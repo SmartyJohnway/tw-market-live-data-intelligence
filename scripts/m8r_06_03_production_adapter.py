@@ -980,7 +980,15 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
 
 
 def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
-    """Materialize the four legacy and four Phase G route-aware production routes."""
+    """Materialize governed production routes without acquiring sources at build time."""
+    # Import after this module is fully initialized: the already-live-tested I1
+    # candidate imports the shared approval guard from this module.
+    from server.services.phase_i_i1_production_candidate import (
+        EXECUTOR_ID as PHASE_I_I1_EXECUTOR_ID,
+        production_batch_operation_adapter_candidate,
+        production_operation_adapter_candidate,
+    )
+
     metadata = ExecutorMetadataRegistry.from_json(load_production_executor_metadata())
     routes = (
         (EXECUTOR_ID, "current_observation", "TWSE"),
@@ -993,9 +1001,14 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
         (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TPEX"),
         (PHASE_H_H1_EXECUTOR_ID, "trading_status_context", "TPEX"),
         (PHASE_H_H3_EXECUTOR_ID, "recent_performance", "TWSE"),
+        (PHASE_I_I1_EXECUTOR_ID, "market_state_context", "TWSE"),
+        (PHASE_I_I1_EXECUTOR_ID, "market_state_context", "TPEX"),
     )
-    registrations = [
-        RuntimeAdapterRegistration(
+    registrations = []
+    for executor, capability, market in routes:
+        entry = metadata.get_route(executor, capability, market)
+        is_i1 = executor == PHASE_I_I1_EXECUTOR_ID
+        registrations.append(RuntimeAdapterRegistration(
             executor_id=entry.executor_id,
             capability_id=entry.capability_id,
             market=entry.market,
@@ -1006,10 +1019,14 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
             timeout_seconds=entry.timeout_seconds,
             maximum_result_items=entry.maximum_result_items,
             output_policy=entry.output_policy,
-            adapter=production_operation_adapter,
-            batch_adapter=None if entry.executor_id in {PHASE_H_H1_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID} else production_batch_operation_adapter,
+            adapter=production_operation_adapter_candidate if is_i1 else production_operation_adapter,
+            batch_adapter=(
+                production_batch_operation_adapter_candidate
+                if is_i1
+                else None
+                if entry.executor_id in {PHASE_H_H1_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID}
+                else production_batch_operation_adapter
+            ),
             fake_adapter=False,
-        )
-        for entry in (metadata.get_route(executor, capability, market) for executor, capability, market in routes)
-    ]
+        ))
     return RuntimeAdapterRegistry(registrations)

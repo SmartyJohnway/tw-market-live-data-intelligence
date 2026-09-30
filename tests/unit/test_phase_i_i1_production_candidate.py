@@ -360,8 +360,11 @@ def test_candidate_batch_limit_matches_unified_hard_target_limit(tmp_path):
     assert calls == []
 
 
-def test_candidate_registry_is_separate_from_normal_runtime():
-    assert build_production_runtime_adapter_registry().routes_for_executor(EXECUTOR_ID) == ()
+def test_candidate_adapter_is_promoted_to_two_normal_production_routes_with_batching():
+    normal = build_production_runtime_adapter_registry().routes_for_executor(EXECUTOR_ID)
+    assert {item.market for item in normal} == {"TWSE", "TPEX"}
+    assert len(normal) == 2
+    assert all(item.batch_adapter is production_batch_operation_adapter_candidate for item in normal)
     candidate = build_i1_candidate_runtime_adapter_registry()
     assert {item.market for item in candidate.routes_for_executor(EXECUTOR_ID)} == {"TWSE", "TPEX"}
 

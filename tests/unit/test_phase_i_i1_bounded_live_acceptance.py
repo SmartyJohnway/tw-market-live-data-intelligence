@@ -82,6 +82,34 @@ def _fixture_identity(monkeypatch):
     return runtime
 
 
+def _pre_activation_runner_authority(monkeypatch):
+    """Replay the historical runner against its original dormant authority snapshot."""
+    from scripts.m8r_06_02_mode_b1_preview import load_planning_authorities
+
+    authorities = load_planning_authorities("unified_market_evidence_request.v3")
+    authorities["executor_disposition"]["surfaces"] = [
+        item for item in authorities["executor_disposition"].get("surfaces", [])
+        if item.get("surface_id") != "phase_i_i1_market_state_executor"
+    ]
+    monkeypatch.setattr(
+        "scripts.m8r_06_02_mode_b1_preview.load_planning_authorities",
+        lambda *_args, **_kwargs: copy.deepcopy(authorities),
+    )
+    monkeypatch.setattr(
+        "scripts.run_phase_i_i1_bounded_live_acceptance._assert_dormant_authority",
+        lambda: {
+            "active_source_count": 0,
+            "normal_registry_i1_routes": 0,
+            "support_status": "contract_supported",
+            "runtime_executable": False,
+            "routing_status": "plan_only",
+            "selected_executor_id": None,
+            "network_required": False,
+            "batching_scope": "same_market",
+        },
+    )
+
+
 def _fixture_transport(calls):
     payloads = {
         SOURCE_DESCRIPTORS["I1-TWSE-FMTQIK-OPENAPI"]["url"]: [_fmt()],
@@ -98,6 +126,10 @@ def _fixture_transport(calls):
 
 def test_runner_offline_e2e_uses_candidate_registry_and_shared_market_fetches(tmp_path, monkeypatch):
     _fixture_identity(monkeypatch)
+    # This replay exercises the historical pre-activation candidate runner.
+    # Its original dormant-authority precondition is represented by an
+    # in-memory snapshot; current branch authority is validated separately.
+    _pre_activation_runner_authority(monkeypatch)
     live_ledger = ROOT / "docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json"
     ledger_before = live_ledger.read_bytes() if live_ledger.exists() else None
     delegated = []
@@ -123,12 +155,13 @@ def test_runner_offline_e2e_uses_candidate_registry_and_shared_market_fetches(tm
     assert result["projection"]["citation_lineage_valid"] is True
     assert result["network"]["raw_payload_persistence"] == "NONE"
     assert result["normal_runtime_dormancy"]["normal_registry_i1_routes"] == 0
-    assert _assert_dormant_authority()["active_source_count"] == 0
+    assert result["normal_runtime_dormancy"]["active_source_count"] == 0
     assert live_ledger.read_bytes() == ledger_before if ledger_before is not None else not live_ledger.exists()
 
 
 def test_runner_transport_failure_is_recorded_once_and_stops_without_projection(tmp_path, monkeypatch):
     _fixture_identity(monkeypatch)
+    _pre_activation_runner_authority(monkeypatch)
     delegated = []
 
     def failing_transport(url, timeout):

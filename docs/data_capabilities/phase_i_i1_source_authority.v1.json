@@ -2,13 +2,15 @@
   "schema_version": "phase_i_source_authority.v1",
   "phase": "I1",
   "capability_id": "market_state_context",
-  "owner_decision_ref": "USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE",
+  "owner_decision_ref": "USER_CHAT_2026-09-30_PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE",
+  "source_contract_owner_ref": "USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE",
+  "bounded_live_acceptance_ref": "USER_CHAT_2026-09-30_PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE",
   "source_contract_status": "FROZEN_PASS",
-  "active_source_count": 0,
-  "runtime_executable": false,
+  "active_source_count": 3,
+  "runtime_executable": true,
   "records": [
-    {"source_id":"I1-TWSE-FMTQIK-OPENAPI","market":"TWSE","source_family":"TWSE_EXCHANGE_REPORT_FMTQIK","source_contract_id":"TWSE_FMTQIK_OPENAPI_V1","activation_state":"inactive","runtime_executable":false},
-    {"source_id":"I1-TWSE-BREADTH-TWTAZU-OPENAPI","market":"TWSE","source_family":"TWSE_OPENDATA_TWTAZU","source_contract_id":"TWSE_TWTAZU_OD_OPENAPI_V1","activation_state":"inactive","runtime_executable":false},
-    {"source_id":"I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI","market":"TPEX","source_family":"TPEX_MAINBOARD_MARKET_HIGHLIGHT","source_contract_id":"TPEX_MAINBORAD_HIGHLIGHT_OPENAPI_V1","activation_state":"inactive","runtime_executable":false}
+    {"source_id":"I1-TWSE-FMTQIK-OPENAPI","market":"TWSE","source_family":"TWSE_EXCHANGE_REPORT_FMTQIK","source_contract_id":"TWSE_FMTQIK_OPENAPI_V1","activation_state":"active","runtime_executable":true},
+    {"source_id":"I1-TWSE-BREADTH-TWTAZU-OPENAPI","market":"TWSE","source_family":"TWSE_OPENDATA_TWTAZU","source_contract_id":"TWSE_TWTAZU_OD_OPENAPI_V1","activation_state":"active","runtime_executable":true},
+    {"source_id":"I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI","market":"TPEX","source_family":"TPEX_MAINBOARD_MARKET_HIGHLIGHT","source_contract_id":"TPEX_MAINBORAD_HIGHLIGHT_OPENAPI_V1","activation_state":"active","runtime_executable":true}
   ]
 }

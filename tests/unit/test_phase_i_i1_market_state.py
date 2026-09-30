@@ -126,12 +126,12 @@ def test_assembler_selects_only_frozen_market_rows_and_rejects_unsupported_marke
         assemble_market_state_context("TAIFEX", retrieved_at=NOW)
 
 
-def test_i1_schema_catalog_routing_and_request_are_dormant_and_v3_only():
+def test_i1_schema_catalog_routing_and_request_are_active_only_in_v3():
     validate_phase_i_i1_contracts()
     catalog = _json("docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json")
     assert _catalog_valid(catalog)
     cap = next(x for x in catalog["data_need_capabilities"] if x["capability_id"] == "market_state_context")
-    assert (cap["support_status"], cap["runtime_executable"], cap["phase_i_activation_state"]) == ("contract_supported", False, "implementation_candidate_inactive")
+    assert (cap["support_status"], cap["runtime_executable"], cap["phase_i_activation_state"]) == ("runtime_executable", True, "selected_route_active")
     assert not {"index_futures_context", "taifex_market_state", "institutional_positioning", "institutional_positioning_context", "market_positioning_context"} & {x["capability_id"] for x in catalog["data_need_capabilities"]}
     for version in ("v1", "v2"):
         schema = _json(f"schemas/unified_market_evidence_request.{version}.schema.json")
@@ -215,7 +215,7 @@ def test_i1_partial_can_omit_unavailable_breadth_without_fabrication():
     assert "breadth" not in partial
 
 
-def test_market_state_context_v3_preview_is_plan_only_without_authorization_or_network():
+def test_market_state_context_v3_preview_is_ready_but_still_requires_authorization_and_has_no_network():
     req = {
         "schema_version":"unified_market_evidence_request.v3",
         "request_id":"i1-dormant-preview",
@@ -225,15 +225,15 @@ def test_market_state_context_v3_preview_is_plan_only_without_authorization_or_n
     }
     result = build_mode_b1_preview_package(req, validate_mode_a_request(req, allow_fixture_snapshot=True), FakeSecurityMaster(), planning_timestamp=NOW)
     assert result["validation"]["validation_status"] == "valid"
-    assert result["validation"]["capability_results"][0]["status"] == "contract_supported"
-    assert result["preview"]["status"] != "ready_for_confirmation"
+    assert result["validation"]["capability_results"][0]["status"] == "runtime_executable"
+    assert result["preview"]["status"] == "ready_for_confirmation"
     assert result["authorization_created"] is False
     assert result["network_executed"] is False
     operation = result["orchestration_plan"]["operations"][0]
-    assert operation["operation_status"] == "plan_only_not_executable"
-    assert operation["executor_id"] is None
-    assert operation["network_required"] is False
-    assert result["orchestration_plan"]["batch_groups"] == []
+    assert operation["operation_status"] == "executable_pending_approval"
+    assert operation["executor_id"] == "phase_i_i1_market_state_executor"
+    assert operation["network_required"] is True
+    assert len(result["orchestration_plan"]["batch_groups"]) == 1
 
 
 def test_i1_fixture_artifact_projects_through_lineage_result_v3_and_audit_v3():

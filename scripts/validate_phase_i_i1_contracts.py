@@ -119,12 +119,14 @@ def validate_phase_i_i1_contracts() -> None:
 
     capability = next((x for x in catalog.get("data_need_capabilities", []) if x.get("capability_id") == "market_state_context"), None)
     route = next((x for x in routing.get("routes", []) if x.get("capability_id") == "market_state_context"), None)
-    if not capability or (capability.get("support_status"), capability.get("runtime_executable"), capability.get("phase_i_activation_state")) != ("contract_supported", False, "implementation_candidate_inactive"):
-        raise I1ValidationError("i1_catalog_not_dormant")
+    if not capability or (capability.get("support_status"), capability.get("runtime_executable"), capability.get("phase_i_activation_state")) != ("runtime_executable", True, "selected_route_active"):
+        raise I1ValidationError("i1_catalog_activation_candidate_invalid")
     if capability.get("supported_markets") != ["TWSE", "TPEX"] or capability.get("instrument_scope") != {"instrument_families":["company_share"],"instrument_types":["common_share"]}:
         raise I1ValidationError("i1_catalog_scope_invalid")
-    if not route or (route.get("routing_status"), route.get("runtime_executable"), route.get("selected_executor_id"), route.get("network_required"), route.get("approval_required"), route.get("batching_scope")) != ("plan_only", False, None, False, True, "same_market"):
-        raise I1ValidationError("i1_route_not_dormant")
+    if not route or (route.get("routing_status"), route.get("runtime_executable"), route.get("selected_executor_id"), route.get("network_required"), route.get("approval_required"), route.get("batching_scope")) != ("resolved", True, "phase_i_i1_market_state_executor", True, True, "same_market"):
+        raise I1ValidationError("i1_route_activation_candidate_invalid")
+    if route.get("candidate_executor_ids") != ["phase_i_i1_market_state_executor"] or route.get("supported_markets") != ["TWSE", "TPEX"] or route.get("blocking_reasons") != []:
+        raise I1ValidationError("i1_route_scope_invalid")
     if route.get("output_evidence_contract") != "market_state_context_evidence.v1":
         raise I1ValidationError("i1_output_contract_mismatch")
     if catalog.get("phase_h_contract", {}).get("active_phase_h_source_count") != 2 or routing.get("phase_h_source_authority", {}).get("active_source_count") != 2:
@@ -132,14 +134,15 @@ def validate_phase_i_i1_contracts() -> None:
     active = {x.get("source_id") for x in routing.get("phase_h_source_authority", {}).get("records", []) if x.get("activation_state") == "active" and x.get("runtime_executable") is True}
     if active != {"H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}:
         raise I1ValidationError("phase_h_active_set_changed")
-    if source_authority.get("active_source_count") != 0 or source_authority.get("runtime_executable") is not False or any(x.get("activation_state") != "inactive" or x.get("runtime_executable") is not False for x in source_authority.get("records", [])):
-        raise I1ValidationError("phase_i_source_authority_not_dormant")
-    if descriptors.get("network_enabled") is not False or descriptors.get("runtime_executable") is not False:
-        raise I1ValidationError("i1_source_descriptor_not_dormant")
+    expected_sources = {"I1-TWSE-FMTQIK-OPENAPI", "I1-TWSE-BREADTH-TWTAZU-OPENAPI", "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI"}
+    if source_authority.get("active_source_count") != 3 or source_authority.get("runtime_executable") is not True or {x.get("source_id") for x in source_authority.get("records", [])} != expected_sources or any(x.get("activation_state") != "active" or x.get("runtime_executable") is not True for x in source_authority.get("records", [])):
+        raise I1ValidationError("phase_i_source_authority_activation_candidate_invalid")
+    if descriptors.get("network_enabled") is not True or descriptors.get("runtime_executable") is not True:
+        raise I1ValidationError("i1_source_descriptor_activation_candidate_invalid")
     if len(descriptors.get("sources", [])) != 3 or any(
-        source.get("activation_state") != "inactive"
-        or source.get("runtime_executable") is not False
-        or source.get("usage_authority_status") != "FROZEN_SOURCE_CONTRACT_PASS_LIVE_ACCEPTANCE_PENDING"
+        source.get("activation_state") != "active"
+        or source.get("runtime_executable") is not True
+        or source.get("usage_authority_status") != "BOUNDED_LIVE_ACCEPTANCE_PASS_ACTIVATION_CANDIDATE"
         or source.get("raw_payload_retention_policy") != "forbidden"
         or not source.get("source_owner")
         or not source.get("source_role")
@@ -147,8 +150,9 @@ def validate_phase_i_i1_contracts() -> None:
         for source in descriptors.get("sources", [])
     ):
         raise I1ValidationError("i1_source_descriptor_fields_invalid")
-    if any(x.get("capability_id") == "market_state_context" for x in registry.get("executors", [])):
-        raise I1ValidationError("i1_executor_registered")
+    normal_i1 = [x for x in registry.get("executors", []) if x.get("capability_id") == "market_state_context"]
+    if len(normal_i1) != 2 or {x.get("market") for x in normal_i1} != {"TWSE", "TPEX"} or any(x.get("executor_id") != "phase_i_i1_market_state_executor" or x.get("network_required") is not True or x.get("expected_evidence_contract") != "market_state_context_evidence.v1" for x in normal_i1):
+        raise I1ValidationError("i1_production_registry_metadata_invalid")
 
     enum_v3 = request_v3["properties"]["data_needs"]["items"]["properties"]["type"]["enum"]
     enum_v1 = request_v1["properties"]["data_needs"]["items"]["properties"]["type"]["enum"]
@@ -182,7 +186,7 @@ def validate_phase_i_i1_contracts() -> None:
         "market_positioning_context",
     }:
         raise I1ValidationError("i2_i3_scope_added")
-    print("Phase I I1 contracts: PASS (dormant, V3-only, zero-network authority)")
+    print("Phase I I1 contracts: PASS (active technical candidate, V3-only; live acceptance unchanged)")
 
 
 if __name__ == "__main__":
