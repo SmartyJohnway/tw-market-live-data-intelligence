@@ -56,13 +56,14 @@ As of this governance consolidation:
 - initial Phase G G1/G2 runtime evidence exists and is accepted;
 - H-ACT-V3 promotion is accepted;
 - H1 coverage remains partial;
-- H2/H3 activation remains incomplete;
-- **Phase I I1 production-capable implementation candidate is Owner-authorized
-  under the frozen source contract; the current runtime route remains dormant.**
+- H2 remains inactive; the selected H3 TWSE route is Owner-accepted and active;
+- **Phase I I1 production-capable implementation candidate is accepted, and
+  bounded live acceptance is ACCEPTED / PASS; the current runtime route remains
+  dormant and production activation is not yet authorized.**
 
-Do not activate I1 or begin I2/I3 without separate explicit Owner
-authorization. This I1 implementation tranche does not authorize market
-network use, production route activation, or merge.
+Do not repeat bounded live acceptance, activate I1, merge its PR, or begin I2/I3
+without separate explicit Owner authorization. Acceptance does not promote the
+normal production registry or change current Catalog/Routing truth.
 
 ## 5. Authority hierarchy
 
@@ -305,13 +306,16 @@ important audit evidence.
 
 ## 16. Current stop rule
 
-For the present authorized I1 implementation tranche:
+For the current I1 state:
 
-> **Do not run I1 live acceptance, activate I1, or enter I2/I3 implementation.**
+> **I1 bounded live acceptance is accepted; do not repeat it, activate I1, merge
+> PR #295, or enter I2/I3 implementation without separate Owner authorization.**
 
-Production-capable I1 candidate implementation and deterministic offline
-validation are authorized by the current Owner instruction and frozen source
-contract. Documentation cleanup, governance reconciliation, archive
-organization, and current-state validation remain allowed. Separate Owner
-authorization is required before I1 live acceptance/activation or I2/I3
-implementation.
+The production-capable I1 implementation candidate and bounded live acceptance
+are accepted. Current runtime authority remains `contract_supported`,
+`runtime_executable=false`, `routing_status=plan_only`,
+`selected_executor_id=null`, normal production I1 routes = 0, and Phase I active
+source count = 0. Documentation cleanup, governance reconciliation, archive
+organization, and deterministic offline validation remain allowed. Separate
+Owner authorization is required before production route activation, PR merge,
+or I2/I3 implementation.

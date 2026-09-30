@@ -160,9 +160,11 @@ H-ACT-H3 final activation closure is recorded in
 The route-level `H0H-LIVE-003` and `H0H-ROLL-004` gates are accepted. Attempt
 #2E is the accepted bounded-live evidence; its original runner nonzero
 exit is retained as a historical acceptance-harness false negative and no new
-live run is required. H-ACT-H3 itself does not authorize Phase I work; the
-separate Owner authority permits a production-capable I1 implementation
-candidate, but not bounded live acceptance or route activation in this tranche.
+live run is required. Separately, the Phase I I1 production-capable implementation
+candidate and its bounded live acceptance are accepted. This does not activate
+the production route or authorize a merge.
+The I1 bounded live acceptance ledger is
+`docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json`.
 
 Accepted promotion ledger:
 `docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json`.
@@ -181,15 +183,23 @@ Current interpretation:
   completion is not declared by this file.
 - Phase H: substantial contract/runtime work exists and V3 promotion is
   complete; broader H1/H2/H3 Roadmap coverage remains incomplete.
-- **Phase I I1 production activation implementation candidate:** the frozen I1
-  source contract is accepted and a bounded official-source executor candidate
-  is being implemented under separate Owner authority. The current Catalog and
-  Routing remain dormant: `market_state_context` is `contract_supported`,
-  `runtime_executable=false`, `plan_only`, with no selected executor and zero
-  active Phase I sources. This implementation tranche uses no market network.
-- I1 bounded live acceptance and production route activation remain separate
-  gates and are not performed here. I2 and I3 remain not started; the broader
-  Roadmap Phase I remains incomplete.
+- **Phase I I1 production-capable implementation candidate:** accepted under
+  the frozen I1 source contract. Bounded live acceptance is separately
+  `ACCEPTED / PASS` under its Owner authority. The current Catalog, Routing,
+  and normal production registry remain dormant: `market_state_context` is
+  `contract_supported`, `runtime_executable=false`, `routing_status=plan_only`,
+  `selected_executor_id=null`, normal production I1 routes = 0, and Phase I
+  active sources = 0. Production route activation remains **NOT YET AUTHORIZED /
+  INACTIVE**. I2 and I3 remain not started; the broader Roadmap Phase I remains
+  incomplete.
+
+I1 bounded-live timing semantics are recorded without changing the accepted
+evidence: the execution/acquisition reference timestamp is
+`2026-09-30T01:56:37Z`; per-source transport retrieval timestamps are recorded
+individually in the bounded-live telemetry; normalized evidence `retrieved_at`
+uses the governed execution/acquisition reference timestamp for the I1 v1
+contract; transport telemetry `retrieved_at` is each individual HTTP retrieval
+observation time.
 
 ## Current authority hierarchy
 

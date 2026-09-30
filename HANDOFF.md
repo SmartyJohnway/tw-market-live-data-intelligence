@@ -2,7 +2,7 @@
 
 ## Status
 
-Date: **2026-09-29**
+Date: **2026-09-30**
 
 Baseline main before this documentation-governance consolidation:
 
@@ -10,9 +10,9 @@ Baseline main before this documentation-governance consolidation:
 
 Current workstream:
 
-> **H-ACT-H3 is Owner-accepted. Phase I I1 has an Owner-authorized
-> production-capable implementation candidate; its current route remains
-> dormant, and live acceptance, route activation, I2, and I3 are separate gates.**
+> **H-ACT-H3 is Owner-accepted. The Phase I I1 production-capable implementation
+> candidate and bounded live acceptance are accepted; production route
+> activation remains inactive and not yet authorized. I2 and I3 are not started.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -69,11 +69,15 @@ H2 activation                NOT STARTED / INACTIVE
 H3 TWSE recent_performance   ACTIVE; H0H-LIVE-003 PASS; H0H-ROLL-004 PASS
 H3 TPEX                      BLOCKED / NON-EXECUTABLE
 Provider automation         NOT_ESTABLISHED_TERMS_CONFLICTED
-Phase I I1 production-capable candidate IN IMPLEMENTATION / DORMANT
+Phase I I1 production-capable implementation ACCEPTED
+I1 current runtime route       DORMANT / INACTIVE
 Phase I active sources       0
-I1 live acceptance           NOT RUN
-I1 runtime/route activation  INACTIVE / NOT AUTHORIZED IN THIS TRANCHE
-I2 / I3                      NOT STARTED / NOT AUTHORIZED
+I1 bounded live acceptance   ACCEPTED / PASS
+normal production I1 routes  0
+market_state_context         contract_supported / runtime_executable=false
+I1 routing                   plan_only / selected_executor_id=null
+I1 production route activation INACTIVE / NOT YET AUTHORIZED
+I2 / I3                      NOT STARTED
 ```
 
 V1/V2 remain compatibility contracts. Existing persisted artifacts retain their
@@ -127,9 +131,24 @@ The H-ACT-H3 final activation is Owner-accepted for the selected bounded TWSE
 technical candidate and its live/rollback evidence. Separately, Owner accepted
 the frozen Phase I I1 source contract and authorized a bounded,
 production-capable executor candidate for `market_state_context`. The current
-route remains dormant, unregistered, and non-executable. This tranche does not
-authorize market network access or route activation. I2 and I3 remain not
-started. The broader Roadmap Phase I remains incomplete.
+route remains dormant, unregistered, and non-executable. The separate
+`PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE` gate is accepted PASS under Owner authority;
+its ledger is
+`docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json`.
+The acceptance used exactly three official GETs (TWSE FMTQIK 1, TWSE breadth 1,
+TPEx 1), zero retries; TWSE is governed partial due to preserved date mismatch
+and TPEx is complete. This did not activate the production route. Normal
+production I1 routes remain 0, Phase I active source count remains 0, and
+`market_state_context` remains `contract_supported`, `runtime_executable=false`,
+`plan_only`, with no selected executor. I2 and I3 remain not started; the
+broader Roadmap Phase I remains incomplete.
+
+I1 timing semantics: acceptance execution/acquisition reference timestamp is
+`2026-09-30T01:56:37Z`; each source transport retrieval timestamp is recorded
+individually in bounded-live telemetry. Normalized evidence `retrieved_at` uses
+the governed execution/acquisition reference timestamp for the I1 v1 contract;
+transport telemetry `retrieved_at` is the individual HTTP retrieval observation
+time.
 
 ## Historical documentation problem already closed
 
@@ -171,19 +190,20 @@ files unless the task requires historical evidence.
 
 ## Current allowed next work
 
-Continue only within separately authorized work. The current authorized I1
-tranche is production-capable candidate implementation and deterministic
-offline validation only. Do not run bounded live acceptance, activate the
-route, or start I2/I3 without a separate Owner gate.
+The I1 implementation candidate and bounded live acceptance are accepted. The
+next gate is **Phase I I1 — Production Route Activation Decision**. Do not
+activate the route, alter current Catalog/Routing/normal-registry truth, merge
+PR #295, or start I2/I3 without separate explicit Owner authorization.
 
 ## Explicit stop boundary
 
-**Do not run I1 live acceptance, activate I1, or begin I2/I3 in this tranche.**
+**Do not repeat I1 live acceptance, activate I1, merge PR #295, or begin I2/I3
+in this tranche.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0 and the I1 source
-contract are frozen; production-capable candidate implementation is authorized.
-Bounded live acceptance, production route activation, I2, I3, and merge require
-separate Owner authorization.
+contract are frozen; the production-capable I1 candidate and bounded live
+acceptance are accepted. Production route activation remains inactive and not
+yet authorized. I2/I3 and merge remain outside this acceptance.
 
 ## Before any future Phase I work
 
