@@ -205,6 +205,18 @@ uses the governed execution/acquisition reference timestamp for the I1 v1
 contract; transport telemetry `retrieved_at` is each individual HTTP retrieval
 observation time.
 
+Phase I I2-A0 reached `PASS_GO` from the single Owner-executed bounded TAIFEX
+probe recorded in
+`docs/governance/phase_i/PHASE_I_I2_A0_TX_REGULAR_SESSION_GO_NO_GO_PREFLIGHT_2026-09-30.json`.
+I2-A1 `index_futures_context` source/evidence contract is frozen `FROZEN_PASS`
+in
+`docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json`.
+This authorizes no A2 work: I2 runtime implementation is not started and is
+not authorized; I2 has zero active sources and zero normal production routes.
+I1 remains the only active Phase I runtime tranche (three active sources).
+I3 is not started, Phase I remains incomplete, and MCP remains exactly six
+tools. No additional source call was made for A1.
+
 ## Current authority hierarchy
 
 When artifacts disagree, do not guess. Use this order for the type of fact

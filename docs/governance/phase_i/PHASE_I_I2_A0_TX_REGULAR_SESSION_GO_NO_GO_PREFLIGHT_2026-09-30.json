@@ -1,0 +1,49 @@
+{
+  "schema_version": "phase_i_i2_a0_go_no_go_preflight.v1",
+  "gate": "I2-A0",
+  "status": "PASS_GO",
+  "owner_authority_ref": "USER_CHAT_2026-09-30_PHASE_I_I2_A1_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_FREEZE",
+  "execution_classification": "Owner-executed bounded live probe; not production execution",
+  "source": {
+    "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI",
+    "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT",
+    "source_contract_id": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1",
+    "endpoint_family": "DailyMarketReportFut",
+    "endpoint": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut",
+    "http_status": 200,
+    "content_type": "application/octet-stream",
+    "response_bytes": 813057,
+    "response_sha256": "7a35adfc030aba52378dcc5e68a1bcfd90082d4a065b3fff891a365e9fa9370b",
+    "root_row_count": 2156,
+    "unique_source_dates": ["20260929"],
+    "trading_sessions_observed": ["一般", "盤後"],
+    "get_count": 1,
+    "retry_count": 0,
+    "required_source_keys_missing": [],
+    "raw_response_committed": false
+  },
+  "selection_observation": {
+    "eligible_tx_regular_standard_month_candidates": ["202610", "202611", "202612", "202703", "202706", "202709"],
+    "selected": {
+      "Date": "20260929",
+      "Contract": "TX",
+      "ContractMonth(Week)": "202610",
+      "TradingSession": "一般",
+      "Open": "48098",
+      "High": "48194",
+      "Low": "47630",
+      "Last": "47767",
+      "Change": "-358",
+      "%": "-0.74%",
+      "Volume": "43812",
+      "SettlementPrice": "47781",
+      "OpenInterest": "102023",
+      "BestBid": "47753",
+      "BestAsk": "47765"
+    },
+    "spread_rows_observed": ["202610/202611"],
+    "six_digit_outright_selector_required": true
+  },
+  "market_network_calls_in_this_a1_tranche": 0,
+  "raw_source_payload_retention": "forbidden"
+}
