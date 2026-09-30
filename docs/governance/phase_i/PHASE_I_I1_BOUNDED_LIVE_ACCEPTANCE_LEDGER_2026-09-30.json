@@ -1,0 +1,363 @@
+{
+  "acceptance_execution_timestamp": "2026-09-30T01:56:37Z",
+  "candidate_commit": "0f556ca79134fd8338406ba3299eea83deab3e88",
+  "controlled_execution": {
+    "aggregation_status": "succeeded",
+    "artifact_inventory": [
+      {
+        "byte_size": 2325,
+        "evidence_contract": "market_state_context_evidence.v1",
+        "item_count": 1,
+        "relative_path": "evidence/phase_i/i1/umeop-op-v1-1172781d2a7ba65b7a84.json",
+        "schema_version": "market_state_context_evidence.v1",
+        "sha256": "aa7079511fbe89c08c574d96422b59a706f77a696967e5c62cbb73206216b090"
+      },
+      {
+        "byte_size": 2325,
+        "evidence_contract": "market_state_context_evidence.v1",
+        "item_count": 1,
+        "relative_path": "evidence/phase_i/i1/umeop-op-v1-80d51bf6899805d7ed2e.json",
+        "schema_version": "market_state_context_evidence.v1",
+        "sha256": "173593a2263f8467bd51c03b67960f31f68cf64401a38ff19753365844eb8629"
+      },
+      {
+        "byte_size": 2959,
+        "evidence_contract": "market_state_context_evidence.v1",
+        "item_count": 1,
+        "relative_path": "evidence/phase_i/i1/umeop-op-v1-b332ac23465f81e16bf5.json",
+        "schema_version": "market_state_context_evidence.v1",
+        "sha256": "9e7391faa159fca09cd719b1b1a547d333c91f14f8508eea7305881769f807da"
+      },
+      {
+        "byte_size": 2959,
+        "evidence_contract": "market_state_context_evidence.v1",
+        "item_count": 1,
+        "relative_path": "evidence/phase_i/i1/umeop-op-v1-edbc03357dd583885f4e.json",
+        "schema_version": "market_state_context_evidence.v1",
+        "sha256": "574c73a9dc4493f4b05f333fe1292495e27d9d523e18e1e713982b509d2940f5"
+      }
+    ],
+    "authorization_id": "umea-v1-70dcebe554dde7bc41f6",
+    "authorization_owner_review_reference": "USER_CHAT_2026-09-30_PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE",
+    "control_package_manifest_sha256": "ff27d7f945e03797b7bfdb7b06078bd0b62a20aebfe36c877ff8cf74e9311a13",
+    "execution_request_ids": [
+      "umereq-v1-e2425edbbaa63b29542b",
+      "umereq-v1-a6cd24e0b98b2b9f8d84",
+      "umereq-v1-baa7995866328b57ab13",
+      "umereq-v1-83509667e0d8a466c50a"
+    ],
+    "operation_ids": [
+      "umeop-op-v1-b332ac23465f81e16bf5",
+      "umeop-op-v1-edbc03357dd583885f4e",
+      "umeop-op-v1-80d51bf6899805d7ed2e",
+      "umeop-op-v1-1172781d2a7ba65b7a84"
+    ],
+    "operation_statuses": [
+      "succeeded",
+      "succeeded",
+      "succeeded",
+      "succeeded"
+    ],
+    "preflight_id": "umeopf-v1-6c866a9377972e2e126f"
+  },
+  "gate_id": "PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE",
+  "i2_started": false,
+  "i3_started": false,
+  "market_evidence": {
+    "TPEX": {
+      "caveats": [],
+      "components": {
+        "tpex_mainborad_highlight": {
+          "observed_fields": {
+            "benchmark.change_points": -0.74,
+            "benchmark.close_index": 412.25,
+            "breadth.down": 399,
+            "breadth.flat": 80,
+            "breadth.limit_down": 2,
+            "breadth.limit_up": 21,
+            "breadth.unmatched_including_suspended": 25,
+            "breadth.up": 389,
+            "trade_date": "2026-09-29",
+            "turnover.value": 176208.0,
+            "turnover.volume": 749184.0
+          },
+          "official_date": "2026-09-29",
+          "source": {
+            "authority": "official",
+            "retrieved_at": "2026-09-30T01:56:37Z",
+            "source_contract_id": "TPEX_MAINBORAD_HIGHLIGHT_OPENAPI_V1",
+            "source_family": "TPEX_MAINBOARD_MARKET_HIGHLIGHT",
+            "source_id": "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI",
+            "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainborad_highlight"
+          },
+          "status": "available",
+          "transport": {
+            "content_type": "application/json",
+            "error_code": null,
+            "http_status": 200,
+            "response_byte_count": 429,
+            "response_sha256": "d161b5eda3bb6eafa3db8f3fac7cff26cb998bf7f3fcf4bda34ba6fff2c79842",
+            "status": "available"
+          },
+          "unit_metadata": {
+            "benchmark.change_points": "index_point",
+            "benchmark.close_index": "index_point",
+            "breadth.down": "company_count",
+            "breadth.flat": "company_count",
+            "breadth.limit_down": "company_count",
+            "breadth.limit_up": "company_count",
+            "breadth.unmatched_including_suspended": "company_count",
+            "breadth.up": "company_count",
+            "turnover.value": "TWD_million",
+            "turnover.volume": "thousand_share"
+          }
+        }
+      },
+      "status": "complete",
+      "trade_date": "2026-09-29"
+    },
+    "TWSE": {
+      "caveats": [
+        "twse_component_official_dates_mismatch; dates preserved without alignment"
+      ],
+      "components": {
+        "breadth": {
+          "observed_fields": {
+            "down": 671,
+            "flat": 59,
+            "limit_down": 10,
+            "limit_up": 19,
+            "no_comparison": 4,
+            "unmatched": 2,
+            "up": 342
+          },
+          "official_date": "2026-06-05",
+          "source": {
+            "authority": "official",
+            "retrieved_at": "2026-09-30T01:56:37Z",
+            "source_contract_id": "TWSE_TWTAZU_OD_OPENAPI_V1",
+            "source_family": "TWSE_OPENDATA_TWTAZU",
+            "source_id": "I1-TWSE-BREADTH-TWTAZU-OPENAPI",
+            "url": "https://openapi.twse.com.tw/v1/opendata/twtazu_od"
+          },
+          "status": "available",
+          "transport": {
+            "content_type": "application/json",
+            "error_code": null,
+            "http_status": 200,
+            "response_byte_count": 319,
+            "response_sha256": "9700f002e5e58fdf1afc1eb6db6be6596583adeaa6312745e6afc2b515154d47",
+            "status": "available"
+          },
+          "unit_metadata": {
+            "down": "security_count",
+            "flat": "security_count",
+            "limit_down": "security_count",
+            "limit_up": "security_count",
+            "no_comparison": "security_count",
+            "unmatched": "security_count",
+            "up": "security_count"
+          }
+        },
+        "fmtqik": {
+          "observed_fields": {
+            "benchmark": {
+              "change_points": -392.64,
+              "change_unit": "index_point",
+              "close_index": 47631.96,
+              "identifier": "TAIEX"
+            },
+            "turnover": {
+              "transactions": 4340375,
+              "value": 836144707733,
+              "volume": 9672871036
+            }
+          },
+          "official_date": "2026-09-29",
+          "source": {
+            "authority": "official",
+            "retrieved_at": "2026-09-30T01:56:37Z",
+            "source_contract_id": "TWSE_FMTQIK_OPENAPI_V1",
+            "source_family": "TWSE_EXCHANGE_REPORT_FMTQIK",
+            "source_id": "I1-TWSE-FMTQIK-OPENAPI",
+            "url": "https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK"
+          },
+          "status": "available",
+          "transport": {
+            "content_type": "application/json",
+            "error_code": null,
+            "http_status": 200,
+            "response_byte_count": 2606,
+            "response_sha256": "9981640ace9d79680788d29ea7e18fee563262f75e8dcc416dfb7ac60b13f227",
+            "status": "available"
+          },
+          "unit_metadata": {
+            "benchmark.change_points": "index_point",
+            "benchmark.close_index": "index_point",
+            "turnover.transactions": "transaction",
+            "turnover.value": "TWD",
+            "turnover.volume": "share"
+          }
+        }
+      },
+      "status": "partial",
+      "trade_date": "2026-09-29"
+    },
+    "same_market_reuse": {
+      "TPEX_source_gets": 1,
+      "TPEX_targets": 2,
+      "TWSE_source_gets": 2,
+      "TWSE_targets": 2
+    }
+  },
+  "mcp_tool_count": 6,
+  "network": {
+    "actual_get_count": 3,
+    "maximum_get_count": 3,
+    "maximum_response_bytes_per_get": 65536,
+    "raw_payload_persistence": "NONE",
+    "retry_count": 0,
+    "sources": [
+      {
+        "content_type": "application/json",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_mainborad_highlight",
+        "http_status": 200,
+        "json_root_type": "list",
+        "response_byte_count": 429,
+        "response_sha256": "d161b5eda3bb6eafa3db8f3fac7cff26cb998bf7f3fcf4bda34ba6fff2c79842",
+        "retrieved_at": "2026-09-30T01:56:48Z",
+        "row_count": 1,
+        "selected_official_date": "2026-09-29",
+        "semantic_component_status": "available",
+        "source_contract_id": "TPEX_MAINBORAD_HIGHLIGHT_OPENAPI_V1",
+        "source_family": "TPEX_MAINBOARD_MARKET_HIGHLIGHT",
+        "source_id": "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI",
+        "timeout_seconds": 15
+      },
+      {
+        "candidate_row_count": 19,
+        "content_type": "application/json",
+        "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK",
+        "http_status": 200,
+        "json_root_type": "list",
+        "response_byte_count": 2606,
+        "response_sha256": "9981640ace9d79680788d29ea7e18fee563262f75e8dcc416dfb7ac60b13f227",
+        "retrieved_at": "2026-09-30T01:56:49Z",
+        "row_count": 19,
+        "rows_sharing_selected_maximum_date": 1,
+        "selected_maximum_official_date": "2026-09-29",
+        "selected_official_date": "2026-09-29",
+        "semantic_component_status": "available",
+        "source_contract_id": "TWSE_FMTQIK_OPENAPI_V1",
+        "source_family": "TWSE_EXCHANGE_REPORT_FMTQIK",
+        "source_id": "I1-TWSE-FMTQIK-OPENAPI",
+        "timeout_seconds": 15
+      },
+      {
+        "content_type": "application/json",
+        "endpoint": "https://openapi.twse.com.tw/v1/opendata/twtazu_od",
+        "http_status": 200,
+        "json_root_type": "list",
+        "response_byte_count": 319,
+        "response_sha256": "9700f002e5e58fdf1afc1eb6db6be6596583adeaa6312745e6afc2b515154d47",
+        "retrieved_at": "2026-09-30T01:56:51Z",
+        "row_count": 2,
+        "selected_official_date": "2026-06-05",
+        "semantic_component_status": "available",
+        "source_contract_id": "TWSE_TWTAZU_OD_OPENAPI_V1",
+        "source_family": "TWSE_OPENDATA_TWTAZU",
+        "source_id": "I1-TWSE-BREADTH-TWTAZU-OPENAPI",
+        "timeout_seconds": 15
+      }
+    ],
+    "timeout_seconds": 15
+  },
+  "normal_runtime_dormancy": {
+    "active_source_count": 0,
+    "batching_scope": "same_market",
+    "candidate_registry_markets": [
+      "TPEX",
+      "TWSE"
+    ],
+    "mcp_tool_count": 6,
+    "network_required": false,
+    "normal_registry_i1_routes": 0,
+    "routing_status": "plan_only",
+    "runtime_executable": false,
+    "selected_executor_id": null,
+    "support_status": "contract_supported"
+  },
+  "owner_authorization_reference": "USER_CHAT_2026-09-30_PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE",
+  "phase_i_active_source_count": 0,
+  "production_route_active": false,
+  "projection": {
+    "governed_evidence_package_path": "docs/governance/phase_i/acceptance_runs/20260930T015637Z-1bf1dea1/phase_i_i1_bounded_live_acceptance_evidence.zip",
+    "governed_evidence_package_sha256": "de2168534dafe6c6db02ba9ab79496ba0980c0c81aab475eda23055b589714fc",
+    "artifact_lineage_valid": true,
+    "attempt_count": 1,
+    "audit_v3": {
+      "archive_member": "control/umea-v1-70dcebe554dde7bc41f6/audit/unified_market_evidence_audit_package.v3.json",
+      "path": "docs/governance/phase_i/acceptance_runs/20260930T015637Z-1bf1dea1/phase_i_i1_bounded_live_acceptance_evidence.zip",
+      "schema_valid": true,
+      "sha256": "e6b03c2e0de0910f7f762bc607aa2487b884d02f885a5acc47cac3e8c7b17864"
+    },
+    "bundle_id": "umeb-v1-130674ef93f1b696b6c0",
+    "candidate_authority_overlay": "acceptance-only in-memory projection; canonical Catalog/Routing/registry unchanged",
+    "candidate_authority_overlay_sha256": "87cd8430ec4847741bc010e78646be28fa6d934d2bdcee710f0da543dc64d183",
+    "citation_lineage_valid": true,
+    "claim_id": "umecl-v1-4b7c346e1d2ae27e6ebd",
+    "claim_state": "consumed_success",
+    "receipt_id": "umerec-v1-944716097d8e93a4c66d",
+    "result_v3": {
+      "archive_member": "control/umea-v1-70dcebe554dde7bc41f6/ai_context/unified_market_evidence_result.v3.json",
+      "path": "docs/governance/phase_i/acceptance_runs/20260930T015637Z-1bf1dea1/phase_i_i1_bounded_live_acceptance_evidence.zip",
+      "schema_valid": true,
+      "sha256": "a4138a36c91de3ced4e4f53a3720fbbb6c5084648f7e1bc82728d355f4953f47"
+    }
+  },
+  "schema_version": "phase_i_i1_bounded_live_acceptance_ledger.v1",
+  "security_master": {
+    "release_id": "security-master-20260926T151841Z",
+    "release_index_sha256": "665d69e53588fa6cd723e434902946a43ac4f712920b0c4ec2adf91b556f4c10",
+    "release_manifest_sha256": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+    "selected_targets": [
+      {
+        "canonical_target_id": "TWSE:1101",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0001101004",
+        "market": "TWSE",
+        "security_code": "1101",
+        "security_master_record_hash": "fdc4ab1ddc4a517a2a204cc7ed4b9ef33ee79d6ac1e2856b3c2aa4c43cfb0e90"
+      },
+      {
+        "canonical_target_id": "TWSE:1102",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0001102002",
+        "market": "TWSE",
+        "security_code": "1102",
+        "security_master_record_hash": "eae90855a4b04bc2952e3c82a036f59f178be586e5fd704359f13459ae1b3769"
+      },
+      {
+        "canonical_target_id": "TPEX:1240",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0001240000",
+        "market": "TPEX",
+        "security_code": "1240",
+        "security_master_record_hash": "fe9042479fa8a11edefdc900d7a5a3288b0f05f30c7007fd9121d6764b0b5cb5"
+      },
+      {
+        "canonical_target_id": "TPEX:1259",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0001259000",
+        "market": "TPEX",
+        "security_code": "1259",
+        "security_master_record_hash": "5581b82cb1f8b73c9cebb67093675ea177388bee7f3677242158b4b75b4fb632"
+      }
+    ]
+  },
+  "status": "PASS"
+}
