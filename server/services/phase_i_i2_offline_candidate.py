@@ -116,6 +116,7 @@ def run_i2_candidate_offline_batch(
             transport=transport,
         )
         evidence["caveats"].append("offline injected-fixture transport metadata; no market request occurred")
+        failed = evidence["status"] in {"source_failed", "binding_failed"}
         evidence_bytes = canonical_json(evidence).encode("utf-8")
         artifacts[relative_path] = evidence_bytes
         metadata = {
@@ -136,11 +137,11 @@ def run_i2_candidate_offline_batch(
             "executor_id": EXECUTOR_ID,
             "capability_id": CAPABILITY_ID,
             "evidence_contract": EVIDENCE_SCHEMA,
-            "status": "succeeded",
-            "error_code": None,
+            "status": "failed" if failed else "succeeded",
+            "error_code": evidence["status"] if failed else None,
             "result_item_count": 1,
             "evidence_artifacts": [metadata],
-            "warnings": [],
+            "warnings": list(evidence.get("caveats", [])),
         }
         results.append(operation_result)
 

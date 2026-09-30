@@ -9,7 +9,7 @@
   "records": [
     {
       "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI",
-      "market": "TWSE",
+      "market": "TAIFEX",
       "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT",
       "source_contract_id": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1",
       "activation_state": "inactive",

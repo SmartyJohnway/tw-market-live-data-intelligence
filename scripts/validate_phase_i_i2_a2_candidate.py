@@ -45,9 +45,9 @@ def validate() -> None:
     if source.get("active_source_count") != 0 or source.get("runtime_executable") is not False or len(source.get("records", [])) != 1:
         raise ValueError("i2_source_authority_not_inactive")
     source_record = source["records"][0]
-    if (source_record.get("source_id"), source_record.get("source_family"), source_record.get("source_contract_id"),
+    if (source_record.get("source_id"), source_record.get("market"), source_record.get("source_family"), source_record.get("source_contract_id"),
             source_record.get("activation_state"), source_record.get("runtime_executable")) != (
-        "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI", "TAIFEX_DAILY_MARKET_REPORT_FUT",
+        "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI", "TAIFEX", "TAIFEX_DAILY_MARKET_REPORT_FUT",
         "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1", "inactive", False
     ):
         raise ValueError("i2_source_record_active")

@@ -331,7 +331,7 @@ def main() -> None:
         _fail("phase_i_v3_request_extension_not_additive")
     additive_v3_schema_hashes = {
         "schemas/unified_market_evidence_request.v3.schema.json": "e11807c2d43dfa91cae90e4b266cc450724301dea7152313fe0ef0afc883e348",
-        "schemas/unified_market_evidence_result.v3.schema.json": "a397e1642c1c7c84cc0a0c2b92efffad39f452dc5db42fe962cbbe0fd17804b4",
+        "schemas/unified_market_evidence_result.v3.schema.json": "2c2092db493d183922b434e99922b2ed4409185ba67985f9b7fbb2639f21eb9b",
         "schemas/unified_market_evidence_audit_package.v3.schema.json": "08d90c8756503715a0174deda3eecc484ac21e97f542a23e1e7530a0939abadb",
     }
     for relative_path, expected_hash in additive_v3_schema_hashes.items():

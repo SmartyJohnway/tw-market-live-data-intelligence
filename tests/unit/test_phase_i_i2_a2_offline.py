@@ -188,6 +188,46 @@ def _execution_request(target_id, operation_id, request_id):
     }
 
 
+def _candidate_target(target_id, operation_id, request_id):
+    request = _execution_request(target_id, operation_id, request_id)
+    return {
+        "canonical_target_id": target_id, "market": "TWSE",
+        "instrument_family": "company_share", "instrument_type": "common_share",
+        "operation_id": operation_id, "execution_request_id": request_id,
+        "execution_request_hash": request["execution_request_hash"],
+        "execution_request": request,
+    }
+
+
+@pytest.mark.parametrize(
+    "rows,evidence_status,operation_status,error_code",
+    [
+        ([row(Last="malformed")], "source_failed", "failed", "source_failed"),
+        ([row(), row()], "binding_failed", "failed", "binding_failed"),
+        ([row(Contract="MTX")], "unavailable", "succeeded", None),
+        ([row(Open="-")], "partial", "succeeded", None),
+        ([row()], "complete", "succeeded", None),
+    ],
+    ids=["source-failed", "binding-failed", "unavailable", "partial", "complete"],
+)
+def test_candidate_operation_result_status_follows_i1_failure_semantics(
+    rows, evidence_status, operation_status, error_code
+):
+    target = _candidate_target("TWSE:2330", "umeop-op-v1-" + "a" * 20, "umereq-v2-" + "b" * 20)
+    candidate = run_i2_candidate_offline_batch(
+        [target], source_payload=json.dumps(rows).encode(), governed_retrieved_at=STAMP,
+        transport_retrieved_at=TRANSPORT_STAMP, fmtqik_benchmark_date="2026-09-29",
+    )
+    operation_result = candidate["operation_results"][0]
+    artifact = json.loads(candidate["artifact_bytes"][operation_result["evidence_artifacts"][0]["relative_path"]])
+    schema_validate(artifact)
+    assert artifact["status"] == evidence_status
+    assert operation_result["status"] == operation_status
+    assert operation_result["error_code"] == error_code
+    assert operation_result["evidence_artifacts"] == candidate["artifact_inventory"]
+    assert operation_result["warnings"] == artifact["caveats"]
+
+
 def test_candidate_batch_reuses_one_injected_source_and_emits_v2_artifact_lineage():
     operation_ids = ["umeop-op-v1-" + c * 20 for c in "123"]
     request_ids = ["umereq-v2-" + c * 20 for c in "456"]
@@ -284,6 +324,88 @@ def test_result_and_audit_v3_accept_additive_i2_phase_i_reference_only():
     phase_i_item = audit_schema["properties"]["phase_i_evidence"]["properties"]["evidence_artifact_references"]["items"]
     assert jsonschema.Draft7Validator(phase_i_item).is_valid({"capability_id":"index_futures_context",
         "schema_version":"index_futures_context_evidence.v1","relative_path":"evidence/phase_i/i2/x.json","sha256":"a"*64})
+
+
+def test_result_v3_transport_byte_bound_matches_frozen_i2_schema():
+    result_schema = json.loads((ROOT / "schemas/unified_market_evidence_result.v3.schema.json").read_text(encoding="utf-8"))
+    result_validator = jsonschema.Draft7Validator(
+        result_schema["definitions"]["index_futures_context"],
+        format_checker=jsonschema.FormatChecker(),
+    )
+    statuses = {
+        "complete": evidence([row()]),
+        "partial": evidence([row(Open="-")]),
+        "unavailable": evidence([row(Contract="MTX")]),
+        "source_failed": evidence([row(Last="malformed")]),
+        "binding_failed": evidence([row(), row()]),
+    }
+    evidence_schema = json.loads((ROOT / "schemas/index_futures_context_evidence.v1.schema.json").read_text(encoding="utf-8"))
+    evidence_validator = jsonschema.Draft202012Validator(
+        evidence_schema, format_checker=jsonschema.FormatChecker()
+    )
+    for status, item in statuses.items():
+        projected = copy.deepcopy(item)
+        projected["target"] = {"canonical_target_id": "TWSE:2330", "market": "TWSE"}
+        projected["transport"] = {
+            "http_status": 200, "content_type": "application/octet-stream",
+            "response_byte_count": 2097153, "response_sha256": "a" * 64,
+            "retrieved_at": TRANSPORT_STAMP, "get_count": 1, "retry_count": 0,
+            "raw_payload_persisted": False,
+        }
+        evidence_accepts_bound = evidence_validator.is_valid(
+            item | {"transport": projected["transport"]}
+        )
+        assert evidence_accepts_bound is (status == "source_failed"), status
+        assert result_validator.is_valid(projected) is (status == "source_failed"), status
+
+
+def test_failed_candidate_operation_remains_failed_in_lineage_and_result_projection():
+    operation_id = "umeop-op-v1-" + "9" * 20
+    request_id = "umereq-v2-" + "8" * 20
+    target_id = "TWSE:2330"
+    target = _candidate_target(target_id, operation_id, request_id)
+    candidate = run_i2_candidate_offline_batch(
+        [target], source_payload=json.dumps([row(Last="malformed")]).encode(),
+        governed_retrieved_at=STAMP, transport_retrieved_at=TRANSPORT_STAMP,
+        fmtqik_benchmark_date="2026-09-29",
+    )
+    relative_path, body = next(iter(candidate["artifact_bytes"].items()))
+    artifact = json.loads(body)
+    inventory_item = candidate["artifact_inventory"][0]
+    identity = {"canonical_target_id":target_id,"isin":None,"market":"TWSE","security_code":"2330",
+                "security_name_zh":"fixture","security_name_en":None,"instrument_family":"company_share","instrument_type":"common_share"}
+    req = {"schema_version":"unified_market_evidence_request.v3","request_id":"i2-failure-projection-fixture",
+           "execution_mode":"execute","targets":[{"input":"2330","market_hint":"TWSE"}],
+           "data_needs":[{"type":"index_futures_context","priority":"required","parameters":{}}]}
+    f3 = {"target_results":[{"target_index":0,"original_input":"2330","resolution_status":"resolved","canonical_identity":identity}]}
+    plan = {"plan_id":"umeop-v1-"+"3"*20,"plan_hash":"a"*64,"schema_version":"unified_market_evidence_orchestration_plan.v1",
+            "plan_status":"plan_ready","input_bindings":{"f3_validation_output_hash":"b"*64},"operations":[
+                {"operation_id":operation_id,"capability_id":"index_futures_context","canonical_target_ids":[target_id],"market":"TWSE",
+                 "executor_id":EXECUTOR_ID,"operation_status":"executable_pending_approval","expected_evidence_contract":"index_futures_context_evidence.v1","parameters":{}}]}
+    bundle = {"bundle_id":"umeb-v1-"+"4"*20,"bundle_hash":"d"*64,"schema_version":"unified_market_evidence_bundle.v1",
+              "finalized_at":STAMP,"artifact_inventory":[inventory_item],"operation_evidence_entries":[
+                  {"operation_id":operation_id,"status":"failed","error_code":"source_failed","artifacts":[inventory_item]}]}
+    receipt = {"execution_receipt_id":"umerec-v1-"+"5"*20,"execution_receipt_hash":"e"*64,
+               "schema_version":"unified_market_evidence_execution_receipt.v1","overall_status":"failed","finalized_at":STAMP}
+    inputs = ProjectionInputs(
+        request=req, f3_validation=f3, plan=plan,
+        authorization={"authorization_id":"umea-v1-"+"6"*20,"authorization_hash":"f"*64,"schema_version":"unified_market_evidence_execution_authorization.v1"},
+        consumption_binding={"consumption_binding_id":"umeacb-v1-"+"7"*20,"consumption_binding_hash":"1"*64},
+        claim={"claim_id":"umecl-v1-"+"8"*20,"consumption_binding_id":"umeacb-v1-"+"7"*20,"consumption_binding_hash":"1"*64,
+               "authorization_id":"umea-v1-"+"6"*20,"plan_id":plan["plan_id"],"operator_confirmation_reference":"fixture",
+               "state":"consumed_failed","finalized_at":STAMP}, receipt=receipt, bundle=bundle,
+        artifact_root=".", calculated_at=STAMP, evidence_artifacts={relative_path:artifact},
+    )
+    lineage = build_lineage_map(inputs)
+    binding = lineage.bindings[target_id]["index_futures_context"]
+    assert binding.status == "failed"
+    assert binding.error_code == "source_failed"
+    assert binding.evidence_artifacts == [inventory_item]
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    result_schema = json.loads((ROOT / "schemas/unified_market_evidence_result.v3.schema.json").read_text(encoding="utf-8"))
+    jsonschema.Draft7Validator(result_schema, format_checker=jsonschema.FormatChecker()).validate(result)
+    assert result["targets"][0]["evidence"].get("index_futures_context") is None
+    assert result["status"] == "failed"
 
 
 def test_i2_artifact_projects_through_05c_result_v3_and_audit_v3():
