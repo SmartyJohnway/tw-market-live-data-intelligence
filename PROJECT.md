@@ -162,11 +162,12 @@ The route-level `H0H-LIVE-003` and `H0H-ROLL-004` gates are accepted. Attempt
 exit is retained as a historical acceptance-harness false negative and no new
 live run is required. Separately, the Phase I I1 production-capable implementation
 candidate and its bounded live acceptance are accepted. On the existing PR #295
-branch, a technical production-route activation candidate is now wired and has
-passed deterministic rollback rehearsal. This branch-local candidate is not
-final Owner activation acceptance and does not change `main` before merge.
+branch, the selected production route is Owner-accepted after deterministic
+rollback rehearsal; the route is active in the accepted runtime authority.
 The I1 bounded live acceptance ledger is
 `docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json`.
+Final production-route activation is Owner-accepted and recorded in
+`docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json`.
 
 Accepted promotion ledger:
 `docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json`.
@@ -185,17 +186,16 @@ Current interpretation:
   completion is not declared by this file.
 - Phase H: substantial contract/runtime work exists and V3 promotion is
   complete; broader H1/H2/H3 Roadmap coverage remains incomplete.
-- **Phase I I1:** the production-capable implementation and bounded live
-  acceptance are `ACCEPTED / PASS`. On the unmerged PR #295 branch only,
-  `market_state_context` is wired as a technical activation candidate:
-  `runtime_executable=true`, route `resolved`, selected executor
-  `phase_i_i1_market_state_executor`, two production registry routes, and three
-  active I1 source records. This is **not** final Owner activation acceptance;
-  merge remains unauthorized and `main` remains unchanged until merge. The
-  branch candidate preserves TWSE partial/date-mismatch semantics, exact
+- **Phase I I1:** the production-capable implementation, bounded live
+  acceptance, and production-route activation are `ACCEPTED / PASS` under
+  separate Owner decisions. `market_state_context` is runtime executable via
+  the resolved `phase_i_i1_market_state_executor` route for TWSE and TPEx,
+  backed by exactly three active I1 sources and two normal production registry
+  routes. The route preserves TWSE partial/date-mismatch semantics, exact
   `股票` breadth selection, source-native units, explicit approval, and no
-  polling/history/background behavior. I2 and I3 remain not started; the
-  broader Roadmap Phase I remains incomplete.
+  polling/history/background behavior. Evidence is loaded only when explicitly
+  requested and authorized. I2 and I3 remain not started; the broader Roadmap
+  Phase I remains incomplete.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is

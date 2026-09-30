@@ -492,7 +492,7 @@
       "surface_id": "phase_i_i1_market_state_executor",
       "path": "server/services/phase_i_i1_production_candidate.py",
       "surface_type": "controlled_phase_i_i1_market_state_executor",
-      "current_status": "I1 technical activation candidate; bounded live acceptance PASS; final Owner activation acceptance pending",
+      "current_status": "I1 production route Owner activation accepted; bounded live acceptance PASS; route remains explicit-request and approval gated",
       "network_behavior": "fixed official TWSE FMTQIK and stock breadth plus TPEx highlight sources; same-market batches share acquisition; TWSE maximum two GETs, TPEx maximum one GET, mixed maximum three GETs; retry zero",
       "input_contract": "05B execution request v1 bound to market_state_context / TWSE or TPEX / exact approved company common-share target",
       "output_contract": "market_state_context_evidence.v1",
@@ -519,7 +519,8 @@
         "docs/governance/phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json",
         "docs/governance/phase_i/Phase_I_I1_Market_State_Source_Contract_2026-09-29_FROZEN.md",
         "docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json",
-        "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json"
+        "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json",
+        "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json"
       ]
     }
   ]

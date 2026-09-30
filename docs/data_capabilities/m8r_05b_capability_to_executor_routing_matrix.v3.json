@@ -416,7 +416,7 @@
     },
     {
       "capability_id": "market_state_context",
-      "capability_status_source": "catalog v3 support_status=runtime_executable; accepted I1 bounded-live evidence and activation-candidate authority",
+      "capability_status_source": "catalog v3 support_status=runtime_executable; final Owner-accepted I1 production activation authority",
       "supported_markets": ["TWSE", "TPEX"],
       "supported_security_types": [],
       "supported_instrument_families": ["company_share"],
@@ -439,7 +439,8 @@
         "docs/governance/phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json",
         "docs/governance/phase_i/Phase_I_I1_Market_State_Source_Contract_2026-09-29_FROZEN.md",
         "docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json",
-        "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json"
+        "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json",
+        "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json"
       ],
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",

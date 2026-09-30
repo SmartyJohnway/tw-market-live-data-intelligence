@@ -57,15 +57,14 @@ As of this governance consolidation:
 - H-ACT-V3 promotion is accepted;
 - H1 coverage remains partial;
 - H2 remains inactive; the selected H3 TWSE route is Owner-accepted and active;
-- **Phase I I1 production-capable implementation and bounded live acceptance
-  are accepted. The PR #295 branch carries a technical route-activation
-  candidate with rollback proof; final Owner activation acceptance is pending,
-  and merge remains unauthorized. `main` remains unchanged until merge.**
+- **Phase I I1 production-capable implementation, bounded live acceptance,
+  rollback, and Owner production-route activation are accepted and merged.
+  `market_state_context` is runtime executable on its bounded, approval-gated
+  route. I2 and I3 remain unstarted and require separate Owner authorization.**
 
-Do not repeat bounded live acceptance, change the accepted technical candidate,
-merge PR #295, or begin I2/I3 without separate explicit Owner authorization.
-The PR branch technical candidate is distinct from final activation acceptance
-and from accepted `main` truth.
+Do not repeat bounded live acceptance or rollback. I1 activation is accepted
+current runtime truth. Do not begin I2/I3 without separate explicit Owner
+authorization; broader Phase I remains incomplete.
 
 ## 5. Authority hierarchy
 
@@ -310,13 +309,11 @@ important audit evidence.
 
 For the current I1 state:
 
-> **I1 bounded live acceptance is accepted. PR #295 carries a technical
-> activation candidate with rollback proof; do not merge or enter I2/I3 without
-> the separate final Owner activation decision.**
+> **I1 production activation is Owner-accepted and merged.**
 
-On the PR #295 branch, `market_state_context` is technically wired with
-`runtime_executable=true`, `routing_status=resolved`, selected executor
-`phase_i_i1_market_state_executor`, two normal-registry routes, and three active
-I1 source records. This is not final Owner activation acceptance and does not
-change `main` until merge. Merge remains unauthorized; I2/I3 remain not started.
-No new live source call is authorized by the technical-candidate state.
+`market_state_context` is runtime executable on the explicitly requested,
+approval-gated `phase_i_i1_market_state_executor` route, with two normal
+production routes and exactly three active I1 sources. The accepted bounded-live
+evidence remains immutable. Do not repeat live acquisition or rollback. I2/I3
+remain not started and require separate Owner authorization; Phase I as a whole
+is not complete.

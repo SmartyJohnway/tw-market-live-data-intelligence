@@ -37,10 +37,10 @@ def validate() -> None:
     if MAX_BATCH_TARGETS != 50 or MAX_RESPONSE_BYTES != 65536 or TIMEOUT_SECONDS != 15:
         raise ValueError("i1_candidate_bound_changed")
     candidate = _read("config/phase_i_i1_production_executor_candidate.json")
-    if (candidate.get("candidate_status"), candidate.get("live_acceptance"), candidate.get("production_route_active"), candidate.get("active_source_count")) != ("PRODUCTION_ROUTE_ACTIVATION_CANDIDATE", "ACCEPTED_PASS", True, 3):
-        raise ValueError("i1_activation_candidate_metadata_invalid")
-    if candidate.get("final_owner_activation_acceptance") != "PENDING" or candidate.get("merge") != "NOT_AUTHORIZED":
-        raise ValueError("i1_final_acceptance_boundary_invalid")
+    if (candidate.get("candidate_status"), candidate.get("live_acceptance"), candidate.get("production_route_active"), candidate.get("active_source_count")) != ("OWNER_ACTIVATION_ACCEPTED", "ACCEPTED_PASS", True, 3):
+        raise ValueError("i1_owner_accepted_activation_metadata_invalid")
+    if candidate.get("final_owner_activation_acceptance") != "ACCEPTED" or candidate.get("merge_authorized") is not True or "merge" in candidate:
+        raise ValueError("i1_final_acceptance_authority_invalid")
     entries = candidate.get("executor_metadata", {}).get("executors", [])
     if len(entries) != 2 or {item.get("market") for item in entries} != {"TWSE", "TPEX"}:
         raise ValueError("i1_candidate_market_routes_invalid")
@@ -71,6 +71,13 @@ def validate() -> None:
     if projection.get("result_v3", {}).get("sha256") != EXPECTED["result"] or projection.get("audit_v3", {}).get("sha256") != EXPECTED["audit"]:
         raise ValueError("i1_bounded_live_projection_hash_mismatch")
 
+    activation = _read("docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json")
+    if activation.get("status") != "OWNER_ACTIVATION_ACCEPTED" or activation.get("owner_authority_reference") != "USER_CHAT_2026-09-30_PHASE_I_I1_FINAL_PRODUCTION_ACTIVATION_ACCEPTANCE":
+        raise ValueError("i1_final_owner_acceptance_ledger_invalid")
+    runtime = activation.get("runtime_authority", {})
+    if runtime.get("active_source_count") != 3 or runtime.get("normal_production_registry_routes") != 2 or runtime.get("active_source_ids") != ["I1-TWSE-FMTQIK-OPENAPI", "I1-TWSE-BREADTH-TWTAZU-OPENAPI", "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI"]:
+        raise ValueError("i1_final_activation_source_authority_invalid")
+
     normal = build_production_runtime_adapter_registry().routes_for_executor(EXECUTOR_ID)
     candidate_registry = build_i1_candidate_runtime_adapter_registry()
     candidate_routes = candidate_registry.routes_for_executor(EXECUTOR_ID)
@@ -82,7 +89,7 @@ def validate() -> None:
         raise ValueError("i1_production_adapter_binding_invalid")
     if any(item.batch_adapter is not production_batch_operation_adapter_candidate for item in candidate_routes):
         raise ValueError("i1_candidate_batch_adapter_missing")
-    print("Phase I I1 production candidate: PASS (live-tested bounded implementation and evidence preserved)")
+    print("Phase I I1 production candidate: PASS (Owner-accepted bounded implementation and evidence preserved)")
 
 
 if __name__ == "__main__":

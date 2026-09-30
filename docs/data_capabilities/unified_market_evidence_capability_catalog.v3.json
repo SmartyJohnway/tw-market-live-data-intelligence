@@ -286,7 +286,7 @@
         "TWSE and TPEx source-native monetary and volume units remain distinct and are not converted",
         "currentness remains unknown without a separately governed market-session calendar input",
         "market-level context does not establish target-specific causation",
-        "bounded live acceptance passed for the selected official I1 sources; final Owner activation acceptance remains pending",
+        "bounded live acceptance and I1-ROLL-001 passed; the selected TWSE and TPEx I1 sources have final Owner production activation acceptance",
         "no historical lookup, polling, scheduler, background refresh, or persistent source history"
       ],
       "instrument_scope": {"instrument_families":["company_share"],"instrument_types":["common_share"]},

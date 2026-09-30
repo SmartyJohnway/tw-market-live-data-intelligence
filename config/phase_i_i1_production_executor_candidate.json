@@ -1,11 +1,11 @@
 {
   "candidate_id": "PHASE_I_I1_PRODUCTION_ACTIVATION_IMPLEMENTATION",
-  "candidate_status": "PRODUCTION_ROUTE_ACTIVATION_CANDIDATE",
+  "candidate_status": "OWNER_ACTIVATION_ACCEPTED",
   "live_acceptance": "ACCEPTED_PASS",
   "production_route_active": true,
   "active_source_count": 3,
-  "final_owner_activation_acceptance": "PENDING",
-  "merge": "NOT_AUTHORIZED",
+  "final_owner_activation_acceptance": "ACCEPTED",
+  "merge_authorized": true,
   "transport": {
     "timeout_seconds": 15,
     "automatic_retry": 0,

@@ -1,4 +1,4 @@
-"""Fail-closed validation of the PR-branch I1 technical activation candidate."""
+"""Fail-closed validation of the Owner-accepted I1 production activation."""
 from __future__ import annotations
 
 import hashlib
@@ -63,11 +63,13 @@ def validate() -> None:
     records = {item.get("source_id"): item for item in source_authority.get("records", [])}
     if source_authority.get("active_source_count") != 3 or source_authority.get("runtime_executable") is not True or set(records) != EXPECTED_SOURCES:
         raise ValueError("i1_source_authority_set_invalid")
+    if source_authority.get("owner_decision_ref") != "USER_CHAT_2026-09-30_PHASE_I_I1_FINAL_PRODUCTION_ACTIVATION_ACCEPTANCE" or source_authority.get("final_activation_acceptance_ledger") != "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json":
+        raise ValueError("i1_final_owner_authority_reference_invalid")
     if any(item.get("activation_state") != "active" or item.get("runtime_executable") is not True for item in records.values()):
         raise ValueError("i1_source_not_active")
     if descriptors.get("runtime_executable") is not True or descriptors.get("network_enabled") is not True or len(descriptors.get("sources", [])) != 3:
         raise ValueError("i1_source_descriptor_state_invalid")
-    if any(item.get("activation_state") != "active" or item.get("runtime_executable") is not True or item.get("raw_payload_retention_policy") != "forbidden" for item in descriptors["sources"]):
+    if any(item.get("activation_state") != "active" or item.get("runtime_executable") is not True or item.get("raw_payload_retention_policy") != "forbidden" or item.get("usage_authority_status") != "OWNER_ACTIVATION_ACCEPTED" for item in descriptors["sources"]):
         raise ValueError("i1_source_descriptor_contract_invalid")
     breadth = next(item for item in descriptors["sources"] if item.get("source_id") == "I1-TWSE-BREADTH-TWTAZU-OPENAPI")
     if breadth.get("required_selector") != {"類型": "股票"}:
@@ -109,12 +111,19 @@ def validate() -> None:
             if hashlib.sha256(archive.read(spec["archive_member"])).hexdigest() != EXPECTED[key]:
                 raise ValueError(f"accepted_{key}_changed")
 
+    final_ledger = _read("docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json")
+    if final_ledger.get("status") != "OWNER_ACTIVATION_ACCEPTED" or final_ledger.get("owner_authority_reference") != "USER_CHAT_2026-09-30_PHASE_I_I1_FINAL_PRODUCTION_ACTIVATION_ACCEPTANCE":
+        raise ValueError("i1_final_owner_activation_acceptance_missing")
+    decision = final_ledger.get("final_decision", {})
+    if decision.get("final_owner_activation_acceptance") != "ACCEPTED" or decision.get("merge_authorized") is not True or decision.get("merge_performed") is not False:
+        raise ValueError("i1_final_activation_decision_invalid")
+
     baseline = "0f556ca79134fd8338406ba3299eea83deab3e88"
     for path in LIVE_TESTED_FILES:
         result = subprocess.run(["git", "diff", "--quiet", baseline, "--", path], cwd=ROOT, check=False)
         if result.returncode != 0:
             raise ValueError(f"live_tested_implementation_delta:{path}")
-    print("Phase I I1 production activation: PASS (two bounded routes, 3 active sources, no live-tested semantic delta)")
+    print("Phase I I1 production activation: PASS (Owner accepted, two bounded routes, 3 active sources, no live-tested semantic delta)")
 
 
 if __name__ == "__main__":

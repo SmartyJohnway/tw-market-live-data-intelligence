@@ -142,7 +142,7 @@ def validate_phase_i_i1_contracts() -> None:
     if len(descriptors.get("sources", [])) != 3 or any(
         source.get("activation_state") != "active"
         or source.get("runtime_executable") is not True
-        or source.get("usage_authority_status") != "BOUNDED_LIVE_ACCEPTANCE_PASS_ACTIVATION_CANDIDATE"
+        or source.get("usage_authority_status") != "OWNER_ACTIVATION_ACCEPTED"
         or source.get("raw_payload_retention_policy") != "forbidden"
         or not source.get("source_owner")
         or not source.get("source_role")
@@ -186,7 +186,7 @@ def validate_phase_i_i1_contracts() -> None:
         "market_positioning_context",
     }:
         raise I1ValidationError("i2_i3_scope_added")
-    print("Phase I I1 contracts: PASS (active technical candidate, V3-only; live acceptance unchanged)")
+    print("Phase I I1 contracts: PASS (Owner-accepted activation, V3-only; live evidence unchanged)")
 
 
 if __name__ == "__main__":
