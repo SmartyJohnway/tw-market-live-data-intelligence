@@ -35,6 +35,17 @@ Frozen contracts/manifests under `phase_h/` remain immutable evidence of their
 accepted gate. They must not be rewritten merely because the current preferred
 runtime later changed.
 
+## Phase I accepted governance
+
+- [I1 frozen source contract](phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json)
+- [I1 bounded live acceptance](phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json)
+- [I1 technical activation candidate snapshot](phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json)
+- [I1 final production route activation acceptance](phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json)
+
+The technical-candidate record remains historical. The final acceptance ledger
+is the current Owner decision for the selected I1 route; broader Phase I is not
+complete, and I2/I3 remain unstarted.
+
 ## Governance policy
 
 - [Governance policy manifest](governance_policy_manifest.json)

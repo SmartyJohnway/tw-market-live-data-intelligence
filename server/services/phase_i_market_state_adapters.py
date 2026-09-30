@@ -76,6 +76,32 @@ def _component(source: Mapping[str, str], status: str, official_date: str | None
     }
 
 
+def normalize_twse_breadth_observation(
+    row: Mapping[str, Any],
+) -> tuple[str, dict[str, int], dict[str, str]]:
+    """Validate and normalize one exact TWSE 股票 breadth source row.
+
+    Kept pure so production partial-evidence handling and the complete TWSE
+    normalizer share one frozen field/date/value contract.
+    """
+    if not isinstance(row, Mapping) or row.get("類型") != "股票":
+        raise MarketStateNormalizationError("invalid_selected_breadth_row:股票")
+    required = ("出表日期", "類型", "上漲", "漲停", "下跌", "跌停", "持平", "未成交", "無比價")
+    for key in required:
+        if key not in row:
+            raise MarketStateNormalizationError(f"missing_required_field:TWTAZU:{key}")
+    official_date = _date(row["出表日期"], "TWTAZU.出表日期")
+    mapping = {
+        "上漲": "up", "漲停": "limit_up", "下跌": "down", "跌停": "limit_down",
+        "持平": "flat", "未成交": "unmatched", "無比價": "no_comparison",
+    }
+    values = {target: _number(row[key], f"TWTAZU.{key}", integer=True) for key, target in mapping.items()}
+    if any(value < 0 for value in values.values()):
+        raise MarketStateNormalizationError("invalid_numeric:TWTAZU.negative_breadth")
+    units = {key: "security_count" for key in values}
+    return official_date, values, units
+
+
 def normalize_twse_market_state(
     fmtqik_rows: Sequence[Mapping[str, Any]],
     breadth_rows: Sequence[Mapping[str, Any]],
@@ -108,13 +134,7 @@ def normalize_twse_market_state(
     breadth_values: dict[str, int] = {}
     breadth_status = "missing"
     if breadth is not None:
-        required = ("出表日期", "類型", "上漲", "漲停", "下跌", "跌停", "持平", "未成交", "無比價")
-        for key in required:
-            if key not in breadth:
-                raise MarketStateNormalizationError(f"missing_required_field:TWTAZU:{key}")
-        breadth_date = _date(breadth["出表日期"], "TWTAZU.出表日期")
-        mapping = {"上漲":"up", "漲停":"limit_up", "下跌":"down", "跌停":"limit_down", "持平":"flat", "未成交":"unmatched", "無比價":"no_comparison"}
-        breadth_values = {target: _number(breadth[key], f"TWTAZU.{key}", integer=True) for key, target in mapping.items()}
+        breadth_date, breadth_values, _breadth_units = normalize_twse_breadth_observation(breadth)
         breadth_status = "available"
     aligned = breadth is not None and breadth_date == fmt_date
     status = "complete" if aligned else "partial"
@@ -136,11 +156,11 @@ def normalize_twse_market_state(
         "breadth_unit": "security_count",
         "source_unit_metadata": {
             "I1-TWSE-FMTQIK-OPENAPI": {"turnover.volume":"share", "turnover.value":"TWD", "turnover.transactions":"transaction", "benchmark.close_index":"index_point", "benchmark.change_points":"index_point"},
-            "I1-TWSE-BREADTH-TWTAZU-OPENAPI": {key:"security_count" for key in breadth_values},
+            "I1-TWSE-BREADTH-TWTAZU-OPENAPI": dict(_breadth_units) if breadth is not None else {},
         },
         "components": {
             "fmtqik": _component(_TWSE_FMTQIK, "available", fmt_date, fmt_values, {"turnover.volume":"share", "turnover.value":"TWD", "turnover.transactions":"transaction", "benchmark.close_index":"index_point", "benchmark.change_points":"index_point"}, retrieved_at),
-            "breadth": _component(_TWSE_BREADTH, breadth_status, breadth_date, breadth_values, {key:"security_count" for key in breadth_values}, retrieved_at),
+            "breadth": _component(_TWSE_BREADTH, breadth_status, breadth_date, breadth_values, dict(_breadth_units) if breadth is not None else {}, retrieved_at),
         },
         "citation_ids": [],
         "caveats": caveats,

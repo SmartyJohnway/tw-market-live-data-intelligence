@@ -1,0 +1,77 @@
+{
+  "schema_version": "phase_i_i1_production_route_activation_acceptance_ledger.v1",
+  "gate_id": "PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION",
+  "status": "OWNER_ACTIVATION_ACCEPTED",
+  "owner_authority_reference": "USER_CHAT_2026-09-30_PHASE_I_I1_FINAL_PRODUCTION_ACTIVATION_ACCEPTANCE",
+  "technical_activation_candidate": {
+    "head": "ae6b6425ec59b25343d7d8f76c05da47e07eff0b",
+    "tree": "a1457e81cf2c51226935746feb273bfc8b163c30",
+    "baseline_main": "fae1d15b0c81fc4b45aa92ce45d5bbbfead8839b",
+    "live_tested_implementation_commit": "0f556ca79134fd8338406ba3299eea83deab3e88"
+  },
+  "accepted_authority_chain": {
+    "i0": "FROZEN_PASS",
+    "i1_source_contract": "FROZEN_PASS",
+    "i1_implementation": "ACCEPTED_PASS",
+    "i1_production_capable_implementation": "ACCEPTED_PASS",
+    "i1_bounded_live_acceptance": "ACCEPTED_PASS",
+    "technical_route_activation_review": "PASS",
+    "i1_roll_001": "PASS",
+    "bounded_live_acceptance_ledger": "docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json",
+    "technical_candidate_ledger": "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json"
+  },
+  "runtime_authority": {
+    "capability_id": "market_state_context",
+    "executor_id": "phase_i_i1_market_state_executor",
+    "markets": ["TWSE", "TPEX"],
+    "instrument_families": ["company_share"],
+    "instrument_types": ["common_share"],
+    "normal_production_registry_routes": 2,
+    "active_source_count": 3,
+    "active_source_ids": [
+      "I1-TWSE-FMTQIK-OPENAPI",
+      "I1-TWSE-BREADTH-TWTAZU-OPENAPI",
+      "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI"
+    ],
+    "batching_scope": "same_market",
+    "approval_required": true,
+    "timeout_seconds": 15,
+    "retry_count": 0,
+    "maximum_response_bytes_per_get": 65536,
+    "raw_payload_persistence": "forbidden",
+    "optional_explicit_request_only": true
+  },
+  "bounded_live_acceptance": {
+    "status": "ACCEPTED_PASS",
+    "owner_authority_reference": "USER_CHAT_2026-09-30_PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE",
+    "execution_acquisition_reference_timestamp": "2026-09-30T01:56:37Z",
+    "actual_get_count": 3,
+    "retry_count": 0,
+    "twse_status": "partial",
+    "twse_fmtqik_official_date": "2026-09-29",
+    "twse_breadth_official_date": "2026-06-05",
+    "tpex_status": "complete",
+    "evidence_zip_sha256": "de2168534dafe6c6db02ba9ab79496ba0980c0c81aab475eda23055b589714fc",
+    "result_v3_sha256": "a4138a36c91de3ced4e4f53a3720fbbb6c5084648f7e1bc82728d355f4953f47",
+    "audit_v3_sha256": "e6b03c2e0de0910f7f762bc607aa2487b884d02f885a5acc47cac3e8c7b17864",
+    "timestamp_semantics": {
+      "normalized_evidence_retrieved_at": "governed execution/acquisition reference timestamp for I1 v1",
+      "transport_telemetry_retrieved_at": "individual HTTP retrieval observation time"
+    }
+  },
+  "preservation_and_scope": {
+    "no_live_tested_semantic_delta": "PASS",
+    "phase_g_preserved": "PASS",
+    "phase_h_preserved": "PASS",
+    "mcp_tool_count": 6,
+    "i2_started": false,
+    "i3_started": false,
+    "market_network_calls_during_final_closure": 0
+  },
+  "final_decision": {
+    "final_owner_activation_acceptance": "ACCEPTED",
+    "merge_authorized": true,
+    "merge_performed": false,
+    "merge_performed_scope": "historical pre-merge acceptance snapshot"
+  }
+}

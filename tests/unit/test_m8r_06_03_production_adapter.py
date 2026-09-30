@@ -28,11 +28,11 @@ def _request(capability_id: str, market: str, *, executor_id: str = "m8r_03d_wat
     }
 
 
-def test_production_metadata_materializes_legacy_research_and_selected_h1_routes():
+def test_production_metadata_materializes_legacy_research_and_selected_phase_routes():
     metadata = load_production_executor_metadata()
     registry = build_production_runtime_adapter_registry()
 
-    assert len(metadata["executors"]) == 10
+    assert len(metadata["executors"]) == 12
     assert len(production_executor_metadata_sha256()) == 64
     for capability_id, market in (
         ("current_observation", "TWSE"),
@@ -64,6 +64,10 @@ def test_production_metadata_materializes_legacy_research_and_selected_h1_routes
     assert h3.fake_adapter is False
     assert h3.network_required is True
     assert h3.batch_adapter is None
+    i1 = [item for item in registry.routes_for_executor("phase_i_i1_market_state_executor")]
+    assert len(i1) == 2
+    assert {item.market for item in i1} == {"TWSE", "TPEX"}
+    assert all(item.network_required and item.batch_adapter is not None and not item.fake_adapter for item in i1)
 
 
 def test_selected_h1_tpex_attention_fetches_once_and_persists_only_target_bounded_artifacts(tmp_path, monkeypatch):

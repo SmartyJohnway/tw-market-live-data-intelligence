@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "695c3be032996d9f8dea3750091b8c0cac48d29d3e92794259cde1a1778c33b5",
+    "canonical_sha256": "82f0c4d32a0b069d451c017647c73b086adc416123ff7d39b870dff0ec0ab5ca",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "7f0bd71647933f38b79133def5350e5b9a049f9f",
-    "canonical_git_blob_sha": "6661cc61778b59a832f527bcc10d9743015077ea"
+    "generated_from_commit": "0d376f224f11397281800af1680abb5d45ffd364",
+    "canonical_git_blob_sha": "698e1dd302452ae37cdf9a2d389e6c3a384df1e4"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -273,9 +273,9 @@
     {
       "capability_id": "market_state_context",
       "description": "Optional official market-level benchmark, breadth, and turnover context associated with a resolved TWSE or TPEx company common-share target; source units remain explicit and no target-specific causation is implied.",
-      "support_status": "contract_supported",
-      "runtime_executable": false,
-      "phase_i_activation_state": "implementation_candidate_inactive",
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_i_activation_state": "selected_route_active",
       "supported_markets": [
         "TWSE",
         "TPEX"
@@ -289,11 +289,12 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "I1 is fixture-only and dormant; no runtime executor or route is active",
-        "TWSE requires aligned FMTQIK and exact 股票 breadth dates; TPEx and TWSE units are intentionally not converted",
+        "TWSE market-state evidence may legitimately be partial when FMTQIK and exact 股票 breadth official dates do not align; TWSE breadth never falls back to 整體市場",
+        "TWSE and TPEx source-native monetary and volume units remain distinct and are not converted",
         "currentness remains unknown without a separately governed market-session calendar input",
         "market-level context does not establish target-specific causation",
-        "I1 source contract USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE is frozen; live activation and production route activation are not authorized"
+        "bounded live acceptance and I1-ROLL-001 passed; the selected TWSE and TPEx I1 sources have final Owner production activation acceptance",
+        "no historical lookup, polling, scheduler, background refresh, or persistent source history"
       ],
       "instrument_scope": {
         "instrument_families": [

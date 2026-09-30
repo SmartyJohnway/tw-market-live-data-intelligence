@@ -1,0 +1,67 @@
+{
+  "schema_version": "phase_i_i1_production_activation_implementation_candidate.v1",
+  "candidate_id": "PHASE_I_I1_PRODUCTION_ACTIVATION_IMPLEMENTATION",
+  "owner_authorization_ref": "USER_CHAT_2026-09-29_PHASE_I_I1_PRODUCTION_ACTIVATION_IMPLEMENTATION",
+  "status": "IMPLEMENTATION_CANDIDATE",
+  "source_contract": "FROZEN_PASS",
+  "dormant_semantic_implementation": "ACCEPTED_PASS",
+  "historical_dormant_implementation_pr": "#294_MERGED",
+  "production_transport": "IMPLEMENTED_CANDIDATE",
+  "executor_id": "phase_i_i1_market_state_executor",
+  "executor_candidate_metadata": "config/phase_i_i1_production_executor_candidate.json",
+  "runtime_registry_registered": false,
+  "current_route": {
+    "capability_id": "market_state_context",
+    "support_status": "contract_supported",
+    "runtime_executable": false,
+    "routing_status": "plan_only",
+    "selected_executor_id": null,
+    "network_required": false,
+    "approval_required": true,
+    "batching_scope": "same_market"
+  },
+  "source_transport": {
+    "timeout_seconds": 15,
+    "automatic_retry": 0,
+    "maximum_response_bytes_per_get": 65536,
+    "http_success_status": 200,
+    "accepted_content_type": "application/json with optional parameters",
+    "redirects": "rejected",
+    "encoding": ["utf-8", "utf-8-sig"],
+    "raw_payload_persistence": "forbidden",
+    "max_unique_gets": {"TWSE": 2, "TPEX": 1, "mixed_execution": 3}
+  },
+  "maximum_batch_targets": 50,
+  "source_row_selection": {
+    "FMTQIK": "select unique maximum parsed ROC Date; never depend on source ordering",
+    "TWSE_breadth": "類型 == 股票 only; no 整體市場 fallback; duplicate selected rows fail closed",
+    "TPEx": "exactly one row required; empty unavailable; multiple rows fail closed"
+  },
+  "phase_i_active_source_count": 0,
+  "live_acceptance": "NOT_RUN",
+  "production_route_activation": false,
+  "merge_authorized": false,
+  "i2": "NOT_STARTED",
+  "i3": "NOT_STARTED",
+  "rollback_target": {
+    "remove_or_disable": ["isolated I1 candidate registry builder", "candidate executor metadata", "candidate source adapter"],
+    "preserve": ["frozen I0/I1 authorities", "offline I1 normalizers", "PR #294 dormant semantics"],
+    "runtime_authority_changes_required": false
+  },
+  "validation": {
+    "validation_scope": "current PR repair source/test tree, validated before commit",
+    "focused_i1_tests": "50 passed",
+    "phase_i_contract_validator": "PASS",
+    "phase_i_candidate_validator": "PASS",
+    "phase_h_v3_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP tools=6",
+    "compileall": "PASS",
+    "default_ci": "828 passed; 1 skipped; 5 deselected",
+    "full_current": "1201 passed; 1 skipped; 5 deselected",
+    "diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS"
+  },
+  "network_used": false,
+  "live_market_source_calls": 0
+}

@@ -56,13 +56,15 @@ As of this governance consolidation:
 - initial Phase G G1/G2 runtime evidence exists and is accepted;
 - H-ACT-V3 promotion is accepted;
 - H1 coverage remains partial;
-- H2/H3 activation remains incomplete;
-- **Phase I I1 offline implementation is Owner-authorized as a dormant,
-  fixture-only candidate under the frozen source contract.**
+- H2 remains inactive; the selected H3 TWSE route is Owner-accepted and active;
+- **Phase I I1 production-capable implementation, bounded live acceptance,
+  rollback, and Owner production-route activation are accepted and merged.
+  `market_state_context` is runtime executable on its bounded, approval-gated
+  route. I2 and I3 remain unstarted and require separate Owner authorization.**
 
-Do not activate I1 or begin I2/I3 without separate explicit Owner
-authorization. I1 implementation does not authorize market network use,
-production route activation, or merge.
+Do not repeat bounded live acceptance or rollback. I1 activation is accepted
+current runtime truth. Do not begin I2/I3 without separate explicit Owner
+authorization; broader Phase I remains incomplete.
 
 ## 5. Authority hierarchy
 
@@ -305,11 +307,13 @@ important audit evidence.
 
 ## 16. Current stop rule
 
-For the present repository state:
+For the current I1 state:
 
-> **Do not activate I1 or enter I2/I3 implementation.**
+> **I1 production activation is Owner-accepted and merged.**
 
-The offline I1 implementation candidate is authorized by the frozen Owner
-source contract. Documentation cleanup, governance reconciliation, archive
-organization, and current-state validation remain allowed. Separate Owner
-authorization is required before I1 activation or I2/I3 implementation.
+`market_state_context` is runtime executable on the explicitly requested,
+approval-gated `phase_i_i1_market_state_executor` route, with two normal
+production routes and exactly three active I1 sources. The accepted bounded-live
+evidence remains immutable. Do not repeat live acquisition or rollback. I2/I3
+remain not started and require separate Owner authorization; Phase I as a whole
+is not complete.

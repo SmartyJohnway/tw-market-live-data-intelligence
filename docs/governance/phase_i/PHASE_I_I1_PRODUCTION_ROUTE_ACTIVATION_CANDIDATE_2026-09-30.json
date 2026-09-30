@@ -1,0 +1,107 @@
+{
+  "schema_version": "phase_i_i1_production_route_activation_candidate.v1",
+  "gate_id": "PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE",
+  "status": "TECHNICAL_ACTIVATION_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "owner_authorization_reference": "USER_CHAT_2026-09-30_PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE",
+  "branch": "phase-i/i1-production-activation-implementation",
+  "baseline": {
+    "branch_head": "c1c40f4f2254413a83c734ed8f66d49028e8a751",
+    "main_sha": "fae1d15b0c81fc4b45aa92ce45d5bbbfead8839b"
+  },
+  "accepted_authorities": {
+    "source_contract_json": "docs/governance/phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json",
+    "source_contract_markdown": "docs/governance/phase_i/Phase_I_I1_Market_State_Source_Contract_2026-09-29_FROZEN.md",
+    "production_implementation_commit": "0f556ca79134fd8338406ba3299eea83deab3e88",
+    "bounded_live_acceptance_ledger": "docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json",
+    "bounded_live_acceptance": {
+      "status": "ACCEPTED_PASS",
+      "owner_authorization_reference": "USER_CHAT_2026-09-30_PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE",
+      "acceptance_execution_timestamp": "2026-09-30T01:56:37Z",
+      "actual_get_count": 3,
+      "retry_count": 0,
+      "twse_status": "partial",
+      "twse_fmtqik_official_date": "2026-09-29",
+      "twse_breadth_official_date": "2026-06-05",
+      "tpex_status": "complete",
+      "evidence_zip_sha256": "de2168534dafe6c6db02ba9ab79496ba0980c0c81aab475eda23055b589714fc",
+      "result_v3_sha256": "a4138a36c91de3ced4e4f53a3720fbbb6c5084648f7e1bc82728d355f4953f47",
+      "audit_v3_sha256": "e6b03c2e0de0910f7f762bc607aa2487b884d02f885a5acc47cac3e8c7b17864"
+    }
+  },
+  "activation_candidate": {
+    "capability_id": "market_state_context",
+    "executor_id": "phase_i_i1_market_state_executor",
+    "markets": ["TWSE", "TPEX"],
+    "instrument_families": ["company_share"],
+    "instrument_types": ["common_share"],
+    "evidence_contract": "market_state_context_evidence.v1",
+    "catalog": {
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_i_activation_state": "selected_route_active"
+    },
+    "routing": {
+      "routing_status": "resolved",
+      "runtime_executable": true,
+      "selected_executor_id": "phase_i_i1_market_state_executor",
+      "network_required": true,
+      "approval_required": true,
+      "batching_scope": "same_market",
+      "retry": 0,
+      "maximum_unique_gets": {
+        "twse": 2,
+        "tpex": 1,
+        "mixed_markets": 3
+      }
+    },
+    "active_sources": [
+      "I1-TWSE-FMTQIK-OPENAPI",
+      "I1-TWSE-BREADTH-TWTAZU-OPENAPI",
+      "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI"
+    ],
+    "active_source_count": 3,
+    "normal_production_registry_routes": [
+      {"market": "TWSE", "executor_id": "phase_i_i1_market_state_executor"},
+      {"market": "TPEX", "executor_id": "phase_i_i1_market_state_executor"}
+    ],
+    "no_semantic_delta": {
+      "server/services/phase_i_i1_production_candidate.py": true,
+      "server/services/phase_i_market_state_adapters.py": true,
+      "schemas/market_state_context_evidence.v1.schema.json": true
+    }
+  },
+  "rollback_rehearsal": {
+    "gate_id": "I1-ROLL-001",
+    "status": "PASS",
+    "method": "deterministic in-memory authority rollback",
+    "rollback_target_commit": "c1c40f4f2254413a83c734ed8f66d49028e8a751",
+    "expected_after_state": {
+      "catalog_runtime_executable": false,
+      "routing_status": "plan_only",
+      "selected_executor_id": null,
+      "normal_registry_i1_routes": 0,
+      "phase_i_active_source_count": 0,
+      "preview_executable": false,
+      "estimated_i1_network_calls": 0
+    },
+    "phase_g_unchanged": true,
+    "phase_h_unchanged": true,
+    "mcp_tool_count": 6,
+    "accepted_live_evidence_hashes_unchanged": true
+  },
+  "validation": {
+    "activation_tranche_market_network_calls": 0,
+    "focused_activation_tests": "PASS",
+    "phase_i_contract_validator": "PASS",
+    "phase_i_production_candidate_validator": "PASS",
+    "phase_i_production_activation_validator": "PASS",
+    "phase_h_v3_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS",
+    "mcp_tool_count": 6,
+    "final_owner_activation_acceptance": "PENDING",
+    "merge": false,
+    "i2_started": false,
+    "i3_started": false
+  }
+}

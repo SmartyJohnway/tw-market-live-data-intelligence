@@ -2,7 +2,7 @@
 
 ## Status
 
-Date: **2026-09-29**
+Date: **2026-09-30**
 
 Baseline main before this documentation-governance consolidation:
 
@@ -10,8 +10,9 @@ Baseline main before this documentation-governance consolidation:
 
 Current workstream:
 
-> **H-ACT-H3 is Owner-accepted. Phase I I1 has an Owner-authorized offline,
-> dormant implementation candidate; activation, I2, and I3 are not authorized.**
+> **H-ACT-H3 is Owner-accepted. Phase I I1 production activation is
+> Owner-accepted and merged after bounded live acceptance and deterministic
+> rollback proof. I2 and I3 are not started and require separate authorization.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -68,10 +69,15 @@ H2 activation                NOT STARTED / INACTIVE
 H3 TWSE recent_performance   ACTIVE; H0H-LIVE-003 PASS; H0H-ROLL-004 PASS
 H3 TPEX                      BLOCKED / NON-EXECUTABLE
 Provider automation         NOT_ESTABLISHED_TERMS_CONFLICTED
-Phase I I1 offline candidate IMPLEMENTED / DORMANT
-Phase I active sources       0
-I1 runtime/route activation  NOT AUTHORIZED
-I2 / I3                      NOT STARTED / NOT AUTHORIZED
+Phase I I1 implementation    ACCEPTED
+I1 bounded live acceptance   ACCEPTED / PASS
+I1-ROLL-001                  PASS
+I1 production activation     OWNER_ACTIVATION_ACCEPTED / MERGED
+Catalog/Routing              runtime_executable / resolved
+selected executor            phase_i_i1_market_state_executor
+normal production I1 routes  2 (TWSE + TPEX)
+Phase I active sources       3
+I2 / I3                      NOT STARTED
 ```
 
 V1/V2 remain compatibility contracts. Existing persisted artifacts retain their
@@ -123,10 +129,26 @@ false negative. No new live execution is required for this closure.
 The H-ACT-H3 final activation is Owner-accepted for the selected bounded TWSE
 `recent_performance` route. The route-specific acceptance ledger records the
 technical candidate and its live/rollback evidence. Separately, Owner accepted
-the frozen Phase I I1 source contract and authorized an offline, fixture-only,
-dormant implementation candidate for `market_state_context`. I1 does not
-authorize market network access, production executor/route activation, I2, or
-I3. The broader Roadmap Phase I remains incomplete.
+the frozen Phase I I1 source contract and authorized a bounded,
+production-capable executor candidate for `market_state_context`. The separate
+`PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE` gate is accepted PASS under Owner authority;
+its ledger is
+`docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json`.
+The acceptance used exactly three official GETs (TWSE FMTQIK 1, TWSE breadth 1,
+TPEx 1), zero retries; TWSE is governed partial due to preserved date mismatch
+and TPEx is complete. The final Owner decision accepts production activation
+of the selected I1 market-state route. Current runtime authority has two normal
+production routes (TWSE and TPEx) and exactly three active I1 sources.
+`I1-ROLL-001` passed. No new market requests were made during final activation
+closure. I2 and I3 remain not started and require a separate Owner gate; the
+broader Roadmap Phase I remains incomplete.
+
+I1 timing semantics: acceptance execution/acquisition reference timestamp is
+`2026-09-30T01:56:37Z`; each source transport retrieval timestamp is recorded
+individually in bounded-live telemetry. Normalized evidence `retrieved_at` uses
+the governed execution/acquisition reference timestamp for the I1 v1 contract;
+transport telemetry `retrieved_at` is the individual HTTP retrieval observation
+time.
 
 ## Historical documentation problem already closed
 
@@ -168,18 +190,20 @@ files unless the task requires historical evidence.
 
 ## Current allowed next work
 
-Continue only within separately authorized work. Offline I1 implementation is
-authorized under its frozen source contract; do not activate it or start I2 or
-I3 without new Owner authorization.
+I1 production activation has been Owner-accepted and merged after bounded live
+acceptance and deterministic rollback proof. Do not repeat live acquisition or
+rollback. The next possible roadmap gate is I2, but it requires separate Owner
+authorization. I2/I3 are not started.
 
 ## Explicit stop boundary
 
-**Do not activate I1 or begin I2/I3.**
+**Do not repeat I1 live acceptance or rollback. Do not begin I2/I3 without a
+separate Owner authorization.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0 and the I1 source
-contract are frozen; only dormant offline I1 implementation is authorized.
-Live activation, production route activation, I2, I3, and merge require separate
-Owner authorization.
+contract are frozen; the production-capable I1 implementation, bounded live
+acceptance, and Owner production-route activation are accepted. I2/I3 remain
+outside this tranche.
 
 ## Before any future Phase I work
 
@@ -190,7 +214,8 @@ At minimum:
 3. apply the Evidence Value Gate to each candidate evidence family;
 4. keep derivatives identity separate from cash-security ISIN identity;
 5. preserve explicit/optional bounded loading;
-6. retain dormant/non-executable authority until separate activation approval.
+6. preserve the accepted I1 evidence; I2/I3 each require separate Owner
+   authorization before implementation.
 
 ## Historical-document rule
 

@@ -160,9 +160,14 @@ H-ACT-H3 final activation closure is recorded in
 The route-level `H0H-LIVE-003` and `H0H-ROLL-004` gates are accepted. Attempt
 #2E is the accepted bounded-live evidence; its original runner nonzero
 exit is retained as a historical acceptance-harness false negative and no new
-live run is required. H-ACT-H3 itself does not authorize Phase I work; the
-separate frozen I0/I1 Owner authority permits only dormant, offline I1
-implementation, not live activation or route activation.
+live run is required. Separately, the Phase I I1 production-capable implementation
+candidate and its bounded live acceptance are accepted. On the existing PR #295
+branch, the selected production route is Owner-accepted after deterministic
+rollback rehearsal; the route is active in the accepted runtime authority.
+The I1 bounded live acceptance ledger is
+`docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json`.
+Final production-route activation is Owner-accepted and recorded in
+`docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json`.
 
 Accepted promotion ledger:
 `docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json`.
@@ -181,14 +186,24 @@ Current interpretation:
   completion is not declared by this file.
 - Phase H: substantial contract/runtime work exists and V3 promotion is
   complete; broader H1/H2/H3 Roadmap coverage remains incomplete.
-- **Phase I I1 offline implementation candidate:** Owner accepted the frozen
-  I1 source contract (`USER_CHAT_2026-09-29_PHASE_I_I1_SOURCE_CONTRACT_ACCEPTANCE`)
-  and authorized dormant, fixture-only implementation. `market_state_context`
-  remains `contract_supported`, non-executable, and has zero active Phase I
-  sources. No market network was used.
-- Phase I live activation and production route activation are not authorized;
-  I2 and I3 are not authorized and remain not started. The broader Roadmap
+- **Phase I I1:** the production-capable implementation, bounded live
+  acceptance, and production-route activation are `ACCEPTED / PASS` under
+  separate Owner decisions. `market_state_context` is runtime executable via
+  the resolved `phase_i_i1_market_state_executor` route for TWSE and TPEx,
+  backed by exactly three active I1 sources and two normal production registry
+  routes. The route preserves TWSE partial/date-mismatch semantics, exact
+  `股票` breadth selection, source-native units, explicit approval, and no
+  polling/history/background behavior. Evidence is loaded only when explicitly
+  requested and authorized. I2 and I3 remain not started; the broader Roadmap
   Phase I remains incomplete.
+
+I1 bounded-live timing semantics are recorded without changing the accepted
+evidence: the execution/acquisition reference timestamp is
+`2026-09-30T01:56:37Z`; per-source transport retrieval timestamps are recorded
+individually in the bounded-live telemetry; normalized evidence `retrieved_at`
+uses the governed execution/acquisition reference timestamp for the I1 v1
+contract; transport telemetry `retrieved_at` is each individual HTTP retrieval
+observation time.
 
 ## Current authority hierarchy
 
