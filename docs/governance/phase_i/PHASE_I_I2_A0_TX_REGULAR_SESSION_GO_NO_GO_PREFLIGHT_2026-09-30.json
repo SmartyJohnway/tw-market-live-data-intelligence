@@ -2,7 +2,8 @@
   "schema_version": "phase_i_i2_a0_go_no_go_preflight.v1",
   "gate": "I2-A0",
   "status": "PASS_GO",
-  "owner_authority_ref": "USER_CHAT_2026-09-30_PHASE_I_I2_A1_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_FREEZE",
+  "owner_authority_ref": "USER_CHAT_2026-09-30_PHASE_I_I2_A0_TX_REGULAR_SESSION_GO_NO_GO_PREFLIGHT",
+  "recorded_under_a1_authority_ref": "USER_CHAT_2026-09-30_PHASE_I_I2_A1_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_FREEZE",
   "execution_classification": "Owner-executed bounded live probe; not production execution",
   "source": {
     "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI",

@@ -177,6 +177,11 @@ def validate_a1_contract() -> None:
     companion = (ROOT / "docs/governance/phase_i/Phase_I_I2_TX_Regular_Session_Source_Evidence_Contract_2026-09-30_FROZEN.md").read_text(encoding="utf-8")
     if f"JSON SHA-256: `{contract_sha}`" not in companion:
         raise I2A1ContractError("markdown_companion_json_hash_mismatch")
+    if (a0.get("owner_authority_ref"), a0.get("recorded_under_a1_authority_ref")) != (
+        "USER_CHAT_2026-09-30_PHASE_I_I2_A0_TX_REGULAR_SESSION_GO_NO_GO_PREFLIGHT",
+        "USER_CHAT_2026-09-30_PHASE_I_I2_A1_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_FREEZE",
+    ):
+        raise I2A1ContractError("a0_execution_and_recording_authorities_not_separated")
     if (contract.get("status"), contract.get("gate"), contract.get("capability_id")) != ("FROZEN_PASS", "I2-A1", "index_futures_context"):
         raise I2A1ContractError("a1_identity_or_status_invalid")
     if contract["authority_boundary"].get("a2_implementation_authorized") is not False:
@@ -247,6 +252,20 @@ def validate_a1_contract() -> None:
     invalid_complete = {**complete, "market_data": {"open": 1}}
     if validator.is_valid(invalid_complete):
         raise I2A1ContractError("complete_without_governed_fields_accepted")
+    partial = {**complete, "status": "partial", "missing_fields": ["open_interest"]}
+    partial["market_data"] = {key: value for key, value in complete["market_data"].items() if key != "open_interest"}
+    validator.validate(partial)
+    for field in ("market_data", "unit_metadata"):
+        invalid_partial = {**partial}
+        invalid_partial.pop(field)
+        if validator.is_valid(invalid_partial):
+            raise I2A1ContractError(f"partial_without_{field}_accepted")
+        invalid_partial = {**partial, field: {}}
+        if validator.is_valid(invalid_partial):
+            raise I2A1ContractError(f"partial_with_empty_{field}_accepted")
+    invalid_partial = {**partial, "missing_fields": ["invented_market_metric"]}
+    if validator.is_valid(invalid_partial):
+        raise I2A1ContractError("partial_with_ungoverned_missing_field_accepted")
     print("Phase I I2-A1 source/evidence contract: PASS (offline, dormant, no source calls)")
 
 

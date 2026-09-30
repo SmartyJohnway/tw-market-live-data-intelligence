@@ -103,8 +103,9 @@ def test_evidence_schema_accepts_explicit_partial_and_failure_without_fake_value
     partial["market_data"] = dict(partial["market_data"])
     partial["market_data"].pop("open_interest")
     validator.validate(partial)
-    partial_without_observed_unit = {**partial, "market_data": {"last": 47767}, "unit_metadata": {}}
-    assert not validator.is_valid(partial_without_observed_unit)
+    assert partial["market_data"]
+    assert partial["unit_metadata"]
+    assert partial["missing_fields"]
     for status in ("unavailable", "source_failed", "binding_failed"):
         failure = {**complete, "status": status}
         for key in ("contract_period", "trade_date", "market_data", "unit_metadata"):
@@ -124,6 +125,27 @@ def test_evidence_schema_accepts_explicit_partial_and_failure_without_fake_value
     for key in ("contract_period", "trade_date", "market_data", "unit_metadata"):
         invalid_sentinel.pop(key, None)
     validator.validate(invalid_sentinel)
+
+
+def test_partial_evidence_requires_nonempty_observations_units_and_governed_missing_fields():
+    validator = _schema_validator()
+    complete = _valid_complete_fixture({})
+    partial = {**complete, "status": "partial", "missing_fields": ["open_interest"]}
+    partial["market_data"] = dict(partial["market_data"])
+    partial["market_data"].pop("open_interest")
+    validator.validate(partial)
+
+    without_market_data = {**partial}
+    without_market_data.pop("market_data")
+    assert not validator.is_valid(without_market_data)
+
+    without_unit_metadata = {**partial}
+    without_unit_metadata.pop("unit_metadata")
+    assert not validator.is_valid(without_unit_metadata)
+
+    assert not validator.is_valid({**partial, "market_data": {}})
+    assert not validator.is_valid({**partial, "unit_metadata": {}})
+    assert not validator.is_valid({**partial, "missing_fields": ["not_a_governed_i2_observation"]})
 
 
 def test_payload_byte_row_utf8_json_and_root_bounds_fail_closed():

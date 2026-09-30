@@ -53,7 +53,11 @@
       },
       "additionalProperties": false
     },
-    "missing_fields": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "missing_fields": {
+      "type": "array",
+      "items": {"enum": ["open", "high", "low", "last", "change_points", "change_percent", "volume", "settlement_price", "open_interest", "best_bid", "best_ask"]},
+      "uniqueItems": true
+    },
     "alignment_status": {"enum": ["same_trade_date_non_simultaneous_close", "different_trade_date", "not_comparable", "unavailable"]},
     "source": {
       "type": "object",
@@ -102,8 +106,12 @@
     {
       "if": {"properties": {"status": {"const": "partial"}}, "required": ["status"]},
       "then": {
-        "required": ["contract_period", "trade_date", "missing_fields"],
-        "properties": {"missing_fields": {"minItems": 1}}
+        "required": ["contract_period", "trade_date", "market_data", "unit_metadata", "missing_fields"],
+        "properties": {
+          "market_data": {"minProperties": 1},
+          "unit_metadata": {"minProperties": 1},
+          "missing_fields": {"minItems": 1}
+        }
       }
     },
     {
