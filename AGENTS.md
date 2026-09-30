@@ -61,16 +61,16 @@ As of this governance consolidation:
   rollback, and Owner production-route activation are accepted and merged.
   `market_state_context` is runtime executable on its bounded, approval-gated
   route. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS;
-  I2-A2 is an Owner-authorized dormant offline implementation candidate; I2
-  runtime remains inactive with zero active sources/routes and no default
-  production executor. Live acceptance/production activation are not
-  authorized. I3 remains unstarted and requires separate Owner authorization.**
+  I2-A2 dormant offline implementation is Owner-accepted; I2 runtime remains
+  inactive with zero active sources/routes, no selected/default production
+  executor, and no production activation. A3 live acceptance remains a separate
+  Owner gate. I3 remains unstarted and requires separate Owner authorization.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
-current runtime truth. I2-A2 may proceed only as the explicitly authorized
-dormant offline implementation candidate; no market network, production route,
-or activation is authorized. I3 and Phase J still require separate explicit
-Owner authorization; broader Phase I remains incomplete.
+current runtime truth. I2-A2 is accepted dormant implementation truth; this does
+not authorize market network execution, a selected production route, or
+activation. A3, I3, and Phase J still require separate explicit Owner
+authorization; broader Phase I remains incomplete.
 
 ## 5. Authority hierarchy
 
@@ -321,7 +321,7 @@ For the current Phase I state:
 approval-gated `phase_i_i1_market_state_executor` route, with two normal
 production routes and exactly three active I1 sources. I2-A0 is PASS_GO and
 I2-A1 `index_futures_context` source/evidence contract is FROZEN_PASS. I2-A2
-is authorized only as an offline dormant implementation candidate; I2 runtime
-is inactive with zero active sources and routes.
-I3 is not started. The accepted bounded-live evidence remains immutable; do not
+dormant offline implementation is Owner-accepted; I2 runtime remains inactive
+with zero active sources/routes and no selected production executor. A3 live
+acceptance remains separately gated. I3 is not started. The accepted bounded-live evidence remains immutable; do not
 repeat it or rollback. Phase I as a whole is not complete.
