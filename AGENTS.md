@@ -57,13 +57,15 @@ As of this governance consolidation:
 - H-ACT-V3 promotion is accepted;
 - H1 coverage remains partial;
 - H2 remains inactive; the selected H3 TWSE route is Owner-accepted and active;
-- **Phase I I1 production-capable implementation candidate is accepted, and
-  bounded live acceptance is ACCEPTED / PASS; the current runtime route remains
-  dormant and production activation is not yet authorized.**
+- **Phase I I1 production-capable implementation and bounded live acceptance
+  are accepted. The PR #295 branch carries a technical route-activation
+  candidate with rollback proof; final Owner activation acceptance is pending,
+  and merge remains unauthorized. `main` remains unchanged until merge.**
 
-Do not repeat bounded live acceptance, activate I1, merge its PR, or begin I2/I3
-without separate explicit Owner authorization. Acceptance does not promote the
-normal production registry or change current Catalog/Routing truth.
+Do not repeat bounded live acceptance, change the accepted technical candidate,
+merge PR #295, or begin I2/I3 without separate explicit Owner authorization.
+The PR branch technical candidate is distinct from final activation acceptance
+and from accepted `main` truth.
 
 ## 5. Authority hierarchy
 
@@ -308,14 +310,13 @@ important audit evidence.
 
 For the current I1 state:
 
-> **I1 bounded live acceptance is accepted; do not repeat it, activate I1, merge
-> PR #295, or enter I2/I3 implementation without separate Owner authorization.**
+> **I1 bounded live acceptance is accepted. PR #295 carries a technical
+> activation candidate with rollback proof; do not merge or enter I2/I3 without
+> the separate final Owner activation decision.**
 
-The production-capable I1 implementation candidate and bounded live acceptance
-are accepted. Current runtime authority remains `contract_supported`,
-`runtime_executable=false`, `routing_status=plan_only`,
-`selected_executor_id=null`, normal production I1 routes = 0, and Phase I active
-source count = 0. Documentation cleanup, governance reconciliation, archive
-organization, and deterministic offline validation remain allowed. Separate
-Owner authorization is required before production route activation, PR merge,
-or I2/I3 implementation.
+On the PR #295 branch, `market_state_context` is technically wired with
+`runtime_executable=true`, `routing_status=resolved`, selected executor
+`phase_i_i1_market_state_executor`, two normal-registry routes, and three active
+I1 source records. This is not final Owner activation acceptance and does not
+change `main` until merge. Merge remains unauthorized; I2/I3 remain not started.
+No new live source call is authorized by the technical-candidate state.

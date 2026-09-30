@@ -161,8 +161,10 @@ The route-level `H0H-LIVE-003` and `H0H-ROLL-004` gates are accepted. Attempt
 #2E is the accepted bounded-live evidence; its original runner nonzero
 exit is retained as a historical acceptance-harness false negative and no new
 live run is required. Separately, the Phase I I1 production-capable implementation
-candidate and its bounded live acceptance are accepted. This does not activate
-the production route or authorize a merge.
+candidate and its bounded live acceptance are accepted. On the existing PR #295
+branch, a technical production-route activation candidate is now wired and has
+passed deterministic rollback rehearsal. This branch-local candidate is not
+final Owner activation acceptance and does not change `main` before merge.
 The I1 bounded live acceptance ledger is
 `docs/governance/phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json`.
 
@@ -183,15 +185,17 @@ Current interpretation:
   completion is not declared by this file.
 - Phase H: substantial contract/runtime work exists and V3 promotion is
   complete; broader H1/H2/H3 Roadmap coverage remains incomplete.
-- **Phase I I1 production-capable implementation candidate:** accepted under
-  the frozen I1 source contract. Bounded live acceptance is separately
-  `ACCEPTED / PASS` under its Owner authority. The current Catalog, Routing,
-  and normal production registry remain dormant: `market_state_context` is
-  `contract_supported`, `runtime_executable=false`, `routing_status=plan_only`,
-  `selected_executor_id=null`, normal production I1 routes = 0, and Phase I
-  active sources = 0. Production route activation remains **NOT YET AUTHORIZED /
-  INACTIVE**. I2 and I3 remain not started; the broader Roadmap Phase I remains
-  incomplete.
+- **Phase I I1:** the production-capable implementation and bounded live
+  acceptance are `ACCEPTED / PASS`. On the unmerged PR #295 branch only,
+  `market_state_context` is wired as a technical activation candidate:
+  `runtime_executable=true`, route `resolved`, selected executor
+  `phase_i_i1_market_state_executor`, two production registry routes, and three
+  active I1 source records. This is **not** final Owner activation acceptance;
+  merge remains unauthorized and `main` remains unchanged until merge. The
+  branch candidate preserves TWSE partial/date-mismatch semantics, exact
+  `股票` breadth selection, source-native units, explicit approval, and no
+  polling/history/background behavior. I2 and I3 remain not started; the
+  broader Roadmap Phase I remains incomplete.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is
