@@ -42,6 +42,7 @@ runtime later changed.
 - [I2-A1 TX regular-session source/evidence contract (Markdown companion)](phase_i/Phase_I_I2_TX_Regular_Session_Source_Evidence_Contract_2026-09-30_FROZEN.md)
 - [I2-A1 Owner acceptance / merge authorization ledger](phase_i/PHASE_I_I2_A1_SOURCE_EVIDENCE_CONTRACT_ACCEPTANCE_LEDGER_2026-09-30.json)
 - [I2-A2 dormant offline implementation candidate](phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_CANDIDATE_2026-09-30.json)
+- [I2-A2 Owner acceptance / merge authorization ledger](phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_ACCEPTANCE_LEDGER_2026-10-01.json)
 - [I2 inactive source authority descriptor](../data_capabilities/phase_i_i2_source_authority.v1.json)
 - [I1 frozen source contract](phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json)
 - [I1 bounded live acceptance](phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json)
@@ -53,10 +54,11 @@ is the current Owner decision for the selected I1 route; broader Phase I is not
 complete.
 
 I2-A0 is accepted preflight evidence. I2-A1 source/evidence contract is
-Owner-accepted and authorized for merge by its acceptance ledger. The ledger is
-a historical pre-merge acceptance snapshot. I2-A2 is a dormant offline
-implementation candidate only; no live acceptance, production activation, or
-active I2 route/source is authorized. I3 remains unstarted.
+Owner-accepted and merged. I2-A2 dormant offline implementation is also
+Owner-accepted and authorized for merge by its acceptance ledger. Both
+acceptance ledgers preserve historical pre-merge snapshots. I2 remains inactive:
+no live acceptance, production activation, selected executor, active source, or
+normal production route is authorized. I3 remains unstarted.
 
 ## Governance policy
 
