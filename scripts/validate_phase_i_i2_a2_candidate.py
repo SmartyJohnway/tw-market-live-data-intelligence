@@ -95,6 +95,20 @@ def validate() -> None:
         "3d5a43f93c9aba84a3cab26fddac13dfc6b61200",
     ):
         raise ValueError("i2_candidate_governance_identity_invalid")
+    repair = candidate.get("implementation_candidate", {})
+    if (repair.get("review_repair_commit"), repair.get("review_repair_tree")) != (
+        "379d0a504900952931ca642f74992205310facb5",
+        "bc48ccde64b379729e7ec92567120fb6058d0296",
+    ):
+        raise ValueError("i2_candidate_review_repair_lineage_invalid")
+    repaired_validation = candidate.get("validation_after_review_repair", {})
+    if (repaired_validation.get("focused_i2_a2"), repaired_validation.get("cross_boundary_a2_a1_i1_phase_h_v3"),
+            repaired_validation.get("default_ci"), repaired_validation.get("full_current"),
+            repaired_validation.get("market_network_calls")) != (
+        "29 passed", "113 passed", "832 passed, 1 skipped, 5 deselected",
+        "1205 passed, 1 skipped, 5 deselected", 0
+    ):
+        raise ValueError("i2_candidate_review_validation_record_invalid")
     candidate_capability = candidate.get("capability", {})
     if (candidate_capability.get("capability_id"), candidate_capability.get("runtime_executable"),
             candidate_capability.get("routing_status"), candidate_capability.get("selected_executor_id")) != (

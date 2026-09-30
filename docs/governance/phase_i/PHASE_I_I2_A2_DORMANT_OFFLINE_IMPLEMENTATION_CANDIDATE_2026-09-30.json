@@ -8,7 +8,9 @@
     "technical_commit": "8930a2be7d3432a29f99ff64f60999f52c072276",
     "technical_tree": "6bae17f19898fb4b6c797a65eaab2752327e21e3",
     "portable_sync_commit": "b7c7bb76d444432b67d7e0c0d255767af6a4f578",
-    "portable_sync_tree": "34fbbd3a0b6491cec3050d682e724c6ab3cef4e6"
+    "portable_sync_tree": "34fbbd3a0b6491cec3050d682e724c6ab3cef4e6",
+    "review_repair_commit": "379d0a504900952931ca642f74992205310facb5",
+    "review_repair_tree": "bc48ccde64b379729e7ec92567120fb6058d0296"
   },
   "capability": {
     "capability_id": "index_futures_context",
@@ -47,6 +49,24 @@
     "git_diff_check": "PASS",
     "crlf_aware_diff_check": "PASS",
     "profile_network_may_have_occurred": false
+  },
+  "validation_after_review_repair": {
+    "focused_i2_a2": "29 passed",
+    "cross_boundary_a2_a1_i1_phase_h_v3": "113 passed",
+    "default_ci": "832 passed, 1 skipped, 5 deselected",
+    "full_current": "1205 passed, 1 skipped, 5 deselected",
+    "i2_a1_validator": "PASS",
+    "i2_a2_validator": "PASS",
+    "i1_contract_validator": "PASS",
+    "i1_production_candidate_validator": "PASS",
+    "i1_activation_validator": "PASS",
+    "phase_h_v3_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP tools=6",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "market_network_calls": 0
   },
   "governance_boundary": {
     "market_network_calls": 0,
