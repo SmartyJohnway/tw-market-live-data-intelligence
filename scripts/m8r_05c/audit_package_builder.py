@@ -181,16 +181,21 @@ def _phase_h_governance(inputs: ProjectionInputs) -> dict:
 
 
 def _phase_i_evidence(inputs: ProjectionInputs) -> dict:
-    """Expose I1 artifact lineage without implying source activation authority."""
+    """Expose Phase I artifact lineage without implying source activation authority."""
+    capability_by_contract = {
+        "market_state_context_evidence.v1": "market_state_context",
+        "index_futures_context_evidence.v1": "index_futures_context",
+    }
     references = []
     inventory = {
         item.get("relative_path"): item for item in inputs.bundle.get("artifact_inventory", [])
-        if isinstance(item, dict) and item.get("schema_version") == "market_state_context_evidence.v1"
+        if isinstance(item, dict) and item.get("schema_version") in capability_by_contract
     }
     for relative_path, item in sorted(inventory.items()):
+        schema_version = item.get("schema_version")
         references.append({
-            "capability_id": "market_state_context",
-            "schema_version": "market_state_context_evidence.v1",
+            "capability_id": capability_by_contract[schema_version],
+            "schema_version": schema_version,
             "relative_path": relative_path,
             "sha256": item.get("sha256", ""),
         })

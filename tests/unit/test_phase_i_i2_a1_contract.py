@@ -166,5 +166,7 @@ def test_i2_a1_keeps_tpex_and_runtime_route_unsupported_and_dormant():
     assert contract["target_association"]["tpex_supported"] is False
     assert contract["runtime_activation"]["i2_active_sources"] == 0
     assert contract["runtime_activation"]["i2_normal_production_routes"] == 0
-    assert not any(item.get("capability_id") == "index_futures_context" for item in catalog.get("data_need_capabilities", []))
-    assert not any(item.get("capability_id") == "index_futures_context" for item in routing.get("routes", []))
+    i2_cap = next(item for item in catalog.get("data_need_capabilities", []) if item.get("capability_id") == "index_futures_context")
+    i2_route = next(item for item in routing.get("routes", []) if item.get("capability_id") == "index_futures_context")
+    assert i2_cap["support_status"] == "contract_supported" and i2_cap["runtime_executable"] is False
+    assert i2_route["routing_status"] == "plan_only" and i2_route["selected_executor_id"] is None

@@ -132,7 +132,10 @@ def test_i1_schema_catalog_routing_and_request_are_active_only_in_v3():
     assert _catalog_valid(catalog)
     cap = next(x for x in catalog["data_need_capabilities"] if x["capability_id"] == "market_state_context")
     assert (cap["support_status"], cap["runtime_executable"], cap["phase_i_activation_state"]) == ("runtime_executable", True, "selected_route_active")
-    assert not {"index_futures_context", "taifex_market_state", "institutional_positioning", "institutional_positioning_context", "market_positioning_context"} & {x["capability_id"] for x in catalog["data_need_capabilities"]}
+    cap_by_id = {x["capability_id"]: x for x in catalog["data_need_capabilities"]}
+    assert cap_by_id["index_futures_context"]["runtime_executable"] is False
+    assert cap_by_id["index_futures_context"]["support_status"] == "contract_supported"
+    assert not {"taifex_market_state", "institutional_positioning", "institutional_positioning_context", "market_positioning_context"} & set(cap_by_id)
     for version in ("v1", "v2"):
         schema = _json(f"schemas/unified_market_evidence_request.{version}.schema.json")
         enum = schema["properties"]["data_needs"]["items"]["properties"]["type"]["enum"]
