@@ -1,0 +1,170 @@
+{
+  "schema_version": "phase_i_i2_tx_regular_session_source_evidence_contract.v1",
+  "gate": "I2-A1",
+  "status": "FROZEN_PASS",
+  "owner_authority_ref": "USER_CHAT_2026-09-30_PHASE_I_I2_A1_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_FREEZE",
+  "capability_id": "index_futures_context",
+  "a0_record": "docs/governance/phase_i/PHASE_I_I2_A0_TX_REGULAR_SESSION_GO_NO_GO_PREFLIGHT_2026-09-30.json",
+  "authority_boundary": {
+    "a2_implementation_authorized": false,
+    "runtime_implementation_status": "NOT_STARTED / NOT AUTHORIZED",
+    "route_activation_authorized": false,
+    "production_source_activation_authorized": false,
+    "merge_authorized": false,
+    "i3_authorized": false,
+    "phase_j_authorized": false,
+    "market_network_calls_during_a1": 0
+  },
+  "product_scope": {
+    "venue": "TAIFEX",
+    "product_code": "TX",
+    "source_trading_session": "一般",
+    "normalized_trading_session": "regular",
+    "series_type": "standard_monthly_outright",
+    "series_selection": "nearest_available_standard_monthly_outright_in_selected_official_source_date",
+    "excluded": [
+      "after_hours_盤後", "weekly_series", "calendar_spreads", "options", "put_call_ratio",
+      "institutional_positioning", "large_trader_positioning", "MTX", "TMF",
+      "single_stock_futures", "arbitrary_TAIFEX_products", "historical_lookup",
+      "historical_backfill", "rolling_futures_calculations", "continuous_contract_synthesis",
+      "futures_basis_or_premium_discount", "trading_signals", "bullish_or_bearish_labels"
+    ]
+  },
+  "target_association": {
+    "eligible_market": "TWSE",
+    "eligible_instrument_family": "company_share",
+    "eligible_instrument_type": "common_share",
+    "tpex_supported": false,
+    "tpex_exclusion_reason": "TX official underlying is the TAIEX; the same direct market-alignment relationship is not established for TPEx securities.",
+    "cash_identity": {"durable_identity": "ISIN", "routing_identity": "market + security_code"},
+    "derivative_product_identity": {"venue": "TAIFEX", "product_code": "TX"},
+    "derivative_series_identity": {"venue": "TAIFEX", "product_code": "TX", "contract_period_format": "YYYYMM"},
+    "observation_grain": ["derivative_series", "official_trade_date", "trading_session"],
+    "security_master_rule": "Do not add TX derivative series to Security Master as cash-security ISIN identities."
+  },
+  "source_authority": {
+    "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI",
+    "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT",
+    "source_contract_id": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1",
+    "endpoint": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut",
+    "oas_authority": {"title": "臺灣期貨交易所 OAS", "url": "https://openapi.taifex.com.tw/swagger.json", "classification": "official TAIFEX OAS/open-data surface"},
+    "government_open_data": {
+      "dataset_id": "11319",
+      "dataset_name": "期貨每日交易行情",
+      "dataset_url": "https://data.gov.tw/dataset/11319",
+      "publisher": "金融監督管理委員會證券期貨局",
+      "license": "政府資料開放授權條款-第1版 (Open Government Data License v1.0)",
+      "license_url": "https://data.gov.tw/license",
+      "attribution_required": true,
+      "scope_note": "Authority is limited to this governed public dataset and corresponding TAIFEX OAS endpoint; it does not generalize to TAIFEX realtime feeds, paid historical products, all TAIFEX website content, or other endpoints."
+    },
+    "source_attribution_preservation_required": true
+  },
+  "transport": {
+    "method": "GET",
+    "maximum_unique_gets_per_governed_execution": 1,
+    "automatic_retry_count": 0,
+    "timeout_seconds": 30,
+    "http_success_status": 200,
+    "maximum_response_bytes": 2097152,
+    "maximum_root_rows": 5000,
+    "redirects": "rejected",
+    "raw_payload_persistence": "forbidden",
+    "cache_or_history_accumulation": false,
+    "polling": false,
+    "scheduler": false,
+    "background_refresh": false,
+    "accepted_content_types": ["application/octet-stream", "application/json"],
+    "body_formats": ["UTF-8 JSON array", "UTF-8-SIG JSON array when repository transport convention permits"],
+    "csv_supported": false,
+    "validation_chain": ["body_bytes", "byte_bound", "UTF-8_decode", "JSON_parse", "root_array_validation", "row_count_bound", "date_and_series_selection", "selected_row_field_validation", "normalized_evidence"],
+    "fail_closed_on": ["unexpected_binary_content", "invalid_UTF8", "malformed_JSON", "wrong_root_shape", "resource_bound_violation", "missing_required_structural_keys"]
+  },
+  "date_selection": {
+    "source_field": "Date",
+    "format": "Gregorian YYYYMMDD",
+    "roc_conversion": false,
+    "algorithm": ["retain syntactically valid Gregorian YYYYMMDD dates", "parse deterministically", "select maximum official Date", "only rows from selected Date are eligible"],
+    "fallback_to_older_date_if_selected_date_has_no_eligible_tx": false,
+    "no_valid_date_outcome": "source_failed",
+    "official_date_is_calendar_today_test": false
+  },
+  "series_selector": {
+    "required_exact_predicates": {"Contract": "TX", "TradingSession": "一般"},
+    "contract_month_week_field": "ContractMonth(Week)",
+    "standard_month_fullmatch_regex": "^[0-9]{6}$",
+    "month_validation": "Gregorian YYYYMM with month 01..12",
+    "exclude_weekly_series": true,
+    "exclude_spread_values_containing_slash": true,
+    "selection": "minimum valid YYYYMM among eligible rows for selected official Date",
+    "selected_date_tx_regular_month_binding_cardinality": 1,
+    "no_eligible_series_outcome": "unavailable",
+    "non_unique_minimum_binding_outcome": "binding_failed",
+    "independent_rollover_calendar": false,
+    "execution_clock_month_guess": false,
+    "volume_or_open_interest_front_month_inference": false,
+    "fallback_products": []
+  },
+  "source_row_contract": {
+    "source_values_are_strings_by_default": true,
+    "required_structural_keys": ["Date", "Contract", "ContractMonth(Week)", "Open", "High", "Low", "Last", "Change", "%", "Volume", "SettlementPrice", "OpenInterest", "BestBid", "BestAsk", "TradingHalt", "TradingSession"],
+    "fields": {
+      "Open": {"normalized_field": "open", "unit": "index_point"},
+      "High": {"normalized_field": "high", "unit": "index_point"},
+      "Low": {"normalized_field": "low", "unit": "index_point"},
+      "Last": {"normalized_field": "last", "unit": "index_point"},
+      "Change": {"normalized_field": "change_points", "unit": "index_point", "sign": "preserved"},
+      "%": {"normalized_field": "change_percent", "unit": "percent", "example_source": "-0.74%", "example_normalized": -0.74, "fraction_conversion": false},
+      "Volume": {"normalized_field": "volume", "unit": "contract_count"},
+      "SettlementPrice": {"normalized_field": "settlement_price", "unit": "index_point"},
+      "OpenInterest": {"normalized_field": "open_interest", "unit": "contract_count"},
+      "BestBid": {"normalized_field": "best_bid", "unit": "index_point", "nullable": true},
+      "BestAsk": {"normalized_field": "best_ask", "unit": "index_point", "nullable": true}
+    },
+    "missing_markers": ["-", "NULL", "empty string where source semantics permit"],
+    "missing_marker_semantics": "missing, never numeric zero",
+    "malformed_numeric_semantics": "Do not silently coerce malformed numeric content to missing; apply the separately frozen status rules.",
+    "forbidden_derived_fields": ["notional_contract_value", "leverage", "premium_discount", "basis", "implied_return", "historical_high_low_interpretation", "spread_volume_interpretation"]
+  },
+  "evidence_contract": {
+    "schema_version": "index_futures_context_evidence.v1",
+    "statuses": ["complete", "partial", "unavailable", "source_failed", "binding_failed"],
+    "complete_requires": ["unique_selected_series", "valid_trade_date", "contract_TX", "contract_period", "regular_trading_session", "open", "high", "low", "last", "change_points", "change_percent", "volume", "settlement_price", "open_interest"],
+    "best_bid_best_ask": "nullable_or_optional_numeric_observations",
+    "partial_rule": "A uniquely selected row with missing non-identity market fields may be partial only when missing values are explicit and remaining observations are semantically usable.",
+    "malformed_required_numeric_rule": "Must produce the governed partial/failure outcome; never convert malformed content to missing silently.",
+    "common_required_fields": ["schema_version", "status", "target_market", "venue", "product_code", "trading_session", "currentness_status", "retrieved_at", "alignment_status", "source", "transport", "citation_ids", "caveats"],
+    "currentness_status": "unknown",
+    "interpretation_guard": "Facts and descriptive date alignment only; no trading, directional, sentiment, lead/lag, basis, or causation interpretation."
+  },
+  "timing_and_alignment": {
+    "execution_reference_timestamp_capture": "capture once per governed execution",
+    "normalized_evidence_retrieved_at": "governed execution/acquisition reference timestamp",
+    "transport_retrieved_at": "individual HTTP retrieval observation timestamp",
+    "currentness_status": "unknown unless separate governed trading calendar/session authority proves otherwise",
+    "alignment_values": ["same_trade_date_non_simultaneous_close", "different_trade_date", "not_comparable", "unavailable"],
+    "alignment_reference": "governed TWSE benchmark/FMTQIK component trade date when present",
+    "not_alignment_references": ["TWSE breadth date", "TPEx market-state date", "execution local calendar date"],
+    "rules": {"same_date": "same_trade_date_non_simultaneous_close", "different_date": "different_trade_date", "no_benchmark_component": "not_comparable", "I2_no_usable_selected_evidence": "unavailable", "I1_global_partial_due_breadth_mismatch_invalidates_benchmark_comparison": false},
+    "equal_dates_mean_simultaneous_observations": false
+  },
+  "future_a2_execution_reuse_contract": {
+    "one_logical_need_per_eligible_target": true,
+    "compatible_requests_share_one_governed_source_acquisition": true,
+    "maximum_daily_market_report_fut_gets_per_governed_execution": 1,
+    "per_target_refetch": false,
+    "intended_batching_scope": "same_source",
+    "implemented_in_a1": false
+  },
+  "runtime_activation": {
+    "i2_normal_production_routes": 0,
+    "i2_active_sources": 0,
+    "i2_executor_registered": false,
+    "index_futures_context_runtime_executable": false,
+    "catalog_or_routing_mutated": false,
+    "current_i1_active_sources": 3,
+    "mcp_tool_count": 6,
+    "i3_started": false,
+    "phase_j_started": false
+  }
+}

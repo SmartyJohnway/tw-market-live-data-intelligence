@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tw-market-live-data-intelligence:index_futures_context_evidence:v1",
+  "title": "Phase I2 Index Futures Context Evidence v1",
+  "type": "object",
+  "required": [
+    "schema_version", "status", "target_market", "venue", "product_code",
+    "trading_session", "currentness_status", "retrieved_at", "alignment_status",
+    "source", "transport", "citation_ids", "caveats"
+  ],
+  "properties": {
+    "schema_version": {"const": "index_futures_context_evidence.v1"},
+    "status": {"enum": ["complete", "partial", "unavailable", "source_failed", "binding_failed"]},
+    "target_market": {"const": "TWSE"},
+    "venue": {"const": "TAIFEX"},
+    "product_code": {"const": "TX"},
+    "contract_period": {"type": "string", "pattern": "^[0-9]{4}(0[1-9]|1[0-2])$"},
+    "trade_date": {"type": "string", "format": "date"},
+    "trading_session": {"const": "regular"},
+    "currentness_status": {"const": "unknown"},
+    "retrieved_at": {"type": "string", "format": "date-time"},
+    "market_data": {
+      "type": "object",
+      "properties": {
+        "open": {"type": "number"},
+        "high": {"type": "number"},
+        "low": {"type": "number"},
+        "last": {"type": "number"},
+        "change_points": {"type": "number"},
+        "change_percent": {"type": "number"},
+        "volume": {"type": "integer", "minimum": 0},
+        "settlement_price": {"type": "number"},
+        "open_interest": {"type": "integer", "minimum": 0},
+        "best_bid": {"type": ["number", "null"]},
+        "best_ask": {"type": ["number", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "unit_metadata": {
+      "type": "object",
+      "properties": {
+        "open": {"const": "index_point"},
+        "high": {"const": "index_point"},
+        "low": {"const": "index_point"},
+        "last": {"const": "index_point"},
+        "change_points": {"const": "index_point"},
+        "change_percent": {"const": "percent"},
+        "volume": {"const": "contract_count"},
+        "settlement_price": {"const": "index_point"},
+        "open_interest": {"const": "contract_count"},
+        "best_bid": {"const": "index_point"},
+        "best_ask": {"const": "index_point"}
+      },
+      "additionalProperties": false
+    },
+    "missing_fields": {
+      "type": "array",
+      "items": {"enum": ["open", "high", "low", "last", "change_points", "change_percent", "volume", "settlement_price", "open_interest", "best_bid", "best_ask"]},
+      "uniqueItems": true
+    },
+    "alignment_status": {"enum": ["same_trade_date_non_simultaneous_close", "different_trade_date", "not_comparable", "unavailable"]},
+    "source": {
+      "type": "object",
+      "required": ["source_id", "source_family", "source_contract_id", "endpoint", "authority", "dataset_id", "attribution_required"],
+      "properties": {
+        "source_id": {"const": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI"},
+        "source_family": {"const": "TAIFEX_DAILY_MARKET_REPORT_FUT"},
+        "source_contract_id": {"const": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1"},
+        "endpoint": {"const": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut"},
+        "authority": {"const": "official_taifex_oas_open_data"},
+        "dataset_id": {"const": "11319"},
+        "attribution_required": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "transport": {
+      "type": "object",
+      "required": ["http_status", "content_type", "response_byte_count", "response_sha256", "retrieved_at", "get_count", "retry_count", "raw_payload_persisted"],
+      "properties": {
+        "http_status": {"type": ["integer", "null"], "minimum": 100, "maximum": 599},
+        "content_type": {"type": ["string", "null"]},
+        "response_byte_count": {"type": "integer", "minimum": 0, "maximum": 2097153},
+        "response_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "get_count": {"enum": [0, 1]},
+        "retry_count": {"const": 0},
+        "raw_payload_persisted": {"const": false},
+        "error_code": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "citation_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "caveats": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "complete"}}, "required": ["status"]},
+      "then": {
+        "required": ["contract_period", "trade_date", "market_data", "unit_metadata"],
+        "properties": {
+          "market_data": {"required": ["open", "high", "low", "last", "change_points", "change_percent", "volume", "settlement_price", "open_interest"]},
+          "unit_metadata": {"required": ["open", "high", "low", "last", "change_points", "change_percent", "volume", "settlement_price", "open_interest"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "partial"}}, "required": ["status"]},
+      "then": {
+        "required": ["contract_period", "trade_date", "market_data", "unit_metadata", "missing_fields"],
+        "properties": {
+          "market_data": {"minProperties": 1},
+          "unit_metadata": {"minProperties": 1},
+          "missing_fields": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"enum": ["complete", "partial", "unavailable", "binding_failed"]}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "transport": {
+            "properties": {
+              "http_status": {"const": 200},
+              "content_type": {"enum": ["application/octet-stream", "application/json"]},
+              "response_byte_count": {"maximum": 2097152},
+              "response_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+              "get_count": {"const": 1}
+            }
+          }
+        }
+      }
+    },
+    {"if": {"properties": {"market_data": {"required": ["open"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["open"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["high"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["high"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["low"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["low"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["last"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["last"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["change_points"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["change_points"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["change_percent"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["change_percent"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["volume"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["volume"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["settlement_price"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["settlement_price"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["open_interest"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["open_interest"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["best_bid"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["best_bid"]}}, "required": ["unit_metadata"]}},
+    {"if": {"properties": {"market_data": {"required": ["best_ask"]}}, "required": ["market_data"]}, "then": {"properties": {"unit_metadata": {"required": ["best_ask"]}}, "required": ["unit_metadata"]}}
+  ],
+  "additionalProperties": false
+}

@@ -12,7 +12,8 @@ Current workstream:
 
 > **H-ACT-H3 is Owner-accepted. Phase I I1 production activation is
 > Owner-accepted and merged after bounded live acceptance and deterministic
-> rollback proof. I2 and I3 are not started and require separate authorization.**
+> rollback proof. I2-A0/A1 are complete (A1 contract frozen); A2 runtime
+> implementation is not authorized. I3 is not started.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -77,7 +78,12 @@ Catalog/Routing              runtime_executable / resolved
 selected executor            phase_i_i1_market_state_executor
 normal production I1 routes  2 (TWSE + TPEX)
 Phase I active sources       3
-I2 / I3                      NOT STARTED
+I2-A0                        PASS_GO (one previously Owner-executed bounded probe)
+I2-A1                        SOURCE / EVIDENCE CONTRACT FROZEN_PASS
+I2 runtime implementation   NOT STARTED / NOT AUTHORIZED (A2 not authorized)
+I2 active sources / routes   0 / 0
+I3                           NOT STARTED
+Broader Phase I              INCOMPLETE
 ```
 
 V1/V2 remain compatibility contracts. Existing persisted artifacts retain their
@@ -140,8 +146,9 @@ and TPEx is complete. The final Owner decision accepts production activation
 of the selected I1 market-state route. Current runtime authority has two normal
 production routes (TWSE and TPEx) and exactly three active I1 sources.
 `I1-ROLL-001` passed. No new market requests were made during final activation
-closure. I2 and I3 remain not started and require a separate Owner gate; the
-broader Roadmap Phase I remains incomplete.
+closure. I2-A0/A1 are complete, but I2 runtime implementation is not started
+and requires a separate A2 Owner gate; I3 is not started. The broader Roadmap
+Phase I remains incomplete.
 
 I1 timing semantics: acceptance execution/acquisition reference timestamp is
 `2026-09-30T01:56:37Z`; each source transport retrieval timestamp is recorded
@@ -192,18 +199,20 @@ files unless the task requires historical evidence.
 
 I1 production activation has been Owner-accepted and merged after bounded live
 acceptance and deterministic rollback proof. Do not repeat live acquisition or
-rollback. The next possible roadmap gate is I2, but it requires separate Owner
-authorization. I2/I3 are not started.
+rollback. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS.
+This does not authorize A2: I2 runtime implementation remains NOT STARTED / NOT
+AUTHORIZED, with zero active I2 sources and routes. I3 is not started.
 
 ## Explicit stop boundary
 
-**Do not repeat I1 live acceptance or rollback. Do not begin I2/I3 without a
-separate Owner authorization.**
+**Do not repeat I1 live acceptance or rollback. Do not begin I2-A2 runtime
+implementation, I3, or Phase J without separate explicit Owner authorization.**
 
-Roadmap Phase I is Cross-Market & Optional Context. I0 and the I1 source
-contract are frozen; the production-capable I1 implementation, bounded live
-acceptance, and Owner production-route activation are accepted. I2/I3 remain
-outside this tranche.
+Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
+and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
+one I2-A0 probe is historical preflight evidence only. I2 runtime remains
+dormant, unimplemented, and unauthorized; I3 remains not started. Broader Phase
+I is incomplete.
 
 ## Before any future Phase I work
 

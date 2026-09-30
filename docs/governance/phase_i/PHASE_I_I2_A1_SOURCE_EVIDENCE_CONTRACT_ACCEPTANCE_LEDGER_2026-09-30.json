@@ -1,0 +1,68 @@
+{
+  "schema_version": "phase_i_i2_a1_source_evidence_contract_acceptance_ledger.v1",
+  "gate_id": "PHASE_I_I2_A1_SOURCE_EVIDENCE_CONTRACT",
+  "status": "OWNER_ACCEPTED_FROZEN_PASS",
+  "owner_authority_reference": "USER_CHAT_2026-09-30_PHASE_I_I2_A1_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE",
+  "reviewed_candidate": {
+    "baseline_main": "4d37a76196c76473a0ba3850fedcd0a2eb33aff9",
+    "reviewed_head": "93414e37f3e84a9273a7c935cf620e7d8fbca267",
+    "reviewed_tree": "e9e673aa7905416800bd27d885652c9e0893392e",
+    "pull_request": 296
+  },
+  "accepted_authority_chain": {
+    "phase_i_i0": "FROZEN_PASS",
+    "phase_i_i1": "OWNER_ACCEPTED_MERGED_RUNTIME_EXECUTABLE",
+    "phase_i_i2_a0": "ACCEPTED_PASS_GO",
+    "phase_i_i2_a1_contract": "FROZEN_PASS",
+    "independent_review": "PASS",
+    "closure_repair": "PASS",
+    "a0_record": "docs/governance/phase_i/PHASE_I_I2_A0_TX_REGULAR_SESSION_GO_NO_GO_PREFLIGHT_2026-09-30.json",
+    "a1_contract": "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json",
+    "a1_contract_sha256": "6d535e34defb1e82947f64ceec6df5e1859888fb3550e36e6ded1b6a7573d4fb",
+    "a0_source_payload_sha256": "7a35adfc030aba52378dcc5e68a1bcfd90082d4a065b3fff891a365e9fa9370b"
+  },
+  "frozen_i2_a1_scope": {
+    "capability_id": "index_futures_context",
+    "eligible_target_market": "TWSE",
+    "eligible_instrument_family": "company_share",
+    "eligible_instrument_type": "common_share",
+    "venue": "TAIFEX",
+    "product_code": "TX",
+    "trading_session": "regular",
+    "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT",
+    "maximum_unique_gets_per_governed_execution": 1,
+    "automatic_retry_count": 0,
+    "timeout_seconds": 30,
+    "maximum_response_bytes": 2097152,
+    "maximum_root_rows": 5000,
+    "raw_payload_persistence": "forbidden"
+  },
+  "runtime_preservation": {
+    "i2_runtime_implementation": "NOT_STARTED",
+    "i2_active_sources": 0,
+    "i2_normal_production_routes": 0,
+    "i2_executor_registered": false,
+    "i1_active_sources": 3,
+    "mcp_tool_count": 6,
+    "i3_started": false,
+    "phase_j_started": false,
+    "market_network_calls_during_owner_merge_closure": 0
+  },
+  "validation_evidence": {
+    "focused_i2_a1": "10 passed",
+    "default_ci": "832 passed, 1 skipped, 5 deselected",
+    "full_current": "1205 passed, 1 skipped, 5 deselected",
+    "github_reported_statuses": 0,
+    "github_reported_workflow_runs": 0,
+    "github_ci_claim": "NOT_CLAIMED"
+  },
+  "final_decision": {
+    "owner_acceptance": "ACCEPTED",
+    "contract_frozen": true,
+    "merge_authorized": true,
+    "merge_performed": false,
+    "merge_performed_scope": "historical pre-merge acceptance snapshot",
+    "a2_implementation_authorized": false,
+    "a2_authorization_scope": "separate post-merge Owner gate"
+  }
+}

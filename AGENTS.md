@@ -60,11 +60,15 @@ As of this governance consolidation:
 - **Phase I I1 production-capable implementation, bounded live acceptance,
   rollback, and Owner production-route activation are accepted and merged.
   `market_state_context` is runtime executable on its bounded, approval-gated
-  route. I2 and I3 remain unstarted and require separate Owner authorization.**
+  route. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS;
+  I2 runtime implementation (A2) remains not started/not authorized, with zero
+  I2 active sources/routes. I3 remains unstarted and requires separate Owner
+  authorization.**
 
-Do not repeat bounded live acceptance or rollback. I1 activation is accepted
-current runtime truth. Do not begin I2/I3 without separate explicit Owner
-authorization; broader Phase I remains incomplete.
+Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
+current runtime truth. Do not begin I2-A2 runtime implementation, I3, or Phase J
+without separate explicit Owner authorization; broader Phase I remains
+incomplete.
 
 ## 5. Authority hierarchy
 
@@ -307,13 +311,15 @@ important audit evidence.
 
 ## 16. Current stop rule
 
-For the current I1 state:
+For the current Phase I state:
 
 > **I1 production activation is Owner-accepted and merged.**
 
 `market_state_context` is runtime executable on the explicitly requested,
 approval-gated `phase_i_i1_market_state_executor` route, with two normal
-production routes and exactly three active I1 sources. The accepted bounded-live
-evidence remains immutable. Do not repeat live acquisition or rollback. I2/I3
-remain not started and require separate Owner authorization; Phase I as a whole
-is not complete.
+production routes and exactly three active I1 sources. I2-A0 is PASS_GO and
+I2-A1 `index_futures_context` source/evidence contract is FROZEN_PASS, but I2
+runtime implementation remains not started/not authorized with zero active
+sources and routes. I3 is not started. The accepted bounded-live evidence
+remains immutable; do not repeat it or rollback. Phase I as a whole is not
+complete.
