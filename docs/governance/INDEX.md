@@ -40,6 +40,7 @@ runtime later changed.
 - [I2-A0 TAIFEX TX bounded preflight](phase_i/PHASE_I_I2_A0_TX_REGULAR_SESSION_GO_NO_GO_PREFLIGHT_2026-09-30.json)
 - [I2-A1 TX regular-session source/evidence contract (authoritative JSON)](phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json)
 - [I2-A1 TX regular-session source/evidence contract (Markdown companion)](phase_i/Phase_I_I2_TX_Regular_Session_Source_Evidence_Contract_2026-09-30_FROZEN.md)
+- [I2-A1 Owner acceptance / merge authorization ledger](phase_i/PHASE_I_I2_A1_SOURCE_EVIDENCE_CONTRACT_ACCEPTANCE_LEDGER_2026-09-30.json)
 - [I1 frozen source contract](phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json)
 - [I1 bounded live acceptance](phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json)
 - [I1 technical activation candidate snapshot](phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json)
@@ -47,11 +48,13 @@ runtime later changed.
 
 The technical-candidate record remains historical. The final acceptance ledger
 is the current Owner decision for the selected I1 route; broader Phase I is not
-complete, and I2/I3 remain unstarted.
+complete.
 
-I2-A0 is a recorded preflight only. I2-A1 freezes the narrow TX regular-session
-source/evidence contract; A2 runtime implementation is not authorized, I2
-active sources/routes remain zero, and I3 remains unstarted.
+I2-A0 is accepted preflight evidence. I2-A1 source/evidence contract is
+Owner-accepted and authorized for merge by its acceptance ledger. The ledger is
+a historical pre-merge acceptance snapshot; A2 runtime implementation remains a
+separate post-merge Owner gate. I2 active sources/routes remain zero and I3
+remains unstarted until separately authorized.
 
 ## Governance policy
 
