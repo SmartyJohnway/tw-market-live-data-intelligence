@@ -95,6 +95,33 @@ def valid_requests(tmp_path):
     return out['execution_requests']
 
 
+def test_governed_listing_syntax_is_not_four_digits(tmp_path, monkeypatch):
+    requests = valid_requests(tmp_path)
+    requests[0]['approved_security_identifiers'] = ['TWSE:12345A']
+    calls = []
+    def fake(*args):
+        calls.append(args)
+        return 200, {'Content-Type': 'application/json'}, deterministic_fixture_payload()
+    monkeypatch.setattr(candidate, '_read_once', fake)
+    result = candidate.production_batch_operation_adapter_candidate(
+        tuple(requests), DispatchRuntimeContext(str(tmp_path / 'canonical'), 'execute-approved'))
+    assert len(calls) == 1 and all(item['status'] == 'succeeded' for item in result)
+
+
+def test_historical_replay_cannot_mask_current_authority_corruption(monkeypatch):
+    import scripts.phase_i_i2_a4_proof as proof
+    original = proof.current_json
+    def corrupted(path):
+        value = copy.deepcopy(original(path))
+        if path == CATALOG:
+            record(value, 'data_need_capabilities')['runtime_executable'] = False
+        return value
+    monkeypatch.setattr(proof, 'current_json', corrupted)
+    with pytest.raises(AssertionError):
+        with proof.historical_dormant_authority():
+            pytest.fail("corrupt current authority was silently replayed")
+
+
 @pytest.mark.parametrize('field,value', [
     ('executor_id', 'wrong'), ('capability_id', 'recent_performance'), ('market', 'TPEX'),
     ('network_authorized', False), ('timeout_seconds', 15), ('maximum_records', 2),

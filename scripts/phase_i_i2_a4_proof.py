@@ -208,7 +208,7 @@ def run_production_offline_proof(output_root: Path, payload: bytes):
         return 200, {"Content-Type": "application/octet-stream"}, payload
     def deny(*args, **kwargs):
         raise AssertionError("market network forbidden in A4")
-    from server.services.phase_i_i2_live_acceptance_candidate import acquire_taifex_once
+    from server.services.phase_i_i2_production_transport import acquire_taifex_once
     def fake_clock_acquisition(*, transport):
         return acquire_taifex_once(transport=transport, clock=lambda: datetime(2026, 10, 1, 6, 0, 1, tzinfo=timezone.utc))
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny), patch("server.services.phase_i_i2_production_candidate._read_once", fake), patch("server.services.phase_i_i2_production_candidate._stamp", return_value=stamp), patch("server.services.phase_i_i2_production_candidate.acquire_taifex_once", fake_clock_acquisition):

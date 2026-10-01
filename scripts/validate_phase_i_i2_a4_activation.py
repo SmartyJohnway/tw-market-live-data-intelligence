@@ -24,6 +24,13 @@ def validate(*, require_record=True):
         raise AssertionError("external market network forbidden in A4 validator")
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny):
         verify_candidate_authority()
+        import ast
+        for name in ("phase_i_i2_production_candidate.py", "phase_i_i2_production_transport.py"):
+            tree = ast.parse((ROOT / "server/services" / name).read_text(encoding="utf-8"))
+            assert not any(isinstance(node, ast.ImportFrom) and "acceptance" in (node.module or "")
+                           for node in ast.walk(tree))
+        from server.services.phase_i_i2_production_transport import MAX_READ_BYTES, TIMEOUT_SECONDS
+        assert (MAX_READ_BYTES, TIMEOUT_SECONDS) == (2097153, 30)
         preserved = verify_a3_hashes()
         a1 = ROOT / "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json"
         assert hashlib.sha256(a1.read_bytes()).hexdigest() == "6d535e34defb1e82947f64ceec6df5e1859888fb3550e36e6ded1b6a7573d4fb"

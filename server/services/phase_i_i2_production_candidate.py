@@ -1,6 +1,6 @@
 """Approval-bound I2 A4 production surface; no acquisition at import/build time.
 
-The accepted A3 fixed-endpoint transport and A2 normalizer remain unchanged.
+The production-owned transport conforms to A3; the A2 normalizer is unchanged.
 Each fully validated same-source batch acquires and normalizes exactly once.
 """
 from __future__ import annotations
@@ -19,7 +19,7 @@ from scripts.m8r_05b_03.errors import OrchestrationError
 from scripts.m8r_filesystem_safety import FilesystemSafetyError, atomic_write_bytes
 from scripts.m8r_05c.citation_builder import _build_citation_id
 from .phase_i_i2_index_futures_adapters import CAPABILITY_ID, EVIDENCE_SCHEMA, normalize_taifex_tx_payload
-from .phase_i_i2_live_acceptance_candidate import A3TransportError, acquire_taifex_once, _read_once
+from .phase_i_i2_production_transport import ProductionTransportError, acquire_taifex_once, _read_once
 
 EXECUTOR_ID = "phase_i_i2_index_futures_context_executor"
 ROOT = Path(__file__).resolve().parents[2]
@@ -47,7 +47,9 @@ def _validate_batch(requests, context):
                 True, 30, 1, {}, ["equity"]):
             raise OrchestrationError("i2_execution_request_scope_invalid")
         targets = req.get("approved_security_identifiers", [])
-        if len(targets) != 1 or not re.fullmatch(r"TWSE:[0-9]{4}", targets[0]):
+        # Listing-ID syntax follows the Security Master snapshot resolver;
+        # instrument eligibility is already bound by resolution and planning.
+        if len(targets) != 1 or not re.fullmatch(r"TWSE:[A-Z0-9._-]{1,20}", targets[0]):
             raise OrchestrationError("i2_approved_target_invalid")
         if tuple(req.get(k) for k in ("batch_group_id", "authorization_id")) != binding:
             raise OrchestrationError("i2_batch_binding_mismatch")
@@ -75,7 +77,7 @@ def production_batch_operation_adapter_candidate(requests, context):
                      "retrieved_at": acquired.retrieved_at, "get_count": 1, "retry_count": 0,
                      "raw_payload_persisted": False}
         payload = acquired.body
-    except A3TransportError as exc:
+    except ProductionTransportError as exc:
         # Empty rows produce the frozen honest source_failed shape, not absent
         # evidence or fabricated observations. Keep bounded transport telemetry.
         payload = []
