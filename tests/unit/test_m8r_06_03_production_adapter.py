@@ -32,7 +32,10 @@ def test_production_metadata_materializes_legacy_research_and_selected_phase_rou
     metadata = load_production_executor_metadata()
     registry = build_production_runtime_adapter_registry()
 
-    assert len(metadata["executors"]) == 12
+    assert len(metadata["executors"]) == 13
+    i2 = registry.get_route("phase_i_i2_index_futures_context_executor", "index_futures_context", "TWSE")
+    assert i2 is not None and i2.network_required and not i2.fake_adapter
+    assert len(registry.routes_for_executor(i2.executor_id)) == 1
     assert len(production_executor_metadata_sha256()) == 64
     for capability_id, market in (
         ("current_observation", "TWSE"),

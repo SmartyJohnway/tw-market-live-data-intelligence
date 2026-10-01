@@ -169,6 +169,11 @@ def _valid_complete_fixture(schema: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+sys.path.insert(0, str(ROOT))
+from scripts.phase_i_i2_a4_proof import historical_gate
+
+
+@historical_gate
 def validate_a1_contract() -> None:
     contract = _json(CONTRACT_PATH)
     a0 = _json(A0_PATH)

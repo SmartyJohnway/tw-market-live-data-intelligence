@@ -988,6 +988,11 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
         production_batch_operation_adapter_candidate,
         production_operation_adapter_candidate,
     )
+    from server.services.phase_i_i2_production_candidate import (
+        EXECUTOR_ID as PHASE_I_I2_EXECUTOR_ID,
+        production_batch_operation_adapter_candidate as i2_batch_adapter,
+        production_operation_adapter_candidate as i2_operation_adapter,
+    )
 
     metadata = ExecutorMetadataRegistry.from_json(load_production_executor_metadata())
     routes = (
@@ -1003,11 +1008,19 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
         (PHASE_H_H3_EXECUTOR_ID, "recent_performance", "TWSE"),
         (PHASE_I_I1_EXECUTOR_ID, "market_state_context", "TWSE"),
         (PHASE_I_I1_EXECUTOR_ID, "market_state_context", "TPEX"),
+        (PHASE_I_I2_EXECUTOR_ID, "index_futures_context", "TWSE"),
     )
     registrations = []
     for executor, capability, market in routes:
+        # Historical dormant authority replay has no I2 metadata registration.
+        # The current A4 validator separately requires its exact single route.
+        if executor == PHASE_I_I2_EXECUTOR_ID and not any(
+            item.get("executor_id") == executor for item in load_production_executor_metadata()["executors"]
+        ):
+            continue
         entry = metadata.get_route(executor, capability, market)
         is_i1 = executor == PHASE_I_I1_EXECUTOR_ID
+        is_i2 = executor == PHASE_I_I2_EXECUTOR_ID
         registrations.append(RuntimeAdapterRegistration(
             executor_id=entry.executor_id,
             capability_id=entry.capability_id,
@@ -1019,8 +1032,9 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
             timeout_seconds=entry.timeout_seconds,
             maximum_result_items=entry.maximum_result_items,
             output_policy=entry.output_policy,
-            adapter=production_operation_adapter_candidate if is_i1 else production_operation_adapter,
+            adapter=i2_operation_adapter if is_i2 else production_operation_adapter_candidate if is_i1 else production_operation_adapter,
             batch_adapter=(
+                i2_batch_adapter if is_i2 else
                 production_batch_operation_adapter_candidate
                 if is_i1
                 else None

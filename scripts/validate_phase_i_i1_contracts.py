@@ -191,11 +191,15 @@ def validate_phase_i_i1_contracts() -> None:
         raise I1ValidationError("i2_i3_scope_added")
     i2_capability = next((x for x in catalog.get("data_need_capabilities", []) if x.get("capability_id") == "index_futures_context"), None)
     i2_route = next((x for x in routing.get("routes", []) if x.get("capability_id") == "index_futures_context"), None)
-    if i2_capability and (i2_capability.get("runtime_executable") is not False or i2_capability.get("support_status") != "contract_supported"):
-        raise I1ValidationError("i2_dormant_catalog_state_invalid")
-    if i2_route and (i2_route.get("routing_status") != "plan_only" or i2_route.get("selected_executor_id") is not None):
-        raise I1ValidationError("i2_dormant_routing_state_invalid")
-    print("Phase I I1 contracts: PASS (Owner-accepted activation preserved; I2 remains dormant)")
+    if i2_capability and i2_capability.get("runtime_executable") is True:
+        from scripts.phase_i_i2_a4_proof import verify_candidate_authority
+        verify_candidate_authority()
+    else:
+        if i2_capability and (i2_capability.get("runtime_executable") is not False or i2_capability.get("support_status") != "contract_supported"):
+            raise I1ValidationError("i2_dormant_catalog_state_invalid")
+        if i2_route and (i2_route.get("routing_status") != "plan_only" or i2_route.get("selected_executor_id") is not None):
+            raise I1ValidationError("i2_dormant_routing_state_invalid")
+    print("Phase I I1 contracts: PASS (Owner-accepted activation preserved; I2 separately governed)")
 
 
 if __name__ == "__main__":

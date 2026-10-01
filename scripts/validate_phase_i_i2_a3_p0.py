@@ -34,6 +34,11 @@ def _git(*args: str) -> str:
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
 
+sys.path.insert(0, str(ROOT))
+from scripts.phase_i_i2_a4_proof import historical_gate
+
+
+@historical_gate
 def validate(*, write_candidate_record: bool = False) -> dict:
     contract_path = ROOT / "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json"
     contract_sha = hashlib.sha256(contract_path.read_bytes()).hexdigest()

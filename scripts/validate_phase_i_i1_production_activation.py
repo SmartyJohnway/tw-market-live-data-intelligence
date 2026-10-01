@@ -90,7 +90,11 @@ def validate() -> None:
         raise ValueError("i1_normal_registry_route_set_invalid")
     if any(item.capability_id != CAPABILITY_ID or item.expected_evidence_contract != EVIDENCE_CONTRACT or item.adapter is not production_operation_adapter_candidate or item.batch_adapter is not production_batch_operation_adapter_candidate or item.fake_adapter for item in registrations):
         raise ValueError("i1_normal_registry_adapter_binding_invalid")
-    i2_i3 = {"index_futures_context", "institutional_positioning", "market_positioning_context"}
+    # Later I2 A4 authority is separate from the frozen I1 activation gate.
+    if any(item.get("capability_id") == "index_futures_context" for item in metadata.get("executors", [])):
+        from scripts.phase_i_i2_a4_proof import verify_candidate_authority
+        verify_candidate_authority()
+    i2_i3 = {"institutional_positioning", "market_positioning_context"}
     if any(item.get("capability_id") in i2_i3 for item in metadata.get("executors", [])):
         raise ValueError("i2_i3_production_route_added")
 
