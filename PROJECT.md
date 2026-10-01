@@ -1,31 +1,26 @@
 # PROJECT.md — Current Project Authority
 
-## Current A4 branch candidate boundary (2026-10-01)
+## Current I2 production activation boundary (2026-10-01)
 
-On `phase-i/i2-a4-production-activation-candidate`, I2-A4 is a technical
-production activation candidate, READY FOR OWNER REVIEW after offline proof.
+I2-A4 production activation is Owner-accepted and merge-authorized.
 
-- Candidate Catalog: `index_futures_context` runtime executable;
+- Catalog: `index_futures_context` is runtime executable with
   `phase_i_activation_state=selected_route_active`.
-- Candidate Routing: resolved, approval required, `same_source`, selected
+- Routing: resolved, approval required, `same_source`, selected
   `phase_i_i2_index_futures_context_executor`; one normal TWSE production route.
-- Candidate source: one active TAIFEX source; eligible cash targets are TWSE
-  company/common shares. Explicit optional loading only, never startup refresh.
-- `I2-ROLL-001`: PASS; deterministic in-memory rollback to
-  `7ffbdf7fb102668457b2a15877c10ad7673da9bf`; accepted A3 evidence preserved.
-- Final Owner production activation: PENDING / NOT YET ACCEPTED.
-  Merge: NOT AUTHORIZED. All A4 market network calls: 0.
-- I1 remains Owner-accepted/merged: two routes, three active sources.
-  Phase G/H preserved; MCP exactly six; I3/Phase J NOT STARTED;
-  broader Phase I INCOMPLETE.
+- Source authority: one active TAIFEX source; eligible cash targets remain TWSE
+  company/common shares. Loading is explicit/optional only, never startup refresh.
+- `I2-ROLL-001`: PASS; deterministic rollback target remains
+  `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
+- No additional market request was authorized or performed for activation.
+- I1 remains active with two routes and three sources; MCP remains exactly six.
+- I3 / Phase J remain NOT STARTED; broader Phase I remains INCOMPLETE.
 
-Candidate evidence:
+Activation evidence:
 
 `docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json`
 
-The I2 dormant/inactive statements below describe the accepted **main baseline**
-`7ffbdf7fb102668457b2a15877c10ad7673da9bf`, not the A4 branch candidate.
-They do not supersede this candidate boundary or grant final activation.
+`docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json`
 
 ## Project identity
 
@@ -241,8 +236,9 @@ in
 `docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json`.
 Phase I I2-A2 dormant offline implementation is Owner-accepted under
 `docs/governance/phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_ACCEPTANCE_LEDGER_2026-10-01.json`.
-I2 runtime remains inactive: it has zero active sources, zero normal production
-routes, no selected executor, and no default-registry executor. I1 remains
+I2 runtime is production executable after Owner acceptance: it has one active
+TAIFEX source, one normal TWSE production route, selected executor
+`phase_i_i2_index_futures_context_executor`, and one default-registry executor route. I1 remains
 accepted and active with three sources. A2 used synthetic fixtures only and made
 no market-source requests. I2-A3 bounded live acceptance is Owner-accepted `PASS` under
 `USER_CHAT_2026-10-01_PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE`, with live evidence recorded in
@@ -250,9 +246,11 @@ no market-source requests. I2-A3 bounded live acceptance is Owner-accepted `PASS
 `docs/governance/phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json`.
 One TAIFEX GET supplied both TWSE:1101 and TWSE:1102, with zero retries and no
 TWSE/TPEx requests. Result V3, Audit V3, replay, and citation/artifact lineage
-passed; raw payload persistence is NONE. Merge is Owner-authorized for the accepted A3 evidence and governed runner. Production activation remains
-NOT_AUTHORIZED: I2 is dormant with zero active sources/routes and selected
-executor null. I3 is not started, Phase I remains incomplete, and MCP remains
+passed; raw payload persistence is NONE. A3 accepted live evidence remains immutable historical proof. I2-A4 production
+activation is Owner-accepted under
+`USER_CHAT_2026-10-01_PHASE_I_I2_A4_FINAL_PRODUCTION_ACTIVATION_ACCEPTANCE_AND_MERGE_CLOSURE`.
+The normal route is approval-gated, TWSE company/common-share only, same-source,
+and bounded to at most one TAIFEX acquisition per governed execution. I3 is not started, Phase I remains incomplete, and MCP remains
 exactly six tools. The earlier unused live authority is superseded without use.
 
 ## Current authority hierarchy
