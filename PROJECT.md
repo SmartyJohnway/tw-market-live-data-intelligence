@@ -1,5 +1,32 @@
 # PROJECT.md — Current Project Authority
 
+## Current A4 branch candidate boundary (2026-10-01)
+
+On `phase-i/i2-a4-production-activation-candidate`, I2-A4 is a technical
+production activation candidate, READY FOR OWNER REVIEW after offline proof.
+
+- Candidate Catalog: `index_futures_context` runtime executable;
+  `phase_i_activation_state=selected_route_active`.
+- Candidate Routing: resolved, approval required, `same_source`, selected
+  `phase_i_i2_index_futures_context_executor`; one normal TWSE production route.
+- Candidate source: one active TAIFEX source; eligible cash targets are TWSE
+  company/common shares. Explicit optional loading only, never startup refresh.
+- `I2-ROLL-001`: PASS; deterministic in-memory rollback to
+  `7ffbdf7fb102668457b2a15877c10ad7673da9bf`; accepted A3 evidence preserved.
+- Final Owner production activation: PENDING / NOT YET ACCEPTED.
+  Merge: NOT AUTHORIZED. All A4 market network calls: 0.
+- I1 remains Owner-accepted/merged: two routes, three active sources.
+  Phase G/H preserved; MCP exactly six; I3/Phase J NOT STARTED;
+  broader Phase I INCOMPLETE.
+
+Candidate evidence:
+
+`docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json`
+
+The I2 dormant/inactive statements below describe the accepted **main baseline**
+`7ffbdf7fb102668457b2a15877c10ad7673da9bf`, not the A4 branch candidate.
+They do not supersede this candidate boundary or grant final activation.
+
 ## Project identity
 
 **tw-market-live-data-intelligence** is a local-first Taiwan market evidence and

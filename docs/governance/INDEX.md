@@ -13,6 +13,11 @@ The repository-level governance authority is intentionally small:
 
 ## Current runtime governance
 
+Branch technical candidate (not final activation):
+
+- [I2-A4 activation candidate and I2-ROLL-001 proof](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json).
+  Final Owner acceptance pending; merge not authorized; A4 market calls zero.
+
 Current executable truth is governed by:
 
 - [Capability Catalog V3](../data_capabilities/unified_market_evidence_capability_catalog.v3.json)

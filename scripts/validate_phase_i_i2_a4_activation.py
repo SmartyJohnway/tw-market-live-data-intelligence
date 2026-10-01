@@ -44,13 +44,26 @@ def validate(*, require_record=True):
             "phase_i_i2_production_route_activation_candidate.v1", "TECHNICAL_ACTIVATION_CANDIDATE_READY_FOR_OWNER_REVIEW", AUTHORITY, BASELINE)
         assert ledger["final_owner_activation_acceptance"] == "PENDING" and ledger["merge_authorized"] is False
         assert ledger["market_network_calls"] == 0 and ledger["i3_started"] is False and ledger["phase_j_started"] is False
+        candidate = ledger["activation_candidate"]
+        assert (candidate["capability_id"], candidate["executor_id"], candidate["supported_markets"], candidate["instrument_families"], candidate["instrument_types"], candidate["evidence_contract"], candidate["normal_production_routes"], candidate["active_i2_sources"], candidate["batching_scope"], candidate["approval_required"], candidate["maximum_unique_taifex_gets"], candidate["retry_count"], candidate["timeout_seconds"], candidate["maximum_response_bytes"], candidate["raw_payload_persistence"], candidate["optional_explicit_loading_only"]) == (
+            "index_futures_context", EXECUTOR, ["TWSE"], ["company_share"], ["common_share"], "index_futures_context_evidence.v1", 1, 1, "same_source", True, 1, 0, 30, 2097152, "forbidden", True)
+        import subprocess
+        reviewed = ledger["implementation_candidate"]
+        assert subprocess.check_output(["git", "rev-parse", reviewed["head"] + "^{tree}"], cwd=ROOT, text=True).strip() == reviewed["tree"]
+        assert subprocess.run(["git", "merge-base", "--is-ancestor", reviewed["head"], "HEAD"], cwd=ROOT, check=False).returncode == 0
         rollback = ledger["rollback_rehearsal"]
         assert (rollback["gate_id"], rollback["status"], rollback["method"], rollback["rollback_target_commit"]) == (
             "I2-ROLL-001", "PASS", "deterministic in-memory authority rollback", BASELINE)
+        assert rollback["expected_after_state"] == {"support_status": "contract_supported", "runtime_executable": False,
+            "phase_i_activation_state": "implementation_candidate_inactive", "routing_status": "plan_only", "selected_executor_id": None,
+            "active_i2_sources": 0, "normal_production_i2_routes": 0, "source_activation_state": "inactive", "estimated_i2_network_requests": 0,
+            "i1_active_sources": 3, "i1_production_routes": 2, "mcp_tool_count": 6}
         assert ledger["preserved_a3_hashes"] == preserved
         assert ledger["normal_production_offline_e2e"]["status"] == "PASS"
-        assert ledger["normal_production_offline_e2e"]["result_sha256"] == proof["result_sha256"]
-        assert ledger["normal_production_offline_e2e"]["audit_sha256"] == proof["audit_sha256"]
+        assert ledger["normal_production_offline_e2e"]["result_v3_schema"] == "PASS"
+        assert ledger["normal_production_offline_e2e"]["audit_v3_schema"] == "PASS"
+        assert ledger["normal_production_offline_e2e"]["result_replay"] == "PASS"
+        assert ledger["normal_production_offline_e2e"]["audit_replay"] == "PASS"
         for key, path in (("catalog", CATALOG), ("routing", ROUTING), ("source", SOURCE)):
             assert ledger["candidate_authority_sha256"][key] == hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
     print("Phase I I2-A4 technical activation: PASS (normal-production offline E2E; exact dormant rollback; market network=0; final Owner acceptance pending)")
