@@ -1,0 +1,236 @@
+{
+  "schema_version": "phase_i_i2_production_route_activation_candidate.v1",
+  "status": "TECHNICAL_ACTIVATION_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "owner_authorization_reference": "USER_CHAT_2026-10-01_PHASE_I_I2_A4_PRODUCTION_ACTIVATION_CANDIDATE_AND_ROLLBACK_AUTHORIZATION",
+  "branch": "phase-i/i2-a4-production-activation-candidate",
+  "baseline_main": "7ffbdf7fb102668457b2a15877c10ad7673da9bf",
+  "implementation_candidate": {
+    "head": "00ae7d2dc35e108251ccbb86ab81dab70e215985",
+    "tree": "66cfde4f0cf9cef583c5a59434f254e19549f2ca",
+    "scope": "implementation snapshot; excludes subsequent portable/governance commits"
+  },
+  "portable_sync_commit": "acdd3164040b3fc6efdcc0619d855858c7f4f129",
+  "accepted_authorities": {
+    "a1_contract": "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json",
+    "a1_contract_sha256": "6d535e34defb1e82947f64ceec6df5e1859888fb3550e36e6ded1b6a7573d4fb",
+    "a2_acceptance": "docs/governance/phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_ACCEPTANCE_LEDGER_2026-10-01.json",
+    "a3_bounded_live": "docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json",
+    "a3_owner_closure": "docs/governance/phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json"
+  },
+  "activation_candidate": {
+    "capability_id": "index_futures_context",
+    "executor_id": "phase_i_i2_index_futures_context_executor",
+    "supported_markets": [
+      "TWSE"
+    ],
+    "source_venue": "TAIFEX",
+    "instrument_families": [
+      "company_share"
+    ],
+    "instrument_types": [
+      "common_share"
+    ],
+    "evidence_contract": "index_futures_context_evidence.v1",
+    "catalog": {
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_i_activation_state": "selected_route_active"
+    },
+    "routing": {
+      "routing_status": "resolved",
+      "selected_executor_id": "phase_i_i2_index_futures_context_executor",
+      "network_required": true,
+      "blocking_reasons": []
+    },
+    "normal_production_routes": 1,
+    "active_i2_sources": 1,
+    "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI",
+    "batching_scope": "same_source",
+    "approval_required": true,
+    "maximum_unique_taifex_gets": 1,
+    "retry_count": 0,
+    "timeout_seconds": 30,
+    "maximum_response_bytes": 2097152,
+    "raw_payload_persistence": "forbidden",
+    "optional_explicit_loading_only": true
+  },
+  "candidate_authority_sha256": {
+    "catalog": "c245cc1bc28f12b3dcd087410ddc25f6e30861ec1ba34d1160d534a9c1661a83",
+    "routing": "c2835ca9a41aaaf25547e239db8832a6ddadd06a9da7282a04c3022c1fc82251",
+    "source": "8c7f39cc6eb8e6b1ba8f6153cc4c85af1be4c759720bddc40b24882b01b72e10"
+  },
+  "normal_production_offline_e2e": {
+    "status": "PASS",
+    "canonical_authority_overlay_used": false,
+    "normal_production_registry_used": true,
+    "targets": [
+      "TWSE:1101",
+      "TWSE:1102"
+    ],
+    "security_master": {
+      "activated_at": "2026-09-26T15:21:02Z",
+      "release_id": "security-master-20260926T151841Z",
+      "release_index_sha256": "665d69e53588fa6cd723e434902946a43ac4f712920b0c4ec2adf91b556f4c10",
+      "release_manifest_schema_sha256": "e0e44ca6c335da386be38a9e7618189279cbb5089b8dbe3aba40df912e17962e",
+      "release_manifest_sha256": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+      "schema_version": "taiwan_market_identity_active_pointer.v1"
+    },
+    "logical_operations": 2,
+    "batch_groups": 1,
+    "fake_acquisitions": 1,
+    "external_market_calls": 0,
+    "operation_ids": [
+      "umeop-op-v1-e706a162b4b2d93d586c",
+      "umeop-op-v1-c1b627ba23a0d7052d23"
+    ],
+    "batch_group_ids": [
+      "umeop-batch-v1-41c2cd4a5d80c21aaaf8"
+    ],
+    "claim_state": "consumed_success",
+    "claim_attempt_count": 1,
+    "result_v3_schema": "PASS",
+    "audit_v3_schema": "PASS",
+    "result_replay": "PASS",
+    "audit_replay": "PASS",
+    "citation_lineage": "PASS",
+    "artifact_lineage": "PASS",
+    "raw_runtime_persistence": "NONE"
+  },
+  "rollback_rehearsal": {
+    "gate_id": "I2-ROLL-001",
+    "status": "PASS",
+    "method": "deterministic in-memory authority rollback",
+    "rollback_target_commit": "7ffbdf7fb102668457b2a15877c10ad7673da9bf",
+    "comparison": "Deep-copy candidate; replace only I2 records with Git-loaded baseline; full Catalog/Routing/metadata/disposition equality, exact source equality, filtered normal registry and real plan-only preview.",
+    "expected_after_state": {
+      "support_status": "contract_supported",
+      "runtime_executable": false,
+      "phase_i_activation_state": "implementation_candidate_inactive",
+      "routing_status": "plan_only",
+      "selected_executor_id": null,
+      "active_i2_sources": 0,
+      "normal_production_i2_routes": 0,
+      "source_activation_state": "inactive",
+      "estimated_i2_network_requests": 0,
+      "i1_active_sources": 3,
+      "i1_production_routes": 2,
+      "mcp_tool_count": 6
+    }
+  },
+  "preserved_a3_hashes": {
+    "docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json": "c1b4e8e7f79de9d13bc1ce201f0228f49b883e10255801a73114fb5067008c13",
+    "docs/governance/phase_i/acceptance_runs/i2-a3-20261001T034543Z-66b378b9/governed/control/umea-v1-9ea1fb3b07cf686afb45/ai_context/unified_market_evidence_result.v3.json": "45bef90cc92866cd5af11c50bdce63b5b4e52cc16c7c3978cd93feb4162cb8ad",
+    "docs/governance/phase_i/acceptance_runs/i2-a3-20261001T034543Z-66b378b9/governed/control/umea-v1-9ea1fb3b07cf686afb45/audit/unified_market_evidence_audit_package.v3.json": "c91812dfb4c96df043d147df9ab7cbaae1c401e242565dca7fe1da9df7299ce7",
+    "docs/governance/phase_i/acceptance_runs/i2-a3-20261001T034543Z-66b378b9/phase_i_i2_a3_bounded_live_acceptance_evidence.zip": "6233659a08d0f49510a7300aa2b3027388dc127983364077426ec3d896301285"
+  },
+  "preservation": {
+    "frozen_history_unchanged": true,
+    "live_tested_normalizer_schema_transport_unchanged": true,
+    "phase_g": "PASS",
+    "phase_h": "PASS",
+    "i1_active_sources": 3,
+    "i1_production_routes": 2,
+    "mcp_tool_count": 6
+  },
+  "validation_before_independent_review_repair": {
+    "focused_a4": "28 passed / 0 skipped / 0 deselected",
+    "cross_boundary": "87 passed / 0 skipped / 0 deselected",
+    "production_registry_and_i1": "25 passed / 0 skipped / 0 deselected",
+    "default_ci": "860 passed / 1 skipped / 5 deselected",
+    "full_current": "1233 passed / 1 skipped / 5 deselected",
+    "validators": "PASS",
+    "portable_catalog": "PASS",
+    "runtime_skill_guide": "PASS / MCP=6",
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "profile_change": "Only added A4 test file to default-ci/full-current; no test paths removed.",
+    "validation_scope": "Final offline branch worktree; implementation snapshot and portable sync commits recorded separately; no subsequent runtime semantic changes."
+  },
+  "independent_review_repair": {
+    "status": "COMPLETED",
+    "previous_reviewed_head": "bfd32580d145196be18fa4b986b4cf474c9bebce",
+    "head": "751eb5718db5e7c08f33a091638e277a8e9e7ed1",
+    "tree": "5fb5c3e18c28cb021fb2faaa1a1332fa29232555",
+    "identity_rule": "TWSE:[A-Z0-9._-]{1,20}",
+    "identity_rule_authority": "scripts/m8r_03d_f1_security_master_snapshot_adapter.py exact canonical target resolver",
+    "eligibility_authority": "Security Master resolution and governed planner: TWSE company_share/common_share, execution allowed",
+    "four_digit_restriction_removed": true,
+    "production_transport_path": "server/services/phase_i_i2_production_transport.py",
+    "production_acceptance_transport_dependency": false,
+    "transport_conformance": "PASS",
+    "transport_conformance_response_cases": 12,
+    "transport_suite": "16 passed / 0 skipped / 0 deselected",
+    "current_authority_corruption_before_historical_replay": "FAIL_CLOSED / PASS",
+    "governance_record_commit_identity": "Repair implementation snapshot above; subsequent docs-only record commit is reported externally to avoid self-reference."
+  },
+  "validation": {
+    "focused_a4": "30 passed / 0 skipped / 0 deselected",
+    "production_transport": "16 passed / 0 skipped / 0 deselected",
+    "focused_total_unique": "46 passed / 0 skipped / 0 deselected",
+    "cross_boundary": "85 passed / 0 skipped / 0 deselected",
+    "cross_boundary_test_paths": [
+      "tests/unit/test_phase_i_i2_a1_contract.py",
+      "tests/unit/test_phase_i_i2_a2_offline.py",
+      "tests/unit/test_phase_i_i2_a3_single_get_rearm.py",
+      "tests/integration/test_phase_i_i2_a3_p0_governed_runner.py",
+      "tests/unit/test_phase_i_i1_market_state.py",
+      "tests/unit/test_m8r_06_03_production_adapter.py"
+    ],
+    "default_ci": "878 passed / 1 skipped / 5 deselected",
+    "full_current": "1251 passed / 1 skipped / 5 deselected",
+    "validators": "PASS",
+    "portable_catalog": "PASS / unchanged lineage",
+    "runtime_skill_guide": "PASS / MCP=6",
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "profile_change": "18 new regressions (2 A4 + 16 transport); only one test path added to both profiles; no existing paths removed.",
+    "validation_scope": "Offline repaired implementation worktree at repair snapshot; socket-denial fixtures active around relevant tests. No market acquisition."
+  },
+  "market_network_calls": 0,
+  "final_owner_activation_acceptance": "PENDING",
+  "merge_authorized": false,
+  "merge_performed": false,
+  "i3_started": false,
+  "phase_j_started": false,
+  "portable_lineage": {
+    "generated_from_commit": "00ae7d2dc35e108251ccbb86ab81dab70e215985",
+    "canonical_git_blob_sha": "d84d8e5d287237e2ebcc125f27d5410cbf1a84a6",
+    "canonical_sha256": "c245cc1bc28f12b3dcd087410ddc25f6e30861ec1ba34d1160d534a9c1661a83"
+  },
+  "changed_files": [
+    "AGENTS.md",
+    "HANDOFF.md",
+    "PROJECT.md",
+    "config/m8r_06_03_executor_registry_metadata.json",
+    "config/test_execution_profiles.json",
+    "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+    "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+    "docs/data_capabilities/phase_i_i2_source_authority.v1.json",
+    "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+    "docs/governance/INDEX.md",
+    "docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json",
+    "scripts/m8r_06_03_production_adapter.py",
+    "scripts/phase_i_i2_a4_proof.py",
+    "scripts/validate_phase_i_i1_contracts.py",
+    "scripts/validate_phase_i_i1_production_activation.py",
+    "scripts/validate_phase_i_i2_a1_contracts.py",
+    "scripts/validate_phase_i_i2_a2_candidate.py",
+    "scripts/validate_phase_i_i2_a3_live_acceptance.py",
+    "scripts/validate_phase_i_i2_a3_p0.py",
+    "scripts/validate_phase_i_i2_a4_activation.py",
+    "server/services/phase_i_i2_production_candidate.py",
+    "server/services/phase_i_i2_production_transport.py",
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+    "tests/integration/test_phase_i_i2_a3_p0_governed_runner.py",
+    "tests/unit/test_m8r_06_03_production_adapter.py",
+    "tests/unit/test_phase_i_i1_market_state.py",
+    "tests/unit/test_phase_i_i2_a1_contract.py",
+    "tests/unit/test_phase_i_i2_a2_offline.py",
+    "tests/unit/test_phase_i_i2_a3_single_get_rearm.py",
+    "tests/unit/test_phase_i_i2_a4_activation.py",
+    "tests/unit/test_phase_i_i2_production_transport.py"
+  ]
+}

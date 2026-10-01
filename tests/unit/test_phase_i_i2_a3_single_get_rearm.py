@@ -1,5 +1,15 @@
 from __future__ import annotations
 
+import pytest
+from scripts.phase_i_i2_a4_proof import historical_dormant_authority
+
+
+@pytest.fixture(autouse=True)
+def accepted_pre_activation_authority():
+    """Historical A1/A2/A3 gates retain the exact accepted dormant baseline."""
+    with historical_dormant_authority():
+        yield
+
 import copy
 import json
 import socket

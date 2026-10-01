@@ -1,5 +1,27 @@
 # HANDOFF.md — Current Operational Handoff
 
+## Current I2 production activation boundary (2026-10-01)
+
+I2-A4 production activation is Owner-accepted and merge-authorized.
+
+- Catalog: `index_futures_context` is runtime executable with
+  `phase_i_activation_state=selected_route_active`.
+- Routing: resolved, approval required, `same_source`, selected
+  `phase_i_i2_index_futures_context_executor`; one normal TWSE production route.
+- Source authority: one active TAIFEX source; eligible cash targets remain TWSE
+  company/common shares. Loading is explicit/optional only, never startup refresh.
+- `I2-ROLL-001`: PASS; deterministic rollback target remains
+  `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
+- No additional market request was authorized or performed for activation.
+- I1 remains active with two routes and three sources; MCP remains exactly six.
+- I3 / Phase J remain NOT STARTED; broader Phase I remains INCOMPLETE.
+
+Activation evidence:
+
+`docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json`
+
+`docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json`
+
 ## Status
 
 Date: **2026-10-01**
@@ -11,11 +33,10 @@ Baseline main before this documentation-governance consolidation:
 Current workstream:
 
 > **H-ACT-H3 is Owner-accepted. Phase I I1 production activation is
-> Owner-accepted and merged after bounded live acceptance and deterministic
-> rollback proof. I2-A0/A1 are complete; I2-A2 dormant offline implementation
-> is Owner-accepted with zero I2 runtime routes/sources and no selected executor.
-> A3 bounded live acceptance is PASS; production activation is NOT_AUTHORIZED.
-> I2 remains dormant with zero active sources/routes. I3 is not started.**
+> Owner-accepted and merged. I2-A0/A1/A2/A3 are accepted, and I2-A4 final
+> production activation is Owner-accepted with rollback proof. `index_futures_context`
+> is production executable on one approval-gated TWSE route backed by one active
+> TAIFEX source. I3 is not started.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -84,10 +105,10 @@ I2-A0                        PASS_GO (one previously Owner-executed bounded prob
 I2-A1                        SOURCE / EVIDENCE CONTRACT FROZEN_PASS
 I2-A2                       OWNER_ACCEPTED / DORMANT OFFLINE IMPLEMENTATION
 I2-A3                       OWNER_ACCEPTED / BOUNDED LIVE PASS / MERGE AUTHORIZED
-I2 production activation    NOT_AUTHORIZED
-I2 runtime                  INACTIVE / NOT PRODUCTION EXECUTABLE
-I2 active sources / routes   0 / 0
-I2 selected executor        null
+I2 production activation    OWNER_ACTIVATION_ACCEPTED
+I2 runtime                  PRODUCTION EXECUTABLE / APPROVAL-GATED
+I2 active sources / routes   1 / 1
+I2 selected executor        phase_i_i2_index_futures_context_executor
 I3                           NOT STARTED
 Broader Phase I              INCOMPLETE
 ```
@@ -207,9 +228,9 @@ files unless the task requires historical evidence.
 I1 production activation has been Owner-accepted and merged after bounded live
 acceptance and deterministic rollback proof. Do not repeat live acquisition or
 rollback. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS.
-I2-A2 dormant offline implementation is Owner-accepted. Production runtime
-remains inactive and I2 active sources/routes remain zero. I2-A3 bounded live
-acceptance is Owner-accepted PASS and merge-authorized for PR #298. Its
+I2-A2 dormant offline implementation and I2-A3 bounded-live acceptance are
+accepted historical stages. I2-A4 production activation is now Owner-accepted
+and merge-authorized for PR #299. Its
 live ledger is `docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json`; the Owner acceptance / merge closure ledger is
 `docs/governance/phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json`.
 Exactly one TAIFEX GET was used, retry zero, TWSE/TPEx GETs zero. Two target
@@ -220,15 +241,14 @@ I3 is not started.
 ## Explicit stop boundary
 
 **Do not repeat I1 live acceptance or rollback, or the consumed I2-A3 single GET.
-PR #298 merge is Owner-authorized by the A3 closure ledger. I2 production
-activation remains NOT_AUTHORIZED. Do not begin I3 or Phase J without separate
-authorization.**
+I2-A4 production activation is Owner-accepted; preserve `I2-ROLL-001` and the
+accepted A3 evidence. Do not begin I3 or Phase J without separate authorization.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
 one I2-A0 probe is historical preflight evidence only. I2-A2 dormant offline
-implementation is Owner-accepted; A3 bounded live acceptance is PASS. Runtime
-remains dormant/inactive pending a separate production activation decision.
+implementation is Owner-accepted; A3 bounded live acceptance is PASS. Runtime is production executable under the accepted A4 route; I3 remains a
+separate future Owner decision.
 The old unused A3 authority is superseded_without_use; the fresh single-GET
 authority is consumed. I3 remains not started. Broader Phase I is incomplete.
 

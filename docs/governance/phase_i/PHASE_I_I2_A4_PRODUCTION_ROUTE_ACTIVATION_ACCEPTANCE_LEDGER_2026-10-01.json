@@ -1,0 +1,89 @@
+{
+  "schema_version": "phase_i_i2_a4_production_route_activation_acceptance_ledger.v1",
+  "gate_id": "PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION",
+  "status": "OWNER_ACTIVATION_ACCEPTED",
+  "owner_authority_reference": "USER_CHAT_2026-10-01_PHASE_I_I2_A4_FINAL_PRODUCTION_ACTIVATION_ACCEPTANCE_AND_MERGE_CLOSURE",
+  "reviewed_candidate": {
+    "baseline_main": "7ffbdf7fb102668457b2a15877c10ad7673da9bf",
+    "reviewed_head": "179ef6243c329a2fe5f84a81c54969f9f7b2c5db",
+    "reviewed_tree": "c429d513dca90c3c05dc801573c496307f3d8f37",
+    "pull_request": 299,
+    "candidate_ledger": "docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json",
+    "candidate_ledger_sha256": "cc91a9f116f180e521602e7e7ef2f9449ecc8745d7e71f4f74948a7c4dad4f55"
+  },
+  "accepted_runtime_authority": {
+    "capability_id": "index_futures_context",
+    "support_status": "runtime_executable",
+    "runtime_executable": true,
+    "phase_i_activation_state": "selected_route_active",
+    "routing_status": "resolved",
+    "selected_executor_id": "phase_i_i2_index_futures_context_executor",
+    "supported_markets": ["TWSE"],
+    "instrument_families": ["company_share"],
+    "instrument_types": ["common_share"],
+    "batching_scope": "same_source",
+    "approval_required": true,
+    "network_required": true,
+    "normal_production_routes": 1,
+    "active_i2_sources": 1,
+    "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI",
+    "source_market": "TAIFEX",
+    "maximum_unique_taifex_gets_per_governed_execution": 1,
+    "retry_count": 0,
+    "timeout_seconds": 30,
+    "maximum_response_bytes": 2097152,
+    "raw_payload_persistence": "forbidden",
+    "optional_explicit_loading_only": true
+  },
+  "accepted_validation": {
+    "a4_technical_candidate": "INDEPENDENTLY_ACCEPTED_PASS",
+    "i2_roll_001": "INDEPENDENTLY_ACCEPTED_PASS",
+    "focused_a4": "30 passed / 0 skipped / 0 deselected",
+    "production_transport": "16 passed / 0 skipped / 0 deselected",
+    "cross_boundary": "85 passed / 0 skipped / 0 deselected",
+    "default_ci": "878 passed / 1 skipped / 5 deselected",
+    "full_current": "1251 passed / 1 skipped / 5 deselected",
+    "socket_security_pull_request_alerts": "SUCCESS",
+    "socket_security_project_report": "SUCCESS",
+    "github_actions_workflow_runs": 0,
+    "github_actions_ci_claim": "NOT_CLAIMED"
+  },
+  "rollback": {
+    "gate_id": "I2-ROLL-001",
+    "status": "PASS",
+    "rollback_target_commit": "7ffbdf7fb102668457b2a15877c10ad7673da9bf",
+    "method": "deterministic in-memory authority rollback",
+    "restores": {
+      "support_status": "contract_supported",
+      "runtime_executable": false,
+      "routing_status": "plan_only",
+      "selected_executor_id": null,
+      "active_i2_sources": 0,
+      "normal_production_i2_routes": 0,
+      "estimated_i2_network_requests": 0
+    },
+    "preserves": {
+      "i1_active_sources": 3,
+      "i1_production_routes": 2,
+      "mcp_tool_count": 6,
+      "phase_g": "unchanged",
+      "phase_h": "unchanged"
+    }
+  },
+  "accepted_prior_evidence": {
+    "a3_acceptance_ledger_sha256": "c1b4e8e7f79de9d13bc1ce201f0228f49b883e10255801a73114fb5067008c13",
+    "a3_result_v3_sha256": "45bef90cc92866cd5af11c50bdce63b5b4e52cc16c7c3978cd93feb4162cb8ad",
+    "a3_audit_v3_sha256": "c91812dfb4c96df043d147df9ab7cbaae1c401e242565dca7fe1da9df7299ce7",
+    "a3_acceptance_zip_sha256": "6233659a08d0f49510a7300aa2b3027388dc127983364077426ec3d896301285"
+  },
+  "closure": {
+    "production_activation_authorized": true,
+    "merge_authorized": true,
+    "merge_performed": false,
+    "merge_performed_scope": "historical pre-merge acceptance snapshot",
+    "additional_market_request_authorized": false,
+    "i3_authorized": false,
+    "phase_j_authorized": false,
+    "market_network_calls_during_final_activation_closure": 0
+  }
+}

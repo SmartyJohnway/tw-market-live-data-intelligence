@@ -13,6 +13,11 @@ The repository-level governance authority is intentionally small:
 
 ## Current runtime governance
 
+I2-A4 production activation is Owner-accepted.
+
+- [I2-A4 activation candidate and I2-ROLL-001 proof](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json)
+- [I2-A4 final production activation acceptance](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json)
+
 Current executable truth is governed by:
 
 - [Capability Catalog V3](../data_capabilities/unified_market_evidence_capability_catalog.v3.json)
@@ -46,7 +51,9 @@ runtime later changed.
 - [I2-A3 historical pre-network governed runner candidate](phase_i/PHASE_I_I2_A3_PRE_NETWORK_GOVERNED_RUNNER_CANDIDATE_2026-10-01.json)
 - [I2-A3 single-GET bounded live acceptance PASS](phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json)
 - [I2-A3 Owner acceptance / merge closure](phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json)
-- [I2 inactive source authority descriptor](../data_capabilities/phase_i_i2_source_authority.v1.json)
+- [I2-A4 technical activation candidate / rollback proof](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json)
+- [I2-A4 final production activation acceptance](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json)
+- [I2 active source authority descriptor](../data_capabilities/phase_i_i2_source_authority.v1.json)(../data_capabilities/phase_i_i2_source_authority.v1.json)
 - [I1 frozen source contract](phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json)
 - [I1 bounded live acceptance](phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json)
 - [I1 technical activation candidate snapshot](phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json)
@@ -56,13 +63,12 @@ The technical-candidate record remains historical. The final acceptance ledger
 is the current Owner decision for the selected I1 route; broader Phase I is not
 complete.
 
-I2-A0 is accepted preflight evidence. I2-A1 source/evidence contract is
-Owner-accepted and merged. I2-A2 dormant offline implementation is also
-Owner-accepted and authorized for merge by its acceptance ledger. Both
-acceptance ledgers preserve historical pre-merge snapshots. I2 remains inactive:
-I2-A3 bounded live acceptance is independently reviewed and Owner-accepted PASS;
-PR #298 merge is authorized by its closure ledger. Production activation,
-selected executor, active source, and normal production route remain NOT_AUTHORIZED. The earlier
+I2-A0 is accepted preflight evidence. I2-A1 source/evidence contract, I2-A2
+dormant implementation, and I2-A3 bounded-live acceptance are accepted historical
+gates. I2-A4 production activation is independently reviewed and Owner-accepted:
+the selected executor is `phase_i_i2_index_futures_context_executor`, with one
+active TAIFEX source and one normal approval-gated TWSE production route.
+`I2-ROLL-001` preserves deterministic rollback to `7ffbdf7f...`. The earlier
 unused live authority is superseded_without_use. I3 remains unstarted.
 
 ## Governance policy

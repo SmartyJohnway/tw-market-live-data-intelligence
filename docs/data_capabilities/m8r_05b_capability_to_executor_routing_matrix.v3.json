@@ -448,32 +448,48 @@
     },
     {
       "capability_id": "index_futures_context",
-      "capability_status_source": "catalog v3 support_status=contract_supported; A2 dormant implementation candidate",
-      "supported_markets": ["TWSE"],
-      "supported_security_types": [],
-      "supported_instrument_families": ["company_share"],
-      "supported_instrument_types": ["common_share"],
+      "capability_status_source": "Catalog V3 runtime_executable; A4 branch technical activation candidate, final Owner activation pending",
+      "supported_markets": [
+        "TWSE"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_instrument_families": [
+        "company_share"
+      ],
+      "supported_instrument_types": [
+        "common_share"
+      ],
       "target_required": true,
       "time_scope_required": false,
-      "runtime_executable": false,
+      "runtime_executable": true,
       "provisional": false,
-      "candidate_executor_ids": ["phase_i_i2_index_futures_context_executor"],
-      "selected_executor_id": null,
-      "routing_status": "plan_only",
+      "candidate_executor_ids": [
+        "phase_i_i2_index_futures_context_executor"
+      ],
+      "selected_executor_id": "phase_i_i2_index_futures_context_executor",
+      "routing_status": "resolved",
       "batching_scope": "same_source",
       "approval_required": true,
       "network_required": true,
-      "estimated_operation_rule": "One logical evidence operation per eligible TWSE target; compatible I2 operations share one supplied source acquisition, with future governed acquisition capped at one TAIFEX GET per execution and zero retries.",
+      "estimated_operation_rule": "One logical operation per eligible TWSE target; all compatible operations in one governed execution share one TAIFEX acquisition; maximum one unique GET, retry zero.",
       "parameter_mapping": {},
       "output_evidence_contract": "index_futures_context_evidence.v1",
-      "known_limitations": ["Offline candidate only; no production network execution", "TPEx cash targets are unsupported", "TAIFEX TX regular session and standard monthly outright only"],
+      "known_limitations": [
+        "A4 branch technical activation candidate; final Owner production activation pending",
+        "TPEx cash targets unsupported",
+        "TAIFEX TX regular session and standard monthly outright only"
+      ],
       "evidence_paths": [
         "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json",
-        "docs/governance/phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_CANDIDATE_2026-09-30.json"
+        "docs/governance/phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_ACCEPTANCE_LEDGER_2026-10-01.json",
+        "docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json",
+        "docs/governance/phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json"
       ],
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
-      "blocking_reasons": ["production network execution is not activated", "bounded live acceptance has not occurred", "Owner production-route activation has not occurred"],
+      "blocking_reasons": [],
       "source_compatibility_key": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI"
     },
     {

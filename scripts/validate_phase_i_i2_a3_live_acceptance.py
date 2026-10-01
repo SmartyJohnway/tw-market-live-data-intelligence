@@ -22,6 +22,11 @@ def _contained(reference: str) -> Path:
     return path
 
 
+sys.path.insert(0, str(ROOT))
+from scripts.phase_i_i2_a4_proof import historical_gate
+
+
+@historical_gate
 def validate() -> dict:
     ledger = _json(LEDGER_PATH)
     if (ledger["schema_version"], ledger["status"], ledger["owner_authorization_reference"],

@@ -522,6 +522,39 @@
         "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json",
         "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json"
       ]
+    },
+    {
+      "surface_id": "phase_i_i2_index_futures_context_executor",
+      "path": "server/services/phase_i_i2_production_candidate.py",
+      "surface_type": "controlled_phase_i_i2_index_futures_executor",
+      "current_status": "A4 technical production activation candidate; A3 accepted PASS; final Owner activation pending",
+      "network_behavior": "one fixed TAIFEX GET per compatible same_source execution; retry zero; raw persistence forbidden",
+      "input_contract": "execution_request.v2 index_futures_context / TWSE / approved equity target / parameters {}",
+      "output_contract": "index_futures_context_evidence.v1",
+      "approval_boundary": "05B authorization, consumption binding, execute-once claim and network confirmation",
+      "authorization_binding": "operation, executor, capability, market, exact target",
+      "single_use_enforced": true,
+      "supported_markets": [
+        "TWSE"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "index_futures_context"
+      ],
+      "batching_supported": true,
+      "deterministic": false,
+      "reusable_for_05b": true,
+      "reuse_mode": "adapter_required",
+      "disposition": "adapter_required",
+      "blocking_gaps": [],
+      "evidence_paths": [
+        "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json",
+        "docs/governance/phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_ACCEPTANCE_LEDGER_2026-10-01.json",
+        "docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json",
+        "docs/governance/phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json"
+      ]
     }
   ]
 }

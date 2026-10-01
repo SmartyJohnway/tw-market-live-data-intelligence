@@ -164,6 +164,20 @@
       "timeout_seconds": 15,
       "maximum_result_items": 1,
       "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "phase_i_i2_index_futures_context_executor",
+      "capability_id": "index_futures_context",
+      "market": "TWSE",
+      "supported_security_types": [
+        "equity"
+      ],
+      "expected_evidence_contract": "index_futures_context_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 30,
+      "maximum_result_items": 1,
+      "output_policy": "contained_artifact_only"
     }
   ]
 }

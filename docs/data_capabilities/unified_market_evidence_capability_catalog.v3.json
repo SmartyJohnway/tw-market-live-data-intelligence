@@ -295,26 +295,39 @@
     },
     {
       "capability_id": "index_futures_context",
-      "description": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; this A2 implementation candidate remains dormant and does not imply activation.",
-      "support_status": "contract_supported",
-      "runtime_executable": false,
-      "phase_i_activation_state": "implementation_candidate_inactive",
-      "supported_markets": ["TWSE"],
+      "description": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; A4 technical production activation candidate only, final Owner activation pending.",
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_i_activation_state": "selected_route_active",
+      "supported_markets": [
+        "TWSE"
+      ],
       "provisional_markets": [],
       "allowed_parameters": {},
       "requires_target_resolution": true,
       "requires_approval_for_execution": true,
-      "possible_timing_classes": ["official_eod"],
+      "possible_timing_classes": [
+        "official_eod"
+      ],
       "possible_fallbacks": [],
       "known_limitations": [
         "TAIFEX TX regular session only; standard monthly outright series only",
         "TPEx targets, after-hours, weekly series, calendar spreads, MTX/TMF, options, and other products are unsupported",
-        "currentness is unknown; no production route or active source exists; the A2 implementation is a dormant candidate only",
+        "A3 bounded live acceptance passed; A4 branch technical activation candidate remains approval-gated and explicit-request only; final Owner production activation pending; currentness unknown",
         "no history, historical lookup/backfill, rolling futures, continuous-contract synthesis, polling, scheduler, or background refresh",
         "no basis/premium-discount, signals, bullish/bearish interpretation, or target-specific causation"
       ],
-      "instrument_scope": {"instrument_families":["company_share"],"instrument_types":["common_share"]},
-      "coverage_modes": ["nearest_available_standard_monthly_outright"],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "nearest_available_standard_monthly_outright"
+      ],
       "historical_lookup_supported": false
     },
     {

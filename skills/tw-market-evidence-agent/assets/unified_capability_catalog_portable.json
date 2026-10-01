@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "17eee4aae589f2dbc59489ef611cc6ff11f85a60a50a24d06e878c7c74a59853",
+    "canonical_sha256": "c245cc1bc28f12b3dcd087410ddc25f6e30861ec1ba34d1160d534a9c1661a83",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "8930a2be7d3432a29f99ff64f60999f52c072276",
-    "canonical_git_blob_sha": "8ed9b16d0506f78f174a8e9bbe92302db9b2747f"
+    "generated_from_commit": "00ae7d2dc35e108251ccbb86ab81dab70e215985",
+    "canonical_git_blob_sha": "d84d8e5d287237e2ebcc125f27d5410cbf1a84a6"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -311,10 +311,10 @@
     },
     {
       "capability_id": "index_futures_context",
-      "description": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; this A2 implementation candidate remains dormant and does not imply activation.",
-      "support_status": "contract_supported",
-      "runtime_executable": false,
-      "phase_i_activation_state": "implementation_candidate_inactive",
+      "description": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; A4 technical production activation candidate only, final Owner activation pending.",
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_i_activation_state": "selected_route_active",
       "supported_markets": [
         "TWSE"
       ],
@@ -329,7 +329,7 @@
       "known_limitations": [
         "TAIFEX TX regular session only; standard monthly outright series only",
         "TPEx targets, after-hours, weekly series, calendar spreads, MTX/TMF, options, and other products are unsupported",
-        "currentness is unknown; no production route or active source exists; the A2 implementation is a dormant candidate only",
+        "A3 bounded live acceptance passed; A4 branch technical activation candidate remains approval-gated and explicit-request only; final Owner production activation pending; currentness unknown",
         "no history, historical lookup/backfill, rolling futures, continuous-contract synthesis, polling, scheduler, or background refresh",
         "no basis/premium-discount, signals, bullish/bearish interpretation, or target-specific causation"
       ],

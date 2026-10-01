@@ -1,5 +1,27 @@
 # AGENTS.md — Repository Governance and AI Collaboration Contract
 
+## Current I2 production activation boundary (2026-10-01)
+
+I2-A4 production activation is Owner-accepted and merge-authorized.
+
+- Catalog: `index_futures_context` is runtime executable with
+  `phase_i_activation_state=selected_route_active`.
+- Routing: resolved, approval required, `same_source`, selected
+  `phase_i_i2_index_futures_context_executor`; one normal TWSE production route.
+- Source authority: one active TAIFEX source; eligible cash targets remain TWSE
+  company/common shares. Loading is explicit/optional only, never startup refresh.
+- `I2-ROLL-001`: PASS; deterministic rollback target remains
+  `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
+- No additional market request was authorized or performed for activation.
+- I1 remains active with two routes and three sources; MCP remains exactly six.
+- I3 / Phase J remain NOT STARTED; broader Phase I remains INCOMPLETE.
+
+Activation evidence:
+
+`docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json`
+
+`docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json`
+
 ## 1. Read this repository in the right order
 
 Before substantial work, read these root governance files:
@@ -61,17 +83,18 @@ As of this governance consolidation:
   rollback, and Owner production-route activation are accepted and merged.
   `market_state_context` is runtime executable on its bounded, approval-gated
   route. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS;
-  I2-A2 dormant offline implementation is Owner-accepted; I2 runtime remains
-  inactive with zero active sources/routes, no selected/default production
-  executor, and no production activation. I2-A3 bounded live acceptance is PASS;
-  production activation remains NOT_AUTHORIZED. I3 remains unstarted and
+  I2-A2 dormant offline implementation and I2-A3 bounded-live acceptance are
+  accepted historical stages. I2-A4 production activation is Owner-accepted:
+  `index_futures_context` is runtime executable through the selected
+  `phase_i_i2_index_futures_context_executor` route with one active TAIFEX
+  source and one normal TWSE production route. I3 remains unstarted and
   requires separate Owner authorization.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
-current runtime truth. I2-A2 is accepted dormant implementation truth; this does
-not authorize market network execution, a selected production route, or
-activation. A3 used its fresh single-GET authority exactly once; no repeat
-request is authorized. I3 and Phase J still require separate explicit Owner
+current runtime truth. I2-A2 remains historical dormant implementation truth; A3 used its fresh
+single-GET authority exactly once and no repeat acceptance request is authorized.
+Current I2 production execution is permitted only through the normal explicit,
+approval-bound A4 route. I3 and Phase J still require separate explicit Owner
 authorization; broader Phase I remains incomplete.
 
 ## 5. Authority hierarchy
@@ -322,11 +345,10 @@ For the current Phase I state:
 `market_state_context` is runtime executable on the explicitly requested,
 approval-gated `phase_i_i1_market_state_executor` route, with two normal
 production routes and exactly three active I1 sources. I2-A0 is PASS_GO and
-I2-A1 `index_futures_context` source/evidence contract is FROZEN_PASS. I2-A2
-dormant offline implementation is Owner-accepted; I2 runtime remains inactive
-with zero active sources/routes and no selected production executor. I2-A3
-bounded live acceptance is Owner-accepted PASS and PR #298 merge is authorized;
-production activation remains NOT_AUTHORIZED. The live acceptance ledger
+I2-A1 `index_futures_context` source/evidence contract is FROZEN_PASS. I2-A2 dormant implementation and I2-A3 bounded-live acceptance are accepted
+historical gates. I2-A4 production activation is Owner-accepted: runtime is
+executable, one active TAIFEX source and one normal TWSE route are selected, and
+the selected executor is `phase_i_i2_index_futures_context_executor`. The live acceptance ledger
 records one TAIFEX GET, zero retries, two same-source target operations, valid
 Result/Audit V3 and lineage, and no raw persistence. The old live authority was
 superseded without use; the fresh single-GET authority is consumed. I3 is not
