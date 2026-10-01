@@ -83,7 +83,7 @@ Phase I active sources       3
 I2-A0                        PASS_GO (one previously Owner-executed bounded probe)
 I2-A1                        SOURCE / EVIDENCE CONTRACT FROZEN_PASS
 I2-A2                       OWNER_ACCEPTED / DORMANT OFFLINE IMPLEMENTATION
-I2-A3                       BOUNDED LIVE ACCEPTANCE PASS / PENDING INDEPENDENT REVIEW
+I2-A3                       OWNER_ACCEPTED / BOUNDED LIVE PASS / MERGE AUTHORIZED
 I2 production activation    NOT_AUTHORIZED
 I2 runtime                  INACTIVE / NOT PRODUCTION EXECUTABLE
 I2 active sources / routes   0 / 0
@@ -209,8 +209,9 @@ acceptance and deterministic rollback proof. Do not repeat live acquisition or
 rollback. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS.
 I2-A2 dormant offline implementation is Owner-accepted. Production runtime
 remains inactive and I2 active sources/routes remain zero. I2-A3 bounded live
-acceptance is PASS and ready for independent review in Draft PR #298. Its
-ledger is `docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json`.
+acceptance is Owner-accepted PASS and merge-authorized for PR #298. Its
+live ledger is `docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json`; the Owner acceptance / merge closure ledger is
+`docs/governance/phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json`.
 Exactly one TAIFEX GET was used, retry zero, TWSE/TPEx GETs zero. Two target
 operations share the acquisition; both are complete, with alignment
 not_comparable and currentness unknown. No further live request is authorized.
@@ -219,8 +220,9 @@ I3 is not started.
 ## Explicit stop boundary
 
 **Do not repeat I1 live acceptance or rollback, or the consumed I2-A3 single GET.
-I2 production activation and merge are NOT_AUTHORIZED. Do not begin I3 or
-Phase J without separate authorization.**
+PR #298 merge is Owner-authorized by the A3 closure ledger. I2 production
+activation remains NOT_AUTHORIZED. Do not begin I3 or Phase J without separate
+authorization.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
