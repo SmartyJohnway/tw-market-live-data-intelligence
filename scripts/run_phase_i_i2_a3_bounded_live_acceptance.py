@@ -1,9 +1,4 @@
-"""Disarmed Phase I2 A3 governed-runner P0 (fake transport only).
-
-This command intentionally exposes only --fake-preflight. It exercises the
-real 05B authorization/claim/receipt/bundle and 05C Result/Audit path with an
-in-process source fixture. No live mode or production registry is available.
-"""
+"""Phase I2 A3 acceptance-only governed runner with an explicitly re-armed CLI."""
 from __future__ import annotations
 
 import argparse
@@ -14,7 +9,7 @@ import os
 import sys
 import tempfile
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -95,7 +90,7 @@ def _target_identity(record: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
-def _authorities() -> tuple[dict[str, Any], dict[str, Any]]:
+def _authorities(*, live: bool = False) -> tuple[dict[str, Any], dict[str, Any]]:
     authorities = load_planning_authorities("unified_market_evidence_request.v3")
     catalog = copy.deepcopy(authorities["capability_catalog"])
     routing = copy.deepcopy(authorities["routing_matrix"])
@@ -116,8 +111,8 @@ def _authorities() -> tuple[dict[str, Any], dict[str, Any]]:
     surfaces.append({
         "surface_id": EXECUTOR_ID, "path": "server/services/phase_i_i2_live_acceptance_candidate.py",
         "surface_type": "acceptance_only_i2_candidate_executor",
-        "current_status": "P0 fake-transport only; live execution disarmed",
-        "network_behavior": "one injected acquisition per same_source batch; no live delegate",
+        "current_status": "single-GET Owner-authorized acceptance only" if live else "P0 fake-transport only; live execution disarmed",
+        "network_behavior": "one fixed-endpoint acquisition per same_source batch; retry zero" if live else "one injected acquisition per same_source batch; no live delegate",
         "input_contract": "execution_request.v2 index_futures_context / TWSE / approved target",
         "output_contract": EVIDENCE_SCHEMA,
         "approval_boundary": "05B authorization, consumption binding, preflight, execute-once claim",
@@ -151,7 +146,7 @@ def _operation_result_status(evidence_status: str) -> tuple[str, str | None]:
     raise P0Error("evidence_status_unrecognized")
 
 
-def _make_batch_adapter(fake_transport, *, governed_timestamp: str):
+def _make_batch_adapter(fake_transport, *, governed_timestamp: str, live: bool = False):
     acquisitions = []
 
     def batch(requests, context):
@@ -166,7 +161,8 @@ def _make_batch_adapter(fake_transport, *, governed_timestamp: str):
                 CAPABILITY_ID, EXECUTOR_ID, "TWSE", True, 30, 1, {}
             ):
                 raise P0Error("execution_request_scope_invalid")
-        acquired = acquire_taifex_once(transport=fake_transport, clock=lambda: datetime(2026, 10, 1, tzinfo=timezone.utc))
+        acquired = acquire_taifex_once(transport=fake_transport,
+            clock=None if live else lambda: datetime(2026, 10, 1, tzinfo=timezone.utc))
         acquisitions.append(acquired)
         from server.services.phase_i_i2_index_futures_adapters import decode_taifex_payload
         rows, error = decode_taifex_payload(acquired.body)
@@ -209,6 +205,13 @@ def _make_batch_adapter(fake_transport, *, governed_timestamp: str):
 
 def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[str, Any]:
     """Run real 05B/05C orchestration using only an injected fake transport."""
+    return _run_governed_acceptance(output_root=output_root, fake_transport=fake_transport)
+
+
+def _run_governed_acceptance(*, output_root: Path, fake_transport,
+        owner_authority: str = PRE_NETWORK_AUTHORITY, execution_timestamp: str = STAMP,
+        live: bool = False) -> dict[str, Any]:
+    """The reviewed P0 chain; live mode changes only delegate, authority and time."""
     import server.services.unified_mode_a as mode_a
     import server.services.unified_mode_b2 as mode_b2
     import server.services.unified_mode_c as mode_c
@@ -220,8 +223,7 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
     output_root.mkdir(parents=True, exist_ok=False)
     control_root = output_root / "control"
     control_root.mkdir()
-    run_id = "a3-p0-" + uuid.uuid4().hex[:12]
-    execution_timestamp = STAMP
+    run_id = ("a3-live-" if live else "a3-p0-") + uuid.uuid4().hex[:12]
     identity_runtime = load_active_mode_a_security_master(security_master_root=ROOT / "data" / "security_master")
     if identity_runtime.validation.get("valid") is not True:
         raise P0Error("security_master_invalid")
@@ -247,7 +249,7 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
         "response_preferences": {"include_citations": True, "include_currentness": True,
             "include_caveats": True, "include_audit_reference": True},
     }
-    authorities, overlay = _authorities()
+    authorities, overlay = _authorities(live=live)
     overlay_path = output_root / "acceptance_only_catalog_overlay.json"
     overlay_path.write_text(json.dumps(overlay["capability_catalog"], ensure_ascii=False, sort_keys=True, indent=2)+"\n", encoding="utf-8")
     overlay_record_path = output_root / "acceptance_only_authority_overlay.json"
@@ -283,9 +285,10 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
             raise P0Error("planned_operation_authority_mismatch")
         registry_json = _executor_registry_metadata()
         decision_at = execution_timestamp
-        decision = {"decision": "approved", "decision_reason": "Owner-authorized A3-P0 fake-transport proof only",
-            "owner_identity_reference": "USER_CHAT_OWNER", "owner_review_reference": PRE_NETWORK_AUTHORITY,
-            "reviewed_at": decision_at, "issued_at": decision_at, "expires_at": "2026-10-01T00:15:00Z",
+        expires_at = (datetime.fromisoformat(decision_at.replace("Z", "+00:00")) + timedelta(minutes=15)).isoformat().replace("+00:00", "Z")
+        decision = {"decision": "approved", "decision_reason": "Owner-authorized single-GET bounded live acceptance" if live else "Owner-authorized A3-P0 fake-transport proof only",
+            "owner_identity_reference": "USER_CHAT_OWNER", "owner_review_reference": owner_authority,
+            "reviewed_at": decision_at, "issued_at": decision_at, "expires_at": expires_at,
             "single_use": True, "replay_policy": "deny_replay", "maximum_use_count": 1,
             "approval_scope_mode": "whole_plan_executable_scope", "approved_operation_ids": [],
             "approved_batch_group_ids": [], "approved_batch_membership": {}}
@@ -311,7 +314,7 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
             "consumption_binding": consumption_binding, "unused_consumption_state": unused_state,
             "preflight": preflight,
         })
-        batch_adapter, acquisitions = _make_batch_adapter(fake_transport, governed_timestamp=execution_timestamp)
+        batch_adapter, acquisitions = _make_batch_adapter(fake_transport, governed_timestamp=execution_timestamp, live=live)
         reg = RuntimeAdapterRegistration(EXECUTOR_ID, CAPABILITY_ID, "TWSE", ("equity",), EVIDENCE_SCHEMA,
             True, True, 30, 1, "contained_artifact_only",
             adapter=lambda req, ctx: (_ for _ in ()).throw(P0Error("single-operation-route_forbidden")),
@@ -322,7 +325,7 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
             evaluation_timestamp=decision_at, claim_created_at=decision_at, finalized_at=decision_at,
             executor_registry_metadata=registry_json, runtime_adapter_registry=runtime_registry,
             output_root=str(package_root), mode="execute-approved", confirm_execution=True,
-            operator_confirmation_reference=PRE_NETWORK_AUTHORITY, confirm_network_execution=True)
+            operator_confirmation_reference=owner_authority, confirm_network_execution=True)
         outcomes = execution.get("dispatch_outcomes", [])
         failed_count = sum(item.get("status") == "failed" for item in outcomes)
         expected_claim_state = (
@@ -341,7 +344,7 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
                 evaluation_timestamp=decision_at, claim_created_at=decision_at, finalized_at=decision_at,
                 executor_registry_metadata=registry_json, runtime_adapter_registry=runtime_registry,
                 output_root=str(package_root), mode="execute-approved", confirm_execution=True,
-                operator_confirmation_reference=PRE_NETWORK_AUTHORITY, confirm_network_execution=True)
+                operator_confirmation_reference=owner_authority, confirm_network_execution=True)
         except OrchestrationError:
             replay_denied = True
         else:
@@ -436,13 +439,15 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
             "source_acquisition": source, "overlay_sha256": overlay_hash,
             "selected_targets": targets, "operation_ids": [x["operation_id"] for x in operations],
             "batch_group_ids": [x["batch_group_id"] for x in groups],
-            "simulated_source_acquisitions": len(acquisitions), "actual_external_market_calls": 0,
+            "simulated_source_acquisitions": 0 if live else len(acquisitions), "actual_external_market_calls": len(acquisitions) if live else 0,
             "replay_denied_before_transport": replay_denied,
             "result_v3_sha256": hashlib.sha256(result_path.read_bytes()).hexdigest(),
             "audit_v3_sha256": hashlib.sha256(audit_path.read_bytes()).hexdigest(),
             "lineage": lineage, "citation_index": citations, "result": result, "audit": audit,
             "result_v3_replay": True, "audit_v3_replay": True, "raw_payload_persistence": "NONE",
-            "source_selection": select_tx_regular_series(json.loads(source.body)), "overlay": overlay}
+            "source_selection": select_tx_regular_series(json.loads(source.body)), "overlay": overlay,
+            "evidence_objects": evidence_objects, "result_path": result_path, "audit_path": audit_path,
+            "security_master_pointer": identity_runtime.pointer}
     finally:
         mode_a.REQUEST_CAPABILITY_CATALOG_PATHS = old_catalog_paths
         mode_a.get_production_mode_a_security_master = old_security_master_getter
@@ -455,12 +460,22 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Disarmed I2 A3-P0 governed fake-transport preflight")
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fake-preflight", action="store_true", help="run synthetic TAIFEX fixture through 05B/05C; zero network")
-    parser.add_argument("--live", action="store_true", help="reserved; always rejected in this tranche")
+    parser.add_argument("--live", action="store_true", help="requires fresh single-GET Owner authority and guards")
+    parser.add_argument("--confirm-single-taifex-get", action="store_true")
+    parser.add_argument("--owner-authorization-reference")
+    parser.add_argument("--expected-live-runner-head")
+    parser.add_argument("--expected-live-runner-tree")
     args = parser.parse_args()
     if args.live:
-        parser.error("live_execution_not_rearmed")
+        from scripts.phase_i_i2_a3_live_support import execute_single_get_acceptance
+        try:
+            outcome = execute_single_get_acceptance(guard_args=args)
+        except (ValueError, P0Error) as exc:
+            parser.error(str(exc))
+        print(json.dumps(outcome, ensure_ascii=False, sort_keys=True, indent=2))
+        return 0 if outcome["status"] == "PASS" else 1
     if not args.fake_preflight:
         parser.error("select --fake-preflight; live execution is not re-armed")
     payload = deterministic_fixture_payload()
