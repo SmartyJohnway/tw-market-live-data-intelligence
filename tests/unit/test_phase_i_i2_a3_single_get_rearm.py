@@ -56,6 +56,7 @@ def _offline_acceptance(tmp_path, monkeypatch, kind):
     monkeypatch.setattr(live, "LEDGER_PATH", tmp_path / "ledger.json")
     monkeypatch.setattr(live, "ATTEMPT_PATH", tmp_path / "attempt.json")
     monkeypatch.setattr(live, "RESERVATION_PATH", tmp_path / "reservation.json")
+    monkeypatch.setattr(live, "GOVERNANCE", tmp_path)
     rows = json.loads(deterministic_fixture_payload())
     selected = next(x for x in rows if x["Date"] == "20260929" and x["Contract"] == "TX"
                     and x["TradingSession"] == "一般" and x["ContractMonth(Week)"] == "202610")
@@ -101,6 +102,7 @@ def test_rearmed_packaging_shared_governed_path_passes_offline(tmp_path, monkeyp
     assert out["projection"]["result_replay"] == out["projection"]["audit_replay"] == "PASS"
     assert out["acceptance_package"]["raw_body_absence_verified"] is True
     from scripts import validate_phase_i_i2_a3_live_acceptance as validator
+    monkeypatch.setattr(validator, "GOVERNANCE", live.ROOT / "docs/governance/phase_i")
     ledger = tmp_path / "ledger.json"
     ledger.write_text(json.dumps(out), encoding="utf-8")
     monkeypatch.setattr(validator, "LEDGER_PATH", ledger)

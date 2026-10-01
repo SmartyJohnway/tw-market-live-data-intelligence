@@ -63,13 +63,15 @@ As of this governance consolidation:
   route. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS;
   I2-A2 dormant offline implementation is Owner-accepted; I2 runtime remains
   inactive with zero active sources/routes, no selected/default production
-  executor, and no production activation. A3 live acceptance remains a separate
-  Owner gate. I3 remains unstarted and requires separate Owner authorization.**
+  executor, and no production activation. I2-A3 bounded live acceptance is PASS;
+  production activation remains NOT_AUTHORIZED. I3 remains unstarted and
+  requires separate Owner authorization.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
 current runtime truth. I2-A2 is accepted dormant implementation truth; this does
 not authorize market network execution, a selected production route, or
-activation. A3, I3, and Phase J still require separate explicit Owner
+activation. A3 used its fresh single-GET authority exactly once; no repeat
+request is authorized. I3 and Phase J still require separate explicit Owner
 authorization; broader Phase I remains incomplete.
 
 ## 5. Authority hierarchy
@@ -322,6 +324,11 @@ approval-gated `phase_i_i1_market_state_executor` route, with two normal
 production routes and exactly three active I1 sources. I2-A0 is PASS_GO and
 I2-A1 `index_futures_context` source/evidence contract is FROZEN_PASS. I2-A2
 dormant offline implementation is Owner-accepted; I2 runtime remains inactive
-with zero active sources/routes and no selected production executor. A3 live
-acceptance remains separately gated. I3 is not started. The accepted bounded-live evidence remains immutable; do not
-repeat it or rollback. Phase I as a whole is not complete.
+with zero active sources/routes and no selected production executor. I2-A3
+bounded live acceptance is PASS and remains subject to independent review;
+production activation and merge are NOT_AUTHORIZED. The live acceptance ledger
+records one TAIFEX GET, zero retries, two same-source target operations, valid
+Result/Audit V3 and lineage, and no raw persistence. The old live authority was
+superseded without use; the fresh single-GET authority is consumed. I3 is not
+started. Preserve accepted bounded-live evidence; do not repeat it or rollback.
+Phase I as a whole is not complete.

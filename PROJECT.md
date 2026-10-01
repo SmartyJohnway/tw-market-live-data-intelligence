@@ -217,9 +217,15 @@ Phase I I2-A2 dormant offline implementation is Owner-accepted under
 I2 runtime remains inactive: it has zero active sources, zero normal production
 routes, no selected executor, and no default-registry executor. I1 remains
 accepted and active with three sources. A2 used synthetic fixtures only and made
-no market-source requests. A3 bounded live acceptance and production activation
-remain separate Owner gates. I3 is not started, Phase I remains incomplete, and
-MCP remains exactly six tools.
+no market-source requests. I2-A3 bounded live acceptance is PASS under
+`USER_CHAT_2026-10-01_PHASE_I_I2_A3_SINGLE_GET_LIVE_REARM`, recorded in
+`docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json`.
+One TAIFEX GET supplied both TWSE:1101 and TWSE:1102, with zero retries and no
+TWSE/TPEx requests. Result V3, Audit V3, replay, and citation/artifact lineage
+passed; raw payload persistence is NONE. Production activation remains
+NOT_AUTHORIZED: I2 is dormant with zero active sources/routes and selected
+executor null. I3 is not started, Phase I remains incomplete, and MCP remains
+exactly six tools. The earlier unused live authority is superseded without use.
 
 ## Current authority hierarchy
 

@@ -1,0 +1,240 @@
+{
+  "audit_reference": {
+    "audit_package_id": "umeap-v3-0ea25de785f5d12e6481",
+    "relative_path": "audit/unified_market_evidence_audit_package.v3.json",
+    "schema_version": "unified_market_evidence_audit_package.v3"
+  },
+  "generated_at": "2026-10-01T03:45:43Z",
+  "request_caveats": [],
+  "request_id": "a3-live-6706c57e5bbc",
+  "request_summary": {
+    "execution_mode": "execute",
+    "optional_data_needs": [],
+    "request_schema_version": "unified_market_evidence_request.v3",
+    "requested_data_needs": [
+      "index_futures_context"
+    ],
+    "required_data_needs": [
+      "index_futures_context"
+    ],
+    "target_count": 2
+  },
+  "result_hash": "0620ca81fc98b8a0ae46191df6c7a218222735227969f9e4a009a1964a38eca6",
+  "result_id": "umeresult-v3-6895a082fed1e9b16472",
+  "schema_version": "unified_market_evidence_result.v3",
+  "status": "full_success",
+  "targets": [
+    {
+      "canonical_identity": {
+        "canonical_target_id": "TWSE:1101",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0001101004",
+        "market": "TWSE",
+        "security_code": "1101",
+        "security_name_en": null,
+        "security_name_zh": "台泥"
+      },
+      "citations": [
+        {
+          "artifact_reference": "evidence/phase_i/i2/umeop-op-v1-e706a162b4b2d93d586c.json",
+          "citation_id": "cite-e98436d021e0ca26",
+          "normalized_evidence_hash": "02334f8ad3ac4124542dcb06baacdeb89cd5cd0b6db3dca44d6dd7b90c96ddd9",
+          "retrieved_at": "2026-10-01T03:45:43Z",
+          "source_contract_id": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1",
+          "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT"
+        }
+      ],
+      "client_target_reference": "TWSE:1101",
+      "coverage": {
+        "missing_needs": [],
+        "provided_needs": [
+          "index_futures_context"
+        ]
+      },
+      "evidence": {
+        "index_futures_context": {
+          "alignment_status": "not_comparable",
+          "caveats": [
+            "Descriptive TAIFEX TX regular-session context only; no signal, basis, or causation interpretation."
+          ],
+          "citation_ids": [
+            "cite-e98436d021e0ca26"
+          ],
+          "contract_period": "202610",
+          "currentness_status": "unknown",
+          "market_data": {
+            "best_ask": 48334.0,
+            "best_bid": 48329.0,
+            "change_percent": 1.15,
+            "change_points": 549.0,
+            "high": 48646.0,
+            "last": 48330.0,
+            "low": 48230.0,
+            "open": 48467.0,
+            "open_interest": 105359,
+            "settlement_price": 48330.0,
+            "volume": 42731
+          },
+          "product_code": "TX",
+          "retrieved_at": "2026-10-01T03:45:43Z",
+          "schema_version": "index_futures_context_evidence.v1",
+          "source": {
+            "attribution_required": true,
+            "authority": "official_taifex_oas_open_data",
+            "dataset_id": "11319",
+            "endpoint": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut",
+            "source_contract_id": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1",
+            "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT",
+            "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI"
+          },
+          "status": "complete",
+          "target": {
+            "canonical_target_id": "TWSE:1101",
+            "market": "TWSE"
+          },
+          "target_market": "TWSE",
+          "trade_date": "2026-09-30",
+          "trading_session": "regular",
+          "transport": {
+            "content_type": "application/octet-stream",
+            "get_count": 1,
+            "http_status": 200,
+            "raw_payload_persisted": false,
+            "response_byte_count": 821670,
+            "response_sha256": "64c8f7b0c6c9d59b5e132c3e14e568c84955e91856cc0d9ea56040f1cfd02bbc",
+            "retrieved_at": "2026-10-01T03:45:50Z",
+            "retry_count": 0
+          },
+          "unit_metadata": {
+            "best_ask": "index_point",
+            "best_bid": "index_point",
+            "change_percent": "percent",
+            "change_points": "index_point",
+            "high": "index_point",
+            "last": "index_point",
+            "low": "index_point",
+            "open": "index_point",
+            "open_interest": "contract_count",
+            "settlement_price": "index_point",
+            "volume": "contract_count"
+          },
+          "venue": "TAIFEX"
+        }
+      },
+      "resolution": {
+        "canonical_target_id": "TWSE:1101",
+        "market": "TWSE",
+        "security_code": "1101",
+        "security_name": "台泥",
+        "status": "resolved"
+      }
+    },
+    {
+      "canonical_identity": {
+        "canonical_target_id": "TWSE:1102",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0001102002",
+        "market": "TWSE",
+        "security_code": "1102",
+        "security_name_en": null,
+        "security_name_zh": "亞泥"
+      },
+      "citations": [
+        {
+          "artifact_reference": "evidence/phase_i/i2/umeop-op-v1-c1b627ba23a0d7052d23.json",
+          "citation_id": "cite-c6e866e5f50f58b3",
+          "normalized_evidence_hash": "be53b8bf89d65c2e6a5caf628e80215786d9938ee31c05731d9fc3c4268df12e",
+          "retrieved_at": "2026-10-01T03:45:43Z",
+          "source_contract_id": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1",
+          "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT"
+        }
+      ],
+      "client_target_reference": "TWSE:1102",
+      "coverage": {
+        "missing_needs": [],
+        "provided_needs": [
+          "index_futures_context"
+        ]
+      },
+      "evidence": {
+        "index_futures_context": {
+          "alignment_status": "not_comparable",
+          "caveats": [
+            "Descriptive TAIFEX TX regular-session context only; no signal, basis, or causation interpretation."
+          ],
+          "citation_ids": [
+            "cite-c6e866e5f50f58b3"
+          ],
+          "contract_period": "202610",
+          "currentness_status": "unknown",
+          "market_data": {
+            "best_ask": 48334.0,
+            "best_bid": 48329.0,
+            "change_percent": 1.15,
+            "change_points": 549.0,
+            "high": 48646.0,
+            "last": 48330.0,
+            "low": 48230.0,
+            "open": 48467.0,
+            "open_interest": 105359,
+            "settlement_price": 48330.0,
+            "volume": 42731
+          },
+          "product_code": "TX",
+          "retrieved_at": "2026-10-01T03:45:43Z",
+          "schema_version": "index_futures_context_evidence.v1",
+          "source": {
+            "attribution_required": true,
+            "authority": "official_taifex_oas_open_data",
+            "dataset_id": "11319",
+            "endpoint": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut",
+            "source_contract_id": "TAIFEX_DAILY_MARKET_REPORT_FUT_OPENAPI_V1",
+            "source_family": "TAIFEX_DAILY_MARKET_REPORT_FUT",
+            "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI"
+          },
+          "status": "complete",
+          "target": {
+            "canonical_target_id": "TWSE:1102",
+            "market": "TWSE"
+          },
+          "target_market": "TWSE",
+          "trade_date": "2026-09-30",
+          "trading_session": "regular",
+          "transport": {
+            "content_type": "application/octet-stream",
+            "get_count": 1,
+            "http_status": 200,
+            "raw_payload_persisted": false,
+            "response_byte_count": 821670,
+            "response_sha256": "64c8f7b0c6c9d59b5e132c3e14e568c84955e91856cc0d9ea56040f1cfd02bbc",
+            "retrieved_at": "2026-10-01T03:45:50Z",
+            "retry_count": 0
+          },
+          "unit_metadata": {
+            "best_ask": "index_point",
+            "best_bid": "index_point",
+            "change_percent": "percent",
+            "change_points": "index_point",
+            "high": "index_point",
+            "last": "index_point",
+            "low": "index_point",
+            "open": "index_point",
+            "open_interest": "contract_count",
+            "settlement_price": "index_point",
+            "volume": "contract_count"
+          },
+          "venue": "TAIFEX"
+        }
+      },
+      "resolution": {
+        "canonical_target_id": "TWSE:1102",
+        "market": "TWSE",
+        "security_code": "1102",
+        "security_name": "亞泥",
+        "status": "resolved"
+      }
+    }
+  ]
+}
