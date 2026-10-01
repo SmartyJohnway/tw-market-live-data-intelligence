@@ -171,7 +171,11 @@ def validate(*, write_candidate_record: bool = False) -> dict:
                     "socket_connect_attempts": 0, "live_execution_rearm_required": True},
     }
     if write_candidate_record:
-        RECORD_PATH.write_text(json.dumps(record, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+        RECORD_PATH.write_text(
+            json.dumps(record, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
     print("Phase I I2-A3-P0 governed runner: PASS (fake transport; market network=0)")
     return record
 
