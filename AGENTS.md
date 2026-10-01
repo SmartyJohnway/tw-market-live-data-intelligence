@@ -325,8 +325,8 @@ production routes and exactly three active I1 sources. I2-A0 is PASS_GO and
 I2-A1 `index_futures_context` source/evidence contract is FROZEN_PASS. I2-A2
 dormant offline implementation is Owner-accepted; I2 runtime remains inactive
 with zero active sources/routes and no selected production executor. I2-A3
-bounded live acceptance is PASS and remains subject to independent review;
-production activation and merge are NOT_AUTHORIZED. The live acceptance ledger
+bounded live acceptance is Owner-accepted PASS and PR #298 merge is authorized;
+production activation remains NOT_AUTHORIZED. The live acceptance ledger
 records one TAIFEX GET, zero retries, two same-source target operations, valid
 Result/Audit V3 and lineage, and no raw persistence. The old live authority was
 superseded without use; the fresh single-GET authority is consumed. I3 is not
