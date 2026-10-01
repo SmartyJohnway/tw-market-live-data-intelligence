@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import socket
+import copy
+import json
 from pathlib import Path
 
 from scripts.run_phase_i_i2_a3_bounded_live_acceptance import (
@@ -9,6 +11,7 @@ from scripts.run_phase_i_i2_a3_bounded_live_acceptance import (
     deterministic_fixture_payload,
     run_fake_governed_acceptance,
 )
+from server.services.phase_i_i2_index_futures_adapters import SOURCE_ENDPOINT
 
 
 def test_fake_transport_completes_real_authorization_dispatch_and_v3_chain(tmp_path, monkeypatch):
@@ -53,3 +56,96 @@ def test_fake_transport_completes_real_authorization_dispatch_and_v3_chain(tmp_p
     assert {x["contract_period"] for x in typed} == {"202610"}
     assert {x["trade_date"] for x in typed} == {"2026-09-29"}
     assert all(item["executor_id"] == EXECUTOR_ID for item in out["plan"]["operations"])
+
+
+def _failure_payload(kind: str) -> bytes:
+    rows = json.loads(deterministic_fixture_payload())
+    if kind == "source_failed":
+        next(row for row in rows if row["Date"] == "20260929" and row["Contract"] == "TX"
+             and row["TradingSession"] == "一般" and row["ContractMonth(Week)"] == "202610")["Last"] = "bad-numeric"
+    elif kind == "binding_failed":
+        selected = next(row for row in rows if row["Date"] == "20260929" and row["Contract"] == "TX"
+                        and row["TradingSession"] == "一般" and row["ContractMonth(Week)"] == "202610")
+        rows.append(copy.deepcopy(selected))
+    elif kind == "unavailable":
+        for row in rows:
+            if row["Date"] == "20260929" and row["Contract"] == "TX" and row["TradingSession"] == "一般":
+                row["Contract"] = "MTX"
+    else:
+        raise AssertionError(kind)
+    return json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+
+
+def _run_noncomplete_governed_case(tmp_path, monkeypatch, kind):
+    monkeypatch.setattr(socket.socket, "connect", lambda *a, **k: (_ for _ in ()).throw(
+        AssertionError("P0 attempted an external socket connection")))
+    payload = _failure_payload(kind)
+    calls = []
+
+    def fake_transport(url, timeout):
+        calls.append((url, timeout))
+        return 200, {"Content-Type": "application/octet-stream"}, payload
+
+    out = run_fake_governed_acceptance(output_root=tmp_path / kind, fake_transport=fake_transport)
+    assert calls == [(SOURCE_ENDPOINT, 30)]
+    assert out["simulated_source_acquisitions"] == 1
+    assert out["actual_external_market_calls"] == 0
+    assert len(out["execution"]["dispatch_outcomes"]) == 2
+    return out
+
+
+def _assert_operation_artifacts_and_governance(out, *, evidence_status, operation_status, error_code):
+    execution = out["execution"]
+    assert execution["claim_record"]["attempt_count"] == 1
+    assert execution["consumption_state"] == ("consumed_success" if operation_status == "succeeded" else "consumed_failed")
+    assert all((x["status"], x["error_code"], x["result_item_count"]) == (operation_status, error_code, 1)
+               for x in execution["dispatch_outcomes"])
+    assert all(x["status"] == operation_status and x["error_code"] == error_code
+               for x in execution["execution_receipt"]["operation_receipts"])
+    assert all(x["status"] == operation_status and x["error_code"] == error_code
+               for x in execution["evidence_bundle"]["operation_evidence_entries"])
+    for outcome in execution["dispatch_outcomes"]:
+        artifact = outcome["evidence_artifacts"][0]
+        artifact_path = out["package_root"] / artifact["relative_path"]
+        raw = artifact_path.read_bytes()
+        assert len(raw) == artifact["byte_size"]
+        import hashlib
+        assert hashlib.sha256(raw).hexdigest() == artifact["sha256"]
+        typed = json.loads(raw)
+        assert typed["status"] == evidence_status
+        assert typed["citation_ids"]
+        assert outcome["warnings"] == typed["caveats"]
+        assert any(x["relative_path"] == artifact["relative_path"] and x["sha256"] == artifact["sha256"]
+                   for x in execution["evidence_bundle"]["artifact_inventory"])
+    assert out["result_v3_replay"] is True and out["audit_v3_replay"] is True
+    for target in out["result"]["targets"]:
+        target_id = target["resolution"]["canonical_target_id"]
+        binding = out["lineage"].bindings[target_id]["index_futures_context"]
+        if operation_status == "failed":
+            assert "index_futures_context" not in target["evidence"]
+            assert binding.status == "failed" and binding.error_code == evidence_status
+            assert len(binding.evidence_artifacts) == 1 and len(binding.artifact_objects) == 1
+            artifact_object = next(iter(binding.artifact_objects.values()))
+            assert artifact_object["status"] == evidence_status
+            assert out["citation_index"].target_need_citations[f"{target_id}::index_futures_context"] == []
+        else:
+            assert target["evidence"]["index_futures_context"]["status"] == evidence_status
+            assert binding.status == "succeeded"
+
+
+def test_source_failed_governed_chain_preserves_failure_artifact_and_lineage(tmp_path, monkeypatch):
+    out = _run_noncomplete_governed_case(tmp_path, monkeypatch, "source_failed")
+    _assert_operation_artifacts_and_governance(
+        out, evidence_status="source_failed", operation_status="failed", error_code="source_failed")
+
+
+def test_binding_failed_governed_chain_preserves_failure_artifact_and_lineage(tmp_path, monkeypatch):
+    out = _run_noncomplete_governed_case(tmp_path, monkeypatch, "binding_failed")
+    _assert_operation_artifacts_and_governance(
+        out, evidence_status="binding_failed", operation_status="failed", error_code="binding_failed")
+
+
+def test_unavailable_evidence_remains_successful_operation_in_governed_chain(tmp_path, monkeypatch):
+    out = _run_noncomplete_governed_case(tmp_path, monkeypatch, "unavailable")
+    _assert_operation_artifacts_and_governance(
+        out, evidence_status="unavailable", operation_status="succeeded", error_code=None)

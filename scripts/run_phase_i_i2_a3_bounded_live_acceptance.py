@@ -142,6 +142,15 @@ def _executor_registry_metadata() -> dict[str, Any]:
     }]}
 
 
+def _operation_result_status(evidence_status: str) -> tuple[str, str | None]:
+    """Mirror the accepted I2/A2 evidence-to-operation status contract."""
+    if evidence_status in {"complete", "partial", "unavailable"}:
+        return "succeeded", None
+    if evidence_status in {"source_failed", "binding_failed"}:
+        return "failed", evidence_status
+    raise P0Error("evidence_status_unrecognized")
+
+
 def _make_batch_adapter(fake_transport, *, governed_timestamp: str):
     acquisitions = []
 
@@ -177,6 +186,7 @@ def _make_batch_adapter(fake_transport, *, governed_timestamp: str):
                            "response_sha256": acquired.response_sha256, "retrieved_at": acquired.retrieved_at,
                            "get_count": 1, "retry_count": 0, "raw_payload_persisted": False},
             )
+            operation_status, error_code = _operation_result_status(evidence["status"])
             payload = canonical_json(evidence).encode("utf-8")
             atomic_write_bytes(context.governed_output_root, rel, payload, allow_overwrite=False)
             artifact = {"relative_path": rel, "sha256": hashlib.sha256(payload).hexdigest(),
@@ -188,8 +198,9 @@ def _make_batch_adapter(fake_transport, *, governed_timestamp: str):
                 "operation_id": operation_id, "execution_request_id": request["execution_request_id"],
                 "execution_request_hash": request["execution_request_hash"],
                 "executor_id": EXECUTOR_ID, "capability_id": CAPABILITY_ID,
-                "evidence_contract": EVIDENCE_SCHEMA, "status": "succeeded", "error_code": None,
-                "result_item_count": 1, "evidence_artifacts": [artifact], "warnings": evidence["caveats"],
+                "evidence_contract": EVIDENCE_SCHEMA, "status": operation_status, "error_code": error_code,
+                "result_item_count": 1, "evidence_artifacts": [artifact],
+                "warnings": list(evidence.get("caveats", [])),
             })
         return results
 
@@ -312,9 +323,16 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
             executor_registry_metadata=registry_json, runtime_adapter_registry=runtime_registry,
             output_root=str(package_root), mode="execute-approved", confirm_execution=True,
             operator_confirmation_reference=PRE_NETWORK_AUTHORITY, confirm_network_execution=True)
-        if execution.get("consumption_state") != "consumed_success" or execution.get("claim_record", {}).get("attempt_count") != 1:
+        outcomes = execution.get("dispatch_outcomes", [])
+        failed_count = sum(item.get("status") == "failed" for item in outcomes)
+        expected_claim_state = (
+            "consumed_success" if failed_count == 0 else
+            "consumed_failed" if failed_count == len(operations) else
+            "consumed_partial"
+        )
+        if execution.get("consumption_state") != expected_claim_state or execution.get("claim_record", {}).get("attempt_count") != 1:
             raise P0Error("execute_once_fake_transport_claim_failed")
-        if len(execution.get("dispatch_outcomes", [])) != 2 or len(acquisitions) != 1:
+        if len(outcomes) != 2 or len(acquisitions) != 1:
             raise P0Error("same_source_fake_acquisition_count_invalid")
         from scripts.m8r_05b_03.errors import OrchestrationError
         try:
@@ -354,11 +372,54 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
         Draft7Validator(json.loads((ROOT / "schemas/unified_market_evidence_result.v3.schema.json").read_text(encoding="utf-8")), format_checker=FormatChecker()).validate(result)
         Draft7Validator(json.loads((ROOT / "schemas/unified_market_evidence_audit_package.v3.schema.json").read_text(encoding="utf-8")), format_checker=FormatChecker()).validate(audit)
         evidence_objects = []
+        operation_evidence = {}
+        for operation_result in execution["dispatch_outcomes"]:
+            artifacts = operation_result.get("evidence_artifacts", [])
+            if len(artifacts) != 1:
+                raise P0Error("operation_evidence_artifact_missing")
+            artifact = artifacts[0]
+            artifact_bytes = (package_root / artifact["relative_path"]).read_bytes()
+            if (len(artifact_bytes) != artifact["byte_size"]
+                    or hashlib.sha256(artifact_bytes).hexdigest() != artifact["sha256"]):
+                raise P0Error("operation_evidence_artifact_integrity_mismatch")
+            operation_evidence[operation_result["operation_id"]] = json.loads(artifact_bytes)
         for target in result["targets"]:
-            typed = target["evidence"][CAPABILITY_ID]
-            if typed["target"]["canonical_target_id"] not in {"TWSE:1101", "TWSE:1102"} or typed["venue"] != "TAIFEX" or typed["product_code"] != "TX" or typed["alignment_status"] != "not_comparable":
+            target_id = target["resolution"]["canonical_target_id"]
+            if target_id not in {"TWSE:1101", "TWSE:1102"}:
                 raise P0Error("result_i2_target_or_alignment_mismatch")
-            evidence_objects.append(typed)
+            binding = lineage.bindings[target_id][CAPABILITY_ID]
+            evidence = operation_evidence[binding.operation_id]
+            artifact_ref = binding.evidence_artifacts[0]
+            rel_path = artifact_ref["relative_path"]
+            expected_citation = _build_citation_id(binding.operation_id, rel_path)
+            if evidence.get("citation_ids") != [expected_citation] or binding.artifact_objects.get(rel_path) != evidence:
+                raise P0Error("evidence_artifact_citation_or_lineage_mismatch")
+            if not any(item.get("relative_path") == rel_path
+                       and item.get("sha256") == artifact_ref.get("sha256")
+                       for item in inputs.bundle.get("artifact_inventory", [])):
+                raise P0Error("evidence_bundle_artifact_binding_missing")
+            if evidence.get("status") in {"source_failed", "binding_failed"}:
+                if binding.status != "failed" or binding.error_code != evidence["status"]:
+                    raise P0Error("failed_evidence_lineage_status_mismatch")
+                if CAPABILITY_ID in target.get("evidence", {}):
+                    raise P0Error("failed_operation_must_not_project_as_successful_typed_binding")
+                if not binding.evidence_artifacts or not binding.artifact_objects:
+                    raise P0Error("failed_evidence_artifact_lineage_missing")
+                if citations.target_need_citations.get(f"{target_id}::{CAPABILITY_ID}") != []:
+                    raise P0Error("failed_evidence_must_not_emit_success_citations")
+            else:
+                if binding.status != "succeeded" or CAPABILITY_ID not in target.get("evidence", {}):
+                    raise P0Error("successful_evidence_binding_missing")
+                typed = target["evidence"][CAPABILITY_ID]
+                expected_alignment = "not_comparable" if evidence["status"] in {"complete", "partial"} else "unavailable"
+                if (typed["target"]["canonical_target_id"] != target_id
+                        or typed["venue"] != "TAIFEX" or typed["product_code"] != "TX"
+                        or typed["status"] != evidence["status"]
+                        or typed["alignment_status"] != expected_alignment):
+                    raise P0Error("result_i2_target_or_alignment_mismatch")
+                if expected_citation not in citations.target_need_citations.get(f"{target_id}::{CAPABILITY_ID}", []):
+                    raise P0Error("successful_evidence_citation_index_missing")
+            evidence_objects.append(evidence)
         source_hashes = {x["transport"]["response_sha256"] for x in evidence_objects}
         source_counts = {x["transport"]["response_byte_count"] for x in evidence_objects}
         if len(source_hashes) != 1 or len(source_counts) != 1 or any(not x["citation_ids"] for x in evidence_objects):
@@ -370,7 +431,7 @@ def run_fake_governed_acceptance(*, output_root: Path, fake_transport) -> dict[s
             raise P0Error("raw_fixture_payload_persisted")
         result_path = package_root / result_package["canonical_result_reference"]
         audit_path = package_root / result_package["audit_reference"]
-        return {"request": request, "f3": f3, "plan": plan, "authorization": authorization,
+        return {"package_root": package_root, "request": request, "f3": f3, "plan": plan, "authorization": authorization,
             "consumption_binding": consumption_binding, "preflight": preflight, "execution": execution,
             "source_acquisition": source, "overlay_sha256": overlay_hash,
             "selected_targets": targets, "operation_ids": [x["operation_id"] for x in operations],
