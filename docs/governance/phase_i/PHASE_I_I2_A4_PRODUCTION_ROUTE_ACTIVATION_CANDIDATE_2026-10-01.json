@@ -132,7 +132,7 @@
     "i1_production_routes": 2,
     "mcp_tool_count": 6
   },
-  "validation": {
+  "validation_before_independent_review_repair": {
     "focused_a4": "28 passed / 0 skipped / 0 deselected",
     "cross_boundary": "87 passed / 0 skipped / 0 deselected",
     "production_registry_and_i1": "25 passed / 0 skipped / 0 deselected",
@@ -146,6 +146,47 @@
     "crlf_aware_diff_check": "PASS",
     "profile_change": "Only added A4 test file to default-ci/full-current; no test paths removed.",
     "validation_scope": "Final offline branch worktree; implementation snapshot and portable sync commits recorded separately; no subsequent runtime semantic changes."
+  },
+  "independent_review_repair": {
+    "status": "COMPLETED",
+    "previous_reviewed_head": "bfd32580d145196be18fa4b986b4cf474c9bebce",
+    "head": "751eb5718db5e7c08f33a091638e277a8e9e7ed1",
+    "tree": "5fb5c3e18c28cb021fb2faaa1a1332fa29232555",
+    "identity_rule": "TWSE:[A-Z0-9._-]{1,20}",
+    "identity_rule_authority": "scripts/m8r_03d_f1_security_master_snapshot_adapter.py exact canonical target resolver",
+    "eligibility_authority": "Security Master resolution and governed planner: TWSE company_share/common_share, execution allowed",
+    "four_digit_restriction_removed": true,
+    "production_transport_path": "server/services/phase_i_i2_production_transport.py",
+    "production_acceptance_transport_dependency": false,
+    "transport_conformance": "PASS",
+    "transport_conformance_response_cases": 12,
+    "transport_suite": "16 passed / 0 skipped / 0 deselected",
+    "current_authority_corruption_before_historical_replay": "FAIL_CLOSED / PASS",
+    "governance_record_commit_identity": "Repair implementation snapshot above; subsequent docs-only record commit is reported externally to avoid self-reference."
+  },
+  "validation": {
+    "focused_a4": "30 passed / 0 skipped / 0 deselected",
+    "production_transport": "16 passed / 0 skipped / 0 deselected",
+    "focused_total_unique": "46 passed / 0 skipped / 0 deselected",
+    "cross_boundary": "85 passed / 0 skipped / 0 deselected",
+    "cross_boundary_test_paths": [
+      "tests/unit/test_phase_i_i2_a1_contract.py",
+      "tests/unit/test_phase_i_i2_a2_offline.py",
+      "tests/unit/test_phase_i_i2_a3_single_get_rearm.py",
+      "tests/integration/test_phase_i_i2_a3_p0_governed_runner.py",
+      "tests/unit/test_phase_i_i1_market_state.py",
+      "tests/unit/test_m8r_06_03_production_adapter.py"
+    ],
+    "default_ci": "878 passed / 1 skipped / 5 deselected",
+    "full_current": "1251 passed / 1 skipped / 5 deselected",
+    "validators": "PASS",
+    "portable_catalog": "PASS / unchanged lineage",
+    "runtime_skill_guide": "PASS / MCP=6",
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "profile_change": "18 new regressions (2 A4 + 16 transport); only one test path added to both profiles; no existing paths removed.",
+    "validation_scope": "Offline repaired implementation worktree at repair snapshot; socket-denial fixtures active around relevant tests. No market acquisition."
   },
   "market_network_calls": 0,
   "final_owner_activation_acceptance": "PENDING",
@@ -180,6 +221,7 @@
     "scripts/validate_phase_i_i2_a3_p0.py",
     "scripts/validate_phase_i_i2_a4_activation.py",
     "server/services/phase_i_i2_production_candidate.py",
+    "server/services/phase_i_i2_production_transport.py",
     "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
     "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
     "tests/integration/test_phase_i_i2_a3_p0_governed_runner.py",
@@ -188,6 +230,7 @@
     "tests/unit/test_phase_i_i2_a1_contract.py",
     "tests/unit/test_phase_i_i2_a2_offline.py",
     "tests/unit/test_phase_i_i2_a3_single_get_rearm.py",
-    "tests/unit/test_phase_i_i2_a4_activation.py"
+    "tests/unit/test_phase_i_i2_a4_activation.py",
+    "tests/unit/test_phase_i_i2_production_transport.py"
   ]
 }
