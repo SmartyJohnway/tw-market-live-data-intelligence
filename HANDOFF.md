@@ -2,7 +2,7 @@
 
 ## Status
 
-Date: **2026-09-30**
+Date: **2026-10-01**
 
 Baseline main before this documentation-governance consolidation:
 
@@ -14,8 +14,8 @@ Current workstream:
 > Owner-accepted and merged after bounded live acceptance and deterministic
 > rollback proof. I2-A0/A1 are complete; I2-A2 dormant offline implementation
 > is Owner-accepted with zero I2 runtime routes/sources and no selected executor.
-> A3 live acceptance and production activation remain separate Owner gates. I3
-> is not started.**
+> A3 bounded live acceptance is PASS; production activation is NOT_AUTHORIZED.
+> I2 remains dormant with zero active sources/routes. I3 is not started.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -83,6 +83,8 @@ Phase I active sources       3
 I2-A0                        PASS_GO (one previously Owner-executed bounded probe)
 I2-A1                        SOURCE / EVIDENCE CONTRACT FROZEN_PASS
 I2-A2                       OWNER_ACCEPTED / DORMANT OFFLINE IMPLEMENTATION
+I2-A3                       OWNER_ACCEPTED / BOUNDED LIVE PASS / MERGE AUTHORIZED
+I2 production activation    NOT_AUTHORIZED
 I2 runtime                  INACTIVE / NOT PRODUCTION EXECUTABLE
 I2 active sources / routes   0 / 0
 I2 selected executor        null
@@ -151,8 +153,9 @@ of the selected I1 market-state route. Current runtime authority has two normal
 production routes (TWSE and TPEx) and exactly three active I1 sources.
 `I1-ROLL-001` passed. No new market requests were made during final activation
 closure. I2-A0/A1 are complete. I2-A2 dormant offline implementation is
-Owner-accepted; runtime remains inactive and A3 live acceptance is a separate
-Owner gate. I3 is not started. The broader Roadmap Phase I remains incomplete.
+Owner-accepted; A3 bounded live acceptance is PASS under the fresh single-GET
+Owner authority. Runtime remains inactive and production activation is
+NOT_AUTHORIZED. I3 is not started. The broader Roadmap Phase I remains incomplete.
 
 I1 timing semantics: acceptance execution/acquisition reference timestamp is
 `2026-09-30T01:56:37Z`; each source transport retrieval timestamp is recorded
@@ -205,22 +208,29 @@ I1 production activation has been Owner-accepted and merged after bounded live
 acceptance and deterministic rollback proof. Do not repeat live acquisition or
 rollback. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS.
 I2-A2 dormant offline implementation is Owner-accepted. Production runtime
-remains inactive and I2 active sources/routes remain zero. I2 live acquisition
-is still forbidden unless separately authorized under the A3 bounded-live gate.
+remains inactive and I2 active sources/routes remain zero. I2-A3 bounded live
+acceptance is Owner-accepted PASS and merge-authorized for PR #298. Its
+live ledger is `docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json`; the Owner acceptance / merge closure ledger is
+`docs/governance/phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json`.
+Exactly one TAIFEX GET was used, retry zero, TWSE/TPEx GETs zero. Two target
+operations share the acquisition; both are complete, with alignment
+not_comparable and currentness unknown. No further live request is authorized.
 I3 is not started.
 
 ## Explicit stop boundary
 
-**Do not repeat I1 live acceptance or rollback. I2-A2 is accepted, but do not
-perform I2 live acceptance or production activation without a separate explicit
-Owner authorization. Do not begin I3 or Phase J without separate authorization.**
+**Do not repeat I1 live acceptance or rollback, or the consumed I2-A3 single GET.
+PR #298 merge is Owner-authorized by the A3 closure ledger. I2 production
+activation remains NOT_AUTHORIZED. Do not begin I3 or Phase J without separate
+authorization.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
 one I2-A0 probe is historical preflight evidence only. I2-A2 dormant offline
-implementation is Owner-accepted; runtime remains inactive and unauthorized for
-live/production execution until the separate A3/activation gates. I3 remains not
-started. Broader Phase I is incomplete.
+implementation is Owner-accepted; A3 bounded live acceptance is PASS. Runtime
+remains dormant/inactive pending a separate production activation decision.
+The old unused A3 authority is superseded_without_use; the fresh single-GET
+authority is consumed. I3 remains not started. Broader Phase I is incomplete.
 
 ## Before any future Phase I work
 

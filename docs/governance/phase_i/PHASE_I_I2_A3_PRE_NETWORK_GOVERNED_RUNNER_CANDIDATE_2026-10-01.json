@@ -1,0 +1,136 @@
+{
+  "current_pre_network_authority": "USER_CHAT_2026-10-01_PHASE_I_I2_A3_PRE_NETWORK_GOVERNED_RUNNER_CLOSURE",
+  "fake_source_acquisition": {
+    "actual_external_market_calls": 0,
+    "content_type": "application/octet-stream",
+    "endpoint": "https://openapi.taifex.com.tw/v1/DailyMarketReportFut",
+    "fixture_body_persisted": false,
+    "http_status": 200,
+    "response_byte_count": 2419,
+    "response_sha256": "6ffba33507099695e86ee01394f7722c1477608761f18ce0b728a9ffb999a244",
+    "retrieved_at": "2026-10-01T00:00:00Z",
+    "retry_count": 0,
+    "selected_contract_period": "202610",
+    "selected_date": "2026-09-29",
+    "simulated_acquisitions": 1,
+    "source_id": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI"
+  },
+  "frozen_a1_contract_sha256": "6d535e34defb1e82947f64ceec6df5e1859888fb3550e36e6ded1b6a7573d4fb",
+  "gate_id": "PHASE_I_I2_A3_PRE_NETWORK_GOVERNED_RUNNER_CLOSURE",
+  "governed_execution": {
+    "authorization_id": "umea-v1-0edcf69e913c7a57f5c2",
+    "batch_group_count": 1,
+    "batch_group_ids": [
+      "umeop-batch-v1-41c2cd4a5d80c21aaaf8"
+    ],
+    "bundle_id": "umeb-v1-af4325cabd1cf2b76884",
+    "candidate_authority_overlay_sha256": "8881cbfcac162bb51d9293d86fc3ad9da4ff7ce6706a7fa9dd1cb8c836386a18",
+    "claim_attempt_count": 1,
+    "claim_id": "umecl-v1-df5494c6ba729871c611",
+    "claim_state": "consumed_success",
+    "consumption_binding_id": "umeacb-v1-2014f9334303b3696fda",
+    "executable_operations": 2,
+    "execution_request_ids": [
+      "umereq-v2-d43a837a82da6feb1284",
+      "umereq-v2-fbdef5aa0471c3d6117f"
+    ],
+    "execution_request_schema": "unified_market_evidence_execution_request.v2",
+    "executor_id": "phase_i_i2_index_futures_context_executor",
+    "logical_operations": 2,
+    "network_request_estimate": 1,
+    "operation_ids": [
+      "umeop-op-v1-e706a162b4b2d93d586c",
+      "umeop-op-v1-c1b627ba23a0d7052d23"
+    ],
+    "owner_review_reference": "USER_CHAT_2026-10-01_PHASE_I_I2_A3_PRE_NETWORK_GOVERNED_RUNNER_CLOSURE",
+    "preflight_id": "umeopf-v1-8019581ff6ee41f0f7c0",
+    "receipt_id": "umerec-v1-00b4114e2f2cdae0ff80",
+    "request_schema": "unified_market_evidence_request.v3"
+  },
+  "live_execution_rearm_required": true,
+  "network": {
+    "TAIFEX": 0,
+    "TPEx": 0,
+    "TWSE": 0,
+    "live_execution_rearm_required": true,
+    "market_network_calls": 0,
+    "socket_connect_attempts": 0
+  },
+  "prior_live_authority": "USER_CHAT_2026-10-01_PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE",
+  "prior_live_authority_consumed": false,
+  "projection": {
+    "artifact_lineage": "PASS",
+    "audit_replay": "PASS",
+    "audit_v3_schema": "PASS",
+    "audit_v3_sha256": "d29aeb33381b03a76eb26a38f4bf8d18b52a12d7d1c96a96f3606f10cec13786",
+    "citation_lineage": "PASS",
+    "generated_control_package": "data/phase_i_i2_a3_p0/20261001T024129Z-4ab3ddc8",
+    "operation_result_count": 2,
+    "raw_payload_persistence": "NONE",
+    "result_replay": "PASS",
+    "result_v3_schema": "PASS",
+    "result_v3_sha256": "d9aa0d25fb2edf81f97ae1fa6ccaf1b3eae0006a5135a563f4108d316d708d5d"
+  },
+  "review_candidate_head": "6e590d59b97765af02df1e851dffa3f10a29eba9",
+  "review_candidate_tree": "ad935f8df43178439ba87e2a659a15abc57de700",
+  "runtime_boundary": {
+    "a3_live_acceptance": "NOT_YET_EXECUTED",
+    "default_registry_i2_executor_present": false,
+    "i1_active_sources": 3,
+    "i2_active_sources": 0,
+    "i2_production_routes": 0,
+    "i3_started": false,
+    "mcp_tool_count": 6,
+    "merge_authorized": false,
+    "phase_j_started": false,
+    "production_activation": "NOT_AUTHORIZED",
+    "selected_production_executor": null
+  },
+  "schema_version": "phase_i_i2_a3_pre_network_governed_runner_candidate.v1",
+  "security_master": {
+    "release_id": "security-master-20260926T151841Z",
+    "release_index_sha256": "665d69e53588fa6cd723e434902946a43ac4f712920b0c4ec2adf91b556f4c10",
+    "release_manifest_sha256": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+    "selected_targets": [
+      {
+        "canonical_target_id": "TWSE:1101",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0001101004",
+        "market": "TWSE",
+        "security_code": "1101",
+        "security_name_en": null,
+        "security_name_zh": "台泥"
+      },
+      {
+        "canonical_target_id": "TWSE:1102",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0001102002",
+        "market": "TWSE",
+        "security_code": "1102",
+        "security_name_en": null,
+        "security_name_zh": "亞泥"
+      }
+    ]
+  },
+  "starting_main": "846c3f8f4c76862d8c76aeba3acdbf0f3dc44af1",
+  "status": "PRE_NETWORK_GOVERNED_RUNNER_READY_FOR_INDEPENDENT_REVIEW",
+  "validation": {
+    "focused": { "passed": 56, "skipped": 0, "deselected": 0 },
+    "default_ci": { "passed": 832, "skipped": 1, "deselected": 5 },
+    "full_current": { "passed": 1205, "skipped": 1, "deselected": 5 },
+    "i2_a1_validator": "PASS",
+    "i2_a2_validator": "PASS",
+    "i2_a3_p0_validator": "PASS",
+    "i1_contract_candidate_activation_validators": "PASS",
+    "phase_h_v3_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS",
+    "mcp_tool_count": 6,
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "market_network_calls": 0
+  }
+}

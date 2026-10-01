@@ -34,6 +34,7 @@ def build_execution_request_projection(
 ) -> tuple[dict, list[str]]:
     parameters = operation.get("parameters")
     is_recent_performance = binding.get("capability_id") == "recent_performance"
+    is_index_futures_context = binding.get("capability_id") == "index_futures_context"
     lookback_trading_days = None
     if is_recent_performance:
         if not isinstance(parameters, dict) or set(parameters) != {"lookback_trading_days"}:
@@ -59,7 +60,7 @@ def build_execution_request_projection(
 
     request_version = (
         "unified_market_evidence_execution_request.v2"
-        if is_recent_performance
+        if is_recent_performance or is_index_futures_context
         else "unified_market_evidence_execution_request.v1"
     )
     identity_body = {
@@ -84,8 +85,10 @@ def build_execution_request_projection(
     }
     if is_recent_performance:
         identity_body["parameters"] = {"lookback_trading_days": lookback_trading_days}
+    elif is_index_futures_context:
+        identity_body["parameters"] = {}
     req_hash = sha256_json(identity_body)
-    req_id_prefix = "umereq-v2-" if is_recent_performance else "umereq-v1-"
+    req_id_prefix = "umereq-v2-" if request_version.endswith(".v2") else "umereq-v1-"
     req_id = req_id_prefix + req_hash[:20]
 
     request = {
@@ -114,6 +117,8 @@ def build_execution_request_projection(
     }
     if is_recent_performance:
         request["parameters"] = {"lookback_trading_days": lookback_trading_days}
+    elif is_index_futures_context:
+        request["parameters"] = {}
     schema_path = REQUEST_SCHEMA_PATHS[request_version]
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     if list(Draft202012Validator(schema).iter_errors(request)):

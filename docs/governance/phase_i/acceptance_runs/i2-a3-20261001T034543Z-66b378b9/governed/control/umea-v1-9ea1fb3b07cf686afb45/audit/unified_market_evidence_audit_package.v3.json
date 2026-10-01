@@ -1,0 +1,203 @@
+{
+  "artifact_inventory": [
+    {
+      "byte_size": 1620,
+      "evidence_contract": "index_futures_context_evidence.v1",
+      "item_count": 1,
+      "relative_path": "evidence/phase_i/i2/umeop-op-v1-c1b627ba23a0d7052d23.json",
+      "schema_version": "index_futures_context_evidence.v1",
+      "sha256": "be53b8bf89d65c2e6a5caf628e80215786d9938ee31c05731d9fc3c4268df12e"
+    },
+    {
+      "byte_size": 1620,
+      "evidence_contract": "index_futures_context_evidence.v1",
+      "item_count": 1,
+      "relative_path": "evidence/phase_i/i2/umeop-op-v1-e706a162b4b2d93d586c.json",
+      "schema_version": "index_futures_context_evidence.v1",
+      "sha256": "02334f8ad3ac4124542dcb06baacdeb89cd5cd0b6db3dca44d6dd7b90c96ddd9"
+    }
+  ],
+  "audit_package_hash": "263424589355ccbb13abb081cdfedac923190b2a67496835a0623fe1583aaf24",
+  "audit_package_id": "umeap-v3-0ea25de785f5d12e6481",
+  "authorization_identity": {
+    "authorization_hash": "9ea1fb3b07cf686afb45abe566ec3f160404ef26cea75d7343896b8f62c3642f",
+    "authorization_id": "umea-v1-9ea1fb3b07cf686afb45",
+    "schema_version": "unified_market_evidence_execution_authorization.v1",
+    "scope_hash": "278902afebae070b8a581f5d6a93663613677c9d19fa013f055572e95623a4d4"
+  },
+  "bundle_identity": {
+    "bundle_hash": "fa79fbe28cc548432de2eda4efc2f35e1437aae87ac561ecaa069b07703e73f1",
+    "bundle_id": "umeb-v1-fa79fbe28cc548432de2",
+    "finalized_at": "2026-10-01T03:45:43Z",
+    "overall_status": "succeeded",
+    "schema_version": "unified_market_evidence_bundle.v1",
+    "total_item_count": 2
+  },
+  "caveats": [],
+  "citation_to_operation_map": [
+    {
+      "artifact_hash": "02334f8ad3ac4124542dcb06baacdeb89cd5cd0b6db3dca44d6dd7b90c96ddd9",
+      "artifact_relative_path": "evidence/phase_i/i2/umeop-op-v1-e706a162b4b2d93d586c.json",
+      "canonical_target_id": "TWSE:1101",
+      "capability_id": "index_futures_context",
+      "citation_id": "cite-e98436d021e0ca26",
+      "executor_id": "phase_i_i2_index_futures_context_executor",
+      "operation_id": "umeop-op-v1-e706a162b4b2d93d586c",
+      "requested_data_need": "index_futures_context"
+    },
+    {
+      "artifact_hash": "be53b8bf89d65c2e6a5caf628e80215786d9938ee31c05731d9fc3c4268df12e",
+      "artifact_relative_path": "evidence/phase_i/i2/umeop-op-v1-c1b627ba23a0d7052d23.json",
+      "canonical_target_id": "TWSE:1102",
+      "capability_id": "index_futures_context",
+      "citation_id": "cite-c6e866e5f50f58b3",
+      "executor_id": "phase_i_i2_index_futures_context_executor",
+      "operation_id": "umeop-op-v1-c1b627ba23a0d7052d23",
+      "requested_data_need": "index_futures_context"
+    }
+  ],
+  "claim_identity": {
+    "atomic_claim_hash": "cc03d1c3a38120eb5dfec5def541cd681eb94b25f6b438f12107e109ed25c0d0",
+    "claim_id": "umecl-v1-20db455904241eb3e702",
+    "finalized_record_hash": "33d402bd9e579f0670ee220dfac523ea38aef381cddf6ea5065a68717962536b",
+    "schema_version": "unified_market_evidence_consumption_record.v1"
+  },
+  "integrity_verification": {
+    "all_artifact_hashes_verified": true,
+    "bundle_hash_verified": true,
+    "receipt_hash_verified": true,
+    "result_hash_verified": true
+  },
+  "operation_lineage": [
+    {
+      "artifact_references": [
+        {
+          "byte_size": 1620,
+          "item_count": 1,
+          "relative_path": "evidence/phase_i/i2/umeop-op-v1-c1b627ba23a0d7052d23.json",
+          "schema_version": "index_futures_context_evidence.v1",
+          "sha256": "be53b8bf89d65c2e6a5caf628e80215786d9938ee31c05731d9fc3c4268df12e"
+        }
+      ],
+      "canonical_target_ids": [
+        "TWSE:1102"
+      ],
+      "capability_id": "index_futures_context",
+      "error_code": null,
+      "evidence_contract": "index_futures_context_evidence.v1",
+      "executor_id": "phase_i_i2_index_futures_context_executor",
+      "market": "TWSE",
+      "operation_id": "umeop-op-v1-c1b627ba23a0d7052d23",
+      "result_item_count": 1,
+      "status": "succeeded",
+      "warnings": [
+        "Descriptive TAIFEX TX regular-session context only; no signal, basis, or causation interpretation."
+      ]
+    },
+    {
+      "artifact_references": [
+        {
+          "byte_size": 1620,
+          "item_count": 1,
+          "relative_path": "evidence/phase_i/i2/umeop-op-v1-e706a162b4b2d93d586c.json",
+          "schema_version": "index_futures_context_evidence.v1",
+          "sha256": "02334f8ad3ac4124542dcb06baacdeb89cd5cd0b6db3dca44d6dd7b90c96ddd9"
+        }
+      ],
+      "canonical_target_ids": [
+        "TWSE:1101"
+      ],
+      "capability_id": "index_futures_context",
+      "error_code": null,
+      "evidence_contract": "index_futures_context_evidence.v1",
+      "executor_id": "phase_i_i2_index_futures_context_executor",
+      "market": "TWSE",
+      "operation_id": "umeop-op-v1-e706a162b4b2d93d586c",
+      "result_item_count": 1,
+      "status": "succeeded",
+      "warnings": [
+        "Descriptive TAIFEX TX regular-session context only; no signal, basis, or causation interpretation."
+      ]
+    }
+  ],
+  "phase_h_governance": {
+    "evidence_artifact_references": [],
+    "h4_derivations": [],
+    "source_attempts": []
+  },
+  "phase_i_evidence": {
+    "evidence_artifact_references": [
+      {
+        "capability_id": "index_futures_context",
+        "relative_path": "evidence/phase_i/i2/umeop-op-v1-c1b627ba23a0d7052d23.json",
+        "schema_version": "index_futures_context_evidence.v1",
+        "sha256": "be53b8bf89d65c2e6a5caf628e80215786d9938ee31c05731d9fc3c4268df12e"
+      },
+      {
+        "capability_id": "index_futures_context",
+        "relative_path": "evidence/phase_i/i2/umeop-op-v1-e706a162b4b2d93d586c.json",
+        "schema_version": "index_futures_context_evidence.v1",
+        "sha256": "02334f8ad3ac4124542dcb06baacdeb89cd5cd0b6db3dca44d6dd7b90c96ddd9"
+      }
+    ]
+  },
+  "plan_identity": {
+    "plan_hash": "487a7af18d3b643a1e29f14abff5debe9a2d6ff793354d97e86359bcbbe4faa7",
+    "plan_id": "umeop-v1-487a7af18d3b643a1e29",
+    "plan_status": "plan_ready",
+    "schema_version": "unified_market_evidence_orchestration_plan.v1"
+  },
+  "projector_metadata": {
+    "calculated_at_source": "cli_calculated_at",
+    "canonicalization_version": "m8r_05b_03_canonical_v1",
+    "projected_at": "2026-10-01T03:45:43Z",
+    "projector_version": "m8r_05c_v1_3",
+    "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at"
+  },
+  "receipt_identity": {
+    "execution_receipt_hash": "2114d2a470f4928112e83864e7d82024829e25b2b2af51c6a84b3694adca7f98",
+    "execution_receipt_id": "umerec-v1-2114d2a470f4928112e8",
+    "failed_operations": 0,
+    "finalized_at": "2026-10-01T03:45:43Z",
+    "overall_status": "succeeded",
+    "schema_version": "unified_market_evidence_execution_receipt.v1",
+    "succeeded_operations": 2,
+    "total_operations": 2
+  },
+  "replay_manifest": {
+    "atomic_claim_hash": "cc03d1c3a38120eb5dfec5def541cd681eb94b25f6b438f12107e109ed25c0d0",
+    "authorization_hash": "9ea1fb3b07cf686afb45abe566ec3f160404ef26cea75d7343896b8f62c3642f",
+    "authorization_id": "umea-v1-9ea1fb3b07cf686afb45",
+    "bundle_hash": "fa79fbe28cc548432de2eda4efc2f35e1437aae87ac561ecaa069b07703e73f1",
+    "bundle_id": "umeb-v1-fa79fbe28cc548432de2",
+    "claim_id": "umecl-v1-20db455904241eb3e702",
+    "consumption_binding_hash": "6dc7ef8b1196ad89429b9147608a732131011e5b66edcc16329cb69300544cc8",
+    "consumption_binding_id": "umeacb-v1-6dc7ef8b1196ad89429b",
+    "execution_receipt_hash": "2114d2a470f4928112e83864e7d82024829e25b2b2af51c6a84b3694adca7f98",
+    "execution_receipt_id": "umerec-v1-2114d2a470f4928112e8",
+    "finalized_record_hash": "33d402bd9e579f0670ee220dfac523ea38aef381cddf6ea5065a68717962536b",
+    "plan_hash": "487a7af18d3b643a1e29f14abff5debe9a2d6ff793354d97e86359bcbbe4faa7",
+    "plan_id": "umeop-v1-487a7af18d3b643a1e29",
+    "request_hash": "b40bc71ac954e5ea1ff8029dbaa7298a57e82c4d090f7d48885a41e7741baf29",
+    "request_id": "a3-live-6706c57e5bbc"
+  },
+  "request_identity": {
+    "request_hash": "b40bc71ac954e5ea1ff8029dbaa7298a57e82c4d090f7d48885a41e7741baf29",
+    "request_id": "a3-live-6706c57e5bbc",
+    "schema_version": "unified_market_evidence_request.v3"
+  },
+  "result_hash": "0620ca81fc98b8a0ae46191df6c7a218222735227969f9e4a009a1964a38eca6",
+  "result_id": "umeresult-v3-6895a082fed1e9b16472",
+  "result_relative_path": "ai_context/unified_market_evidence_result.v3.json",
+  "schema_version": "unified_market_evidence_audit_package.v3",
+  "target_validation_identity": {
+    "f3_validation_output_hash": "833ec4b39e342da601b5c08b78962f179a2ee39a53bdcc0bb8a38a2c6c4913e8",
+    "security_master_artifact_hashes": [
+      "665d69e53588fa6cd723e434902946a43ac4f712920b0c4ec2adf91b556f4c10",
+      "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856"
+    ],
+    "security_master_release_id": "security-master-20260926T151841Z",
+    "security_master_release_manifest_hash": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856"
+  },
+  "warnings": []
+}

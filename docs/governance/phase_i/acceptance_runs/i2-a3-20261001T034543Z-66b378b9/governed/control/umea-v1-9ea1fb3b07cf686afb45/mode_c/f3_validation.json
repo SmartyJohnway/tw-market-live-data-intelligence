@@ -1,0 +1,168 @@
+{
+  "blocking_issues": [],
+  "capability_results": [
+    {
+      "capability_id": "index_futures_context",
+      "data_need_index": 0,
+      "known_limitations": [
+        "TAIFEX TX regular session only; standard monthly outright series only",
+        "TPEx targets, after-hours, weekly series, calendar spreads, MTX/TMF, options, and other products are unsupported",
+        "currentness is unknown; no production route or active source exists; the A2 implementation is a dormant candidate only",
+        "no history, historical lookup/backfill, rolling futures, continuous-contract synthesis, polling, scheduler, or background refresh",
+        "no basis/premium-discount, signals, bullish/bearish interpretation, or target-specific causation"
+      ],
+      "priority": "required",
+      "reason_codes": [],
+      "status": "runtime_executable"
+    }
+  ],
+  "capability_validation_status": "valid",
+  "limits": {
+    "hard_target_limit": 50,
+    "operation_count": 0,
+    "operation_count_computed": false,
+    "orchestrator_projection_required": true,
+    "target_count": 2
+  },
+  "normalized_request": {
+    "data_needs": [
+      {
+        "parameters": {},
+        "priority": "required",
+        "type": "index_futures_context"
+      }
+    ],
+    "execution_mode": "execute",
+    "request_id": "a3-live-6706c57e5bbc",
+    "response_preferences": {
+      "include_audit_reference": true,
+      "include_caveats": true,
+      "include_citations": true,
+      "include_currentness": true
+    },
+    "schema_version": "unified_market_evidence_request.v3",
+    "targets": [
+      {
+        "client_target_reference": "TWSE:1101",
+        "input": "1101",
+        "market_hint": "TWSE",
+        "resolution_requirement": "exact"
+      },
+      {
+        "client_target_reference": "TWSE:1102",
+        "input": "1102",
+        "market_hint": "TWSE",
+        "resolution_requirement": "exact"
+      }
+    ]
+  },
+  "request_id": "a3-live-6706c57e5bbc",
+  "request_schema_status": "valid",
+  "schema_version": "unified_market_evidence_request_validation.v1",
+  "target_results": [
+    {
+      "candidate_matches": [
+        {
+          "canonical_target_id": "TWSE:1101",
+          "execution_eligibility": {
+            "reason_codes": [],
+            "status": "allowed"
+          },
+          "instrument_family": "company_share",
+          "instrument_id": "TW0001101004",
+          "instrument_type": "common_share",
+          "isin": "TW0001101004",
+          "listing_id": "TWSE:1101",
+          "market": "TWSE",
+          "release_id": "security-master-20260926T151841Z",
+          "release_manifest_hash": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+          "security_code": "1101",
+          "security_name_en": null,
+          "security_name_zh": "台泥"
+        }
+      ],
+      "canonical_identity": {
+        "canonical_target_id": "TWSE:1101",
+        "execution_eligibility": {
+          "reason_codes": [],
+          "status": "allowed"
+        },
+        "instrument_family": "company_share",
+        "instrument_id": "TW0001101004",
+        "instrument_type": "common_share",
+        "isin": "TW0001101004",
+        "listing_id": "TWSE:1101",
+        "market": "TWSE",
+        "release_id": "security-master-20260926T151841Z",
+        "release_manifest_hash": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+        "security_code": "1101",
+        "security_name_en": null,
+        "security_name_zh": "台泥"
+      },
+      "market_hint": "TWSE",
+      "original_input": "1101",
+      "reason_codes": [
+        "exact_scoped_code"
+      ],
+      "resolution_requirement": "exact",
+      "resolution_status": "resolved",
+      "target_index": 0
+    },
+    {
+      "candidate_matches": [
+        {
+          "canonical_target_id": "TWSE:1102",
+          "execution_eligibility": {
+            "reason_codes": [],
+            "status": "allowed"
+          },
+          "instrument_family": "company_share",
+          "instrument_id": "TW0001102002",
+          "instrument_type": "common_share",
+          "isin": "TW0001102002",
+          "listing_id": "TWSE:1102",
+          "market": "TWSE",
+          "release_id": "security-master-20260926T151841Z",
+          "release_manifest_hash": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+          "security_code": "1102",
+          "security_name_en": null,
+          "security_name_zh": "亞泥"
+        }
+      ],
+      "canonical_identity": {
+        "canonical_target_id": "TWSE:1102",
+        "execution_eligibility": {
+          "reason_codes": [],
+          "status": "allowed"
+        },
+        "instrument_family": "company_share",
+        "instrument_id": "TW0001102002",
+        "instrument_type": "common_share",
+        "isin": "TW0001102002",
+        "listing_id": "TWSE:1102",
+        "market": "TWSE",
+        "release_id": "security-master-20260926T151841Z",
+        "release_manifest_hash": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+        "security_code": "1102",
+        "security_name_en": null,
+        "security_name_zh": "亞泥"
+      },
+      "market_hint": "TWSE",
+      "original_input": "1102",
+      "reason_codes": [
+        "exact_scoped_code"
+      ],
+      "resolution_requirement": "exact",
+      "resolution_status": "resolved",
+      "target_index": 1
+    }
+  ],
+  "target_validation_status": "valid",
+  "validation_metadata": {
+    "allow_fixture_snapshot": false,
+    "deterministic": true,
+    "offline": true
+  },
+  "validation_status": "valid",
+  "warnings": []
+}
