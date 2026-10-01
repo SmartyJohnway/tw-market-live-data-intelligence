@@ -1,28 +1,21 @@
-"""Explicit one-shot A0 research probe, not a runtime executor.
-
-Bodies/whole-market rows remain in memory. Only bounded telemetry, inventory,
-one exact target observation per market and aggregate checks are persisted.
-An explicit reviewed local mapping must be supplied before any I/O.
+"""Offline A0 probe tooling, not an executor or A1 production contract.
+Historical live authority is permanently disarmed. Unresolved mapping blocks
+formal analysis; hypothetical test mappings never become committed authority.
 """
 from __future__ import annotations
-
 import argparse
 import hashlib
 import json
 import re
-import subprocess
 import sys
-import urllib.error
-import urllib.request
-from datetime import datetime, timezone, date
+from datetime import date
 from pathlib import Path
-
+from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 if not __debug__:
     raise RuntimeError("optimized_governance_execution_not_supported")
 sys.path.insert(0, str(ROOT))
 from scripts.m8r_filesystem_safety import atomic_write_bytes
-from scripts.m8r_06_01c2_mode_a_security_master_loader import load_active_mode_a_security_master
 
 BASELINE = "dafa5999c63d34d55a4665c6534aa77477448d79"
 AUTHORITY = "USER_CHAT_2026-10-01_PHASE_I_I3_A0_CASH_INSTITUTIONAL_FLOW_SOURCE_TIMING_SYMMETRY_PREFLIGHT_AUTHORIZATION"
@@ -46,52 +39,124 @@ PROTECTED = [
     "schemas/unified_market_evidence_result.v3.schema.json",
     "schemas/unified_market_evidence_audit_package.v3.schema.json",
 ]
+P0_AUTHORITY = "USER_CHAT_2026-10-01_PHASE_I_I3_A0_P0_OFFLINE_PROBE_HARNESS_CLOSURE_AUTHORIZATION"
+HISTORICAL_SHA = "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0"
+DEFAULT_MAPPING_AUTHORITY = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_CASH_INSTITUTIONAL_FLOW_PROBE_MAPPING_V1.json"
+MAPPING_SHA = "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c"
+NOT_APPLICABLE = "NOT_APPLICABLE_SOURCE_DOES_NOT_EXPOSE_COMPONENT_SPLIT"
 
 
-def stamp():
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+def deny_network(*args, **kwargs):
+    raise RuntimeError("P0_external_network_forbidden")
 
 
-def persist(record, *, first=False):
-    atomic_write_bytes(ROOT, RECORD, (json.dumps(record, ensure_ascii=False, indent=2) + "\n").encode(),
-                       allow_overwrite=not first)
+def fixed_get(*args, **kwargs):
+    # No transport delegate in P0, independent of Attempt 1 file existence.
+    # Future authority must introduce a separately reviewed new attempt latch.
+    raise ValueError("fresh_a0_rearm_not_authorized")
 
 
-class RejectRedirects(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, *args, **kwargs):
-        return None
-
-
-def fixed_get(market):
-    request = urllib.request.Request(ENDPOINTS[market], method="GET", headers={"Accept": "application/json"})
-    opener = urllib.request.build_opener(RejectRedirects())
-    try:
-        response = opener.open(request, timeout=30)
-    except urllib.error.HTTPError as error:
-        response = error
-    with response:
-        body = response.read(MAX_BYTES + 1)
-        status = getattr(response, "status", getattr(response, "code", None))
-        mime = response.headers.get("Content-Type", "").split(";", 1)[0].strip().lower()
-    return status, mime, body
+def run(authority, mappings=None):
+    raise ValueError("fresh_a0_rearm_not_authorized")
 
 
 def numeric(value):
-    if isinstance(value, bool):
-        raise ValueError("boolean_not_share_count")
-    text = str(value).strip().replace(",", "")
-    if not re.fullmatch(r"[+-]?[0-9]+", text):
+    if isinstance(value, bool) or not isinstance(value, (str, int)):
         raise ValueError("missing_or_invalid_integer")
-    return int(text)
-
-
-def official_date(value):
     text = str(value).strip()
-    if re.fullmatch(r"[0-9]{7}", text):
-        return date(int(text[:3]) + 1911, int(text[3:5]), int(text[5:7])).isoformat()
-    if re.fullmatch(r"[0-9]{8}", text):
-        return date(int(text[:4]), int(text[4:6]), int(text[6:8])).isoformat()
+    if not re.fullmatch(r"[+-]?(?:[0-9]+|[0-9]{1,3}(?:,[0-9]{3})+)", text):
+        raise ValueError("missing_or_invalid_integer")
+    return int(text.replace(",", ""))
+
+
+def official_date(value, encoding=None):
+    if not isinstance(value, str):
+        raise ValueError("unknown_official_date_encoding")
+    if encoding in (None, "ROC_YYYMMDD") and re.fullmatch(r"[0-9]{7}", value):
+        return date(int(value[:3]) + 1911, int(value[3:5]), int(value[5:])).isoformat()
+    if encoding in (None, "Gregorian_YYYYMMDD") and re.fullmatch(r"[0-9]{8}", value):
+        return date(int(value[:4]), int(value[4:6]), int(value[6:])).isoformat()
     raise ValueError("unknown_official_date_encoding")
+
+
+def validate_mapping(authority, *, require_resolved=False):
+    if authority.get("schema_version") != "phase_i_i3_a0_cash_institutional_flow_probe_mapping.v1":
+        raise ValueError("mapping_schema")
+    if authority.get("authority_scope") != "OFFLINE_PROBE_TOOLING_ONLY_NOT_A1_CONTRACT":
+        raise ValueError("mapping_scope")
+    markets = authority.get("markets", {})
+    if set(markets) != {"TWSE", "TPEX"}:
+        raise ValueError("mapping_markets")
+    for market, m in markets.items():
+        expected = ("證券代號", "date", "top_level", "Gregorian_YYYYMMDD") if market == "TWSE" else (
+            "SecuritiesCompanyCode", "Date", "row", "ROC_YYYMMDD")
+        if tuple(m.get(k) for k in ("code_field", "date_field", "date_source", "date_encoding")) != expected:
+            raise ValueError("mapping_identity_date")
+        if m.get("unit") != "share" or m.get("single_date_required") is not True:
+            raise ValueError("mapping_unit_date_policy")
+        core = m.get("required_common_core", {})
+        if set(core) != {*CORE, "institutional_total_net_shares"}:
+            raise ValueError("mapping_core")
+        fields = []
+        for group in CORE:
+            if set(core[group]) != {"buy_shares", "sell_shares", "net_shares"}:
+                raise ValueError("mapping_group")
+            for name, keys in core[group].items():
+                if keys is None:
+                    if not (market == "TPEX" and group == "dealer_total" and name == "sell_shares"
+                            and m["mapping_status"] == "UNRESOLVED"):
+                        raise ValueError("unjustified_unresolved_mapping")
+                    continue
+                if not isinstance(keys, list) or not keys or not all(isinstance(k, str) and k for k in keys):
+                    raise ValueError("mapping_expression")
+                fields.extend(keys)
+        total = core["institutional_total_net_shares"]
+        if not isinstance(total, list) or not total or not all(isinstance(k, str) and k for k in total):
+            raise ValueError("mapping_total")
+        fields.extend(total)
+        if len(set(fields)) != len(fields):
+            raise ValueError("duplicate_common_core_assignment")
+        optional = m.get("source_native_optional")
+        split = m.get("conditional_invariants", {}).get("dealer_component_split")
+        if not isinstance(optional, dict) or split not in ([], ["dealer_proprietary", "dealer_hedging"]):
+            raise ValueError("mapping_optional_conditional")
+        if any(g not in optional for g in split):
+            raise ValueError("mapping_component_groups")
+        for g, spec in optional.items():
+            if isinstance(spec, str) and spec:
+                continue
+            if not isinstance(spec, dict) or set(spec) != {"buy_shares", "sell_shares", "net_shares"}:
+                raise ValueError("mapping_optional_group")
+            if not all(isinstance(keys, list) and keys and all(isinstance(k, str) and k for k in keys) for keys in spec.values()):
+                raise ValueError("mapping_optional_expression")
+    if require_resolved and (authority.get("mapping_status") == "UNRESOLVED"
+                            or any(m["mapping_status"] == "UNRESOLVED" for m in markets.values())):
+        raise ValueError("mapping_unresolved_dealer_total_sell")
+    return authority
+
+
+def load_mapping(path=DEFAULT_MAPPING_AUTHORITY):
+    if Path(path).resolve() != DEFAULT_MAPPING_AUTHORITY.resolve():
+        raise ValueError("unreviewed_mapping_path")
+    body = DEFAULT_MAPPING_AUTHORITY.read_bytes()
+    if hashlib.sha256(body).hexdigest() != MAPPING_SHA:
+        raise ValueError("unreviewed_mapping_hash")
+    return validate_mapping(json.loads(body))
+
+
+def decode_payload(payload):
+    if isinstance(payload, bytes):
+        if len(payload) > MAX_BYTES:
+            raise ValueError("payload_bound")
+        def unique_pairs(pairs):
+            result = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError("duplicate_json_key")
+                result[key] = value
+            return result
+        return json.loads(payload.decode("utf-8-sig"), object_pairs_hook=unique_pairs)
+    return payload
 
 
 def unpack(market, payload):
@@ -99,173 +164,190 @@ def unpack(market, payload):
         if not isinstance(payload, dict) or not isinstance(payload.get("fields"), list) or not isinstance(payload.get("data"), list):
             raise ValueError("unexpected_twse_root_shape")
         fields = payload["fields"]
-        if len(set(fields)) != len(fields):
-            raise ValueError("duplicate_field_labels")
+        if not all(isinstance(f, str) for f in fields) or len(set(fields)) != len(fields):
+            raise ValueError("duplicate_or_invalid_field_labels")
         rows = []
         for row in payload["data"]:
             if not isinstance(row, list) or len(row) != len(fields):
                 raise ValueError("twse_row_width")
             rows.append(dict(zip(fields, row)))
         return fields, rows
-    if not isinstance(payload, list) or not all(isinstance(row, dict) for row in payload):
+    if market != "TPEX" or not isinstance(payload, list) or not all(isinstance(row, dict) for row in payload):
         raise ValueError("unexpected_tpex_root_shape")
     return sorted({key for row in payload for key in row}), payload
 
 
 def expression(row, keys):
-    values = [numeric(row[key]) for key in keys]
-    return sum(values)
+    if keys is None:
+        raise ValueError("mapping_unresolved_dealer_total_sell")
+    return sum(numeric(row[key]) for key in keys)
 
 
-def normalized(row, mapping):
-    result = {}
-    for group, fields in mapping["groups"].items():
-        result[group] = {name: expression(row, keys) for name, keys in fields.items()}
-        if any(result[group].get(name, 0) < 0 for name in ("buy_shares", "sell_shares")):
-            raise ValueError("negative_buy_sell")
-    result["institutional_total_net_shares"] = expression(row, mapping["total_net"])
+def group_values(row, fields):
+    result = {name: expression(row, keys) for name, keys in fields.items()}
+    if result["buy_shares"] < 0 or result["sell_shares"] < 0:
+        raise ValueError("negative_buy_sell")
     return result
 
 
+def normalized(row, mapping):
+    core = mapping["required_common_core"]
+    required = {g: group_values(row, core[g]) for g in CORE}
+    required["institutional_total_net_shares"] = expression(row, core["institutional_total_net_shares"])
+    optional = {}
+    for group, fields in mapping["source_native_optional"].items():
+        if isinstance(fields, str):
+            if fields in row:
+                optional[group] = row[fields]
+        elif all(k in row for keys in fields.values() for k in keys):
+            optional[group] = group_values(row, fields)
+    return {"common_core": required, "source_native_optional": optional}
+
+
 def arithmetic(rows, mapping):
-    checks = {name: {"rows_checked": 0, "rows_passed": 0, "rows_failed": 0,
-                     "missing_field_rows": 0, "first_failure_reason": None}
-              for name in CORE + ["dealer_component_net", "institutional_total_net"]}
+    checks = {name: {"status": "PASS", "rows_checked": 0, "rows_passed": 0,
+                     "rows_failed": 0, "missing_field_rows": 0, "first_failure_reason": None}
+              for name in CORE + ["institutional_total_net", "dealer_component_net"]}
+    split = mapping["conditional_invariants"]["dealer_component_split"]
     for row in rows:
         for name, check in checks.items():
+            if name == "dealer_component_net":
+                optional = mapping["source_native_optional"]
+                if not split or not all(k in row for g in split for keys in optional[g].values() for k in keys):
+                    continue
             check["rows_checked"] += 1
             try:
-                obs = normalized(row, mapping)
+                core = mapping["required_common_core"]
                 if name in CORE:
-                    item = obs[name]
+                    item = group_values(row, core[name])
                     valid = item["net_shares"] == item["buy_shares"] - item["sell_shares"]
-                elif name == "dealer_component_net":
-                    valid = obs["dealer_total"]["net_shares"] == obs["dealer_proprietary"]["net_shares"] + obs["dealer_hedging"]["net_shares"]
+                elif name == "institutional_total_net":
+                    valid = expression(row, core["institutional_total_net_shares"]) == sum(
+                        expression(row, core[g]["net_shares"]) for g in CORE)
                 else:
-                    valid = obs["institutional_total_net_shares"] == sum(obs[group]["net_shares"] for group in CORE)
+                    components = [group_values(row, mapping["source_native_optional"][g]) for g in split]
+                    dealer = group_values(row, core["dealer_total"])
+                    valid = all(dealer[k] == sum(c[k] for c in components) for k in dealer)
                 if not valid:
                     raise ValueError("arithmetic_inconsistency")
                 check["rows_passed"] += 1
             except (ValueError, KeyError) as error:
+                check["status"] = "FAIL"
                 check["rows_failed"] += 1
-                if isinstance(error, KeyError) or str(error) == "missing_or_invalid_integer":
+                if isinstance(error, KeyError):
                     check["missing_field_rows"] += 1
                 if check["first_failure_reason"] is None:
                     check["first_failure_reason"] = str(error)
+    if checks["dealer_component_net"]["rows_checked"] == 0:
+        checks["dealer_component_net"]["status"] = NOT_APPLICABLE
     return checks
 
 
-def preflight():
-    assert subprocess.check_output(["git", "rev-parse", "origin/main"], cwd=ROOT, text=True).strip() == BASELINE
-    assert subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() == BASELINE
-    assert subprocess.check_output(["git", "branch", "--show-current"], cwd=ROOT, text=True).strip() == BRANCH
-    assert not subprocess.check_output(["git", "diff", "--name-only"], cwd=ROOT, text=True).strip()
-    assert not subprocess.check_output(["git", "diff", "--cached", "--name-only"], cwd=ROOT, text=True).strip()
-    runtime = load_active_mode_a_security_master(security_master_root=ROOT / "data/security_master")
-    assert runtime.validation["valid"]
-    targets = []
-    for market, code in TARGETS.items():
-        target = runtime.lookup["by_canonical"][market + ":" + code]
-        cls = target["classification"]
-        assert (cls["market"], cls["instrument_family"], cls["instrument_type"], target["execution_eligibility"]["status"]) == (
-            market, "company_share", "common_share", "allowed")
-        targets.append({"canonical_target_id": target["canonical_target_id"], "market": market,
-            "security_code": code, "isin": target["identity"]["isin"], "record_hash": target["record_hash"],
-            "instrument_family": cls["instrument_family"], "instrument_type": cls["instrument_type"],
-            "execution_eligibility": "allowed"})
-    hashes = {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in PROTECTED}
-    return {"pointer": runtime.pointer, "validation": runtime.validation, "targets": targets}, hashes
+def analyze_market(market, payload, mapping):
+    # Pure helper for reviewed mappings OR explicitly hypothetical unit tests.
+    payload = decode_payload(payload)
+    fields, rows = unpack(market, payload)
+    if not rows or mapping["code_field"] not in fields:
+        raise ValueError("required_code_field_absent")
+    matches = [row for row in rows if row.get(mapping["code_field"]) == TARGETS[market]]
+    if len(matches) != 1:
+        raise ValueError("target_binding_failed")
+    raw_dates = ([payload[mapping["date_field"]]] if mapping["date_source"] == "top_level"
+                 else [row[mapping["date_field"]] for row in rows])
+    dates = sorted({official_date(d, mapping["date_encoding"]) for d in raw_dates})
+    if mapping["single_date_required"] and len(dates) != 1:
+        raise ValueError("unexpected_multiple_source_dates")
+    observations = [normalized(row, mapping) for row in rows]
+    checks = arithmetic(rows, mapping)
+    return {"market": market, "exact_matches": 1, "row_count": len(rows), "field_count": len(fields),
+            "normalized_trade_dates": dates,
+            "selected_observation": {"security_code": TARGETS[market], "trade_date": dates[0],
+                                    "unit": "share", **observations[rows.index(matches[0])]},
+            "arithmetic": checks,
+            "status": "FAIL" if any(c["rows_failed"] for c in checks.values()) else "PASS"}
 
 
-def run(authority, mappings):
-    if authority != AUTHORITY:
-        raise ValueError("owner_authority_required")
-    if not isinstance(mappings, dict) or set(mappings) != set(ENDPOINTS):
-        raise ValueError("offline_mapping_required_before_io")
-    for mapping in mappings.values():
-        if not isinstance(mapping, dict) or not {"code_field", "date_field", "groups", "total_net"} <= set(mapping):
-            raise ValueError("reviewed_mapping_fields_required_before_io")
-        if not set(CORE) <= set(mapping["groups"]):
-            raise ValueError("common_core_mapping_required_before_io")
-    identity, hashes = preflight()
-    record = {"schema_version": "phase_i_i3_a0_cash_institutional_flow_source_timing_symmetry_preflight.v1",
-        "owner_authority": AUTHORITY, "baseline_main": BASELINE, "branch": BRANCH, "probe_timestamp": stamp(),
-        "network_budget": {"TWSE": 1, "TPEX": 1, "total": 2, "retry": 0, "timeout_seconds": 30, "maximum_probe_bytes": MAX_BYTES, "redirects": "rejected"},
-        "actual_network_counts": {"TWSE": 0, "TPEX": 0, "other_market_data": 0}, "retry_count": 0,
-        "security_master": identity, "production_authority_sha256": hashes, "sources": {},
-        "status": "IN_PROGRESS", "a1_contract_freeze_authorized": False, "implementation_authorized": False,
-        "production_activation_authorized": False, "merge_authorized": False, "i3_other_families_authorized": False}
-    # Durable one-shot latch before any I/O; a second invocation cannot overwrite.
-    persist(record, first=True)
-    memory = {}
-    for market in ENDPOINTS:
-        info = {"endpoint": ENDPOINTS[market], "retrieved_at": stamp(), "get_count": 1}
-        record["actual_network_counts"][market] = 1
-        record["sources"][market] = info
-        persist(record)
-        try:
-            status, mime, body = fixed_get(market)
-            info.update(http_status=status, base_mime=mime, response_bytes=len(body),
-                        response_sha256=hashlib.sha256(body).hexdigest(), redirect_outcome="rejected" if status in range(300, 400) else "none")
-            if status != 200 or len(body) > MAX_BYTES:
-                raise ValueError("transport_status_or_bound")
-            payload = json.loads(body.decode("utf-8-sig"))
-            fields, rows = unpack(market, payload)
-            info.update(root_type=type(payload).__name__, top_level_keys=sorted(payload) if isinstance(payload, dict) else [],
-                        fields=fields, field_count=len(fields), row_count=len(rows))
-            memory[market] = (payload, rows)
-            code_fields = [mappings[market]["code_field"]]
-            if code_fields[0] not in fields:
-                raise ValueError("reviewed_code_field_not_in_payload")
-            matches = [(key, row) for key in code_fields for row in rows if str(row.get(key, "")).strip() == TARGETS[market]]
-            info["binding_match_count"] = len(matches)
-            print(json.dumps({"market": market, "inventory": info}, ensure_ascii=False), flush=True)
-            if len(matches) == 1:
-                key, selected = matches[0]
-                info["exact_code_field"] = key
-                # Discovery output only: one target's numeric observations, no raw row set.
-                selected_numbers = {}
-                for field, value in selected.items():
-                    if field not in {key, "Date", "證券名稱", "名稱", "SecuritiesName", "SecurityName", "Name"}:
-                        try: selected_numbers[field] = numeric(value)
-                        except ValueError: pass
-                print(json.dumps({"market": market, "fields": fields, "selected_numeric_observations": selected_numbers,
-                                  "source_date": payload.get("date") if isinstance(payload, dict) else selected.get("Date")},
-                                 ensure_ascii=False), flush=True)
-        except Exception as error:
-            info["error"] = type(error).__name__ + ":" + str(error)
-        persist(record)
-    try:
-        for market, (payload, rows) in memory.items():
-            mapping = mappings[market]
-            info = record["sources"][market]
-            selected = [row for row in rows if str(row.get(info["exact_code_field"], "")).strip() == TARGETS[market]]
-            if len(selected) != 1:
-                raise ValueError("target_binding_failed")
-            dates = sorted({str(row[mapping["date_field"]]) for row in rows}) if market == "TPEX" else [str(payload[mapping["date_field"]])]
-            normalized_dates = sorted({official_date(value) for value in dates})
-            info.update(source_mapping=mapping, unique_source_dates=dates, normalized_trade_dates=normalized_dates,
-                date_encoding="ROC compact YYYMMDD" if all(len(value) == 7 for value in dates) else "Gregorian YYYYMMDD",
-                selected_observation={"market": market, "security_code": TARGETS[market],
-                    "trade_date": official_date(selected[0][mapping["date_field"]]) if market == "TPEX" else official_date(dates[0]),
-                    "unit": "share", **normalized(selected[0], mapping)}, arithmetic=arithmetic(rows, mapping),
-                publication_phase_in_payload="absent",
-                publication_timestamp_fields=[field for field in info["fields"] if any(token in field.lower() for token in ("timestamp", "publish", "update", "time"))])
-        record["status"] = "PROBED_AWAITING_GOVERNANCE_REVIEW"
-    except Exception as error:
-        record["status"] = "HOLD"
-        record["failure_reason"] = type(error).__name__ + ":" + str(error)
-    record["raw_payload_persistence"] = "NONE"
-    record["raw_payload_policy_proof"] = "No body or whole-market rows are written; only telemetry, inventory, exact-target normalized observations and aggregates. Bodies remain process-memory only."
-    persist(record)
-    print(json.dumps(record, ensure_ascii=False, indent=2), flush=True)
+def analyze_acquired_payloads(twse_payload, tpex_payload, mapping_authority):
+    # Pure analysis: validate the supplied authority's pinned serialization,
+    # without loading a file, external cache, clock or transport.
+    authority_bytes = (json.dumps(mapping_authority, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    if hashlib.sha256(authority_bytes).hexdigest() != MAPPING_SHA:
+        raise ValueError("unreviewed_mapping_authority")
+    reviewed = mapping_authority
+    validate_mapping(reviewed, require_resolved=True)
+    sources = {m: analyze_market(m, p, reviewed["markets"][m])
+               for m, p in (("TWSE", twse_payload), ("TPEX", tpex_payload))}
+    return {"sources": sources, "status": "PASS" if all(s["status"] == "PASS" for s in sources.values()) else "HOLD",
+            "trade_date_symmetry": "same" if sources["TWSE"]["normalized_trade_dates"] == sources["TPEX"]["normalized_trade_dates"] else "different",
+            "field_symmetry_matrix": [{"group": g, "classification": "COMMON_CORE"} for g in ["identity", "trade_date", *CORE, "institutional_total_net_shares"]] +
+                [{"group": g, "classification": "SOURCE_NATIVE_OPTIONAL"} for g in ["foreign_dealer", "foreign_including_dealer", "security_name"]] +
+                [{"group": "dealer_proprietary_and_hedging", "classification": "NOT_EQUIVALENT"}],
+            "per_target_network_request_required": False, "raw_payload_persistence": "NONE", "market_network_calls": 0}
+
+
+def write_analysis(output_root, relative_path, result):
+    if Path(relative_path).name == Path(RECORD).name:
+        raise ValueError("historical_attempt_immutable")
+    allowed = {"sources", "status", "trade_date_symmetry", "field_symmetry_matrix",
+               "per_target_network_request_required", "raw_payload_persistence", "market_network_calls"}
+    if set(result) - allowed:
+        raise ValueError("unreviewed_output_fields")
+    for market, summary in result.get("sources", {}).items():
+        if market not in TARGETS or set(summary) != {"market", "exact_matches", "row_count", "field_count",
+                                                   "normalized_trade_dates", "selected_observation",
+                                                   "arithmetic", "status"}:
+            raise ValueError("unreviewed_source_summary")
+        observation = summary["selected_observation"]
+        if set(observation) != {"security_code", "trade_date", "unit", "common_core", "source_native_optional"}:
+            raise ValueError("unreviewed_observation")
+        if set(observation["common_core"]) != {*CORE, "institutional_total_net_shares"}:
+            raise ValueError("unreviewed_observation")
+        for name, values in observation["common_core"].items():
+            if name == "institutional_total_net_shares":
+                if type(values) is not int:
+                    raise ValueError("unreviewed_observation")
+            elif (set(values) != {"buy_shares", "sell_shares", "net_shares"}
+                  or not all(type(v) is int for v in values.values())):
+                raise ValueError("unreviewed_observation")
+        optional = observation["source_native_optional"]
+        specs = load_mapping()["markets"][market]["source_native_optional"]
+        if set(optional) - set(specs):
+            raise ValueError("unreviewed_optional_observation")
+        for name, values in optional.items():
+            if isinstance(specs[name], str):
+                if not isinstance(values, str) or len(values) > 128:
+                    raise ValueError("unreviewed_optional_observation")
+            elif (set(values) != {"buy_shares", "sell_shares", "net_shares"}
+                  or not all(type(v) is int for v in values.values())):
+                raise ValueError("unreviewed_optional_observation")
+        if set(summary["arithmetic"]) != {*CORE, "institutional_total_net", "dealer_component_net"}:
+            raise ValueError("unreviewed_arithmetic_summary")
+        for check in summary["arithmetic"].values():
+            if set(check) != {"status", "rows_checked", "rows_passed", "rows_failed",
+                              "missing_field_rows", "first_failure_reason"}:
+                raise ValueError("unreviewed_arithmetic_summary")
+    atomic_write_bytes(Path(output_root), relative_path,
+                       (json.dumps(result, ensure_ascii=False, indent=2) + "\n").encode("utf-8"),
+                       allow_overwrite=False)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Offline only; live execution NOT re-armed")
+    parser.add_argument("--mapping-file", type=Path, default=DEFAULT_MAPPING_AUTHORITY)
+    parser.add_argument("--twse-fixture", type=Path)
+    parser.add_argument("--tpex-fixture", type=Path)
+    parser.add_argument("--owner-authorization-reference", default=P0_AUTHORITY)
+    args = parser.parse_args(argv)
+    if args.owner_authorization_reference != P0_AUTHORITY:
+        raise ValueError("fresh_a0_rearm_not_authorized")
+    with patch("socket.socket.connect", deny_network), patch("socket.create_connection", deny_network):
+        mapping = load_mapping(args.mapping_file)
+        validate_mapping(mapping, require_resolved=True)
+        if args.twse_fixture is None or args.tpex_fixture is None:
+            raise ValueError("offline_fixture_paths_required")
+        result = analyze_acquired_payloads(args.twse_fixture.read_bytes(), args.tpex_fixture.read_bytes(), mapping)
+        print(json.dumps(result, ensure_ascii=True))
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--owner-authorization-reference", required=True)
-    parser.add_argument("--mapping-file", type=Path, required=True)
-    args = parser.parse_args()
-    # Historical A0 authorization is already consumed. The durable record latch
-    # refuses another invocation; no CLI retry or stdin-dependent closure.
-    run(args.owner_authorization_reference, json.loads(args.mapping_file.read_text(encoding="utf-8")))
+    main()

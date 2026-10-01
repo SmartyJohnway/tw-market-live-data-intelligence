@@ -1,0 +1,225 @@
+{
+  "schema_version": "phase_i_i3_a0_p0_offline_probe_harness_closure.v1",
+  "owner_authority": "USER_CHAT_2026-10-01_PHASE_I_I3_A0_P0_OFFLINE_PROBE_HARNESS_CLOSURE_AUTHORIZATION",
+  "baseline_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "starting_pr": 300,
+  "starting_head": "8a04fbd0a6749b5b52428bffafadd4ff2a84ecab",
+  "starting_tree": "323c054b67935dd44f98c64634d48d237ed87a01",
+  "historical_attempt_1": {
+    "status": "HOLD",
+    "record_sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+    "TWSE_get_consumed": 1,
+    "TPEX_get_consumed": 1,
+    "retry": 0,
+    "immutable": true
+  },
+  "mapping_authority": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_CASH_INSTITUTIONAL_FLOW_PROBE_MAPPING_V1.json",
+    "sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
+    "mapping_status": "UNRESOLVED"
+  },
+  "stdin_dependency": "absent",
+  "arbitrary_local_mapping": "rejected",
+  "offline_fixture_proof": {
+    "TWSE": {
+      "market": "TWSE",
+      "exact_matches": 1,
+      "row_count": 2,
+      "field_count": 19,
+      "normalized_trade_dates": [
+        "2026-09-30"
+      ],
+      "selected_observation": {
+        "security_code": "1101",
+        "trade_date": "2026-09-30",
+        "unit": "share",
+        "common_core": {
+          "foreign_and_mainland_excluding_foreign_dealer": {
+            "buy_shares": 100,
+            "sell_shares": 40,
+            "net_shares": 60
+          },
+          "investment_trust": {
+            "buy_shares": 100,
+            "sell_shares": 40,
+            "net_shares": 60
+          },
+          "dealer_total": {
+            "buy_shares": 30,
+            "sell_shares": 10,
+            "net_shares": 20
+          },
+          "institutional_total_net_shares": 140
+        },
+        "source_native_optional": {
+          "dealer_proprietary": {
+            "buy_shares": 30,
+            "sell_shares": 10,
+            "net_shares": 20
+          },
+          "dealer_hedging": {
+            "buy_shares": 0,
+            "sell_shares": 0,
+            "net_shares": 0
+          },
+          "foreign_dealer": {
+            "buy_shares": 0,
+            "sell_shares": 0,
+            "net_shares": 0
+          },
+          "security_name": "SYNTHETIC TEST ONLY"
+        }
+      },
+      "arithmetic": {
+        "foreign_and_mainland_excluding_foreign_dealer": {
+          "status": "PASS",
+          "rows_checked": 2,
+          "rows_passed": 2,
+          "rows_failed": 0,
+          "missing_field_rows": 0,
+          "first_failure_reason": null
+        },
+        "investment_trust": {
+          "status": "PASS",
+          "rows_checked": 2,
+          "rows_passed": 2,
+          "rows_failed": 0,
+          "missing_field_rows": 0,
+          "first_failure_reason": null
+        },
+        "dealer_total": {
+          "status": "PASS",
+          "rows_checked": 2,
+          "rows_passed": 2,
+          "rows_failed": 0,
+          "missing_field_rows": 0,
+          "first_failure_reason": null
+        },
+        "institutional_total_net": {
+          "status": "PASS",
+          "rows_checked": 2,
+          "rows_passed": 2,
+          "rows_failed": 0,
+          "missing_field_rows": 0,
+          "first_failure_reason": null
+        },
+        "dealer_component_net": {
+          "status": "PASS",
+          "rows_checked": 2,
+          "rows_passed": 2,
+          "rows_failed": 0,
+          "missing_field_rows": 0,
+          "first_failure_reason": null
+        }
+      },
+      "status": "PASS"
+    },
+    "TPEX": {
+      "status": "BLOCKED_UNRESOLVED_AGGREGATE_DEALER_SELL",
+      "formal_full_path": "NOT_PROVEN",
+      "test_only_engine_hypothesis_is_not_source_authority": true
+    }
+  },
+  "test_only_tpex_mechanics": {
+    "scope": "HYPOTHETICAL_MAPPING_NOT_SOURCE_AUTHORITY",
+    "sell_key_hypothesis": "Dealers-TotalSell",
+    "rows_checked": 2,
+    "exact_target_matches": 1,
+    "trade_date": "2026-09-30",
+    "unit": "share",
+    "common_core_arithmetic": "PASS",
+    "dealer_component_split": "NOT_APPLICABLE_SOURCE_DOES_NOT_EXPOSE_COMPONENT_SPLIT",
+    "cross_market_source_semantics": "NOT_PROVEN"
+  },
+  "symmetry_result": "NOT_PROVEN: required TPEx aggregate dealer sell mapping unresolved; synthetic arithmetic cannot adjudicate real field semantics",
+  "blocker": {
+    "candidates": [
+      "Dealers-TotalSell",
+      "Dealers -TotalSell"
+    ],
+    "selected": null,
+    "reason": "No offline official institutional-flow schema evidence found. Attempt 1 field inventory proves both keys exist, not which is the aggregate dealer sell observation.",
+    "offline_search_scope": [
+      "repository docs/scripts/tests/data file/key search",
+      "D:/Codex-Workspace/docs/tw-market-live-data-intelligence file inventory",
+      "docs/protocol/TPEX_OPENAPI_FIELD_DICTIONARY.md",
+      "docs/protocol/TPEX_OPENAPI_PROTOCOL.md"
+    ],
+    "unrelated_endpoint_dictionary_not_repurposed": true
+  },
+  "market_network_calls": 0,
+  "actual_network_counts": {
+    "TWSE": 0,
+    "TPEX": 0,
+    "TAIFEX": 0,
+    "other_market_data": 0
+  },
+  "network_denial": [
+    "socket.socket.connect",
+    "socket.create_connection",
+    "probe runner has no network/subprocess import or live delegate"
+  ],
+  "raw_payload_persistence": "NONE",
+  "raw_persistence_proof": "Synthetic fixtures are test source data only. Generated summaries contain normalized selected observations and aggregate checks, not fields/data/raw rows or bodies. Contained write tests reject traversal, raw fields, and historical Attempt 1 filename.",
+  "production_authority_changed": false,
+  "runtime": {
+    "I1_active_sources": 3,
+    "I1_routes": 2,
+    "I2_active_sources": 1,
+    "I2_routes": 1,
+    "I2_selected_executor": "phase_i_i2_index_futures_context_executor",
+    "I3_capability_present": false,
+    "MCP": 6
+  },
+  "future_attempt_boundary": {
+    "historical_authority_reuse": "REJECTED_BEFORE_IO",
+    "fixed_get": "REJECTED_BEFORE_IO",
+    "future_authority": "NOT_ISSUED",
+    "future_attempt_record": "Distinct Attempt 2 filename required; historical Attempt 1 name rejected by contained summary writer",
+    "rearm_recommendation": "NONE"
+  },
+  "validation": {
+    "status": "PASS_OFFLINE_CHECKS_NOT_P0_SEMANTIC_PASS",
+    "focused": {
+      "passed": 54,
+      "skipped": 0,
+      "deselected": 0
+    },
+    "default_ci": {
+      "passed": 932,
+      "skipped": 1,
+      "deselected": 5
+    },
+    "full_current": {
+      "passed": 1305,
+      "skipped": 1,
+      "deselected": 5
+    },
+    "historical_a0_record_validator": "PASS_HISTORICAL_HOLD_PRESERVED",
+    "mapping_validator": "PASS_INTEGRITY_MAPPING_UNRESOLVED",
+    "p0_validator": "PASS_INTEGRITY_GATE_HOLD",
+    "i1_contract_validator": "PASS",
+    "i1_production_candidate_validator": "PASS",
+    "i1_activation_validator": "PASS",
+    "i2_a4_validator": "PASS",
+    "phase_h_validator": "PASS",
+    "portable_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS",
+    "MCP": 6,
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "crlf_aware_diff_check": "PASS",
+    "protected_runtime_bytes_vs_baseline": "IDENTICAL",
+    "network_denial_fixture": "ACTIVE_FOR_ALL_P0_TESTS_AND_VALIDATORS",
+    "raw_body_absence_and_contained_output_tests": "PASS"
+  },
+  "final_decision": "HOLD",
+  "fresh_a0_rearm_ready": false,
+  "fresh_a0_rearm_authorized": false,
+  "A1_authorized": false,
+  "implementation_authorized": false,
+  "production_activation_authorized": false,
+  "merge_authorized": false,
+  "I3_other_families_authorized": false,
+  "Phase_J_authorized": false
+}
