@@ -1,0 +1,609 @@
+{
+  "schema_version": "phase_i_i3_a0_cash_institutional_flow_source_timing_symmetry_preflight.v1",
+  "owner_authority": "USER_CHAT_2026-10-01_PHASE_I_I3_A0_CASH_INSTITUTIONAL_FLOW_SOURCE_TIMING_SYMMETRY_PREFLIGHT_AUTHORIZATION",
+  "baseline_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "branch": "phase-i/i3-a0-cash-institutional-flow-preflight",
+  "probe_timestamp": "2026-10-01T07:23:57Z",
+  "network_budget": {
+    "TWSE": 1,
+    "TPEX": 1,
+    "total": 2,
+    "retry": 0,
+    "timeout_seconds": 30,
+    "maximum_probe_bytes": 4194304,
+    "redirects": "rejected"
+  },
+  "actual_network_counts": {
+    "TWSE": 1,
+    "TPEX": 1,
+    "other_market_data": 0
+  },
+  "retry_count": 0,
+  "security_master": {
+    "pointer": {
+      "activated_at": "2026-09-26T15:21:02Z",
+      "release_id": "security-master-20260926T151841Z",
+      "release_index_sha256": "665d69e53588fa6cd723e434902946a43ac4f712920b0c4ec2adf91b556f4c10",
+      "release_manifest_schema_sha256": "e0e44ca6c335da386be38a9e7618189279cbb5089b8dbe3aba40df912e17962e",
+      "release_manifest_sha256": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+      "schema_version": "taiwan_market_identity_active_pointer.v1"
+    },
+    "validation": {
+      "valid": true,
+      "selection_id": "security-master-20260926T151841Z",
+      "release_id": "security-master-20260926T151841Z",
+      "release_manifest_hash": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+      "process_lifetime_immutable_selection": true
+    },
+    "targets": [
+      {
+        "canonical_target_id": "TWSE:1101",
+        "market": "TWSE",
+        "security_code": "1101",
+        "isin": "TW0001101004",
+        "record_hash": "fdc4ab1ddc4a517a2a204cc7ed4b9ef33ee79d6ac1e2856b3c2aa4c43cfb0e90",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "execution_eligibility": "allowed"
+      },
+      {
+        "canonical_target_id": "TPEX:5347",
+        "market": "TPEX",
+        "security_code": "5347",
+        "isin": "TW0005347009",
+        "record_hash": "fef0252ac6cdb244169d8aecd4ed4b127cff64db2f20dc593f114cd573772253",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "execution_eligibility": "allowed"
+      }
+    ]
+  },
+  "production_authority_sha256": {
+    "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json": "c245cc1bc28f12b3dcd087410ddc25f6e30861ec1ba34d1160d534a9c1661a83",
+    "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json": "c2835ca9a41aaaf25547e239db8832a6ddadd06a9da7282a04c3022c1fc82251",
+    "docs/data_capabilities/phase_i_i1_source_authority.v1.json": "fb7d3a172846b52b3783258fa5d19e10d648f3997940396fd148e2a89c4bc1ce",
+    "docs/data_capabilities/phase_i_i2_source_authority.v1.json": "8c7f39cc6eb8e6b1ba8f6153cc4c85af1be4c759720bddc40b24882b01b72e10",
+    "config/m8r_06_03_executor_registry_metadata.json": "518809f861cae1548122e1444f8de2702c50327161af6b4fdbacb477748d534c",
+    "scripts/m8r_06_03_production_adapter.py": "4553292fc5a4a49b55c3169194ea738bc981d6703a49b03c4bed62a72ca48e65",
+    "schemas/unified_market_evidence_request.v3.schema.json": "e11807c2d43dfa91cae90e4b266cc450724301dea7152313fe0ef0afc883e348",
+    "schemas/unified_market_evidence_result.v3.schema.json": "2c2092db493d183922b434e99922b2ed4409185ba67985f9b7fbb2639f21eb9b",
+    "schemas/unified_market_evidence_audit_package.v3.schema.json": "08d90c8756503715a0174deda3eecc484ac21e97f542a23e1e7530a0939abadb"
+  },
+  "sources": {
+    "TWSE": {
+      "endpoint": "https://www.twse.com.tw/rwd/zh/fund/T86?date=20260930&selectType=ALLBUT0999&response=json",
+      "retrieved_at": "2026-10-01T07:23:57Z",
+      "get_count": 1,
+      "http_status": 200,
+      "base_mime": "application/json",
+      "response_bytes": 192873,
+      "response_sha256": "c0f2cd9592edb75efc78c705d04d63c96c60814928540fc91ed0681185c27f6b",
+      "redirect_outcome": "none",
+      "root_type": "dict",
+      "top_level_keys": [
+        "data",
+        "date",
+        "fields",
+        "hints",
+        "notes",
+        "selectType",
+        "stat",
+        "title",
+        "total"
+      ],
+      "fields": [
+        "證券代號",
+        "證券名稱",
+        "外陸資買進股數(不含外資自營商)",
+        "外陸資賣出股數(不含外資自營商)",
+        "外陸資買賣超股數(不含外資自營商)",
+        "外資自營商買進股數",
+        "外資自營商賣出股數",
+        "外資自營商買賣超股數",
+        "投信買進股數",
+        "投信賣出股數",
+        "投信買賣超股數",
+        "自營商買賣超股數",
+        "自營商買進股數(自行買賣)",
+        "自營商賣出股數(自行買賣)",
+        "自營商買賣超股數(自行買賣)",
+        "自營商買進股數(避險)",
+        "自營商賣出股數(避險)",
+        "自營商買賣超股數(避險)",
+        "三大法人買賣超股數"
+      ],
+      "field_count": 19,
+      "row_count": 1341,
+      "binding_match_count": 1,
+      "exact_code_field": "證券代號",
+      "source_date": "20260930",
+      "unique_source_dates": [
+        "20260930"
+      ],
+      "normalized_trade_dates": [
+        "2026-09-30"
+      ],
+      "date_encoding": "Gregorian YYYYMMDD",
+      "binding_status": "PASS",
+      "publication_phase_in_payload": "absent",
+      "publication_phase_assessment_scope": "No explicit machine-readable phase field in observed top-level keys/field inventory; free-text notes/hints were not retained or exhaustively reviewed.",
+      "selected_observation": {
+        "canonical_target_id": "TWSE:1101",
+        "market": "TWSE",
+        "security_code": "1101",
+        "trade_date": "2026-09-30",
+        "unit": "share",
+        "foreign_and_mainland_excluding_foreign_dealer": {
+          "buy_shares": 65775475,
+          "sell_shares": 12946404,
+          "net_shares": 52829071
+        },
+        "investment_trust": {
+          "buy_shares": 4878000,
+          "sell_shares": 50000,
+          "net_shares": 4828000
+        },
+        "dealer_total": {
+          "buy_shares": 1689234,
+          "sell_shares": 738943,
+          "net_shares": 950291
+        },
+        "institutional_total_net_shares": 58607362,
+        "source_native_optional": {
+          "foreign_dealer": {
+            "buy_shares": 0,
+            "sell_shares": 0,
+            "net_shares": 0
+          },
+          "dealer_proprietary": {
+            "buy_shares": 389000,
+            "sell_shares": 133000,
+            "net_shares": 256000
+          },
+          "dealer_hedging": {
+            "buy_shares": 1300234,
+            "sell_shares": 605943,
+            "net_shares": 694291
+          }
+        }
+      },
+      "selected_observation_provenance": "Numeric/date observations printed by the single acquired in-memory response before EOF. Dealer total buy/sell are explicit sums of proprietary+hedging; source total net retained.",
+      "common_core_mapping": {
+        "foreign_and_mainland_excluding_foreign_dealer": {
+          "buy_shares": [
+            "外陸資買進股數(不含外資自營商)"
+          ],
+          "sell_shares": [
+            "外陸資賣出股數(不含外資自營商)"
+          ],
+          "net_shares": [
+            "外陸資買賣超股數(不含外資自營商)"
+          ]
+        },
+        "investment_trust": {
+          "buy_shares": [
+            "投信買進股數"
+          ],
+          "sell_shares": [
+            "投信賣出股數"
+          ],
+          "net_shares": [
+            "投信買賣超股數"
+          ]
+        },
+        "dealer_total": {
+          "buy_shares": [
+            "自營商買進股數(自行買賣)",
+            "自營商買進股數(避險)"
+          ],
+          "sell_shares": [
+            "自營商賣出股數(自行買賣)",
+            "自營商賣出股數(避險)"
+          ],
+          "net_shares": [
+            "自營商買賣超股數"
+          ],
+          "derivation": "sum proprietary and hedging; no foreign dealer addition"
+        },
+        "institutional_total_net_shares": [
+          "三大法人買賣超股數"
+        ]
+      }
+    },
+    "TPEX": {
+      "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_3insti_daily_trading",
+      "retrieved_at": "2026-10-01T07:23:58Z",
+      "get_count": 1,
+      "http_status": 200,
+      "base_mime": "application/json",
+      "response_bytes": 863557,
+      "response_sha256": "71dd2db7bcfa291ec86a1c6d2a919cb653f70e462ae971309f20b9526e71b0be",
+      "redirect_outcome": "none",
+      "root_type": "list",
+      "top_level_keys": [],
+      "fields": [
+        " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell",
+        "CompanyName",
+        "Date",
+        "Dealers -TotalSell",
+        "Dealers-Difference",
+        "Dealers-TotalBuy",
+        "Dealers-TotalSell",
+        "Foreign Dealers-Total Buy",
+        "Foreign Dealers-TotalSell",
+        "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference",
+        "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy",
+        "ForeignDealers-Difference",
+        "ForeignInvestorsInclude MainlandAreaInvestors-Difference",
+        "ForeignInvestorsIncludeMainlandAreaInvestors-TotalBuy",
+        "ForeignInvestorsIncludeMainlandAreaInvestors-TotalSell",
+        "SecuritiesCompanyCode",
+        "SecuritiesInvestmentTrustCompanies-Difference",
+        "SecuritiesInvestmentTrustCompanies-TotalBuy",
+        "SecuritiesInvestmentTrustCompanies-TotalSell",
+        "TotalDifference"
+      ],
+      "field_count": 20,
+      "row_count": 913,
+      "initial_discovery_match_count": 0,
+      "binding_status": "NOT_EVALUATED",
+      "binding_reason": "SecuritiesCompanyCode not in harness discovery allowlist; zero discovery matches is NOT proof that TPEX:5347 is absent.",
+      "code_field_discovered": "SecuritiesCompanyCode",
+      "date_field": "Date",
+      "date_encoding": "NOT_VERIFIED",
+      "unique_source_dates": null,
+      "normalized_trade_dates": null,
+      "selected_observation": null,
+      "publication_timestamp_in_field_inventory": "absent"
+    }
+  },
+  "status": "HOLD",
+  "a1_contract_freeze_authorized": false,
+  "implementation_authorized": false,
+  "production_activation_authorized": false,
+  "merge_authorized": false,
+  "i3_other_families_authorized": false,
+  "failure_reason": "EOFError:EOF when reading a line",
+  "raw_payload_persistence": "NONE",
+  "raw_payload_policy_proof": "No body or whole-market rows are written; only telemetry, inventory, exact-target normalized observations and aggregates. Bodies remain process-memory only.",
+  "final_decision": "HOLD / CONTRACT_REQUIRES_MORE_SOURCE_WORK",
+  "closure_failure": {
+    "origin": "probe harness, not demonstrated provider failure",
+    "code": "stdin_eof_before_semantic_closure",
+    "historical_error": "EOFError:EOF when reading a line",
+    "whole_market_rows_released_without_persistence": true,
+    "source_get_budget_consumed": true,
+    "another_get_authorized": false,
+    "tooling_correction": "Remove post-acquisition stdin dependency; require reviewed local mapping before I/O; existing durable latch prevents rerun.",
+    "executed_command": "python -u scripts/run_phase_i_i3_a0_preflight.py --owner-authorization-reference USER_CHAT_2026-10-01_PHASE_I_I3_A0_CASH_INSTITUTIONAL_FLOW_SOURCE_TIMING_SYMMETRY_PREFLIGHT_AUTHORIZATION",
+    "executed_tool_revision": "Initial uncommitted research tool before the offline mapping correction; no live rerun was performed.",
+    "transport_timestamp_semantics": "Recorded retrieved_at is the UTC acquisition attempt start, not an official source publication timestamp.",
+    "pre_network_focused_tests": "9 passed",
+    "post_probe_focused_tests": "13 passed / 0 skipped / 0 deselected"
+  },
+  "field_symmetry_matrix": [
+    {
+      "group": "identity",
+      "classification": "COMMON_CORE",
+      "twse_source_fields": [
+        "證券代號"
+      ],
+      "tpex_source_fields": [
+        "SecuritiesCompanyCode"
+      ],
+      "verification": "TWSE PASS; TPEx binding NOT_EVALUATED"
+    },
+    {
+      "group": "trade_date",
+      "classification": "COMMON_CORE",
+      "twse_source_fields": [
+        "date"
+      ],
+      "tpex_source_fields": [
+        "Date"
+      ],
+      "verification": "TWSE observed; TPEx values/encoding NOT_OBSERVED"
+    },
+    {
+      "group": "foreign_and_mainland_excluding_foreign_dealer",
+      "classification": "COMMON_CORE",
+      "twse_source_fields": [
+        "外陸資買進股數(不含外資自營商)",
+        "外陸資賣出股數(不含外資自營商)",
+        "外陸資買賣超股數(不含外資自營商)"
+      ],
+      "tpex_source_fields": [
+        " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell",
+        "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference",
+        "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy"
+      ],
+      "verification": "Candidate labels only; numeric equivalence NOT_PROVEN"
+    },
+    {
+      "group": "investment_trust",
+      "classification": "COMMON_CORE",
+      "twse_source_fields": [
+        "投信買進股數",
+        "投信賣出股數",
+        "投信買賣超股數"
+      ],
+      "tpex_source_fields": [
+        "SecuritiesInvestmentTrustCompanies-Difference",
+        "SecuritiesInvestmentTrustCompanies-TotalBuy",
+        "SecuritiesInvestmentTrustCompanies-TotalSell"
+      ],
+      "verification": "Candidate labels only; TPEx NOT_VALIDATED"
+    },
+    {
+      "group": "dealer_total",
+      "classification": "COMMON_CORE",
+      "twse_source_fields": [
+        "自營商買賣超股數",
+        "自營商買進股數(自行買賣)",
+        "自營商賣出股數(自行買賣)",
+        "自營商買賣超股數(自行買賣)",
+        "自營商買進股數(避險)",
+        "自營商賣出股數(避險)",
+        "自營商買賣超股數(避險)"
+      ],
+      "tpex_source_fields": [
+        "Dealers -TotalSell",
+        "Dealers-Difference",
+        "Dealers-TotalBuy",
+        "Dealers-TotalSell"
+      ],
+      "verification": "TWSE buy/sell derived; TPEx Dealers sell variants NOT_ADJUDICATED"
+    },
+    {
+      "group": "institutional_total_net_shares",
+      "classification": "COMMON_CORE",
+      "twse_source_fields": [
+        "三大法人買賣超股數"
+      ],
+      "tpex_source_fields": [
+        "TotalDifference"
+      ],
+      "verification": "TWSE selected invariant PASS; TPEx/dataset invariant NOT_PERFORMED"
+    },
+    {
+      "group": "foreign_dealer",
+      "classification": "SOURCE_NATIVE_OPTIONAL",
+      "twse_source_fields": [
+        "外資自營商買進股數",
+        "外資自營商賣出股數",
+        "外資自營商買賣超股數"
+      ],
+      "tpex_source_fields": [
+        "Foreign Dealers-Total Buy",
+        "Foreign Dealers-TotalSell",
+        "ForeignDealers-Difference"
+      ],
+      "verification": "Not added again to institutional total"
+    },
+    {
+      "group": "foreign_and_mainland_including_foreign_dealer",
+      "classification": "SOURCE_NATIVE_OPTIONAL",
+      "twse_source_fields": [],
+      "tpex_source_fields": [
+        "ForeignInvestorsInclude MainlandAreaInvestors-Difference",
+        "ForeignInvestorsIncludeMainlandAreaInvestors-TotalBuy",
+        "ForeignInvestorsIncludeMainlandAreaInvestors-TotalSell"
+      ],
+      "verification": "Not interchangeable with excluding-dealer core"
+    },
+    {
+      "group": "dealer_proprietary_and_hedging",
+      "classification": "NOT_EQUIVALENT",
+      "twse_source_fields": [
+        "自營商買進股數(自行買賣)",
+        "自營商賣出股數(自行買賣)",
+        "自營商買賣超股數(自行買賣)",
+        "自營商買進股數(避險)",
+        "自營商賣出股數(避險)",
+        "自營商買賣超股數(避險)"
+      ],
+      "tpex_source_fields": [],
+      "verification": "TWSE labels explicit; TPEx split equivalence not proved; do not map sell variants by guess"
+    },
+    {
+      "group": "security_name",
+      "classification": "SOURCE_NATIVE_OPTIONAL",
+      "twse_source_fields": [
+        "證券名稱"
+      ],
+      "tpex_source_fields": [
+        "CompanyName"
+      ],
+      "verification": "Metadata only; never binding fallback"
+    }
+  ],
+  "arithmetic_invariants": {
+    "required_scope": "whole acquired datasets",
+    "completed_scope": "TWSE selected observation only",
+    "whole_dataset": {
+      "TWSE": {
+        "foreign_net_equals_buy_minus_sell": {
+          "rows_available": 1341,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        },
+        "trust_net_equals_buy_minus_sell": {
+          "rows_available": 1341,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        },
+        "dealer_net_equals_buy_minus_sell": {
+          "rows_available": 1341,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        },
+        "dealer_net_equals_proprietary_plus_hedging": {
+          "rows_available": 1341,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        },
+        "institutional_total_without_foreign_dealer_double_count": {
+          "rows_available": 1341,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        }
+      },
+      "TPEX": {
+        "foreign_net_equals_buy_minus_sell": {
+          "rows_available": 913,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        },
+        "trust_net_equals_buy_minus_sell": {
+          "rows_available": 913,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        },
+        "dealer_net_equals_buy_minus_sell": {
+          "rows_available": 913,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        },
+        "dealer_net_equals_proprietary_plus_hedging": {
+          "rows_available": 913,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        },
+        "institutional_total_without_foreign_dealer_double_count": {
+          "rows_available": 913,
+          "rows_checked": 0,
+          "rows_passed": 0,
+          "rows_failed": null,
+          "missing_field_rows": null,
+          "first_failure_reason": "analysis not reached before harness EOF",
+          "status": "NOT_PERFORMED"
+        }
+      }
+    },
+    "twse_selected_row": {
+      "rows_checked": 1,
+      "rows_passed": 1,
+      "rows_failed": 0,
+      "checks": {
+        "foreign_net_equals_buy_minus_sell": "PASS",
+        "trust_net_equals_buy_minus_sell": "PASS",
+        "dealer_net_equals_buy_minus_sell": "PASS",
+        "dealer_net_equals_proprietary_plus_hedging": "PASS",
+        "institutional_total_without_foreign_dealer_double_count": "PASS"
+      }
+    }
+  },
+  "publication_timing_findings": {
+    "twse": {
+      "official_documentation_url": "https://eshop.twse.com.tw/zh/product/detail/c4c87ac184e44896a05fcab5a9d544ec",
+      "authority_scope": "Official daily product schedule, not public T86 machine-readable finality guarantee",
+      "preliminary_excluding_block_trades": "18:00 Asia/Taipei",
+      "including_block_trades": "20:00 Asia/Taipei",
+      "publication_phase_in_payload": "absent",
+      "a1_rule_frozen": false
+    },
+    "tpex": {
+      "official_semantic_reference": "https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge.php?l=zh-tw",
+      "field_inventory_has_date": true,
+      "publication_timestamp_field": "absent",
+      "exact_final_completion_time_proven": false,
+      "tpex_same_day_finality": "UNRESOLVED"
+    },
+    "unresolved": [
+      "TPEx actual Date values/encoding and target binding/numeric observations",
+      "Whole-dataset arithmetic for both sources",
+      "TPEx dealer variants exact meanings",
+      "Exact TPEx final publication time",
+      "Relation between TWSE product schedule and public T86 completion"
+    ]
+  },
+  "cross_market_symmetry": {
+    "identity_symmetry": "NOT_PROVEN",
+    "trade_date_symmetry": "not_observed",
+    "unit_symmetry": "NOT_PROVEN_IN_THIS_PROBE",
+    "participant_semantic_symmetry": "CANDIDATE_ONLY_NOT_PROVEN",
+    "field_grain_symmetry": "NOT_PROVEN",
+    "publication_timing_symmetry": "ASYMMETRIC_UNRESOLVED",
+    "transport_symmetry": "different valid JSON shapes; both transport-valid",
+    "design_principle": "semantic normalization required; transport normalization not required"
+  },
+  "same_source_batching": {
+    "whole_market_snapshot_observed": true,
+    "per_target_network_request_required": "NO for acquisition design; exact TPEx local binding still unproven",
+    "expected_unique_acquisitions": {
+      "TWSE": 1,
+      "TPEX": 1,
+      "mixed": 2
+    },
+    "runtime_implemented": false
+  },
+  "raw_persistence_verification": {
+    "raw_body_written": false,
+    "whole_market_rows_written": false,
+    "temporary_raw_files_created": false,
+    "result": "NONE",
+    "method": "Record-only contained-write paths inspected; working-tree inventory checked; no raw output path exists."
+  },
+  "production_containment": {
+    "catalog_routing_registry_modified": false,
+    "i1_active_sources": 3,
+    "i1_production_routes": 2,
+    "i2_active_sources": 1,
+    "i2_production_routes": 1,
+    "i2_selected_executor": "phase_i_i2_index_futures_context_executor",
+    "i3_production_capability_present": false,
+    "mcp_tool_count": 6
+  },
+  "decision_basis": "HOLD because governed analysis was incomplete after harness EOF. Both acquisitions succeeded. This proves neither source failure nor semantic equivalence/NO_GO. No further GET authorized.",
+  "offline_validation": {
+    "focused": "13 passed / 0 skipped / 0 deselected",
+    "default_ci": "878 passed / 1 skipped / 5 deselected",
+    "a0_record_validator": "PASS (consistency/containment only; A0 remains HOLD)",
+    "i1_contract_validator": "PASS",
+    "phase_h_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS / MCP=6",
+    "compileall": "PASS",
+    "normal_and_crlf_diff_checks": "PASS",
+    "full_current": "NOT_RUN: A0 evidence/tooling only; production contracts unchanged",
+    "profile_scope": "Existing default-ci profile untouched; new A0 tests run separately; no production test/config changes",
+    "additional_market_gets": 0,
+    "github_ci_success_claimed": false
+  }
+}
