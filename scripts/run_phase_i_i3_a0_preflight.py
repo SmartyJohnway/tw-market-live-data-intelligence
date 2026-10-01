@@ -43,6 +43,14 @@ P0_AUTHORITY = "USER_CHAT_2026-10-01_PHASE_I_I3_A0_P0_OFFLINE_PROBE_HARNESS_CLOS
 HISTORICAL_SHA = "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0"
 DEFAULT_MAPPING_AUTHORITY = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_CASH_INSTITUTIONAL_FLOW_PROBE_MAPPING_V1.json"
 MAPPING_SHA = "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c"
+ADJUDICATION_AUTHORITY_PATH = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_TPEX_DEALER_SELL_ADJUDICATION_V1.json"
+ADJUDICATION_AUTHORITY_SHA = "666108fdd187f3ec753acc2a258e3ea7bd9415cc371346b5f32dc231ea665240"
+DEALER_SELL_CANDIDATES = ("Dealers-TotalSell", "Dealers -TotalSell")
+TPEX_BUY_FIELD = "Dealers-TotalBuy"
+TPEX_NET_FIELD = "Dealers-Difference"
+TPEX_TOTAL_FIELD = "TotalDifference"
+TPEX_FOREIGN_NET_FIELD = "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference"
+TPEX_TRUST_NET_FIELD = "SecuritiesInvestmentTrustCompanies-Difference"
 NOT_APPLICABLE = "NOT_APPLICABLE_SOURCE_DOES_NOT_EXPOSE_COMPONENT_SPLIT"
 
 
@@ -142,6 +150,172 @@ def load_mapping(path=DEFAULT_MAPPING_AUTHORITY):
     if hashlib.sha256(body).hexdigest() != MAPPING_SHA:
         raise ValueError("unreviewed_mapping_hash")
     return validate_mapping(json.loads(body))
+
+
+def load_adjudication_authority():
+    body = ADJUDICATION_AUTHORITY_PATH.read_bytes()
+    if hashlib.sha256(body).hexdigest() != ADJUDICATION_AUTHORITY_SHA:
+        raise ValueError("unreviewed_adjudication_authority_hash")
+    return json.loads(body)
+
+
+def validate_adjudication_authority(authority):
+    if not isinstance(authority, dict):
+        raise ValueError("adjudication_authority_required")
+    candidates = authority.get("candidate_sell_fields")
+    expected_keys = {"schema_version", "authority_scope", "semantic_target", "buy_field", "net_field",
+                     "candidate_sell_fields", "selection_mode", "official_semantic_basis",
+                     "independent_institutional_total_invariant", "selection_status",
+                     "network_calls_authorized", "synthetic_values_are_not_source_authority"}
+    if set(authority) != expected_keys:
+        raise ValueError("unreviewed_adjudication_authority")
+    if (authority.get("schema_version") != "phase_i_i3_a0_tpex_dealer_sell_adjudication.v1"
+            or authority.get("authority_scope") != "OFFLINE_CANDIDATE_KEY_ADJUDICATION_ONLY"
+            or authority.get("semantic_target") != "dealer_total.sell_shares"
+            or authority.get("selection_mode") != "UNIQUE_WHOLE_DATASET_ARITHMETIC_MATCH"
+            or authority.get("buy_field") != TPEX_BUY_FIELD
+            or authority.get("net_field") != TPEX_NET_FIELD
+            or not isinstance(candidates, list)
+            or len(candidates) != len(set(candidates))
+            or set(candidates) != set(DEALER_SELL_CANDIDATES)
+            or authority.get("selection_status") != "UNRESOLVED_UNTIL_FRESH_SOURCE"):
+        raise ValueError("unreviewed_adjudication_authority")
+    expected_basis = {
+        "authority": "TPEx S35 official daily institutional trading semantic reference",
+        "reference": "https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge.php?l=zh-tw",
+        "dealer_aggregate": ["buy shares", "sell shares", "net shares"],
+        "dealer_proprietary": "separate optional detail",
+        "dealer_hedging": "separate optional detail",
+        "three_institution_total": "foreign/mainland excluding foreign dealer + investment trust + dealer aggregate",
+        "key_selection_limit": "S35 semantic object establishes the aggregate concept and total formula; it does not identify either OpenAPI sell key.",
+    }
+    if (authority.get("official_semantic_basis") != expected_basis
+            or authority.get("network_calls_authorized") != 0
+            or authority.get("synthetic_values_are_not_source_authority") is not True):
+        raise ValueError("adjudication_semantic_anchor")
+    invariant = authority.get("independent_institutional_total_invariant", {})
+    if invariant != {
+        "total_field": TPEX_TOTAL_FIELD,
+        "foreign_ex_dealer_net_field": TPEX_FOREIGN_NET_FIELD,
+        "investment_trust_net_field": TPEX_TRUST_NET_FIELD,
+        "dealer_net_field": TPEX_NET_FIELD,
+        "rule": "TotalDifference == foreign_ex_dealer_net + investment_trust_net + Dealers-Difference for every source row.",
+    }:
+        raise ValueError("adjudication_invariant_authority")
+    return authority
+
+
+def _candidate_stats(rows, candidate):
+    stats = {"candidate": candidate, "rows_checked": 0, "rows_passed": 0, "rows_failed": 0,
+             "missing_rows": 0, "first_failure": None}
+    if not rows:
+        stats["first_failure"] = "zero_rows"
+        return stats
+    if any(candidate not in row for row in rows):
+        stats["missing_rows"] = sum(candidate not in row for row in rows)
+        stats["rows_failed"] = stats["missing_rows"]
+        stats["first_failure"] = "candidate_field_absent"
+    for index, row in enumerate(rows, start=1):
+        if candidate not in row:
+            continue
+        stats["rows_checked"] += 1
+        try:
+            required = (TPEX_BUY_FIELD, candidate, TPEX_NET_FIELD)
+            if any(key not in row for key in required):
+                raise KeyError("required_field_absent")
+            values = [row[key] for key in required]
+            if any(isinstance(v, str) and v.strip().upper() in {"", "-", "NULL"} for v in values):
+                stats["missing_rows"] += 1
+                raise ValueError("missing_share_count")
+            buy, sell, net = [numeric(value) for value in values]
+            if buy < 0 or sell < 0:
+                raise ValueError("negative_share_count")
+            if buy - sell != net:
+                raise ValueError("arithmetic_mismatch")
+            stats["rows_passed"] += 1
+        except KeyError as error:
+            stats["missing_rows"] += 1
+            stats["rows_failed"] += 1
+            if stats["first_failure"] is None:
+                stats["first_failure"] = f"row_{index}:missing_required_field"
+        except ValueError as error:
+            stats["rows_failed"] += 1
+            reason = "missing_share_count" if str(error) == "missing_share_count" else (
+                "malformed_integer" if str(error) == "missing_or_invalid_integer" else str(error))
+            if stats["first_failure"] is None:
+                stats["first_failure"] = f"row_{index}:{reason}"
+    return stats
+
+
+def _institutional_total_stats(rows):
+    stats = {"rows_checked": 0, "rows_passed": 0, "rows_failed": 0,
+             "missing_rows": 0, "first_failure": None}
+    fields = (TPEX_TOTAL_FIELD, TPEX_FOREIGN_NET_FIELD, TPEX_TRUST_NET_FIELD, TPEX_NET_FIELD)
+    if not rows:
+        stats["first_failure"] = "zero_rows"
+        return stats
+    for index, row in enumerate(rows, start=1):
+        stats["rows_checked"] += 1
+        try:
+            if any(key not in row for key in fields):
+                missing = sum(key not in row for key in fields)
+                stats["missing_rows"] += 1
+                raise KeyError(f"missing_fields:{missing}")
+            values = [row[key] for key in fields]
+            if any(isinstance(v, str) and v.strip().upper() in {"", "-", "NULL"} for v in values):
+                stats["missing_rows"] += 1
+                raise ValueError("missing_share_count")
+            total, foreign_net, trust_net, dealer_net = [numeric(value) for value in values]
+            if total != foreign_net + trust_net + dealer_net:
+                raise ValueError("institutional_total_mismatch")
+            stats["rows_passed"] += 1
+        except KeyError as error:
+            stats["rows_failed"] += 1
+            if stats["first_failure"] is None:
+                stats["first_failure"] = f"row_{index}:missing_required_field"
+        except ValueError as error:
+            stats["rows_failed"] += 1
+            reason = "missing_share_count" if str(error) == "missing_share_count" else (
+                "malformed_integer" if str(error) == "missing_or_invalid_integer" else str(error))
+            if stats["first_failure"] is None:
+                stats["first_failure"] = f"row_{index}:{reason}"
+    return stats
+
+
+def adjudicate_tpex_dealer_sell(rows, authority):
+    """Pure, order-independent candidate key selection over a whole payload."""
+    validate_adjudication_authority(authority)
+    if not isinstance(rows, list) or not all(isinstance(row, dict) for row in rows):
+        raise ValueError("tpex_rows_must_be_mappings")
+    statistics = {candidate: _candidate_stats(rows, candidate)
+                  for candidate in sorted(authority["candidate_sell_fields"])}
+    institutional = _institutional_total_stats(rows)
+    qualifies = [candidate for candidate, stats in statistics.items()
+                 if stats["rows_checked"] > 0 and stats["rows_failed"] == 0 and stats["missing_rows"] == 0]
+    if any(stats["missing_rows"] for stats in statistics.values()):
+        status, selected = "MISSING_CANDIDATE_FIELD", None
+    elif not qualifies:
+        status, selected = "NO_MATCH", None
+    elif institutional["rows_checked"] == 0 or institutional["rows_failed"] or institutional["missing_rows"]:
+        status = "INSTITUTIONAL_TOTAL_MISMATCH"
+        selected = None
+    elif len(qualifies) == 1:
+        status, selected = "RESOLVED", qualifies[0]
+    elif len(qualifies) > 1:
+        status, selected = "AMBIGUOUS_ALIAS", None
+    else:
+        status, selected = "NO_MATCH", None
+    return {"selection_status": status, "selected_candidate": selected,
+            "candidate_fields": sorted(authority["candidate_sell_fields"]),
+            "candidate_statistics": statistics,
+            "institutional_total_invariant": institutional,
+            "selection_reason": {
+                "RESOLVED": "exactly_one_candidate_passed_all_rows_and_independent_total_invariant",
+                "AMBIGUOUS_ALIAS": "multiple_candidates_passed_all_rows",
+                "NO_MATCH": "no_candidate_passed_all_rows",
+                "MISSING_CANDIDATE_FIELD": "candidate_field_or_value_missing_in_payload",
+                "INSTITUTIONAL_TOTAL_MISMATCH": "independent_three_institution_total_invariant_failed",
+            }[status]}
 
 
 def decode_payload(payload):
@@ -267,31 +441,63 @@ def analyze_market(market, payload, mapping):
             "status": "FAIL" if any(c["rows_failed"] for c in checks.values()) else "PASS"}
 
 
-def analyze_acquired_payloads(twse_payload, tpex_payload, mapping_authority):
+def analyze_acquired_payloads(twse_payload, tpex_payload, mapping_authority, adjudication_authority=None):
     # Pure analysis: validate the supplied authority's pinned serialization,
     # without loading a file, external cache, clock or transport.
     authority_bytes = (json.dumps(mapping_authority, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     if hashlib.sha256(authority_bytes).hexdigest() != MAPPING_SHA:
         raise ValueError("unreviewed_mapping_authority")
     reviewed = mapping_authority
-    validate_mapping(reviewed, require_resolved=True)
-    sources = {m: analyze_market(m, p, reviewed["markets"][m])
-               for m, p in (("TWSE", twse_payload), ("TPEX", tpex_payload))}
+    validate_mapping(reviewed)
+    adjudication = None
+    tpex_mapping = reviewed["markets"]["TPEX"]
+    if tpex_mapping["mapping_status"] == "UNRESOLVED":
+        if adjudication_authority is None:
+            raise ValueError("mapping_unresolved_dealer_total_sell")
+        authority = validate_adjudication_authority(adjudication_authority)
+        tpex_payload = decode_payload(tpex_payload)
+        _, tpex_rows = unpack("TPEX", tpex_payload)
+        adjudication = adjudicate_tpex_dealer_sell(tpex_rows, authority)
+        if adjudication["selection_status"] != "RESOLVED":
+            return {"sources": {}, "status": "HOLD",
+                    "trade_date_symmetry": "NOT_EVALUATED",
+                    "field_symmetry_matrix": [],
+                    "dealer_sell_adjudication": adjudication,
+                    "per_target_network_request_required": False,
+                    "raw_payload_persistence": "NONE", "market_network_calls": 0}
+        # Ephemeral, process-local resolution; never modify the committed P0 map.
+        import copy
+        reviewed = copy.deepcopy(reviewed)
+        tpex_mapping = reviewed["markets"]["TPEX"]
+        tpex_mapping["required_common_core"]["dealer_total"]["sell_shares"] = [adjudication["selected_candidate"]]
+        tpex_mapping["mapping_status"] = "RESOLVED_BY_P1_WHOLE_DATASET_ARITHMETIC"
+        tpex_mapping.pop("unresolved_fields", None)
+        reviewed["mapping_status"] = "RESOLVED_EPHEMERAL"
+        validate_mapping(reviewed, require_resolved=True)
+    sources = {m: analyze_market(m, payload, reviewed["markets"][m])
+               for m, payload in (("TWSE", twse_payload), ("TPEX", tpex_payload))}
     return {"sources": sources, "status": "PASS" if all(s["status"] == "PASS" for s in sources.values()) else "HOLD",
             "trade_date_symmetry": "same" if sources["TWSE"]["normalized_trade_dates"] == sources["TPEX"]["normalized_trade_dates"] else "different",
             "field_symmetry_matrix": [{"group": g, "classification": "COMMON_CORE"} for g in ["identity", "trade_date", *CORE, "institutional_total_net_shares"]] +
                 [{"group": g, "classification": "SOURCE_NATIVE_OPTIONAL"} for g in ["foreign_dealer", "foreign_including_dealer", "security_name"]] +
                 [{"group": "dealer_proprietary_and_hedging", "classification": "NOT_EQUIVALENT"}],
+            "dealer_sell_adjudication": adjudication,
             "per_target_network_request_required": False, "raw_payload_persistence": "NONE", "market_network_calls": 0}
 
 
 def write_analysis(output_root, relative_path, result):
     if Path(relative_path).name == Path(RECORD).name:
         raise ValueError("historical_attempt_immutable")
-    allowed = {"sources", "status", "trade_date_symmetry", "field_symmetry_matrix",
+    allowed = {"sources", "status", "trade_date_symmetry", "field_symmetry_matrix", "dealer_sell_adjudication",
                "per_target_network_request_required", "raw_payload_persistence", "market_network_calls"}
     if set(result) - allowed:
         raise ValueError("unreviewed_output_fields")
+    if (result.get("status") not in {"PASS", "HOLD"}
+            or result.get("trade_date_symmetry") not in {"same", "different", "NOT_EVALUATED"}
+            or result.get("per_target_network_request_required") is not False
+            or result.get("raw_payload_persistence") != "NONE"
+            or result.get("market_network_calls") != 0):
+        raise ValueError("unreviewed_analysis_summary")
     for market, summary in result.get("sources", {}).items():
         if market not in TARGETS or set(summary) != {"market", "exact_matches", "row_count", "field_count",
                                                    "normalized_trade_dates", "selected_observation",
@@ -326,6 +532,40 @@ def write_analysis(output_root, relative_path, result):
             if set(check) != {"status", "rows_checked", "rows_passed", "rows_failed",
                               "missing_field_rows", "first_failure_reason"}:
                 raise ValueError("unreviewed_arithmetic_summary")
+    adjudication = result.get("dealer_sell_adjudication")
+    if adjudication is not None:
+        if set(adjudication) != {"selection_status", "selected_candidate", "candidate_fields",
+                                 "candidate_statistics", "institutional_total_invariant", "selection_reason"}:
+            raise ValueError("unreviewed_adjudication_summary")
+        if (adjudication["selection_status"] not in {"RESOLVED", "AMBIGUOUS_ALIAS", "NO_MATCH",
+                "MISSING_CANDIDATE_FIELD", "INSTITUTIONAL_TOTAL_MISMATCH"}
+                or adjudication["selected_candidate"] not in (None, *DEALER_SELL_CANDIDATES)
+                or adjudication["candidate_fields"] != sorted(DEALER_SELL_CANDIDATES)
+                or adjudication["selection_reason"] not in {
+                    "exactly_one_candidate_passed_all_rows_and_independent_total_invariant",
+                    "multiple_candidates_passed_all_rows", "no_candidate_passed_all_rows",
+                    "candidate_field_or_value_missing_in_payload",
+                    "independent_three_institution_total_invariant_failed"}):
+            raise ValueError("unreviewed_adjudication_summary")
+        if set(adjudication["candidate_statistics"]) != set(DEALER_SELL_CANDIDATES):
+            raise ValueError("unreviewed_adjudication_summary")
+        for candidate, stats in adjudication["candidate_statistics"].items():
+            if stats["candidate"] != candidate or set(stats) != {"candidate", "rows_checked", "rows_passed",
+                    "rows_failed", "missing_rows", "first_failure"}:
+                raise ValueError("unreviewed_adjudication_summary")
+            if stats["first_failure"] is not None and not re.fullmatch(
+                    r"(?:zero_rows|candidate_field_absent|row_[0-9]+:(?:missing_required_field|missing_share_count|malformed_integer|negative_share_count|arithmetic_mismatch))",
+                    stats["first_failure"]):
+                raise ValueError("unreviewed_adjudication_summary")
+            if not all(type(stats[k]) is int and stats[k] >= 0 for k in
+                       ("rows_checked", "rows_passed", "rows_failed", "missing_rows")):
+                raise ValueError("unreviewed_adjudication_summary")
+        invariant = adjudication["institutional_total_invariant"]
+        if set(invariant) != {"rows_checked", "rows_passed", "rows_failed", "missing_rows", "first_failure"}:
+            raise ValueError("unreviewed_adjudication_summary")
+        if not all(type(invariant[k]) is int and invariant[k] >= 0 for k in
+                   ("rows_checked", "rows_passed", "rows_failed", "missing_rows")):
+            raise ValueError("unreviewed_adjudication_summary")
     atomic_write_bytes(Path(output_root), relative_path,
                        (json.dumps(result, ensure_ascii=False, indent=2) + "\n").encode("utf-8"),
                        allow_overwrite=False)
@@ -342,10 +582,11 @@ def main(argv=None):
         raise ValueError("fresh_a0_rearm_not_authorized")
     with patch("socket.socket.connect", deny_network), patch("socket.create_connection", deny_network):
         mapping = load_mapping(args.mapping_file)
-        validate_mapping(mapping, require_resolved=True)
+        validate_mapping(mapping)
         if args.twse_fixture is None or args.tpex_fixture is None:
             raise ValueError("offline_fixture_paths_required")
-        result = analyze_acquired_payloads(args.twse_fixture.read_bytes(), args.tpex_fixture.read_bytes(), mapping)
+        result = analyze_acquired_payloads(args.twse_fixture.read_bytes(), args.tpex_fixture.read_bytes(),
+                                           mapping, load_adjudication_authority())
         print(json.dumps(result, ensure_ascii=True))
 
 

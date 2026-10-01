@@ -218,7 +218,7 @@ def test_old_authority_and_p0_cli_cannot_rearm():
         p.run(p.AUTHORITY, p.load_mapping())
     with pytest.raises(ValueError, match="fresh_a0_rearm"):
         p.main(["--owner-authorization-reference", p.AUTHORITY])
-    with pytest.raises(ValueError, match="mapping_unresolved"):
+    with pytest.raises(ValueError, match="offline_fixture_paths"):
         p.main([])
 
 
@@ -237,7 +237,9 @@ def Path_source():
 def test_contained_summary_no_raw_body(tmp_path):
     body = payload("TWSE")
     result = {"sources": {"TWSE": p.analyze_market("TWSE", body, p.load_mapping()["markets"]["TWSE"])},
-              "status": "TEST_ONLY", "raw_payload_persistence": "NONE", "market_network_calls": 0}
+              "status": "PASS", "trade_date_symmetry": "same",
+              "per_target_network_request_required": False,
+              "raw_payload_persistence": "NONE", "market_network_calls": 0}
     p.write_analysis(tmp_path, "attempt_2_synthetic_summary.json", result)
     saved = (tmp_path / "attempt_2_synthetic_summary.json").read_text(encoding="utf-8")
     assert '"data"' not in saved and '"fields"' not in saved
@@ -261,7 +263,9 @@ def test_nested_raw_summary_rejected(tmp_path):
     source = p.analyze_market("TWSE", payload("TWSE"), p.load_mapping()["markets"]["TWSE"])
     source["raw_body"] = payload("TWSE")
     with pytest.raises(ValueError, match="unreviewed_source_summary"):
-        p.write_analysis(tmp_path, "nested_raw.json", {"sources": {"TWSE": source}})
+        p.write_analysis(tmp_path, "nested_raw.json", {"sources": {"TWSE": source}, "status": "PASS",
+            "trade_date_symmetry": "same", "per_target_network_request_required": False,
+            "raw_payload_persistence": "NONE", "market_network_calls": 0})
 
 
 def test_mapping_validator():
