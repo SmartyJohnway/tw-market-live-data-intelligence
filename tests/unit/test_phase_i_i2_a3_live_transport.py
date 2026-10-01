@@ -78,6 +78,16 @@ def test_live_delegate_omission_stays_disarmed():
         acquire_taifex_once(transport=None)
 
 
+def test_cli_live_flag_is_rejected_before_transport(monkeypatch, capsys):
+    from scripts.run_phase_i_i2_a3_bounded_live_acceptance import main
+
+    monkeypatch.setattr("sys.argv", ["run_phase_i_i2_a3_bounded_live_acceptance.py", "--live"])
+    with pytest.raises(SystemExit) as caught:
+        main()
+    assert caught.value.code == 2
+    assert "live_execution_not_rearmed" in capsys.readouterr().err
+
+
 @pytest.mark.parametrize(
     "body,code",
     [
