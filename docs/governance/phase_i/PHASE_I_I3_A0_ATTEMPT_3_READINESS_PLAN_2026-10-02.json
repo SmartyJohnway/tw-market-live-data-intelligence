@@ -1,0 +1,16 @@
+{
+  "schema_version": "phase_i_i3_a0_attempt_3_readiness_plan.v1",
+  "status": "NON_EXECUTABLE_CONFIGURATION_ONLY",
+  "attempt_3_authorized": false,
+  "reservation_created": false,
+  "consumed_latch_created": false,
+  "outcome_record_created": false,
+  "markets": {
+    "TWSE": {"ssl_policy": "compatibility", "max_gets": 1},
+    "TPEx": {"ssl_policy": "strict", "max_gets": 1}
+  },
+  "retry": 0,
+  "silent_tls_fallback": false,
+  "unsafe_explicit_allowed": false,
+  "requires_new_owner_authority": true
+}

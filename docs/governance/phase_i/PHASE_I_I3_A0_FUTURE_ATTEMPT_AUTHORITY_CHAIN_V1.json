@@ -1,0 +1,14 @@
+{
+  "schema_version": "phase_i_i3_a0_future_attempt_authority_chain.v1",
+  "authority_chain_status": "REVIEWED_FIXED_HISTORICAL_ANCHORS",
+  "attempt_1_record_sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+  "p0_mapping_sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
+  "p0_record_sha256": "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a",
+  "p1_authority_sha256": "666108fdd187f3ec753acc2a258e3ea7bd9415cc371346b5f32dc231ea665240",
+  "p1_record_sha256": "541b62d45d248d28e114d04628aac379dbd2f5b6d66d6ad07ae8cd4ee661a70c",
+  "attempt_2_record_path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-01.json",
+  "attempt_2_record_sha256": "21cafa9ec4bd351454a47de76d0eba3f562ebeeef0233731d5b256a1052a8d1c",
+  "attempt_2_provenance_erratum_path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_PROVENANCE_ERRATUM_2026-10-02.json",
+  "attempt_2_provenance_erratum_sha256": "27a871c177b99d762d244fd411b826896813455fb46900d3f7233261f5742ac4",
+  "future_latch_generation": "requires_new_owner_authority; P2 creates no reservation or consumed latch"
+}

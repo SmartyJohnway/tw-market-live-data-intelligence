@@ -21,6 +21,36 @@ HISTORICAL = {
     p0.ADJUDICATION_AUTHORITY_PATH.relative_to(p0.ROOT).as_posix(): p0.ADJUDICATION_AUTHORITY_SHA,
     "docs/governance/phase_i/PHASE_I_I3_A0_P1_TPEX_DEALER_SELL_ADJUDICATION_HARNESS_2026-10-01.json": "541b62d45d248d28e114d04628aac379dbd2f5b6d66d6ad07ae8cd4ee661a70c",
 }
+ERRATUM_REL = "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_PROVENANCE_ERRATUM_2026-10-02.json"
+ATTEMPT_1_SHA = "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0"
+P0_RECORD_SHA = "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a"
+
+
+def validate_provenance(root: Path = ROOT) -> None:
+    """Validate observed historical latch bytes separately from corrected authority."""
+    reservation = json.loads((root / attempt2.RESERVATION_REL).read_text(encoding="utf-8"))
+    consumed = json.loads((root / attempt2.CONSUMED_REL).read_text(encoding="utf-8"))
+    # These are deliberately the bytes actually recorded in 2026-10-02. Do not
+    # rewrite history to make them look like the corrected P0 anchor.
+    assert reservation.get("p0_record_sha256") == ATTEMPT_1_SHA
+    assert consumed.get("p0_record_sha256") == ATTEMPT_1_SHA
+    erratum = json.loads((root / ERRATUM_REL).read_text(encoding="utf-8"))
+    assert erratum["schema_version"] == "phase_i_i3_a0_attempt_2_provenance_erratum.v1"
+    assert erratum["historical_recorded_value"] == ATTEMPT_1_SHA
+    assert erratum["correct_authority_value"] == P0_RECORD_SHA
+    assert erratum["classification"] == "PROVENANCE_METADATA_DEFECT_ONLY"
+    assert erratum["historical_files_mutated"] is False
+    assert erratum["network_count_affected"] is False
+    assert erratum["single_use_consumption_affected"] is False
+    assert erratum["attempt_2_hold_decision_affected"] is False
+    assert erratum["raw_persistence_finding_affected"] is False
+    assert erratum["correct_immutable_authority_chain"] == {
+        "attempt_1_record_sha256": ATTEMPT_1_SHA,
+        "p0_mapping_sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
+        "p0_record_sha256": P0_RECORD_SHA,
+        "p1_authority_sha256": "666108fdd187f3ec753acc2a258e3ea7bd9415cc371346b5f32dc231ea665240",
+        "p1_record_sha256": "541b62d45d248d28e114d04628aac379dbd2f5b6d66d6ad07ae8cd4ee661a70c",
+    }
 
 
 def assert_go_evidence(record: dict) -> None:
@@ -71,6 +101,7 @@ def validate(record: dict | None = None, *, root: Path = ROOT, verify_runtime: b
         raise AssertionError("Attempt 2 record validation must not use network")
 
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny):
+        validate_provenance(root)
         value = record if record is not None else json.loads((root / attempt2.RESULT_REL).read_text(encoding="utf-8"))
         assert value["schema_version"] == "phase_i_i3_a0_attempt_2_source_timing_symmetry_reprobe.v1"
         assert value["owner_authority"] == attempt2.AUTHORITY
