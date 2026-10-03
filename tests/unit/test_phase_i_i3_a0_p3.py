@@ -12,6 +12,8 @@ import pytest
 from scripts import phase_i_i3_a0_source_transport as transport
 from scripts import phase_i_i3_a0_attempt_authority as authority
 from scripts.phase_i_i3_a0_future_evidence import source_findings, batching_findings
+from scripts.phase_i_i3_a0_future_evidence import binding_findings_from_payload
+from scripts import run_phase_i_i3_a0_preflight as analyzer
 from scripts import validate_phase_i_i3_a0_attempt3 as historical
 
 
@@ -153,9 +155,9 @@ def test_unacquired_null_is_not_evaluated_zero_and_batching_not_fabricated():
     absent = source_findings(None, complete_body_received=False)
     assert absent["target_binding"] is None and absent["evaluation_status"] == "NOT_EVALUATED"
     assert absent["whole_dataset_arithmetic"] is absent["unit_proof"] is absent["normalized_observation"] is None
-    zero = source_findings({"exact_matches": 0, "arithmetic": {}, "unit": "share", "observation": None,
-                           "whole_market_payload": True}, complete_body_received=True)
-    assert zero["target_binding"] == 0 and zero["evaluation_status"] == "EVALUATED"
+    zero = binding_findings_from_payload("TPEX", [{"SecuritiesCompanyCode": "9999"}],
+                complete_body_received=True, whole_market_payload_observed=True)
+    assert zero["target_binding"] == 0 and zero["evaluation_status"] == "EVALUATED_BINDING_FAILED"
     batch = batching_findings({"TWSE": zero, "TPEx": absent}, ["prior-qualified-evidence"])
     assert batch["batching_observation"] == {"TWSE": "PROVEN", "TPEx": "NOT_EVALUATED"}
     assert batch["mixed_market_observation"] == "NOT_EVALUATED"
@@ -188,11 +190,11 @@ def test_historical_erratum_required_and_false_attribution_rejected(tmp_path, co
 
 def test_v1_historical_valid_v2_explicit_and_attempt4_cannot_use_v1():
     assert authority.load_reviewed_authority_chain()["schema_version"].endswith(".v1")
-    chain = authority.load_reviewed_authority_chain(version="v2", attempt_number=4)
+    chain = authority.load_reviewed_authority_chain(version="v2")
     assert chain["schema_version"].endswith(".v2")
-    with pytest.raises(ValueError, match="attempt4_requires_explicit_v2"):
+    with pytest.raises(ValueError, match="attempt4_requires_explicit_v3"):
         authority.load_reviewed_authority_chain(attempt_number=4)
-    with pytest.raises(ValueError, match="attempt4_requires_explicit_v2"):
+    with pytest.raises(ValueError, match="attempt4_requires_explicit_v3"):
         authority.build_reservation(owner_authority="synthetic-not-authorized", starting_main="x", branch="x",
                                     branch_head="x", tree="x", max_gets={}, attempt_number=4)
 
@@ -218,7 +220,7 @@ def test_p3_validator_production_containment_and_readiness():
 def test_v2_future_latches_validate_all_added_anchors_without_persisting():
     reservation = authority.build_reservation(owner_authority="synthetic-not-authorized", starting_main="x",
         branch="x", branch_head="x", tree="x", max_gets={"TWSE": 0, "TPEx": 1, "retry": 0},
-        version="v2", attempt_number=4)
+        version="v2")
     consumed = authority.build_consumed_latch(reservation, consumed_at="2030-01-01T00:00:00Z")
     authority.validate_consumed_latch(consumed)
     assert consumed["additional_anchors"] == reservation["additional_anchors"]
@@ -233,6 +235,7 @@ def test_explicit_socket_denial():
 
 
 def test_both_observed_batching_not_based_on_prior_flags():
-    observed = source_findings({"exact_matches": 1, "arithmetic": {}, "unit": "share", "observation": {},
-                              "whole_market_payload": True}, complete_body_received=True)
+    payload = json.loads((analyzer.ROOT / "tests/fixtures/phase_i_i3_a0/twse_synthetic.json").read_text(encoding="utf-8"))
+    actual = analyzer.analyze_market("TWSE", payload, analyzer.load_mapping()["markets"]["TWSE"])
+    observed = source_findings(actual, complete_body_received=True, whole_market_payload_observed=True)
     assert batching_findings({"TWSE": observed, "TPEx": observed}, [])["mixed_market_observation"] == "PROVEN"

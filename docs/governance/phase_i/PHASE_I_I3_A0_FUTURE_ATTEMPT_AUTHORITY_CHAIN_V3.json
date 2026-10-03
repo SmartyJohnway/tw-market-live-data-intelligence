@@ -1,0 +1,105 @@
+{
+  "schema_version": "phase_i_i3_a0_future_attempt_authority_chain.v3",
+  "authority_chain_status": "REVIEWED_FIXED_HISTORICAL_ANCHORS",
+  "v2_path": "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V2.json",
+  "v2_sha256": "6c793aeef0820408feeefce6704dc3a80515f0b1aba5c3fd7b294ced4b54b7b9",
+  "v2_authority": {
+    "schema_version": "phase_i_i3_a0_future_attempt_authority_chain.v2",
+    "authority_chain_status": "REVIEWED_FIXED_HISTORICAL_ANCHORS",
+    "v1_path": "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V1.json",
+    "v1_sha256": "bbe45e1ff6126f3751faf589343f31c28a0f8d2c552cea8472d58ab5c6f1e91c",
+    "attempt_1_record_sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+    "p0_mapping_sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
+    "p0_record_sha256": "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a",
+    "p1_authority_sha256": "666108fdd187f3ec753acc2a258e3ea7bd9415cc371346b5f32dc231ea665240",
+    "p1_record_sha256": "541b62d45d248d28e114d04628aac379dbd2f5b6d66d6ad07ae8cd4ee661a70c",
+    "additional_anchors": {
+      "attempt_2": {
+        "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-01.json",
+        "sha256": "21cafa9ec4bd351454a47de76d0eba3f562ebeeef0233731d5b256a1052a8d1c"
+      },
+      "attempt_2_erratum": {
+        "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_PROVENANCE_ERRATUM_2026-10-02.json",
+        "sha256": "27a871c177b99d762d244fd411b826896813455fb46900d3f7233261f5742ac4"
+      },
+      "p2": {
+        "path": "docs/governance/phase_i/PHASE_I_I3_A0_P2_ATTEMPT_2_PROVENANCE_AND_TWSE_TRANSPORT_COMPATIBILITY_CLOSURE_2026-10-02.json",
+        "sha256": "9e2794ee796a98551ea1a1694f0f687853c04ba1209a192834b2a8d1e6a7ad27"
+      },
+      "attempt_3": {
+        "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-02.json",
+        "sha256": "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1"
+      },
+      "attempt_3_reservation": {
+        "path": "docs/governance/phase_i/acceptance_runs/i3-a0-attempt3-authority-reservation.json",
+        "sha256": "ff9ffa93c6ceab5eb7147ce513ef35d175ce6bc13f4f43e0aeffc9b36d54d848"
+      },
+      "attempt_3_consumed": {
+        "path": "docs/governance/phase_i/acceptance_runs/i3-a0-attempt3-authority-consumed.json",
+        "sha256": "2b731cca5ce95840eccf6c1459170e4d7a634ab7d9022cb0e5c2f0b138419c3b"
+      },
+      "attempt_3_erratum": {
+        "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_EVIDENCE_ERRATUM_2026-10-03.json",
+        "sha256": "9f86216243fb4d9885e58d9dd7bb231373d4d222e6e277f6565533e942d37196"
+      }
+    },
+    "p3_closure_reference": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_P3_ATTEMPT_3_EVIDENCE_ERRATUM_AND_BOUNDED_BODY_READ_CLOSURE_2026-10-03.json",
+      "hash_authority": "phase_i_i3_a0_attempt_authority.P3_CLOSURE_SHA256"
+    },
+    "hash_sealing": "P3 references full V2 SHA; loader pins full P3 SHA separately to avoid circular digests. No artifact fields excluded.",
+    "attempt_4_requires_explicit_v2": true,
+    "execution_authorized": false
+  },
+  "v1_sha256": "bbe45e1ff6126f3751faf589343f31c28a0f8d2c552cea8472d58ab5c6f1e91c",
+  "attempt_1_record_sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+  "p0_mapping_sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
+  "p0_record_sha256": "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a",
+  "p1_authority_sha256": "666108fdd187f3ec753acc2a258e3ea7bd9415cc371346b5f32dc231ea665240",
+  "p1_record_sha256": "541b62d45d248d28e114d04628aac379dbd2f5b6d66d6ad07ae8cd4ee661a70c",
+  "additional_anchors": {
+    "attempt_2": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-01.json",
+      "sha256": "21cafa9ec4bd351454a47de76d0eba3f562ebeeef0233731d5b256a1052a8d1c"
+    },
+    "attempt_2_erratum": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_PROVENANCE_ERRATUM_2026-10-02.json",
+      "sha256": "27a871c177b99d762d244fd411b826896813455fb46900d3f7233261f5742ac4"
+    },
+    "p2": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_P2_ATTEMPT_2_PROVENANCE_AND_TWSE_TRANSPORT_COMPATIBILITY_CLOSURE_2026-10-02.json",
+      "sha256": "9e2794ee796a98551ea1a1694f0f687853c04ba1209a192834b2a8d1e6a7ad27"
+    },
+    "attempt_3": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-02.json",
+      "sha256": "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1"
+    },
+    "attempt_3_reservation": {
+      "path": "docs/governance/phase_i/acceptance_runs/i3-a0-attempt3-authority-reservation.json",
+      "sha256": "ff9ffa93c6ceab5eb7147ce513ef35d175ce6bc13f4f43e0aeffc9b36d54d848"
+    },
+    "attempt_3_consumed": {
+      "path": "docs/governance/phase_i/acceptance_runs/i3-a0-attempt3-authority-consumed.json",
+      "sha256": "2b731cca5ce95840eccf6c1459170e4d7a634ab7d9022cb0e5c2f0b138419c3b"
+    },
+    "attempt_3_erratum": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_EVIDENCE_ERRATUM_2026-10-03.json",
+      "sha256": "9f86216243fb4d9885e58d9dd7bb231373d4d222e6e277f6565533e942d37196"
+    }
+  },
+  "p3_closure_reference": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_P3_ATTEMPT_3_EVIDENCE_ERRATUM_AND_BOUNDED_BODY_READ_CLOSURE_2026-10-03.json",
+    "hash_authority": "phase_i_i3_a0_attempt_authority.P3_CLOSURE_SHA256"
+  },
+  "r1_erratum": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_INTERFACE_ERRATUM_2026-10-03.json",
+    "sha256": "b33a891d7d9d97d96cdbd3f030a3c047f499b909d0616e11920896fc647e021f"
+  },
+  "r1_closure_reference": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_FUTURE_EVIDENCE_INTEGRATION_CLOSURE_2026-10-03.json",
+    "hash_authority": "phase_i_i3_a0_attempt_authority.P3_R1_CLOSURE_SHA256"
+  },
+  "attempt_4_requires_explicit_v3": true,
+  "execution_authorized": false,
+  "hash_sealing": "Full-byte P3-R1 closure digest fixed in loader; closure pins full V3 SHA. No fields excluded."
+}

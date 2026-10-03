@@ -13,6 +13,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 AUTHORITY_PATH = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V1.json"
 AUTHORITY_V2_PATH = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V2.json"
+AUTHORITY_V3_PATH = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V3.json"
+P3_R1_CLOSURE_SHA256 = "bfdb3c437cd03923317652146cc0c3b28f3274e9dcb6042faf50a921133decaa"
 # Full-byte P3 seal is held here to avoid circular V2 <-> closure hashes.
 P3_CLOSURE_SHA256 = "6646b58f62c1dcef1dceac1d8644a4b57c0ca996bc51d1137b4cd750646f09ff"
 ANCHOR_FIELDS = {
@@ -37,8 +39,41 @@ def _sha(path: Path) -> str:
 
 def load_reviewed_authority_chain(*, version: str = "v1", attempt_number: int | None = None) -> dict[str, Any]:
     """Load only the repository's single reviewed chain and verify its anchors."""
-    if attempt_number == 4 and version != "v2":
-        raise ValueError("attempt4_requires_explicit_v2")
+    if attempt_number == 4 and version != "v3":
+        raise ValueError("attempt4_requires_explicit_v3")
+    if version == "v3":
+        previous = load_reviewed_authority_chain(version="v2")
+        canonical = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V3.json"
+        if AUTHORITY_V3_PATH.resolve() != canonical.resolve():
+            raise ValueError("authority_chain_path_not_canonical")
+        chain = json.loads(canonical.read_text(encoding="utf-8"))
+        if chain.get("schema_version") != "phase_i_i3_a0_future_attempt_authority_chain.v3":
+            raise ValueError("authority_chain_schema_invalid")
+        if chain.get("authority_chain_status") != "REVIEWED_FIXED_HISTORICAL_ANCHORS":
+            raise ValueError("authority_chain_not_reviewed")
+        # Every V2 anchor and historical disposition is retained, not reinterpreted.
+        if chain.get("v2_authority") != previous or chain.get("v2_sha256") != _sha(AUTHORITY_V2_PATH):
+            raise ValueError("v3_historical_anchor_mismatch")
+        for key in ANCHOR_FIELDS:
+            if chain.get(key) != previous[key]:
+                raise ValueError("v3_historical_anchor_mismatch")
+        for key in ("additional_anchors", "p3_closure_reference", "v1_sha256"):
+            if chain.get(key) != previous[key]:
+                raise ValueError("v3_historical_anchor_mismatch")
+        erratum = "docs/governance/phase_i/PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_INTERFACE_ERRATUM_2026-10-03.json"
+        if chain.get("r1_erratum") != {"path": erratum, "sha256": _sha(ROOT / erratum)}:
+            raise ValueError("v3_erratum_anchor_mismatch")
+        path = "docs/governance/phase_i/PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_FUTURE_EVIDENCE_INTEGRATION_CLOSURE_2026-10-03.json"
+        if chain.get("r1_closure_reference") != {"path": path, "hash_authority": "phase_i_i3_a0_attempt_authority.P3_R1_CLOSURE_SHA256"}:
+            raise ValueError("v3_closure_reference_mismatch")
+        if _sha(ROOT / path) != P3_R1_CLOSURE_SHA256:
+            raise ValueError("v3_closure_anchor_mismatch")
+        record = json.loads((ROOT / path).read_text(encoding="utf-8"))
+        if record["authority"]["v3_sha256"] != _sha(canonical):
+            raise ValueError("v3_closure_reference_mismatch")
+        if chain.get("attempt_4_requires_explicit_v3") is not True or chain.get("execution_authorized") is not False:
+            raise ValueError("v3_execution_boundary_invalid")
+        return chain
     if version == "v2":
         historical = load_reviewed_authority_chain()
         canonical = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V2.json"
@@ -110,11 +145,14 @@ def validate_reservation(reservation: dict[str, Any], chain: dict[str, Any] | No
     for key, expected in ANCHOR_FIELDS.items():
         if reservation.get(key) != expected:
             raise ValueError(f"reservation_anchor_mismatch:{key}")
-    if version == "v2":
-        if reservation.get("authority_chain_sha256") != _sha(AUTHORITY_V2_PATH):
+    if version in {"v2", "v3"}:
+        path = AUTHORITY_V2_PATH if version == "v2" else AUTHORITY_V3_PATH
+        if reservation.get("authority_chain_sha256") != _sha(path):
             raise ValueError("reservation_v2_digest_mismatch")
         if reservation.get("additional_anchors") != fixed["additional_anchors"]:
             raise ValueError("reservation_v2_anchors_mismatch")
+        if version == "v3" and reservation.get("r1_erratum") != fixed["r1_erratum"]:
+            raise ValueError("reservation_v3_anchor_mismatch")
 
 
 def validate_consumed_latch(latch: dict[str, Any], chain: dict[str, Any] | None = None) -> None:
@@ -125,9 +163,12 @@ def validate_consumed_latch(latch: dict[str, Any], chain: dict[str, Any] | None 
     for key, expected in ANCHOR_FIELDS.items():
         if latch.get(key) != expected:
             raise ValueError(f"consumed_anchor_mismatch:{key}")
-    if version == "v2":
-        if latch.get("authority_chain_sha256") != _sha(AUTHORITY_V2_PATH) or latch.get("additional_anchors") != fixed["additional_anchors"]:
+    if version in {"v2", "v3"}:
+        path = AUTHORITY_V2_PATH if version == "v2" else AUTHORITY_V3_PATH
+        if latch.get("authority_chain_sha256") != _sha(path) or latch.get("additional_anchors") != fixed["additional_anchors"]:
             raise ValueError("consumed_v2_anchors_mismatch")
+        if version == "v3" and latch.get("r1_erratum") != fixed["r1_erratum"]:
+            raise ValueError("consumed_v3_anchor_mismatch")
 
 
 def build_reservation(*, owner_authority: str, starting_main: str, branch: str,
@@ -142,9 +183,11 @@ def build_reservation(*, owner_authority: str, starting_main: str, branch: str,
         "network_budget": dict(max_gets),
     }
     value.update({key: chain[key] for key in ANCHOR_FIELDS})
-    if version == "v2":
+    if version in {"v2", "v3"}:
         value.update(authority_chain_version=version, attempt_number=attempt_number,
-                     authority_chain_sha256=_sha(AUTHORITY_V2_PATH), additional_anchors=chain["additional_anchors"])
+                     authority_chain_sha256=_sha(AUTHORITY_V2_PATH if version == "v2" else AUTHORITY_V3_PATH), additional_anchors=chain["additional_anchors"])
+        if version == "v3":
+            value["r1_erratum"] = chain["r1_erratum"]
     elif attempt_number is not None:
         value["attempt_number"] = attempt_number
     validate_reservation(value, chain)
@@ -167,7 +210,7 @@ def build_consumed_latch(reservation: dict[str, Any], *, consumed_at: str) -> di
         "network_budget": dict(reservation["network_budget"]),
     }
     value.update({key: chain[key] for key in ANCHOR_FIELDS})
-    for key in ("authority_chain_version", "attempt_number", "authority_chain_sha256", "additional_anchors"):
+    for key in ("authority_chain_version", "attempt_number", "authority_chain_sha256", "additional_anchors", "r1_erratum"):
         if key in reservation:
             value[key] = reservation[key]
     validate_consumed_latch(value, chain)

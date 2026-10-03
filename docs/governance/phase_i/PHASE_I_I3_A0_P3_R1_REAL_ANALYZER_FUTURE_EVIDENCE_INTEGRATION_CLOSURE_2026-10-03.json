@@ -1,0 +1,117 @@
+{
+  "schema_version": "phase_i_i3_a0_p3_r1_real_analyzer_future_evidence_integration_closure.v1",
+  "decision": "P3_R1_PASS",
+  "owner_authority": "USER_CHAT_2026-10-03_PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_FUTURE_EVIDENCE_INTEGRATION_CLOSURE",
+  "baseline_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "starting_head": "95b0453e2b7c6c93a99ecc6f59e6f743cf011520",
+  "starting_tree": "12788c66d36d1e1df557b582178b6850ac389e45",
+  "PR": 300,
+  "historical_p3": {
+    "decision": "P3_PASS",
+    "self_declared_attempt_4_ready": true,
+    "bytes_unchanged": true
+  },
+  "independent_review": {
+    "readiness_accepted_before_r1": false,
+    "gap": "REAL_ANALYZER_FUTURE_EVIDENCE_INTERFACE_NOT_PROVEN",
+    "erratum_path": "docs/governance/phase_i/PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_INTERFACE_ERRATUM_2026-10-03.json",
+    "erratum_sha256": "b33a891d7d9d97d96cdbd3f030a3c047f499b909d0616e11920896fc647e021f"
+  },
+  "adapter": {
+    "function": "scripts.phase_i_i3_a0_future_evidence.source_findings_from_analyzer_result",
+    "signature": "(result, *, complete_body_received: bool, whole_market_payload_observed: bool)",
+    "canonical_keys": [
+      "market",
+      "exact_matches",
+      "row_count",
+      "field_count",
+      "normalized_trade_dates",
+      "selected_observation",
+      "arithmetic",
+      "status"
+    ],
+    "unit_source": "selected_observation.unit",
+    "observation_projection": "selected_observation content plus explicit market from summary",
+    "canonical_statuses": [
+      "PASS",
+      "FAIL"
+    ],
+    "semantic_failure": "FAIL arithmetic preserved; downstream semantic_status HOLD",
+    "success_exact_matches": 1,
+    "zero_duplicate_interface": "binding_findings_from_payload evaluates source rows without fabricating analyzer success",
+    "composition_function": "compose_analyzer_evidence"
+  },
+  "offline_interface_proof": {
+    "real_analyze_market": "PASS",
+    "real_acquired_P1_path": "PASS",
+    "canonical_source_adaptation": "PASS",
+    "dealer_key": "Dealers-TotalSell",
+    "bindings": {
+      "TWSE": 1,
+      "TPEX": 1
+    },
+    "unit": "share",
+    "no_body": "NOT_EVALUATED/null",
+    "zero_match": "EVALUATED_BINDING_FAILED/0",
+    "duplicate_match": "EVALUATED_BINDING_FAILED/2",
+    "mixed_batching": "PROVEN",
+    "raw_persistence": "NONE"
+  },
+  "batching_semantics": {
+    "explicit_observation_required": true,
+    "prior_support_separate": true,
+    "mixed_requires_both_observed": true
+  },
+  "authority": {
+    "v1_immutable": true,
+    "v2_immutable": true,
+    "v3_path": "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V3.json",
+    "v3_sha256": "14e1f6eebfbffda74883448895ec4a9ddb3ef54a983f39b9da3d6496a738f5d8",
+    "sealing": "Loader fixed full-byte P3_R1_CLOSURE_SHA256; no exclusions; closure pins full V3 SHA",
+    "attempt4_requires_explicit_v3": true
+  },
+  "readiness": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_4_READINESS_PLAN_V2_2026-10-03.json",
+    "sha256": "68a36d26137e91068b881d21559d4981465ae39691545aac222a533b483082bf",
+    "supersedes_original_plan": true,
+    "execution_authority": false
+  },
+  "validation": {
+    "status": "PASS",
+    "R1_only": {"passed": 32, "skipped": 0, "deselected": 0},
+    "focused": {"passed": 193, "skipped": 0, "deselected": 0},
+    "default_ci": {"passed": 1063, "skipped": 1, "deselected": 5, "collected": 1069},
+    "full_current": {"passed": 1436, "skipped": 1, "deselected": 5, "collected": 1442},
+    "validators": {
+      "R1": "PASS", "P3": "PASS", "Attempt3": "PASS", "P2": "PASS", "Attempt2": "PASS",
+      "P1": "PASS", "P0": "PASS", "original_A0": "PASS", "I1_contract": "PASS",
+      "I1_candidate": "PASS", "I1_activation": "PASS", "I2_A4": "PASS",
+      "Phase_H_V3": "PASS", "portable_catalog": "PASS", "runtime_skill_MCP6": "PASS"
+    },
+    "compileall": "PASS",
+    "diff_checks": {"ordinary": "PASS", "CRLF_aware": "PASS"},
+    "initial_diagnostic_failure": "Focused first run: 192 passed / 1 failed. New R1 validator used Windows cp950 for Catalog JSON; repaired with explicit UTF-8. Final focused rerun: 193 passed.",
+    "network_denial": "External socket connect/connect_ex/create_connection denied; only existing literal-loopback IPC allowed"
+  },
+  "market_network_calls": 0,
+  "network_counts": {
+    "TWSE": 0,
+    "TPEx": 0,
+    "TAIFEX": 0,
+    "other": 0
+  },
+  "transport_changed": false,
+  "canonical_analyzer_changed": false,
+  "production_runtime_changed": false,
+  "I1_sources": 3,
+  "I1_routes": 2,
+  "I2_sources": 1,
+  "I2_routes": 1,
+  "MCP_tool_count": 6,
+  "attempt_4_ready": true,
+  "attempt_4_authorized": false,
+  "A1_authorized": false,
+  "implementation_authorized": false,
+  "production_activation_authorized": false,
+  "merge_authorized": false
+}

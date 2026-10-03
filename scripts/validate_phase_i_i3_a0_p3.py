@@ -34,7 +34,8 @@ def validate() -> dict:
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny):
         historical.validate_erratum(ROOT)
         assert sha(authority.AUTHORITY_PATH) == "bbe45e1ff6126f3751faf589343f31c28a0f8d2c552cea8472d58ab5c6f1e91c"
-        authority.load_reviewed_authority_chain(version="v2", attempt_number=4)
+        # Replay the historical V2 authority, not current Attempt 4 eligibility.
+        authority.load_reviewed_authority_chain(version="v2")
         record = json.loads((ROOT / P3_REL).read_text(encoding="utf-8"))
         assert record["owner_authority"] == OWNER
         assert record["baseline_main"] == BASELINE
