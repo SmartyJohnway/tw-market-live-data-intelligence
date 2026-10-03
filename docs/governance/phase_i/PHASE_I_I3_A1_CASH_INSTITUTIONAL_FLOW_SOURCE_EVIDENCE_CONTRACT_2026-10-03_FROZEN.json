@@ -1,0 +1,140 @@
+{
+  "schema_version": "phase_i_i3_a1_cash_institutional_flow_source_evidence_contract.v1",
+  "gate": "I3-A1",
+  "status": "FROZEN_PASS",
+  "owner_authority": "USER_CHAT_2026-10-03_PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_FREEZE",
+  "capability_id": "cash_institutional_flow_context",
+  "a0_evidence": {
+    "decision": "GO_PASS",
+    "attempt3_twse_outcome_sha256": "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1",
+    "attempt3_p3_erratum_sha256": "9f86216243fb4d9885e58d9dd7bb231373d4d222e6e277f6565533e942d37196",
+    "twse_response_sha256": "b292ec02ee89e3aa951337e0504662fee7ee2d7509628199e6752fa36860453e",
+    "attempt4_tpex_outcome_sha256": "0e24c5f55716f512051c1db5fb3eaead921693875f66ec00bd15e84d469028c5",
+    "tpex_response_sha256": "2d058996bf67a375e152f381dda1a8610c32cf3ecd1ed31240c89ac7fd020402",
+    "final_composite_sha256": "497361ce6c7c6ed628a8a17e8dcf3a9586d4448f15c405739853e2faa5484fd8",
+    "authority_chain_v3_sha256": "14e1f6eebfbffda74883448895ec4a9ddb3ef54a983f39b9da3d6496a738f5d8"
+  },
+  "target": {
+    "markets": ["TWSE", "TPEX"],
+    "instrument_family": "company_share",
+    "instrument_type": "common_share",
+    "execution_eligibility": "allowed",
+    "identity_authority": "installation_local_security_master",
+    "durable_identity": "ISIN",
+    "routing_identity": "MARKET:CODE",
+    "binding": "exact_security_code_unique",
+    "name_fallback": false
+  },
+  "sources": {
+    "TWSE": {
+      "source_id": "I3-TWSE-T86-INSTITUTIONAL-TRADING",
+      "authority": "official",
+      "endpoint_family": "https://www.twse.com.tw/rwd/zh/fund/T86",
+      "method": "GET",
+      "parameters": {"date": "explicit_Gregorian_YYYYMMDD", "selectType": "ALLBUT0999", "response": "json"},
+      "automatic_previous_trading_day_fallback": false,
+      "hidden_date_substitution": false,
+      "calendar_today_implies_current": false,
+      "transport": {"tls_policy": "compatibility", "certificate_verification": true, "hostname_verification": true, "verify_mode": "CERT_REQUIRED", "verify_x509_strict": "clear_only_where_supported", "unsafe_tls": false, "silent_policy_fallback": false, "timeout_seconds": 30, "retry_count": 0, "redirect_policy": "reject", "maximum_response_bytes": 4194304, "accepted_mime": ["application/json"], "raw_persistence": false},
+      "root_shape": "object_fields_data",
+      "acquisition_grain": "whole_market",
+      "code_field": "證券代號",
+      "date_field": "date",
+      "date_encoding": "Gregorian_YYYYMMDD",
+      "required_common_core": {
+        "foreign_and_mainland_excluding_foreign_dealer": {"buy_shares": ["外陸資買進股數(不含外資自營商)"], "sell_shares": ["外陸資賣出股數(不含外資自營商)"], "net_shares": ["外陸資買賣超股數(不含外資自營商)"]},
+        "investment_trust": {"buy_shares": ["投信買進股數"], "sell_shares": ["投信賣出股數"], "net_shares": ["投信買賣超股數"]},
+        "dealer_total": {"buy_shares": ["自營商買進股數(自行買賣)", "自營商買進股數(避險)"], "sell_shares": ["自營商賣出股數(自行買賣)", "自營商賣出股數(避險)"], "net_shares": ["自營商買賣超股數"]},
+        "institutional_total_net_shares": ["三大法人買賣超股數"]
+      },
+      "source_native_optional": {
+        "dealer_proprietary": {"buy_shares": ["自營商買進股數(自行買賣)"], "sell_shares": ["自營商賣出股數(自行買賣)"], "net_shares": ["自營商買賣超股數(自行買賣)"]},
+        "dealer_hedging": {"buy_shares": ["自營商買進股數(避險)"], "sell_shares": ["自營商賣出股數(避險)"], "net_shares": ["自營商買賣超股數(避險)"]},
+        "foreign_dealer": {"buy_shares": ["外資自營商買進股數"], "sell_shares": ["外資自營商賣出股數"], "net_shares": ["外資自營商買賣超股數"]},
+        "security_name": "證券名稱"
+      },
+      "dealer_component_split": "REQUIRED_RECONCILIATION",
+      "publication_context": {"18:00": "daily_product_excluding_block_trades", "20:00": "daily_product_including_block_trades", "publication_phase_in_payload": "absent", "infer_phase_from_retrieved_at": false}
+    },
+    "TPEX": {
+      "source_id": "I3-TPEX-3INSTI-DAILY-TRADING",
+      "authority": "official",
+      "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_3insti_daily_trading",
+      "method": "GET",
+      "transport": {"tls_policy": "strict", "timeout_seconds": 30, "retry_count": 0, "redirect_policy": "reject", "maximum_response_bytes": 4194304, "read_chunk_bytes": 65536, "accepted_mime": ["application/json"], "complete_body_required": true, "partial_body_analysis": false, "unsafe_tls": false, "raw_persistence": false},
+      "root_shape": "array_of_objects",
+      "acquisition_grain": "whole_market",
+      "code_field": "SecuritiesCompanyCode",
+      "date_field": "Date",
+      "date_encoding": "ROC_YYYMMDD",
+      "gregorian_year_offset": 1911,
+      "one_normalized_source_date_required": true,
+      "qualified_observation_not_row_count_requirement": {"row_count": 910, "field_count": 20, "raw_date": "1151002", "trade_date": "2026-10-02"},
+      "required_common_core": {
+        "foreign_and_mainland_excluding_foreign_dealer": {"buy_shares": ["Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy"], "sell_shares": [" Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell"], "net_shares": ["Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference"]},
+        "investment_trust": {"buy_shares": ["SecuritiesInvestmentTrustCompanies-TotalBuy"], "sell_shares": ["SecuritiesInvestmentTrustCompanies-TotalSell"], "net_shares": ["SecuritiesInvestmentTrustCompanies-Difference"]},
+        "dealer_total": {"buy_shares": ["Dealers-TotalBuy"], "sell_shares": ["Dealers-TotalSell"], "net_shares": ["Dealers-Difference"]},
+        "institutional_total_net_shares": ["TotalDifference"]
+      },
+      "rejected_dealer_sell_alias": "Dealers -TotalSell",
+      "dealer_sell_live_adjudication": {"selected_rows_passed": 910, "selected_rows_failed": 0, "alias_rows_passed": 802, "alias_rows_failed": 108},
+      "source_native_optional": {
+        "foreign_dealer": {"buy_shares": ["Foreign Dealers-Total Buy"], "sell_shares": ["Foreign Dealers-TotalSell"], "net_shares": ["ForeignDealers-Difference"]},
+        "foreign_including_dealer": {"buy_shares": ["ForeignInvestorsIncludeMainlandAreaInvestors-TotalBuy"], "sell_shares": ["ForeignInvestorsIncludeMainlandAreaInvestors-TotalSell"], "net_shares": ["ForeignInvestorsInclude MainlandAreaInvestors-Difference"]},
+        "security_name": "CompanyName"
+      },
+      "dealer_component_split": "NOT_APPLICABLE_SOURCE_DOES_NOT_EXPOSE_COMPONENT_SPLIT",
+      "publication_timestamp_in_payload": "absent",
+      "same_day_finality": "unknown",
+      "historical_backfill": false
+    }
+  },
+  "semantic_contract": {
+    "participant_semantic_symmetry": "ASSERT_INDEPENDENTLY",
+    "foreign_common_group": "foreign_and_mainland_excluding_foreign_dealer",
+    "foreign_dealer": "source_native_optional_excluded_from_common_total",
+    "foreign_including_dealer": "source_native_optional_not_common_core_substitute",
+    "trust_common_group": "investment_trust",
+    "dealer_common_group": "dealer_total",
+    "institutional_total_formula": ["foreign_and_mainland_excluding_foreign_dealer.net_shares", "investment_trust.net_shares", "dealer_total.net_shares"],
+    "net_formula": "buy_shares - sell_shares",
+    "whole_dataset_arithmetic_required": true,
+    "twse_component_reconciliation_required": true,
+    "tpex_component_reconciliation_required": false,
+    "invariant_failure_status": "source_failed"
+  },
+  "normalized_evidence": {
+    "schema_version": "cash_institutional_flow_context_evidence.v1",
+    "grain": "per_security_trade_date",
+    "unit": "share",
+    "buy_sell": "non_negative_integer_shares",
+    "net": "signed_integer_shares",
+    "implicit_lot_multiplier": false,
+    "required_fields": ["schema_version", "status", "market", "security_code", "trade_date", "retrieved_at", "unit", "foreign_and_mainland_excluding_foreign_dealer", "investment_trust", "dealer_total", "institutional_total_net_shares", "publication_finality", "currentness_status", "source", "transport", "citation_ids", "caveats"],
+    "optional_native_groups": ["foreign_dealer", "dealer_proprietary", "dealer_hedging", "foreign_including_dealer", "security_name"],
+    "statuses": ["complete", "unavailable", "source_failed", "binding_failed"],
+    "complete_requires": ["qualified_source", "complete_body", "valid_shape", "one_source_trade_date", "exact_target_binding_one", "share_unit", "required_core_parsed", "whole_dataset_invariants_pass", "participant_semantics_pass"],
+    "binding_failed_when": "exact_target_match_count_not_one",
+    "source_failed_conditions": ["transport_failure", "partial_body", "invalid_mime", "response_bound_violation", "malformed_json", "wrong_root_shape", "required_field_missing", "date_ambiguity", "malformed_required_numeric", "whole_dataset_invariant_failure", "semantic_contract_violation"],
+    "unavailable_only": "explicit_qualified_no_usable_evidence_without_contract_violation",
+    "partial_status": false
+  },
+  "timing": {
+    "source_trade_dates": "independent",
+    "alignment_statuses": ["same_trade_date", "different_trade_date", "not_comparable", "unavailable"],
+    "same_date_implies_simultaneous_publication": false,
+    "different_date_numeric_same_session_interpretation": false,
+    "date_rewriting": false,
+    "required_fields": ["trade_date", "retrieved_at", "publication_finality", "currentness_status"],
+    "publication_finality_enum": ["known_final", "unknown"],
+    "v1_publication_finality_without_separate_authority": "unknown",
+    "currentness_without_separate_authority": "unknown",
+    "retrieved_at_alone_proves_finality": false
+  },
+  "batching": {"TWSE_max_acquisitions": 1, "TPEX_max_acquisitions": 1, "mixed_max_unique_acquisitions": 2, "per_target_refetch": false, "retry_count": 0, "provenance": {"TWSE": "Attempt_3", "TPEX": "Attempt_4"}},
+  "raw_payload_persistence": "FORBIDDEN",
+  "allowed_durable_telemetry": ["response_sha256", "retrieved_at", "http_mime_bounds", "row_field_counts", "trade_date_findings", "binding_result", "arithmetic_summaries", "normalized_selected_observations", "citation_lineage"],
+  "interpretation": "descriptive_observations_only",
+  "excluded_product_semantics": ["trading_signal", "bullish_bearish", "sentiment", "smart_money", "causal_interpretation", "investment_recommendation", "security_ranking", "flow_score_or_percentile", "rolling_accumulation_5d_20d", "historical_backfill_or_warehouse", "day_trading", "margin_short_lending", "TAIFEX_positioning", "options_PCR", "large_trader_positioning", "ETF_exact_holdings"],
+  "authorization_boundary": {"a1_contract_frozen": true, "a1_market_gets": {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0}, "a2_ready_for_separate_owner_decision": true, "a2_implementation_authorized": false, "production_runtime_implementation": false, "source_activation": false, "route_activation": false, "merge_authorized": false}
+}
