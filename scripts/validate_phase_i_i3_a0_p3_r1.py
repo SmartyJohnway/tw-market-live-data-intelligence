@@ -109,7 +109,14 @@ def validate():
         assert plan["twse_reuse"] == old_plan["twse_reuse"]
         assert record["readiness"]["sha256"] == sha(ROOT / PLAN)
         assert record["authority"]["v3_sha256"] == sha(authority.AUTHORITY_V3_PATH)
-        assert not list((ROOT / PREFIX / "acceptance_runs").glob("*attempt4*"))
+        # The R1 candidate proved there was no Attempt 4 reservation then.
+        # A later separately authorized V3 attempt is valid current evidence.
+        for rel in (PREFIX + "acceptance_runs/i3-a0-attempt4-authority-reservation.json",
+                    PREFIX + "acceptance_runs/i3-a0-attempt4-authority-consumed.json"):
+            historical_path = subprocess.run(["git", "cat-file", "-e", f"{START}:{rel}"],
+                cwd=ROOT, capture_output=True)
+            assert historical_path.returncode != 0, rel
+            assert (ROOT / rel).is_file(), f"current_authorized_attempt4_artifact_missing:{rel}"
         from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
         from server.unified_mcp.tool_contracts import build_tool_specs
         registry = build_production_runtime_adapter_registry()
@@ -120,7 +127,7 @@ def validate():
         assert json.loads((ROOT / "docs/data_capabilities/phase_i_i2_source_authority.v1.json").read_text(encoding="utf-8"))["active_source_count"] == 1
         catalog = json.loads((ROOT / analyzer.PROTECTED[0]).read_text(encoding="utf-8"))
         assert all(c["capability_id"] != "cash_institutional_flow_context" for c in catalog["data_need_capabilities"])
-    print("P3-R1 PASS: real analyzer/composite interface; history immutable; market=0; Attempt4 unauthorized; MCP=6")
+    print("P3-R1 PASS: real analyzer/composite interface; historical bytes immutable; current Attempt4 evidence is separate; MCP=6")
     return record
 
 

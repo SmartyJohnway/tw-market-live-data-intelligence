@@ -81,7 +81,14 @@ def validate() -> dict:
         assert twse["exact_binding"] == 1 and twse["unit"] == "share"
         assert twse["whole_dataset_arithmetic"] == "PASS"
         assert plan["composite_closure"]["historical_hard_coded_batching_flags_are_fresh_proof"] is False
-        assert not list((ROOT / PREFIX / "acceptance_runs").glob("*attempt4*"))
+        # Historical P3 asserted no Attempt 4 latch at its own baseline. Later
+        # V3-authorized Attempt 4 evidence must not invalidate that old fact.
+        for rel in (PREFIX + "acceptance_runs/i3-a0-attempt4-authority-reservation.json",
+                    PREFIX + "acceptance_runs/i3-a0-attempt4-authority-consumed.json"):
+            historical_path = subprocess.run(["git", "cat-file", "-e", f"8be2cfe795b10591be564b441a17094df2884d1e:{rel}"],
+                cwd=ROOT, capture_output=True)
+            assert historical_path.returncode != 0, rel
+            assert (ROOT / rel).is_file(), f"current_authorized_attempt4_artifact_missing:{rel}"
         for relative in PROTECTED:
             assert (ROOT / relative).read_bytes() == subprocess.check_output(["git", "show", BASELINE + ":" + relative], cwd=ROOT), relative
         from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
@@ -96,7 +103,7 @@ def validate() -> dict:
             assert value["active_source_count"] == expected
         catalog = json.loads((ROOT / PROTECTED[0]).read_text(encoding="utf-8"))
         assert all(item["capability_id"] != "cash_institutional_flow_context" for item in catalog["data_need_capabilities"])
-    print("P3 PASS: historical HOLD unchanged; external network=0; Attempt 4 unauthorized; MCP=6")
+    print("P3 PASS: historical HOLD/readiness bytes unchanged; current Attempt 4 artifacts are separate; MCP=6")
     return record
 
 

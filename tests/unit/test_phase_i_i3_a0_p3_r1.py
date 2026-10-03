@@ -177,9 +177,16 @@ def test_attempt4_old_or_default_authority_rejected(version):
         authority.load_reviewed_authority_chain(attempt_number=4)
 
 
-def test_attempt4_explicit_v3_valid_without_any_reservation():
-    assert authority.load_reviewed_authority_chain(version="v3", attempt_number=4)["execution_authorized"] is False
-    assert not list((analyzer.ROOT / "docs/governance/phase_i/acceptance_runs").glob("*attempt4*"))
+def test_attempt4_explicit_v3_remains_valid_and_consumed_latch_is_v3_bound():
+    chain = authority.load_reviewed_authority_chain(version="v3", attempt_number=4)
+    assert chain["execution_authorized"] is False
+    root = analyzer.ROOT / "docs/governance/phase_i/acceptance_runs"
+    reservation = json.loads((root / "i3-a0-attempt4-authority-reservation.json").read_text(encoding="utf-8"))
+    consumed = json.loads((root / "i3-a0-attempt4-authority-consumed.json").read_text(encoding="utf-8"))
+    authority.validate_reservation(reservation, chain)
+    authority.validate_consumed_latch(consumed, chain)
+    assert reservation["attempt_number"] == consumed["attempt_number"] == 4
+    assert consumed["consumed_before_first_http_attempt"] is True
 
 
 @pytest.mark.parametrize("target", ["v3", "r1_erratum", "r1_closure", "erratum_absent"])

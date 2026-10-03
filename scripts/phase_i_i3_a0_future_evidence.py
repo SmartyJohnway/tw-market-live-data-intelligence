@@ -2,11 +2,75 @@
 from __future__ import annotations
 from datetime import date
 from scripts.run_phase_i_i3_a0_preflight import CORE, TARGETS, decode_payload, unpack, NOT_APPLICABLE
+import hashlib
+import json
+
+ATTEMPT3_OUTCOME_SHA256 = "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1"
+ATTEMPT3_TWSE_RESPONSE_SHA256 = "b292ec02ee89e3aa951337e0504662fee7ee2d7509628199e6752fa36860453e"
 
 
 def _flags(complete_body_received, whole_market_payload_observed):
     if type(complete_body_received) is not bool or type(whole_market_payload_observed) is not bool:
         raise ValueError("observation_flags_must_be_boolean")
+
+
+def reconstruct_attempt3_twse_canonical_summary(attempt3_record: dict) -> dict:
+    """Reconstruct the canonical TWSE analyzer shape from immutable A3 evidence.
+
+    This function accepts the loaded historical record and validates all pinned
+    provenance and arithmetic before producing the same eight-key shape as
+    ``analyze_market``. It neither reads source payloads nor infers values.
+    """
+    if not isinstance(attempt3_record, dict):
+        raise ValueError("attempt3_record_invalid")
+    encoded = (json.dumps(attempt3_record, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+    if hashlib.sha256(encoded).hexdigest() != ATTEMPT3_OUTCOME_SHA256:
+        raise ValueError("attempt3_record_anchor_mismatch")
+    if attempt3_record.get("final_decision") != "HOLD":
+        raise ValueError("attempt3_historical_decision_mismatch")
+    telemetry = attempt3_record.get("source_telemetry", {}).get("TWSE", {})
+    payload = attempt3_record.get("source_payload_summaries", {}).get("TWSE", {})
+    observations = attempt3_record.get("normalized_observations", {})
+    arithmetic = attempt3_record.get("whole_dataset_arithmetic", {}).get("TWSE")
+    observation = observations.get("TWSE:1101")
+    if (telemetry.get("response_sha256") != ATTEMPT3_TWSE_RESPONSE_SHA256
+            or attempt3_record.get("target_binding", {}).get("TWSE:1101") != 1
+            or payload.get("row_count") != 1341 or payload.get("field_count") != 19
+            or not isinstance(observation, dict) or observation.get("market") != "TWSE"
+            or observation.get("security_code") != "1101" or observation.get("trade_date") != "2026-09-30"
+            or observation.get("unit") != "share" or not isinstance(arithmetic, dict)):
+        raise ValueError("attempt3_twse_evidence_incomplete")
+    required = {*CORE, "institutional_total_net"}
+    if not required.issubset(arithmetic):
+        raise ValueError("attempt3_twse_arithmetic_incomplete")
+    checks_pass = all(
+        isinstance(arithmetic.get(name), dict)
+        and arithmetic[name].get("status") == "PASS"
+        and arithmetic[name].get("rows_checked") == 1341
+        and arithmetic[name].get("rows_passed") == 1341
+        and arithmetic[name].get("rows_failed") == 0
+        and arithmetic[name].get("missing_field_rows") == 0
+        for name in required
+    )
+    component = arithmetic.get("dealer_component_net")
+    components_pass = (isinstance(component, dict) and component.get("status") == "PASS"
+                       and component.get("rows_checked") == 1341
+                       and component.get("rows_passed") == 1341
+                       and component.get("rows_failed") == 0
+                       and component.get("missing_field_rows") == 0)
+    status = "PASS" if checks_pass and components_pass else "FAIL"
+    selected = {
+        "security_code": observation["security_code"],
+        "trade_date": observation["trade_date"],
+        "unit": observation["unit"],
+        "common_core": {name: observation[name] for name in (*CORE, "institutional_total_net_shares")},
+        "source_native_optional": observation["source_native_optional"],
+    }
+    return {
+        "market": "TWSE", "exact_matches": 1, "row_count": 1341, "field_count": 19,
+        "normalized_trade_dates": ["2026-09-30"], "selected_observation": selected,
+        "arithmetic": arithmetic, "status": status,
+    }
 
 
 def source_findings_from_analyzer_result(result: dict | None, *, complete_body_received: bool,
