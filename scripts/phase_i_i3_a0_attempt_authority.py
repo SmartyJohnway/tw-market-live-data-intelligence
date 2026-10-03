@@ -12,6 +12,9 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 AUTHORITY_PATH = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V1.json"
+AUTHORITY_V2_PATH = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V2.json"
+# Full-byte P3 seal is held here to avoid circular V2 <-> closure hashes.
+P3_CLOSURE_SHA256 = "6646b58f62c1dcef1dceac1d8644a4b57c0ca996bc51d1137b4cd750646f09ff"
 ANCHOR_FIELDS = {
     "attempt_1_record_sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
     "p0_mapping_sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
@@ -32,8 +35,52 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def load_reviewed_authority_chain() -> dict[str, Any]:
+def load_reviewed_authority_chain(*, version: str = "v1", attempt_number: int | None = None) -> dict[str, Any]:
     """Load only the repository's single reviewed chain and verify its anchors."""
+    if attempt_number == 4 and version != "v2":
+        raise ValueError("attempt4_requires_explicit_v2")
+    if version == "v2":
+        historical = load_reviewed_authority_chain()
+        canonical = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V2.json"
+        if AUTHORITY_V2_PATH.resolve() != canonical.resolve():
+            raise ValueError("authority_chain_path_not_canonical")
+        chain = json.loads(canonical.read_text(encoding="utf-8"))
+        if chain.get("schema_version") != "phase_i_i3_a0_future_attempt_authority_chain.v2":
+            raise ValueError("authority_chain_schema_invalid")
+        if chain.get("authority_chain_status") != "REVIEWED_FIXED_HISTORICAL_ANCHORS":
+            raise ValueError("authority_chain_not_reviewed")
+        for key in ANCHOR_FIELDS:
+            if chain.get(key) != historical[key]:
+                raise ValueError(f"authority_chain_anchor_mismatch:{key}")
+        if chain.get("v1_sha256") != _sha(AUTHORITY_PATH):
+            raise ValueError("v1_anchor_mismatch")
+        expected_paths = {
+            "attempt_2": "PHASE_I_I3_A0_ATTEMPT_2_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-01.json",
+            "attempt_2_erratum": "PHASE_I_I3_A0_ATTEMPT_2_PROVENANCE_ERRATUM_2026-10-02.json",
+            "p2": "PHASE_I_I3_A0_P2_ATTEMPT_2_PROVENANCE_AND_TWSE_TRANSPORT_COMPATIBILITY_CLOSURE_2026-10-02.json",
+            "attempt_3": "PHASE_I_I3_A0_ATTEMPT_3_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-02.json",
+            "attempt_3_reservation": "acceptance_runs/i3-a0-attempt3-authority-reservation.json",
+            "attempt_3_consumed": "acceptance_runs/i3-a0-attempt3-authority-consumed.json",
+            "attempt_3_erratum": "PHASE_I_I3_A0_ATTEMPT_3_EVIDENCE_ERRATUM_2026-10-03.json",
+        }
+        if set(chain["additional_anchors"]) != set(expected_paths):
+            raise ValueError("v2_anchor_inventory_mismatch")
+        for key, relative in expected_paths.items():
+            item = chain["additional_anchors"][key]
+            path = "docs/governance/phase_i/" + relative
+            if item["path"] != path or item["sha256"] != _sha(ROOT / path):
+                raise ValueError(f"v2_anchor_mismatch:{key}")
+        p3_path = "docs/governance/phase_i/PHASE_I_I3_A0_P3_ATTEMPT_3_EVIDENCE_ERRATUM_AND_BOUNDED_BODY_READ_CLOSURE_2026-10-03.json"
+        if chain["p3_closure_reference"] != {"path": p3_path, "hash_authority": "phase_i_i3_a0_attempt_authority.P3_CLOSURE_SHA256"}:
+            raise ValueError("p3_reference_mismatch")
+        if _sha(ROOT / p3_path) != P3_CLOSURE_SHA256:
+            raise ValueError("p3_closure_anchor_mismatch")
+        p3 = json.loads((ROOT / p3_path).read_text(encoding="utf-8"))
+        if p3["future_authority_chain"]["sha256"] != _sha(canonical):
+            raise ValueError("p3_v2_reference_mismatch")
+        return chain
+    if version != "v1":
+        raise ValueError("unsupported_authority_chain_version")
     if AUTHORITY_PATH.resolve() != (ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V1.json").resolve():
         raise ValueError("authority_chain_path_not_canonical")
     chain = json.loads(AUTHORITY_PATH.read_text(encoding="utf-8"))
@@ -56,26 +103,37 @@ def load_reviewed_authority_chain() -> dict[str, Any]:
 
 
 def validate_reservation(reservation: dict[str, Any], chain: dict[str, Any] | None = None) -> None:
-    fixed = load_reviewed_authority_chain()
+    version = reservation.get("authority_chain_version", "v1")
+    fixed = load_reviewed_authority_chain(version=version, attempt_number=reservation.get("attempt_number"))
     if chain is not None and chain != fixed:
         raise ValueError("unreviewed_authority_chain")
     for key, expected in ANCHOR_FIELDS.items():
         if reservation.get(key) != expected:
             raise ValueError(f"reservation_anchor_mismatch:{key}")
+    if version == "v2":
+        if reservation.get("authority_chain_sha256") != _sha(AUTHORITY_V2_PATH):
+            raise ValueError("reservation_v2_digest_mismatch")
+        if reservation.get("additional_anchors") != fixed["additional_anchors"]:
+            raise ValueError("reservation_v2_anchors_mismatch")
 
 
 def validate_consumed_latch(latch: dict[str, Any], chain: dict[str, Any] | None = None) -> None:
-    fixed = load_reviewed_authority_chain()
+    version = latch.get("authority_chain_version", "v1")
+    fixed = load_reviewed_authority_chain(version=version, attempt_number=latch.get("attempt_number"))
     if chain is not None and chain != fixed:
         raise ValueError("unreviewed_authority_chain")
     for key, expected in ANCHOR_FIELDS.items():
         if latch.get(key) != expected:
             raise ValueError(f"consumed_anchor_mismatch:{key}")
+    if version == "v2":
+        if latch.get("authority_chain_sha256") != _sha(AUTHORITY_V2_PATH) or latch.get("additional_anchors") != fixed["additional_anchors"]:
+            raise ValueError("consumed_v2_anchors_mismatch")
 
 
 def build_reservation(*, owner_authority: str, starting_main: str, branch: str,
-                      branch_head: str, tree: str, max_gets: dict[str, int]) -> dict[str, Any]:
-    chain = load_reviewed_authority_chain()
+                      branch_head: str, tree: str, max_gets: dict[str, int],
+                      version: str = "v1", attempt_number: int | None = None) -> dict[str, Any]:
+    chain = load_reviewed_authority_chain(version=version, attempt_number=attempt_number)
     value = {
         "schema_version": "phase_i_i3_a0_future_attempt_reservation.v1",
         "owner_authority": owner_authority, "starting_main": starting_main,
@@ -84,12 +142,18 @@ def build_reservation(*, owner_authority: str, starting_main: str, branch: str,
         "network_budget": dict(max_gets),
     }
     value.update({key: chain[key] for key in ANCHOR_FIELDS})
+    if version == "v2":
+        value.update(authority_chain_version=version, attempt_number=attempt_number,
+                     authority_chain_sha256=_sha(AUTHORITY_V2_PATH), additional_anchors=chain["additional_anchors"])
+    elif attempt_number is not None:
+        value["attempt_number"] = attempt_number
     validate_reservation(value, chain)
     return value
 
 
 def build_consumed_latch(reservation: dict[str, Any], *, consumed_at: str) -> dict[str, Any]:
-    chain = load_reviewed_authority_chain()
+    chain = load_reviewed_authority_chain(version=reservation.get("authority_chain_version", "v1"),
+                                         attempt_number=reservation.get("attempt_number"))
     validate_reservation(reservation, chain)
     value = {
         "schema_version": "phase_i_i3_a0_future_attempt_consumed.v1",
@@ -103,5 +167,8 @@ def build_consumed_latch(reservation: dict[str, Any], *, consumed_at: str) -> di
         "network_budget": dict(reservation["network_budget"]),
     }
     value.update({key: chain[key] for key in ANCHOR_FIELDS})
+    for key in ("authority_chain_version", "attempt_number", "authority_chain_sha256", "additional_anchors"):
+        if key in reservation:
+            value[key] = reservation[key]
     validate_consumed_latch(value, chain)
     return value

@@ -30,6 +30,7 @@ class Response:
         self.headers = {"Content-Type": content_type}
         self.read_limits = []
         self.closed = False
+        self.offset = 0
 
     def getcode(self):
         return self.status
@@ -38,7 +39,9 @@ class Response:
         self.read_limits.append(limit)
         if isinstance(self.body, Exception):
             raise self.body
-        return self.body[:limit]
+        chunk = self.body[self.offset:self.offset + limit]
+        self.offset += len(chunk)
+        return chunk
 
     def close(self):
         self.closed = True
@@ -215,7 +218,7 @@ def test_fixed_endpoint_and_bounds_and_json_mime_parameters():
     req, timeout = op.calls[0]
     assert req.full_url == transport.URLS["TWSE"]
     assert req.get_method() == "GET" and timeout == 30
-    assert response.read_limits == [4 * 1024 * 1024 + 1]
+    assert response.read_limits == [transport.READ_CHUNK_BYTES] * 2
     assert telemetry["base_mime"] == "application/json"
     assert telemetry["response_byte_count"] == len(body)
     assert telemetry["retry_count"] == 0 and body == response.body
@@ -240,9 +243,10 @@ def test_bad_mime_oversize_and_read_error_fail_closed():
     telemetry, body, _ = read("TWSE", Response(b'{"data":[]}', content_type="text/html"))
     assert telemetry["error_code"] == "unsupported_content_type" and body is None
     telemetry, body, response_op = read("TWSE", Response(b"x" * (transport.MAX_BYTES + 2)))
-    assert telemetry["response_byte_count"] == transport.MAX_BYTES + 1
+    assert telemetry["response_byte_count"] == 0
+    assert telemetry["partial_response_byte_count"] == transport.MAX_BYTES + 1
     assert telemetry["error_code"] == "response_byte_limit_exceeded" and body is None
-    assert response_op.response.read_limits == [transport.MAX_BYTES + 1]
+    assert max(response_op.response.read_limits) <= transport.READ_CHUNK_BYTES
     telemetry, body, _ = read("TWSE", Response(OSError("read broke")))
     assert telemetry["reason_classification"] == "os_network_error" and body is None
 

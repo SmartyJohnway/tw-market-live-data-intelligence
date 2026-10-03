@@ -1,0 +1,51 @@
+{
+  "schema_version": "phase_i_i3_a0_attempt_3_evidence_erratum.v1",
+  "status": "ACCEPTED_METADATA_AND_EVIDENCE_ATTRIBUTION_ERRATUM",
+  "owner_authority": "USER_CHAT_2026-10-03_PHASE_I_I3_A0_P3_ATTEMPT3_EVIDENCE_ERRATUM_AND_BOUNDED_BODY_READ_CLOSURE",
+  "historical_outcome_path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-02.json",
+  "historical_outcome_sha256": "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1",
+  "reservation_sha256": "ff9ffa93c6ceab5eb7147ce513ef35d175ce6bc13f4f43e0aeffc9b36d54d848",
+  "consumed_latch_sha256": "2b731cca5ce95840eccf6c1459170e4d7a634ab7d9022cb0e5c2f0b138419c3b",
+  "defect_a": {
+    "classification": "FAILURE_PATH_DEFAULT_VALUE_DEFECT",
+    "field": "target_binding.TPEX:5347",
+    "historical_value": 0,
+    "correct_interpretation": "NOT_EVALUATED",
+    "zero_definition": "Complete source payload evaluated, exact target matches zero",
+    "not_evaluated_definition": "No complete TPEx body; binding never attempted"
+  },
+  "defect_b": {
+    "classification": "EVIDENCE_ATTRIBUTION_DEFECT",
+    "historical_values": {
+      "TPEx_targets_per_whole_market_get": true,
+      "mixed_market_max_unique_gets": 2,
+      "per_target_network_request_required": false
+    },
+    "fresh_observation": {
+      "TWSE": "PROVEN_BY_ATTEMPT_3",
+      "TPEx": "NOT_EVALUATED_BY_ATTEMPT_3",
+      "mixed_market": "NOT_EVALUATED_BY_ATTEMPT_3"
+    },
+    "prior_support": "Prior source-shape/design evidence must be cited separately in a future composite closure; historical flags are not fresh TPEx observations"
+  },
+  "impact": {
+    "historical_files_mutated": false,
+    "hold_decision_affected": false,
+    "network_accounting_affected": false,
+    "single_use_consumption_affected": false,
+    "twse_evidence_affected": false,
+    "tpex_semantic_evidence_created": false
+  },
+  "execution_truth": {
+    "decision": "HOLD",
+    "TWSE_GET": 1,
+    "TPEx_GET": 1,
+    "retry": 0,
+    "TPEx_http_status": 200,
+    "TPEx_base_mime": "application/json",
+    "TPEx_failure_phase": "response_body_read",
+    "TPEx_reason_type": "ConnectionResetError",
+    "TPEx_errno": 10054,
+    "TPEx_semantics": "NOT_EVALUATED"
+  }
+}

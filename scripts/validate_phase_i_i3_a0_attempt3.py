@@ -18,6 +18,40 @@ from scripts.run_phase_i_i3_a0_attempt3 import (
 from scripts.run_phase_i_i3_a0_preflight import ENDPOINTS, PROTECTED
 
 MAX_BYTES = 4 * 1024 * 1024
+ERRATUM_REL = "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_EVIDENCE_ERRATUM_2026-10-03.json"
+HISTORICAL_SHA = {
+    OUTCOME_REL: "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1",
+    RESERVATION_REL: "ff9ffa93c6ceab5eb7147ce513ef35d175ce6bc13f4f43e0aeffc9b36d54d848",
+    CONSUMED_REL: "2b731cca5ce95840eccf6c1459170e4d7a634ab7d9022cb0e5c2f0b138419c3b",
+}
+
+
+def validate_erratum(root: Path = ROOT) -> None:
+    for rel, expected in HISTORICAL_SHA.items():
+        assert digest(root / rel) == expected
+    record = _json(root / OUTCOME_REL)
+    assert record["target_binding"]["TPEX:5347"] == 0
+    values = {"TPEx_targets_per_whole_market_get": True,
+              "mixed_market_max_unique_gets": 2, "per_target_network_request_required": False}
+    for key, value in values.items():
+        assert record["batching"][key] == value
+    erratum = _json(root / ERRATUM_REL)
+    assert erratum["schema_version"] == "phase_i_i3_a0_attempt_3_evidence_erratum.v1"
+    assert erratum["status"] == "ACCEPTED_METADATA_AND_EVIDENCE_ATTRIBUTION_ERRATUM"
+    assert erratum["historical_outcome_path"] == OUTCOME_REL
+    assert erratum["historical_outcome_sha256"] == HISTORICAL_SHA[OUTCOME_REL]
+    assert erratum["reservation_sha256"] == HISTORICAL_SHA[RESERVATION_REL]
+    assert erratum["consumed_latch_sha256"] == HISTORICAL_SHA[CONSUMED_REL]
+    a, b = erratum["defect_a"], erratum["defect_b"]
+    assert a["classification"] == "FAILURE_PATH_DEFAULT_VALUE_DEFECT"
+    assert a["field"] == "target_binding.TPEX:5347" and a["historical_value"] == 0
+    assert a["correct_interpretation"] == "NOT_EVALUATED"
+    assert b["classification"] == "EVIDENCE_ATTRIBUTION_DEFECT"
+    assert b["historical_values"] == values
+    assert b["fresh_observation"] == {"TWSE": "PROVEN_BY_ATTEMPT_3",
+        "TPEx": "NOT_EVALUATED_BY_ATTEMPT_3", "mixed_market": "NOT_EVALUATED_BY_ATTEMPT_3"}
+    assert all(value is False for value in erratum["impact"].values())
+    assert erratum["execution_truth"]["TPEx_semantics"] == "NOT_EVALUATED"
 
 
 def digest(path: Path) -> str:
@@ -89,6 +123,7 @@ def validate() -> dict:
         raise AssertionError("Attempt 3 validation must not use network")
 
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny):
+        validate_erratum()
         chain = authority.load_reviewed_authority_chain()
         record = _json(ROOT / OUTCOME_REL)
         reservation_path = ROOT / RESERVATION_REL

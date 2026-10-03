@@ -24,6 +24,7 @@ URLS = {
 }
 MARKET_SSL_POLICY = {"TWSE": SSL_POLICY_COMPATIBILITY, "TPEx": SSL_POLICY_STRICT}
 MAX_BYTES = 4 * 1024 * 1024
+READ_CHUNK_BYTES = 64 * 1024
 TIMEOUT_SECONDS = 30
 RETRY_COUNT = 0
 ALLOWED_MIME = {"application/json"}
@@ -160,11 +161,14 @@ def read_once(market: str, *, policy: str | None = None, endpoint: str | None = 
         "http_status": None, "content_type": None, "base_mime": None,
         "retrieved_at": now(), "response_byte_count": 0, "response_sha256": None,
         "error_code": None,
+        "complete_body_received": False, "partial_response_byte_count": 0,
+        "declared_content_length": None, "failure_phase": None,
     }
     try:
         response = opener.open(request, timeout=TIMEOUT_SECONDS)
     except HTTPError as exc:
         telemetry.update(classify_exception(exc))
+        telemetry["failure_phase"] = "http_response_headers"
         telemetry["http_status"] = exc.code
         telemetry["content_type"] = exc.headers.get("Content-Type") if exc.headers else None
         telemetry["base_mime"] = base_mime(telemetry["content_type"])
@@ -175,25 +179,52 @@ def read_once(market: str, *, policy: str | None = None, endpoint: str | None = 
         return telemetry, None
     except Exception as exc:
         telemetry.update(classify_exception(exc))
+        telemetry["failure_phase"] = "connection_setup_or_http_headers"
         return telemetry, None
+    buffer = bytearray()
+    phase = "http_response_headers"
     try:
         telemetry["http_status"] = getattr(response, "status", None) or response.getcode()
         headers = getattr(response, "headers", {})
         telemetry["content_type"] = headers.get("Content-Type")
         telemetry["base_mime"] = base_mime(telemetry["content_type"])
-        body = response.read(MAX_BYTES + 1)
+        declared = headers.get("Content-Length")
+        if (not headers.get("Transfer-Encoding") and isinstance(declared, str)
+                and len(declared) <= 20 and declared.isascii() and declared.isdigit()):
+            telemetry["declared_content_length"] = int(declared)
+        if telemetry["declared_content_length"] is not None and telemetry["declared_content_length"] > MAX_BYTES:
+            telemetry.update(error_code="response_byte_limit_exceeded", failure_phase="http_response_headers")
+            return telemetry, None
+        phase = "response_body_read"
+        while True:
+            limit = min(READ_CHUNK_BYTES, MAX_BYTES + 1 - len(buffer))
+            chunk = response.read(limit)
+            if not isinstance(chunk, bytes) or len(chunk) > limit:
+                telemetry.update(error_code="response_body_read_contract_violation", failure_phase="response_body_read")
+                return telemetry, None
+            if not chunk:
+                break
+            buffer.extend(chunk)
+            telemetry["partial_response_byte_count"] = len(buffer)
+            if len(buffer) > MAX_BYTES:
+                telemetry.update(error_code="response_byte_limit_exceeded", failure_phase="response_body_read")
+                return telemetry, None
+        length = telemetry["declared_content_length"]
+        if length is not None and len(buffer) != length:
+            telemetry.update(error_code="content_length_mismatch", failure_phase="response_body_read")
+            return telemetry, None
+        telemetry["complete_body_received"] = True
+        body = bytes(buffer)
     except Exception as exc:
         telemetry.update(classify_exception(exc))
+        telemetry["failure_phase"] = phase
         return telemetry, None
     finally:
         try:
             response.close()
         except Exception:
             pass
-    telemetry["response_byte_count"] = len(body) if isinstance(body, bytes) else 0
-    if not isinstance(body, bytes):
-        telemetry["error_code"] = "response_body_not_bytes"
-        return telemetry, None
+    telemetry["response_byte_count"] = len(body)
     import hashlib
     telemetry["response_sha256"] = hashlib.sha256(body).hexdigest()
     if len(body) > MAX_BYTES:
