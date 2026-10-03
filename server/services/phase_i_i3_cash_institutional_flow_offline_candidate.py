@@ -138,8 +138,10 @@ def run_i3_candidate_offline_batch(
                 evidence = {**common, "status": "binding_failed", "error_code": "binding_failed"}
                 evidence["caveats"].append(f"exact source-code matches: {len(matches)}")
             else:
+                prepared_row = matches[0]
                 evidence = {**common, "status": "complete", "trade_date": state.trade_date, "unit": "share",
-                    **matches[0]}
+                    **prepared_row.values}
+                evidence["caveats"].extend(prepared_row.optional_caveats)
         validate_evidence(evidence)
         encoded = canonical_json(evidence).encode("utf-8")
         artifacts[relative_path] = encoded

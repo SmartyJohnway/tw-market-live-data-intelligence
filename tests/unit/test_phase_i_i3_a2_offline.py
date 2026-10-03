@@ -285,3 +285,125 @@ def test_oversize_payload_is_source_failed_without_raw_artifact():
     assert ev["transport"]["response_byte_count"] == 0
     assert ev["transport"]["response_sha256"] is None
     assert body not in next(iter(result["artifact_bytes"].values()))
+
+
+def _twse_cell(payload, row, field, value):
+    payload["data"][row][payload["fields"].index(field)] = value
+
+
+def _drop_twse_field(payload, field):
+    position = payload["fields"].index(field)
+    payload["fields"].pop(position)
+    for row in payload["data"]:
+        row.pop(position)
+
+
+@pytest.mark.parametrize("market,name_field", [("TWSE", "證券名稱"), ("TPEX", "CompanyName")])
+def test_optional_security_name_absent_keeps_complete(market, name_field):
+    twse, tpex = fixture_payloads()
+    if market == "TWSE":
+        _drop_twse_field(twse, name_field)
+        source, code = twse, "1101"
+    else:
+        for row in tpex:
+            row.pop(name_field, None)
+        source, code = tpex, "5347"
+    ev = evidence(execute([target(market, code, 1)], {market: payload_bytes(source)}))[0]
+    assert ev["status"] == "complete"
+    assert "security_name" not in ev["source_native_optional"]
+    assert "optional source-native field unavailable: security_name" in ev["caveats"]
+
+
+@pytest.mark.parametrize("market,name_field", [("TWSE", "證券名稱"), ("TPEX", "CompanyName")])
+def test_optional_security_name_wrong_type_keeps_complete(market, name_field):
+    twse, tpex = fixture_payloads()
+    if market == "TWSE":
+        _twse_cell(twse, 0, name_field, 7)
+        source, code = twse, "1101"
+    else:
+        tpex[0][name_field] = 7
+        source, code = tpex, "5347"
+    ev = evidence(execute([target(market, code, 1)], {market: payload_bytes(source)}))[0]
+    assert ev["status"] == "complete"
+    assert "security_name" not in ev["source_native_optional"]
+    assert "optional source-native field invalid: security_name" in ev["caveats"]
+
+
+@pytest.mark.parametrize("market,group,field", [
+    ("TWSE", "foreign_dealer", "外資自營商買進股數"),
+    ("TPEX", "foreign_dealer", "Foreign Dealers-Total Buy"),
+    ("TPEX", "foreign_including_dealer", "ForeignInvestorsIncludeMainlandAreaInvestors-TotalBuy"),
+])
+def test_optional_source_native_malformed_omitted_without_affecting_core(market, group, field):
+    twse, tpex = fixture_payloads()
+    baseline = evidence(execute([target(market, "1101" if market == "TWSE" else "5347", 1)]))[0]
+    if market == "TWSE":
+        _twse_cell(twse, 0, field, "not-a-share-count")
+        source, code = twse, "1101"
+    else:
+        optional_mapping = load_frozen_contract()["sources"]["TPEX"]["source_native_optional"][group]
+        for keys in optional_mapping.values():
+            for key in keys:
+                tpex[0][key] = "0"
+        tpex[0][field] = "not-a-share-count"
+        source, code = tpex, "5347"
+    ev = evidence(execute([target(market, code, 1)], {market: payload_bytes(source)}))[0]
+    assert ev["status"] == "complete"
+    assert group not in ev["source_native_optional"]
+    assert f"optional source-native group invalid: {group}" in ev["caveats"]
+    for key in ("foreign_and_mainland_excluding_foreign_dealer", "investment_trust", "dealer_total", "institutional_total_net_shares"):
+        assert ev[key] == baseline[key]
+    assert "not-a-share-count" not in json.dumps(ev)
+
+
+def test_optional_foreign_dealer_arithmetic_mismatch_is_local_omission():
+    twse, _ = fixture_payloads()
+    _twse_cell(twse, 0, "外資自營商買賣超股數", "9")
+    ev = evidence(execute([target("TWSE", "1101", 1)], {"TWSE": payload_bytes(twse)}))[0]
+    assert ev["status"] == "complete"
+    assert "foreign_dealer" not in ev["source_native_optional"]
+    assert "optional source-native group invalid: foreign_dealer" in ev["caveats"]
+    assert ev["institutional_total_net_shares"] == 140
+
+
+@pytest.mark.parametrize("market", ["TWSE", "TPEX"])
+def test_optional_foreign_dealer_partial_field_set_is_unavailable(market):
+    twse, tpex = fixture_payloads()
+    if market == "TWSE":
+        _drop_twse_field(twse, "外資自營商買賣超股數")
+        source, code = twse, "1101"
+    else:
+        tpex[0]["Foreign Dealers-Total Buy"] = "4"
+        source, code = tpex, "5347"
+    ev = evidence(execute([target(market, code, 1)], {market: payload_bytes(source)}))[0]
+    assert ev["status"] == "complete"
+    assert "foreign_dealer" not in ev["source_native_optional"]
+    assert "optional source-native group unavailable: foreign_dealer" in ev["caveats"]
+
+
+def test_unrelated_row_optional_corruption_does_not_degrade_target():
+    twse, _ = fixture_payloads()
+    _twse_cell(twse, 1, "外資自營商買進股數", "bad")
+    result = execute([target("TWSE", "1101", 1), target("TWSE", "1102", 2)], {"TWSE": payload_bytes(twse)})
+    first, second = evidence(result)
+    assert first["status"] == second["status"] == "complete"
+    assert "optional source-native group invalid: foreign_dealer" not in first["caveats"]
+    assert "optional source-native group invalid: foreign_dealer" in second["caveats"]
+    assert "foreign_dealer" not in second["source_native_optional"]
+
+
+@pytest.mark.parametrize("change", [
+    lambda payload: _twse_cell(payload, 0, "自營商買賣超股數(自行買賣)", "bad"),
+    lambda payload: _drop_twse_field(payload, "自營商買賣超股數(避險)"),
+    lambda payload: _twse_cell(payload, 0, "自營商買賣超股數(自行買賣)", "19"),
+])
+def test_twse_required_dealer_reconciliation_remains_source_failed(change):
+    twse, _ = fixture_payloads()
+    change(twse)
+    result = execute([target("TWSE", "1101", 1)], {"TWSE": payload_bytes(twse)})
+    ev = evidence(result)[0]
+    assert ev["status"] == "source_failed"
+    assert result["operation_results"][0]["status"] == "failed"
+    for key in ("unit", "foreign_and_mainland_excluding_foreign_dealer", "investment_trust", "dealer_total",
+                "institutional_total_net_shares", "source_native_optional"):
+        assert key not in ev

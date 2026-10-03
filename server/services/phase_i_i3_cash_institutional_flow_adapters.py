@@ -84,35 +84,55 @@ def _flow(row: dict[str, Any], mapping: dict[str, list[str]]) -> dict[str, int]:
     return values
 
 
-def _normalized_row(row: dict[str, Any], source: dict[str, Any], market: str) -> dict[str, Any]:
+@dataclass(frozen=True)
+class PreparedRow:
+    values: dict[str, Any]
+    optional_caveats: tuple[str, ...]
+
+
+def _normalized_row(row: dict[str, Any], source: dict[str, Any], market: str) -> PreparedRow:
     mapping = source["required_common_core"]
     groups = {name: _flow(row, mapping[name]) for name in CORE_GROUPS}
     total = _expression(row, mapping["institutional_total_net_shares"])
     if total != sum(groups[name]["net_shares"] for name in CORE_GROUPS):
         raise ValueError("institutional_total_mismatch")
     optional: dict[str, Any] = {}
-    for name, fields in source["source_native_optional"].items():
-        if isinstance(fields, str):
-            if fields in row:
-                optional[name] = row[fields]
-        elif all(key in row for keys in fields.values() for key in keys):
-            optional[name] = _flow(row, fields)
+    caveats: list[str] = []
     if market == "TWSE":
-        if "dealer_proprietary" not in optional or "dealer_hedging" not in optional:
-            raise ValueError("twse_dealer_components_missing")
+        for name in ("dealer_proprietary", "dealer_hedging"):
+            optional[name] = _flow(row, source["source_native_optional"][name])
         if any(groups["dealer_total"][field] != optional["dealer_proprietary"][field] + optional["dealer_hedging"][field]
                for field in ("buy_shares", "sell_shares", "net_shares")):
             raise ValueError("twse_dealer_components_mismatch")
-    return {"foreign_and_mainland_excluding_foreign_dealer": groups["foreign_and_mainland_excluding_foreign_dealer"],
+    for name, fields in source["source_native_optional"].items():
+        if name in optional:
+            continue
+        if isinstance(fields, str):
+            value = row.get(fields)
+            if fields not in row:
+                caveats.append(f"optional source-native field unavailable: {name}")
+            elif not isinstance(value, str) or not value.strip():
+                caveats.append(f"optional source-native field invalid: {name}")
+            else:
+                optional[name] = value
+        elif not all(key in row for keys in fields.values() for key in keys):
+            caveats.append(f"optional source-native group unavailable: {name}")
+        else:
+            try:
+                optional[name] = _flow(row, fields)
+            except (KeyError, TypeError, ValueError):
+                caveats.append(f"optional source-native group invalid: {name}")
+    values = {"foreign_and_mainland_excluding_foreign_dealer": groups["foreign_and_mainland_excluding_foreign_dealer"],
             "investment_trust": groups["investment_trust"], "dealer_total": groups["dealer_total"],
             "institutional_total_net_shares": total, "source_native_optional": optional}
+    return PreparedRow(values, tuple(caveats))
 
 
 @dataclass(frozen=True)
 class PreparedSource:
     market: str
     trade_date: str | None
-    index: dict[str, list[dict[str, Any]]]
+    index: dict[str, list[PreparedRow]]
     row_count: int
     field_count: int
     error_code: str | None
@@ -166,10 +186,12 @@ def prepare_market_source(market: str, payload: bytes, *, twse_governed_source_d
         required.update(source["required_common_core"]["institutional_total_net_shares"])
         required.add(source["code_field"])
         if market == "TWSE":
-            required.add(source["source_native_optional"]["security_name"])
+            for name in ("dealer_proprietary", "dealer_hedging"):
+                for expression in source["source_native_optional"][name].values():
+                    required.update(expression)
         if not required.issubset(fields):
             raise ValueError("required_source_fields_missing")
-        index: dict[str, list[dict[str, Any]]] = {}
+        index: dict[str, list[PreparedRow]] = {}
         for row in rows:
             code = row[source["code_field"]]
             if not isinstance(code, str) or not code:

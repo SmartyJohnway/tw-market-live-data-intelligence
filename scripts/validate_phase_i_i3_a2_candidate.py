@@ -21,6 +21,9 @@ START = "f773b7b28f2e17d1f038084dc864dd15fbeda1bd"
 START_TREE = "f4ce0391bc450d7c6857203b10973f6b540c079a"
 OWNER = "USER_CHAT_2026-10-03_PHASE_I_I3_A2_DORMANT_OFFLINE_IMPLEMENTATION_AUTHORIZATION"
 RECORD = "docs/governance/phase_i/PHASE_I_I3_A2_DORMANT_OFFLINE_IMPLEMENTATION_CANDIDATE_2026-10-03.json"
+RECORD_SHA256 = "122d3317d098bc602fe753b02837bf9b1b7133ba287c45cd8de73383d97300e1"
+HISTORICAL_TECHNICAL_COMMIT = "59e8fcc32f31cf2c1ad610867fc2d87d1e250e95"
+HISTORICAL_TECHNICAL_TREE = "d902591980ec3adfebd35270b0ed4c6bc402f7df"
 SCHEMA = "schemas/cash_institutional_flow_context_evidence.v1.schema.json"
 MODULES = (
     "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
@@ -101,6 +104,7 @@ def validate(*, require_record: bool = True) -> dict | None:
                 and len(build_tool_specs()) == 6, "existing_runtime_or_mcp_drift")
         record = None
         if require_record:
+            require(sha(ROOT / RECORD) == RECORD_SHA256, "historical_a2_record_hash")
             record = json.loads((ROOT / RECORD).read_text(encoding="utf-8"))
             require(record["schema_version"] == "phase_i_i3_a2_dormant_offline_implementation_candidate.v1"
                     and record["status"] == "DORMANT_IMPLEMENTATION_CANDIDATE_READY_FOR_REVIEW"
@@ -108,9 +112,14 @@ def validate(*, require_record: bool = True) -> dict | None:
                     and record["starting_head"] == START and record["starting_tree"] == START_TREE, "a2_governance_identity")
             require(record["a1_contract"]["path"] == a1.CONTRACT and record["a1_contract"]["sha256"] == a1.sha(ROOT / a1.CONTRACT), "a2_a1_provenance")
             technical = record["technical_implementation"]
+            require(technical["commit"] == HISTORICAL_TECHNICAL_COMMIT
+                    and technical["tree"] == HISTORICAL_TECHNICAL_TREE, "historical_technical_identity")
             require(subprocess.check_output(["git", "rev-parse", technical["commit"] + "^{tree}"], cwd=ROOT).decode().strip() == technical["tree"], "technical_commit_tree")
             for rel in (*MODULES, SCHEMA, "tests/unit/test_phase_i_i3_a2_offline.py", "config/test_execution_profiles.json", "scripts/validate_phase_i_i3_a2_candidate.py"):
-                require((ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", f"{technical['commit']}:{rel}"], cwd=ROOT), f"technical_bytes_changed:{rel}")
+                historical = subprocess.check_output(["git", "show", f"{technical['commit']}:{rel}"], cwd=ROOT)
+                require(bool(historical), f"historical_technical_file_missing:{rel}")
+                if rel == SCHEMA:
+                    require((ROOT / rel).read_bytes() == historical, "evidence_schema_changed_since_a2")
             require(technical["adapter_path"] == MODULES[0] and technical["candidate_executor_path"] == MODULES[1]
                     and technical["evidence_schema_path"] == SCHEMA
                     and technical["evidence_schema_sha256"] == sha(ROOT / SCHEMA), "technical_file_provenance")
