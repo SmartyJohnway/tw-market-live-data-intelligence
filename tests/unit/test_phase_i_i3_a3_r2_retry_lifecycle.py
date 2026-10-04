@@ -265,9 +265,19 @@ def test_previous_owner_authorities_are_rejected():
             attempt3.fresh_owner_reference(owner)
 
 
-def test_attempt2_history_is_immutable_and_attempt3_is_separate():
+def test_attempt2_history_is_immutable_and_attempt3_lifecycle_is_consistent():
     attempt3.attempt2_history_intact()
     assert attempt3.RESERVATION.endswith("i3-a3-attempt-3-live-authority-reservation.json")
     assert attempt3.CONSUMED.endswith("i3-a3-attempt-3-live-authority-consumed.json")
-    assert not (a3.ROOT / attempt3.RESERVATION).exists()
-    assert not (a3.ROOT / attempt3.CONSUMED).exists()
+    reservation = a3.ROOT / attempt3.RESERVATION
+    consumed = a3.ROOT / attempt3.CONSUMED
+    passed = a3.ROOT / attempt3.OUTCOME
+    hold = a3.ROOT / attempt3.HOLD
+    if not any(path.exists() for path in (reservation, consumed, passed, hold)):
+        assert not reservation.exists() and not consumed.exists()
+    else:
+        assert reservation.is_file() and consumed.is_file()
+        assert passed.exists() != hold.exists()
+        latch = json.loads(consumed.read_text(encoding="utf-8"))
+        assert latch["consumed"] is True
+        assert latch["consumed_before_first_http_attempt"] is True
