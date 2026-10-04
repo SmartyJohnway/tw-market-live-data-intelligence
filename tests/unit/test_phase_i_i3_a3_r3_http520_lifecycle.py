@@ -172,12 +172,80 @@ def test_404_stops_immediately_even_with_budget_remaining():
     assert acquired is None
 
 
+def assert_attempt4_lifecycle(reservation, consumed, passed, held):
+    if not any(path.exists() for path in (reservation, consumed, passed, held)):
+        # Valid only before the single-use live authority is consumed.
+        assert all(not path.exists() for path in (reservation, consumed, passed, held))
+        return "pre_live"
+    assert reservation.is_file() and consumed.is_file()
+    assert passed.exists() != held.exists()
+    latch = json.loads(consumed.read_text(encoding="utf-8"))
+    assert latch["consumed"] is True
+    assert latch["consumed_before_first_http_attempt"] is True
+    assert latch["reservation_sha256"] == a3.sha(reservation)
+    return "post_live"
+
+
+def test_attempt4_pre_live_lifecycle_is_valid_without_artifacts(tmp_path):
+    assert assert_attempt4_lifecycle(*(tmp_path / name for name in
+        ("reservation.json", "consumed.json", "pass.json", "hold.json"))) == "pre_live"
+
+
 def test_attempt3_history_is_immutable_and_attempt4_is_separate():
     attempt4.historical_attempts_intact()
     assert attempt4.RESERVATION.endswith("i3-a3-attempt-4-live-authority-reservation.json")
     assert attempt4.CONSUMED.endswith("i3-a3-attempt-4-live-authority-consumed.json")
-    assert not (a3.ROOT / attempt4.RESERVATION).exists()
-    assert not (a3.ROOT / attempt4.CONSUMED).exists()
+    reservation = a3.ROOT / attempt4.RESERVATION
+    consumed = a3.ROOT / attempt4.CONSUMED
+    passed = a3.ROOT / attempt4.OUTCOME
+    held = a3.ROOT / attempt4.HOLD
+    assert assert_attempt4_lifecycle(reservation, consumed, passed, held) == "post_live"
+    assert passed.is_file() and not held.exists()  # Committed Attempt 4 outcome.
+
+
+def test_committed_attempt4_pass_lineage_and_containment():
+    immutable = {
+        attempt4.OUTCOME: "f89a52b894e5c101ee6016a97034d395823011baee591cb4272334e821baa021",
+        attempt4.RESERVATION: "951228829ddcb4f4639f7cae03d35045d1aa148a89df3c48b15fc09fdb2077ed",
+        attempt4.CONSUMED: "44abcb5393ef4f3d2956b921a50e237deaeb83571af538cfbff06f3b6edeb21f",
+        f"{attempt4.ARTIFACT_ROOT}/evidence/phase_i/i3/i3a3-tpex-5347.json":
+            "7550c023d639aa4e43389b33dc730b79d6d345ebcd71130c604420db04a80891",
+        f"{attempt4.ARTIFACT_ROOT}/evidence/phase_i/i3/i3a3-twse-1101.json":
+            "398bea2cdce82bb3d1066974ac9e009d87b4f4e9c8249328d36df7b8aaf7d048",
+    }
+    assert all(a3.sha(a3.ROOT / path) == digest for path, digest in immutable.items())
+    record = json.loads((a3.ROOT / attempt4.OUTCOME).read_text(encoding="utf-8"))
+    assert record["status"] == "PASS_READY_FOR_INDEPENDENT_REVIEW"
+    assert record["A3_decision"] == "PASS" and record["candidate_reached"] is True
+    expected_count = {"TPEX": 1, "TWSE": 1, "TAIFEX": 0, "other": 0}
+    assert record["acquisition_callback_attempts"] == expected_count
+    assert record["transport_attempt_count"] == expected_count
+    assert record["http_dispatch_count"] == expected_count
+    assert record["retry_count_by_market"] == {key: 0 for key in expected_count}
+    assert record["raw_payload_persistence"] == "NONE"
+    assert record["candidate"]["network_calls"] == 0
+    assert record["candidate"]["simulated_source_acquisition_count"] == 2
+    assert all(item["status"] == "succeeded" for item in record["candidate"]["operation_results"])
+    assert record["candidate"]["alignment"] == {
+        "status": "different_trade_date",
+        "same_date_implies_simultaneous_publication": False,
+        "numeric_same_session_interpretation_allowed": False,
+    }
+    for market, target, trade_date, size, digest in (
+        ("TPEX", "TPEX:5347", "2026-10-02", 861949,
+         "2d058996bf67a375e152f381dda1a8610c32cf3ecd1ed31240c89ac7fd020402"),
+        ("TWSE", "TWSE:1101", "2026-09-30", 192873,
+         "377cdd86c4720f630d8c008e3642eb6e24d02f118d2452d7d3738ee4bc7dbb86"),
+    ):
+        evidence = record["evidence"][market]
+        live = record["source_telemetry"][market]
+        assert evidence["canonical_target_id"] == target
+        assert evidence["status"] == "complete" and evidence["unit"] == "share"
+        assert evidence["trade_date"] == trade_date
+        assert live["complete_body_received"] is True and live["http_status"] == 200
+        assert live["response_byte_count"] == evidence["transport"]["response_byte_count"] == size
+        assert live["response_sha256"] == evidence["transport"]["response_sha256"] == digest
+    a3.production_containment()
 
 
 def test_previous_owner_authorities_are_rejected():
