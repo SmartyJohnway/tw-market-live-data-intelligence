@@ -58,6 +58,12 @@ runtime later changed.
 - [I1 bounded live acceptance](phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json)
 - [I1 technical activation candidate snapshot](phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json)
 - [I1 final production route activation acceptance](phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json)
+- [I3-A0 final source/timing/symmetry composite GO](phase_i/PHASE_I_I3_A0_FINAL_COMPOSITE_CLOSURE_2026-10-03.json)
+- [I3-A1 frozen cash institutional flow source/evidence contract](phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json)
+- [I3-A2-R1 offline optional-detail repair closure](phase_i/PHASE_I_I3_A2_R1_OPTIONAL_SOURCE_NATIVE_FAILURE_SEMANTICS_CLOSURE_2026-10-03.json)
+- [I3-A3 Attempt 4 accepted bounded-live evidence](phase_i/PHASE_I_I3_A3_ATTEMPT_4_BOUNDED_LIVE_ADAPTER_ACCEPTANCE_2026-10-04.json)
+- [I3-A3-R4 post-live lifecycle and independent-review candidate](phase_i/PHASE_I_I3_A3_R4_ATTEMPT_4_POST_LIVE_LIFECYCLE_AND_INDEPENDENT_REVIEW_CLOSURE_2026-10-04.json)
+- [I3-A3 Owner final acceptance closure](phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json)
 
 The technical-candidate record remains historical. The final acceptance ledger
 is the current Owner decision for the selected I1 route; broader Phase I is not
@@ -69,7 +75,11 @@ gates. I2-A4 production activation is independently reviewed and Owner-accepted:
 the selected executor is `phase_i_i2_index_futures_context_executor`, with one
 active TAIFEX source and one normal approval-gated TWSE production route.
 `I2-ROLL-001` preserves deterministic rollback to `7ffbdf7f...`. The earlier
-unused live authority is superseded_without_use. I3 remains unstarted.
+unused I2 live authority is superseded_without_use. I3-A3 bounded-live adapter
+acceptance is independently reviewed and Owner-accepted. Attempts 1–3 remain
+historical HOLD outcomes; Attempt 4 is accepted PASS. I3 production sources
+and routes remain 0/0; A4, public V3 integration, production activation, and
+PR #300 merge are not authorized. MCP remains exactly six tools.
 
 ## Governance policy
 

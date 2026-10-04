@@ -1,5 +1,19 @@
 # HANDOFF.md — Current Operational Handoff
 
+## Current I3-A3 stopping point (2026-10-04)
+
+I3-A0 is `GO_PASS`, I3-A1 is `FROZEN_PASS`, and I3-A2-R1 is `PASS`.
+I3-A3 is `OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_BOUNDED_LIVE_PASS` under
+`docs/governance/phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json`.
+Attempts 1–3 remain historical HOLD outcomes; Attempt 4 is the accepted PASS.
+Its single-use live authority is consumed. No further A3 acquisition or
+Attempt 5 is authorized or required.
+
+Stop before A4: I3 has 0 active production sources and 0 production routes;
+the candidate is not reachable through the default runtime. Production
+activation, public V3 integration, MCP changes, and PR #300 merge are not
+authorized. PR #300 remains Draft; MCP remains exactly six tools.
+
 ## Current I2 production activation boundary (2026-10-01)
 
 I2-A4 production activation is Owner-accepted and merge-authorized.
@@ -14,7 +28,8 @@ I2-A4 production activation is Owner-accepted and merge-authorized.
   `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
 - No additional market request was authorized or performed for activation.
 - I1 remains active with two routes and three sources; MCP remains exactly six.
-- I3 / Phase J remain NOT STARTED; broader Phase I remains INCOMPLETE.
+- I3-A3 is Owner-accepted but I3 production remains inactive; Phase J is not
+  started and broader Phase I remains incomplete.
 
 Activation evidence:
 
@@ -24,7 +39,7 @@ Activation evidence:
 
 ## Status
 
-Date: **2026-10-01**
+Date: **2026-10-04**
 
 Baseline main before this documentation-governance consolidation:
 
@@ -36,7 +51,8 @@ Current workstream:
 > Owner-accepted and merged. I2-A0/A1/A2/A3 are accepted, and I2-A4 final
 > production activation is Owner-accepted with rollback proof. `index_futures_context`
 > is production executable on one approval-gated TWSE route backed by one active
-> TAIFEX source. I3 is not started.**
+> TAIFEX source. I3-A3 bounded-live adapter acceptance is Owner-accepted;
+> I3 production remains inactive and A4 is not authorized.**
 
 The purpose of this handoff is to let a new human or agent resume without
 reconstructing the repository from hundreds of historical milestone documents.
@@ -109,7 +125,8 @@ I2 production activation    OWNER_ACTIVATION_ACCEPTED
 I2 runtime                  PRODUCTION EXECUTABLE / APPROVAL-GATED
 I2 active sources / routes   1 / 1
 I2 selected executor        phase_i_i2_index_futures_context_executor
-I3                           NOT STARTED
+I3-A3                        OWNER_ACCEPTED / BOUNDED LIVE PASS
+I3 active sources / routes   0 / 0; A4 NOT AUTHORIZED
 Broader Phase I              INCOMPLETE
 ```
 
@@ -175,8 +192,9 @@ production routes (TWSE and TPEx) and exactly three active I1 sources.
 `I1-ROLL-001` passed. No new market requests were made during final activation
 closure. I2-A0/A1 are complete. I2-A2 dormant offline implementation is
 Owner-accepted; A3 bounded live acceptance is PASS under the fresh single-GET
-Owner authority. Runtime remains inactive and production activation is
-NOT_AUTHORIZED. I3 is not started. The broader Roadmap Phase I remains incomplete.
+Owner authority. I2 runtime is now active under its separately accepted A4
+route. I3-A3 is Owner-accepted, but I3 production remains inactive and I3-A4
+is not authorized. The broader Roadmap Phase I remains incomplete.
 
 I1 timing semantics: acceptance execution/acquisition reference timestamp is
 `2026-09-30T01:56:37Z`; each source transport retrieval timestamp is recorded
@@ -236,33 +254,37 @@ live ledger is `docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LE
 Exactly one TAIFEX GET was used, retry zero, TWSE/TPEx GETs zero. Two target
 operations share the acquisition; both are complete, with alignment
 not_comparable and currentness unknown. No further live request is authorized.
-I3 is not started.
+I3-A3 is Owner-accepted; I3 production is 0/0 and A4 is not authorized.
 
 ## Explicit stop boundary
 
 **Do not repeat I1 live acceptance or rollback, or the consumed I2-A3 single GET.
 I2-A4 production activation is Owner-accepted; preserve `I2-ROLL-001` and the
-accepted A3 evidence. Do not begin I3 or Phase J without separate authorization.**
+accepted I2-A3 evidence. I3-A3 is closed; do not begin I3-A4 or Phase J without
+separate authorization.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
 one I2-A0 probe is historical preflight evidence only. I2-A2 dormant offline
-implementation is Owner-accepted; A3 bounded live acceptance is PASS. Runtime is production executable under the accepted A4 route; I3 remains a
-separate future Owner decision.
+implementation is Owner-accepted; A3 bounded live acceptance is PASS. Runtime
+is production executable under the accepted I2-A4 route. I3-A3 is separately
+Owner-accepted, while I3-A4 remains a future Owner decision.
 The old unused A3 authority is superseded_without_use; the fresh single-GET
-authority is consumed. I3 remains not started. Broader Phase I is incomplete.
+authority is consumed. I3 production remains inactive. Broader Phase I is
+incomplete.
 
 ## Before any future Phase I work
 
 At minimum:
 
 1. read `ROADMAP.md` Phase I;
-2. establish a Phase I preflight rather than immediately integrating data;
+2. preserve the completed I3-A0 preflight and A1 frozen contract; do not
+   repeat source acquisition under consumed A3 authority;
 3. apply the Evidence Value Gate to each candidate evidence family;
 4. keep derivatives identity separate from cash-security ISIN identity;
 5. preserve explicit/optional bounded loading;
-6. preserve the accepted I1 evidence; I2/I3 each require separate Owner
-   authorization before implementation.
+6. preserve accepted I1/I2/I3 evidence; I3-A4 production work requires a
+   separate explicit Owner authorization.
 
 ## Historical-document rule
 
