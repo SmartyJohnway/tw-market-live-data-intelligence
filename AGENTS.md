@@ -9,10 +9,12 @@ is consumed. No additional A3 acquisition or Attempt 5 is authorized or
 required. The Owner acceptance ledger is
 `docs/governance/phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json`.
 
-I3 remains non-production: active sources/routes are 0/0, A4 is not authorized,
-and no I3 executor is reachable through the default runtime. Public V3
-integration, MCP changes, production activation, and PR #300 merge are not
-authorized. MCP remains exactly six tools; Phase I remains incomplete.
+I3 remains non-production: active sources/routes are 0/0 and no I3 executor is
+reachable through the default runtime. Final merge-readiness for PR #300 passed,
+so PR #300 merge is Owner-authorized and I3-A4 **Production Activation Preflight
+only** is authorized after merge from post-merge main. Actual A4 production
+activation, source/route activation, public V3 integration, and MCP changes
+remain not authorized. MCP remains exactly six tools; Phase I remains incomplete.
 
 ## Current I2 production activation boundary (2026-10-01)
 

@@ -9,10 +9,12 @@ Attempts 1–3 remain historical HOLD outcomes; Attempt 4 is the accepted PASS.
 Its single-use live authority is consumed. No further A3 acquisition or
 Attempt 5 is authorized or required.
 
-Stop before A4: I3 has 0 active production sources and 0 production routes;
-the candidate is not reachable through the default runtime. Production
-activation, public V3 integration, MCP changes, and PR #300 merge are not
-authorized. PR #300 remains Draft; MCP remains exactly six tools.
+I3 has 0 active production sources and 0 production routes; the candidate is
+not reachable through the default runtime. Final merge-readiness for PR #300
+passed, so PR #300 merge is Owner-authorized. After merge, I3-A4 **Production
+Activation Preflight only** is authorized from the post-merge main. Actual
+A4 production/source/route activation, public V3 integration, and MCP changes
+remain not authorized. MCP remains exactly six tools.
 
 ## Current I2 production activation boundary (2026-10-01)
 
