@@ -2,7 +2,7 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "c245cc1bc28f12b3dcd087410ddc25f6e30861ec1ba34d1160d534a9c1661a83",
+    "canonical_sha256": "6a3383ad36eb26adc69a963549a45f741aa3316d007a6b9dbb2af169d75c404e",
     "generator_version": "PHASE-H-ACT-V3-v1",
     "generated_from_commit": "00ae7d2dc35e108251ccbb86ab81dab70e215985",
     "canonical_git_blob_sha": "d84d8e5d287237e2ebcc125f27d5410cbf1a84a6"
@@ -343,6 +343,41 @@
       },
       "coverage_modes": [
         "nearest_available_standard_monthly_outright"
+      ],
+      "historical_lookup_supported": false
+    },
+    {
+      "capability_id": "cash_institutional_flow_context",
+      "description": "Optional descriptive institutional cash share-flow evidence with independent source dates; A4 technical candidate only.",
+      "support_status": "contract_supported",
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "provisional_markets": [],
+      "allowed_parameters": {},
+      "requires_target_resolution": true,
+      "requires_approval_for_execution": true,
+      "possible_timing_classes": [
+        "official_eod"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "I3-A3 bounded-live acceptance is Owner-accepted; A4 candidate is not production activated",
+        "TWSE source date is resolved through governed calendar/currentness authority before authorization and bound immutably per execution",
+        "TPEx source-reported date remains source-native; finality and currentness remain unknown",
+        "common shares only; no history, polling, scheduler, fallback, raw persistence, or retry"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "latest_governed_source_observation"
       ],
       "historical_lookup_supported": false
     },

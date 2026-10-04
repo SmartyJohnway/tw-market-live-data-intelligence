@@ -86,9 +86,10 @@ def test_request_v3_data_need_universe_and_bounds():
     universe = schema("request")["properties"]["data_needs"]["items"]["properties"]["type"]["enum"]
     assert universe == [
         "identity", "current_observation", "official_eod_reference", "recent_performance",
-        "session_status", "source_currentness", "evidence_quality", "material_disclosures",
-        "monthly_revenue", "trading_status_context", "corporate_action_context", "market_state_context", "index_futures_context",
-    ]
+            "session_status", "source_currentness", "evidence_quality", "material_disclosures",
+            "monthly_revenue", "trading_status_context", "corporate_action_context", "market_state_context", "index_futures_context",
+            "cash_institutional_flow_context",
+        ]
     for need in ("trading_status_context", "corporate_action_context"):
         candidate = copy.deepcopy(request)
         candidate["data_needs"] = [{"type": need, "priority": "required", "parameters": {}}]

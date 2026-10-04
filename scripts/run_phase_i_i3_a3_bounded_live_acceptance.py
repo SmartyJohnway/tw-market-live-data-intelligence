@@ -28,6 +28,7 @@ from server.services.phase_i_i3_cash_institutional_flow_offline_candidate import
 
 OWNER = "USER_CHAT_2026-10-04_PHASE_I_I3_A3_BOUNDED_LIVE_ADAPTER_ACCEPTANCE_AUTHORIZATION"
 BASELINE = "dafa5999c63d34d55a4665c6534aa77477448d79"
+CURRENT_CONTAINMENT_BASELINE = "5c26e7b541bdb6c0d70a39c1e0eab8e129823373"
 BRANCH = "phase-i/i3-a0-cash-institutional-flow-preflight"
 START_HEAD = "80f6a4d3732562bc7060d512fdb0f533441e1f98"
 START_TREE = "992aace0902021a44f5368425a7a735674071459"
@@ -111,9 +112,58 @@ def load_targets() -> tuple[dict[str, dict], dict]:
 
 
 def production_containment() -> None:
+    def baseline_json(relative: str) -> dict:
+        return json.loads(subprocess.check_output(
+            ["git", "show", f"{CURRENT_CONTAINMENT_BASELINE}:{relative}"], cwd=ROOT
+        ).decode("utf-8"))
+
+    drop = object()
+    def without_i3(value):
+        if value == "cash_institutional_flow_context":
+            return drop
+        if isinstance(value, dict):
+            if value.get("capability_id") == "cash_institutional_flow_context":
+                return drop
+            if value.get("properties", {}).get("capability_id", {}).get("const") == "cash_institutional_flow_context":
+                return drop
+            if value.get("properties", {}).get("schema_version", {}).get("const") == "cash_institutional_flow_context_evidence.v2":
+                return drop
+            return {key: filtered for key, item in value.items()
+                    if key != "cash_institutional_flow_context"
+                    for filtered in [without_i3(item)] if filtered is not drop}
+        if isinstance(value, list):
+            return [filtered for item in value for filtered in [without_i3(item)] if filtered is not drop]
+        return value
+
     for rel in PROTECTED:
-        require((ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", f"{BASELINE}:{rel}"], cwd=ROOT),
-                f"production_authority_drift:{rel}")
+        current = json.loads((ROOT / rel).read_text(encoding="utf-8")) if rel.endswith(".json") else None
+        if rel in {
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "schemas/unified_market_evidence_request.v3.schema.json",
+            "schemas/unified_market_evidence_result.v3.schema.json",
+            "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        }:
+            normalized = without_i3(current)
+            if rel == "schemas/unified_market_evidence_result.v3.schema.json":
+                # The typed cash_flow projection is an I3-only definition added
+                # alongside the capability-specific evidence projection.
+                normalized.get("definitions", {}).pop("cash_flow", None)
+            require(normalized == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
+        else:
+            require((ROOT / rel).read_bytes() == subprocess.check_output(
+                ["git", "show", f"{CURRENT_CONTAINMENT_BASELINE}:{rel}"], cwd=ROOT
+            ), f"production_authority_drift:{rel}")
+    catalog = json.loads((ROOT / PROTECTED[0]).read_text(encoding="utf-8"))
+    routing = json.loads((ROOT / PROTECTED[1]).read_text(encoding="utf-8"))
+    i3_capability = next((item for item in catalog["data_need_capabilities"]
+                          if item.get("capability_id") == "cash_institutional_flow_context"), None)
+    i3_route = next((item for item in routing["routes"]
+                     if item.get("capability_id") == "cash_institutional_flow_context"), None)
+    require(i3_capability is not None and i3_capability.get("support_status") == "contract_supported"
+            and i3_route is not None and i3_route.get("routing_status") == "plan_only"
+            and i3_route.get("runtime_executable") is False and i3_route.get("selected_executor_id") is None,
+            "i3_candidate_must_remain_dormant")
     from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
     from server.unified_mcp.tool_contracts import build_tool_specs
     registry = build_production_runtime_adapter_registry()

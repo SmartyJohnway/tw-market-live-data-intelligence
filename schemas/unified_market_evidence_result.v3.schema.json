@@ -980,6 +980,21 @@
       ],
       "additionalProperties":false
     },
+    "cash_institutional_flow_context": {
+      "type":"object","additionalProperties":false,
+      "required":["schema_version","status","market","security_code","canonical_target_id","retrieved_at","publication_finality","currentness_status","source","transport","citation_ids","caveats"],
+      "properties":{
+        "schema_version":{"const":"cash_institutional_flow_context_evidence.v2"},"status":{"enum":["complete","unavailable","source_failed","binding_failed"]},"market":{"enum":["TWSE","TPEX"]},"security_code":{"type":"string","minLength":1},"canonical_target_id":{"type":"string","pattern":"^(TWSE|TPEX):[A-Za-z0-9]+$"},
+        "trade_date":{"type":["string","null"],"format":"date"},"resolved_source_trade_date":{"type":["string","null"],"format":"date"},"source_reported_trade_date":{"type":["string","null"],"format":"date"},"retrieved_at":{"type":"string","format":"date-time"},"unit":{"const":"share"},
+        "foreign_and_mainland_excluding_foreign_dealer":{"$ref":"#/definitions/cash_flow"},"investment_trust":{"$ref":"#/definitions/cash_flow"},"dealer_total":{"$ref":"#/definitions/cash_flow"},"institutional_total_net_shares":{"type":"integer"},
+        "source_native_optional":{"type":"object","additionalProperties":false,"properties":{"foreign_dealer":{"$ref":"#/definitions/cash_flow"},"foreign_including_dealer":{"$ref":"#/definitions/cash_flow"},"dealer_proprietary":{"$ref":"#/definitions/cash_flow"},"dealer_hedging":{"$ref":"#/definitions/cash_flow"},"security_name":{"type":"string"}}},
+        "publication_finality":{"enum":["known_final","unknown"]},"currentness_status":{"const":"unknown"},
+        "source":{"type":"object","additionalProperties":false,"required":["source_id","authority","market","source_contract_ref","source_contract_sha256","source_reported_trade_date"],"properties":{"source_id":{"type":"string","minLength":1},"authority":{"const":"official"},"market":{"enum":["TWSE","TPEX"]},"source_contract_ref":{"type":"string","minLength":1},"source_contract_sha256":{"const":"4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428"},"source_reported_trade_date":{"type":["string","null"],"format":"date"}}},
+        "transport":{"type":"object","additionalProperties":false,"required":["mode","network_get_count","retry_count","http_status","content_type","complete_body_received","response_byte_count","partial_response_byte_count","response_sha256","tls_policy","redirect_policy","raw_payload_persisted"],"properties":{"mode":{"const":"official_https_live"},"network_get_count":{"const":1},"retry_count":{"const":0},"http_status":{"type":["integer","null"],"minimum":100,"maximum":599},"content_type":{"type":["string","null"]},"complete_body_received":{"type":"boolean"},"response_byte_count":{"type":"integer","minimum":0,"maximum":4194304},"partial_response_byte_count":{"type":"integer","minimum":0,"maximum":4194305},"declared_content_length":{"type":["integer","null"],"minimum":0,"maximum":4194304},"response_sha256":{"type":["string","null"],"pattern":"^[0-9a-f]{64}$"},"tls_policy":{"enum":["compatibility","strict"]},"redirect_policy":{"const":"reject"},"raw_payload_persisted":{"const":false},"failure_phase":{"type":["string","null"]},"error_code":{"type":["string","null"]}}},
+        "citation_ids":{"type":"array","items":{"type":"string","minLength":1},"minItems":1,"uniqueItems":true},"caveats":{"type":"array","items":{"type":"string"},"minItems":1},"error_code":{"type":"string","minLength":1}
+      },
+      "allOf":[{"if":{"properties":{"status":{"const":"complete"}},"required":["status"]},"then":{"required":["resolved_source_trade_date","source_reported_trade_date","trade_date","unit","foreign_and_mainland_excluding_foreign_dealer","investment_trust","dealer_total","institutional_total_net_shares"],"properties":{"transport":{"properties":{"complete_body_received":{"const":true}}}},"not":{"required":["error_code"]}}},{"if":{"properties":{"status":{"enum":["unavailable","source_failed","binding_failed"]}},"required":["status"]},"then":{"required":["error_code"],"not":{"anyOf":[{"required":["unit"]},{"required":["foreign_and_mainland_excluding_foreign_dealer"]},{"required":["investment_trust"]},{"required":["dealer_total"]},{"required":["institutional_total_net_shares"]},{"required":["source_native_optional"]}]}}},{"if":{"properties":{"market":{"const":"TWSE"}},"required":["market"]},"then":{"properties":{"transport":{"properties":{"tls_policy":{"const":"compatibility"}}}}}},{"if":{"properties":{"market":{"const":"TPEX"}},"required":["market"]},"then":{"properties":{"transport":{"properties":{"tls_policy":{"const":"strict"}}}}}}]
+    },
     "trading_status_context": {
       "type": "object",
       "properties": {
@@ -3290,6 +3305,7 @@
       ],
       "additionalProperties": false
     },
+    "cash_flow": {"type":"object","additionalProperties":false,"required":["buy_shares","sell_shares","net_shares"],"properties":{"buy_shares":{"type":"integer","minimum":0},"sell_shares":{"type":"integer","minimum":0},"net_shares":{"type":"integer"}}},
     "status_type": {
       "type": "string",
       "enum": [
@@ -3659,6 +3675,9 @@
               },
               "index_futures_context": {
                 "$ref": "#/definitions/index_futures_context"
+              },
+              "cash_institutional_flow_context": {
+                "$ref": "#/definitions/cash_institutional_flow_context"
               },
               "discontinuity_safety": {
                 "$ref": "#/definitions/discontinuity_safety"

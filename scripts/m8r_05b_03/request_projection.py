@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REQUEST_SCHEMA_PATHS = {
     "unified_market_evidence_execution_request.v1": ROOT / "schemas" / "unified_market_evidence_execution_request.v1.schema.json",
     "unified_market_evidence_execution_request.v2": ROOT / "schemas" / "unified_market_evidence_execution_request.v2.schema.json",
+    "unified_market_evidence_execution_request.v3": ROOT / "schemas" / "unified_market_evidence_execution_request.v3.schema.json",
 }
 
 
@@ -35,6 +36,14 @@ def build_execution_request_projection(
     parameters = operation.get("parameters")
     is_recent_performance = binding.get("capability_id") == "recent_performance"
     is_index_futures_context = binding.get("capability_id") == "index_futures_context"
+    is_i3 = binding.get("capability_id") == "cash_institutional_flow_context"
+    i3_parameters: dict = {}
+    if is_i3 and binding.get("market") == "TWSE":
+        source_date = plan.get("resolved_source_trade_date")
+        date_binding = plan.get("source_date_binding")
+        if not isinstance(source_date, str) or not isinstance(date_binding, dict) or date_binding.get("resolved_source_trade_date") != source_date:
+            raise OrchestrationError("i3_source_date_binding_missing")
+        i3_parameters = {"resolved_source_trade_date": source_date}
     lookback_trading_days = None
     if is_recent_performance:
         if not isinstance(parameters, dict) or set(parameters) != {"lookback_trading_days"}:
@@ -59,7 +68,9 @@ def build_execution_request_projection(
             warnings.append("currentness_requirement_unavailable")
 
     request_version = (
-        "unified_market_evidence_execution_request.v2"
+        "unified_market_evidence_execution_request.v3"
+        if is_i3
+        else "unified_market_evidence_execution_request.v2"
         if is_recent_performance or is_index_futures_context
         else "unified_market_evidence_execution_request.v1"
     )
@@ -87,8 +98,10 @@ def build_execution_request_projection(
         identity_body["parameters"] = {"lookback_trading_days": lookback_trading_days}
     elif is_index_futures_context:
         identity_body["parameters"] = {}
+    elif is_i3:
+        identity_body["parameters"] = i3_parameters
     req_hash = sha256_json(identity_body)
-    req_id_prefix = "umereq-v2-" if request_version.endswith(".v2") else "umereq-v1-"
+    req_id_prefix = "umereq-v3-" if request_version.endswith(".v3") else ("umereq-v2-" if request_version.endswith(".v2") else "umereq-v1-")
     req_id = req_id_prefix + req_hash[:20]
 
     request = {
@@ -119,6 +132,8 @@ def build_execution_request_projection(
         request["parameters"] = {"lookback_trading_days": lookback_trading_days}
     elif is_index_futures_context:
         request["parameters"] = {}
+    elif is_i3:
+        request["parameters"] = i3_parameters
     schema_path = REQUEST_SCHEMA_PATHS[request_version]
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     if list(Draft202012Validator(schema).iter_errors(request)):

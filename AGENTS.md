@@ -10,11 +10,11 @@ required. The Owner acceptance ledger is
 `docs/governance/phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json`.
 
 I3 remains non-production: active sources/routes are 0/0 and no I3 executor is
-reachable through the default runtime. Final merge-readiness for PR #300 passed,
-so PR #300 merge is Owner-authorized and I3-A4 **Production Activation Preflight
-only** is authorized after merge from post-merge main. Actual A4 production
-activation, source/route activation, public V3 integration, and MCP changes
-remain not authorized. MCP remains exactly six tools; Phase I remains incomplete.
+reachable through the default runtime. I3-A4 technical candidate implementation,
+including production-evidence V2 and Public V3 candidate integration, is
+explicitly authorized on PR #301 and remains offline/dormant. Production
+activation, source/route activation, live acquisition, MCP changes, and merge
+remain unauthorized. MCP remains exactly six tools; Phase I remains incomplete.
 
 ## Current I2 production activation boundary (2026-10-01)
 
@@ -30,8 +30,9 @@ I2-A4 production activation is Owner-accepted and merge-authorized.
   `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
 - No additional market request was authorized or performed for activation.
 - I1 remains active with two routes and three sources; MCP remains exactly six.
-- I3-A3 is Owner-accepted but I3 production remains inactive; Phase J is not
-  started and broader Phase I remains incomplete.
+- I3-A3 is Owner-accepted; I3-A4 offline technical candidate implementation is
+  authorized while I3 production remains inactive. Phase J is not started and
+  broader Phase I remains incomplete.
 
 Activation evidence:
 
@@ -105,7 +106,8 @@ As of this governance consolidation:
   `index_futures_context` is runtime executable through the selected
   `phase_i_i2_index_futures_context_executor` route with one active TAIFEX
   source and one normal TWSE production route. I3-A3 is now Owner-accepted;
-  I3-A4 and production activation still require separate Owner authorization.**
+  I3-A4 candidate work is explicitly authorized; production activation still
+  requires separate Owner authorization.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
 current runtime truth. I2-A2 remains historical dormant implementation truth; A3 used its fresh
@@ -369,6 +371,6 @@ the selected executor is `phase_i_i2_index_futures_context_executor`. The live a
 records one TAIFEX GET, zero retries, two same-source target operations, valid
 Result/Audit V3 and lineage, and no raw persistence. The old live authority was
 superseded without use; the fresh single-GET authority is consumed. I3-A3 is
-Owner-accepted bounded-live adapter evidence, but I3 production remains 0/0
-and A4 is unauthorized. Preserve accepted bounded-live evidence; do not repeat
-it or rollback. Phase I as a whole is not complete.
+Owner-accepted bounded-live adapter evidence; I3-A4 technical candidate work is
+authorized but I3 production remains 0/0. Preserve accepted bounded-live
+evidence; do not repeat it or rollback. Phase I as a whole is not complete.

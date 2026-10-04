@@ -126,8 +126,8 @@
               "relative_contained_output_path", "parameters"
             ],
             "properties": {
-              "schema_version": { "const": "unified_market_evidence_execution_request.v2" },
-              "execution_request_id": { "type": "string", "pattern": "^umereq-v2-[0-9a-f]{20}$" },
+              "schema_version": { "enum": ["unified_market_evidence_execution_request.v2", "unified_market_evidence_execution_request.v3"] },
+              "execution_request_id": { "type": "string", "pattern": "^umereq-v[23]-[0-9a-f]{20}$" },
               "execution_request_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
               "operation_id": { "type": "string", "pattern": "^umeop-op-v1-[0-9a-f]{20}$" },
               "batch_group_id": { "type": "string", "pattern": "^umeop-batch-v1-[0-9a-f]{20}$" },
@@ -140,7 +140,7 @@
               "market": { "type": ["string", "null"] },
               "approved_security_identifiers": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
               "approved_security_types": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-              "capability_id": { "enum": ["recent_performance", "index_futures_context"] },
+              "capability_id": { "enum": ["recent_performance", "index_futures_context", "cash_institutional_flow_context"] },
               "executor_id": { "type": "string", "minLength": 1 },
               "requested_fields": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
               "currentness_requirement": { "type": ["string", "null"] },
@@ -155,16 +155,16 @@
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "lookback_trading_days": { "type": "integer", "minimum": 1, "maximum": 20 }
+                  "lookback_trading_days": { "type": "integer", "minimum": 1, "maximum": 20 },
+                  "resolved_source_trade_date": { "type": "string", "format": "date" }
                 }
               }
             },
             "allOf": [
-              {
-                "if": { "properties": { "capability_id": { "const": "index_futures_context" } }, "required": ["capability_id"] },
-                "then": { "properties": { "parameters": { "maxProperties": 0 } } },
-                "else": { "properties": { "parameters": { "required": ["lookback_trading_days"] } } }
-              }
+              {"if":{"properties":{"capability_id":{"const":"index_futures_context"}},"required":["capability_id"]},"then":{"properties":{"parameters":{"maxProperties":0}}}},
+              {"if":{"properties":{"capability_id":{"const":"recent_performance"}},"required":["capability_id"]},"then":{"properties":{"parameters":{"required":["lookback_trading_days"],"maxProperties":1}}}},
+              {"if":{"properties":{"capability_id":{"const":"cash_institutional_flow_context"},"market":{"const":"TWSE"}},"required":["capability_id","market"]},"then":{"properties":{"parameters":{"required":["resolved_source_trade_date"],"maxProperties":1}}}},
+              {"if":{"properties":{"capability_id":{"const":"cash_institutional_flow_context"},"market":{"const":"TPEX"}},"required":["capability_id","market"]},"then":{"properties":{"parameters":{"maxProperties":0}}}}
             ],
             "additionalProperties": false
           }

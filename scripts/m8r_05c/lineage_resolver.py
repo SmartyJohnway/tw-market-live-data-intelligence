@@ -34,6 +34,7 @@ _CAPABILITY_TO_DATA_NEED: dict[str, str] = {
     "corporate_action_context": "corporate_action_context",
     "market_state_context": "market_state_context",
     "index_futures_context": "index_futures_context",
+    "cash_institutional_flow_context": "cash_institutional_flow_context",
 }
 
 _TARGET_SCOPED_EVIDENCE_CONTRACTS = {
@@ -44,6 +45,7 @@ _TARGET_SCOPED_EVIDENCE_CONTRACTS = {
     "recent_performance_evidence.v1",
     "market_state_context_evidence.v1",
     "index_futures_context_evidence.v1",
+    "cash_institutional_flow_context_evidence.v2",
 }
 
 _PHASE_H_TYPED_EVIDENCE_CONTRACTS = {
@@ -61,6 +63,7 @@ _PHASE_H_TYPED_CONTRACT_BY_DATA_NEED = {
 _PHASE_I_TYPED_CONTRACT_BY_DATA_NEED = {
     "market_state_context": "market_state_context_evidence.v1",
     "index_futures_context": "index_futures_context_evidence.v1",
+    "cash_institutional_flow_context": "cash_institutional_flow_context_evidence.v2",
 }
 _PHASE_I_TYPED_EVIDENCE_CONTRACTS = set(_PHASE_I_TYPED_CONTRACT_BY_DATA_NEED.values())
 

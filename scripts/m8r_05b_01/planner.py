@@ -89,6 +89,10 @@ def validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: lis
 
 def plan_identity_scope(plan: Mapping[str, Any]) -> dict[str, Any]:
     scope={k:plan[k] for k in ('schema_version','input_bindings','plan_status','operations','batch_groups','accounting','blocked_operations','omitted_optional_capabilities','package_approval_requirements')}
+    if "resolved_source_trade_date" in plan:
+        scope["resolved_source_trade_date"] = plan["resolved_source_trade_date"]
+    if "source_date_binding" in plan:
+        scope["source_date_binding"] = plan["source_date_binding"]
     bindings=plan['input_bindings']
     scope.update({'canonical_operation_ordering':'f3_capability_market_executor_target_parameters_batch_operation_id','planner_version':PLANNER_VERSION,'routing_matrix_version':bindings['routing_matrix_version'],'routing_matrix_hash':bindings['routing_matrix_hash'],'handoff_contract_version':bindings['handoff_contract_version'],'handoff_contract_hash':bindings['handoff_contract_hash']})
     return scope

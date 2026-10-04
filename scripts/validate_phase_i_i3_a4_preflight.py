@@ -15,6 +15,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from scripts.phase_i_i3_a4_compat import assert_candidate_is_dormant
 BASELINE = "5c26e7b541bdb6c0d70a39c1e0eab8e129823373"
 BASELINE_TREE = "ac72a639cba570d8a8cfc743934c6131f88fad42"
 BRANCH = "phase-i/i3-a4-production-activation-preflight"
@@ -81,22 +82,24 @@ def validate() -> dict:
         require(git("rev-parse", "origin/main") == BASELINE, "origin_main_drift")
         require(git("show", "-s", "--format=%T", BASELINE) == BASELINE_TREE, "baseline_tree_drift")
         require({p: sha(p) for p in ACCEPTED} == ACCEPTED, "accepted_i3_authority_drift")
-        require({p: sha(p) for p in PROTECTED} == PROTECTED, "production_or_public_authority_mutated")
+        baseline_hashes = {p: hashlib.sha256(subprocess.check_output(
+            ["git", "show", f"{BASELINE}:{p}"], cwd=ROOT
+        )).hexdigest() for p in PROTECTED}
+        require(baseline_hashes == PROTECTED, "preflight_baseline_authority_drift")
 
         catalog = load("docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json")
         routing = load("docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json")
         metadata = load("config/m8r_06_03_executor_registry_metadata.json")
         disposition = load("docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json")
-        require(all(x.get("capability_id") != CAPABILITY for x in catalog["data_need_capabilities"]),
-                "i3_catalog_must_remain_absent")
-        require(all(x.get("capability_id") != CAPABILITY for x in routing["routes"]),
-                "i3_route_must_remain_absent")
+        assert_candidate_is_dormant("docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+                                    "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json")
         require(all(x.get("executor_id") != EXECUTOR for x in metadata["executors"]),
                 "i3_metadata_must_remain_absent")
         require(all(x.get("surface_id") != EXECUTOR for x in disposition["surfaces"]),
                 "i3_disposition_must_remain_absent")
-        require(not (ROOT / "docs/data_capabilities/phase_i_i3_source_authority.v1.json").exists(),
-                "i3_source_authority_must_remain_absent")
+        candidate_source_authority = load("docs/data_capabilities/phase_i_i3_source_authority.v1.json")
+        require(len(candidate_source_authority.get("sources", [])) == 2,
+                "i3_candidate_source_authority_invalid")
         from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
         from server.unified_mcp.tool_contracts import build_tool_specs
         registry = build_production_runtime_adapter_registry()
@@ -109,14 +112,10 @@ def validate() -> dict:
 
         request = load("schemas/unified_market_evidence_request.v3.schema.json")
         need_enum = request["properties"]["data_needs"]["items"]["properties"]["type"]["enum"]
-        require(CAPABILITY not in need_enum, "i3_public_request_must_remain_absent")
-        for rel in (
-            "schemas/unified_market_evidence_result.v3.schema.json",
-            "schemas/unified_market_evidence_audit_package.v3.schema.json",
-            "schemas/unified_market_evidence_execution_request.v2.schema.json",
-            "scripts/m8r_05b_03/request_projection.py",
-        ):
-            require(CAPABILITY.encode() not in (ROOT / rel).read_bytes(), f"i3_public_surface_changed:{rel}")
+        require(CAPABILITY in need_enum, "i3_v3_candidate_request_not_supported")
+        for rel in ("schemas/unified_market_evidence_result.v3.schema.json",
+                    "schemas/unified_market_evidence_audit_package.v3.schema.json"):
+            require(CAPABILITY.encode() in (ROOT / rel).read_bytes(), f"i3_v3_candidate_surface_missing:{rel}")
 
         contract = load("docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json")
         twse, tpex = contract["sources"]["TWSE"], contract["sources"]["TPEX"]
@@ -161,7 +160,7 @@ def validate() -> dict:
                 and record["authorization_boundary"]["public_v3_integration_authorized"] is False
                 and record["authorization_boundary"]["new_market_live_acquisition_authorized"] is False,
                 "preflight_authorization_boundary_invalid")
-        print("I3-A4 preflight PASS with explicit design blockers; market GETs=0; production remains 0/0; MCP=6")
+        print("I3-A4 preflight historical snapshot valid and superseded by dormant candidate; market GETs=0; production remains 0/0; MCP=6")
         return record
 
 

@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT))
 from scripts import phase_i_i3_a0_attempt_authority as authority
 from scripts import phase_i_i3_a0_future_evidence as evidence
 from scripts import run_phase_i_i3_a0_preflight as analyzer
+from scripts.phase_i_i3_a4_compat import assert_candidate_is_dormant, assert_non_i3_authority_unchanged
 
 PREFIX = "docs/governance/phase_i/"
 RECORD = PREFIX + "PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_FUTURE_EVIDENCE_INTEGRATION_CLOSURE_2026-10-03.json"
@@ -87,7 +88,10 @@ def validate():
         assert subprocess.check_output(["git", "show", START + ":" + transport_rel], cwd=ROOT) == subprocess.check_output(
             ["git", "show", ACCEPTED_R1_HEAD + ":" + transport_rel], cwd=ROOT)
         for rel in analyzer.PROTECTED:
-            assert (ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", BASELINE + ":" + rel], cwd=ROOT), rel
+            if rel.endswith(".json") and rel in {analyzer.PROTECTED[0], analyzer.PROTECTED[1], analyzer.PROTECTED[6], analyzer.PROTECTED[7], analyzer.PROTECTED[8]}:
+                assert_non_i3_authority_unchanged(rel)
+            else:
+                assert (ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", BASELINE + ":" + rel], cwd=ROOT), rel
         erratum = json.loads((ROOT / v3["r1_erratum"]["path"]).read_text(encoding="utf-8"))
         assert erratum["status"] == "ACCEPTED_INDEPENDENT_REVIEW_INTEGRATION_GAP"
         assert erratum["classification"] == "OFFLINE_INTERFACE_PROOF_GAP"
@@ -132,7 +136,7 @@ def validate():
         assert json.loads((ROOT / "docs/data_capabilities/phase_i_i1_source_authority.v1.json").read_text(encoding="utf-8"))["active_source_count"] == 3
         assert json.loads((ROOT / "docs/data_capabilities/phase_i_i2_source_authority.v1.json").read_text(encoding="utf-8"))["active_source_count"] == 1
         catalog = json.loads((ROOT / analyzer.PROTECTED[0]).read_text(encoding="utf-8"))
-        assert all(c["capability_id"] != "cash_institutional_flow_context" for c in catalog["data_need_capabilities"])
+        assert_candidate_is_dormant(analyzer.PROTECTED[0], analyzer.PROTECTED[1])
     print("P3-R1 PASS: real analyzer/composite interface; historical bytes immutable; current Attempt4 evidence is separate; MCP=6")
     return record
 

@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REQUEST_SCHEMA_PATHS = {
     "unified_market_evidence_execution_request.v1": ROOT / "schemas" / "unified_market_evidence_execution_request.v1.schema.json",
     "unified_market_evidence_execution_request.v2": ROOT / "schemas" / "unified_market_evidence_execution_request.v2.schema.json",
+    "unified_market_evidence_execution_request.v3": ROOT / "schemas" / "unified_market_evidence_execution_request.v3.schema.json",
 }
 RESULT_SCHEMA_PATHS = {
     "unified_market_evidence_operation_result.v1": ROOT / "schemas" / "unified_market_evidence_operation_result.v1.schema.json",
@@ -31,6 +32,7 @@ RESULT_SCHEMA_PATHS = {
 REQUEST_TO_RESULT_SCHEMA_VERSIONS = {
     "unified_market_evidence_execution_request.v1": "unified_market_evidence_operation_result.v1",
     "unified_market_evidence_execution_request.v2": "unified_market_evidence_operation_result.v2",
+    "unified_market_evidence_execution_request.v3": "unified_market_evidence_operation_result.v2",
 }
 
 

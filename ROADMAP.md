@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "H-ACT-H3 accepted; Phase I I1 offline candidate authorized; broader Phase I incomplete"
+status_reconciled_through: "I1/I2 active; I3-A4 technical candidate authorized but inactive; broader Phase I incomplete"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -43,6 +43,13 @@ tags:
 > authorized the first offline/dormant Phase I I1 implementation candidate
 > under frozen I0/I1 authority; runtime activation and I2/I3 remain
 > unauthorized, so Roadmap Phase I remains incomplete.
+
+> **Current authorization reconciliation — 2026-10-04:** I1 and I2 remain
+> active under their separate Owner acceptance. I3-A3 is Owner-accepted. The
+> Owner has authorized offline I3-A4 technical candidate implementation,
+> including production-evidence V2 and Unified V3 candidate integration; I3
+> production activation remains unauthorized and default runtime sources/routes
+> remain 0/0. Phase I remains incomplete.
 
 ---
 

@@ -1,0 +1,50 @@
+{
+  "schema_version": "phase_i_i3_a4_production_evidence_v2_decision.v1",
+  "gate": "I3-A4-EVIDENCE-V2",
+  "owner_authority": "USER_CHAT_2026-10-04_PHASE_I_I3_A4_PRODUCTION_EVIDENCE_V2_AND_TECHNICAL_CANDIDATE_RESUME_AUTHORIZATION",
+  "decision": "PRODUCTION_EVIDENCE_V2_APPROVED_FOR_DORMANT_A4_CANDIDATE",
+  "historical_contract": {
+    "evidence_contract": "cash_institutional_flow_context_evidence.v1",
+    "schema_path": "schemas/cash_institutional_flow_context_evidence.v1.schema.json",
+    "schema_sha256": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c",
+    "bytes_changed": false,
+    "historical_evidence_migrated": false,
+    "A1_changed": false,
+    "A2_A3_evidence_rewritten": false
+  },
+  "production_candidate_contract": {
+    "evidence_contract": "cash_institutional_flow_context_evidence.v2",
+    "schema_path": "schemas/cash_institutional_flow_context_evidence.v2.schema.json",
+    "schema_sha256": "b5c80c338be99ffa55d51c73e7909f2c0ba2908d8caecce0ac50a474738e2847",
+    "evolution": "ADD_PRODUCTION_TRANSPORT_AND_DATE_PROVENANCE_ONLY",
+    "A1_semantics_preserved": true,
+    "A1_source_contract_ref": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+    "A1_source_contract_sha256": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428"
+  },
+  "rationale": "V1 transport provenance is intentionally offline-only and cannot truthfully represent production HTTP acquisition.",
+  "production_transport": {
+    "mode": "official_https_live",
+    "TWSE_tls": "compatibility_verified_tls",
+    "TPEX_tls": "strict_verified_tls",
+    "retry_count": 0,
+    "max_dispatches_per_market_per_authorized_execution": 1,
+    "mixed_market_max_dispatches": 2,
+    "redirect_policy": "reject",
+    "raw_payload_persisted": false,
+    "raw_body_policy": "memory_transient_only"
+  },
+  "date_provenance": {
+    "distinct_fields": ["evaluation_time", "resolved_source_trade_date", "source_reported_trade_date", "retrieved_at"],
+    "TWSE_query_date": "explicit_governed_date_bound_before_authorization",
+    "TWSE_source_reported_date_must_match_resolved_date": true,
+    "TPEx_query_date": "none_source_reported_date_only",
+    "publication_finality_inferred_from_retrieval_time": false,
+    "currentness_default": "unknown"
+  },
+  "acceptance_boundary": {
+    "market_GETs_during_implementation": {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0},
+    "default_runtime_activation_performed": false,
+    "production_activation_authorized": false,
+    "merge_authorized": false
+  }
+}
