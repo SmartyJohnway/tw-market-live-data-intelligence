@@ -1,0 +1,240 @@
+{
+  "attempt3_p3_erratum_sha256": "9f86216243fb4d9885e58d9dd7bb231373d4d222e6e277f6565533e942d37196",
+  "attempt3_twse_source_sha256": "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1",
+  "attempt4_tpex_source_sha256": "0e24c5f55716f512051c1db5fb3eaead921693875f66ec00bd15e84d469028c5",
+  "authority_v3_sha256": "14e1f6eebfbffda74883448895ec4a9ddb3ef54a983f39b9da3d6496a738f5d8",
+  "batching": {
+    "TPEx": "PROVEN_BY_ATTEMPT_4",
+    "TWSE": "PROVEN_BY_ATTEMPT_3",
+    "max_unique_acquisitions": 2,
+    "mixed_market_observation": "PROVEN",
+    "per_target_network_request_required": false
+  },
+  "dealer_sell_adjudication": {
+    "candidate_fields": [
+      "Dealers -TotalSell",
+      "Dealers-TotalSell"
+    ],
+    "candidate_statistics": {
+      "Dealers -TotalSell": {
+        "candidate": "Dealers -TotalSell",
+        "first_failure": "row_75:arithmetic_mismatch",
+        "missing_rows": 0,
+        "rows_checked": 910,
+        "rows_failed": 108,
+        "rows_passed": 802
+      },
+      "Dealers-TotalSell": {
+        "candidate": "Dealers-TotalSell",
+        "first_failure": null,
+        "missing_rows": 0,
+        "rows_checked": 910,
+        "rows_failed": 0,
+        "rows_passed": 910
+      }
+    },
+    "institutional_total_invariant": {
+      "first_failure": null,
+      "missing_rows": 0,
+      "rows_checked": 910,
+      "rows_failed": 0,
+      "rows_passed": 910
+    },
+    "selected_candidate": "Dealers-TotalSell",
+    "selection_reason": "exactly_one_candidate_passed_all_rows_and_independent_total_invariant",
+    "selection_status": "RESOLVED"
+  },
+  "field_grain_symmetry": "per_security_trade_date",
+  "final_A0_decision": "GO_PASS",
+  "participant_semantic_symmetry": "PASS",
+  "publication_currentness": {
+    "TPEx_same_day_finality": "UNRESOLVED",
+    "TWSE_payload_phase": "absent",
+    "publication_finality_representation": "unknown"
+  },
+  "schema_version": "phase_i_i3_a0_final_composite_closure.v1",
+  "target_binding": 1,
+  "tpex_evidence": {
+    "batching_observation": "PROVEN",
+    "evaluation_status": "EVALUATED",
+    "normalized_observation": {
+      "common_core": {
+        "dealer_total": {
+          "buy_shares": 201403,
+          "net_shares": -70094,
+          "sell_shares": 271497
+        },
+        "foreign_and_mainland_excluding_foreign_dealer": {
+          "buy_shares": 5922066,
+          "net_shares": 991958,
+          "sell_shares": 4930108
+        },
+        "institutional_total_net_shares": 1232412,
+        "investment_trust": {
+          "buy_shares": 321548,
+          "net_shares": 310548,
+          "sell_shares": 11000
+        }
+      },
+      "market": "TPEX",
+      "security_code": "5347",
+      "source_native_optional": {
+        "foreign_dealer": {
+          "buy_shares": 0,
+          "net_shares": 0,
+          "sell_shares": 0
+        },
+        "foreign_including_dealer": {
+          "buy_shares": 5922066,
+          "net_shares": 991958,
+          "sell_shares": 4930108
+        },
+        "security_name": "世界"
+      },
+      "trade_date": "2026-10-02",
+      "unit": "share"
+    },
+    "semantic_status": "PASS",
+    "target_binding": 1,
+    "unit_proof": "share",
+    "whole_dataset_arithmetic": {
+      "dealer_component_net": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 0,
+        "rows_failed": 0,
+        "rows_passed": 0,
+        "status": "NOT_APPLICABLE_SOURCE_DOES_NOT_EXPOSE_COMPONENT_SPLIT"
+      },
+      "dealer_total": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 910,
+        "rows_failed": 0,
+        "rows_passed": 910,
+        "status": "PASS"
+      },
+      "foreign_and_mainland_excluding_foreign_dealer": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 910,
+        "rows_failed": 0,
+        "rows_passed": 910,
+        "status": "PASS"
+      },
+      "institutional_total_net": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 910,
+        "rows_failed": 0,
+        "rows_passed": 910,
+        "status": "PASS"
+      },
+      "investment_trust": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 910,
+        "rows_failed": 0,
+        "rows_passed": 910,
+        "status": "PASS"
+      }
+    }
+  },
+  "trade_date_symmetry": {
+    "TPEx": "2026-10-02",
+    "TWSE": "2026-09-30",
+    "classification": "different_trade_date"
+  },
+  "twse_evidence": {
+    "batching_observation": "PROVEN",
+    "evaluation_status": "EVALUATED",
+    "normalized_observation": {
+      "common_core": {
+        "dealer_total": {
+          "buy_shares": 1689234,
+          "net_shares": 950291,
+          "sell_shares": 738943
+        },
+        "foreign_and_mainland_excluding_foreign_dealer": {
+          "buy_shares": 65775475,
+          "net_shares": 52829071,
+          "sell_shares": 12946404
+        },
+        "institutional_total_net_shares": 58607362,
+        "investment_trust": {
+          "buy_shares": 4878000,
+          "net_shares": 4828000,
+          "sell_shares": 50000
+        }
+      },
+      "market": "TWSE",
+      "security_code": "1101",
+      "source_native_optional": {
+        "dealer_hedging": {
+          "buy_shares": 1300234,
+          "net_shares": 694291,
+          "sell_shares": 605943
+        },
+        "dealer_proprietary": {
+          "buy_shares": 389000,
+          "net_shares": 256000,
+          "sell_shares": 133000
+        },
+        "foreign_dealer": {
+          "buy_shares": 0,
+          "net_shares": 0,
+          "sell_shares": 0
+        },
+        "security_name": "台泥            "
+      },
+      "trade_date": "2026-09-30",
+      "unit": "share"
+    },
+    "semantic_status": "PASS",
+    "target_binding": 1,
+    "unit_proof": "share",
+    "whole_dataset_arithmetic": {
+      "dealer_component_net": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 1341,
+        "rows_failed": 0,
+        "rows_passed": 1341,
+        "status": "PASS"
+      },
+      "dealer_total": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 1341,
+        "rows_failed": 0,
+        "rows_passed": 1341,
+        "status": "PASS"
+      },
+      "foreign_and_mainland_excluding_foreign_dealer": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 1341,
+        "rows_failed": 0,
+        "rows_passed": 1341,
+        "status": "PASS"
+      },
+      "institutional_total_net": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 1341,
+        "rows_failed": 0,
+        "rows_passed": 1341,
+        "status": "PASS"
+      },
+      "investment_trust": {
+        "first_failure_reason": null,
+        "missing_field_rows": 0,
+        "rows_checked": 1341,
+        "rows_failed": 0,
+        "rows_passed": 1341,
+        "status": "PASS"
+      }
+    }
+  },
+  "unit_symmetry": "PASS"
+}

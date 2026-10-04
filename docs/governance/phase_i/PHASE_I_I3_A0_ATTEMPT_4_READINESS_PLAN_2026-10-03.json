@@ -1,0 +1,56 @@
+{
+  "schema_version": "phase_i_i3_a0_attempt_4_readiness_plan.v1",
+  "status": "NON_EXECUTABLE_CONFIGURATION_ONLY",
+  "attempt_4_authorized": false,
+  "purpose": "complete TPEx side only",
+  "authority_chain_version": "v2",
+  "markets": {
+    "TWSE": {
+      "max_gets": 0
+    },
+    "TPEx": {
+      "max_gets": 1,
+      "ssl_policy": "strict"
+    }
+  },
+  "TAIFEX_max_gets": 0,
+  "other_max_gets": 0,
+  "retry": 0,
+  "redirect_policy": "reject",
+  "reservation_created": false,
+  "consumed_latch_created": false,
+  "twse_reuse": {
+    "outcome_path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-02.json",
+    "outcome_sha256": "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1",
+    "source_trade_date": "2026-09-30",
+    "response_sha256": "b292ec02ee89e3aa951337e0504662fee7ee2d7509628199e6752fa36860453e",
+    "rows": 1341,
+    "fields": 19,
+    "canonical_target_id": "TWSE:1101",
+    "exact_binding": 1,
+    "unit": "share",
+    "whole_dataset_arithmetic": "PASS"
+  },
+  "composite_closure": {
+    "TWSE": "accepted Attempt 3 subset plus P3 erratum",
+    "TPEx": "future Attempt 4 accepted subset only",
+    "same_process_required": false,
+    "exact_provenance_required": true,
+    "TPEx_batching": "NOT_EVALUATED until qualified TPEx payload evidence exists",
+    "mixed_market_batching": "NOT_EVALUATED until both qualified source subsets exist",
+    "historical_hard_coded_batching_flags_are_fresh_proof": false,
+    "required_checks": [
+      "dealer_key_adjudication",
+      "independent_institutional_total",
+      "whole_dataset_arithmetic",
+      "exact_code_binding",
+      "date_attribution",
+      "share_units",
+      "participant_semantics",
+      "publication_currentness_unknowns",
+      "batching_proof"
+    ]
+  },
+  "A1_authorized": false,
+  "merge_authorized": false
+}

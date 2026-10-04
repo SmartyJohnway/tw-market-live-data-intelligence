@@ -1,0 +1,61 @@
+{
+  "schema_version": "phase_i_i3_a3_r1_transport_key_mapping_http_dispatch_accounting_closure.v1",
+  "gate": "I3-A3-R1",
+  "status": "OFFLINE_PASS_READY_FOR_SEPARATE_OWNER_REARM_DECISION",
+  "owner_authority": "USER_INSTRUCTION:I3-A3-R1 Transport-Key Mapping & HTTP Dispatch Accounting Closure",
+  "starting_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "r1_start_head": "c6605e121d3d70e768c3c271fe7c5db7f81947c2",
+  "r1_start_tree": "2195a291c457c06e3251f1d51f0f710a52b1b5fe",
+  "branch": "phase-i/i3-a0-cash-institutional-flow-preflight",
+  "pr": {"number": 300, "state_at_start": "OPEN", "draft_at_start": true},
+  "historical_a3_pre_network_commit": "82cc71b0c80ba9a35b9fa0c00c592cd484ee54a9",
+  "historical_a3_pre_network_tree": "9019689573cb546820c32465e6e049f165fea73c",
+  "historical_a3_attempt_status": "HOLD",
+  "historical_a3_independently_accepted": false,
+  "historical_owner_authority_consumed": true,
+  "historical_correct_http_dispatch": {"TWSE": 1, "TPEx": 0, "TAIFEX": 0, "other": 0, "retry": 0},
+  "historical_recorded_callback_attempts": {"TWSE": 1, "TPEX": 1},
+  "root_cause": "canonical TPEX was passed directly to the reviewed transport that accepts TPEx; policy rejected it before HTTP dispatch",
+  "canonical_transport_mapping": {"TWSE": "TWSE", "TPEX": "TPEx"},
+  "accounting_contract": {
+    "acquisition_callback_attempts": "canonical-market counter incremented when orchestration calls the acquisition callback; this is not HTTP I/O",
+    "http_dispatch_count": "canonical-market counter incremented immediately before opener.open; an opener exception still counts as attempted dispatch",
+    "http_response_and_complete_body": "separate bounded transport telemetry, never inferred from either counter"
+  },
+  "http_dispatch_boundary": "immediately before opener.open(request, timeout=TIMEOUT_SECONDS)",
+  "candidate_hashes_before": {
+    "server/services/phase_i_i3_cash_institutional_flow_adapters.py": "401b3b56d48c690ea1634e9285f7a7857531e1b0dbbcba3a179d11420dc4ab2e",
+    "server/services/phase_i_i3_cash_institutional_flow_offline_candidate.py": "5d297b1d8faf3eb829edbbfed82c8f3327de3f1ca0483adf1e437099d14d917c",
+    "schemas/cash_institutional_flow_context_evidence.v1.schema.json": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c"
+  },
+  "candidate_hashes_after": {
+    "server/services/phase_i_i3_cash_institutional_flow_adapters.py": "401b3b56d48c690ea1634e9285f7a7857531e1b0dbbcba3a179d11420dc4ab2e",
+    "server/services/phase_i_i3_cash_institutional_flow_offline_candidate.py": "5d297b1d8faf3eb829edbbfed82c8f3327de3f1ca0483adf1e437099d14d917c",
+    "schemas/cash_institutional_flow_context_evidence.v1.schema.json": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c"
+  },
+  "historical_artifacts_mutated": false,
+  "A1_mutated": false,
+  "A2_mutated": false,
+  "A2_R1_mutated": false,
+  "production_registry_mutated": false,
+  "public_v3_mutated": false,
+  "old_pre_network_readiness": "HISTORICAL_NOT_REUSABLE",
+  "old_pre_network_readiness_explanation": "Historically valid snapshot; subsequent live evidence proved its transport-key integration coverage insufficient, and the original owner authority is consumed.",
+  "old_owner_authority": "CONSUMED_NOT_REUSABLE",
+  "production_runtime": {"I1_active_sources": 3, "I1_routes": 2, "I2_active_sources": 1, "I2_routes": 1, "I3_active_sources": 0, "I3_routes": 0},
+  "mcp_tool_count": 6,
+  "validation": {
+    "A3_and_R1_tests": {"passed": 20, "skipped": 0, "deselected": 0, "failed": 0},
+    "focused_A1_A2_A3_transport_tests": {"passed": 157, "skipped": 0, "deselected": 0, "failed": 0},
+    "default_ci": {"passed": 1159, "skipped": 1, "deselected": 5, "failed": 0},
+    "full_current": {"passed": 1532, "skipped": 1, "deselected": 5, "failed": 0},
+    "compileall": "PASS"
+  },
+  "actual_market_gets_during_R1": {"TWSE": 0, "TPEx": 0, "TAIFEX": 0, "other": 0},
+  "I3_A3_R1_pass_does_not_equal_I3_A3_pass": true,
+  "I3_A3_Attempt_1_HOLD_remains_valid": true,
+  "A3_rearm_authorized": false,
+  "A4_authorized": false,
+  "production_activation_authorized": false,
+  "merge_authorized": false
+}

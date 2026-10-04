@@ -1,0 +1,57 @@
+{
+  "additional_anchors": {
+    "attempt_2": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-01.json",
+      "sha256": "21cafa9ec4bd351454a47de76d0eba3f562ebeeef0233731d5b256a1052a8d1c"
+    },
+    "attempt_2_erratum": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_2_PROVENANCE_ERRATUM_2026-10-02.json",
+      "sha256": "27a871c177b99d762d244fd411b826896813455fb46900d3f7233261f5742ac4"
+    },
+    "attempt_3": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_SOURCE_TIMING_SYMMETRY_REPROBE_2026-10-02.json",
+      "sha256": "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1"
+    },
+    "attempt_3_consumed": {
+      "path": "docs/governance/phase_i/acceptance_runs/i3-a0-attempt3-authority-consumed.json",
+      "sha256": "2b731cca5ce95840eccf6c1459170e4d7a634ab7d9022cb0e5c2f0b138419c3b"
+    },
+    "attempt_3_erratum": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_EVIDENCE_ERRATUM_2026-10-03.json",
+      "sha256": "9f86216243fb4d9885e58d9dd7bb231373d4d222e6e277f6565533e942d37196"
+    },
+    "attempt_3_reservation": {
+      "path": "docs/governance/phase_i/acceptance_runs/i3-a0-attempt3-authority-reservation.json",
+      "sha256": "ff9ffa93c6ceab5eb7147ce513ef35d175ce6bc13f4f43e0aeffc9b36d54d848"
+    },
+    "p2": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A0_P2_ATTEMPT_2_PROVENANCE_AND_TWSE_TRANSPORT_COMPATIBILITY_CLOSURE_2026-10-02.json",
+      "sha256": "9e2794ee796a98551ea1a1694f0f687853c04ba1209a192834b2a8d1e6a7ad27"
+    }
+  },
+  "attempt_1_record_sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+  "attempt_number": 4,
+  "authority_chain_sha256": "14e1f6eebfbffda74883448895ec4a9ddb3ef54a983f39b9da3d6496a738f5d8",
+  "authority_chain_version": "v3",
+  "consumed": false,
+  "network_budget": {
+    "TPEx": 1,
+    "TWSE": 0,
+    "retry": 0
+  },
+  "owner_authority": "USER_CHAT_2026-10-03_PHASE_I_I3_A0_FRESH_ATTEMPT_4_TPEX_ONLY_FINAL_COMPOSITE_CLOSURE_AUTHORIZATION",
+  "p0_mapping_sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
+  "p0_record_sha256": "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a",
+  "p1_authority_sha256": "666108fdd187f3ec753acc2a258e3ea7bd9415cc371346b5f32dc231ea665240",
+  "p1_record_sha256": "541b62d45d248d28e114d04628aac379dbd2f5b6d66d6ad07ae8cd4ee661a70c",
+  "r1_erratum": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_INTERFACE_ERRATUM_2026-10-03.json",
+    "sha256": "b33a891d7d9d97d96cdbd3f030a3c047f499b909d0616e11920896fc647e021f"
+  },
+  "reserved": true,
+  "schema_version": "phase_i_i3_a0_future_attempt_reservation.v1",
+  "starting_branch": "phase-i/i3-a0-cash-institutional-flow-preflight",
+  "starting_branch_head": "8be2cfe795b10591be564b441a17094df2884d1e",
+  "starting_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "starting_tree": "24c188f0949008761470fe5d48af74c62fe83b7e"
+}

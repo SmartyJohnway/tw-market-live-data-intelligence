@@ -1,0 +1,96 @@
+{
+  "A3_decision": "HOLD",
+  "A3_independently_accepted": false,
+  "actual_gets": {
+    "TAIFEX": 0,
+    "TPEX": 1,
+    "TWSE": 1,
+    "other": 0
+  },
+  "candidate": null,
+  "candidate_file_hashes": {
+    "schemas/cash_institutional_flow_context_evidence.v1.schema.json": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c",
+    "server/services/phase_i_i3_cash_institutional_flow_adapters.py": "401b3b56d48c690ea1634e9285f7a7857531e1b0dbbcba3a179d11420dc4ab2e",
+    "server/services/phase_i_i3_cash_institutional_flow_offline_candidate.py": "5d297b1d8faf3eb829edbbfed82c8f3327de3f1ca0483adf1e437099d14d917c"
+  },
+  "consumed_latch": {
+    "path": "docs/governance/phase_i/acceptance_runs/i3-a3-live-authority-consumed.json",
+    "sha256": "a9475d4d7ef62696cb1a2c3239a628d3ec48c56fcf306373fc6331146cd89e17"
+  },
+  "evidence": {},
+  "failure_code": "acquisition_exception:ValueError",
+  "historical_response_sha_comparison": {
+    "TWSE": false
+  },
+  "immutable_hashes": {
+    "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428",
+    "docs/governance/phase_i/PHASE_I_I3_A2_DORMANT_OFFLINE_IMPLEMENTATION_CANDIDATE_2026-10-03.json": "122d3317d098bc602fe753b02837bf9b1b7133ba287c45cd8de73383d97300e1",
+    "docs/governance/phase_i/PHASE_I_I3_A2_R1_OPTIONAL_SOURCE_NATIVE_FAILURE_SEMANTICS_CLOSURE_2026-10-03.json": "d4962eddf90fe2cf6e1ed3c231f66dc7e1332d9597c5e8fc886ca85e926b9b12",
+    "schemas/cash_institutional_flow_context_evidence.v1.schema.json": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c"
+  },
+  "merge_authorized": false,
+  "owner_authority": "USER_CHAT_2026-10-04_PHASE_I_I3_A3_BOUNDED_LIVE_ADAPTER_ACCEPTANCE_AUTHORIZATION",
+  "pre_network_commit": "82cc71b0c80ba9a35b9fa0c00c592cd484ee54a9",
+  "pre_network_tree": "9019689573cb546820c32465e6e049f165fea73c",
+  "production_activation_authorized": false,
+  "public_v3_integration_authorized": false,
+  "raw_payload_persistence": "NONE",
+  "reservation": {
+    "path": "docs/governance/phase_i/acceptance_runs/i3-a3-live-authority-reservation.json",
+    "sha256": "ac8a80a62e23223d53b327d1626383900efc14df66ed536765b0905e0d5d6b4e"
+  },
+  "retry_count": 0,
+  "schema_version": "phase_i_i3_a3_bounded_live_adapter_acceptance.v1",
+  "security_master": {
+    "index_sha256": "665d69e53588fa6cd723e434902946a43ac4f712920b0c4ec2adf91b556f4c10",
+    "manifest_sha256": "18a10eb8927902d021d5e9023be4c9a6f28be50c9d02fa148e7a56780476a856",
+    "release_id": "security-master-20260926T151841Z"
+  },
+  "source_telemetry": {
+    "TWSE": {
+      "base_mime": "application/json",
+      "complete_body_received": true,
+      "content_type": "application/json;charset=UTF-8",
+      "declared_content_length": null,
+      "endpoint": "https://www.twse.com.tw/rwd/zh/fund/T86?date=20260930&selectType=ALLBUT0999&response=json",
+      "error_code": null,
+      "failure_phase": null,
+      "http_status": 200,
+      "market": "TWSE",
+      "method": "GET",
+      "partial_response_byte_count": 192873,
+      "redirect_policy": "reject",
+      "response_byte_count": 192873,
+      "response_sha256": "3e3f99d2a82ab3dc127472d6ac5128c1452d9f075745ca4b8370727d10d0cbda",
+      "retrieved_at": "2026-10-03T18:24:27Z",
+      "retry_count": 0,
+      "ssl_policy": "compatibility",
+      "timeout_seconds": 30,
+      "tls_verification_mode": "verified_tls_compatibility_context"
+    }
+  },
+  "starting_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "status": "HOLD",
+  "targets": {
+    "TPEX": {
+      "canonical_target_id": "TPEX:5347",
+      "execution_eligibility": "allowed",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "isin": "TW0005347009",
+      "market": "TPEX",
+      "resolution_reason": "exact_listing_id",
+      "security_code": "5347"
+    },
+    "TWSE": {
+      "canonical_target_id": "TWSE:1101",
+      "execution_eligibility": "allowed",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "isin": "TW0001101004",
+      "market": "TWSE",
+      "resolution_reason": "exact_listing_id",
+      "security_code": "1101"
+    }
+  }
+}

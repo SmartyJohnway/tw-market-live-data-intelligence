@@ -1,0 +1,35 @@
+{
+  "schema_version": "phase_i_i3_a0_tpex_dealer_sell_adjudication.v1",
+  "authority_scope": "OFFLINE_CANDIDATE_KEY_ADJUDICATION_ONLY",
+  "semantic_target": "dealer_total.sell_shares",
+  "buy_field": "Dealers-TotalBuy",
+  "net_field": "Dealers-Difference",
+  "candidate_sell_fields": [
+    "Dealers-TotalSell",
+    "Dealers -TotalSell"
+  ],
+  "selection_mode": "UNIQUE_WHOLE_DATASET_ARITHMETIC_MATCH",
+  "official_semantic_basis": {
+    "authority": "TPEx S35 official daily institutional trading semantic reference",
+    "reference": "https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge.php?l=zh-tw",
+    "dealer_aggregate": [
+      "buy shares",
+      "sell shares",
+      "net shares"
+    ],
+    "dealer_proprietary": "separate optional detail",
+    "dealer_hedging": "separate optional detail",
+    "three_institution_total": "foreign/mainland excluding foreign dealer + investment trust + dealer aggregate",
+    "key_selection_limit": "S35 semantic object establishes the aggregate concept and total formula; it does not identify either OpenAPI sell key."
+  },
+  "independent_institutional_total_invariant": {
+    "total_field": "TotalDifference",
+    "foreign_ex_dealer_net_field": "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference",
+    "investment_trust_net_field": "SecuritiesInvestmentTrustCompanies-Difference",
+    "dealer_net_field": "Dealers-Difference",
+    "rule": "TotalDifference == foreign_ex_dealer_net + investment_trust_net + Dealers-Difference for every source row."
+  },
+  "selection_status": "UNRESOLVED_UNTIL_FRESH_SOURCE",
+  "network_calls_authorized": 0,
+  "synthetic_values_are_not_source_authority": true
+}

@@ -1,0 +1,52 @@
+{
+    "schema_version":  "phase_i_i3_a3_final_merge_and_a4_preflight_transition.v1",
+    "gate":  "I3-A3_FINAL_MERGE_AND_I3-A4_PREFLIGHT_TRANSITION",
+    "status":  "MERGE_AUTHORIZED_A4_PREFLIGHT_AUTHORIZED",
+    "owner_decision_source":  "USER_CHAT_2026-10-04_CONDITIONAL_MERGE_THEN_I3_A4_PRODUCTION_ACTIVATION_PREFLIGHT",
+    "owner_decision_interpretation":  "If final PR #300 merge-readiness passes, merge PR #300 and then begin I3-A4 Production Activation Preflight only.",
+    "reviewed_head":  "a63d2daf5bfab08ff8e1c1e3f46c86440823bf0a",
+    "reviewed_tree":  "df5cd062adc5f95ac5621daa7c4ec9bd7f7d46d3",
+    "reviewed_base_main":  "dafa5999c63d34d55a4665c6534aa77477448d79",
+    "pull_request":  300,
+    "merge_readiness":  {
+                            "pr_state":  "OPEN",
+                            "pr_draft":  true,
+                            "github_mergeable":  true,
+                            "unresolved_review_threads":  0,
+                            "changed_files":  110,
+                            "commits_ahead_of_main":  25,
+                            "base_drift":  false,
+                            "diff_check":  "PASS",
+                            "production_containment":  "PASS",
+                            "compileall":  "PASS",
+                            "focused_a3":  "46 passed",
+                            "default_ci":  "1185 passed, 0 failed, 1 skipped, 5 deselected",
+                            "full_current":  "1558 passed, 0 failed, 1 skipped, 5 deselected",
+                            "test_profiles_network_may_have_occurred":  false,
+                            "github_actions_workflow_runs":  0,
+                            "github_actions_ci_claim":  "NOT_CLAIMED",
+                            "socket_security_checks":  "2 SUCCESS"
+                        },
+    "accepted_a3_status":  "OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_BOUNDED_LIVE_PASS",
+    "a3_additional_live_acquisition_required":  false,
+    "a3_attempt_5_required":  false,
+    "authorization":  {
+                          "merge_pr_300_authorized":  true,
+                          "merge_method":  "merge_commit",
+                          "i3_a4_production_activation_preflight_authorized":  true,
+                          "i3_a4_production_activation_authorized":  false,
+                          "production_route_mutation_authorized":  false,
+                          "source_activation_authorized":  false,
+                          "public_v3_integration_authorized":  false,
+                          "mcp_change_authorized":  false,
+                          "new_market_live_acquisition_authorized":  false
+                      },
+    "transition_contract":  {
+                                "merge_first":  true,
+                                "a4_branch_must_start_from_post_merge_main":  true,
+                                "a4_preflight_is_offline_by_default":  true,
+                                "activation_requires_separate_owner_gate":  true,
+                                "rollback_proof_required_before_activation":  true,
+                                "preserve_mcp_tool_count":  6
+                            }
+}

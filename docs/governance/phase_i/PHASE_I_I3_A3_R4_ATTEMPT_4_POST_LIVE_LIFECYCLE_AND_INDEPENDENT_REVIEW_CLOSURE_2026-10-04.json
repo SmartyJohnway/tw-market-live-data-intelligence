@@ -1,0 +1,61 @@
+{
+  "schema_version": "phase_i_i3_a3_r4_attempt_4_post_live_lifecycle_and_independent_review_closure.v1",
+  "gate": "I3-A3-R4",
+  "status": "INDEPENDENT_ACCEPTANCE_CANDIDATE_PASS",
+  "baseline_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "branch": "phase-i/i3-a0-cash-institutional-flow-preflight",
+  "pull_request": 300,
+  "attempts": {
+    "attempt_1": "HOLD_VALID_HISTORICAL_OUTCOME",
+    "attempt_2": "HOLD_VALID_HISTORICAL_OUTCOME",
+    "attempt_3": "HOLD_VALID_HISTORICAL_OUTCOME",
+    "attempt_4": "PASS_READY_FOR_INDEPENDENT_REVIEW"
+  },
+  "attempt_4_owner_authority": "CONSUMED_NOT_REUSABLE",
+  "attempt_4_live_commit": "15f388a56c1932937a8b019922d566cd2aa926ca",
+  "attempt_4_live_tree": "7818b7bf61c1d5e1582991e5c986c8cc4bd0d270",
+  "immutable_attempt_4_artifacts_sha256": {
+    "docs/governance/phase_i/PHASE_I_I3_A3_ATTEMPT_4_BOUNDED_LIVE_ADAPTER_ACCEPTANCE_2026-10-04.json": "f89a52b894e5c101ee6016a97034d395823011baee591cb4272334e821baa021",
+    "docs/governance/phase_i/acceptance_runs/i3-a3-attempt-4-live-authority-reservation.json": "951228829ddcb4f4639f7cae03d35045d1aa148a89df3c48b15fc09fdb2077ed",
+    "docs/governance/phase_i/acceptance_runs/i3-a3-attempt-4-live-authority-consumed.json": "44abcb5393ef4f3d2956b921a50e237deaeb83571af538cfbff06f3b6edeb21f",
+    "docs/governance/phase_i/acceptance_runs/i3-a3-attempt-4-live/evidence/phase_i/i3/i3a3-tpex-5347.json": "7550c023d639aa4e43389b33dc730b79d6d345ebcd71130c604420db04a80891",
+    "docs/governance/phase_i/acceptance_runs/i3-a3-attempt-4-live/evidence/phase_i/i3/i3a3-twse-1101.json": "398bea2cdce82bb3d1066974ac9e009d87b4f4e9c8249328d36df7b8aaf7d048"
+  },
+  "independent_review_input": {
+    "source": "Owner-supplied ChatGPT independent review disposition in I3-A3-R4 instruction",
+    "attempt_4_substantive_live_acceptance": "PASS",
+    "a3_final_governance_closure_before_r4": "PENDING_POST_LIVE_LIFECYCLE_REPAIR",
+    "additional_live_acquisition_required": false,
+    "attempt_5_required": false,
+    "reviewed_live_commit_contains_only_five_generated_evidence_files": true,
+    "candidate_network_calls": 0,
+    "raw_payload_persistence": "NONE"
+  },
+  "post_live_lifecycle_defect": {
+    "classification": "TEST_ONLY_REPAIRED",
+    "test_path": "tests/unit/test_phase_i_i3_a3_r3_http520_lifecycle.py",
+    "cause": "pre-live-only absence assertion was invalid after the single-use Attempt 4 reservation and consumed latch were created",
+    "repair": "accept artifact absence before live; after live require reservation, consumed latch, exactly one outcome, consumed-before-dispatch proof, and reservation hash lineage",
+    "live_evidence_mutated": false,
+    "runner_or_transport_mutated": false
+  },
+  "r4_market_gets": {"TPEX": 0, "TWSE": 0, "TAIFEX": 0, "other": 0},
+  "production_containment": {
+    "i3_active_production_sources": 0,
+    "i3_production_routes": 0,
+    "mcp_tool_count": 6,
+    "public_v3_integration_changed": false
+  },
+  "validation": {
+    "compileall": "PASS",
+    "focused": {"passed": 46, "failed": 0, "skipped": 0, "deselected": 0},
+    "default_ci": {"passed": 1185, "failed": 0, "skipped": 1, "deselected": 5, "network_may_have_occurred": false},
+    "full_current": {"passed": 1558, "failed": 0, "skipped": 1, "deselected": 5, "network_may_have_occurred": false}
+  },
+  "i3_a3_disposition": "INDEPENDENT_ACCEPTANCE_CANDIDATE_PASS",
+  "owner_final_acceptance_recorded": false,
+  "a4_authorized": false,
+  "production_activation_authorized": false,
+  "public_v3_integration_authorized": false,
+  "merge_authorized": false
+}

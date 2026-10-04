@@ -1,5 +1,25 @@
 # PROJECT.md — Current Project Authority
 
+## Current I3-A3 Owner acceptance boundary (2026-10-04)
+
+`cash_institutional_flow_context` A0 source preflight is `GO_PASS`, A1 is
+`FROZEN_PASS`, A2-R1 is `PASS`, and A3 bounded-live adapter acceptance is
+`OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_BOUNDED_LIVE_PASS`. Attempts 1–3 remain
+historical HOLD outcomes; Attempt 4 is the accepted PASS. Its live authority is
+consumed, and no further A3 acquisition or Attempt 5 is authorized or required.
+
+I3 remains **non-production**: active sources and production routes are 0/0;
+the candidate executor is not reachable through the default runtime. Final
+merge-readiness for PR #300 passed, so PR #300 merge is Owner-authorized and
+I3-A4 **Production Activation Preflight only** is authorized after merge.
+A4 production activation, source/route activation, public V3 integration, and
+MCP changes remain not authorized. The MCP surface remains six tools; broader
+Phase I is incomplete.
+
+Owner acceptance evidence:
+
+`docs/governance/phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json`
+
 ## Current I2 production activation boundary (2026-10-01)
 
 I2-A4 production activation is Owner-accepted and merge-authorized.
@@ -14,7 +34,8 @@ I2-A4 production activation is Owner-accepted and merge-authorized.
   `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
 - No additional market request was authorized or performed for activation.
 - I1 remains active with two routes and three sources; MCP remains exactly six.
-- I3 / Phase J remain NOT STARTED; broader Phase I remains INCOMPLETE.
+- I3-A3 is Owner-accepted but I3 production remains inactive; Phase J is not
+  started and broader Phase I remains incomplete.
 
 Activation evidence:
 
@@ -216,9 +237,9 @@ Current interpretation:
   routes. The route preserves TWSE partial/date-mismatch semantics, exact
   `股票` breadth selection, source-native units, explicit approval, and no
   polling/history/background behavior. Evidence is loaded only when explicitly
-  requested and authorized. I2-A2 dormant offline implementation is
-  Owner-accepted but remains non-production; I3 remains not started and the
-  broader Roadmap Phase I remains incomplete.
+  requested and authorized. I2-A4 is Owner-accepted and active. I3-A3 is
+  Owner-accepted bounded-live adapter evidence, but I3 production remains
+  inactive; the broader Roadmap Phase I remains incomplete.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is
@@ -250,8 +271,10 @@ passed; raw payload persistence is NONE. A3 accepted live evidence remains immut
 activation is Owner-accepted under
 `USER_CHAT_2026-10-01_PHASE_I_I2_A4_FINAL_PRODUCTION_ACTIVATION_ACCEPTANCE_AND_MERGE_CLOSURE`.
 The normal route is approval-gated, TWSE company/common-share only, same-source,
-and bounded to at most one TAIFEX acquisition per governed execution. I3 is not started, Phase I remains incomplete, and MCP remains
-exactly six tools. The earlier unused live authority is superseded without use.
+and bounded to at most one TAIFEX acquisition per governed execution. I3-A3 is
+Owner-accepted under its separate ledger, while I3 production remains 0/0,
+A4 is unauthorized, Phase I remains incomplete, and MCP remains exactly six
+tools. The earlier unused I2 live authority is superseded without use.
 
 ## Current authority hierarchy
 

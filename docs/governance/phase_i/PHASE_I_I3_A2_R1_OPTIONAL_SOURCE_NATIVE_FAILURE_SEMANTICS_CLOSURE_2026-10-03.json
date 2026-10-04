@@ -1,0 +1,78 @@
+{
+  "schema_version": "phase_i_i3_a2_r1_optional_source_native_failure_semantics_closure.v1",
+  "gate": "I3-A2-R1",
+  "status": "A2_R1_PASS",
+  "owner_authority": "USER_CHAT_2026-10-03_PHASE_I_I3_A2_R1_OPTIONAL_SOURCE_NATIVE_FAILURE_SEMANTICS_CLOSURE",
+  "starting_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "starting_head": "81a3667a52fe354555cb87705a15ec2301a695b6",
+  "starting_tree": "659e56f20f08ea99cd6f725a8fe755b7917cf5d6",
+  "a1_contract": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+    "sha256": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428",
+    "status": "FROZEN_PASS",
+    "bytes_changed": false
+  },
+  "original_a2": {
+    "record_path": "docs/governance/phase_i/PHASE_I_I3_A2_DORMANT_OFFLINE_IMPLEMENTATION_CANDIDATE_2026-10-03.json",
+    "record_sha256": "122d3317d098bc602fe753b02837bf9b1b7133ba287c45cd8de73383d97300e1",
+    "technical_commit": "59e8fcc32f31cf2c1ad610867fc2d87d1e250e95",
+    "technical_tree": "d902591980ec3adfebd35270b0ed4c6bc402f7df",
+    "governance_commit": "81a3667a52fe354555cb87705a15ec2301a695b6",
+    "historical_status": "DORMANT_IMPLEMENTATION_CANDIDATE_READY_FOR_REVIEW",
+    "historical_self_declared_A3_ready": true,
+    "bytes_changed": false
+  },
+  "independent_review": {
+    "disposition_before_R1": "HOLD_FOR_SMALL_REPAIR",
+    "blocker": "OPTIONAL_SOURCE_NATIVE_FAILURE_SEMANTICS",
+    "A3_readiness_acceptance_before_R1": "WITHHELD_PENDING_A2_R1"
+  },
+  "repair": {
+    "TWSE_security_name_optional": true,
+    "TPEX_security_name_optional": true,
+    "TWSE_foreign_dealer_optional": true,
+    "TPEX_foreign_dealer_optional": true,
+    "TPEX_foreign_including_dealer_optional": true,
+    "TWSE_dealer_proprietary_reconciliation_mandatory": true,
+    "TWSE_dealer_hedging_reconciliation_mandatory": true,
+    "common_core_whole_dataset_arithmetic_unchanged": true,
+    "foreign_dealer_excluded_from_institutional_total": true,
+    "optional_issue_scope": "target_row_only",
+    "optional_failure_behavior": "omit_affected_group_with_bounded_caveat_no_zero_fill",
+    "failure_evidence_numeric_observations_fabricated": false
+  },
+  "schema_sha_before": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c",
+  "schema_sha_after": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c",
+  "schema_unchanged": true,
+  "technical_repair": {
+    "commit": "cab3fbdaa4e16369d6fee0768ac68a9944bea7a8",
+    "tree": "6385c06a0e421b7a84f0925e76c401f162511ffb"
+  },
+  "validation": {
+    "R1_specific": {"passed": 14, "skipped": 0, "deselected": 39},
+    "A2_only": {"passed": 53, "skipped": 0, "deselected": 0},
+    "I3_SSL_focused": {"passed": 269, "skipped": 0, "deselected": 0},
+    "default_ci": {"passed": 1139, "skipped": 1, "deselected": 5},
+    "full_current": {"passed": 1512, "skipped": 1, "deselected": 5},
+    "historical_and_current_validators": "PASS",
+    "portable_catalog_and_runtime_skill_sync": "PASS",
+    "MCP_tool_count": 6,
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "CRLF_aware_diff_check": "PASS"
+  },
+  "network_calls": 0,
+  "raw_payload_persistence": false,
+  "production_authority_changed": false,
+  "I1_active_sources": 3,
+  "I1_production_routes": 2,
+  "I2_active_sources": 1,
+  "I2_production_routes": 1,
+  "I3_active_sources": 0,
+  "I3_production_routes": 0,
+  "A2_independent_review_after_R1": "PASS",
+  "A3_ready_for_separate_owner_decision": true,
+  "A3_authorized": false,
+  "production_activation_authorized": false,
+  "merge_authorized": false
+}
