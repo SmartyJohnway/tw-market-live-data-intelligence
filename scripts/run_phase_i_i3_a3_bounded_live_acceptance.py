@@ -138,11 +138,11 @@ def original_start_guard() -> None:
     load_targets()
 
 
-def target_request(item: dict, number: int) -> dict:
+def target_request(item: dict, number: int, *, request_authority: str = OWNER) -> dict:
     result = dict(item)
     market = item["market"]
     result["operation_id"] = f"i3a3-{market.lower()}-{item['security_code']}"
-    digest = hashlib.sha256(f"{OWNER}:{result['operation_id']}:{number}".encode()).hexdigest()
+    digest = hashlib.sha256(f"{request_authority}:{result['operation_id']}:{number}".encode()).hexdigest()
     result["execution_request_id"] = "umereq-v2-" + digest[:20]
     result["execution_request_hash"] = digest
     return result
@@ -158,8 +158,11 @@ def qualified(telemetry: dict, body: bytes | None) -> bool:
 
 
 def execute_with_acquirer(acquire: Callable[[str], tuple[dict, bytes | None]], targets: dict[str, dict],
-                          *, http_dispatch_count: dict[str, int] | None = None) -> tuple[dict, dict[str, bytes]]:
+                          *, http_dispatch_count: dict[str, int] | None = None,
+                          acquisition_order: tuple[str, str] = ("TWSE", "TPEX"),
+                          operation_authority: str = OWNER) -> tuple[dict, dict[str, bytes]]:
     """One sequential attempt; neither this function nor its return stores raw bodies."""
+    require(acquisition_order in (("TWSE", "TPEX"), ("TPEX", "TWSE")), "unsupported_acquisition_order")
     attempts = {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0}
     telemetry: dict[str, dict] = {}
     bodies: dict[str, bytes] = {}
@@ -168,7 +171,7 @@ def execute_with_acquirer(acquire: Callable[[str], tuple[dict, bytes | None]], t
                               "http_dispatch_count": dispatches, "retry_count": 0, "source_telemetry": telemetry,
                               "candidate": None, "evidence": {}, "A3_decision": "HOLD", "failure_code": None}
     artifacts: dict[str, bytes] = {}
-    for market in ("TWSE", "TPEX"):
+    for market in acquisition_order:
         attempts[market] += 1
         try:
             observation, body = acquire(market)
@@ -182,7 +185,8 @@ def execute_with_acquirer(acquire: Callable[[str], tuple[dict, bytes | None]], t
         bodies[market] = body
     if len(bodies) == 2:
         try:
-            inputs = [target_request(targets[market], n) for n, market in enumerate(("TWSE", "TPEX"), 1)]
+            inputs = [target_request(targets[market], n, request_authority=operation_authority)
+                      for n, market in enumerate(("TWSE", "TPEX"), 1)]
             candidate = run_i3_candidate_offline_batch(inputs, source_payloads=bodies,
                 retrieved_at_by_market={m: telemetry[m]["retrieved_at"] for m in bodies},
                 twse_governed_source_date="20260930")
