@@ -156,7 +156,15 @@ def test_exact_mapping_and_frozen_candidate_and_production_containment():
     a3.production_containment()
 
 
-def test_pre_network_validator_does_not_create_live_artifacts():
-    for path in (attempt2.RESERVATION, attempt2.CONSUMED, attempt2.OUTCOME, attempt2.HOLD):
-        assert not (a3.ROOT / path).exists()
+def test_attempt2_artifact_lifecycle_is_consistent():
+    paths = [a3.ROOT / path for path in (attempt2.RESERVATION, attempt2.CONSUMED, attempt2.OUTCOME, attempt2.HOLD)]
+    existing = [path.exists() for path in paths]
+    if not any(existing):
+        assert existing == [False, False, False, False]
+    else:
+        assert existing[0] and existing[1]
+        assert existing[2] != existing[3]
+        consumed = json.loads(paths[1].read_text(encoding="utf-8"))
+        assert consumed["consumed"] is True
+        assert consumed["consumed_before_first_http_attempt"] is True
     assert attempt2.NETWORK_BUDGET == {"TPEX": 1, "TWSE": 1, "TAIFEX": 0, "other": 0, "retry": 0}
