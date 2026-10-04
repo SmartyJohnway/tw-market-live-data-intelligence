@@ -1,0 +1,113 @@
+{
+  "schema_version": "phase_i_i3_a0_p3_attempt_3_evidence_erratum_and_bounded_body_read_closure.v1",
+  "status": "OFFLINE_EVIDENCE_AND_BOUNDED_BODY_READ_CLOSURE_PASS",
+  "decision": "P3_PASS",
+  "owner_authority": "USER_CHAT_2026-10-03_PHASE_I_I3_A0_P3_ATTEMPT3_EVIDENCE_ERRATUM_AND_BOUNDED_BODY_READ_CLOSURE",
+  "baseline_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "starting_head": "e9ef5c70d20f2f2914a22f00830721408e24d634",
+  "starting_tree": "717eb5d29a29a0f4190e00be30d1db74afc0a427",
+  "branch": "phase-i/i3-a0-cash-institutional-flow-preflight",
+  "PR": 300,
+  "attempt_3": {
+    "status": "HOLD",
+    "consumed": true,
+    "outcome_sha256": "01d4dffa06fc7a78ecc2b4a510badfac511b6f6078f3578af80bbe5abed9f7a1",
+    "reservation_sha256": "ff9ffa93c6ceab5eb7147ce513ef35d175ce6bc13f4f43e0aeffc9b36d54d848",
+    "consumed_latch_sha256": "2b731cca5ce95840eccf6c1459170e4d7a634ab7d9022cb0e5c2f0b138419c3b",
+    "historical_files_immutable": true
+  },
+  "twse_evidence": {
+    "accepted": true,
+    "reusable_for_composite_A0": true
+  },
+  "tpex_evidence": {
+    "complete_body": false,
+    "semantics": "NOT_EVALUATED"
+  },
+  "erratum": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_3_EVIDENCE_ERRATUM_2026-10-03.json",
+    "sha256": "9f86216243fb4d9885e58d9dd7bb231373d4d222e6e277f6565533e942d37196",
+    "target_binding_historical": 0,
+    "correct_interpretation": "NOT_EVALUATED",
+    "TPEx_batching_historical": true,
+    "fresh_interpretation": "NOT_EVALUATED_BY_ATTEMPT_3"
+  },
+  "body_read_closure": {
+    "incremental": true,
+    "chunk_bytes": 65536,
+    "maximum_bytes": 4194304,
+    "maximum_buffer_bytes": 4194305,
+    "bounded": true,
+    "partial_bytes_never_analyzable": true,
+    "partial_bytes_never_persisted": true,
+    "retry": 0,
+    "partial_telemetry": {
+      "complete_body_received": false,
+      "response_byte_count": 0,
+      "response_sha256": null,
+      "partial_response_byte_count": "number of bounded bytes observed before failure"
+    },
+    "content_length": "optional non-negative ASCII integer; oversized rejected before read; EOF length mismatch rejected; transfer-encoding uses bounded EOF",
+    "failure_phase": "response_body_read",
+    "TWSE_ssl_policy": "compatibility",
+    "TPEx_ssl_policy": "strict",
+    "unsafe_tls_forbidden": true,
+    "silent_fallback": false
+  },
+  "future_failure_path": {
+    "helper": "scripts/phase_i_i3_a0_future_evidence.py",
+    "unacquired_binding": null,
+    "unacquired_status": "NOT_EVALUATED",
+    "unacquired_arithmetic": null,
+    "unacquired_unit": null,
+    "unacquired_observation": null,
+    "evaluated_zero_matches": 0,
+    "batching_observation_separate_from_prior_support": true
+  },
+  "future_authority_chain": {
+    "version": "v2",
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_FUTURE_ATTEMPT_AUTHORITY_CHAIN_V2.json",
+    "sha256": "6c793aeef0820408feeefce6704dc3a80515f0b1aba5c3fd7b294ced4b54b7b9",
+    "closure_hash_pin": "full-byte SHA-256 in loader constant; V2 references this record, avoiding circular hashes"
+  },
+  "readiness_plan": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A0_ATTEMPT_4_READINESS_PLAN_2026-10-03.json",
+    "sha256": "46864d0f18688974dfb87e442e00d6129a8b3ee99c1fe0104401325be92b5c9e"
+  },
+  "validation": {
+    "status": "PASS",
+    "P3_only": {"passed": 34, "skipped": 0, "deselected": 0},
+    "focused": {"passed": 161, "skipped": 0, "deselected": 0},
+    "default_ci": {"passed": 1031, "skipped": 1, "deselected": 5, "collected": 1037},
+    "full_current": {"passed": 1404, "skipped": 1, "deselected": 5, "collected": 1410},
+    "validators": {
+      "P3": "PASS", "Attempt3": "PASS", "P2": "PASS", "Attempt2": "PASS",
+      "P1": "PASS", "P0": "PASS", "original_A0": "PASS",
+      "I1_contract": "PASS", "I1_candidate": "PASS", "I1_activation": "PASS",
+      "I2_A4": "PASS", "Phase_H_V3": "PASS", "portable_catalog": "PASS", "runtime_skill_MCP6": "PASS"
+    },
+    "compileall": "PASS",
+    "diff_checks": {"ordinary": "PASS", "CRLF_aware": "PASS"},
+    "network_denial": "External socket connect/connect_ex/create_connection denied; literal loopback permitted only for existing IPC infrastructure",
+    "validator_pass_does_not_change_attempt_3_hold": true
+  },
+  "attempt_4_ready": true,
+  "attempt_4_authorized": false,
+  "market_network_calls": 0,
+  "network_counts": {
+    "TWSE": 0,
+    "TPEx": 0,
+    "TAIFEX": 0,
+    "other": 0
+  },
+  "production_runtime_changed": false,
+  "I1_sources": 3,
+  "I1_routes": 2,
+  "I2_sources": 1,
+  "I2_routes": 1,
+  "MCP_tool_count": 6,
+  "A1_authorized": false,
+  "implementation_authorized": false,
+  "production_activation_authorized": false,
+  "merge_authorized": false
+}

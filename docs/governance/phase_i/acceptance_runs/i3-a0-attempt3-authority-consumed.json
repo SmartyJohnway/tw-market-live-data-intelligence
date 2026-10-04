@@ -1,0 +1,22 @@
+{
+  "attempt_1_record_sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+  "consumed": true,
+  "consumed_at": "2026-10-03T00:51:51Z",
+  "consumed_before_first_http_attempt": true,
+  "network_budget": {
+    "TPEx": 1,
+    "TWSE": 1,
+    "retry": 0
+  },
+  "owner_authority": "USER_CHAT_2026-10-02_PHASE_I_I3_A0_FRESH_ATTEMPT_3_FINAL_SOURCE_TIMING_SYMMETRY_REPROBE",
+  "p0_mapping_sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
+  "p0_record_sha256": "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a",
+  "p1_authority_sha256": "666108fdd187f3ec753acc2a258e3ea7bd9415cc371346b5f32dc231ea665240",
+  "p1_record_sha256": "541b62d45d248d28e114d04628aac379dbd2f5b6d66d6ad07ae8cd4ee661a70c",
+  "reserved": true,
+  "schema_version": "phase_i_i3_a0_future_attempt_consumed.v1",
+  "starting_branch": "phase-i/i3-a0-cash-institutional-flow-preflight",
+  "starting_branch_head": "e3c44a0a49da3b92ee3254bc73d41831242ac275",
+  "starting_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "starting_tree": "e3447f9c2ad17e80e6876d11af9c93299771d75a"
+}

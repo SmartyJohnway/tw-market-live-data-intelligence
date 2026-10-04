@@ -1,0 +1,28 @@
+{
+  "schema_version": "phase_i_i3_a0_attempt_2_provenance_erratum.v1",
+  "status": "ACCEPTED_METADATA_ERRATUM",
+  "affected_historical_files": [
+    "docs/governance/phase_i/acceptance_runs/i3-a0-attempt2-authority-reservation.json",
+    "docs/governance/phase_i/acceptance_runs/i3-a0-attempt2-authority-consumed.json"
+  ],
+  "affected_field": "p0_record_sha256",
+  "historical_recorded_value": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+  "correct_authority_value": "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a",
+  "clarification": {
+    "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0": "A0 Attempt 1 record SHA-256",
+    "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a": "A0-P0 offline closure record SHA-256"
+  },
+  "classification": "PROVENANCE_METADATA_DEFECT_ONLY",
+  "historical_files_mutated": false,
+  "network_count_affected": false,
+  "single_use_consumption_affected": false,
+  "attempt_2_hold_decision_affected": false,
+  "raw_persistence_finding_affected": false,
+  "correct_immutable_authority_chain": {
+    "attempt_1_record_sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+    "p0_mapping_sha256": "e3af3d8b5ce11fe88f0c32efa45400126fe1991ec0c0725fbc3f480e2888638c",
+    "p0_record_sha256": "8d58c1eb22941099f28e72e884c4686ddab1a66de752dfd343892e959fca118a",
+    "p1_authority_sha256": "666108fdd187f3ec753acc2a258e3ea7bd9415cc371346b5f32dc231ea665240",
+    "p1_record_sha256": "541b62d45d248d28e114d04628aac379dbd2f5b6d66d6ad07ae8cd4ee661a70c"
+  }
+}

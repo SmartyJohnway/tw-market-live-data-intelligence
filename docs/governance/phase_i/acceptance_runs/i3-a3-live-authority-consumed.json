@@ -1,0 +1,7 @@
+{
+  "consumed": true,
+  "consumed_before_first_http_attempt": true,
+  "owner_authority": "USER_CHAT_2026-10-04_PHASE_I_I3_A3_BOUNDED_LIVE_ADAPTER_ACCEPTANCE_AUTHORIZATION",
+  "reservation_sha256": "ac8a80a62e23223d53b327d1626383900efc14df66ed536765b0905e0d5d6b4e",
+  "schema_version": "phase_i_i3_a3_live_authority_consumed.v1"
+}

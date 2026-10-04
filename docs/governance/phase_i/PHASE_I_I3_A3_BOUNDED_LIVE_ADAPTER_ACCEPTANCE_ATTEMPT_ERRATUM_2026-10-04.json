@@ -1,0 +1,48 @@
+{
+  "schema_version": "phase_i_i3_a3_bounded_live_adapter_acceptance_attempt_erratum.v1",
+  "status": "ACCEPTED_NETWORK_ACCOUNTING_ERRATUM",
+  "owner_authority": "USER_CHAT_2026-10-04_PHASE_I_I3_A3_BOUNDED_LIVE_ADAPTER_ACCEPTANCE_AUTHORIZATION",
+  "affected_outcome_path": "docs/governance/phase_i/PHASE_I_I3_A3_BOUNDED_LIVE_ADAPTER_ACCEPTANCE_ATTEMPT_2026-10-04.json",
+  "affected_outcome_sha256": "43de8c468aed8476487ce9c22ff20ba210d1392e3c22c871d1813e6576c223d4",
+  "affected_field": "actual_gets.TPEX",
+  "historical_recorded_value": 1,
+  "historical_value_meaning": "A3 acquire callback invoked once and incremented its counter before the transport pre-I/O policy guard",
+  "correct_http_get_attribution": {
+    "TWSE": 1,
+    "TPEX": 0,
+    "TAIFEX": 0,
+    "other": 0,
+    "retry": 0
+  },
+  "failure": {
+    "recorded_code": "acquisition_exception:ValueError",
+    "precise_classification": "TPEx transport policy rejected unreviewed market key before HTTP dispatch",
+    "runner_argument": "TPEX",
+    "transport_reviewed_key": "TPEx",
+    "transport_error": "unreviewed_market",
+    "http_response_observed_for_TPEX": false,
+    "source_semantics_evaluated_for_TPEX": false
+  },
+  "evidence_basis": [
+    "The sealed A3 runner passes TPEX to its acquire callback and increments live_counts before calling read_once.",
+    "The unchanged reviewed transport URLS and MARKET_SSL_POLICY use TPEx, not TPEX.",
+    "read_once calls policy_for_market before constructing or opening any HTTP request; policy_for_market raises ValueError(unreviewed_market) for TPEX.",
+    "The immutable outcome contains TWSE telemetry only and no TPEx HTTP telemetry."
+  ],
+  "historical_outcome_mutated": false,
+  "consumed_latch_mutated": false,
+  "owner_authority_consumed": true,
+  "repeat_or_retry_authorized": false,
+  "A3_decision": "HOLD",
+  "TWSE_complete_body": true,
+  "TPEX_complete_body": false,
+  "candidate_normalization_reached": false,
+  "post_live_test_disposition": {
+    "status": "NOT_ALL_PASS",
+    "failure": "test_sealed_pre_network_guard_rejects_candidate_code_drift",
+    "reason": "The test expects a candidate-drift guard but the persisted consumed latch correctly triggers the earlier single-use guard; no frozen A3 code or test was changed after consumption."
+  },
+  "raw_payload_persistence": "NONE",
+  "production_activation_authorized": false,
+  "merge_authorized": false
+}

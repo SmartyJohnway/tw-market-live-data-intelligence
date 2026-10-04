@@ -1,0 +1,92 @@
+{
+  "schema_version": "phase_i_i3_a2_dormant_offline_implementation_candidate.v1",
+  "gate": "I3-A2",
+  "status": "DORMANT_IMPLEMENTATION_CANDIDATE_READY_FOR_REVIEW",
+  "owner_authority": "USER_CHAT_2026-10-03_PHASE_I_I3_A2_DORMANT_OFFLINE_IMPLEMENTATION_AUTHORIZATION",
+  "starting_main": "dafa5999c63d34d55a4665c6534aa77477448d79",
+  "starting_head": "f773b7b28f2e17d1f038084dc864dd15fbeda1bd",
+  "starting_tree": "f4ce0391bc450d7c6857203b10973f6b540c079a",
+  "technical_implementation": {
+    "commit": "59e8fcc32f31cf2c1ad610867fc2d87d1e250e95",
+    "tree": "d902591980ec3adfebd35270b0ed4c6bc402f7df",
+    "adapter_path": "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+    "candidate_executor_path": "server/services/phase_i_i3_cash_institutional_flow_offline_candidate.py",
+    "evidence_schema_path": "schemas/cash_institutional_flow_context_evidence.v1.schema.json",
+    "evidence_schema_sha256": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c"
+  },
+  "a1_contract": {
+    "path": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+    "sha256": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428",
+    "status": "FROZEN_PASS"
+  },
+  "capability": {
+    "capability_id": "cash_institutional_flow_context",
+    "candidate_executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+    "evidence_schema": "cash_institutional_flow_context_evidence.v1"
+  },
+  "public_integration": {
+    "catalog_present": false,
+    "routing_present": false,
+    "request_v3_supported": false,
+    "result_v3_projection": false,
+    "audit_v3_reference": false
+  },
+  "runtime": {
+    "production_registry_present": false,
+    "runtime_executable": false,
+    "active_sources": 0,
+    "production_routes": 0
+  },
+  "offline": {
+    "injected_input_only": true,
+    "network_calls": 0,
+    "system_clock_reads": false,
+    "raw_payload_persistence": false
+  },
+  "batching": {
+    "same_market_prepare_once": "PASS",
+    "mixed_max_simulated_acquisitions": 2
+  },
+  "candidate_evidence": {
+    "TWSE_complete": "PASS",
+    "TPEX_complete": "PASS",
+    "explicit_TWSE_date_mismatch": "source_failed",
+    "TPEX_multiple_source_dates": "source_failed",
+    "binding_zero_or_duplicate": "binding_failed",
+    "whole_dataset_arithmetic_failure": "source_failed_for_all_dependent_targets",
+    "TPEX_dealer_sell": "Dealers-TotalSell_only",
+    "near_alias_fallback": false,
+    "foreign_dealer_double_counting": false,
+    "same_and_different_date_alignment": "PASS",
+    "publication_finality": "unknown",
+    "currentness_status": "unknown",
+    "A0_synthetic_parity": "PASS",
+    "operation_results_and_citations": "PASS",
+    "failure_numeric_observations_fabricated": false
+  },
+  "validation": {
+    "A2_only": {"passed": 39, "skipped": 0, "deselected": 0},
+    "I3_SSL_focused": {"passed": 255, "skipped": 0, "deselected": 0},
+    "default_ci": {"passed": 1125, "skipped": 1, "deselected": 5},
+    "full_current": {"passed": 1498, "skipped": 1, "deselected": 5},
+    "historical_A0_and_A1_validators": "PASS",
+    "I1_I2A4_PhaseH_validators": "PASS",
+    "portable_catalog_and_runtime_skill_sync": "PASS",
+    "MCP_tool_count": 6,
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "CRLF_aware_diff_check": "PASS"
+  },
+  "not_proven_by_A2": [
+    "live_HTTP_transport",
+    "production_registry_wiring",
+    "public_V3_request_result_audit_integration",
+    "source_activation",
+    "route_activation",
+    "merge"
+  ],
+  "A3_ready_for_separate_owner_decision": true,
+  "A3_authorized": false,
+  "production_activation_authorized": false,
+  "merge_authorized": false
+}

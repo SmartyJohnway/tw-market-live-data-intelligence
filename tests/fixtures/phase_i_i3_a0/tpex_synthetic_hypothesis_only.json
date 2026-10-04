@@ -1,0 +1,34 @@
+[
+  {
+    "SecuritiesCompanyCode": "5347",
+    "Date": "1150930",
+    "CompanyName": "SYNTHETIC TEST ONLY",
+    "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+    " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+    "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+    "SecuritiesInvestmentTrustCompanies-TotalBuy": "100",
+    "SecuritiesInvestmentTrustCompanies-TotalSell": "40",
+    "SecuritiesInvestmentTrustCompanies-Difference": "60",
+    "Dealers-TotalBuy": "30",
+    "Dealers-Difference": "20",
+    "TotalDifference": "140",
+    "Dealers-TotalSell": "10",
+    "Dealers -TotalSell": "999"
+  },
+  {
+    "SecuritiesCompanyCode": "5483",
+    "Date": "1150930",
+    "CompanyName": "SYNTHETIC TEST ONLY",
+    "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+    " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+    "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+    "SecuritiesInvestmentTrustCompanies-TotalBuy": "100",
+    "SecuritiesInvestmentTrustCompanies-TotalSell": "40",
+    "SecuritiesInvestmentTrustCompanies-Difference": "60",
+    "Dealers-TotalBuy": "30",
+    "Dealers-Difference": "20",
+    "TotalDifference": "140",
+    "Dealers-TotalSell": "10",
+    "Dealers -TotalSell": "999"
+  }
+]

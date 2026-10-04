@@ -1,0 +1,256 @@
+{
+  "synthetic_notice": "Synthetic deterministic test data; not historical source evidence.",
+  "unique_candidate_a": [
+    {
+      "SecuritiesCompanyCode": "5347",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "10",
+      "Dealers -TotalSell": "99"
+    },
+    {
+      "SecuritiesCompanyCode": "5483",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "10",
+      "Dealers -TotalSell": "99"
+    }
+  ],
+  "unique_candidate_b": [
+    {
+      "SecuritiesCompanyCode": "5347",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "99",
+      "Dealers -TotalSell": "10"
+    },
+    {
+      "SecuritiesCompanyCode": "5483",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "99",
+      "Dealers -TotalSell": "10"
+    }
+  ],
+  "both_candidates_valid": [
+    {
+      "SecuritiesCompanyCode": "5347",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "10",
+      "Dealers -TotalSell": "10"
+    },
+    {
+      "SecuritiesCompanyCode": "5483",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "10",
+      "Dealers -TotalSell": "10"
+    }
+  ],
+  "neither_candidate_valid": [
+    {
+      "SecuritiesCompanyCode": "5347",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "99",
+      "Dealers -TotalSell": "99"
+    },
+    {
+      "SecuritiesCompanyCode": "5483",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "99",
+      "Dealers -TotalSell": "99"
+    }
+  ],
+  "missing_candidate_fields": [
+    {
+      "SecuritiesCompanyCode": "5347",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120"
+    },
+    {
+      "SecuritiesCompanyCode": "5483",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120"
+    }
+  ],
+  "malformed_integer": [
+    {
+      "SecuritiesCompanyCode": "5347",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "malformed",
+      "Dealers -TotalSell": "99"
+    },
+    {
+      "SecuritiesCompanyCode": "5483",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "10",
+      "Dealers -TotalSell": "99"
+    }
+  ],
+  "one_candidate_row_mismatch": [
+    {
+      "SecuritiesCompanyCode": "5347",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "10",
+      "Dealers -TotalSell": "10"
+    },
+    {
+      "SecuritiesCompanyCode": "5483",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "11",
+      "Dealers -TotalSell": "10"
+    }
+  ],
+  "institutional_total_mismatch": [
+    {
+      "SecuritiesCompanyCode": "5347",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "120",
+      "Dealers-TotalSell": "10",
+      "Dealers -TotalSell": "99"
+    },
+    {
+      "SecuritiesCompanyCode": "5483",
+      "Date": "1150930",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy": "100",
+      " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell": "40",
+      "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference": "60",
+      "SecuritiesInvestmentTrustCompanies-TotalBuy": "50",
+      "SecuritiesInvestmentTrustCompanies-TotalSell": "10",
+      "SecuritiesInvestmentTrustCompanies-Difference": "40",
+      "Dealers-TotalBuy": "30",
+      "Dealers-Difference": "20",
+      "TotalDifference": "121",
+      "Dealers-TotalSell": "10",
+      "Dealers -TotalSell": "99"
+    }
+  ],
+  "zero_rows": []
+}

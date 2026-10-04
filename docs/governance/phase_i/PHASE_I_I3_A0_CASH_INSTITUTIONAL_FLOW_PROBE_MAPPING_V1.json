@@ -1,0 +1,187 @@
+{
+  "schema_version": "phase_i_i3_a0_cash_institutional_flow_probe_mapping.v1",
+  "authority_scope": "OFFLINE_PROBE_TOOLING_ONLY_NOT_A1_CONTRACT",
+  "owner_authority": "USER_CHAT_2026-10-01_PHASE_I_I3_A0_P0_OFFLINE_PROBE_HARNESS_CLOSURE_AUTHORIZATION",
+  "mapping_status": "UNRESOLVED",
+  "provenance": {
+    "field_inventory": "docs/governance/phase_i/PHASE_I_I3_A0_CASH_INSTITUTIONAL_FLOW_SOURCE_TIMING_SYMMETRY_PREFLIGHT_2026-10-01.json",
+    "sha256": "43ef038ffd33a455ae52eff18a8f08e52436164b6d27d6140090b368810df5e0",
+    "offline_search_result": "Only Attempt 1 inventory contains both dealer sell labels. Local TPEx protocol/dictionary describe a different daily-close endpoint; no institutional-flow official schema adjudication is available. No source acquisition performed."
+  },
+  "markets": {
+    "TWSE": {
+      "mapping_status": "RESOLVED_FOR_SYNTHETIC_PROBE",
+      "code_field": "證券代號",
+      "date_source": "top_level",
+      "date_field": "date",
+      "date_encoding": "Gregorian_YYYYMMDD",
+      "single_date_required": true,
+      "unit": "share",
+      "required_common_core": {
+        "foreign_and_mainland_excluding_foreign_dealer": {
+          "buy_shares": [
+            "外陸資買進股數(不含外資自營商)"
+          ],
+          "sell_shares": [
+            "外陸資賣出股數(不含外資自營商)"
+          ],
+          "net_shares": [
+            "外陸資買賣超股數(不含外資自營商)"
+          ]
+        },
+        "investment_trust": {
+          "buy_shares": [
+            "投信買進股數"
+          ],
+          "sell_shares": [
+            "投信賣出股數"
+          ],
+          "net_shares": [
+            "投信買賣超股數"
+          ]
+        },
+        "dealer_total": {
+          "buy_shares": [
+            "自營商買進股數(自行買賣)",
+            "自營商買進股數(避險)"
+          ],
+          "sell_shares": [
+            "自營商賣出股數(自行買賣)",
+            "自營商賣出股數(避險)"
+          ],
+          "net_shares": [
+            "自營商買賣超股數"
+          ]
+        },
+        "institutional_total_net_shares": [
+          "三大法人買賣超股數"
+        ]
+      },
+      "source_native_optional": {
+        "dealer_proprietary": {
+          "buy_shares": [
+            "自營商買進股數(自行買賣)"
+          ],
+          "sell_shares": [
+            "自營商賣出股數(自行買賣)"
+          ],
+          "net_shares": [
+            "自營商買賣超股數(自行買賣)"
+          ]
+        },
+        "dealer_hedging": {
+          "buy_shares": [
+            "自營商買進股數(避險)"
+          ],
+          "sell_shares": [
+            "自營商賣出股數(避險)"
+          ],
+          "net_shares": [
+            "自營商買賣超股數(避險)"
+          ]
+        },
+        "foreign_dealer": {
+          "buy_shares": [
+            "外資自營商買進股數"
+          ],
+          "sell_shares": [
+            "外資自營商賣出股數"
+          ],
+          "net_shares": [
+            "外資自營商買賣超股數"
+          ]
+        },
+        "security_name": "證券名稱"
+      },
+      "conditional_invariants": {
+        "dealer_component_split": [
+          "dealer_proprietary",
+          "dealer_hedging"
+        ]
+      }
+    },
+    "TPEX": {
+      "mapping_status": "UNRESOLVED",
+      "code_field": "SecuritiesCompanyCode",
+      "date_source": "row",
+      "date_field": "Date",
+      "date_encoding": "ROC_YYYMMDD",
+      "single_date_required": true,
+      "unit": "share",
+      "required_common_core": {
+        "foreign_and_mainland_excluding_foreign_dealer": {
+          "buy_shares": [
+            "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Buy"
+          ],
+          "sell_shares": [
+            " Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Total Sell"
+          ],
+          "net_shares": [
+            "Foreign Investors include Mainland Area Investors (Foreign Dealers excluded)-Difference"
+          ]
+        },
+        "investment_trust": {
+          "buy_shares": [
+            "SecuritiesInvestmentTrustCompanies-TotalBuy"
+          ],
+          "sell_shares": [
+            "SecuritiesInvestmentTrustCompanies-TotalSell"
+          ],
+          "net_shares": [
+            "SecuritiesInvestmentTrustCompanies-Difference"
+          ]
+        },
+        "dealer_total": {
+          "buy_shares": [
+            "Dealers-TotalBuy"
+          ],
+          "sell_shares": null,
+          "net_shares": [
+            "Dealers-Difference"
+          ]
+        },
+        "institutional_total_net_shares": [
+          "TotalDifference"
+        ]
+      },
+      "unresolved_fields": {
+        "dealer_total_sell": {
+          "candidates": [
+            "Dealers-TotalSell",
+            "Dealers -TotalSell"
+          ],
+          "selected": null,
+          "reason": "Both exact keys observed; spelling and synthetic arithmetic cannot establish source-native aggregate semantics. Offline official schema evidence absent."
+        }
+      },
+      "source_native_optional": {
+        "foreign_dealer": {
+          "buy_shares": [
+            "Foreign Dealers-Total Buy"
+          ],
+          "sell_shares": [
+            "Foreign Dealers-TotalSell"
+          ],
+          "net_shares": [
+            "ForeignDealers-Difference"
+          ]
+        },
+        "foreign_including_dealer": {
+          "buy_shares": [
+            "ForeignInvestorsIncludeMainlandAreaInvestors-TotalBuy"
+          ],
+          "sell_shares": [
+            "ForeignInvestorsIncludeMainlandAreaInvestors-TotalSell"
+          ],
+          "net_shares": [
+            "ForeignInvestorsInclude MainlandAreaInvestors-Difference"
+          ]
+        },
+        "security_name": "CompanyName"
+      },
+      "conditional_invariants": {
+        "dealer_component_split": []
+      }
+    }
+  }
+}
