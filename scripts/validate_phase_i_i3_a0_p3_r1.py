@@ -19,6 +19,7 @@ RECORD = PREFIX + "PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_FUTURE_EVIDENCE_INTEGRATION
 PLAN = PREFIX + "PHASE_I_I3_A0_ATTEMPT_4_READINESS_PLAN_V2_2026-10-03.json"
 BASELINE = "dafa5999c63d34d55a4665c6534aa77477448d79"
 START = "95b0453e2b7c6c93a99ecc6f59e6f743cf011520"
+ACCEPTED_R1_HEAD = "8be2cfe795b10591be564b441a17094df2884d1e"
 OWNER = "USER_CHAT_2026-10-03_PHASE_I_I3_A0_P3_R1_REAL_ANALYZER_FUTURE_EVIDENCE_INTEGRATION_CLOSURE"
 
 
@@ -77,9 +78,14 @@ def validate():
         immutable = set(authority.HASHED_PATHS.values()) | {x["path"] for x in v2["additional_anchors"].values()}
         immutable |= {authority.AUTHORITY_PATH.relative_to(ROOT).as_posix(), authority.AUTHORITY_V2_PATH.relative_to(ROOT).as_posix(),
             v2["p3_closure_reference"]["path"], PREFIX + "PHASE_I_I3_A0_ATTEMPT_4_READINESS_PLAN_2026-10-03.json",
-            "scripts/phase_i_i3_a0_source_transport.py", "scripts/run_phase_i_i3_a0_preflight.py"}
+            "scripts/run_phase_i_i3_a0_preflight.py"}
         for rel in immutable:
             assert (ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", START + ":" + rel], cwd=ROOT), rel
+        # Transport was unchanged at the historical P3-R1 gate. A later,
+        # separately authorized I3-A3-R1 adds only dispatch observation.
+        transport_rel = "scripts/phase_i_i3_a0_source_transport.py"
+        assert subprocess.check_output(["git", "show", START + ":" + transport_rel], cwd=ROOT) == subprocess.check_output(
+            ["git", "show", ACCEPTED_R1_HEAD + ":" + transport_rel], cwd=ROOT)
         for rel in analyzer.PROTECTED:
             assert (ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", BASELINE + ":" + rel], cwd=ROOT), rel
         erratum = json.loads((ROOT / v3["r1_erratum"]["path"]).read_text(encoding="utf-8"))

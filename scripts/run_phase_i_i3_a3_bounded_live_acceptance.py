@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts import phase_i_i3_a0_source_transport as transport
+from scripts.phase_i_i3_transport_mapping import transport_market_key
 from scripts.m8r_08g_security_master_releases import SECURITY_MASTER_ROOT, load_active_identity_service
 from scripts.m8r_filesystem_safety import atomic_write_bytes
 from scripts.run_phase_i_i3_a0_preflight import PROTECTED
@@ -156,12 +157,15 @@ def qualified(telemetry: dict, body: bytes | None) -> bool:
             and telemetry.get("retry_count") == 0 and telemetry.get("redirect_policy") == "reject")
 
 
-def execute_with_acquirer(acquire: Callable[[str], tuple[dict, bytes | None]], targets: dict[str, dict]) -> tuple[dict, dict[str, bytes]]:
+def execute_with_acquirer(acquire: Callable[[str], tuple[dict, bytes | None]], targets: dict[str, dict],
+                          *, http_dispatch_count: dict[str, int] | None = None) -> tuple[dict, dict[str, bytes]]:
     """One sequential attempt; neither this function nor its return stores raw bodies."""
     attempts = {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0}
     telemetry: dict[str, dict] = {}
     bodies: dict[str, bytes] = {}
-    result: dict[str, Any] = {"actual_gets": attempts, "retry_count": 0, "source_telemetry": telemetry,
+    dispatches = http_dispatch_count if http_dispatch_count is not None else {key: 0 for key in attempts}
+    result: dict[str, Any] = {"acquisition_callback_attempts": attempts,
+                              "http_dispatch_count": dispatches, "retry_count": 0, "source_telemetry": telemetry,
                               "candidate": None, "evidence": {}, "A3_decision": "HOLD", "failure_code": None}
     artifacts: dict[str, bytes] = {}
     for market in ("TWSE", "TPEX"):
@@ -230,6 +234,17 @@ def execute_with_acquirer(acquire: Callable[[str], tuple[dict, bytes | None]], t
     return result, artifacts
 
 
+def acquire_reviewed_source(canonical_market: str, *, on_http_dispatch: Callable[[], None] | None = None,
+                            opener_factory: Callable | None = None) -> tuple[dict, bytes | None]:
+    """Translate only at the reviewed fixed-endpoint transport interface."""
+    market_key = transport_market_key(canonical_market)
+    policy = "compatibility" if canonical_market == "TWSE" else "strict"
+    kwargs: dict[str, Any] = {"policy": policy, "on_http_dispatch": on_http_dispatch}
+    if opener_factory is not None:
+        kwargs["opener_factory"] = opener_factory
+    return transport.read_once(market_key, **kwargs)
+
+
 def final_pre_network_guard(sealed_head: str) -> tuple[dict, dict]:
     require(len(sealed_head) == 40 and git("rev-parse", "HEAD") == sealed_head,
             "sealed_pre_network_head_guard")
@@ -277,19 +292,20 @@ def live(sealed_head: str, owner_reference: str) -> dict:
     consumed = {"schema_version": "phase_i_i3_a3_live_authority_consumed.v1", "owner_authority": OWNER,
         "reservation_sha256": reservation_sha, "consumed": True, "consumed_before_first_http_attempt": True}
     consumed_sha = write_once(CONSUMED, consumed)
-    live_counts = {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0}
+    dispatches = {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0}
 
     def acquire(market: str):
-        live_counts[market] += 1
-        return transport.read_once(market, policy="compatibility" if market == "TWSE" else "strict")
+        def observed_dispatch() -> None:
+            dispatches[market] += 1
+        return acquire_reviewed_source(market, on_http_dispatch=observed_dispatch)
 
     try:
-        result, artifacts = execute_with_acquirer(acquire, targets)
+        result, artifacts = execute_with_acquirer(acquire, targets, http_dispatch_count=dispatches)
     except Exception as exc:
         result, artifacts = ({"A3_decision": "HOLD", "failure_code": "runner_exception:" + type(exc).__name__,
-                              "actual_gets": live_counts, "retry_count": 0, "source_telemetry": {},
+                              "acquisition_callback_attempts": None, "http_dispatch_count": dispatches,
+                              "retry_count": 0, "source_telemetry": {},
                               "raw_payload_persistence": "NONE_UNVERIFIED_AFTER_EXCEPTION"}, {})
-    result["actual_gets"] = live_counts
     result.update({"schema_version": "phase_i_i3_a3_bounded_live_adapter_acceptance.v1",
                    "status": "PASS_READY_FOR_INDEPENDENT_REVIEW" if result["A3_decision"] == "PASS" else "HOLD",
                    "owner_authority": OWNER, "starting_main": BASELINE,
@@ -321,7 +337,9 @@ def main() -> None:
     require(args.live and args.confirm_single_use_two_market_gets and args.sealed_pre_network_head,
             "live_execution_requires_explicit_confirmation_and_sealed_head")
     result = live(args.sealed_pre_network_head, args.owner_authorization_reference or "")
-    print(json.dumps({"A3_decision": result["A3_decision"], "actual_gets": result["actual_gets"],
+    print(json.dumps({"A3_decision": result["A3_decision"],
+                      "acquisition_callback_attempts": result["acquisition_callback_attempts"],
+                      "http_dispatch_count": result["http_dispatch_count"],
                       "failure_code": result.get("failure_code")}, sort_keys=True))
 
 

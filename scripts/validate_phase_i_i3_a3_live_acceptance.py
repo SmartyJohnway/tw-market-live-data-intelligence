@@ -9,6 +9,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
+HISTORICAL_PRE_NETWORK_COMMIT = "82cc71b0c80ba9a35b9fa0c00c592cd484ee54a9"
+HISTORICAL_PRE_NETWORK_TREE = "9019689573cb546820c32465e6e049f165fea73c"
 sys.path.insert(0, str(ROOT))
 
 from scripts import run_phase_i_i3_a3_bounded_live_acceptance as a3
@@ -25,6 +27,11 @@ def read_json(relative: str) -> dict:
     return json.loads((ROOT / relative).read_text(encoding="utf-8"))
 
 
+def sealed_sha(relative: str) -> str:
+    body = subprocess.check_output(["git", "show", f"{HISTORICAL_PRE_NETWORK_COMMIT}:{relative}"], cwd=ROOT)
+    return hashlib.sha256(body).hexdigest()
+
+
 def validate(*, pre_network_only: bool = False) -> dict | None:
     def deny(*args, **kwargs):
         raise AssertionError("a3_validator_external_network_forbidden")
@@ -33,6 +40,9 @@ def validate(*, pre_network_only: bool = False) -> dict | None:
         a3.immutable_hashes()
         a3.production_containment()
         closure = read_json(a3.PRE_NETWORK)
+        require(subprocess.check_output(["git", "show", "-s", "--format=%T",
+                HISTORICAL_PRE_NETWORK_COMMIT], cwd=ROOT, text=True).strip()
+                == HISTORICAL_PRE_NETWORK_TREE, "historical_pre_network_tree_invalid")
         require(closure["schema_version"] == "phase_i_i3_a3_pre_network_runner_closure.v1"
                 and closure["status"] == "PASS_READY_TO_CONSUME_OWNER_AUTHORITY"
                 and closure["owner_authority"] == a3.OWNER
@@ -41,9 +51,9 @@ def validate(*, pre_network_only: bool = False) -> dict | None:
                 and closure["starting_tree"] == a3.START_TREE
                 and closure["immutable_hashes"] == a3.HASHES
                 and closure["candidate_file_hashes"] == a3.candidate_hashes()
-                and closure["source_transport_sha256"] == a3.sha(ROOT / "scripts/phase_i_i3_a0_source_transport.py")
-                and closure["runner_sha256"] == a3.sha(ROOT / "scripts/run_phase_i_i3_a3_bounded_live_acceptance.py")
-                and closure["validator_sha256"] == a3.sha(ROOT / "scripts/validate_phase_i_i3_a3_live_acceptance.py")
+                and closure["source_transport_sha256"] == sealed_sha("scripts/phase_i_i3_a0_source_transport.py")
+                and closure["runner_sha256"] == sealed_sha("scripts/run_phase_i_i3_a3_bounded_live_acceptance.py")
+                and closure["validator_sha256"] == sealed_sha("scripts/validate_phase_i_i3_a3_live_acceptance.py")
                 and closure["twse_governed_source_date"] == "20260930"
                 and closure["actual_market_gets"] == 0
                 and closure["live_authority_consumed"] is False, "pre_network_closure_invalid")
@@ -70,7 +80,7 @@ def validate(*, pre_network_only: bool = False) -> dict | None:
                 "reservation_invalid")
         commit = reservation["pre_network_commit"]
         tree = reservation["pre_network_tree"]
-        require(subprocess.check_output(["git", "show", "-s", "--format=%T", commit], cwd=ROOT, text=True).strip() == tree
+        require(commit == HISTORICAL_PRE_NETWORK_COMMIT and tree == HISTORICAL_PRE_NETWORK_TREE
                 and subprocess.check_output(["git", "show", f"{commit}:{a3.PRE_NETWORK}"], cwd=ROOT) == (ROOT / a3.PRE_NETWORK).read_bytes(),
                 "pre_network_commit_or_tree_invalid")
         require(consumed == {"schema_version": "phase_i_i3_a3_live_authority_consumed.v1",

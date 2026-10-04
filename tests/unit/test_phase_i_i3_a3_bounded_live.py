@@ -66,7 +66,8 @@ def test_fake_complete_two_market_path_and_raw_absence():
     acquire, calls, raw = fake_acquirer()
     result, artifacts = a3.execute_with_acquirer(acquire, targets())
     assert calls == ["TWSE", "TPEX"]
-    assert result["actual_gets"] == {"TWSE": 1, "TPEX": 1, "TAIFEX": 0, "other": 0}
+    assert result["acquisition_callback_attempts"] == {"TWSE": 1, "TPEX": 1, "TAIFEX": 0, "other": 0}
+    assert result["http_dispatch_count"] == {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0}
     assert result["A3_decision"] == "PASS"
     assert [result["evidence"][m]["status"] for m in ("TWSE", "TPEX")] == ["complete", "complete"]
     assert result["candidate"]["network_calls"] == 0
@@ -81,14 +82,14 @@ def test_fake_complete_two_market_path_and_raw_absence():
 def test_twse_transport_failure_stops_before_tpex():
     acquire, calls, _ = fake_acquirer(failed_market="TWSE")
     result, artifacts = a3.execute_with_acquirer(acquire, targets())
-    assert calls == ["TWSE"] and result["actual_gets"]["TPEX"] == 0
+    assert calls == ["TWSE"] and result["acquisition_callback_attempts"]["TPEX"] == 0
     assert result["A3_decision"] == "HOLD" and result["candidate"] is None and artifacts == {}
 
 
 def test_tpex_transport_failure_has_no_retry():
     acquire, calls, _ = fake_acquirer(failed_market="TPEX")
     result, _ = a3.execute_with_acquirer(acquire, targets())
-    assert calls == ["TWSE", "TPEX"] and result["actual_gets"]["TPEX"] == 1
+    assert calls == ["TWSE", "TPEX"] and result["acquisition_callback_attempts"]["TPEX"] == 1
     assert result["A3_decision"] == "HOLD" and result["retry_count"] == 0
 
 
@@ -164,6 +165,16 @@ def test_candidate_file_or_schema_drift_rejected(monkeypatch):
 
 
 def test_sealed_pre_network_guard_rejects_candidate_code_drift(monkeypatch):
+    # Model the pre-consumption state; the real consumed latch has precedence.
+    monkeypatch.setattr(a3.Path, "exists", lambda path: False)
+    closure = json.loads((a3.ROOT / a3.PRE_NETWORK).read_text(encoding="utf-8"))
+    historical = {
+        "phase_i_i3_a0_source_transport.py": closure["source_transport_sha256"],
+        "run_phase_i_i3_a3_bounded_live_acceptance.py": closure["runner_sha256"],
+        "validate_phase_i_i3_a3_live_acceptance.py": closure["validator_sha256"],
+    }
+    original_sha = a3.sha
+    monkeypatch.setattr(a3, "sha", lambda path: historical.get(path.name, original_sha(path)))
     monkeypatch.setattr(a3, "git", lambda *args: "f" * 40 if args == ("rev-parse", "HEAD") else
                         a3.BRANCH if args == ("branch", "--show-current") else
                         a3.BASELINE if args == ("rev-parse", "origin/main") else "?? data/")

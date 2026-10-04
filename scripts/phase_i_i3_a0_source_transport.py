@@ -145,7 +145,8 @@ def _decode_json(body: bytes) -> Any:
 
 def read_once(market: str, *, policy: str | None = None, endpoint: str | None = None,
               ssl_context: ssl.SSLContext | None = None, opener_factory: Callable = build_opener,
-              now: Callable[[], str] = utc_now) -> tuple[dict[str, Any], bytes | None]:
+              now: Callable[[], str] = utc_now,
+              on_http_dispatch: Callable[[], None] | None = None) -> tuple[dict[str, Any], bytes | None]:
     """One fixed GET. Tests inject an opener; this helper has no retry/fallback."""
     selected = policy_for_market(market, policy)
     if endpoint is not None:
@@ -165,6 +166,10 @@ def read_once(market: str, *, policy: str | None = None, endpoint: str | None = 
         "declared_content_length": None, "failure_phase": None,
     }
     try:
+        # This is the only observer site: policy, TLS, opener and Request guards
+        # have passed, and the next operation attempts the HTTP dispatch.
+        if on_http_dispatch is not None:
+            on_http_dispatch()
         response = opener.open(request, timeout=TIMEOUT_SECONDS)
     except HTTPError as exc:
         telemetry.update(classify_exception(exc))
