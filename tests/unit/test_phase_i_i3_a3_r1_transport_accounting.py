@@ -148,8 +148,20 @@ def test_two_fake_transport_dispatches_produce_complete_candidate_evidence():
     assert all(result["evidence"][m]["status"] == "complete" for m in ("TWSE", "TPEX"))
 
 
-def test_consumed_latch_precedes_candidate_drift_in_real_worktree(monkeypatch):
+def test_consumed_latch_precedes_candidate_drift_in_historical_a3_state(monkeypatch):
     original_git = a3.git
-    monkeypatch.setattr(a3, "git", lambda *args: "?? data/" if args == ("status", "--porcelain") else original_git(*args))
+
+    def historical_git(*args):
+        if args == ("rev-parse", "HEAD"):
+            return a3.START_HEAD
+        if args == ("branch", "--show-current"):
+            return a3.BRANCH
+        if args == ("rev-parse", "origin/main"):
+            return a3.BASELINE
+        if args == ("status", "--porcelain"):
+            return "?? data/"
+        return original_git(*args)
+
+    monkeypatch.setattr(a3, "git", historical_git)
     with pytest.raises(RuntimeError, match="single_use_latch_or_outcome_exists"):
-        a3.final_pre_network_guard(original_git("rev-parse", "HEAD"))
+        a3.final_pre_network_guard(a3.START_HEAD)
