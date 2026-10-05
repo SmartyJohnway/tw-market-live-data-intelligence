@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "I1/I2 active; I3-A4 bounded production configuration active pending independent acceptance; broader Phase I incomplete"
+status_reconciled_through: "I1/I2/I3 active; I3-A4 Owner-accepted and closed; broader Phase I incomplete"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -57,6 +57,15 @@ tags:
 > registrations, governed pre-authorization TWSE date binding, Unified V3,
 > and evidence V2. This tranche performs zero market GETs. Owner final A4
 > acceptance and PR merge remain unauthorized; Phase I remains incomplete.
+
+> **I3-A4 final closure — 2026-10-05:** The Owner has accepted and closed
+> I3-A4 as `OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_PRODUCTION_ACTIVATION_PASS`.
+> I3 has two active official sources, one logical route, two runtime market
+> registrations, active Unified V3 integration, and production evidence V2.
+> Accepted A3 bounded-live evidence was sufficient; no additional A4 live
+> acquisition was required or performed. PR #301 merge remains unauthorized.
+> Phase I remains incomplete; see the final closure ledger in the governance
+> index for current acceptance authority.
 
 ---
 

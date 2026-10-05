@@ -13,7 +13,11 @@ The repository-level governance authority is intentionally small:
 
 ## Current runtime governance
 
-I2-A4 production activation is Owner-accepted.
+I2-A4 and I3-A4 production activation are Owner-accepted. I3 has two active
+official sources, one logical route, two runtime market registrations, active
+Unified V3 integration, and production evidence V2. A3 bounded-live evidence
+was sufficient for A4 closure; no additional A4 live acquisition was required.
+PR #301 merge remains unauthorized; MCP remains six tools.
 
 - [I2-A4 activation candidate and I2-ROLL-001 proof](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json)
 - [I2-A4 final production activation acceptance](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json)
@@ -68,6 +72,8 @@ runtime later changed.
 - [I3-A4 production evidence V2 decision](phase_i/PHASE_I_I3_A4_PRODUCTION_EVIDENCE_V2_DECISION_2026-10-04.json)
 - [I3-A4 technical activation candidate](phase_i/PHASE_I_I3_A4_TECHNICAL_ACTIVATION_CANDIDATE_2026-10-04.json)
 - [I3-A4 bounded production activation implementation](phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json)
+- [I3-A4 portable lineage sync repair](phase_i/PHASE_I_I3_A4_ACTIVATION_ACCEPTANCE_R1_PORTABLE_LINEAGE_SYNC_2026-10-05.json)
+- [I3-A4 final Owner acceptance and closure](phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json)
 
 The technical-candidate record remains historical. The final acceptance ledger
 is the current Owner decision for the selected I1 route; broader Phase I is not
@@ -83,10 +89,10 @@ unused I2 live authority is superseded_without_use. I3-A3 bounded-live adapter
 acceptance is independently reviewed and Owner-accepted. Attempts 1–3 remain
 historical HOLD outcomes; Attempt 4 is accepted PASS. I3-A4 technical candidate
 implementation including production evidence V2 and Public V3 integration is
-now bounded-production active pending independent acceptance on PR #301: two
-official sources, one logical route, and two runtime market registrations.
-This tranche performed no market GET. Owner final A4 acceptance and merge
-remain unauthorized. MCP remains exactly six tools.
+now production-active and Owner-accepted on PR #301: two official sources, one
+logical route, and two runtime market registrations. A3 evidence was sufficient;
+final A4 closure performed no market GET. Merge remains unauthorized. MCP
+remains exactly six tools.
 
 ## Governance policy
 

@@ -1,0 +1,101 @@
+{
+  "schema_version": "phase_i_i3_a4_final_owner_acceptance_and_closure.v1",
+  "gate": "I3-A4",
+  "status": "OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_PRODUCTION_ACTIVATION_PASS",
+  "owner_authority": "USER_CHAT_2026-10-05_PHASE_I_I3_A4_FINAL_ACCEPTANCE_AND_MERGE_READINESS_AUTHORIZATION",
+  "final_accepted_activation_state": {
+    "commit": "ac5db1d33668c1a8c6a3a63a74667451628529e6",
+    "tree": "56be9d4623fd2d549852f3df21a889fe8b903995"
+  },
+  "lineage": {
+    "r1_hardening": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A4_R1_INDEPENDENT_REVIEW_HARDENING_2026-10-05.json",
+      "sha256": "132910292872b36c408af1f27e531fa38cab4612867bca42dd0f892be26b66f6"
+    },
+    "bounded_production_activation": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json",
+      "sha256": "109a3721149cf292dbf09fb38cb63fcdaaeaf274252bb9463dd9a784182cb558"
+    },
+    "activation_acceptance_r1_portable_lineage_sync": {
+      "path": "docs/governance/phase_i/PHASE_I_I3_A4_ACTIVATION_ACCEPTANCE_R1_PORTABLE_LINEAGE_SYNC_2026-10-05.json",
+      "sha256": "cbae13cbf4315cea6ad445af1b020876e8383599a500811e50222b1a48205610"
+    }
+  },
+  "historical_layers": {
+    "A1_A2_A2_R1_A3_attempts_1_to_4_and_A3_owner_acceptance": "PRESERVED_IMMUTABLE",
+    "A4_preflight_candidate_R1_and_activation_records": "PRESERVED_AS_HISTORICAL_LAYERS",
+    "historical_evidence_contract": "cash_institutional_flow_context_evidence.v1",
+    "production_evidence_contract": "cash_institutional_flow_context_evidence.v2",
+    "historical_evidence_migrated": false
+  },
+  "accepted_production_contract": {
+    "sources": {
+      "TWSE": "official T86 only",
+      "TPEX": "official tpex_3insti_daily_trading only",
+      "active_source_count": 2
+    },
+    "routing": {
+      "logical_capability_route_count": 1,
+      "runtime_market_executor_registration_count": 2,
+      "executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+      "default_runtime_reachable": true
+    },
+    "transport": {
+      "TWSE_TLS": "compatibility verified TLS",
+      "TPEX_TLS": "strict verified TLS",
+      "maximum_dispatch_per_market_per_authorized_execution": 1,
+      "retry_count": 0,
+      "fallback": "prohibited",
+      "redirect": "rejected",
+      "raw_payload_persistence": "prohibited"
+    },
+    "date_behavior": {
+      "TWSE_source_date": "governed dynamically before authorization",
+      "per_execution_resolved_date": "immutable",
+      "hidden_fallback": "prohibited",
+      "transport_date_selection": "prohibited",
+      "TPEX_query_date_fabrication": "prohibited"
+    },
+    "public_integration": {
+      "Unified_Request_V3": "active",
+      "Unified_Result_V3": "active",
+      "Unified_Audit_V3": "active",
+      "MCP_tool_count": 6
+    }
+  },
+  "live_evidence_closure": {
+    "A3_bounded_live_evidence_sufficient_for_A4_closure": true,
+    "additional_A4_production_live_acceptance_required": false,
+    "additional_market_GET_performed": false,
+    "A4_production_live_request_performed": false,
+    "reason": "A4 changed governed runtime wiring, date binding, V2 provenance and production registration while retaining the A3-reviewed official source families and TLS policies; A4-specific behavior has deterministic offline acceptance coverage."
+  },
+  "final_acceptance": {
+    "owner_acceptance": "ACCEPTED",
+    "independent_production_activation_acceptance": "PASS",
+    "I3_A4": "CLOSED / OWNER ACCEPTED",
+    "I3_production_configuration": "ACTIVE",
+    "normal_future_authorized_production_execution": "PERMITTED_UNDER_NORMAL_RUNTIME_GOVERNANCE",
+    "additional_live_acquisition": "NOT_REQUIRED",
+    "I1_sources_routes": "3/2",
+    "I2_sources_routes": "1/1",
+    "I3_active_sources": 2,
+    "I3_logical_route_count": 1,
+    "I3_runtime_market_routes": 2,
+    "I3_ROLL_001": "PASS",
+    "MCP_tool_count": 6,
+    "broader_Phase_I": "NOT_AUTOMATICALLY_COMPLETE"
+  },
+  "merge_readiness_baseline": {
+    "expected_base": "main",
+    "base_sha": "5c26e7b541bdb6c0d70a39c1e0eab8e129823373",
+    "market_GETs_in_final_closure_tranche": 0,
+    "merge_authorized": false
+  },
+  "final_boundary": {
+    "I3_A4_owner_accepted": true,
+    "PR_301_merge": "NOT_YET_AUTHORIZED",
+    "broader_Phase_I_complete": false,
+    "market_live_acquisition_authorized_in_final_closure": false
+  }
+}

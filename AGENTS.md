@@ -9,16 +9,18 @@ is consumed. No additional A3 acquisition or Attempt 5 is authorized or
 required. The Owner acceptance ledger is
 `docs/governance/phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json`.
 
-I3-A4 bounded production configuration is Owner-authorized and implemented on
-PR #301 pending independent acceptance: two active source authorities, one
-logical same-market route, two default-runtime market registrations, governed
-pre-authorization TWSE date binding, Unified V3 integration, and production
-evidence V2. This tranche performs no market acquisition. Owner final A4
-acceptance and merge remain pending/not authorized; MCP remains exactly six
-tools and Phase I remains incomplete.
+I3-A4 is `OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_PRODUCTION_ACTIVATION_PASS`
+and closed on PR #301: two active source authorities, one logical same-market
+route, two default-runtime market registrations, governed pre-authorization
+TWSE date binding, Unified V3 integration, and production evidence V2. A4
+closure performed no market acquisition. Merge remains unauthorized; MCP
+remains exactly six tools and Phase I remains incomplete.
 
 Activation ledger:
 `docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json`.
+
+Final Owner acceptance closure:
+`docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json`.
 
 ## Current I2 production activation boundary (2026-10-01)
 
@@ -34,10 +36,9 @@ I2-A4 production activation is Owner-accepted and merge-authorized.
   `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
 - No additional market request was authorized or performed for activation.
 - I1 remains active with two routes and three sources; MCP remains exactly six.
-- I3-A3 is Owner-accepted; I3-A4 bounded production configuration is active
-  pending independent acceptance. Live acquisition, final A4 acceptance, and
-  merge remain unauthorized. Phase J is not started and broader Phase I
-  remains incomplete.
+- I3-A3 and I3-A4 are Owner-accepted; I3 production is active. Additional live
+  acquisition is not required and merge remains unauthorized. Phase J is not
+  started and broader Phase I remains incomplete.
 
 Activation evidence:
 
@@ -110,17 +111,18 @@ As of this governance consolidation:
   accepted historical stages. I2-A4 production activation is Owner-accepted:
   `index_futures_context` is runtime executable through the selected
   `phase_i_i2_index_futures_context_executor` route with one active TAIFEX
-  source and one normal TWSE production route. I3-A3 is Owner-accepted. I3-A4
-  bounded production configuration is Owner-authorized and active pending
-  independent acceptance, with two sources, one logical route, and two runtime
-  market registrations; this tranche performs no market acquisition.**
+  source and one normal TWSE production route. I3-A3 and I3-A4 are
+  Owner-accepted. I3 is production active with two sources, one logical route,
+  and two runtime market registrations; A4 closure performed no market
+  acquisition.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
 current runtime truth. I2-A2 remains historical dormant implementation truth; A3 used its fresh
 single-GET authority exactly once and no repeat acceptance request is authorized.
 Current I2 production execution is permitted only through the normal explicit,
-approval-bound I2-A4 route. I3-A3 is closed; I3-A4 and Phase J still require
-separate explicit Owner authorization. Broader Phase I remains incomplete.
+approval-bound I2-A4 route. I3-A3 and I3-A4 are closed and accepted; future
+I3 authority changes and Phase J require separate explicit Owner authorization.
+Broader Phase I remains incomplete.
 
 ## 5. Authority hierarchy
 
@@ -377,7 +379,7 @@ the selected executor is `phase_i_i2_index_futures_context_executor`. The live a
 records one TAIFEX GET, zero retries, two same-source target operations, valid
 Result/Audit V3 and lineage, and no raw persistence. The old live authority was
 superseded without use; the fresh single-GET authority is consumed. I3-A3 is
-Owner-accepted bounded-live adapter evidence. I3-A4 production configuration
-is active pending independent acceptance; no live acquisition occurred in the
-activation tranche. Preserve accepted evidence; do not repeat A3 or rollback.
+Owner-accepted bounded-live adapter evidence. I3-A4 production is active and
+Owner-accepted; no live acquisition occurred in the activation/closure tranches.
+Preserve accepted evidence; do not repeat A3 or rollback.
 Phase I as a whole is not complete.
