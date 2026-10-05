@@ -555,6 +555,32 @@
         "docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json",
         "docs/governance/phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json"
       ]
+    },
+    {
+      "surface_id": "phase_i_i3_cash_institutional_flow_context_executor",
+      "path": "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+      "surface_type": "controlled_phase_i_i3_cash_institutional_flow_executor",
+      "current_status": "Owner-authorized I3-A4 production configuration active; live acquisition remains unperformed and separately unauthorized",
+      "network_behavior": "one fixed official HTTPS GET per same-market batch; TWSE compatibility verified TLS; TPEx strict verified TLS; retry zero; redirect rejected; raw persistence forbidden",
+      "input_contract": "execution_request.v3 cash_institutional_flow_context / TWSE or TPEX / exact approved equity target; TWSE date bound before authorization",
+      "output_contract": "cash_institutional_flow_context_evidence.v2",
+      "approval_boundary": "05B plan, explicit authorization, single-use claim and network confirmation",
+      "authorization_binding": "plan, operation, target, date, executor, source and evidence contract",
+      "single_use_enforced": true,
+      "supported_markets": ["TWSE", "TPEX"],
+      "supported_security_types": ["equity"],
+      "supported_capabilities": ["cash_institutional_flow_context"],
+      "batching_supported": true,
+      "deterministic": false,
+      "reusable_for_05b": true,
+      "reuse_mode": "adapter_required",
+      "disposition": "adapter_required",
+      "blocking_gaps": [],
+      "evidence_paths": [
+        "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+        "docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json"
+      ]
     }
   ]
 }

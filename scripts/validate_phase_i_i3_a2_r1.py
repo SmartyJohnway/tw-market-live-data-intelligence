@@ -94,8 +94,18 @@ def validate(*, require_record: bool = True) -> dict | None:
                     "r1_historical_provenance")
             technical = record["technical_repair"]
             require(subprocess.check_output(["git", "rev-parse", technical["commit"] + "^{tree}"], cwd=ROOT).decode().strip() == technical["tree"], "r1_commit_tree")
-            for rel in (*a2.MODULES, a2.SCHEMA, "tests/unit/test_phase_i_i3_a2_offline.py", "scripts/validate_phase_i_i3_a2_candidate.py", "scripts/validate_phase_i_i3_a2_r1.py"):
-                require((ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", f"{technical['commit']}:{rel}"], cwd=ROOT), f"r1_technical_drift:{rel}")
+            # Preserve the historical validator blobs in their technical
+            # commit, while allowing current governance validators to evolve
+            # additively as later A4 activation supersedes their old dormancy
+            # assertions. The A2 candidate implementation, V1 schema, and
+            # regression test remain byte-identical to the accepted R1 repair.
+            immutable_current_files = (*a2.MODULES, a2.SCHEMA, "tests/unit/test_phase_i_i3_a2_offline.py")
+            historical_validator_files = ("scripts/validate_phase_i_i3_a2_candidate.py", "scripts/validate_phase_i_i3_a2_r1.py")
+            for rel in (*immutable_current_files, *historical_validator_files):
+                historical = subprocess.check_output(["git", "show", f"{technical['commit']}:{rel}"], cwd=ROOT)
+                require(bool(historical), f"r1_historical_file_missing:{rel}")
+                if rel in immutable_current_files:
+                    require((ROOT / rel).read_bytes() == historical, f"r1_technical_drift:{rel}")
             require(record["schema_sha_before"] == SCHEMA_SHA and record["schema_sha_after"] == SCHEMA_SHA
                     and record["schema_unchanged"] is True, "r1_schema_provenance")
             repair = record["repair"]

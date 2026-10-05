@@ -14,6 +14,7 @@ from jsonschema import Draft202012Validator
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts import validate_phase_i_i3_a1 as a1
+from scripts import phase_i_i3_a4_compat as a4_compat
 from scripts.run_phase_i_i3_a0_preflight import PROTECTED
 
 BASELINE = "dafa5999c63d34d55a4665c6534aa77477448d79"
@@ -82,23 +83,25 @@ def validate(*, require_record: bool = True) -> dict | None:
                 and EVIDENCE_SCHEMA == "cash_institutional_flow_context_evidence.v1", "candidate_executor_identity")
         require(load_frozen_contract()["sources"] == a1.validate_contract(load_frozen_contract())["sources"], "frozen_mapping_authority")
         require(set(build_i3_candidate_runtime_adapter_registry()) == {(EXECUTOR_ID, "TWSE"), (EXECUTOR_ID, "TPEX")}, "isolated_candidate_registry")
+        # A2's original record is historical. Later, separately authorized A4
+        # promotion adds I3 to shared authorities; project those additions out
+        # when checking that the previously accepted I1/I2 and other surfaces
+        # remain unchanged. The original A2 commit/tree checks below remain exact.
         for rel in PROTECTED:
-            require((ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", f"{BASELINE}:{rel}"], cwd=ROOT), f"production_drift:{rel}")
+            a4_compat.assert_non_i3_authority_unchanged(rel)
         for rel in ("schemas/unified_market_evidence_request.v3.schema.json", "schemas/unified_market_evidence_result.v3.schema.json",
                     "schemas/unified_market_evidence_audit_package.v3.schema.json"):
-            require(b"cash_institutional_flow_context" not in (ROOT / rel).read_bytes(), f"public_v3_i3_exposure:{rel}")
-        catalog = json.loads((ROOT / PROTECTED[0]).read_text(encoding="utf-8"))
-        routing = json.loads((ROOT / PROTECTED[1]).read_text(encoding="utf-8"))
-        require("cash_institutional_flow_context" not in json.dumps(catalog)
-                and "cash_institutional_flow_context" not in json.dumps(routing), "i3_catalog_or_route_exposure")
-        require(EXECUTOR_ID not in (ROOT / "scripts/m8r_06_03_production_adapter.py").read_text(encoding="utf-8")
-                and EXECUTOR_ID not in (ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8"), "i3_production_registry_import")
+            a4_compat.assert_non_i3_authority_unchanged(rel)
         from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
         from server.unified_mcp.tool_contracts import build_tool_specs
         registry = build_production_runtime_adapter_registry()
-        require(not registry.routes_for_executor(EXECUTOR_ID)
+        require(len(registry.routes_for_executor(EXECUTOR_ID)) == 2
                 and len(registry.routes_for_executor("phase_i_i1_market_state_executor")) == 2
                 and len(registry.routes_for_executor("phase_i_i2_index_futures_context_executor")) == 1, "production_registry_routes")
+        from scripts.validate_phase_i_i3_a4_activation import validate as validate_i3_activation
+        activation = validate_i3_activation()
+        require(activation["i3_active_sources"] == 2 and activation["i3_logical_routes"] == 1
+                and activation["i3_runtime_market_routes"] == 2, "i3_a4_active_state")
         require(json.loads((ROOT / "docs/data_capabilities/phase_i_i1_source_authority.v1.json").read_text(encoding="utf-8"))["active_source_count"] == 3
                 and json.loads((ROOT / "docs/data_capabilities/phase_i_i2_source_authority.v1.json").read_text(encoding="utf-8"))["active_source_count"] == 1
                 and len(build_tool_specs()) == 6, "existing_runtime_or_mcp_drift")
@@ -140,7 +143,7 @@ def validate(*, require_record: bool = True) -> dict | None:
                     "public_V3_request_result_audit_integration", "source_activation", "route_activation", "merge"], "a2_unproven_boundary")
             require(record["A3_authorized"] is False and record["production_activation_authorized"] is False
                     and record["merge_authorized"] is False and record["A3_ready_for_separate_owner_decision"] is True, "a2_authorization_boundary")
-    print("I3-A2 dormant offline candidate PASS; production/public routes absent; market GETs=0; MCP=6")
+    print("I3-A2 historical dormant offline candidate PASS; current I3-A4 state validated separately; market GETs=0; MCP=6")
     return record
 
 

@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CAPABILITY = "cash_institutional_flow_context"
 EVIDENCE_V2 = "cash_institutional_flow_context_evidence.v2"
+I3_EXECUTOR = "phase_i_i3_cash_institutional_flow_context_executor"
 CANDIDATE_BASELINE = "5c26e7b541bdb6c0d70a39c1e0eab8e129823373"
 _DROP = object()
 
@@ -21,7 +22,8 @@ def _without_i3(value):
     if value == CAPABILITY or value == EVIDENCE_V2:
         return _DROP
     if isinstance(value, dict):
-        if value.get("capability_id") == CAPABILITY:
+        if value.get("capability_id") == CAPABILITY or value.get("executor_id") == I3_EXECUTOR \
+                or value.get("surface_id") == I3_EXECUTOR:
             return _DROP
         properties = value.get("properties", {})
         if properties.get("capability_id", {}).get("const") == CAPABILITY:
@@ -44,6 +46,31 @@ def _without_i3(value):
 
 def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_BASELINE) -> None:
     """Require current shared JSON authority to equal baseline sans I3 additions."""
+    if relative == "scripts/m8r_06_03_production_adapter.py":
+        current_text = (ROOT / relative).read_text(encoding="utf-8")
+        baseline_text = subprocess.check_output(
+            ["git", "show", f"{baseline}:{relative}"], cwd=ROOT
+        ).decode("utf-8")
+        import_block = (
+            "    from server.services.phase_i_i3_cash_institutional_flow_production_candidate import (\n"
+            "        build_i3_production_candidate_registrations,\n"
+            "    )\n"
+        )
+        registration_block = (
+            "    registrations.extend(build_i3_production_candidate_registrations(\n"
+            "        **({} if i3_acquire is None else {\"acquire\": i3_acquire})\n"
+            "    ))\n"
+        )
+        current_text = current_text.replace(import_block, "", 1).replace(registration_block, "", 1)
+        # The optional I3 injection seam is limited to the registry factory
+        # signature; normalize that single signature back to its baseline form.
+        current_text = current_text.replace(
+            "def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) -> RuntimeAdapterRegistry:",
+            "def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:", 1,
+        )
+        if current_text != baseline_text:
+            raise AssertionError(f"non_i3_production_adapter_drift:{relative}")
+        return
     current = json.loads((ROOT / relative).read_text(encoding="utf-8"))
     old = json.loads(subprocess.check_output(
         ["git", "show", f"{baseline}:{relative}"], cwd=ROOT
@@ -53,6 +80,16 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
 
 
 def assert_candidate_is_dormant(catalog_relative: str, routing_relative: str) -> None:
+    """Validate historical dormancy or delegate to current activation proof.
+
+    The name is retained for historical callers; after the additive activation
+    ledger exists, current runtime truth is checked by the dedicated validator.
+    """
+    activation = ROOT / "docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json"
+    if activation.exists():
+        from scripts.validate_phase_i_i3_a4_activation import validate
+        validate()
+        return
     catalog = json.loads((ROOT / catalog_relative).read_text(encoding="utf-8"))
     routing = json.loads((ROOT / routing_relative).read_text(encoding="utf-8"))
     capability = next((item for item in catalog["data_need_capabilities"]

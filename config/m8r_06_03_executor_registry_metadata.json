@@ -178,6 +178,30 @@
       "timeout_seconds": 30,
       "maximum_result_items": 1,
       "output_policy": "contained_artifact_only"
+    },
+    {
+      "executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+      "capability_id": "cash_institutional_flow_context",
+      "market": "TWSE",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "cash_institutional_flow_context_evidence.v2",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 30,
+      "maximum_result_items": 50,
+      "output_policy": "no_raw_payload_retention"
+    },
+    {
+      "executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+      "capability_id": "cash_institutional_flow_context",
+      "market": "TPEX",
+      "supported_security_types": ["equity"],
+      "expected_evidence_contract": "cash_institutional_flow_context_evidence.v2",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 30,
+      "maximum_result_items": 50,
+      "output_policy": "no_raw_payload_retention"
     }
   ]
 }

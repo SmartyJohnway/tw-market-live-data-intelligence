@@ -6,11 +6,16 @@
     "reference": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
     "sha256": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428"
   },
-  "activation_state": "candidate_dormant_not_active",
+  "activation_state": "active",
+  "owner_activation_authority": "USER_CHAT_2026-10-05_PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_AUTHORIZATION",
+  "runtime_executable": true,
+  "active_source_count": 2,
   "sources": [
     {
       "source_id": "I3-TWSE-T86-INSTITUTIONAL-TRADING",
       "market": "TWSE",
+      "activation_state": "active",
+      "runtime_executable": true,
       "authority": "official",
       "source_family": "TWSE_T86_institutional_trading",
       "endpoint": "https://www.twse.com.tw/rwd/zh/fund/T86",
@@ -28,6 +33,8 @@
     {
       "source_id": "I3-TPEX-3INSTI-DAILY-TRADING",
       "market": "TPEX",
+      "activation_state": "active",
+      "runtime_executable": true,
       "authority": "official",
       "source_family": "TPEx_3insti_daily_trading",
       "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_3insti_daily_trading",
@@ -44,5 +51,5 @@
     }
   ],
   "batching": {"scope": "same_market", "same_market_max_dispatches": 1, "mixed_market_max_dispatches": 2, "per_target_refetch": false},
-  "authorization_boundary": {"source_activation_authorized": false, "route_activation_authorized": false, "production_activation_authorized": false, "live_acquisition_authorized": false}
+  "authorization_boundary": {"source_activation_authorized": true, "route_activation_authorized": true, "production_activation_authorized": true, "live_acquisition_authorized": false}
 }

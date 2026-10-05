@@ -166,7 +166,7 @@ def validate() -> dict:
                 and adjudication["candidate_statistics"]["Dealers-TotalSell"]["rows_passed"] == 910
                 and adjudication["candidate_statistics"]["Dealers -TotalSell"]["rows_failed"] == 108, "a0_semantic_provenance")
         for rel in PROTECTED:
-            if rel.endswith(".json") and rel in {PROTECTED[0], PROTECTED[1], PROTECTED[6], PROTECTED[7], PROTECTED[8]}:
+            if (rel.endswith(".json") and rel in {PROTECTED[0], PROTECTED[1], PROTECTED[4], PROTECTED[6], PROTECTED[7], PROTECTED[8]}) or rel == PROTECTED[5]:
                 assert_non_i3_authority_unchanged(rel)
             else:
                 require((ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", f"{BASELINE}:{rel}"], cwd=ROOT), f"production_drift:{rel}")

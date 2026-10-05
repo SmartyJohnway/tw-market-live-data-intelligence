@@ -1,8 +1,9 @@
-"""Dormant I3-A4 V2 production executor candidate.
+"""Owner-activated I3-A4 V2 production executor.
 
-This module is intentionally absent from the default runtime registry. It uses
-the frozen A1 parser and emits production-provenance V2 evidence separately
-from the historical V1 offline-injected A2 candidate.
+The normal production registry binds this executor for approved TWSE/TPEX
+operations. Source acquisition still occurs only after the governed execution
+path invokes an already authorized registration. It uses the frozen A1 parser
+and emits production-provenance V2 evidence separately from historical V1.
 """
 from __future__ import annotations
 
@@ -34,14 +35,14 @@ _HASH = re.compile(r"[0-9a-f]{64}\Z")
 
 
 def build_i3_production_candidate_registry(*, acquire: Callable[..., Any] = acquire_once) -> dict[tuple[str, str], Any]:
-    """Return isolated candidate registrations; never installs into default runtime."""
+    """Return market adapters for deterministic injection or isolated use."""
     return {(EXECUTOR_ID, market): lambda requests, context: production_batch_operation_adapter_candidate(
         requests, context, acquire=acquire
     ) for market in ("TWSE", "TPEX")}
 
 
 def build_i3_production_candidate_registrations(*, acquire: Callable[..., Any] = acquire_once) -> list[Any]:
-    """Build two dormant M8R runtime registrations without mutating its registry."""
+    """Build the two governed I3 M8R production registrations."""
     from scripts.m8r_05b_03.dispatch import RuntimeAdapterRegistration
     return [RuntimeAdapterRegistration(
         executor_id=EXECUTOR_ID, capability_id=CAPABILITY_ID, market=market,
@@ -202,5 +203,7 @@ def production_batch_operation_adapter_candidate(
     return outcomes
 
 
-def production_operation_adapter_candidate(request: dict[str, Any], context: Any) -> dict[str, Any]:
-    return production_batch_operation_adapter_candidate((request,), context)[0]
+def production_operation_adapter_candidate(
+    request: dict[str, Any], context: Any, *, acquire: Callable[..., Any] = acquire_once,
+) -> dict[str, Any]:
+    return production_batch_operation_adapter_candidate((request,), context, acquire=acquire)[0]

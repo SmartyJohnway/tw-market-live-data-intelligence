@@ -47,9 +47,9 @@ def validate(record: dict | None = None) -> dict:
         for rel, expected in HISTORICAL.items():
             assert hashlib.sha256((ROOT / rel).read_bytes()).hexdigest() == expected, rel
         for rel in runner.PROTECTED:
-            if rel.endswith(".json") and rel in {
-                runner.PROTECTED[0], runner.PROTECTED[1], runner.PROTECTED[6], runner.PROTECTED[7], runner.PROTECTED[8],
-            }:
+            if (rel.endswith(".json") and rel in {
+                runner.PROTECTED[0], runner.PROTECTED[1], runner.PROTECTED[4], runner.PROTECTED[6], runner.PROTECTED[7], runner.PROTECTED[8],
+            }) or rel == runner.PROTECTED[5]:
                 assert_non_i3_authority_unchanged(rel)
             else:
                 current = (ROOT / rel).read_bytes()

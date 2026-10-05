@@ -67,9 +67,9 @@ def validate(record=None):
     for path in PROTECTED:
         current = (ROOT / path).read_bytes()
         baseline = subprocess.check_output(["git", "show", BASELINE + ":" + path], cwd=ROOT)
-        if path.endswith(".json") and path in {
-            PROTECTED[0], PROTECTED[1], PROTECTED[6], PROTECTED[7], PROTECTED[8],
-        }:
+        if (path.endswith(".json") and path in {
+            PROTECTED[0], PROTECTED[1], PROTECTED[6], PROTECTED[7], PROTECTED[8], PROTECTED[4],
+        }) or path == PROTECTED[5]:
             assert hashlib.sha256(baseline).hexdigest() == r["production_authority_sha256"][path]
             assert_non_i3_authority_unchanged(path)
         else:

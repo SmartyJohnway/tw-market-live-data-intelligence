@@ -979,7 +979,7 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
     return results
 
 
-def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
+def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) -> RuntimeAdapterRegistry:
     """Materialize governed production routes without acquiring sources at build time."""
     # Import after this module is fully initialized: the already-live-tested I1
     # candidate imports the shared approval guard from this module.
@@ -992,6 +992,9 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
         EXECUTOR_ID as PHASE_I_I2_EXECUTOR_ID,
         production_batch_operation_adapter_candidate as i2_batch_adapter,
         production_operation_adapter_candidate as i2_operation_adapter,
+    )
+    from server.services.phase_i_i3_cash_institutional_flow_production_candidate import (
+        build_i3_production_candidate_registrations,
     )
 
     metadata = ExecutorMetadataRegistry.from_json(load_production_executor_metadata())
@@ -1043,4 +1046,7 @@ def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:
             ),
             fake_adapter=False,
         ))
+    registrations.extend(build_i3_production_candidate_registrations(
+        **({} if i3_acquire is None else {"acquire": i3_acquire})
+    ))
     return RuntimeAdapterRegistry(registrations)

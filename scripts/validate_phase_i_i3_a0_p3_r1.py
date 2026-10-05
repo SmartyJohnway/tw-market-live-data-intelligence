@@ -88,7 +88,7 @@ def validate():
         assert subprocess.check_output(["git", "show", START + ":" + transport_rel], cwd=ROOT) == subprocess.check_output(
             ["git", "show", ACCEPTED_R1_HEAD + ":" + transport_rel], cwd=ROOT)
         for rel in analyzer.PROTECTED:
-            if rel.endswith(".json") and rel in {analyzer.PROTECTED[0], analyzer.PROTECTED[1], analyzer.PROTECTED[6], analyzer.PROTECTED[7], analyzer.PROTECTED[8]}:
+            if (rel.endswith(".json") and rel in {analyzer.PROTECTED[0], analyzer.PROTECTED[1], analyzer.PROTECTED[4], analyzer.PROTECTED[6], analyzer.PROTECTED[7], analyzer.PROTECTED[8]}) or rel == analyzer.PROTECTED[5]:
                 assert_non_i3_authority_unchanged(rel)
             else:
                 assert (ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", BASELINE + ":" + rel], cwd=ROOT), rel

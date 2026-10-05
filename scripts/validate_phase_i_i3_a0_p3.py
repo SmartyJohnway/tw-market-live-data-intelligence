@@ -91,7 +91,7 @@ def validate() -> dict:
             assert historical_path.returncode != 0, rel
             assert (ROOT / rel).is_file(), f"current_authorized_attempt4_artifact_missing:{rel}"
         for relative in PROTECTED:
-            if relative.endswith(".json") and relative in {PROTECTED[0], PROTECTED[1], PROTECTED[6], PROTECTED[7], PROTECTED[8]}:
+            if (relative.endswith(".json") and relative in {PROTECTED[0], PROTECTED[1], PROTECTED[4], PROTECTED[6], PROTECTED[7], PROTECTED[8]}) or relative == PROTECTED[5]:
                 assert_non_i3_authority_unchanged(relative)
             else:
                 assert (ROOT / relative).read_bytes() == subprocess.check_output(["git", "show", BASELINE + ":" + relative], cwd=ROOT), relative

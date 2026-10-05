@@ -173,12 +173,18 @@ def test_transport_fixed_endpoints_and_single_dispatch_fake_opener():
     assert result.telemetry["complete_body_received"] is True
 
 
-def test_candidate_registry_has_two_dormant_routes_default_registry_stays_zero():
+def test_i3_registry_is_active_with_two_production_routes():
     from scripts.m8r_05b_03.dispatch import RuntimeAdapterRegistry
     from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
     candidate_registry = RuntimeAdapterRegistry(build_i3_production_candidate_registrations())
     assert len(candidate_registry.routes_for_executor(EXECUTOR_ID)) == 2
-    assert not build_production_runtime_adapter_registry().routes_for_executor(EXECUTOR_ID)
+    active = build_production_runtime_adapter_registry()
+    routes = active.routes_for_executor(EXECUTOR_ID)
+    assert {item.market for item in routes} == {"TWSE", "TPEX"}
+    assert all(item.expected_evidence_contract == "cash_institutional_flow_context_evidence.v2"
+               and item.network_required and item.bounded_execution_supported
+               and item.timeout_seconds == 30 and item.maximum_result_items == 50
+               and item.output_policy == "no_raw_payload_retention" for item in routes)
 
 
 def test_i3_roll_001_restores_baseline_without_disturbing_i1_i2_or_mcp():

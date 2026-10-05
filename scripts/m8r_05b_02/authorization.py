@@ -31,6 +31,23 @@ def _derived(plan, mode, requested):
  bindings=[{'operation_id':x['operation_id'],'market':x.get('market'),'security_types':sorted(x.get('security_types',[])),'capability_id':x.get('capability_id'),'executor_id':x.get('executor_id'),'expected_evidence_contract':x.get('expected_evidence_contract'),'batch_group_id':x.get('batch_group_id')} for x in sorted(chosen,key=lambda x:x['operation_id'])]
  return {'approved_operation_bindings':bindings,'approval_scope_mode':mode,'approved_operation_ids':ids,'approved_batch_group_ids':bids,'approved_batch_membership':members,'approved_capability_ids':sorted({x.get('capability_id') for x in chosen}), 'approved_executor_ids':sorted({x.get('executor_id') for x in chosen}), 'expected_evidence_contracts':sorted({x.get('expected_evidence_contract') for x in chosen})}
 def build_execution_authorization(plan,decision_input):
+ # I3 TWSE is executable only after the governed source date has been bound
+ # into the plan identity.  This guard prevents a caller from authorizing an
+ # unbound preview and leaves date selection outside the executor/transport.
+ i3_twse = any(isinstance(op, dict) and op.get('capability_id') == 'cash_institutional_flow_context'
+               and op.get('market') == 'TWSE' and op.get('operation_status') == 'executable_pending_approval'
+               for op in plan.get('operations', []))
+ if i3_twse:
+  from scripts.m8r_05b_01.planner import plan_identity_scope
+  from scripts.m8r_05b_01.canonical import plan_hash_and_id
+  source_date = plan.get('resolved_source_trade_date')
+  date_binding = plan.get('source_date_binding')
+  if (not isinstance(source_date, str) or not isinstance(date_binding, dict)
+      or date_binding.get('resolved_source_trade_date') != source_date):
+   raise AuthorizationError('i3_source_date_binding_missing')
+  expected_hash, expected_id = plan_hash_and_id(plan_identity_scope(plan))
+  if (plan.get('plan_hash'), plan.get('plan_id')) != (expected_hash, expected_id):
+   raise AuthorizationError('i3_source_date_plan_hash_mismatch')
  d=dict(decision_input);scope=_derived(plan,d.get('approval_scope_mode'),d)
  identity={'schema_version':'unified_market_evidence_execution_authorization.v1','owner_identity_reference':d.get('owner_identity_reference'),'decision':d.get('decision'),'plan_schema_version':plan.get('schema_version'),'plan_id':plan.get('plan_id'),'plan_hash':plan.get('plan_hash'),'input_bindings':plan.get('input_bindings'),'issued_at':d.get('issued_at'),'expires_at':d.get('expires_at'),'single_use':d.get('single_use'),'replay_policy':d.get('replay_policy'),'maximum_use_count':d.get('maximum_use_count'),**scope}
  h,i=authorization_identity(identity); approved=d.get('decision')=='approved'

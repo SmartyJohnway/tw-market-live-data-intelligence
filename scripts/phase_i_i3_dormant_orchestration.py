@@ -48,8 +48,13 @@ def build_dormant_i3_candidate_preview(
                  selected_executor_id=EXECUTOR_ID, blocking_reasons=[])
     candidate_inventory = authorities["executor_disposition"]
     surfaces = candidate_inventory.get("surfaces")
-    if not isinstance(surfaces, list) or any(item.get("surface_id") == EXECUTOR_ID for item in surfaces if isinstance(item, dict)):
+    if not isinstance(surfaces, list):
         raise ValueError("i3_candidate_executor_disposition_invalid")
+    # Current runtime authority is active after A4 activation.  This legacy
+    # offline candidate helper works only on its deep-copied authority, so
+    # replace the copied active I3 row with the historical dormant projection.
+    surfaces[:] = [item for item in surfaces
+                   if not isinstance(item, dict) or item.get("surface_id") != EXECUTOR_ID]
     surfaces.append({"surface_id": EXECUTOR_ID, "path": "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
                      "surface_type": "dormant_i3_production_candidate", "current_status": "isolated technical candidate",
                      "network_behavior": "one fixed GET per market batch; retry zero",

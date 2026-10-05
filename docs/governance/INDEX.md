@@ -67,6 +67,7 @@ runtime later changed.
 - [I3-A3 final merge / I3-A4 preflight transition](phase_i/PHASE_I_I3_A3_FINAL_MERGE_AND_A4_PREFLIGHT_TRANSITION_2026-10-04.json)
 - [I3-A4 production evidence V2 decision](phase_i/PHASE_I_I3_A4_PRODUCTION_EVIDENCE_V2_DECISION_2026-10-04.json)
 - [I3-A4 technical activation candidate](phase_i/PHASE_I_I3_A4_TECHNICAL_ACTIVATION_CANDIDATE_2026-10-04.json)
+- [I3-A4 bounded production activation implementation](phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json)
 
 The technical-candidate record remains historical. The final acceptance ledger
 is the current Owner decision for the selected I1 route; broader Phase I is not
@@ -81,10 +82,11 @@ active TAIFEX source and one normal approval-gated TWSE production route.
 unused I2 live authority is superseded_without_use. I3-A3 bounded-live adapter
 acceptance is independently reviewed and Owner-accepted. Attempts 1–3 remain
 historical HOLD outcomes; Attempt 4 is accepted PASS. I3-A4 technical candidate
-implementation, including production evidence V2 and Public V3 integration, is
-authorized on PR #301; default production sources/routes remain 0/0. Production
-activation, source/route activation, and merge remain unauthorized. MCP remains
-exactly six tools.
+implementation including production evidence V2 and Public V3 integration is
+now bounded-production active pending independent acceptance on PR #301: two
+official sources, one logical route, and two runtime market registrations.
+This tranche performed no market GET. Owner final A4 acceptance and merge
+remain unauthorized. MCP remains exactly six tools.
 
 ## Governance policy
 

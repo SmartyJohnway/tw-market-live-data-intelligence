@@ -82,6 +82,23 @@ def validate() -> dict:
         require(git("rev-parse", "origin/main") == BASELINE, "origin_main_drift")
         require(git("show", "-s", "--format=%T", BASELINE) == BASELINE_TREE, "baseline_tree_drift")
         require({p: sha(p) for p in ACCEPTED} == ACCEPTED, "accepted_i3_authority_drift")
+        activation = ROOT / "docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json"
+        if activation.exists():
+            # The preflight is immutable historical evidence. Once the Owner-
+            # authorized activation ledger exists, validate that snapshot's
+            # preserved baseline and delegate current runtime truth to the
+            # activation validator instead of demanding a dormant runtime.
+            record = load(PREFLIGHT)
+            require(record["status"] == "PREFLIGHT_PASS_WITH_EXPLICIT_DESIGN_BLOCKERS"
+                    and record["baseline_main"] == BASELINE
+                    and record["baseline_tree"] == BASELINE_TREE
+                    and record["current_state"].get("i3_active_sources") == 0
+                    and record["current_state"].get("i3_production_registry_routes") == 0,
+                    "historical_preflight_snapshot_invalid")
+            from scripts.validate_phase_i_i3_a4_activation import validate as validate_activation
+            active = validate_activation()
+            print("I3-A4 preflight historical snapshot valid and superseded by active Owner-authorized state; market GETs=0")
+            return {"historical_preflight": record, "current_activation": active}
         baseline_hashes = {p: hashlib.sha256(subprocess.check_output(
             ["git", "show", f"{BASELINE}:{p}"], cwd=ROOT
         )).hexdigest() for p in PROTECTED}

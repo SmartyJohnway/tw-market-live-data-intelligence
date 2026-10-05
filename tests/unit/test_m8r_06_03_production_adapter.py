@@ -32,7 +32,7 @@ def test_production_metadata_materializes_legacy_research_and_selected_phase_rou
     metadata = load_production_executor_metadata()
     registry = build_production_runtime_adapter_registry()
 
-    assert len(metadata["executors"]) == 13
+    assert len(metadata["executors"]) == 15
     i2 = registry.get_route("phase_i_i2_index_futures_context_executor", "index_futures_context", "TWSE")
     assert i2 is not None and i2.network_required and not i2.fake_adapter
     assert len(registry.routes_for_executor(i2.executor_id)) == 1
@@ -71,6 +71,9 @@ def test_production_metadata_materializes_legacy_research_and_selected_phase_rou
     assert len(i1) == 2
     assert {item.market for item in i1} == {"TWSE", "TPEX"}
     assert all(item.network_required and item.batch_adapter is not None and not item.fake_adapter for item in i1)
+    i3 = registry.routes_for_executor("phase_i_i3_cash_institutional_flow_context_executor")
+    assert len(i3) == 2 and {item.market for item in i3} == {"TWSE", "TPEX"}
+    assert all(item.network_required and item.batch_adapter is not None and not item.fake_adapter for item in i3)
 
 
 def test_selected_h1_tpex_attention_fetches_once_and_persists_only_target_bounded_artifacts(tmp_path, monkeypatch):

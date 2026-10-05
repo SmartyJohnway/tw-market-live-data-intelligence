@@ -171,10 +171,9 @@ def validate(record: dict | None = None, *, root: Path = ROOT, verify_runtime: b
             if root == ROOT:
                 assert hashlib.sha256((root / path).read_bytes()).hexdigest() == digest
         if verify_runtime:
+            from scripts import phase_i_i3_a4_compat as a4_compat
             for path in p0.PROTECTED:
-                current = (ROOT / path).read_bytes()
-                baseline = subprocess.check_output(["git", "show", attempt2.STARTING_MAIN + ":" + path], cwd=ROOT)
-                assert current == baseline, f"production_authority_changed:{path}"
+                a4_compat.assert_non_i3_authority_unchanged(path)
             from server.unified_mcp.tool_contracts import build_tool_specs
             from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
             assert len(build_tool_specs()) == 6
@@ -182,8 +181,10 @@ def validate(record: dict | None = None, *, root: Path = ROOT, verify_runtime: b
             assert len(registry.routes_for_executor("phase_i_i1_market_state_executor")) == 2
             assert len(registry.routes_for_executor("phase_i_i2_index_futures_context_executor")) == 1
             catalog = json.loads((ROOT / p0.PROTECTED[0]).read_text(encoding="utf-8"))
-            assert all(item.get("capability_id") != "cash_institutional_flow_context"
+            assert any(item.get("capability_id") == "cash_institutional_flow_context"
                        for item in catalog["data_need_capabilities"])
+            from scripts.validate_phase_i_i3_a4_activation import validate as validate_i3_activation
+            assert validate_i3_activation()["i3_active_sources"] == 2
     print(f"Attempt 2 record integrity PASS; decision={value['final_decision']}; market GETs <=2; network=0")
     return value
 

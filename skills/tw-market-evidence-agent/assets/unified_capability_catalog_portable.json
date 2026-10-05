@@ -2,7 +2,7 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "6a3383ad36eb26adc69a963549a45f741aa3316d007a6b9dbb2af169d75c404e",
+    "canonical_sha256": "c2af4ad632730dc63f271390ddd92824cf884e54b764e56868d532c954d4165e",
     "generator_version": "PHASE-H-ACT-V3-v1",
     "generated_from_commit": "9cb502292cdc522e3d328201633b4af16d92ff8f",
     "canonical_git_blob_sha": "e712843c4b1de862cdbcb12d549e9810379f996b"
@@ -348,8 +348,10 @@
     },
     {
       "capability_id": "cash_institutional_flow_context",
-      "description": "Optional descriptive institutional cash share-flow evidence with independent source dates; A4 technical candidate only.",
-      "support_status": "contract_supported",
+      "description": "Optional descriptive institutional cash share-flow evidence with independently attributed source dates.",
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_i_activation_state": "selected_route_active",
       "supported_markets": [
         "TWSE",
         "TPEX"
@@ -363,7 +365,7 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "I3-A3 bounded-live acceptance is Owner-accepted; A4 candidate is not production activated",
+        "I3-A3 bounded-live acceptance is Owner-accepted",
         "TWSE source date is resolved through governed calendar/currentness authority before authorization and bound immutably per execution",
         "TPEx source-reported date remains source-native; finality and currentness remain unknown",
         "common shares only; no history, polling, scheduler, fallback, raw persistence, or retry"
@@ -379,7 +381,23 @@
       "coverage_modes": [
         "latest_governed_source_observation"
       ],
-      "historical_lookup_supported": false
+      "historical_lookup_supported": false,
+      "candidate_executor_ids": [
+        "phase_i_i3_cash_institutional_flow_context_executor"
+      ],
+      "selected_executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+      "routing_status": "resolved",
+      "batching_scope": "same_market",
+      "network_required": true,
+      "estimated_operation_rule": "One official acquisition per market for each authorized same-market batch; at most two dispatches for a mixed TWSE/TPEX execution; retry zero.",
+      "output_evidence_contract": "cash_institutional_flow_context_evidence.v2",
+      "evidence_paths": [
+        "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json"
+      ],
+      "capability_requires_execution_approval": true,
+      "package_approval_policy": "strictest_operation_controls_package",
+      "blocking_reasons": []
     },
     {
       "capability_id": "trading_status_context",

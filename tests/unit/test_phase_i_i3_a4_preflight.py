@@ -15,10 +15,13 @@ def deny_network(monkeypatch):
     monkeypatch.setattr(socket, "create_connection", deny)
 
 
-def test_preflight_validator_accepts_current_nonproduction_state():
+def test_preflight_validator_preserves_historical_snapshot_and_checks_active_state():
     record = preflight.validate()
-    assert record["status"] == "PREFLIGHT_PASS_WITH_EXPLICIT_DESIGN_BLOCKERS"
-    assert record["preflight_market_gets"] == {"TPEX": 0, "TWSE": 0, "TAIFEX": 0, "other": 0}
+    assert record["historical_preflight"]["status"] == "PREFLIGHT_PASS_WITH_EXPLICIT_DESIGN_BLOCKERS"
+    assert record["current_activation"]["status"] == "PASS"
+    assert record["current_activation"]["i3_active_sources"] == 2
+    assert record["current_activation"]["i3_logical_routes"] == 1
+    assert record["current_activation"]["i3_runtime_market_routes"] == 2
 
 
 def test_recommended_topology_preserves_dual_market_bounded_semantics():

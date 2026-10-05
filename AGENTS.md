@@ -1,6 +1,6 @@
 # AGENTS.md — Repository Governance and AI Collaboration Contract
 
-## Current I3-A3 Owner acceptance boundary (2026-10-04)
+## Current I3 production boundary (2026-10-05)
 
 I3-A3 `cash_institutional_flow_context` bounded-live adapter acceptance is
 `OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_BOUNDED_LIVE_PASS`. Attempts 1–3 remain
@@ -9,12 +9,16 @@ is consumed. No additional A3 acquisition or Attempt 5 is authorized or
 required. The Owner acceptance ledger is
 `docs/governance/phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json`.
 
-I3 remains non-production: active sources/routes are 0/0 and no I3 executor is
-reachable through the default runtime. I3-A4 technical candidate implementation,
-including production-evidence V2 and Public V3 candidate integration, is
-explicitly authorized on PR #301 and remains offline/dormant. Production
-activation, source/route activation, live acquisition, MCP changes, and merge
-remain unauthorized. MCP remains exactly six tools; Phase I remains incomplete.
+I3-A4 bounded production configuration is Owner-authorized and implemented on
+PR #301 pending independent acceptance: two active source authorities, one
+logical same-market route, two default-runtime market registrations, governed
+pre-authorization TWSE date binding, Unified V3 integration, and production
+evidence V2. This tranche performs no market acquisition. Owner final A4
+acceptance and merge remain pending/not authorized; MCP remains exactly six
+tools and Phase I remains incomplete.
+
+Activation ledger:
+`docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json`.
 
 ## Current I2 production activation boundary (2026-10-01)
 
@@ -30,9 +34,10 @@ I2-A4 production activation is Owner-accepted and merge-authorized.
   `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
 - No additional market request was authorized or performed for activation.
 - I1 remains active with two routes and three sources; MCP remains exactly six.
-- I3-A3 is Owner-accepted; I3-A4 offline technical candidate implementation is
-  authorized while I3 production remains inactive. Phase J is not started and
-  broader Phase I remains incomplete.
+- I3-A3 is Owner-accepted; I3-A4 bounded production configuration is active
+  pending independent acceptance. Live acquisition, final A4 acceptance, and
+  merge remain unauthorized. Phase J is not started and broader Phase I
+  remains incomplete.
 
 Activation evidence:
 
@@ -105,9 +110,10 @@ As of this governance consolidation:
   accepted historical stages. I2-A4 production activation is Owner-accepted:
   `index_futures_context` is runtime executable through the selected
   `phase_i_i2_index_futures_context_executor` route with one active TAIFEX
-  source and one normal TWSE production route. I3-A3 is now Owner-accepted;
-  I3-A4 candidate work is explicitly authorized; production activation still
-  requires separate Owner authorization.**
+  source and one normal TWSE production route. I3-A3 is Owner-accepted. I3-A4
+  bounded production configuration is Owner-authorized and active pending
+  independent acceptance, with two sources, one logical route, and two runtime
+  market registrations; this tranche performs no market acquisition.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
 current runtime truth. I2-A2 remains historical dormant implementation truth; A3 used its fresh
@@ -371,6 +377,7 @@ the selected executor is `phase_i_i2_index_futures_context_executor`. The live a
 records one TAIFEX GET, zero retries, two same-source target operations, valid
 Result/Audit V3 and lineage, and no raw persistence. The old live authority was
 superseded without use; the fresh single-GET authority is consumed. I3-A3 is
-Owner-accepted bounded-live adapter evidence; I3-A4 technical candidate work is
-authorized but I3 production remains 0/0. Preserve accepted bounded-live
-evidence; do not repeat it or rollback. Phase I as a whole is not complete.
+Owner-accepted bounded-live adapter evidence. I3-A4 production configuration
+is active pending independent acceptance; no live acquisition occurred in the
+activation tranche. Preserve accepted evidence; do not repeat A3 or rollback.
+Phase I as a whole is not complete.

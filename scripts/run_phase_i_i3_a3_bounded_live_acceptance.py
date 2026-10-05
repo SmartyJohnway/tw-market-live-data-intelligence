@@ -1,4 +1,4 @@
-"""Single-use I3-A3 acceptance runner; never registers or activates I3.
+"""Historical single-use I3-A3 acceptance runner.
 
 The official transport acquires bytes; the unchanged A2-R1 candidate receives
 those bytes by injection. Live provenance and candidate transport describe
@@ -112,6 +112,7 @@ def load_targets() -> tuple[dict[str, dict], dict]:
 
 
 def production_containment() -> None:
+    """Protect non-I3 authority while recognizing later authorized A4 activation."""
     def baseline_json(relative: str) -> dict:
         return json.loads(subprocess.check_output(
             ["git", "show", f"{CURRENT_CONTAINMENT_BASELINE}:{relative}"], cwd=ROOT
@@ -122,7 +123,9 @@ def production_containment() -> None:
         if value == "cash_institutional_flow_context":
             return drop
         if isinstance(value, dict):
-            if value.get("capability_id") == "cash_institutional_flow_context":
+            if value.get("capability_id") == "cash_institutional_flow_context" \
+                    or value.get("executor_id") == "phase_i_i3_cash_institutional_flow_context_executor" \
+                    or value.get("surface_id") == "phase_i_i3_cash_institutional_flow_context_executor":
                 return drop
             if value.get("properties", {}).get("capability_id", {}).get("const") == "cash_institutional_flow_context":
                 return drop
@@ -150,6 +153,15 @@ def production_containment() -> None:
                 # alongside the capability-specific evidence projection.
                 normalized.get("definitions", {}).pop("cash_flow", None)
             require(normalized == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
+        elif rel in {
+            "config/m8r_06_03_executor_registry_metadata.json",
+            "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+        }:
+            require(without_i3(current) == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
+        elif rel == "scripts/m8r_06_03_production_adapter.py":
+            # This shared factory has one additive I3 registration hook. Its
+            # current I1/I2 route counts are checked directly below.
+            continue
         else:
             require((ROOT / rel).read_bytes() == subprocess.check_output(
                 ["git", "show", f"{CURRENT_CONTAINMENT_BASELINE}:{rel}"], cwd=ROOT
@@ -160,17 +172,19 @@ def production_containment() -> None:
                           if item.get("capability_id") == "cash_institutional_flow_context"), None)
     i3_route = next((item for item in routing["routes"]
                      if item.get("capability_id") == "cash_institutional_flow_context"), None)
-    require(i3_capability is not None and i3_capability.get("support_status") == "contract_supported"
-            and i3_route is not None and i3_route.get("routing_status") == "plan_only"
-            and i3_route.get("runtime_executable") is False and i3_route.get("selected_executor_id") is None,
-            "i3_candidate_must_remain_dormant")
+    require(i3_capability is not None and i3_capability.get("support_status") == "runtime_executable"
+            and i3_capability.get("runtime_executable") is True
+            and i3_route is not None and i3_route.get("routing_status") == "resolved"
+            and i3_route.get("runtime_executable") is True
+            and i3_route.get("selected_executor_id") == EXECUTOR_ID,
+            "i3_owner_activated_authority_invalid")
     from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
     from server.unified_mcp.tool_contracts import build_tool_specs
     registry = build_production_runtime_adapter_registry()
-    require(not registry.routes_for_executor(EXECUTOR_ID)
+    require(len(registry.routes_for_executor(EXECUTOR_ID)) == 2
             and len(registry.routes_for_executor("phase_i_i1_market_state_executor")) == 2
             and len(registry.routes_for_executor("phase_i_i2_index_futures_context_executor")) == 1,
-            "production_registry_drift")
+            "production_registry_activation_drift")
     require(len(build_tool_specs()) == 6, "mcp_count_drift")
 
 

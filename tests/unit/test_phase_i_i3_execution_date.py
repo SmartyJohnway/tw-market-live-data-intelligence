@@ -301,8 +301,8 @@ def test_unified_v3_preview_accepts_i3_and_binds_date_without_authorizing_execut
         authorities=load_planning_authorities(request["schema_version"]),
     )
     plan = package["orchestration_plan"]
-    assert plan["plan_status"] == "plan_only_not_executable"
-    assert plan["operations"][0]["network_required"] is False
+    assert plan["plan_status"] == "plan_ready"
+    assert plan["operations"][0]["network_required"] is True
     assert package["network_executed"] is False and package["authorization_created"] is False
     assert package["authorization_consumed"] is False and package["execution_performed"] is False
     bound = resolve_and_bind_i3_twse_plan(
@@ -313,4 +313,4 @@ def test_unified_v3_preview_accepts_i3_and_binds_date_without_authorizing_execut
     )
     assert bound["resolved_source_trade_date"] == "2026-10-02"
     assert bound["plan_hash"] != plan["plan_hash"]
-    assert bound["operations"][0]["executor_invocation_eligible"] is False
+    assert bound["operations"][0]["executor_invocation_eligible"] is True

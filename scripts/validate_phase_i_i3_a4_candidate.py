@@ -51,6 +51,19 @@ def validate() -> dict:
         raise AssertionError("i3_a4_market_network_forbidden")
 
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny):
+        activation_record = ROOT / "docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json"
+        if activation_record.exists():
+            # The original candidate validator remains useful as a history
+            # checker, but its dormant-runtime assertion is superseded after
+            # the separately authorized activation tranche.
+            from scripts.validate_phase_i_i3_a4_activation import validate as validate_activation
+            active = validate_activation()
+            historical = _json("docs/governance/phase_i/PHASE_I_I3_A4_TECHNICAL_ACTIVATION_CANDIDATE_2026-10-04.json")
+            _require(historical["final_disposition"] == "TECHNICAL_ACTIVATION_CANDIDATE_READY_FOR_OWNER_REVIEW"
+                     and historical["candidate"]["source_authority_count"] == 2
+                     and historical["authorization_boundary"]["production_activation_authorized"] is False,
+                     "historical_i3_candidate_snapshot_invalid")
+            return {**active, "historical_candidate_snapshot": "VALID_SUPERSEDED_BY_OWNER_ACTIVATION"}
         _require(_git("show", "-s", "--format=%T", BASELINE) == BASELINE_TREE, "rollback_baseline_tree_mismatch")
         _require(all(_sha(path) == expected for path, expected in FROZEN.items()), "frozen_i3_authority_changed")
 
