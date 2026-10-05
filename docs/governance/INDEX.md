@@ -15,9 +15,10 @@ The repository-level governance authority is intentionally small:
 
 I2-A4 and I3-A4 production activation are Owner-accepted. I3 has two active
 official sources, one logical route, two runtime market registrations, active
-Unified V3 integration, and production evidence V2. A3 bounded-live evidence
-was sufficient for A4 closure; no additional A4 live acquisition was required.
-PR #301 merge remains unauthorized; MCP remains six tools.
+Unified V3 integration, and production evidence V2. PR #301 merged as
+`39e162fa9f0b321b23300b20bfac8ce096646b63`. A3 bounded-live evidence was
+sufficient for A4 closure; Phase I exit review passed, while Phase J remains
+unauthorized. MCP remains six tools.
 
 - [I2-A4 activation candidate and I2-ROLL-001 proof](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json)
 - [I2-A4 final production activation acceptance](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json)
@@ -74,10 +75,12 @@ runtime later changed.
 - [I3-A4 bounded production activation implementation](phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json)
 - [I3-A4 portable lineage sync repair](phase_i/PHASE_I_I3_A4_ACTIVATION_ACCEPTANCE_R1_PORTABLE_LINEAGE_SYNC_2026-10-05.json)
 - [I3-A4 final Owner acceptance and closure](phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json)
+- [Phase I final exit review](phase_i/PHASE_I_FINAL_EXIT_REVIEW_2026-10-05.json)
+- [Phase I final closure](phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json)
 
-The technical-candidate record remains historical. The final acceptance ledger
-is the current Owner decision for the selected I1 route; broader Phase I is not
-complete.
+Technical-candidate records remain historical. The final I1/I2/I3 acceptance
+ledgers govern their respective capabilities; the Phase I exit review and
+closure record the completed Roadmap Phase I scope.
 
 I2-A0 is accepted preflight evidence. I2-A1 source/evidence contract, I2-A2
 dormant implementation, and I2-A3 bounded-live acceptance are accepted historical
@@ -89,10 +92,10 @@ unused I2 live authority is superseded_without_use. I3-A3 bounded-live adapter
 acceptance is independently reviewed and Owner-accepted. Attempts 1–3 remain
 historical HOLD outcomes; Attempt 4 is accepted PASS. I3-A4 technical candidate
 implementation including production evidence V2 and Public V3 integration is
-now production-active and Owner-accepted on PR #301: two official sources, one
-logical route, and two runtime market registrations. A3 evidence was sufficient;
-final A4 closure performed no market GET. Merge remains unauthorized. MCP
-remains exactly six tools.
+now production-active, Owner-accepted, and merged on PR #301: two official
+sources, one logical route, and two runtime market registrations. A3 evidence
+was sufficient; final A4 closure performed no market GET. Phase I exit review
+passed; Phase J remains unauthorized. MCP remains exactly six tools.
 
 ## Governance policy
 

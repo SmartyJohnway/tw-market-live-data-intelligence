@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "I1/I2/I3 active; I3-A4 Owner-accepted and closed; broader Phase I incomplete"
+status_reconciled_through: "Phase I exit review PASS; I1/I2/I3 active; Phase J not started"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -30,42 +30,14 @@ tags:
 > **本文件不是 Git / release / deployment 狀態日誌。**  
 > **未來一般進度更新只需由 Owner 將 `[ ]` 改為 `[x]`；不需要因 milestone 完成而重寫 Roadmap。**
 
-> **Repository reconciliation — 2026-09-23:** This file is now the canonical
-> repository Roadmap authority. The durable phase definitions below remain the
-> V3.2 definitions from 2026-09-14. Current implementation evidence is more
-> advanced than the original snapshot, but phase checkboxes are changed only
-> when the whole Roadmap phase exit intent is met. Phase G has accepted G1/G2
-> runtime evidence (material disclosures and monthly revenue), but the broader
-> Roadmap G research scope is not declared complete here. Phase H has completed
-> V3 contract/promotion governance and one bounded-live H1 TPEx attention route,
-> while broader H1, H2 corporate-action, and H3 recent-reference coverage remain
-> incomplete; therefore Roadmap Phase H also remains unchecked. Owner separately
-> authorized the first offline/dormant Phase I I1 implementation candidate
-> under frozen I0/I1 authority; runtime activation and I2/I3 remain
-> unauthorized, so Roadmap Phase I remains incomplete.
-
-> **Historical authorization snapshot — 2026-10-04:** I1 and I2 remain
-> active under their separate Owner acceptance. I3-A3 is Owner-accepted. The
-> Owner has authorized offline I3-A4 technical candidate implementation,
-> including production-evidence V2 and Unified V3 candidate integration; I3
-> production activation remains unauthorized and default runtime sources/routes
-> remain 0/0. Phase I remains incomplete.
-
-> **I3-A4 activation reconciliation — 2026-10-05:** Under explicit Owner
-> authorization, I3 production configuration is active pending independent
-> acceptance: two official sources, one logical route, two runtime market
-> registrations, governed pre-authorization TWSE date binding, Unified V3,
-> and evidence V2. This tranche performs zero market GETs. Owner final A4
-> acceptance and PR merge remain unauthorized; Phase I remains incomplete.
-
-> **I3-A4 final closure — 2026-10-05:** The Owner has accepted and closed
-> I3-A4 as `OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_PRODUCTION_ACTIVATION_PASS`.
-> I3 has two active official sources, one logical route, two runtime market
-> registrations, active Unified V3 integration, and production evidence V2.
-> Accepted A3 bounded-live evidence was sufficient; no additional A4 live
-> acquisition was required or performed. PR #301 merge remains unauthorized.
-> Phase I remains incomplete; see the final closure ledger in the governance
-> index for current acceptance authority.
+> **Current repository reconciliation — 2026-10-05:** This file remains the
+> canonical Roadmap V3.2 authority; durable phase scope is unchanged. Broader
+> Phase G and Phase H scope remains incomplete. Phase I's accepted I1, I2, and
+> I3 capabilities satisfy its minimum optional cross-market and spot/derivatives
+> descriptive-context intent under the I0 Evidence Value Gate; deferred
+> candidates are not phase-exit prerequisites. Phase I is checked complete by
+> the final exit review. Phase J remains not started and is not authorized by
+> Phase I closure.
 
 ---
 
@@ -1152,7 +1124,7 @@ AI 能回答：
 
 並且不需要靠模型猜。
 
-# [ ] Phase I — Cross-Market & Optional Context
+# [x] Phase I — Cross-Market & Optional Context
 
 ## I.0 Phase Goal
 
@@ -1928,7 +1900,7 @@ External Agent Scheduler
 
 [ ] Phase G — Research Evidence Expansion
 [ ] Phase H — Interpretation & Historical Reference
-[ ] Phase I — Cross-Market & Optional Context
+[x] Phase I — Cross-Market & Optional Context
 [ ] Phase J — Integrated Research Acceptance
 [ ] Phase K — Multi-Agent Compatibility & Evaluation
 [ ] Phase L — Production Hardening & Extension Architecture

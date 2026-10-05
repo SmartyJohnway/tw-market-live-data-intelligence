@@ -13,8 +13,9 @@ I3-A4 is `OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_PRODUCTION_ACTIVATION_PASS`
 and closed on PR #301: two active source authorities, one logical same-market
 route, two default-runtime market registrations, governed pre-authorization
 TWSE date binding, Unified V3 integration, and production evidence V2. A4
-closure performed no market acquisition. Merge remains unauthorized; MCP
-remains exactly six tools and Phase I remains incomplete.
+closure performed no market acquisition. PR #301 merged as
+`39e162fa9f0b321b23300b20bfac8ce096646b63`; the Phase I final exit review
+passed. Phase J remains unauthorized; MCP remains exactly six tools.
 
 Activation ledger:
 `docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json`.
@@ -36,9 +37,9 @@ I2-A4 production activation is Owner-accepted and merge-authorized.
   `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
 - No additional market request was authorized or performed for activation.
 - I1 remains active with two routes and three sources; MCP remains exactly six.
-- I3-A3 and I3-A4 are Owner-accepted; I3 production is active. Additional live
-  acquisition is not required and merge remains unauthorized. Phase J is not
-  started and broader Phase I remains incomplete.
+- I3-A3 and I3-A4 are Owner-accepted and merged; I3 production is active.
+  Additional live acquisition is not required. Phase I is closed by the final
+  exit review; Phase J is not started or authorized.
 
 Activation evidence:
 
@@ -113,8 +114,8 @@ As of this governance consolidation:
   `phase_i_i2_index_futures_context_executor` route with one active TAIFEX
   source and one normal TWSE production route. I3-A3 and I3-A4 are
   Owner-accepted. I3 is production active with two sources, one logical route,
-  and two runtime market registrations; A4 closure performed no market
-  acquisition.**
+  and two runtime market registrations. The Phase I final exit review passed;
+  Phase J remains outside this closure.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
 current runtime truth. I2-A2 remains historical dormant implementation truth; A3 used its fresh
@@ -122,7 +123,7 @@ single-GET authority exactly once and no repeat acceptance request is authorized
 Current I2 production execution is permitted only through the normal explicit,
 approval-bound I2-A4 route. I3-A3 and I3-A4 are closed and accepted; future
 I3 authority changes and Phase J require separate explicit Owner authorization.
-Broader Phase I remains incomplete.
+Phase I final exit review is PASS; Phase J remains unauthorized.
 
 ## 5. Authority hierarchy
 

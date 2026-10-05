@@ -1,0 +1,185 @@
+{
+  "schema_version": "phase_i_final_exit_review.v1",
+  "review_date": "2026-10-05",
+  "status": "PHASE_I_OWNER_ACCEPTANCE_CANDIDATE_EXIT_PASS",
+  "phase": "I",
+  "roadmap_authority": {
+    "path": "ROADMAP.md",
+    "version": "3.2",
+    "purpose": "Cross-Market & Optional Context",
+    "exit_interpretation": "The roadmap defines a minimum descriptive context product and an Evidence Value Gate; listed candidates are not blanket phase-exit requirements."
+  },
+  "post_merge_reconciliation": {
+    "merge_commit": "39e162fa9f0b321b23300b20bfac8ce096646b63",
+    "merge_tree": "3cec6f82894b3e81e8d8d7d62f5c037bd50fa89f",
+    "pr": 301,
+    "pr_state": "MERGED_CLOSED",
+    "merged_head": "b693d624e6b440d310c5a1222e051e61df084cf5"
+  },
+  "evidence_authorities": {
+    "I0": {
+      "path": "docs/governance/phase_i/Phase_I_I0_Evidence_Value_Source_Identity_Timing_Decision_Record_2026-09-29_FROZEN.md",
+      "sha256": "02e031e8c39eee96664457735432b7bf08ac9e8b03c07252921f425d05c8f7c5",
+      "status": "FROZEN_PASS"
+    },
+    "I1": {
+      "source_contract": "docs/governance/phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json",
+      "activation_ledger": "docs/governance/phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json",
+      "activation_ledger_sha256": "bfa36e2a74c27c10748cdcb5a5b3cde009a9a6d42537e1012b3793456c6c9ad8",
+      "status": "OWNER_ACCEPTED_ACTIVE"
+    },
+    "I2": {
+      "source_contract": "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json",
+      "activation_ledger": "docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json",
+      "activation_ledger_sha256": "ef0f4b9f5494419c8fc8222045e5981522017ed71b5ac4b30a1e3a485a0aef5b",
+      "status": "OWNER_ACCEPTED_ACTIVE"
+    },
+    "I3": {
+      "source_contract": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+      "final_closure": "docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json",
+      "final_closure_sha256": "bbde0b0c687b68db054942a0629d33de5a5c00517331b92d2c57b43951f043f6",
+      "status": "OWNER_ACCEPTED_ACTIVE"
+    }
+  },
+  "exit_review_matrix": {
+    "I.1_evidence_value_gate": {
+      "status": "PASS",
+      "finding": "Each implemented family has official source authority, direct interpretation value, governed timing and identity, explicit missing/failure states, selected-data-need execution, non-signal safeguards, and bounded dispatch/storage behavior.",
+      "active_family_matrix": {
+        "market_state_context": {
+          "source_authority": "Three accepted official TWSE/TPEx sources: benchmark state, breadth, and TPEx market highlight/turnover context; see frozen I1 source contract and active source ledger.",
+          "interpretation_value": "Distinguishes a target-market move from broad benchmark/breadth/turnover conditions; does not assert target-specific causation.",
+          "timing_governed": "Official source dates are retained per component; date disagreement can yield governed partial evidence and currentness is not inferred from calendar today.",
+          "missing_semantics": "Component-level missing, partial, binding, and source failures remain distinct; malformed required fields fail closed or produce only the contract-permitted partial result.",
+          "default_vs_optional": "Explicit data_need selection and execution approval required; accepted activation ledger marks optional explicit-request-only.",
+          "over_interpretation_risk": "Bounded by market-level scope, non-causation caveats, native-unit preservation, and no fallback from TWSE 股票 breadth to 整體市場.",
+          "cost_bounded": "Same-market batching; at most two TWSE plus one TPEx official acquisitions in a mixed execution; retry zero; bounded response bodies; no history, polling, scheduler, or persistence.",
+          "exit_contribution": "Provides spot-market state, breadth, and turnover surroundings."
+        },
+        "index_futures_context": {
+          "source_authority": "One accepted official TAIFEX DailyMarketReportFut source for TX regular session.",
+          "interpretation_value": "Provides contemporaneous descriptive TX benchmark context for cash targets; not a spot-causation or signal claim.",
+          "timing_governed": "Official trade date, regular session, product TX, nearest valid standard monthly outright series, and alignment/currentness statuses are explicit; currentness remains unknown absent separate authority.",
+          "missing_semantics": "Missing is never numeric zero; unique-series, partial, malformed, source-failed, and unavailable outcomes follow the frozen contract.",
+          "default_vs_optional": "Explicit/optional request only, approval-gated; no automatic TAIFEX context loading.",
+          "over_interpretation_risk": "No basis/premium-discount, leading signal, bullish/bearish, or investment interpretation; regular session only.",
+          "cost_bounded": "One TAIFEX acquisition shared for compatible requests; retry zero; 2 MiB response bound; no history or raw persistence.",
+          "exit_contribution": "Provides the Roadmap's bounded TX regular-session derivatives context."
+        },
+        "cash_institutional_flow_context": {
+          "source_authority": "Two accepted official sources only: TWSE T86 and TPEx tpex_3insti_daily_trading.",
+          "interpretation_value": "Provides per-security official cash-market participant flows and institutional net context, complementing market-wide state and TX regular-session evidence.",
+          "timing_governed": "TWSE date is governed and bound before authorization; TPEx date remains source-reported; retrieved_at, source date, and publication/currentness are distinct, with finality/currentness unknown where not separately proven.",
+          "missing_semantics": "Complete, binding_failed, source_failed, unavailable, and optional source-native details are distinct; no missing-to-zero conversion.",
+          "default_vs_optional": "Caller-selected data_need, approval required, and bounded same-market batching; not automatically loaded.",
+          "over_interpretation_risk": "A1 excludes signals, sentiment/smart-money labels, flow scores, causal claims, and investment recommendations; foreign dealer is not double-counted in common total.",
+          "cost_bounded": "One acquisition per requested market, at most two for mixed TWSE/TPEX, retry zero, 4 MiB per response, no fallback/history/raw persistence.",
+          "exit_contribution": "Closes the separately reviewed cash institutional-flow context gate without claiming TAIFEX participant positioning."
+        }
+      }
+    },
+    "I.2_spot_derivatives_descriptive_context": {
+      "status": "PASS",
+      "finding": "Accepted active I1 market state/breadth/turnover, I2 TX regular-session context, and I3 official cash institutional flow together cover the Roadmap minimum descriptive questions: market-wide versus target-local surroundings, benchmark/futures context, and cash participant-flow context.",
+      "permitted_interpretation": "Observable descriptive context only; no causal, leading/lagging, bullish/bearish, manipulation, or buy/sell-signal conclusion is emitted canonically.",
+      "timing": "Source dates/sessions and alignment statuses remain explicit and are not collapsed into simultaneous publication."
+    },
+    "I.3_derivatives_identity_boundary": {
+      "status": "PASS",
+      "finding": "Cash identity remains ISIN durable identity plus MARKET:CODE listing/routing identity. I2 derivatives remain separate TAIFEX venue/product TX/contract-period series with trade-date and trading-session observation grain; no derivative series is inserted into the cash Security Master identity space.",
+      "evidence": [
+        "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+        "docs/governance/phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json",
+        "tests/unit/test_m8c_taifex_mis_identity_contract.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ]
+    },
+    "I.4_optional_context_candidate_disposition": {
+      "status": "PASS",
+      "finding": "Deferred/rejected candidates remain explicit and are not required to satisfy the current minimum Phase I use case. Frozen I0 DEFER/DO NOT ADD V1 decisions are preserved; no deferred item was silently promoted to implementation."
+    },
+    "I.5_default_result_minimalism": {
+      "status": "PASS",
+      "finding": "Planning is driven by caller-supplied Unified Request data_needs; only selected/authorized optional capabilities become executable. I1, I2, and I3 are not globally auto-fetched, and no background/scheduled acquisition was introduced.",
+      "evidence": [
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "scripts/m8r_05b_01/planner.py",
+        "scripts/m8r_05b_02/authorization.py",
+        "scripts/m8r_05b_03/dispatch.py",
+        "scripts/m8r_06_03_production_adapter.py",
+        "server/unified_mcp/tool_contracts.py"
+      ]
+    },
+    "phase_i_expected_product_outcome": {
+      "status": "PASS",
+      "finding": "The accepted capabilities provide optional, bounded cross-market and spot/derivatives context while keeping Unified Result minimal by explicit need selection and preserving descriptive-only semantics."
+    }
+  },
+  "deferred_family_dispositions": {
+    "industry_classification": {"disposition": "DEFERRED_NOT_REQUIRED_FOR_PHASE_I_EXIT", "I0_decision": "REFERENCE / DEFER"},
+    "industry_turnover_mix": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER"},
+    "industry_price_performance": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER; current official symmetry/semantics insufficient"},
+    "TX_after_hours": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER"},
+    "options_context": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER"},
+    "put_call_ratio": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER; interpretation risk very high"},
+    "TAIFEX_institutional_positioning": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER I3 / separate gate"},
+    "margin_financing": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER I3 / separate gate"},
+    "short_SBL": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER I3 / separate gate"},
+    "large_trader_OI": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "DEFER; interpretation risk very high"},
+    "ETF_AUM_beneficiaries": {"disposition": "DEFERRED_NOT_REQUIRED_FOR_PHASE_I_EXIT", "I0_decision": "DEFER"},
+    "ETF_exact_holdings": {"disposition": "REJECTED_FOR_V1", "I0_decision": "DO NOT ADD V1; future contract reopen required"},
+    "ETF_relationships_and_constituent_context": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "Candidate family; no accepted V1 contract"},
+    "day_trading_context": {"disposition": "REJECTED_FOR_V1", "I0_decision": "DO NOT ADD V1"},
+    "TX_regular_session_settlement_price_and_OI": {"disposition": "IMPLEMENTED_AND_REQUIRED", "I0_decision": "Covered only within accepted I2 TX regular-session contract"},
+    "contract_adjustment_and_settlement_references_beyond_I2": {"disposition": "FUTURE_EVIDENCE_VALUE_GATE_REQUIRED", "I0_decision": "Not part of accepted I2 regular-session contract"}
+  },
+  "selective_positioning_boundary": {
+    "I3_production_family": "cash_institutional_flow_context",
+    "cash_sources": ["official TWSE T86", "official TPEx tpex_3insti_daily_trading"],
+    "sufficient_for_minimum_phase_i_context": true,
+    "not_equivalent_to": ["TAIFEX institutional futures positioning", "margin financing", "short selling", "securities lending"],
+    "future_families_required_for_current_exit": false
+  },
+  "default_result_minimalism": {
+    "explicit_data_needs_drive_planning": true,
+    "I1_automatically_loaded": false,
+    "I2_automatically_loaded": false,
+    "I3_automatically_loaded": false,
+    "automatic_TAIFEX_full_context": false,
+    "automatic_institutional_context": false,
+    "automatic_ETF_margin_options_context": false,
+    "background_scheduler_polling": false
+  },
+  "accepted_runtime_topology": {
+    "market_state_context": {"status": "ACTIVE_ACCEPTED", "active_source_count": 3, "logical_route_count": 1, "runtime_market_executor_registrations": 2},
+    "index_futures_context": {"status": "ACTIVE_ACCEPTED", "active_source_count": 1, "logical_route_count": 1, "runtime_market_executor_registrations": 1},
+    "cash_institutional_flow_context": {"status": "ACTIVE_ACCEPTED", "active_source_count": 2, "logical_route_count": 1, "runtime_market_executor_registrations": 2},
+    "logical_capability_routes": 3,
+    "I1_sources_routes": "3/2",
+    "I2_sources_routes": "1/1",
+    "I3_sources_logical_runtime_routes": "2/1/2"
+  },
+  "unified_public_surface": {
+    "preferred_request": "unified_market_evidence_request.v3",
+    "result": "unified_market_evidence_result.v3",
+    "audit": "unified_market_evidence_audit_package.v3",
+    "competing_public_api_introduced": false,
+    "mcp_tool_count": 6
+  },
+  "phase_j_authorized": false,
+  "market_GETs": {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0},
+  "validation": {
+    "post_merge_authority_validators": "PASS: portable Catalog sync, runtime Skill-guide sync, I1 contract/activation, I2-A4, I3-A4, I3-ROLL-001, and Phase I exit validator",
+    "compileall": "PASS: python -m compileall -q scripts server tests",
+    "focused_tests": "45 passed; separate historical A4 preflight lifecycle suite 6 passed",
+    "default_ci": "1229 passed / 0 failed / 1 skipped / 5 deselected",
+    "full_current": "1601 passed / 0 failed / 1 skipped / 5 deselected",
+    "network_may_have_occurred": false
+  },
+  "historical_evidence_modified": false,
+  "production_implementation_changed_in_exit_tranche": false,
+  "production_activation_changed_in_exit_tranche": false,
+  "source_authority_changed_in_exit_tranche": false,
+  "routing_changed_in_exit_tranche": false,
+  "mcp_changed_in_exit_tranche": false
+}
