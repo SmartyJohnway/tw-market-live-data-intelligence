@@ -1,0 +1,90 @@
+{
+  "schema_version": "phase_i_i3_a4_bounded_production_activation.v1",
+  "gate": "I3-A4",
+  "status": "I3_A4_BOUNDED_PRODUCTION_ACTIVATION_IMPLEMENTED_PENDING_INDEPENDENT_ACCEPTANCE",
+  "owner_authority": "USER_CHAT_2026-10-05_PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_AUTHORIZATION",
+  "accepted_candidate": {
+    "commit": "9f70439a603072548b3571fa73a6e63bbdbe2641",
+    "tree": "2f4e3f6f1271d040cb786e517df2d66a5396d4c1",
+    "r1_governance_path": "docs/governance/phase_i/PHASE_I_I3_A4_R1_INDEPENDENT_REVIEW_HARDENING_2026-10-05.json",
+    "r1_governance_sha256": "132910292872b36c408af1f27e531fa38cab4612867bca42dd0f892be26b66f6",
+    "independent_review": "INDEPENDENT_REVIEW_PASS"
+  },
+  "baseline": {
+    "main_commit": "5c26e7b541bdb6c0d70a39c1e0eab8e129823373",
+    "main_tree": "ac72a639cba570d8a8cfc743934c6131f88fad42"
+  },
+  "active_authority": {
+    "capability_id": "cash_institutional_flow_context",
+    "catalog_state": "runtime_executable",
+    "logical_route_count": 1,
+    "logical_route_state": "resolved",
+    "selected_executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+    "runtime_market_executor_registrations": ["TWSE", "TPEX"],
+    "runtime_executor_reachable": true,
+    "active_official_source_count": 2,
+    "source_authority_path": "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+    "source_authority_sha256": "73170c2e1ca7d4041903aac9a2f013f94b0aacd7880c5a80f81a7de30604cf1d",
+    "routing_authority_path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+    "routing_authority_sha256": "731106915694bb82d627a954c8178b9a600daec36f9990c889ed89e9dc70067b",
+    "catalog_authority_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+    "catalog_authority_sha256": "c2af4ad632730dc63f271390ddd92824cf884e54b764e56868d532c954d4165e",
+    "executor_metadata_path": "config/m8r_06_03_executor_registry_metadata.json",
+    "executor_metadata_sha256": "80256f1ac1de06ce69b4c198a8eaac5979d860e182a5425194f1b275d30f22cf",
+    "orchestrator_disposition_sha256": "e8f357ee53c255d1cb92b09b89cde0a99153654515216a533f521878108f1cf4",
+    "production_executor_path": "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+    "production_transport_path": "server/services/phase_i_i3_production_transport.py",
+    "date_binding_pipeline_path": "scripts/phase_i_i3_execution_pipeline.py",
+    "public_v3": "active",
+    "production_evidence_contract": "cash_institutional_flow_context_evidence.v2",
+    "production_evidence_v2_schema_sha256": "caaf9deb00b6d711b92c8e9abc64e80c73be7f1186a414bd09cf7ce4ec716756",
+    "historical_evidence_v1_sha256": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c"
+  },
+  "execution_policy": {
+    "supported_markets": ["TWSE", "TPEX"],
+    "supported_instrument_families": ["company_share"],
+    "supported_instrument_types": ["common_share"],
+    "batching_scope": "same_market",
+    "maximum_dispatch_per_market_per_execution": 1,
+    "mixed_market_maximum_dispatches": 2,
+    "retry_count": 0,
+    "twse_tls_policy": "compatibility_verified_tls",
+    "tpex_tls_policy": "strict_verified_tls",
+    "redirect_policy": "reject",
+    "raw_payload_persistence": false,
+    "twse_date_binding": "governed_dynamic_resolution_before_authorization_and_immutable_per_execution",
+    "tpex_date_binding": "source_reported_only_no_query_date"
+  },
+  "rollback": {
+    "rollback_id": "I3-ROLL-001",
+    "status": "PASS",
+    "baseline_commit": "5c26e7b541bdb6c0d70a39c1e0eab8e129823373",
+    "baseline_tree": "ac72a639cba570d8a8cfc743934c6131f88fad42",
+    "destructive_git_rollback_performed": false,
+    "preserved_i1": "3_sources_2_routes",
+    "preserved_i2": "1_source_1_route",
+    "preserved_mcp_tools": 6
+  },
+  "validation": {
+    "market_gets": {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0},
+    "network_may_have_occurred": false,
+    "activation_offline_tests": {"passed": 4, "failed": 0, "network_may_have_occurred": false},
+    "focused": {"passed": 186, "failed": 0, "network_may_have_occurred": false},
+    "default_ci": {"passed": 1228, "failed": 0, "skipped": 1, "deselected": 5,
+                    "network_may_have_occurred": false},
+    "full_current": {"passed": 1601, "failed": 0, "skipped": 1, "deselected": 5,
+                      "network_may_have_occurred": false},
+    "mcp_tool_count": 6
+  },
+  "market_live_acquisition_authorized": false,
+  "market_live_acquisition_performed": false,
+  "merge_authorized": false,
+  "owner_final_A4_acceptance_recorded": false,
+  "final_boundary": {
+    "market_live_acquisition_authorized": false,
+    "market_live_acquisition_performed": false,
+    "owner_final_A4_acceptance_recorded": false,
+    "merge_authorized": false,
+    "pr": "#301 OPEN / DRAFT"
+  }
+}

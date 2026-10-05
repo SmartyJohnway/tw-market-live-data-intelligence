@@ -238,10 +238,9 @@ def validate() -> dict:
             path = ROOT / expected
             assert digest(path) == chain[rel]
 
+        from scripts import phase_i_i3_a4_compat as a4_compat
         for relative in PROTECTED:
-            current = (ROOT / relative).read_bytes()
-            baseline = subprocess.check_output(["git", "show", BASELINE + ":" + relative], cwd=ROOT)
-            assert current == baseline, f"production_authority_changed:{relative}"
+            a4_compat.assert_non_i3_authority_unchanged(relative)
         from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
         from server.unified_mcp.tool_contracts import build_tool_specs
         registry = build_production_runtime_adapter_registry()
@@ -249,7 +248,9 @@ def validate() -> dict:
         assert len(registry.routes_for_executor("phase_i_i1_market_state_executor")) == 2
         assert len(registry.routes_for_executor("phase_i_i2_index_futures_context_executor")) == 1
         catalog = _json(ROOT / PROTECTED[0])
-        assert all(item.get("capability_id") != "cash_institutional_flow_context" for item in catalog["data_need_capabilities"])
+        assert any(item.get("capability_id") == "cash_institutional_flow_context" for item in catalog["data_need_capabilities"])
+        from scripts.validate_phase_i_i3_a4_activation import validate as validate_i3_activation
+        assert validate_i3_activation()["i3_active_sources"] == 2
 
     print(f"Attempt 3 evidence validation PASS; decision={record['final_decision']}; market calls={sum(counts.values())}; network=0")
     return record

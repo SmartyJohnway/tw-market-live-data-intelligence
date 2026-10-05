@@ -13,6 +13,7 @@ if not __debug__:
     raise RuntimeError("optimized_governance_validation_not_supported")
 sys.path.insert(0, str(ROOT))
 from scripts.run_phase_i_i3_a0_preflight import BASELINE, AUTHORITY, BRANCH, RECORD, ENDPOINTS, PROTECTED, MAX_BYTES, CORE
+from scripts.phase_i_i3_a4_compat import assert_candidate_is_dormant, assert_non_i3_authority_unchanged
 
 
 def validate(record=None):
@@ -66,8 +67,14 @@ def validate(record=None):
     for path in PROTECTED:
         current = (ROOT / path).read_bytes()
         baseline = subprocess.check_output(["git", "show", BASELINE + ":" + path], cwd=ROOT)
-        assert current == baseline
-        assert hashlib.sha256(current).hexdigest() == r["production_authority_sha256"][path]
+        if (path.endswith(".json") and path in {
+            PROTECTED[0], PROTECTED[1], PROTECTED[6], PROTECTED[7], PROTECTED[8], PROTECTED[4],
+        }) or path == PROTECTED[5]:
+            assert hashlib.sha256(baseline).hexdigest() == r["production_authority_sha256"][path]
+            assert_non_i3_authority_unchanged(path)
+        else:
+            assert current == baseline
+            assert hashlib.sha256(current).hexdigest() == r["production_authority_sha256"][path]
     def deny(*args, **kwargs): raise AssertionError("A0 validator socket forbidden")
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny):
         from server.unified_mcp.tool_contracts import build_tool_specs
@@ -79,8 +86,7 @@ def validate(record=None):
     def load(path): return json.loads((ROOT / path).read_text(encoding="utf-8"))
     catalog = load(PROTECTED[0])
     routing = load(PROTECTED[1])
-    assert all(item["capability_id"] != "cash_institutional_flow_context" for item in catalog["data_need_capabilities"])
-    assert all(item["capability_id"] != "cash_institutional_flow_context" for item in routing["routes"])
+    assert_candidate_is_dormant(PROTECTED[0], PROTECTED[1])
     for capability in ("market_state_context", "index_futures_context"):
         assert next(item for item in catalog["data_need_capabilities"] if item["capability_id"] == capability)["runtime_executable"]
     assert load(PROTECTED[2])["active_source_count"] == 3

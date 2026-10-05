@@ -185,6 +185,7 @@ def _phase_i_evidence(inputs: ProjectionInputs) -> dict:
     capability_by_contract = {
         "market_state_context_evidence.v1": "market_state_context",
         "index_futures_context_evidence.v1": "index_futures_context",
+        "cash_institutional_flow_context_evidence.v2": "cash_institutional_flow_context",
     }
     references = []
     inventory = {

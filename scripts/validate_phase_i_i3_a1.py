@@ -11,6 +11,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.run_phase_i_i3_a0_preflight import PROTECTED
+from scripts.phase_i_i3_a4_compat import assert_candidate_is_dormant, assert_non_i3_authority_unchanged
 
 PREFIX = "docs/governance/phase_i/"
 CONTRACT = PREFIX + "PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json"
@@ -165,7 +166,10 @@ def validate() -> dict:
                 and adjudication["candidate_statistics"]["Dealers-TotalSell"]["rows_passed"] == 910
                 and adjudication["candidate_statistics"]["Dealers -TotalSell"]["rows_failed"] == 108, "a0_semantic_provenance")
         for rel in PROTECTED:
-            require((ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", f"{BASELINE}:{rel}"], cwd=ROOT), f"production_drift:{rel}")
+            if (rel.endswith(".json") and rel in {PROTECTED[0], PROTECTED[1], PROTECTED[4], PROTECTED[6], PROTECTED[7], PROTECTED[8]}) or rel == PROTECTED[5]:
+                assert_non_i3_authority_unchanged(rel)
+            else:
+                require((ROOT / rel).read_bytes() == subprocess.check_output(["git", "show", f"{BASELINE}:{rel}"], cwd=ROOT), f"production_drift:{rel}")
         from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
         from server.unified_mcp.tool_contracts import build_tool_specs
         registry = build_production_runtime_adapter_registry()
@@ -174,7 +178,7 @@ def validate() -> dict:
         require(json.loads((ROOT / "docs/data_capabilities/phase_i_i1_source_authority.v1.json").read_text(encoding="utf-8"))["active_source_count"] == 3
                 and json.loads((ROOT / "docs/data_capabilities/phase_i_i2_source_authority.v1.json").read_text(encoding="utf-8"))["active_source_count"] == 1, "production_sources")
         catalog = json.loads((ROOT / PROTECTED[0]).read_text(encoding="utf-8"))
-        require(all(c["capability_id"] != "cash_institutional_flow_context" for c in catalog["data_need_capabilities"]), "i3_production_absence")
+        assert_candidate_is_dormant(PROTECTED[0], PROTECTED[1])
         require(len(build_tool_specs()) == 6, "mcp_six_tools")
     print("I3-A1 FROZEN_PASS; A0 anchors intact; semantic assertions independent; production unchanged; market GETs=0")
     return contract

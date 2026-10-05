@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts import run_phase_i_i3_a0_preflight as runner
 from scripts.validate_phase_i_i3_a0_p0 import validate as validate_p0
+from scripts.phase_i_i3_a4_compat import assert_candidate_is_dormant, assert_non_i3_authority_unchanged
 
 RECORD = ROOT / "docs/governance/phase_i/PHASE_I_I3_A0_P1_TPEX_DEALER_SELL_ADJUDICATION_HARNESS_2026-10-01.json"
 HISTORICAL = {
@@ -46,8 +47,13 @@ def validate(record: dict | None = None) -> dict:
         for rel, expected in HISTORICAL.items():
             assert hashlib.sha256((ROOT / rel).read_bytes()).hexdigest() == expected, rel
         for rel in runner.PROTECTED:
-            current = (ROOT / rel).read_bytes()
-            assert current == _git_blob(rel), f"production_authority_changed:{rel}"
+            if (rel.endswith(".json") and rel in {
+                runner.PROTECTED[0], runner.PROTECTED[1], runner.PROTECTED[4], runner.PROTECTED[6], runner.PROTECTED[7], runner.PROTECTED[8],
+            }) or rel == runner.PROTECTED[5]:
+                assert_non_i3_authority_unchanged(rel)
+            else:
+                current = (ROOT / rel).read_bytes()
+                assert current == _git_blob(rel), f"production_authority_changed:{rel}"
 
         scenarios = json.loads((ROOT / "tests/fixtures/phase_i_i3_a0/dealer_sell_adjudication_scenarios.json").read_text(encoding="utf-8"))
         expected = {
@@ -85,6 +91,7 @@ def validate(record: dict | None = None) -> dict:
             "I2_selected_executor": "phase_i_i2_index_futures_context_executor",
             "I3_capability_present": False, "MCP": 6,
         }
+        assert_candidate_is_dormant(runner.PROTECTED[0], runner.PROTECTED[1])
         assert value["validation"] == {
             "focused_p1": {"passed": 14, "skipped": 0, "deselected": 0},
             "focused_a0_p0_p1": {"passed": 68, "skipped": 0, "deselected": 0},

@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "H-ACT-H3 accepted; Phase I I1 offline candidate authorized; broader Phase I incomplete"
+status_reconciled_through: "I1/I2/I3 active; I3-A4 Owner-accepted and closed; broader Phase I incomplete"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -43,6 +43,29 @@ tags:
 > authorized the first offline/dormant Phase I I1 implementation candidate
 > under frozen I0/I1 authority; runtime activation and I2/I3 remain
 > unauthorized, so Roadmap Phase I remains incomplete.
+
+> **Historical authorization snapshot — 2026-10-04:** I1 and I2 remain
+> active under their separate Owner acceptance. I3-A3 is Owner-accepted. The
+> Owner has authorized offline I3-A4 technical candidate implementation,
+> including production-evidence V2 and Unified V3 candidate integration; I3
+> production activation remains unauthorized and default runtime sources/routes
+> remain 0/0. Phase I remains incomplete.
+
+> **I3-A4 activation reconciliation — 2026-10-05:** Under explicit Owner
+> authorization, I3 production configuration is active pending independent
+> acceptance: two official sources, one logical route, two runtime market
+> registrations, governed pre-authorization TWSE date binding, Unified V3,
+> and evidence V2. This tranche performs zero market GETs. Owner final A4
+> acceptance and PR merge remain unauthorized; Phase I remains incomplete.
+
+> **I3-A4 final closure — 2026-10-05:** The Owner has accepted and closed
+> I3-A4 as `OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_PRODUCTION_ACTIVATION_PASS`.
+> I3 has two active official sources, one logical route, two runtime market
+> registrations, active Unified V3 integration, and production evidence V2.
+> Accepted A3 bounded-live evidence was sufficient; no additional A4 live
+> acquisition was required or performed. PR #301 merge remains unauthorized.
+> Phase I remains incomplete; see the final closure ledger in the governance
+> index for current acceptance authority.
 
 ---
 

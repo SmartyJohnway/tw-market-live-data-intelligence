@@ -1,0 +1,99 @@
+{
+  "schema_version": "phase_i_i3_a4_activation_acceptance_r1_portable_lineage_sync.v1",
+  "gate": "I3-A4-ACTIVATION-ACCEPTANCE-R1",
+  "status": "PASS",
+  "independent_finding": "PORTABLE_CATALOG_LINEAGE_METADATA_STALE",
+  "activation_commit_reviewed": "4dabe46edaddb0fc34c4e759cfcff48f27703522",
+  "activation_tree_reviewed": "4f0abb6b8d63c08f43b48736972d718f3b546ac5",
+  "finding_classification": {
+    "runtime_activation_defect": false,
+    "production_authority_defect": false,
+    "portable_semantic_drift": false,
+    "portable_lineage_drift": true,
+    "portable_semantic_content_differences": 0,
+    "portable_metadata_differences": 2,
+    "stale_fields": {
+      "generated_from_commit": {
+        "observed": "9cb502292cdc522e3d328201633b4af16d92ff8f",
+        "expected": "4dabe46edaddb0fc34c4e759cfcff48f27703522"
+      },
+      "canonical_git_blob_sha": {
+        "observed": "e712843c4b1de862cdbcb12d549e9810379f996b",
+        "expected": "8362835432f30f2d6a42858ebdd4754c0b0a8d46"
+      }
+    },
+    "portable_markdown_quick_guide_already_exact": true
+  },
+  "pre_repair_independent_validation": {
+    "default_ci": {
+      "passed": 1227,
+      "failed": 1,
+      "skipped": 1,
+      "deselected": 5,
+      "failing_test": "test_current_portable_catalog_is_exact_generated_v3_projection",
+      "network_may_have_occurred": false
+    }
+  },
+  "repair": {
+    "method": "existing scripts/generate_portable_catalog.py",
+    "canonical_catalog_modified": false,
+    "portable_semantic_content_modified": false,
+    "portable_lineage_updated": true,
+    "quick_guide_changed": false,
+    "portable_catalog_path": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+    "generated_from_commit": "4dabe46edaddb0fc34c4e759cfcff48f27703522",
+    "canonical_git_blob_sha": "8362835432f30f2d6a42858ebdd4754c0b0a8d46"
+  },
+  "post_repair_validation": {
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS",
+    "activation_validator": "PASS",
+    "rollback_I3-ROLL-001": "PASS",
+    "compileall": "PASS",
+    "focused_activation_tests": {
+      "passed": 54,
+      "failed": 0
+    },
+    "default_ci": {
+      "passed": 1228,
+      "failed": 0,
+      "skipped": 1,
+      "deselected": 5,
+      "network_may_have_occurred": false
+    },
+    "full_current": {
+      "passed": 1601,
+      "failed": 0,
+      "skipped": 1,
+      "deselected": 5,
+      "network_may_have_occurred": false
+    },
+    "activation_state": {
+      "i3_active_sources": 2,
+      "i3_logical_routes": 1,
+      "i3_runtime_market_routes": 2,
+      "i3_executor_reachable": true,
+      "i3_public_v3_active": true,
+      "production_evidence_contract": "cash_institutional_flow_context_evidence.v2",
+      "i1_sources_routes": "3/2",
+      "i2_sources_routes": "1/1",
+      "mcp_tool_count": 6
+    }
+  },
+  "network_boundary": {
+    "market_gets": {
+      "TWSE": 0,
+      "TPEX": 0,
+      "TAIFEX": 0,
+      "other": 0
+    },
+    "network_may_have_occurred": false,
+    "live_acquisition_authorized": false,
+    "live_acquisition_performed": false
+  },
+  "final_boundary": {
+    "owner_final_a4_acceptance": "PENDING",
+    "merge_authorized": false,
+    "pr": "#301 OPEN / DRAFT"
+  }
+}

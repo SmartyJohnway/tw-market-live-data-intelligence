@@ -493,6 +493,32 @@
       "source_compatibility_key": "I2-TAIFEX-DAILYMARKETREPORTFUT-OPENAPI"
     },
     {
+      "capability_id": "cash_institutional_flow_context",
+      "capability_status_source": "catalog v3 runtime_executable; Owner-authorized I3-A4 bounded production activation",
+      "supported_markets": ["TWSE", "TPEX"],
+      "supported_security_types": ["equity"],
+      "supported_instrument_families": ["company_share"],
+      "supported_instrument_types": ["common_share"],
+      "target_required": true,
+      "time_scope_required": false,
+      "runtime_executable": true,
+      "provisional": false,
+      "candidate_executor_ids": ["phase_i_i3_cash_institutional_flow_context_executor"],
+      "selected_executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+      "routing_status": "resolved",
+      "batching_scope": "same_market",
+      "approval_required": true,
+      "network_required": true,
+      "estimated_operation_rule": "One official acquisition per market for each authorized same-market batch; at most two dispatches for a mixed TWSE/TPEX execution; retry zero",
+      "parameter_mapping": {},
+      "output_evidence_contract": "cash_institutional_flow_context_evidence.v2",
+      "known_limitations": ["TWSE source date must be governed and bound before authorization", "TPEx date remains source-reported; publication finality and currentness remain unknown", "no history, polling, scheduler, fallback, raw persistence, or retry"],
+      "evidence_paths": ["docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json"],
+      "capability_requires_execution_approval": true,
+      "package_approval_policy": "strictest_operation_controls_package",
+      "blocking_reasons": []
+    },
+    {
       "capability_id": "corporate_action_context",
       "capability_status_source": "catalog v3 support_status=contract_supported; runtime inactive",
       "supported_markets": [

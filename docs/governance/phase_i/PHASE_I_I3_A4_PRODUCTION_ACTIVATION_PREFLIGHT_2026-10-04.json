@@ -1,0 +1,192 @@
+{
+  "a3_retry_policy_disposition": "ACCEPTANCE_RUN_ONLY_NOT_PRODUCTION_AUTHORITY",
+  "accepted_authority_sha256": {
+    "I3_A1": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428",
+    "I3_A2_R1": "d4962eddf90fe2cf6e1ed3c231f66dc7e1332d9597c5e8fc886ca85e926b9b12",
+    "I3_A3_MERGE_A4_TRANSITION": "5bd2dda1b50adb421369e2837f7e9a51968a821a3ab3a1e6f101dfbc4eb8e580",
+    "I3_A3_OWNER_CLOSURE": "0cd51bc5b1b07098f0786ccbb4bd39d1ed3263fd6c9c898fc3c60be004c3101d"
+  },
+  "authorization_boundary": {
+    "a4_implementation_authorized": false,
+    "mcp_change_authorized": false,
+    "new_market_live_acquisition_authorized": false,
+    "production_activation_authorized": false,
+    "public_v3_integration_authorized": false,
+    "source_or_route_activation_authorized": false
+  },
+  "baseline_main": "5c26e7b541bdb6c0d70a39c1e0eab8e129823373",
+  "baseline_tree": "ac72a639cba570d8a8cfc743934c6131f88fad42",
+  "blocking_decisions": [
+    "PUBLIC_V3_INTEGRATION_REQUIRED_BUT_NOT_AUTHORIZED",
+    "TWSE_EXPLICIT_SOURCE_DATE_BINDING_POLICY_UNRESOLVED",
+    "PRODUCTION_EXECUTOR_TRANSPORT_NOT_IMPLEMENTED"
+  ],
+  "branch": "phase-i/i3-a4-production-activation-preflight",
+  "current_state": {
+    "i3_active_sources": 0,
+    "i3_catalog_present": false,
+    "i3_executor_metadata_present": false,
+    "i3_production_registry_routes": 0,
+    "i3_routing_present": false,
+    "mcp_tool_count": 6,
+    "public_v3_request_supported": false,
+    "public_v3_result_audit_supported": false
+  },
+  "design_gaps": {
+    "production_executor_transport": {
+      "a3_transport_is_acceptance_only": true,
+      "a3_twse_endpoint_contains_hardcoded_acceptance_date": true,
+      "future_candidate_must_preserve_fixed_reviewed_endpoint_families": true,
+      "future_candidate_must_preserve_market_tls_policy": true,
+      "future_candidate_must_preserve_no_raw_persistence": true,
+      "future_candidate_must_preserve_retry_zero": true,
+      "implemented": false
+    },
+    "public_v3": {
+      "audit_v3_typed_reference_supported": false,
+      "execution_request_projection_supported": false,
+      "implementation_authorized_in_this_preflight": false,
+      "production_significance": "A registered executor without Unified V3 request/result/audit reachability would not provide the normal AI-facing product path.",
+      "request_v3_supported": false,
+      "result_v3_typed_projection_supported": false
+    },
+    "twse_source_date_binding": {
+      "a3_acceptance_used_fixed_reviewed_date": "20260930",
+      "automatic_previous_trading_day_fallback_allowed": false,
+      "calendar_today_implies_current_allowed": false,
+      "current_public_request_carries_source_date": false,
+      "decision_required_before_activation": true,
+      "existing_calendar_currentness_infrastructure_available": true,
+      "frozen_contract_requires_explicit_date": true,
+      "hidden_date_substitution_allowed": false,
+      "options_for_future_owner_decision": [
+        "Require an explicit governed source trade date in the authorized request/binding.",
+        "Authorize a separately governed calendar/currentness resolver to derive an explicit latest-completed source date before preview/authorization, bind that resolved date into the execution contract, and fail closed when unresolved."
+      ],
+      "preflight_recommendation": "Prefer governed pre-authorization date resolution and immutable execution binding, but treat this as a new A4 contract decision rather than an implicit fallback.",
+      "production_policy_from_a3_fixed_date": false
+    }
+  },
+  "future_a4_implementation_surface_inventory": [
+    "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+    "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+    "config/m8r_06_03_executor_registry_metadata.json",
+    "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+    "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+    "scripts/m8r_06_03_production_adapter.py",
+    "new controlled I3 production candidate/transport module",
+    "Unified Request/Result/Audit V3 and execution-request projection contracts if separately authorized",
+    "portable capability catalog / skill guide mirrors if public V3 integration is authorized",
+    "A4 proof/validator/tests and I3-ROLL-001"
+  ],
+  "gate": "I3-A4_PRODUCTION_ACTIVATION_PREFLIGHT",
+  "next_gate": "OWNER_DECISION_ON_A4_IMPLEMENTATION_CONTRACT",
+  "offline_compatibility_repair": {
+    "classification": "HISTORICAL_TEST_BRANCH_INDEPENDENCE_ONLY",
+    "historical_evidence_changed": false,
+    "market_network_calls": 0,
+    "path": "tests/unit/test_phase_i_i3_a3_r1_transport_accounting.py",
+    "production_semantics_changed": false,
+    "reason": "After PR #300 merged, the historical A3 consumed-latch precedence test could no longer depend on the currently checked-out branch being the old A3 branch."
+  },
+  "owner_authority_scope": {
+    "authority": "USER_CHAT_2026-10-04_CONDITIONAL_MERGE_THEN_I3_A4_PRODUCTION_ACTIVATION_PREFLIGHT",
+    "implementation_authorized": false,
+    "preflight_authorized": true,
+    "production_activation_authorized": false
+  },
+  "phase_i_complete": false,
+  "pr_300": {
+    "merge_commit": "5c26e7b541bdb6c0d70a39c1e0eab8e129823373",
+    "merged": true
+  },
+  "preflight_market_gets": {
+    "TAIFEX": 0,
+    "TPEX": 0,
+    "TWSE": 0,
+    "other": 0
+  },
+  "production_authority_baseline_sha256": {
+    "catalog": "c245cc1bc28f12b3dcd087410ddc25f6e30861ec1ba34d1160d534a9c1661a83",
+    "executor_metadata": "518809f861cae1548122e1444f8de2702c50327161af6b4fdbacb477748d534c",
+    "orchestrator_disposition": "86da3a7febbb8f4d75ed041aefd9dc74b953df18c542ad327a806550f9161ca7",
+    "routing": "c2835ca9a41aaaf25547e239db8832a6ddadd06a9da7282a04c3022c1fc82251"
+  },
+  "public_contract_baseline_sha256": {
+    "audit_v3": "08d90c8756503715a0174deda3eecc484ac21e97f542a23e1e7530a0939abadb",
+    "execution_request_v2": "b527a40888ec1d17d1bf39684699e0d61701ce8abd71db2d331c2e9e3460b481",
+    "request_projection": "533de4bc06d51b13c977eb1e5d0b2d9bcc707911de2cea353244b00cd3e10559",
+    "request_v3": "e11807c2d43dfa91cae90e4b266cc450724301dea7152313fe0ef0afc883e348",
+    "result_v3": "2c2092db493d183922b434e99922b2ed4409185ba67985f9b7fbb2639f21eb9b"
+  },
+  "recommended_topology": {
+    "active_source_count_if_later_activated": 2,
+    "approval_required": true,
+    "batching_scope": "same_market",
+    "capability_id": "cash_institutional_flow_context",
+    "evidence_contract": "cash_institutional_flow_context_evidence.v1",
+    "executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+    "maximum_unique_market_acquisitions": 2,
+    "metadata_registrations": 2,
+    "network_required": true,
+    "production_retry_count": 0,
+    "raw_payload_persistence": "FORBIDDEN",
+    "reasoning": "Matches accepted dual-market A1/A2/A3 semantics: same-market targets share one source acquisition; mixed TWSE/TPEX requires independent market acquisitions.",
+    "routing_record_count": 1,
+    "same_market_max_acquisitions": 1,
+    "source_ids": [
+      "I3-TWSE-T86-INSTITUTIONAL-TRADING",
+      "I3-TPEX-3INSTI-DAILY-TRADING"
+    ],
+    "supported_markets": [
+      "TWSE",
+      "TPEX"
+    ]
+  },
+  "rollback_contract": {
+    "expected_i3_after_rollback": {
+      "active_sources": 0,
+      "executor_reachable": false,
+      "production_routes": 0,
+      "public_v3_supported": false
+    },
+    "gate_id": "I3-ROLL-001",
+    "method_required": "deterministic offline authority rollback proof before any activation acceptance",
+    "must_preserve": {
+      "i1_active_sources": 3,
+      "i1_production_routes": 2,
+      "i2_active_sources": 1,
+      "i2_production_routes": 1,
+      "mcp_tool_count": 6
+    },
+    "rollback_target_commit": "5c26e7b541bdb6c0d70a39c1e0eab8e129823373",
+    "rollback_target_tree": "ac72a639cba570d8a8cfc743934c6131f88fad42"
+  },
+  "schema_version": "phase_i_i3_a4_production_activation_preflight.v1",
+  "status": "PREFLIGHT_PASS_WITH_EXPLICIT_DESIGN_BLOCKERS",
+  "validation": {
+    "compileall": "PASS",
+    "default_ci": {
+      "deselected": 5,
+      "failed": 0,
+      "network_may_have_occurred": false,
+      "passed": 1191,
+      "skipped": 1
+    },
+    "focused_i3_a3_a4": {
+      "deselected": 0,
+      "failed": 0,
+      "passed": 52,
+      "skipped": 0
+    },
+    "full_current": {
+      "deselected": 5,
+      "failed": 0,
+      "network_may_have_occurred": false,
+      "passed": 1564,
+      "skipped": 1
+    },
+    "git_diff_check": "PASS",
+    "preflight_validator": "PASS"
+  }
+}

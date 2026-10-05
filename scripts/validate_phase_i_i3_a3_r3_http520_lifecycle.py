@@ -2,13 +2,21 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import socket
+import subprocess
 import sys
 from pathlib import Path
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+
+# R3 sealed Attempt 4's runner bytes at this reviewed pre-network commit.
+# Later authorized A4 work adds a production-containment projection to one
+# shared helper; historical R3 validation must compare its seal to the sealed
+# commit, not mistake that later additive change for historical tampering.
+SEALED_ATTEMPT_4_COMMIT = "bff6ee179115bb9c78b183f2cd8c5b7f4afcfb8c"
 
 from scripts import run_phase_i_i3_a3_attempt_4_bounded_live_acceptance as attempt4
 from scripts import run_phase_i_i3_a3_bounded_live_acceptance as a3
@@ -27,6 +35,15 @@ def require(condition: bool, code: str) -> None:
 
 def read_json(relative: str) -> dict:
     return json.loads((ROOT / relative).read_text(encoding="utf-8"))
+
+
+def sealed_code_hashes() -> dict[str, str]:
+    return {
+        path: hashlib.sha256(subprocess.check_output(
+            ["git", "show", f"{SEALED_ATTEMPT_4_COMMIT}:{path}"], cwd=ROOT
+        )).hexdigest()
+        for path in attempt4.HASHED_CODE
+    }
 
 
 def validate(*, pre_network_only: bool = False) -> dict:
@@ -65,7 +82,7 @@ def validate(*, pre_network_only: bool = False) -> dict:
             and closure["attempt_3_authority"] == "CONSUMED_NOT_REUSABLE"
             and closure["attempt_3_http_dispatch_count"] == {"TPEX": 8, "TWSE": 0, "TAIFEX": 0, "other": 0}
             and closure["attempt_3_terminal_http_status"] == 520
-            and closure["sealed_code_hashes"] == attempt4.sealed_hashes()
+            and closure["sealed_code_hashes"] == sealed_code_hashes()
             and closure["candidate_file_hashes"] == a3.candidate_hashes()
             and closure["immutable_hashes"] == a3.HASHES
             and closure["I3_production"] == {"active_sources": 0, "routes": 0}

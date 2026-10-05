@@ -14,7 +14,7 @@ import json
 from pathlib import Path
 from copy import deepcopy
 
-from jsonschema import Draft202012Validator, Draft7Validator
+from jsonschema import Draft202012Validator, Draft7Validator, FormatChecker
 
 from .errors import ProjectionError
 from .models import ProjectionInputs
@@ -52,6 +52,7 @@ _RESEARCH_EVIDENCE_CONTRACTS = {
     "discontinuity_safety_evidence.v1": "discontinuity_safety_evidence.v1.schema.json",
     "market_state_context_evidence.v1": "market_state_context_evidence.v1.schema.json",
     "index_futures_context_evidence.v1": "index_futures_context_evidence.v1.schema.json",
+    "cash_institutional_flow_context_evidence.v2": "cash_institutional_flow_context_evidence.v2.schema.json",
 }
 
 _DRAFT07_KEYS = {"request", "plan"}
@@ -408,10 +409,20 @@ def load_projection_inputs(
             if not schema_file.exists():
                 raise ProjectionError("missing_evidence_contract_schema")
             schema = json.loads(schema_file.read_text(encoding="utf-8"))
-            validator_cls = Draft7Validator if evidence_contract in _RESEARCH_EVIDENCE_CONTRACTS else Draft202012Validator
-            errors = list(validator_cls(schema).iter_errors(artifact_obj))
+            if evidence_contract in _RESEARCH_EVIDENCE_CONTRACTS and evidence_contract != "cash_institutional_flow_context_evidence.v2":
+                errors = list(Draft7Validator(schema).iter_errors(artifact_obj))
+            else:
+                errors = list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(artifact_obj))
             if errors:
                 raise ProjectionError("artifact_schema_invalid")
+            if evidence_contract == "cash_institutional_flow_context_evidence.v2":
+                # V2 has cross-field provenance/arithmetic invariants in addition
+                # to its JSON Schema shape. Keep historical V1 validation separate.
+                from server.services.phase_i_i3_cash_institutional_flow_v2_evidence import validate_evidence_v2
+                try:
+                    validate_evidence_v2(artifact_obj)
+                except (TypeError, ValueError) as exc:
+                    raise ProjectionError("artifact_schema_invalid") from exc
                     
         # Verify item count if applicable
         expected_items = entry.get("item_count")

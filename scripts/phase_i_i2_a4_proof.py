@@ -74,9 +74,19 @@ def verify_candidate_authority():
     assert current_json("docs/data_capabilities/phase_i_i1_source_authority.v1.json")["active_source_count"] == 3
     assert len(build_tool_contract_snapshot().tools) == 6
     # All non-I2 authority records must equal the accepted dormant baseline.
-    for path, field, id_key, id_value in ((CATALOG, "data_need_capabilities", "capability_id", CAPABILITY), (ROUTING, "routes", "capability_id", CAPABILITY), (METADATA, "executors", "executor_id", EXECUTOR), (DISPOSITION, "surfaces", "surface_id", EXECUTOR)):
+    # I3-A4 is a separately authorized dormant candidate. Preserve its additive
+    # catalog/route candidate while this historical I2 proof compares all other
+    # authority rows to the I2-accepted baseline.
+    i3_capability = "cash_institutional_flow_context"
+    i3_executor = "phase_i_i3_cash_institutional_flow_context_executor"
+    for path, field, id_key, excluded_ids in (
+        (CATALOG, "data_need_capabilities", "capability_id", {CAPABILITY, i3_capability}),
+        (ROUTING, "routes", "capability_id", {CAPABILITY, i3_capability}),
+        (METADATA, "executors", "executor_id", {EXECUTOR, i3_executor}),
+        (DISPOSITION, "surfaces", "surface_id", {EXECUTOR, i3_executor}),
+    ):
         now, before = current_json(path), baseline_json(path)
-        assert [x for x in now[field] if x.get(id_key) != id_value] == [x for x in before[field] if x.get(id_key) != id_value], path
+        assert [x for x in now[field] if x.get(id_key) not in excluded_ids] == [x for x in before[field] if x.get(id_key) not in excluded_ids], path
     assert r["phase_h_source_authority"] == baseline_json(ROUTING)["phase_h_source_authority"]
     return registry
 
@@ -126,12 +136,20 @@ def rollback_authority():
     from scripts.m8r_05b_03.dispatch import RuntimeAdapterRegistry
     registry = verify_candidate_authority()
     rolled = {p: copy.deepcopy(current_json(p)) for p in AUTHORITY_FILES}
+    i3_capability = "cash_institutional_flow_context"
+    i3_executor = "phase_i_i3_cash_institutional_flow_context_executor"
     for path, field, key, value in ((CATALOG, "data_need_capabilities", "capability_id", CAPABILITY), (ROUTING, "routes", "capability_id", CAPABILITY), (METADATA, "executors", "executor_id", EXECUTOR), (DISPOSITION, "surfaces", "surface_id", EXECUTOR)):
         baseline = baseline_json(path)
         if path in (CATALOG, ROUTING):
-            rolled[path][field] = [copy.deepcopy(next(b for b in baseline[field] if b[key] == value)) if x.get(key) == value else x for x in rolled[path][field]]
+            baseline_i2 = next(x for x in baseline[field] if x.get(key) == value)
+            restored = []
+            for item in rolled[path][field]:
+                if item.get(key) == i3_capability:
+                    continue
+                restored.append(copy.deepcopy(baseline_i2) if item.get(key) == value else item)
+            rolled[path][field] = restored
         else:
-            rolled[path][field] = [x for x in rolled[path][field] if x.get(key) != value]
+            rolled[path][field] = [x for x in rolled[path][field] if x.get(key) not in {value, i3_executor}]
         assert rolled[path] == baseline, path
     rolled[SOURCE] = copy.deepcopy(baseline_json(SOURCE))
     regs = [registry.get_route(x["executor_id"], x["capability_id"], x["market"]) for x in rolled[METADATA]["executors"]]

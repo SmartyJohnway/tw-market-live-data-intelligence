@@ -16,6 +16,7 @@ from scripts import phase_i_i3_a0_attempt_authority as authority
 from scripts import phase_i_i3_a0_source_transport as transport
 from scripts import validate_phase_i_i3_a0_attempt3 as historical
 from scripts.run_phase_i_i3_a0_preflight import PROTECTED
+from scripts.phase_i_i3_a4_compat import assert_candidate_is_dormant, assert_non_i3_authority_unchanged
 
 PREFIX = "docs/governance/phase_i/"
 P3_REL = PREFIX + "PHASE_I_I3_A0_P3_ATTEMPT_3_EVIDENCE_ERRATUM_AND_BOUNDED_BODY_READ_CLOSURE_2026-10-03.json"
@@ -90,7 +91,10 @@ def validate() -> dict:
             assert historical_path.returncode != 0, rel
             assert (ROOT / rel).is_file(), f"current_authorized_attempt4_artifact_missing:{rel}"
         for relative in PROTECTED:
-            assert (ROOT / relative).read_bytes() == subprocess.check_output(["git", "show", BASELINE + ":" + relative], cwd=ROOT), relative
+            if (relative.endswith(".json") and relative in {PROTECTED[0], PROTECTED[1], PROTECTED[4], PROTECTED[6], PROTECTED[7], PROTECTED[8]}) or relative == PROTECTED[5]:
+                assert_non_i3_authority_unchanged(relative)
+            else:
+                assert (ROOT / relative).read_bytes() == subprocess.check_output(["git", "show", BASELINE + ":" + relative], cwd=ROOT), relative
         from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
         from server.unified_mcp.tool_contracts import build_tool_specs
         registry = build_production_runtime_adapter_registry()
@@ -102,7 +106,7 @@ def validate() -> dict:
             value = json.loads((ROOT / rel).read_text(encoding="utf-8"))
             assert value["active_source_count"] == expected
         catalog = json.loads((ROOT / PROTECTED[0]).read_text(encoding="utf-8"))
-        assert all(item["capability_id"] != "cash_institutional_flow_context" for item in catalog["data_need_capabilities"])
+        assert_candidate_is_dormant(PROTECTED[0], PROTECTED[1])
     print("P3 PASS: historical HOLD/readiness bytes unchanged; current Attempt 4 artifacts are separate; MCP=6")
     return record
 

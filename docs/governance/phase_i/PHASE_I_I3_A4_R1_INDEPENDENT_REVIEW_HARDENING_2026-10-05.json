@@ -1,0 +1,88 @@
+{
+  "schema_version": "phase_i_i3_a4_r1_independent_review_hardening.v1",
+  "gate": "I3-A4-R1",
+  "authorization_basis": "Owner-provided I3-A4-R1 offline-only hardening instruction dated 2026-10-05",
+  "status": "TECHNICAL_ACTIVATION_CANDIDATE_READY_FOR_OWNER_REVIEW_R1",
+  "starting_state": {
+    "head": "9cb502292cdc522e3d328201633b4af16d92ff8f",
+    "tree": "9316b5282c14f3d2b7f78c998ec66d205052d638",
+    "origin_main": "5c26e7b541bdb6c0d70a39c1e0eab8e129823373",
+    "branch": "phase-i/i3-a4-production-activation-preflight",
+    "pr": 301,
+    "historical_candidate_commit": "9cb502292cdc522e3d328201633b4af16d92ff8f"
+  },
+  "historical_candidate_disposition": "HOLD_FOR_R1_HARDENING",
+  "findings": {
+    "DATE_AUTHORITY_ANNUAL_ARTIFACT_COMPATIBILITY": {
+      "status": "REPAIRED",
+      "resolution": "one annual artifact or collection of governed annual artifacts; coverage checked only for dates traversed",
+      "tests": "tests/unit/test_phase_i_i3_execution_date.py"
+    },
+    "PRE_AUTHORIZATION_DATE_BINDING_PIPELINE_WIRING": {
+      "status": "REPAIRED",
+      "resolution": "isolated Unified Request V3 validation/preview candidate path binds TWSE date before authorization and execution-request V3 projection; TPEX-only skips TWSE date resolution",
+      "module": "scripts/phase_i_i3_dormant_orchestration.py",
+      "tests": "tests/unit/test_phase_i_i3_execution_date.py"
+    },
+    "TRUTHFUL_OVERSIZED_CONTENT_LENGTH_FAILURE_EVIDENCE": {
+      "status": "REPAIRED",
+      "resolution": "V2 declared_content_length accepts truthful non-negative integer telemetry without the 4 MiB ceiling; accepted response_byte_count remains capped",
+      "tests": "tests/unit/test_phase_i_i3_a4_candidate.py"
+    }
+  },
+  "evidence_v2": {
+    "schema_path": "schemas/cash_institutional_flow_context_evidence.v2.schema.json",
+    "schema_sha256_before": "b5c80c338be99ffa55d51c73e7909f2c0ba2908d8caecce0ac50a474738e2847",
+    "schema_sha256_after": "caaf9deb00b6d711b92c8e9abc64e80c73be7f1186a414bd09cf7ce4ec716756",
+    "response_byte_count_maximum": 4194304,
+    "declared_content_length_minimum": 0,
+    "declared_content_length_maximum": null
+  },
+  "immutable_history": {
+    "v1_schema_sha256": "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c",
+    "v1_schema_changed": false,
+    "A1_sha256": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428",
+    "A1_changed": false,
+    "A2_A3_historical_evidence_rewritten": false,
+    "prior_A4_candidate_record_rewritten": false
+  },
+  "implementation": {
+    "commits": [
+      "253402b24e47f38f10523c94344be14cedf1e4a1",
+      "9c17a9cb200a7877a9bccbaaab3810954ba8f835",
+      "6f4eaf810008bcdd24bd8d449078519f0a6bf911"
+    ],
+    "technical_commit": "253402b24e47f38f10523c94344be14cedf1e4a1",
+    "technical_tree": "e9f58e9d4428c09014a5ae2f083c370130786091",
+    "latest_pre_governance_commit": "6f4eaf810008bcdd24bd8d449078519f0a6bf911",
+    "latest_pre_governance_tree": "f9366c65862749b323464d806580c66369425040",
+    "portable_projection_sync": "generated metadata-only lineage refresh; canonical Catalog/route bytes unchanged",
+    "production_activation_performed": false,
+    "default_runtime_i3_sources": 0,
+    "default_runtime_i3_routes": 0,
+    "I3_executor_default_runtime_reachable": false,
+    "I1_sources_routes": "3/2",
+    "I2_sources_routes": "1/1",
+    "MCP_tools": 6
+  },
+  "validation": {
+    "focused_I3_A3_A4_date_transport": {"passed": 85, "failed": 0, "skipped": 0, "deselected": 0},
+    "compileall": "PASS",
+    "default_ci": {"passed": 1191, "failed": 0, "skipped": 1, "deselected": 5, "network_may_have_occurred": false},
+    "full_current": {"passed": 1564, "failed": 0, "skipped": 1, "deselected": 5, "network_may_have_occurred": false},
+    "A4_candidate_validator": "PASS",
+    "A4_preflight_validator": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS",
+    "I3_ROLL_001": "PASS",
+    "MCP_tool_count": 6,
+    "network_may_have_occurred": false,
+    "market_GETs": {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0}
+  },
+  "authorization_boundary": {
+    "additional_live_acquisition_authorized": false,
+    "attempt_5_authorized": false,
+    "production_activation_authorized": false,
+    "merge_authorized": false
+  }
+}

@@ -9,6 +9,8 @@
     "schema_version": {"const": "unified_market_evidence_orchestration_plan.v1"},
     "plan_id": {"type": "string", "pattern": "^umeop-v1-[0-9a-f]{20}$"},
     "plan_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "resolved_source_trade_date": {"type": "string", "format": "date"},
+    "source_date_binding": {"type": "object", "additionalProperties": false, "required": ["market", "evaluation_time", "resolved_source_trade_date", "calendar_authority_ref", "closure_authority_ref"], "properties": {"market": {"const": "TWSE"}, "evaluation_time": {"type": "string", "format": "date-time"}, "resolved_source_trade_date": {"type": "string", "format": "date"}, "calendar_authority_ref": {"type": "string", "minLength": 1}, "closure_authority_ref": {"type": "string", "minLength": 1}}},
     "execution_authorized": {"const": false},
     "input_bindings": {"$ref": "#/definitions/input_bindings"},
     "planner_metadata": {"$ref": "#/definitions/planner_metadata"},

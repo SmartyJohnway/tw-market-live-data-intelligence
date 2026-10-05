@@ -72,7 +72,12 @@ def validate(*, require_record=True):
         assert ledger["normal_production_offline_e2e"]["result_replay"] == "PASS"
         assert ledger["normal_production_offline_e2e"]["audit_replay"] == "PASS"
         for key, path in (("catalog", CATALOG), ("routing", ROUTING), ("source", SOURCE)):
-            assert ledger["candidate_authority_sha256"][key] == hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+            # The I2 ledger pins its historical candidate snapshot. Current
+            # Catalog/Route may now carry the separately authorized dormant I3
+            # candidate, so verify provenance against the pinned Git commit and
+            # verify live I2 semantics independently above.
+            pinned = subprocess.check_output(["git", "show", f"{reviewed['head']}:{path}"], cwd=ROOT)
+            assert ledger["candidate_authority_sha256"][key] == hashlib.sha256(pinned).hexdigest()
     print("Phase I I2-A4 technical activation: PASS (normal-production offline E2E; exact dormant rollback; market network=0; final Owner acceptance pending)")
     return proof
 

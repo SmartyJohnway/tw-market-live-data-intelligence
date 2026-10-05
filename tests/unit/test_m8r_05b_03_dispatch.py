@@ -181,7 +181,7 @@ def test_dispatch_validates_each_execution_request_version_and_rejects_unknown(t
     assert prepared[0].request["parameters"] == {"lookback_trading_days": 5}
 
     unknown_preflight = deepcopy(preflight)
-    unknown_preflight["bounded_execution_requests"][0]["schema_version"] = "unified_market_evidence_execution_request.v3"
+    unknown_preflight["bounded_execution_requests"][0]["schema_version"] = "unified_market_evidence_execution_request.v4"
     with pytest.raises(OrchestrationError, match="execution_request_schema_version_unsupported"):
         prepare_dispatch(unknown_preflight, metadata, runtime, mode="dry-run")
 

@@ -422,6 +422,11 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                     "canonical_target_id": canonical_target_id,
                     "market": target_res.market,
                 }
+            evidence_proj.cash_institutional_flow_context = project_typed_research_evidence(
+                target_bindings.get("cash_institutional_flow_context"),
+                citation_map.get(f"{canonical_target_id}::cash_institutional_flow_context", []),
+                "cash_institutional_flow_context_evidence.v2",
+            )
         if output_schema_version.endswith(".v2"):
             identity = target_res.canonical_identity or {}
             applicable = (
@@ -463,6 +468,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                     "recent_performance": "recent_performance_v3",
                     "market_state_context": "market_state_context",
                     "index_futures_context": "index_futures_context",
+                    "cash_institutional_flow_context": "cash_institutional_flow_context",
                 }.get(need)
                 if typed_field is not None:
                     is_provided = getattr(evidence_proj, typed_field) is not None
@@ -521,6 +527,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
             evidence_proj.discontinuity_safety,
             evidence_proj.market_state_context,
             evidence_proj.index_futures_context,
+            evidence_proj.cash_institutional_flow_context,
         ):
             if isinstance(typed_evidence, dict):
                 typed_ids = typed_evidence.get("citation_ids", [])
@@ -604,6 +611,7 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                 ("discontinuity_safety", ev.discontinuity_safety),
                 ("market_state_context", ev.market_state_context),
                 ("index_futures_context", ev.index_futures_context),
+                ("cash_institutional_flow_context", ev.cash_institutional_flow_context),
             ):
                 if typed_evidence is not None:
                     t_dict["evidence"][field_name] = typed_evidence

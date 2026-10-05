@@ -1,6 +1,6 @@
 # PROJECT.md — Current Project Authority
 
-## Current I3-A3 Owner acceptance boundary (2026-10-04)
+## Current I3 production boundary (2026-10-05)
 
 `cash_institutional_flow_context` A0 source preflight is `GO_PASS`, A1 is
 `FROZEN_PASS`, A2-R1 is `PASS`, and A3 bounded-live adapter acceptance is
@@ -8,17 +8,26 @@
 historical HOLD outcomes; Attempt 4 is the accepted PASS. Its live authority is
 consumed, and no further A3 acquisition or Attempt 5 is authorized or required.
 
-I3 remains **non-production**: active sources and production routes are 0/0;
-the candidate executor is not reachable through the default runtime. Final
-merge-readiness for PR #300 passed, so PR #300 merge is Owner-authorized and
-I3-A4 **Production Activation Preflight only** is authorized after merge.
-A4 production activation, source/route activation, public V3 integration, and
-MCP changes remain not authorized. The MCP surface remains six tools; broader
-Phase I is incomplete.
+I3-A4 is **OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_PRODUCTION_ACTIVATION_PASS**
+and closed under final Owner acceptance. The default runtime has two
+market-specific I3 executor registrations (TWSE/TPEX), one logical same-market
+route, two official source authorities, governed pre-authorization TWSE date
+binding, Unified V3 support, and production evidence V2. This tranche performed
+no market acquisition; additional live acceptance is not required. PR #301
+merge remains unauthorized. MCP remains six tools and broader Phase I remains
+incomplete.
 
 Owner acceptance evidence:
 
 `docs/governance/phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json`
+
+Activation implementation ledger:
+
+`docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json`
+
+Final Owner acceptance closure:
+
+`docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json`
 
 ## Current I2 production activation boundary (2026-10-01)
 
@@ -34,8 +43,9 @@ I2-A4 production activation is Owner-accepted and merge-authorized.
   `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
 - No additional market request was authorized or performed for activation.
 - I1 remains active with two routes and three sources; MCP remains exactly six.
-- I3-A3 is Owner-accepted but I3 production remains inactive; Phase J is not
-  started and broader Phase I remains incomplete.
+- I3-A3 and I3-A4 are Owner-accepted. I3 production is active; see the current
+  I3 production boundary above. Phase J is not started and broader Phase I
+  remains incomplete.
 
 Activation evidence:
 
@@ -238,8 +248,9 @@ Current interpretation:
   `股票` breadth selection, source-native units, explicit approval, and no
   polling/history/background behavior. Evidence is loaded only when explicitly
   requested and authorized. I2-A4 is Owner-accepted and active. I3-A3 is
-  Owner-accepted bounded-live adapter evidence, but I3 production remains
-  inactive; the broader Roadmap Phase I remains incomplete.
+  Owner-accepted bounded-live adapter evidence. I3-A4 is now Owner-accepted
+  and active with two sources, one logical route, and two runtime registrations;
+  broader Roadmap Phase I remains incomplete.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is
@@ -272,9 +283,10 @@ activation is Owner-accepted under
 `USER_CHAT_2026-10-01_PHASE_I_I2_A4_FINAL_PRODUCTION_ACTIVATION_ACCEPTANCE_AND_MERGE_CLOSURE`.
 The normal route is approval-gated, TWSE company/common-share only, same-source,
 and bounded to at most one TAIFEX acquisition per governed execution. I3-A3 is
-Owner-accepted under its separate ledger, while I3 production remains 0/0,
-A4 is unauthorized, Phase I remains incomplete, and MCP remains exactly six
-tools. The earlier unused I2 live authority is superseded without use.
+Owner-accepted under its separate ledger. I3 production is active and Owner-
+accepted under the 2026-10-05 final closure ledger; Phase I remains incomplete
+and MCP remains exactly six tools. The earlier
+unused I2 live authority is superseded without use.
 
 ## Current authority hierarchy
 
