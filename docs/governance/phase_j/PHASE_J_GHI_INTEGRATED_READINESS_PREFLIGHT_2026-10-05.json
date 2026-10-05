@@ -1,5 +1,5 @@
 {
-  "schema_version": "phase_j_ghi_integrated_readiness_preflight.v1",
+  "schema_version": "phase_j_ghi_integrated_readiness_preflight.v2",
   "owner_authorization": "USER_CHAT_2026-10-05_GHI_INTEGRATED_PHASE_J_READINESS_PREFLIGHT_AUTHORIZATION",
   "starting_main": {
     "commit": "7013021914c76c070e000c245e307626a5bc975f",
@@ -58,7 +58,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Selected normal runtime routes exist; J must select an eligible target.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "PRODUCTION_READY",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-02",
@@ -80,7 +83,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Normal TPEx is covered without requiring the separate TPEx H3 baseline route.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "PRODUCTION_READY",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-03",
@@ -101,7 +107,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Current planner and same-source batching exist; J needs cross-scenario expected assertions.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "ACCEPTANCE_HARNESS_ONLY",
+      "conversational_relevance_reason": "This row primarily needs a versioned cross-layer expected-semantics harness."
     },
     {
       "scenario_id": "J1-04",
@@ -122,7 +131,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Latest snapshot is executable, without realtime guarantee.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "PRODUCTION_READY",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-05",
@@ -143,7 +155,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Official EOD route selected for eligible shares.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "PRODUCTION_READY",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-06",
@@ -165,7 +180,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Only latest completed official daily batch, not arbitrary historical or realtime search.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "PRODUCTION_READY",
+      "product_relevance_class": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+      "conversational_relevance_reason": "The evidence family is useful when asked for but not a universal prerequisite to the governed conversational closed loop."
     },
     {
       "scenario_id": "J1-07",
@@ -186,7 +204,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "No evidence is scoped to the completed official daily batch and distinguished from source failure.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+      "conversational_relevance_reason": "Accepted fail-closed typed response, not fabricated positive evidence, is the acceptance target."
     },
     {
       "scenario_id": "J1-08",
@@ -204,12 +225,13 @@
       "current_market_coverage": "TWSE/TPEX eligible common shares",
       "current_acceptance_layer_coverage": "fixture/unit/integration; J suite pending",
       "readiness_class": "MISSING_REQUIRED_CAPABILITY",
-      "j_entry_blocker": true,
-      "blocker_ids": [
-        "J-B02"
-      ],
-      "reason": "Current adapter emits unresolved revision relation and rejects conflicting duplicates; it does not prove an actual correction linkage for the mandatory corrected-disclosure case.",
-      "recommended_predecessor_tranche": "G bounded correction/amendment relation semantics and acceptance"
+      "j_entry_blocker": false,
+      "blocker_ids": [],
+      "reason": "Positive correction linkage is not proven; existing revision_relation=unresolved and conflicting-duplicate fail-closed behavior are the correct acceptance outcome unless official evidence establishes a relation. Do not infer or fabricate supersession. The AI must say official linkage is unproven, not that no correction occurred; positive linkage is not claimed.",
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "MISSING_REQUIRED_CAPABILITY",
+      "product_relevance_class": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+      "conversational_relevance_reason": "Accepted fail-closed typed response, not fabricated positive evidence, is the acceptance target."
     },
     {
       "scenario_id": "J1-09",
@@ -231,7 +253,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Latest available reporting period with missing/not-yet-available distinction; no arbitrary history.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "PRODUCTION_READY",
+      "product_relevance_class": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+      "conversational_relevance_reason": "The evidence family is useful when asked for but not a universal prerequisite to the governed conversational closed loop."
     },
     {
       "scenario_id": "J1-10",
@@ -250,12 +275,13 @@
       "current_market_coverage": "TWSE/TPEX eligible common shares",
       "current_acceptance_layer_coverage": "fixture/unit/integration; J suite pending",
       "readiness_class": "MISSING_REQUIRED_CAPABILITY",
-      "j_entry_blocker": true,
-      "blocker_ids": [
-        "J-B01"
-      ],
-      "reason": "No current V3 financial-statement capability, selected route, or registry executor. Monthly revenue is not a statement.",
-      "recommended_predecessor_tranche": "G bounded selected-statement source/contract/runtime/acceptance"
+      "j_entry_blocker": false,
+      "blocker_ids": [],
+      "reason": "Financial statements are absent from the V3 capability vocabulary/runtime, but optional for normal market conversation. Capability description omits financial_summary; an attempted V3 need is rejected as REQUEST_SCHEMA_INVALID before execution. AI must explain that statements are unsupported, without fabricating data or substituting monthly revenue. This operational J-entry interpretation retains Roadmap G3 as durable future scope and does not mark G/J complete.",
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "MISSING_REQUIRED_CAPABILITY",
+      "product_relevance_class": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+      "conversational_relevance_reason": "The evidence family is useful when asked for but not a universal prerequisite to the governed conversational closed loop."
     },
     {
       "scenario_id": "J1-11",
@@ -278,8 +304,11 @@
       "blocker_ids": [
         "J-B03"
       ],
-      "reason": "TPEx attention is active; disposition has no active TWSE or TPEx route.",
-      "recommended_predecessor_tranche": "H1 bounded disposition route and acceptance"
+      "reason": "TPEx attention is active; disposition has no active TWSE or TPEx route. Its absence may materially misstate abnormal trading context in ordinary conversation. Attention-only coverage cannot establish a no-status conclusion for disposition.",
+      "recommended_predecessor_tranche": "H1 bounded disposition route and acceptance",
+      "runtime_readiness_class": "PARTIAL_MARKET_COVERAGE",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-12",
@@ -301,8 +330,11 @@
       "blocker_ids": [
         "J-B03"
       ],
-      "reason": "No active TWSE or TPEx suspension/resumption route.",
-      "recommended_predecessor_tranche": "H1 bounded suspend/resume route and acceptance"
+      "reason": "No active TWSE or TPEx suspension/resumption route. Its absence may materially misstate whether a security can trade.",
+      "recommended_predecessor_tranche": "H1 bounded suspend/resume route and acceptance",
+      "runtime_readiness_class": "MISSING_REQUIRED_CAPABILITY",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-13",
@@ -325,8 +357,11 @@
       "blocker_ids": [
         "J-B04"
       ],
-      "reason": "V3 contract/schema exists, but H2 has no normal executable or accepted production route.",
-      "recommended_predecessor_tranche": "H2 bounded corporate-action route and interpretation acceptance"
+      "reason": "V3 contract/schema exists, but H2 has no normal executable or accepted production route. Without governed price-basis context, AI could mistake a mechanical reset for an ordinary economic collapse; H4 must fail closed.",
+      "recommended_predecessor_tranche": "H2 bounded corporate-action route and interpretation acceptance",
+      "runtime_readiness_class": "CONTRACT_PRESENT_RUNTIME_INACTIVE",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-14",
@@ -349,8 +384,11 @@
       "blocker_ids": [
         "J-B04"
       ],
-      "reason": "V3 contract/schema exists, but H2 has no normal executable or accepted production route.",
-      "recommended_predecessor_tranche": "H2 bounded corporate-action route and interpretation acceptance"
+      "reason": "V3 contract/schema exists, but H2 has no normal executable or accepted production route. Without governed price-basis context, AI could mistake a mechanical reset for an ordinary economic collapse; H4 must fail closed.",
+      "recommended_predecessor_tranche": "H2 bounded corporate-action route and interpretation acceptance",
+      "runtime_readiness_class": "CONTRACT_PRESENT_RUNTIME_INACTIVE",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-15",
@@ -373,8 +411,11 @@
       "blocker_ids": [
         "J-B04"
       ],
-      "reason": "V3 contract/schema exists, but H2 has no normal executable or accepted production route.",
-      "recommended_predecessor_tranche": "H2 bounded corporate-action route and interpretation acceptance"
+      "reason": "V3 contract/schema exists, but H2 has no normal executable or accepted production route. Without governed price-basis context, AI could mistake a mechanical reset for an ordinary economic collapse; H4 must fail closed.",
+      "recommended_predecessor_tranche": "H2 bounded corporate-action route and interpretation acceptance",
+      "runtime_readiness_class": "CONTRACT_PRESENT_RUNTIME_INACTIVE",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-16",
@@ -397,8 +438,11 @@
       "blocker_ids": [
         "J-B04"
       ],
-      "reason": "V3 contract/schema exists, but H2 has no normal executable or accepted production route.",
-      "recommended_predecessor_tranche": "H2 bounded corporate-action route and interpretation acceptance"
+      "reason": "V3 contract/schema exists, but H2 has no normal executable or accepted production route. Without governed price-basis context, AI could mistake a mechanical reset for an ordinary economic collapse; H4 must fail closed.",
+      "recommended_predecessor_tranche": "H2 bounded corporate-action route and interpretation acceptance",
+      "runtime_readiness_class": "CONTRACT_PRESENT_RUNTIME_INACTIVE",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-17",
@@ -420,7 +464,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "J.1 lists normal TPEx and baseline as separate scenarios, with no cross-product requirement; TWSE selected 1..20-day route can cover baseline. TPEx H3 remains deferred and cannot be claimed. Owner-controlled local-first use does not establish provider-approved unattended automation.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "PRODUCTION_READY",
+      "product_relevance_class": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+      "conversational_relevance_reason": "The evidence family is useful when asked for but not a universal prerequisite to the governed conversational closed loop."
     },
     {
       "scenario_id": "J1-18",
@@ -442,7 +489,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Accepted I2 runtime; catalog/routing retain stale A4-pending prose that should be reconciled in a later current-authority cleanup.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "PRODUCTION_READY",
+      "product_relevance_class": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+      "conversational_relevance_reason": "The evidence family is useful when asked for but not a universal prerequisite to the governed conversational closed loop."
     },
     {
       "scenario_id": "J1-19",
@@ -463,7 +513,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Currentness and source-date semantics exist; J needs paired-source golden expectations.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-20",
@@ -484,7 +537,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Existing deterministic and live selected-product partial semantics can seed J fixture.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-21",
@@ -505,7 +561,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Typed stale semantics exist; J needs scenario-level expected assertion.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-22",
@@ -526,7 +585,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "G/I typed missing semantics exist; source failure must stay distinct.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+      "conversational_relevance_reason": "Accepted fail-closed typed response, not fabricated positive evidence, is the acceptance target."
     },
     {
       "scenario_id": "J1-23",
@@ -547,7 +609,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "G/I source-failure tests and bounded evidence exist.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-24",
@@ -568,7 +633,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Identity ambiguity must fail closed rather than name-match fallback.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     },
     {
       "scenario_id": "J1-25",
@@ -589,7 +657,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Known identity does not imply capability eligibility; assert explicit unsupported result.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+      "conversational_relevance_reason": "Accepted fail-closed typed response, not fabricated positive evidence, is the acceptance target."
     },
     {
       "scenario_id": "J1-26",
@@ -610,7 +681,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Refusal is an expected governed negative path; J needs fixture assertion.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+      "conversational_relevance_reason": "Accepted fail-closed typed response, not fabricated positive evidence, is the acceptance target."
     },
     {
       "scenario_id": "J1-27",
@@ -631,7 +705,10 @@
       "j_entry_blocker": false,
       "blocker_ids": [],
       "reason": "Existing operation limits and negative controls are reusable; J must assert actual bound.",
-      "recommended_predecessor_tranche": null
+      "recommended_predecessor_tranche": null,
+      "runtime_readiness_class": "ACCEPTANCE_READY_WITH_EXISTING_RUNTIME",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "conversational_relevance_reason": "This semantic or source context is required to avoid a material error in normal market conversation."
     }
   ],
   "acceptance_layer_inventory": {
@@ -889,36 +966,8 @@
   },
   "j_blockers": [
     {
-      "blocker_id": "J-B01",
-      "priority": 1,
-      "scenario_ids": [
-        "J1-10"
-      ],
-      "missing_substrate": "selected official financial-statement production capability",
-      "phase_owner": "G",
-      "gap_class": "CAPABILITY_ABSENT",
-      "smallest_bounded_tranche": "G selected-statement evidence contract, one bounded official source/route, period semantics, V3 projection and governed acceptance",
-      "network_proof_eventually_required": true,
-      "why_required_for_j": "J.1 explicitly mandates financial statements; monthly revenue cannot substitute.",
-      "why_broader_phase_completion_unnecessary": "Only selected statement fields and periods needed for Golden Scenario need proof."
-    },
-    {
-      "blocker_id": "J-B02",
-      "priority": 2,
-      "scenario_ids": [
-        "J1-08"
-      ],
-      "missing_substrate": "actual corrected-disclosure linkage rather than only unresolved relation",
-      "phase_owner": "G",
-      "gap_class": "CAPABILITY_ABSENT",
-      "smallest_bounded_tranche": "G bounded correction/duplicate semantics with deterministic and source-backed acceptance",
-      "network_proof_eventually_required": "only if existing accepted evidence cannot establish a real correction case",
-      "why_required_for_j": "J.1 expressly names corrected disclosure; unresolved is safe but does not satisfy that positive case.",
-      "why_broader_phase_completion_unnecessary": "No arbitrary historical/realtime disclosure search is required."
-    },
-    {
       "blocker_id": "J-B03",
-      "priority": 3,
+      "priority": 1,
       "scenario_ids": [
         "J1-11",
         "J1-12"
@@ -926,14 +975,14 @@
       "missing_substrate": "disposition and suspend/resume normal H1 routes",
       "phase_owner": "H",
       "gap_class": "MARKET_COVERAGE_INCOMPLETE",
-      "smallest_bounded_tranche": "H1 representative-market disposition and suspend/resume source/route acceptance with exact status timing",
+      "smallest_bounded_tranche": "H1 representative-market disposition and suspend/resume route acceptance with exact market/target fixture, effective-time semantics and explicit unsupported/coverage caveat for unselected markets; no-status must not be inferred from attention-only coverage.",
       "network_proof_eventually_required": true,
       "why_required_for_j": "TPEx attention alone cannot represent the distinct mandatory statuses.",
       "why_broader_phase_completion_unnecessary": "J need not activate every H1 market/subtype combination if the selected representative coverage is explicit."
     },
     {
       "blocker_id": "J-B04",
-      "priority": 4,
+      "priority": 2,
       "scenario_ids": [
         "J1-13",
         "J1-14",
@@ -943,7 +992,7 @@
       "missing_substrate": "normal executable H2 corporate-action and discontinuity route",
       "phase_owner": "H",
       "gap_class": "CONTRACT_PRESENT_RUNTIME_INACTIVE",
-      "smallest_bounded_tranche": "H2 bounded official corporate-action source/route for J event set plus H4 fail-closed discontinuity semantics and acceptance",
+      "smallest_bounded_tranche": "H2 bounded official corporate-action route for J event set on explicit representative market/target fixtures, H4 fail-closed interpretation, and explicit unsupported/coverage caveat for unselected markets.",
       "network_proof_eventually_required": true,
       "why_required_for_j": "Contract-only H2 cannot supply J corporate-action events through normal governed runtime.",
       "why_broader_phase_completion_unnecessary": "Only the J event set and representative governed market are entry requirements."
@@ -952,7 +1001,7 @@
   "non_blocking_g_h_gaps": [
     {
       "gap_class": "ROADMAP_SCOPE_DEFERRED_NOT_J_REQUIRED",
-      "scope": "G arbitrary historical/realtime disclosure or revenue search; broader financial fields beyond selected J statement case"
+      "scope": "G arbitrary historical/realtime disclosure or revenue search and selected financial-statement production coverage; explicit unsupported remains a valid J semantic outcome."
     },
     {
       "gap_class": "ROADMAP_SCOPE_DEFERRED_NOT_J_REQUIRED",
@@ -974,7 +1023,8 @@
     "TPEX": 0,
     "TAIFEX": 0,
     "MOPS": 0,
-    "other_market_research": 0
+    "other_market_research": 0,
+    "MIS": 0
   },
   "mcp_tool_count": 6,
   "scope_containment": {
@@ -987,17 +1037,359 @@
     "market_live_acquisition": false,
     "phase_j_started": false
   },
-  "final_disposition": "PHASE_J_READINESS_PREFLIGHT_HOLD_FOR_BOUNDED_PREDECESSOR_GAPS",
+  "final_disposition": "PHASE_J_READINESS_PREFLIGHT_HOLD_FOR_BOUNDED_CONVERSATIONAL_CORRECTNESS_GAPS",
   "validation": {
+    "status": "PASS",
     "compileall": "PASS",
     "portable_catalog_sync": "PASS",
     "runtime_skill_guide_sync": "PASS; MCP=6",
     "phase_h_v3_contracts": "PASS",
     "phase_i_final_exit": "PASS",
-    "phase_j_readiness_validator": "PASS",
-    "focused_tests": "63 passed for G/H/J focus; 8 dedicated preflight tests passed after validator repair",
-    "default_ci": "1237 passed / 0 failed / 1 skipped / 5 deselected; fresh final run",
-    "full_current": "1609 passed / 0 failed / 1 skipped / 5 deselected; fresh final run after validator repair",
-    "network_may_have_occurred": false
-  }
+    "phase_j_readiness_validator": "PASS; scenarios=27, current J blockers=2, GETs=0",
+    "focused_tests": "79 passed",
+    "product_intent_tests": "24 passed",
+    "default_ci": "1253 passed / 0 failed / 1 skipped / 5 deselected",
+    "full_current": "1625 passed / 0 failed / 1 skipped / 5 deselected",
+    "network_may_have_occurred": false,
+    "git_diff_check": "PASS"
+  },
+  "realignment_authorization": "USER_CHAT_2026-10-05_PHASE_J_PRODUCT_INTENT_REALIGNMENT_AUTHORIZATION",
+  "original_preflight": {
+    "commit": "e13fd5d065ada1c80096e056b97d1a63a9d38ed8",
+    "tree": "f2381b12eccb0088235b341bdfc81e05fc62b8db",
+    "interpretation": "Initial scenario and accepted-evidence inventory retained; initial four-blocker decision superseded by conversational product relevance gate."
+  },
+  "product_north_star": {
+    "operational_interpretation": "Conversational Market Evidence Acceptance",
+    "definition": "A real AI uses the governed six-tool MCP to obtain enough trustworthy Taiwan-market evidence for a normal human conversation; AI performs analysis, comparison, explanation and dialogue, while TW-Market preserves identity, source, actual source time/currentness, missing/partial/failure, citation, lineage and audit.",
+    "execution_chain": [
+      "human question",
+      "AI selects explicit data_needs",
+      "MCP validates identity and previews bounded work",
+      "human/operator explicitly authorizes",
+      "TW-Market executes once",
+      "supported current/MIS and official evidence with typed semantics",
+      "AI explains with caveats to human"
+    ],
+    "temporal_boundary": "current observation is not a blanket realtime guarantee; distinguish MIS/current observation, official EOD, trade_date, published_at, reporting_period, retrieved_at and currentness",
+    "excluded_product_shapes": [
+      "research warehouse",
+      "financial database",
+      "autonomous research agent",
+      "stock ranking",
+      "strategy or signal engine",
+      "backtester",
+      "general crawler"
+    ],
+    "authority_evidence": [
+      "ROADMAP.md",
+      "PROJECT.md",
+      "README.md",
+      "README.zh-TW.md",
+      "docs/governance/phase_i/Phase_I_I0_Evidence_Value_Source_Identity_Timing_Decision_Record_2026-09-29_FROZEN.md",
+      "skills/tw-market-evidence-agent/SKILL.md",
+      "skills/tw-market-evidence-agent/references/current_limitations.md"
+    ],
+    "historical_source_location_note": "No independent Roadmap V3.1 artifact was located. Current ROADMAP.md V3.2 canonically restates its conversational flow. The Phase G Deep Probe and Owner-approved G0 Contract Decisions are in the separately named project evidence directory outside this Git checkout; G0 is the frozen decision authority and Deep Probe is supporting research, not coding authorization.",
+    "external_project_evidence": [
+      {
+        "path": "D:\\Codex-Workspace\\docs\\tw-market-live-data-intelligence\\10_Phase_G_Authority\\Phase_G_G0_Contract_Decisions.md",
+        "sha256": "da6484ff0af5e55721029f8fabe028a0eb5e8b0c177cde8679af7fcd6fee03c1",
+        "role": "OWNER-APPROVED G0 frozen decisions: G1/G2 conversational slice before G3 financial summary; unresolved correction unless official linkage; no research database."
+      },
+      {
+        "path": "D:\\Codex-Workspace\\docs\\tw-market-live-data-intelligence\\20_Phase_G_Evidence\\Phase_G_AI_First_Official_Research_Evidence_Deep_Probe_2026-09-15.md",
+        "sha256": "2138f2c103db06dd1b87708154ba883e1bb52a62f4d3473dbb859e94580deada",
+        "role": "RESEARCH / PRE-IMPLEMENTATION support for intent; not implementation authorization."
+      }
+    ]
+  },
+  "conversational_product_relevance_gate": {
+    "gate_id": "CONVERSATIONAL_PRODUCT_RELEVANCE_GATE",
+    "questions": [
+      "Is this capability necessary for a normal human-AI Taiwan-market conversation?",
+      "If absent, can explicit unsupported/unavailable/unresolved/missing avoid material misinterpretation?",
+      "Would absence misstate current status, price basis, identity, source or timing/currentness?",
+      "Does the row test product correctness or only broader evidence coverage?",
+      "Does existing fail-closed behavior satisfy conversational correctness?",
+      "Is it required for the MCP human-AI evidence loop or optional enrichment?"
+    ],
+    "decision_rule": "A J.1 mention alone does not make unavailable runtime a J-entry blocker. Block only an unavailable MUST_HAVE_FOR_CONVERSATIONAL_J substrate that cannot be safely represented through accepted fail-closed semantics. Preserve every J.1 row as an acceptance inventory.",
+    "runtime_vs_relevance": "Runtime readiness and conversational product relevance are independent dimensions."
+  },
+  "scenario_product_relevance": {
+    "J1-01": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-02": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-03": "ACCEPTANCE_HARNESS_ONLY",
+    "J1-04": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-05": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-06": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+    "J1-07": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+    "J1-08": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+    "J1-09": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+    "J1-10": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+    "J1-11": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-12": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-13": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-14": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-15": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-16": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-17": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+    "J1-18": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+    "J1-19": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-20": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-21": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-22": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+    "J1-23": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-24": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+    "J1-25": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+    "J1-26": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+    "J1-27": "MUST_HAVE_FOR_CONVERSATIONAL_J"
+  },
+  "conversational_scenario_groups": [
+    {
+      "group_id": "J-C01",
+      "name": "Current market state",
+      "human_intent": "2330 現在怎樣？",
+      "scenario_ids": [
+        "J1-01",
+        "J1-02",
+        "J1-04",
+        "J1-19",
+        "J1-21"
+      ],
+      "evidence_concepts": [
+        "identity",
+        "supported current/MIS observation",
+        "source timestamp",
+        "actual currentness"
+      ],
+      "critical_semantics": "Never claim every current observation is realtime."
+    },
+    {
+      "group_id": "J-C02",
+      "name": "Today's movement in context",
+      "human_intent": "2330 今天怎麼了？",
+      "scenario_ids": [
+        "J1-04",
+        "J1-05",
+        "J1-11",
+        "J1-13",
+        "J1-16",
+        "J1-17"
+      ],
+      "evidence_concepts": [
+        "current observation",
+        "official EOD",
+        "market_state_context",
+        "recent_performance where supported",
+        "trading status",
+        "corporate action"
+      ],
+      "critical_semantics": "Do not explain corporate-action reference-price reset as an ordinary price collapse."
+    },
+    {
+      "group_id": "J-C03",
+      "name": "Institutional and futures context",
+      "human_intent": "外資今天怎麼樣？台指期呢？",
+      "scenario_ids": [
+        "J1-18",
+        "J1-19"
+      ],
+      "evidence_concepts": [
+        "cash_institutional_flow_context",
+        "index_futures_context",
+        "timing alignment"
+      ],
+      "critical_semantics": "Cash institutional flow is not futures institutional positioning."
+    },
+    {
+      "group_id": "J-C04",
+      "name": "Official company information",
+      "human_intent": "最近有什麼重大訊息或營收？",
+      "scenario_ids": [
+        "J1-06",
+        "J1-07",
+        "J1-08",
+        "J1-09",
+        "J1-10"
+      ],
+      "evidence_concepts": [
+        "material_disclosures",
+        "monthly_revenue",
+        "publication/reporting period",
+        "source",
+        "missing",
+        "revision_relation"
+      ],
+      "critical_semantics": "Financial statements are optional; unresolved correction linkage stays unresolved."
+    },
+    {
+      "group_id": "J-C05",
+      "name": "Regulatory and trading status",
+      "human_intent": "今天為什麼不能正常交易？",
+      "scenario_ids": [
+        "J1-11",
+        "J1-12"
+      ],
+      "evidence_concepts": [
+        "attention",
+        "disposition",
+        "suspension/resumption",
+        "effective time"
+      ],
+      "critical_semantics": "Current partial H1 status cannot be reported as complete. Representative market/target fixture must be explicit; unselected markets remain unsupported rather than silently normal."
+    },
+    {
+      "group_id": "J-C06",
+      "name": "Corporate action and price basis",
+      "human_intent": "為什麼今天價格突然掉一大截？",
+      "scenario_ids": [
+        "J1-13",
+        "J1-14",
+        "J1-15",
+        "J1-16"
+      ],
+      "evidence_concepts": [
+        "corporate_action_context",
+        "reference-price discontinuity",
+        "H4 safety"
+      ],
+      "critical_semantics": "No ordinary return interpretation across an unresolved material price-basis discontinuity. Representative market/target fixture must be explicit; unselected markets keep a coverage caveat."
+    },
+    {
+      "group_id": "J-C07",
+      "name": "Evidence unavailable or imperfect",
+      "human_intent": "所以現在到底有沒有資料？",
+      "scenario_ids": [
+        "J1-07",
+        "J1-08",
+        "J1-20",
+        "J1-21",
+        "J1-22",
+        "J1-23",
+        "J1-25",
+        "J1-26"
+      ],
+      "evidence_concepts": [
+        "missing",
+        "not_yet_available",
+        "no_evidence_in_covered_scope",
+        "stale",
+        "partial",
+        "source_failed",
+        "unsupported",
+        "unresolved"
+      ],
+      "critical_semantics": "Preserve each typed state; never convert source failure to no event or missing to zero."
+    },
+    {
+      "group_id": "J-C08",
+      "name": "Real AI and MCP closed loop",
+      "human_intent": "AI 依使用者問題取證並解釋。",
+      "scenario_ids": [
+        "J1-03",
+        "J1-24",
+        "J1-26",
+        "J1-27"
+      ],
+      "evidence_concepts": [
+        "human question",
+        "real AI",
+        "six-tool MCP",
+        "governed result/audit",
+        "AI explanation",
+        "human conversation"
+      ],
+      "critical_semantics": "Preview is not authorization; authorization is not execution; no real-agent run in this preflight."
+    }
+  ],
+  "reclassified_blockers": [
+    {
+      "blocker_id": "J-B01",
+      "scenario_ids": [
+        "J1-10"
+      ],
+      "old_j_entry_blocker": true,
+      "new_j_entry_blocker": false,
+      "runtime_readiness": "MISSING_REQUIRED_CAPABILITY",
+      "product_relevance_class": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+      "reason": "V3 catalog omits financial_summary and schema rejects that need as REQUEST_SCHEMA_INVALID; AI can first inspect capabilities and accurately explain that statements are unsupported. This preserves correct conversation without a financial warehouse."
+    },
+    {
+      "blocker_id": "J-B02",
+      "scenario_ids": [
+        "J1-08"
+      ],
+      "old_j_entry_blocker": true,
+      "new_j_entry_blocker": false,
+      "runtime_readiness": "MISSING_REQUIRED_CAPABILITY",
+      "product_relevance_class": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+      "reason": "Official correction relation is unresolved unless source proves linkage; exposing unresolved is correct, not a positive-linkage defect."
+    },
+    {
+      "blocker_id": "J-B03",
+      "scenario_ids": [
+        "J1-11",
+        "J1-12"
+      ],
+      "old_j_entry_blocker": true,
+      "new_j_entry_blocker": true,
+      "runtime_readiness": "PARTIAL_MARKET_COVERAGE + MISSING_REQUIRED_CAPABILITY",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "reason": "Disposition and suspend/resume can materially alter current market status and tradeability; no selected route covers them."
+    },
+    {
+      "blocker_id": "J-B04",
+      "scenario_ids": [
+        "J1-13",
+        "J1-14",
+        "J1-15",
+        "J1-16"
+      ],
+      "old_j_entry_blocker": true,
+      "new_j_entry_blocker": true,
+      "runtime_readiness": "CONTRACT_PRESENT_RUNTIME_INACTIVE",
+      "product_relevance_class": "MUST_HAVE_FOR_CONVERSATIONAL_J",
+      "reason": "Corporate actions and reference-price resets can invalidate ordinary raw price-movement interpretation; H2 runtime remains inactive."
+    }
+  ],
+  "non_blocking_optional_capabilities": [
+    {
+      "blocker_id": "J-B01",
+      "capability": "financial statements",
+      "runtime_readiness": "MISSING_REQUIRED_CAPABILITY",
+      "product_relevance": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING",
+      "accepted_outcome": "Capability description does not list financial_summary; attempted V3 need gets REQUEST_SCHEMA_INVALID before execution. AI explains unsupported statements; no invented values or substitution with monthly revenue."
+    },
+    {
+      "blocker_id": "J-B02",
+      "capability": "positive corrected-disclosure linkage",
+      "runtime_readiness": "MISSING_REQUIRED_CAPABILITY",
+      "product_relevance": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+      "accepted_outcome": "Preserve revision_relation=unresolved unless official linkage is proven; no inferred merge or supersession."
+    }
+  ],
+  "safe_fail_closed_scenarios": [
+    {
+      "scenario_id": "J1-08",
+      "assertion": "When official correction linkage is unproven, revision_relation stays unresolved and AI says the relation is unproven, not that no correction occurred; no inferred merge/supersession or positive-linkage claim."
+    },
+    {
+      "scenario_id": "J1-10",
+      "assertion": "Capability description omits financial_summary; attempted V3 need is rejected as REQUEST_SCHEMA_INVALID before execution; AI explains unsupported financial statements without fabrication."
+    },
+    {
+      "scenario_id": "J1-22",
+      "assertion": "Missing remains typed missing, not zero."
+    },
+    {
+      "scenario_id": "J1-25",
+      "assertion": "Unsupported identity/capability is explicit; no name fallback."
+    },
+    {
+      "scenario_id": "J1-26",
+      "assertion": "Refused authorization performs no execution."
+    }
+  ]
 }

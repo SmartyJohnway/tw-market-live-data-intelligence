@@ -14,7 +14,8 @@ The repository-level governance authority is intentionally small:
 ## Current runtime governance
 
 Phase J remains not started. The [G/H/I integrated Phase J readiness preflight](phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.md)
-classifies mandatory J.1 scenarios and records a bounded predecessor-gap HOLD;
+preserves all J.1 scenarios and records the product-intent realignment to a
+two-gap conversational-correctness HOLD;
 the [structured record](phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json)
 is the validator input. The preflight makes no market acquisition or product
 activation.

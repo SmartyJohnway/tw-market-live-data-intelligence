@@ -2,12 +2,15 @@
 
 ## Phase J readiness preflight (2026-10-05)
 
-Phase I is complete under the final exit closure. Phase J is not started. The
-G/H/I integrated readiness preflight records
-`PHASE_J_READINESS_PREFLIGHT_HOLD_FOR_BOUNDED_PREDECESSOR_GAPS`: mandatory J.1
-financial-statement, corrected-disclosure, H1 disposition/suspend-resume, and
-H2 corporate-action scenarios need separately authorized bounded predecessor
-work. This preflight performs no market GET and makes no product activation.
+Phase I is complete under the final exit closure. Phase J is not started or
+authorized. Draft PR #303 is undergoing Owner-authorized Product Intent
+Realignment. The original 27-scenario G/H/I inventory remains; its initial
+four-blocker interpretation is superseded by
+`PHASE_J_READINESS_PREFLIGHT_HOLD_FOR_BOUNDED_CONVERSATIONAL_CORRECTNESS_GAPS`.
+Current J-entry predecessors are limited to bounded H1 disposition/suspend-resume
+and H2 corporate-action/price-discontinuity correctness. Financial statements
+are optional evidence; unproven correction linkage must remain explicitly
+unresolved. This governance tranche performs no market GET or activation.
 See `docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.md`
 and its companion JSON for the exact scenario and acceptance-layer inventories.
 
