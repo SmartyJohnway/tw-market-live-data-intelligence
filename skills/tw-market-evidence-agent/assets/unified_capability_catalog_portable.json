@@ -4,8 +4,8 @@
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
     "canonical_sha256": "6a3383ad36eb26adc69a963549a45f741aa3316d007a6b9dbb2af169d75c404e",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "00ae7d2dc35e108251ccbb86ab81dab70e215985",
-    "canonical_git_blob_sha": "d84d8e5d287237e2ebcc125f27d5410cbf1a84a6"
+    "generated_from_commit": "9cb502292cdc522e3d328201633b4af16d92ff8f",
+    "canonical_git_blob_sha": "e712843c4b1de862cdbcb12d549e9810379f996b"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
