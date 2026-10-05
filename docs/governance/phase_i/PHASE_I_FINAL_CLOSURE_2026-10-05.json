@@ -1,0 +1,75 @@
+{
+  "schema_version": "phase_i_final_closure.v1",
+  "gate": "PHASE_I_FINAL_CLOSURE",
+  "status": "PHASE_I_COMPLETED_INDEPENDENT_EXIT_REVIEW_PASS",
+  "owner_direction": "PHASE_I_POST_MERGE_RECONCILIATION_AND_FINAL_EXIT_REVIEW",
+  "review_record": {
+    "path": "docs/governance/phase_i/PHASE_I_FINAL_EXIT_REVIEW_2026-10-05.json",
+    "sha256": "bb43a9e43d318fb96f7c04814bf264a7c92baf2059cda10d8cd444b06da56771",
+    "decision": "PHASE_I_OWNER_ACCEPTANCE_CANDIDATE_EXIT_PASS"
+  },
+  "roadmap": {
+    "authority": "ROADMAP.md V3.2",
+    "phase": "Phase I — Cross-Market & Optional Context",
+    "checkbox_completed": true,
+    "exit_basis": "Accepted I1 + I2 + I3 satisfy the minimum descriptive optional-context intent and I0 Evidence Value Gate; deferred candidate families are not blanket exit requirements."
+  },
+  "I0_authority": {
+    "path": "docs/governance/phase_i/Phase_I_I0_Evidence_Value_Source_Identity_Timing_Decision_Record_2026-09-29_FROZEN.md",
+    "sha256": "02e031e8c39eee96664457735432b7bf08ac9e8b03c07252921f425d05c8f7c5",
+    "status": "FROZEN_PASS"
+  },
+  "accepted_capabilities": {
+    "I1": {"capability": "market_state_context", "status": "ACTIVE / OWNER ACCEPTED", "active_sources": 3, "normal_routes": 2},
+    "I2": {"capability": "index_futures_context", "status": "ACTIVE / OWNER ACCEPTED", "active_sources": 1, "normal_routes": 1},
+    "I3": {"capability": "cash_institutional_flow_context", "status": "ACTIVE / OWNER ACCEPTED / MERGED", "active_sources": 2, "logical_routes": 1, "runtime_market_registrations": 2, "evidence_contract": "cash_institutional_flow_context_evidence.v2"}
+  },
+  "exit_results": {
+    "I.1_evidence_value_gate": "PASS",
+    "I.2_spot_derivatives_descriptive_context": "PASS",
+    "I.3_derivatives_identity_boundary": "PASS",
+    "I.4_optional_context_candidate_disposition": "PASS",
+    "I.5_default_result_minimalism": "PASS",
+    "phase_i_expected_product_outcome": "PASS",
+    "deferred_families_required_for_exit": false
+  },
+  "unified_public_surface": {
+    "preferred_request": "unified_market_evidence_request.v3",
+    "result": "unified_market_evidence_result.v3",
+    "audit": "unified_market_evidence_audit_package.v3",
+    "competing_public_api": false,
+    "MCP_tool_count": 6
+  },
+  "phase_j_authorized": false,
+  "market_GETs": {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0},
+  "validation": {
+    "compileall": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_guide_sync": "PASS; MCP=6",
+    "I1_validator": "PASS; sources/routes=3/2",
+    "I2_validator": "PASS; sources/routes=1/1",
+    "I3_validator": "PASS; sources/logical/runtime routes=2/1/2",
+    "rollback": "PASS; I3-ROLL-001",
+    "focused_tests": "45 passed; separate historical A4 preflight lifecycle suite 6 passed",
+    "default_ci": "1229 passed / 0 failed / 1 skipped / 5 deselected",
+    "full_current": "1601 passed / 0 failed / 1 skipped / 5 deselected",
+    "network_may_have_occurred": false
+  },
+  "merge_state": {
+    "PR_301": "MERGED / CLOSED",
+    "merge_commit": "39e162fa9f0b321b23300b20bfac8ce096646b63",
+    "merge_tree": "3cec6f82894b3e81e8d8d7d62f5c037bd50fa89f",
+    "parent_1": "5c26e7b541bdb6c0d70a39c1e0eab8e129823373",
+    "parent_2": "b693d624e6b440d310c5a1222e051e61df084cf5"
+  },
+  "scope_containment": {
+    "new_capability_implementation": false,
+    "production_code_changed": false,
+    "source_authority_changed": false,
+    "routing_changed": false,
+    "schema_changed": false,
+    "MCP_changed": false,
+    "market_live_acquisition": false,
+    "Phase_J_started": false
+  }
+}

@@ -13,9 +13,10 @@ and closed under final Owner acceptance. The default runtime has two
 market-specific I3 executor registrations (TWSE/TPEX), one logical same-market
 route, two official source authorities, governed pre-authorization TWSE date
 binding, Unified V3 support, and production evidence V2. This tranche performed
-no market acquisition; additional live acceptance is not required. PR #301
-merge remains unauthorized. MCP remains six tools and broader Phase I remains
-incomplete.
+no market acquisition; additional live acceptance was not required. PR #301
+merged as `39e162fa9f0b321b23300b20bfac8ce096646b63`. The Phase I final exit
+review is `PHASE_I_OWNER_ACCEPTANCE_CANDIDATE_EXIT_PASS`; Roadmap Phase I is
+complete. Phase J is not authorized; MCP remains six tools.
 
 Owner acceptance evidence:
 
@@ -28,6 +29,12 @@ Activation implementation ledger:
 Final Owner acceptance closure:
 
 `docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json`
+
+Phase I final exit review and closure:
+
+`docs/governance/phase_i/PHASE_I_FINAL_EXIT_REVIEW_2026-10-05.json`
+
+`docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json`
 
 ## Current I2 production activation boundary (2026-10-01)
 
@@ -250,7 +257,8 @@ Current interpretation:
   requested and authorized. I2-A4 is Owner-accepted and active. I3-A3 is
   Owner-accepted bounded-live adapter evidence. I3-A4 is now Owner-accepted
   and active with two sources, one logical route, and two runtime registrations;
-  broader Roadmap Phase I remains incomplete.
+  The Phase I final exit review passed; optional candidates remain deferred and
+  Phase J is not started or authorized.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is
@@ -284,8 +292,8 @@ activation is Owner-accepted under
 The normal route is approval-gated, TWSE company/common-share only, same-source,
 and bounded to at most one TAIFEX acquisition per governed execution. I3-A3 is
 Owner-accepted under its separate ledger. I3 production is active and Owner-
-accepted under the 2026-10-05 final closure ledger; Phase I remains incomplete
-and MCP remains exactly six tools. The earlier
+accepted under the 2026-10-05 final closure ledger. Phase I is complete under
+the final exit review; MCP remains exactly six tools. The earlier
 unused I2 live authority is superseded without use.
 
 ## Current authority hierarchy

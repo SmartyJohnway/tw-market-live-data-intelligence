@@ -77,10 +77,6 @@ def validate() -> dict:
         raise AssertionError("i3_a4_preflight_network_forbidden")
 
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny):
-        require(git("branch", "--show-current") == BRANCH, "wrong_preflight_branch")
-        require(git("merge-base", "HEAD", BASELINE) == BASELINE, "preflight_not_based_on_post_merge_main")
-        require(git("rev-parse", "origin/main") == BASELINE, "origin_main_drift")
-        require(git("show", "-s", "--format=%T", BASELINE) == BASELINE_TREE, "baseline_tree_drift")
         require({p: sha(p) for p in ACCEPTED} == ACCEPTED, "accepted_i3_authority_drift")
         activation = ROOT / "docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json"
         if activation.exists():
@@ -99,6 +95,14 @@ def validate() -> dict:
             active = validate_activation()
             print("I3-A4 preflight historical snapshot valid and superseded by active Owner-authorized state; market GETs=0")
             return {"historical_preflight": record, "current_activation": active}
+        # These branch/base guards govern execution of the original preflight
+        # gate only. Once activation exists, this module validates an immutable
+        # historical snapshot and must not bind that validation to today's branch
+        # name or moving origin/main pointer.
+        require(git("branch", "--show-current") == BRANCH, "wrong_preflight_branch")
+        require(git("merge-base", "HEAD", BASELINE) == BASELINE, "preflight_not_based_on_post_merge_main")
+        require(git("rev-parse", "origin/main") == BASELINE, "origin_main_drift")
+        require(git("show", "-s", "--format=%T", BASELINE) == BASELINE_TREE, "baseline_tree_drift")
         baseline_hashes = {p: hashlib.sha256(subprocess.check_output(
             ["git", "show", f"{BASELINE}:{p}"], cwd=ROOT
         )).hexdigest() for p in PROTECTED}
