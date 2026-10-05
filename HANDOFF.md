@@ -293,7 +293,9 @@ is production executable under the accepted I2-A4 route. I3-A3 is separately
 Owner-accepted. This paragraph is a historical checkpoint preceding the
 2026-10-05 activation; current I3 authority is summarized at the top of this
 handoff. The old unused A3 authority is superseded_without_use and the fresh
-single-GET authority is consumed. Broader Phase I remains incomplete.
+single-GET authority is consumed. At that historical checkpoint, broader Phase I
+was incomplete; the current exit disposition is recorded in the Phase I final
+exit review linked above.
 
 ## Before any future Phase I work
 
