@@ -13,6 +13,12 @@ The repository-level governance authority is intentionally small:
 
 ## Current runtime governance
 
+Phase J remains not started. The [G/H/I integrated Phase J readiness preflight](phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.md)
+classifies mandatory J.1 scenarios and records a bounded predecessor-gap HOLD;
+the [structured record](phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json)
+is the validator input. The preflight makes no market acquisition or product
+activation.
+
 I2-A4 and I3-A4 production activation are Owner-accepted. I3 has two active
 official sources, one logical route, two runtime market registrations, active
 Unified V3 integration, and production evidence V2. PR #301 merged as
