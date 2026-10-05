@@ -65,7 +65,7 @@ def _validate_batch(requests: tuple[dict[str, Any], ...], context: Any) -> tuple
     if market not in ("TWSE", "TPEX"):
         raise OrchestrationError("i3_market_unsupported")
     binding = (first.get("batch_group_id"), first.get("authorization_id"), first.get("authorization_hash"),
-               first.get("plan_hash"), first.get("resolved_source_trade_date") if market == "TWSE" else None)
+               first.get("plan_hash"))
     source_date: str | None = None
     if market == "TWSE":
         params = first.get("parameters")
@@ -91,11 +91,14 @@ def _validate_batch(requests: tuple[dict[str, Any], ...], context: Any) -> tuple
         if targets[0].split(":", 1)[0] != market:
             raise OrchestrationError("i3_target_market_mismatch")
         if (request.get("batch_group_id"), request.get("authorization_id"), request.get("authorization_hash"),
-            request.get("plan_hash"), request.get("resolved_source_trade_date") if market == "TWSE" else None) != binding:
+            request.get("plan_hash")) != binding:
             raise OrchestrationError("i3_batch_binding_mismatch")
         params = request.get("parameters")
-        if market == "TWSE" and (not isinstance(params, dict) or params != {"resolved_source_trade_date": source_date}):
-            raise OrchestrationError("i3_twse_date_binding_invalid")
+        if market == "TWSE":
+            if not isinstance(params, dict) or set(params) != {"resolved_source_trade_date"}:
+                raise OrchestrationError("i3_twse_date_binding_invalid")
+            if params.get("resolved_source_trade_date") != source_date:
+                raise OrchestrationError("i3_batch_binding_mismatch")
         if market == "TPEX" and params != {}:
             raise OrchestrationError("i3_tpex_query_date_forbidden")
     return market, source_date

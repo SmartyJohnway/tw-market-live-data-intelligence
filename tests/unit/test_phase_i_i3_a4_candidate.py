@@ -217,3 +217,61 @@ def test_transport_rejects_declared_oversize_and_content_length_mismatch():
         acquire_once("TPEX", opener=mismatch, clock=lambda: datetime(2026, 10, 4, tzinfo=timezone.utc))
     assert len(mismatch.calls) == 1
     assert mismatch.response.offset == 2
+
+
+@pytest.mark.parametrize("failure,declared,partial,error", [
+    ("response_headers", 4 * 1024 * 1024 + 777, 0, "response_byte_limit_exceeded"),
+    ("response_body_read", None, 4 * 1024 * 1024 + 1, "response_byte_limit_exceeded"),
+    ("response_body_read", 10, 7, "content_length_mismatch"),
+])
+def test_transport_failure_evidence_is_schema_valid_and_truthful(tmp_path, failure, declared, partial, error):
+    body = _bytes("TPEX")
+    telemetry = _telemetry("TPEX", body)
+    telemetry.update(complete_body_received=False, response_byte_count=0, partial_response_byte_count=partial,
+                     response_sha256=None, failure_phase=failure, error_code=error)
+    telemetry["http_status"] = 200
+    telemetry["content_type"] = "application/json"
+    telemetry["declared_content_length"] = declared
+    telemetry["retrieved_at"] = "2026-10-04T12:00:00Z"
+
+    def fail_acquire(_market, *, resolved_source_trade_date=None):
+        assert resolved_source_trade_date is None
+        raise AcquisitionError(error, telemetry)
+
+    request = _request("TPEX", "5347")
+    results = production_batch_operation_adapter_candidate([request],
+        SimpleNamespace(mode="execute-approved", governed_output_root=str(tmp_path)), acquire=fail_acquire)
+    assert len(results) == 1 and results[0]["status"] == "failed"
+    evidence_path = tmp_path / results[0]["evidence_artifacts"][0]["relative_path"]
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    validate_evidence_v2(evidence)
+    assert evidence["status"] == "source_failed"
+    transport = evidence["transport"]
+    assert transport["network_get_count"] == 1 and transport["retry_count"] == 0
+    assert transport["complete_body_received"] is False
+    assert transport["declared_content_length"] == declared
+    assert transport["response_byte_count"] == 0 and transport["response_sha256"] is None
+    assert transport["partial_response_byte_count"] == partial
+    assert transport["error_code"] == error and transport["raw_payload_persisted"] is False
+
+
+def test_twse_batch_date_binding_uses_parameters_not_top_level_fields(tmp_path):
+    from server.services.phase_i_i3_cash_institutional_flow_production_candidate import _validate_batch
+    requests = [_request("TWSE", "1101", 1), _request("TWSE", "2330", 2)]
+    shared = "umeop-batch-v1-" + "3" * 20
+    for item in requests:
+        item["batch_group_id"] = shared
+        item["resolved_source_trade_date"] = "2099-12-31"  # ignored legacy/top-level field
+    _validate_batch(requests, SimpleNamespace(mode="execute-approved"))
+    observed = []
+    body = _bytes("TWSE")
+    acquisition = Acquisition(body, _telemetry("TWSE", body))
+    outcomes = production_batch_operation_adapter_candidate(requests,
+        SimpleNamespace(mode="execute-approved", governed_output_root=str(tmp_path)),
+        acquire=lambda market, *, resolved_source_trade_date=None:
+            observed.append((market, resolved_source_trade_date)) or acquisition)
+    assert observed == [("TWSE", "2026-09-30")]
+    assert len(outcomes) == 2
+    requests[1]["parameters"]["resolved_source_trade_date"] = "2026-10-01"
+    with pytest.raises(Exception, match="i3_batch_binding_mismatch"):
+        _validate_batch(requests, SimpleNamespace(mode="execute-approved"))

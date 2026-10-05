@@ -139,8 +139,20 @@ def validate() -> dict:
                  "i3_roll_001_failed")
 
         candidate_record = _json("docs/governance/phase_i/PHASE_I_I3_A4_TECHNICAL_ACTIVATION_CANDIDATE_2026-10-04.json")
+        r1_record_path = "docs/governance/phase_i/PHASE_I_I3_A4_R1_INDEPENDENT_REVIEW_HARDENING_2026-10-05.json"
+        if (ROOT / r1_record_path).exists():
+            # The original candidate record is a sealed pre-R1 snapshot. Its
+            # V2 hash remains historical; the additive R1 record owns current
+            # schema truth after the approved telemetry repair.
+            r1_record = _json(r1_record_path)
+            _require(candidate_record["candidate"]["V2_schema_sha256"] ==
+                     "b5c80c338be99ffa55d51c73e7909f2c0ba2908d8caecce0ac50a474738e2847"
+                     and r1_record["evidence_v2"]["schema_sha256_after"] == _sha(v2_path),
+                     "i3_r1_historical_v2_schema_supersession_invalid")
+        else:
+            _require(candidate_record["candidate"]["V2_schema_sha256"] == _sha(v2_path),
+                     "production_evidence_v2_schema_hash_mismatch")
         _require(candidate_record["final_disposition"] == "TECHNICAL_ACTIVATION_CANDIDATE_READY_FOR_OWNER_REVIEW"
-                 and candidate_record["candidate"]["V2_schema_sha256"] == _sha(v2_path)
                  and candidate_record["candidate"]["source_authority_count"] == 2
                  and candidate_record["rollback"]["status"] == "PASS"
                  and candidate_record["validation"]["default_ci"]["failed"] == 0
