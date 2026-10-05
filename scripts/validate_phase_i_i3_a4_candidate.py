@@ -81,12 +81,18 @@ def validate() -> dict:
                  "i3_batching_authority_invalid")
 
         evidence_decision = _json("docs/governance/phase_i/PHASE_I_I3_A4_PRODUCTION_EVIDENCE_V2_DECISION_2026-10-04.json")
+        r1_record_path = "docs/governance/phase_i/PHASE_I_I3_A4_R1_INDEPENDENT_REVIEW_HARDENING_2026-10-05.json"
+        has_r1 = (ROOT / r1_record_path).exists()
+        expected_candidate_schema = (
+            "b5c80c338be99ffa55d51c73e7909f2c0ba2908d8caecce0ac50a474738e2847"
+            if has_r1 else _sha(v2_path)
+        )
         _require(evidence_decision["owner_authority"] ==
                  "USER_CHAT_2026-10-04_PHASE_I_I3_A4_PRODUCTION_EVIDENCE_V2_AND_TECHNICAL_CANDIDATE_RESUME_AUTHORIZATION"
                  and evidence_decision["historical_contract"]["schema_sha256"] == FROZEN["schemas/cash_institutional_flow_context_evidence.v1.schema.json"]
                  and evidence_decision["historical_contract"]["bytes_changed"] is False
                  and evidence_decision["historical_contract"]["A1_changed"] is False
-                 and evidence_decision["production_candidate_contract"]["schema_sha256"] == _sha(v2_path)
+                 and evidence_decision["production_candidate_contract"]["schema_sha256"] == expected_candidate_schema
                  and evidence_decision["production_transport"]["retry_count"] == 0
                  and evidence_decision["acceptance_boundary"]["market_GETs_during_implementation"] ==
                  {"TWSE": 0, "TPEX": 0, "TAIFEX": 0, "other": 0},
@@ -139,8 +145,7 @@ def validate() -> dict:
                  "i3_roll_001_failed")
 
         candidate_record = _json("docs/governance/phase_i/PHASE_I_I3_A4_TECHNICAL_ACTIVATION_CANDIDATE_2026-10-04.json")
-        r1_record_path = "docs/governance/phase_i/PHASE_I_I3_A4_R1_INDEPENDENT_REVIEW_HARDENING_2026-10-05.json"
-        if (ROOT / r1_record_path).exists():
+        if has_r1:
             # The original candidate record is a sealed pre-R1 snapshot. Its
             # V2 hash remains historical; the additive R1 record owns current
             # schema truth after the approved telemetry repair.
