@@ -1,0 +1,199 @@
+{
+  "record_id": "PHASE_J_J_B03_S2C_TPEX_CMODE_UNICODE_VALUE_RECOVERY_2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_S2C_ONE_BOUNDED_UNICODE_SAFE_RECOVERY_GET_AUTHORIZATION",
+  "starting_state": {
+    "main_commit": "ea80e9001b0509ee347904eb42d22f1b94c6d7d7",
+    "main_tree": "cbcfd531390d3a7e7986527e158980746cfd1d30",
+    "pr_309": "MERGED / CLOSED",
+    "pr_310": "MERGED / CLOSED"
+  },
+  "accepted_prior_evidence": {
+    "pr_309": "J_B03_S1B_ALTERNATIVE_CURRENT_STATUS_SEMANTICALLY_SUFFICIENT",
+    "pr_310": "J_B03_S2B_HOLD_POSITIVE_VALUE_GRAMMAR_UNPROVEN",
+    "s2b_response_sha256": "b03d4d86ea689e3367be6224598897bb3da4ac4d13dfb77ce98c2088100a8d29",
+    "s2b_row_count": 22,
+    "s2b_source_date": "1151006"
+  },
+  "source": {
+    "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+    "source_contract_id": "tpex_cmode",
+    "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+    "data_gov_dataset_id": "11736",
+    "license": "ODGL 1.0; free",
+    "source_role": "default_candidate",
+    "activation_state": "eligible",
+    "runtime_executable": false
+  },
+  "tls": {
+    "policy": "compatibility",
+    "context_is_ssl_context": true,
+    "verify_mode": "CERT_REQUIRED",
+    "check_hostname": true,
+    "verify_x509_strict_available": true,
+    "verify_x509_strict_set": false,
+    "validation_bypassed": false
+  },
+  "network": {
+    "authorized_gets": 1,
+    "actual_get_attempts": 1,
+    "retry_count": 0,
+    "fallback_count": 0,
+    "head_count": 0,
+    "post_count": 0,
+    "other_market_gets": 0,
+    "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+    "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+    "http_status": 200,
+    "content_type": "application/json",
+    "content_length": 4829,
+    "response_byte_limit": 4194304,
+    "response_bytes_read": 4829,
+    "response_sha256": "b03d4d86ea689e3367be6224598897bb3da4ac4d13dfb77ce98c2088100a8d29",
+    "retrieved_at_utc": "2026-10-06T10:48:13.258721+00:00",
+    "timeout_seconds": 30,
+    "user_agent": "tw-market-live-data-intelligence/1.0",
+    "redirect_followed": false,
+    "raw_payload_persisted": false
+  },
+  "decode_and_unicode_integrity": {
+    "decode_expression": "raw_bytes.decode('utf-8', errors='strict')",
+    "strict_utf8_decode": "PASS",
+    "json_parse": "PASS",
+    "literal_u_fffd_in_any_decoded_source_string": false,
+    "u_fffd_occurrences_by_required_field": {
+      "SuspensionOfTrading": 0,
+      "AlteredTrading": 0,
+      "PeriodicTrading": 0,
+      "ManagedStock": 0,
+      " FinancialAnnouncements": 0,
+      "CompanyName": 0
+    },
+    "evidence_capture": "Exact string evidence was generated in memory immediately after parsing and serialized to ASCII-safe JSON before output."
+  },
+  "payload_shape": {
+    "root_type": "array",
+    "row_count": 22,
+    "object_row_count": 22,
+    "non_object_row_count": 0,
+    "field_union": [" FinancialAnnouncements", "AlteredTrading", "CompanyName", "Date", "ManagedStock", "MatchingFrequency", "PeriodicTrading", "SecuritiesCompanyCode", "SuspensionOfTrading"],
+    "field_intersection": [" FinancialAnnouncements", "AlteredTrading", "CompanyName", "Date", "ManagedStock", "MatchingFrequency", "PeriodicTrading", "SecuritiesCompanyCode", "SuspensionOfTrading"],
+    "all_nine_fields_present_in_all_rows": true,
+    "expected_field_spellings": {
+      "Date": "exact match",
+      "SecuritiesCompanyCode": "exact match",
+      "CompanyName": "exact match",
+      "AlteredTrading": "exact match",
+      "PeriodicTrading": "exact match",
+      "ManagedStock": "exact match",
+      "MatchingFrequency": "exact match",
+      "SuspensionOfTrading": "exact match",
+      " FinancialAnnouncements": "exact match; one leading ASCII space is source-native; no unspaced variant observed"
+    }
+  },
+  "source_date": {
+    "field": "Date",
+    "json_type": "string",
+    "raw_value": "1151006",
+    "observed_row_count": 22,
+    "parser_precedent": "scripts.twse_trading_calendar.parse_twse_roc_date; existing repository ROC_YYYMMDD parser, exactly 7 digits, Gregorian year = ROC year + 1911, calendar-valid date required",
+    "normalization_basis": "normalization uses existing governed TPEx ROC_YYYMMDD precedent",
+    "normalized_gregorian_date": "2026-10-06",
+    "parse_result": "PASS; calendar-valid and equal to retrieval local date"
+  },
+  "security_code": {
+    "field": "SecuritiesCompanyCode",
+    "json_type": "string on all 22 rows",
+    "length_counts": {"4": 22},
+    "numeric_string_count": 22,
+    "leading_zero_count": 0,
+    "blank_null_missing_count": {"blank": 0, "null": 0, "missing": 0},
+    "unique_code_count": 22,
+    "duplicate_code_count": 0,
+    "binding": "Exact string binding remains deterministic for this observation; do not cast to integer."
+  },
+  "SuspensionOfTrading": {
+    "field_present_count": 22,
+    "json_types": {"string": 22},
+    "blank_count": 18,
+    "nonblank_count": 4,
+    "null_count": 0,
+    "missing_count": 0,
+    "distinct_exact_values": [
+      {
+        "category": "blank",
+        "frequency": 18,
+        "human_readable": "",
+        "length_codepoints": 0,
+        "unicode_escape": "",
+        "json_ascii": "\"\"",
+        "utf8_hex": "",
+        "codepoints": []
+      },
+      {
+        "category": "nonblank marker",
+        "frequency": 4,
+        "human_readable": "Ｙ",
+        "length_codepoints": 1,
+        "unicode_escape": "\\uff39",
+        "json_ascii": "\"\\uff39\"",
+        "utf8_hex": "efbcb9",
+        "codepoints": ["U+FF39"],
+        "unicode_name": "FULLWIDTH LATIN CAPITAL LETTER Y"
+      }
+    ],
+    "affirmative_stopped_value": "Ｙ (U+FF39)",
+    "affirmative_semantics_proven": false,
+    "semantic_decision": "The lexical marker is now recovered exactly. It is not literally the official field label 停止交易. Repository and accepted official dataset metadata contain no authoritative rule mapping fullwidth Y (U+FF39) to affirmative stopped trading. Do not infer affirmative meaning from nonblank status or conventional Y semantics."
+  },
+  "bounded_representative_rows": [
+    {"Date": "1151006", "SecuritiesCompanyCode": "3085", "SuspensionOfTrading": {"unicode_escape": "\\uff39", "json_ascii": "\"\\uff39\"", "utf8_hex": "efbcb9", "codepoints": ["U+FF39"], "length_codepoints": 1}},
+    {"Date": "1151006", "SecuritiesCompanyCode": "4527", "SuspensionOfTrading": {"unicode_escape": "\\uff39", "json_ascii": "\"\\uff39\"", "utf8_hex": "efbcb9", "codepoints": ["U+FF39"], "length_codepoints": 1}},
+    {"Date": "1151006", "SecuritiesCompanyCode": "4804", "SuspensionOfTrading": {"unicode_escape": "\\uff39", "json_ascii": "\"\\uff39\"", "utf8_hex": "efbcb9", "codepoints": ["U+FF39"], "length_codepoints": 1}}
+  ],
+  "other_status_field_values": {
+    "AlteredTrading": {"blank": 4, "U+FF39": 18},
+    "PeriodicTrading": {"blank": 16, "U+FF39": 6},
+    "ManagedStock": {"blank": 22},
+    "MatchingFrequency": {"blank": 15, "010": 1, "030": 6},
+    " FinancialAnnouncements": {"U+FF39": 22},
+    "interpretation": "Captured only as source value statistics; no additional product semantics assigned."
+  },
+  "multiplicity": {
+    "one_row_per_security_observed": true,
+    "duplicate_security_codes": 0,
+    "multiple_dates": false,
+    "duplicate_identical_rows": 0,
+    "event_relationship_inferred": false
+  },
+  "semantics": {
+    "positive_marker": "U+FF39 lexical value observed, but affirmative stopped-trading meaning remains unproven pending authoritative marker definition.",
+    "blank": "Does not mean not stopped.",
+    "target_absence": "No matching row in this retrieved special-status listing; does not mean normal or tradeable.",
+    "negative_value": "No explicit negative encoding observed or authorized; no general tradeability claim."
+  },
+  "comparison_with_s2b": {
+    "s2b_response_sha256": "b03d4d86ea689e3367be6224598897bb3da4ac4d13dfb77ce98c2088100a8d29",
+    "s2c_response_sha256": "b03d4d86ea689e3367be6224598897bb3da4ac4d13dfb77ce98c2088100a8d29",
+    "same_hash": true,
+    "s2b_row_count": 22,
+    "s2c_row_count": 22,
+    "s2b_observed_date": "1151006",
+    "s2c_observed_date": "1151006",
+    "interpretation": "The responses were byte-identical; S2C safely recovered exact values from the same payload. This does not rewrite S2B's historical output-capture limitation."
+  },
+  "disposition": "J_B03_S2C_HOLD_AFFIRMATIVE_MARKER_SEMANTICS_UNPROVEN",
+  "issues": {"H0-SRC-01E": "OPEN", "H0-SRC-02": "OPEN"},
+  "phase_state": {"J_B03": "HOLD", "J_B04": "BLOCKING", "phase_j": "NOT_STARTED"},
+  "change_boundary": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "registry_changed": false,
+    "activation_changed": false,
+    "mcp_changed": false,
+    "mcp_count": 6,
+    "data_directory_touched": false
+  },
+  "stop_boundary": "One GET completed. No further network request, implementation, route activation, J-B03 closure, J-B04, or Phase J work is authorized by this tranche."
+}
