@@ -23,6 +23,7 @@
     "h1_conceptual_contract": "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
     "v3_exact_contract": "docs/governance/phase_h/Phase_H_H0_G_Unified_V3_Exact_Contract_FROZEN.md",
     "v3_freeze_manifest": "docs/governance/phase_h/PHASE_H_H0_G_V3_SCHEMA_FREEZE_MANIFEST.json",
+    "v3_promotion_authority_impact_inventory": "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_PREFLIGHT_AND_AUTHORITY_IMPACT_INVENTORY.json",
     "s3_decision": "docs/governance/phase_j/PHASE_J_J_B03_S3_NATIVE_EVIDENCE_FALLBACK_PRODUCT_CONTRACT_2026-10-06.json",
     "s2d_decision": "docs/governance/phase_j/PHASE_J_J_B03_S2D_TPEX_CMODE_MARKER_SEMANTICS_AUTHORITY_2026-10-06.json",
     "s2c_observation": "docs/governance/phase_j/PHASE_J_J_B03_S2C_TPEX_CMODE_UNICODE_VALUE_RECOVERY_2026-10-06.json",
@@ -121,7 +122,7 @@
     "result_v3": {
       "current_behavior": "For legal H1 v1, typed projection shallow-copies the evidence object after schema-version and citation-lineage checks; target, source date, citation, caveat and source-native provenance in a legal item survive unchanged.",
       "native_only_current_status": "No safe schema-valid object can carry the raw fact as a structured native-only observation. Path A would propagate a false subtype; Path C can only put the raw value in prose caveat.",
-      "future_v2_requirements": "Add H1 v2 to loader/lineage/result contract registries and add an explicit H1 v1-or-v2 Result V3 typed union under a formally accepted freeze amendment."
+      "future_v2_requirements": "Add H1 v2 to loader/lineage/result contract registries and represent it under a new Result V4 contract candidate; keep Result V3 and its frozen schema unchanged."
     },
     "audit_v3": {
       "current_behavior": "Records the H1 source attempt, citation-to-operation lineage and evidence artifact path/hash; it is traceable to the persisted source evidence artifact but is not a self-contained copy of its raw field/value/caveat.",
@@ -157,7 +158,7 @@
       "exact_target_search_succeeded": true,
       "no_evidence_in_covered_scope": "not applicable; a native observation exists, and the declared H1 scope is incomplete"
     },
-    "additional_integration_rule": "Define and test how native_observations affect artifact item_count/result_item_count; current artifact_loader counts len(items) when items exists, which would otherwise count this native fact as zero.",
+    "additional_integration_rule": "Define separate canonical_status_item_count, native_observation_count and operation_result_evidence_count semantics; do not infer aggregate item_count by summing items and native_observations until operation-result aggregation invariants are verified. The current loader counts len(items), so native-only evidence otherwise risks a zero count.",
     "alternatives_not_preferred": [
       "Do not introduce status_type=unknown/native_only/unresolved; it pollutes canonical domain taxonomy.",
       "Do not use status_type=suspension with lifecycle unresolved as a shortcut.",
@@ -166,28 +167,41 @@
     ]
   },
   "frozen_surface_impact": {
-    "h1_conceptual_contract": {"reopen_required": true, "reason": "Amend/supersede the frozen conceptual model to distinguish native observations from canonical status items and define their semantics and coverage."},
-    "h1_v1_schema": {"reopen_required": false, "reason": "Keep v1 immutable; introduce trading_status_context_evidence.v2 with the additive native observation sibling."},
-    "h1_schema_freeze_manifest": {"reopen_required": true, "reason": "Add and freeze the new v2 schema with provenance; retain historical v1 hashes."},
-    "result_v3": {"reopen_required": true, "reason": "The frozen Result V3 schema currently pins embedded H1 to v1. An additive v1-or-v2 H1 union is needed to carry the new contract while preserving existing Result V3 artifacts."},
-    "audit_v3_schema": {"reopen_required": false, "reason": "Its existing evidence artifact reference already allows the trading_status_context capability and a string schema version, and records path/hash."},
-    "audit_v3_projection_acceptance": {"reopen_required": true, "reason": "Current artifact and audit builders recognize H1 v1 only; v2 lineage/source-attempt acceptance and tests must be explicitly added."},
-    "ai_handoff_contract_and_projection": {"reopen_required": true, "reason": "AI-ready H1 Markdown currently omits source-native item fields; the raw fact and unresolved guard must be rendered and accepted end-to-end."},
-    "mcp_tool_schema_and_count": {"reopen_required": false, "reason": "Existing read/export tools carry Result and handoff; retain exactly six tools and change no input schema."}
+    "h1_conceptual_contract": {"reopen_required": true, "reason": "A new addendum or superseding current-state authority must distinguish native observations from canonical status items; the historical frozen record remains unchanged."},
+    "h1_v1_schema": {"reopen_required": false, "disposition": "IMMUTABLE", "reason": "Preserve trading_status_context_evidence.v1 byte-for-byte."},
+    "h1_v2_schema": {"reopen_required": true, "disposition": "NEW_CONTRACT_REQUIRED", "reason": "Author a new trading_status_context_evidence.v2 with native_observations[] outside canonical items[]."},
+    "result_v3_schema": {"reopen_required": false, "disposition": "IMMUTABLE", "reason": "Result V3 is frozen historical authority and must remain byte/hash stable; do not add an H1 v1-or-v2 union to V3."},
+    "result_v4_candidate": {"reopen_required": true, "disposition": "NEW_RESULT_CONTRACT_VERSION_REQUIRED", "candidate": "unified_market_evidence_result.v4", "reason": "Native H1 v2 must be structurally present in the canonical Result for Result/Audit/Handoff use. No already-established immutable-safe extension mechanism was identified."},
+    "request_v3": {"reopen_required": false, "change_required": false, "reason": "This is an output representation change. The existing trading_status_context request can request the capability without a Request V3 change."},
+    "audit_v3_schema": {"reopen_required": false, "disposition": "NOT_REQUIRED", "reason": "The generic artifact-reference shape carries capability, schema_version, path, hash, lineage and citations. Keep Audit V3 schema frozen; later implementation maps/builders/loaders must support H1 v2 and Result V4."},
+    "audit_v3_implementation_maps": {"reopen_required": true, "reason": "Distinguish schema immutability from future builder, loader, registry/map and acceptance changes needed to reference H1 v2 and Result V4."},
+    "v3_schema_freeze_manifest": {"reopen_required": false, "disposition": "IMMUTABLE_HISTORICAL_AUTHORITY", "reason": "Do not modify or update PHASE_H_H0_G_V3_SCHEMA_FREEZE_MANIFEST.json. A new dated/versioned A2.1 freeze/acceptance authority must freeze newly accepted contracts."},
+    "new_a2_1_freeze_acceptance_authority": {"reopen_required": true, "disposition": "REQUIRED", "reason": "Create a new dated/versioned authority for H1 v2, Result V4 if accepted, and related projection/handoff changes; preserve the historical H0-G V3 manifest."},
+    "ai_handoff_contract_and_projection": {"reopen_required": true, "reason": "Future H1 native handoff must include source-native label, raw value, source record date, unresolved caveat and citation; no seventh MCP tool."},
+    "mcp_tool_schema_and_count": {"reopen_required": false, "reason": "Use the existing read/export tools; MCP tool count remains exactly six."}
   },
   "versioning_and_backward_compatibility": {
-    "recommendation": "New H1 evidence schema v2; preserve H1 v1. Formally amend/supersede the frozen Result V3 schema to accept an explicit H1 v1-or-v2 union, then update its dated freeze manifest. Keep outer Result V3 and Audit V3 versions because their top-level shape and Audit V3 artifact-reference shape need not change.",
-    "result_v3_version_change": "Not recommended; a backward-compatible additive embedded-contract union is narrower than a whole Result V4 migration, but it requires an explicit Result V3 freeze reopening and owner acceptance.",
-    "audit_v3_version_change": "Not recommended if existing generic artifact reference shape remains sufficient; versioned implementation maps and acceptance tests must include H1 v2.",
+    "recommendation": "Preserve immutable H1 v1, Result V3, Audit V3 and the original V3 freeze manifest. Author a new H1 v2 with native_observations[] and a new Result contract version, currently Result V4 candidate, to carry it. Create a new dated/versioned freeze and acceptance authority; do not amend frozen V3 bytes or call a modified Result V3 backward-compatible.",
+    "h1_v1_disposition": "IMMUTABLE; existing H1 v1 artifacts and schema remain byte/hash stable.",
+    "h1_v2_disposition": "NEW trading_status_context_evidence.v2 contract with native_observations[] outside canonical items[]; do not add unknown/native_only/unresolved to status_type.",
+    "result_v3_disposition": "IMMUTABLE historical authority; no schema change, reopening or embedded-union amendment.",
+    "result_v4_disposition": "NEW_RESULT_CONTRACT_VERSION_REQUIRED; unified_market_evidence_result.v4 is the current candidate, subject to future A2.1 contract authoring and acceptance.",
+    "request_v3_change_required": false,
+    "audit_v3_schema_disposition": "NOT REQUIRED; preserve frozen schema. Future Audit V3 mapping/builder/loader/acceptance support may be needed for H1 v2 and Result V4.",
+    "v3_freeze_manifest_disposition": "IMMUTABLE historical authority; no update. A new dated/versioned freeze/acceptance record is required for future accepted contracts.",
+    "audit_v3_version_change": "Not recommended; retain the generic artifact-reference structure if contract validation confirms it remains sufficient. Expand implementation maps and acceptance, separately from schema change.",
+    "freeze_and_projection_rule": "Frozen schemas and historical artifacts remain immutable; current promotion/activation projections are mutable. This matches the Phase H V3 promotion inventory authority.",
     "existing_h1_fixtures": "H1 v1 fixtures remain valid and immutable; add v2-specific fixtures for native-only and canonical-item cases.",
-    "existing_result_v3_artifacts": "Remain valid under the v1 branch of the union; do not rewrite historical artifacts.",
+    "existing_result_v3_artifacts": "Remain valid and unchanged under Result V3; no union is added to V3 and no historical artifact is rewritten.",
     "existing_audit_v3_packages": "Remain valid; preserve hashes and references. New v2 artifacts must be recorded through the same path/hash and citation lineage.",
     "existing_production_routes": "Existing active TPEx attention route continues emitting H1 v1; no route contract changes until an authorized implementation and acceptance gate.",
-    "existing_mcp_consumers": "Tool names/input contract stay unchanged. Consumers must tolerate the explicitly supported embedded H1 v2 branch; older strict v1-only clients require upgrade or fail-closed behavior."
+    "existing_mcp_consumers": "Keep six tool names and Request V3 input contract unchanged. Future consumers of Result V4 must recognize its version; existing V3 consumers and persisted V3 artifacts remain unchanged."
   },
   "next_gate": {
     "name": "J-B03-A2.1 — Minimal Native-Evidence Contract Amendment",
-    "entry_conditions": "Separate explicit Owner authorization; settle the proposed native_observations shape, coverage/item-count semantics, H1 conceptual addendum, Result V3 union, Audit mapping and handoff rendering acceptance before adapter work.",
+    "scope": ["new trading_status_context_evidence.v2 with native_observations[]", "new unified_market_evidence_result.v4 candidate", "new dated/versioned contract and freeze/acceptance authority", "Result V4 projection support", "Audit V3 mapping support without schema edit unless later evidence requires one", "AI handoff support for label, raw value, date, unresolved caveat and citation", "validators, fixtures and tests"],
+    "entry_conditions": "Separate explicit Owner authorization; define native_observations semantics and separate canonical status item count, native observation count and operation/result evidence count; preserve aggregation invariants; author H1 conceptual addendum, H1 v2, Result V4 candidate, Audit V3 mapping and handoff acceptance before any adapter work.",
+    "route_boundary": "A2.1 is contract authoring and acceptance work. It does not authorize route activation or tpex_cmode acquisition-adapter implementation; those require separate authorization.",
     "not_authorized_by_a2_0": "No schema/contract or runtime edits, source acquisition, adapter, activation, disposition implementation, J-B04 or Phase J work."
   },
   "issue_states": {
