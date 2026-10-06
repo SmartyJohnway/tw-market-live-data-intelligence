@@ -1,0 +1,215 @@
+{
+  "record_id": "PHASE_J_J_B03_A2_0_NATIVE_ONLY_EVIDENCE_REPRESENTATION_PREFLIGHT_2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_A2_0_NATIVE_ONLY_EVIDENCE_REPRESENTATION_PREFLIGHT_AUTHORIZATION",
+  "starting_state": {
+    "main_commit": "68fefff15c90a2c183cda19f31db1bce9b461b77",
+    "main_tree": "daeb6261895285bae511f65743d76cba72354bcb",
+    "pr_313": "MERGED / CLOSED",
+    "branch": "phase-j/j-b03-a2-0-native-evidence-representation-preflight"
+  },
+  "accepted_product_contract": {
+    "s3_disposition": "J_B03_S3_NATIVE_EVIDENCE_FALLBACK_ACCEPTED",
+    "product_classification": "NATIVE_EVIDENCE_FALLBACK_SUFFICIENT_FOR_J_B03_CONVERSATIONAL_CORRECTNESS",
+    "raw_marker": {"field": "SuspensionOfTrading", "label": "停止交易", "value": "\uff39", "codepoint": "U+FF39"},
+    "marker_semantics": "UNRESOLVED",
+    "prohibitions": [
+      "Do not map the marker to stopped=true or status_type=suspension without later independent semantic authority.",
+      "Do not infer currently suspended, cannot trade, or normal trading from this marker.",
+      "blank != not stopped; target absence != normal trading."
+    ],
+    "j_b03_state": "HOLD pending safe representation, implementation and representative acceptance."
+  },
+  "authority_inspected": {
+    "h1_conceptual_contract": "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
+    "v3_exact_contract": "docs/governance/phase_h/Phase_H_H0_G_Unified_V3_Exact_Contract_FROZEN.md",
+    "v3_freeze_manifest": "docs/governance/phase_h/PHASE_H_H0_G_V3_SCHEMA_FREEZE_MANIFEST.json",
+    "s3_decision": "docs/governance/phase_j/PHASE_J_J_B03_S3_NATIVE_EVIDENCE_FALLBACK_PRODUCT_CONTRACT_2026-10-06.json",
+    "s2d_decision": "docs/governance/phase_j/PHASE_J_J_B03_S2D_TPEX_CMODE_MARKER_SEMANTICS_AUTHORITY_2026-10-06.json",
+    "s2c_observation": "docs/governance/phase_j/PHASE_J_J_B03_S2C_TPEX_CMODE_UNICODE_VALUE_RECOVERY_2026-10-06.json",
+    "relevant_contract_rules": [
+      "H1 canonical status_type vocabulary is attention, disposition, changed_trading_method, suspension and resumption.",
+      "Lifecycle unresolved describes lifecycle uncertainty; it does not make a canonical status_type unassigned.",
+      "H1 allows bounded source-native provenance but models each item with a required canonical status_type.",
+      "Declared H1 scope contains all five canonical types; covered and uncovered must be a disjoint partition.",
+      "no_evidence_in_covered_scope requires complete, successfully retrieved, validated and exact-target-searched declared scope with no uncovered type.",
+      "Result V3 embeds trading_status_context_evidence.v1; Result/Audit V3 schemas and hashes are frozen in the accepted V3 manifest."
+    ]
+  },
+  "current_contract_mechanics": {
+    "h1_schema": "schemas/trading_status_context_evidence.v1.schema.json",
+    "h1_item_required_fields_include": ["status_type", "status_lifecycle", "source_record_date", "source_native_provenance", "citation_ids"],
+    "h1_status_type_enum": ["attention", "disposition", "changed_trading_method", "suspension", "resumption"],
+    "h1_additional_properties": "false at H1 item and relevant container levels; no native-only sibling exists.",
+    "semantic_validator": "scripts/validate_phase_h_v3_contracts.py::validate_trading_status_context_semantics",
+    "semantic_validator_behavior": "Validates canonical declared/covered/uncovered set partition and fail-closed no-evidence conditions. It does not cross-check that an item's status_type is in covered_status_types or validate source-specific marker meaning.",
+    "existing_phase_h_adapter_behavior": "server/services/phase_h_trading_status_adapters.py builds every H1 item with a required canonical status_type and status_lifecycle=reported; no tpex_cmode native-only projection exists.",
+    "current_result_v3_h1_schema": "schemas/unified_market_evidence_result.v3.schema.json pins the embedded H1 schema_version to trading_status_context_evidence.v1 and repeats its typed shape.",
+    "current_h1_result_projection": "scripts/m8r_05c/evidence_projector.py::project_phase_h_typed_evidence delegates to typed projection, requires the expected schema version and citation lineage, and returns a copy of the evidence artifact without semantic rewriting.",
+    "current_loader_and_lineage_contract_maps": [
+      "scripts/m8r_05c/artifact_loader.py lists only trading_status_context_evidence.v1 as the H1 typed/research contract.",
+      "scripts/m8r_05c/lineage_resolver.py maps trading_status_context to trading_status_context_evidence.v1 only.",
+      "scripts/m8r_05c/result_builder.py requests trading_status_context_evidence.v1 only.",
+      "scripts/m8r_05c/audit_package_builder.py recognizes trading_status_context_evidence.v1 only in its H1 artifact map."
+    ],
+    "audit_v3_shape": "Audit V3 evidence_artifact_references supports capability trading_status_context and stores schema_version, relative path and SHA-256; phase_h_governance stores verified source attempts. It does not inline the native fact/caveat. The hashed evidence artifact remains the auditable source record.",
+    "handoff_projection": "market_export_ai_handoff returns canonical_result plus ai_ready_markdown and citation references. MCP emits the markdown as text and full payload as structuredContent.",
+    "handoff_markdown_limitation": "scripts/m8r_05c/markdown_renderer.py::_fmt_phase_h_evidence renders H1 status, covered/uncovered types, caveats and citation IDs, but not source, source_record_date, items, or source_native_provenance. A native-only sibling would likewise be omitted without a renderer update.",
+    "no_handoff_schema_found": "No separate native-only H1 or AI-handoff JSON schema was found. The current MCP tool surface is six tools and does not need a seventh tool for this change."
+  },
+  "candidate_paths": {
+    "A_canonical_suspension_item": {
+      "schema_result": "PASS for both standalone H1 v1 and Result V3 H1 fragment.",
+      "semantic_validator_result": "PASS in the analytical fixture; validator does not check item subtype against source marker semantics or coverage.",
+      "projection_result": "Typed Result projector copies the item, raw value, date, target and caveat unchanged when citation lineage resolves.",
+      "product_truth": "UNSAFE. status_type=suspension is itself a canonical subtype assertion. status_lifecycle=unresolved means lifecycle is unknown; it does not retract the subtype classification.",
+      "coverage_problem": "The mechanically passing fixture had no covered canonical status types and all five uncovered, yet retained a suspension item; existing semantic validation permits this inconsistency.",
+      "decision": "REJECT; schema-valid and validator-valid do not make it truthful."
+    },
+    "B_empty_items_native_fact_elsewhere": {
+      "schema_result": "An H1 partial result with items=[] is schema-valid. target, source, source_snapshot_date, observed_at and citation_ids can remain structured.",
+      "available_fact_slot": "There is no top-level source-native field/value property. Placing the marker in caveats is syntactically legal, but caveats are not a structured source-fact contract.",
+      "projection_result": "The typed projector preserves the caveat string, but does not promote it into a typed fact.",
+      "decision": "REJECT as a sufficient representation; prose caveat cannot substitute for structured native evidence under the frozen contract."
+    },
+    "C_partial_empty_items": {
+      "fixture_schema_result": "PASS.",
+      "fixture_semantic_validator_result": "PASS.",
+      "truthful_status_assessment": "partial is the best existing top-level status for retrieved, exact-target source evidence whose canonical H1 type is unresolved and whose H1 canonical scope remains uncovered; available implies a canonical item in the current H1 schema, while unsupported would discard the fact that a source row was retrieved.",
+      "coverage_assessment": "For native-only tpex_cmode evidence, do not count suspension as covered. Use covered_status_types=[] and all five declared types uncovered for that evidence slice; declared_scope_complete=false; retrieval_succeeded=true; source_contract_validated=true only for validated raw payload shape/field grammar, not business marker meaning; exact_target_search_succeeded=true; coverage.status=partial.",
+      "fact_preservation": "If the exact value is written in caveats, it survives mechanically as prose through typed Result and the handoff markdown. It is not represented as a structured source-native observation and is not a contract-authorized factual field.",
+      "decision": "REJECT as sufficient native-evidence representation; partial is a valid status choice but does not solve the missing typed fact slot."
+    },
+    "D_existing_native_or_untyped_structure": {
+      "result": "No H1 native-only/untyped evidence slot exists. Result V3 exposes a typed trading_status_context property pinned to H1 v1; generic envelopes are not the H1 contract and cannot be repurposed without a false capability/type.",
+      "audit": "Audit V3 can point to a source artifact by capability, path and hash and trace source attempts/citations, but it does not supply a Result/Handoff native-fact slot. Current H1 mapping recognizes v1 only.",
+      "handoff": "StructuredContent returns canonical Result without rewriting. AI-ready markdown currently omits H1 item/native fields and would omit any unimplemented sibling field. A renderer change is required for a dependable conversational native report.",
+      "decision": "No existing representation satisfies the required Result -> Audit -> AI handoff contract."
+    },
+    "E_no_safe_existing_representation": {
+      "finding": "CONFIRMED.",
+      "reason": "Every current legal structured H1 item needs a canonical subtype; empty-item alternatives lack a typed raw field/value; free-text caveats are not governed native evidence; existing generic Result/Audit structures do not project the H1 fact into the AI-ready handoff text."
+    }
+  },
+  "mechanical_fixtures": {
+    "method": "Temporary in-memory copies of the accepted Phase H contract fixture; no fixture or source file was committed or edited.",
+    "fixture_1_path_a": {
+      "shape": "status=partial; one item status_type=suspension, status_lifecycle=unresolved, native field/value/date and citation; no canonical types declared covered.",
+      "h1_v1_json_schema": "PASS",
+      "h1_semantic_validator": "PASS",
+      "result_v3_h1_fragment_schema": "PASS",
+      "typed_projector_preserves_object": true,
+      "product_truth": "FAIL; canonical subtype is asserted despite unresolved marker meaning."
+    },
+    "fixture_2_path_c": {
+      "shape": "status=partial; items=[]; all five canonical types uncovered; raw marker/date described only inside caveat; source, target and citation retained.",
+      "h1_v1_json_schema": "PASS",
+      "h1_semantic_validator": "PASS",
+      "result_v3_h1_fragment_schema": "PASS",
+      "typed_projector_preserves_object": true,
+      "exact_value_survives_as_caveat_text": true,
+      "structured_native_observation_exists": false,
+      "product_truth": "FAIL as native-evidence contract; caveat prose is not a typed fact slot."
+    },
+    "fixture_3_existing_native_untyped_path": "NOT FOUND; no qualifying candidate to mechanically validate end-to-end.",
+    "existing_focused_tests": {
+      "command": "python -m pytest -q tests/unit/test_phase_h_v3_contract_freeze.py tests/unit/test_phase_h_imp_6_v3_projection_handoff.py",
+      "result": "60 passed",
+      "network": false
+    }
+  },
+  "propagation_assessment": {
+    "result_v3": {
+      "current_behavior": "For legal H1 v1, typed projection shallow-copies the evidence object after schema-version and citation-lineage checks; target, source date, citation, caveat and source-native provenance in a legal item survive unchanged.",
+      "native_only_current_status": "No safe schema-valid object can carry the raw fact as a structured native-only observation. Path A would propagate a false subtype; Path C can only put the raw value in prose caveat.",
+      "future_v2_requirements": "Add H1 v2 to loader/lineage/result contract registries and add an explicit H1 v1-or-v2 Result V3 typed union under a formally accepted freeze amendment."
+    },
+    "audit_v3": {
+      "current_behavior": "Records the H1 source attempt, citation-to-operation lineage and evidence artifact path/hash; it is traceable to the persisted source evidence artifact but is not a self-contained copy of its raw field/value/caveat.",
+      "future_v2_requirements": "Teach artifact loading and audit builder maps to recognize H1 v2; preserve v2 artifact path/hash, source attempt metadata and citation mapping. The current Audit V3 schema shape need not change for this additive version if its generic reference contract and integrity tests remain valid."
+    },
+    "ai_handoff": {
+      "current_behavior": "The handoff's structuredContent embeds canonical_result; text content uses ai_ready_markdown. The current H1 markdown formatter emits coverage, caveats and citation IDs but omits source, record date, items and raw native provenance. Caveat prose can be shown, but is not structured native evidence.",
+      "future_v2_requirements": "Render native_observations explicitly in safe H1 Markdown with source label, raw value, source date, unresolved caveat and citation; keep canonical_result intact. Test both MCP structuredContent and human-readable tool text."
+    }
+  },
+  "minimum_contract_amendment": {
+    "disposition": "J_B03_A2_0_MINIMAL_CONTRACT_AMENDMENT_REQUIRED",
+    "preferred_shape": "Add a sibling native_observations array to a new trading_status_context_evidence.v2 contract, outside canonical items[]. Do not add a new status_type.",
+    "native_observation_concept": {
+      "source_native_field": "SuspensionOfTrading",
+      "source_native_label": "停止交易",
+      "source_native_value": "exact source JSON scalar, preserving type and lexical value",
+      "source_record_date": "date for this source observation",
+      "semantic_status": "unresolved",
+      "semantic_caveat": "official marker mapping is not established; do not infer stopped/tradeable",
+      "citation_ids": "one or more governed citations"
+    },
+    "inherited_parent_binding": "The H1 evidence object's existing target (canonical_target_id, market, exact security_code), source identity/license, observed_at, coverage and top-level citation/provenance provide the common binding. The observation should not duplicate or weaken that authority.",
+    "recommended_semantics": {
+      "top_level_status": "partial",
+      "rationale": "Native official evidence exists, while no canonical status item has been established and the declared five-type H1 scope remains incomplete. available is currently defined around canonical items; unsupported would conceal retrieved source evidence.",
+      "covered_status_types": [],
+      "uncovered_status_types": ["attention", "disposition", "changed_trading_method", "suspension", "resumption"],
+      "declared_scope_complete": false,
+      "coverage_status": "partial",
+      "retrieval_succeeded": true,
+      "source_contract_validated": "true only for shape/value-type/source-date grammar validation; must not imply marker business semantics were mapped",
+      "exact_target_search_succeeded": true,
+      "no_evidence_in_covered_scope": "not applicable; a native observation exists, and the declared H1 scope is incomplete"
+    },
+    "additional_integration_rule": "Define and test how native_observations affect artifact item_count/result_item_count; current artifact_loader counts len(items) when items exists, which would otherwise count this native fact as zero.",
+    "alternatives_not_preferred": [
+      "Do not introduce status_type=unknown/native_only/unresolved; it pollutes canonical domain taxonomy.",
+      "Do not use status_type=suspension with lifecycle unresolved as a shortcut.",
+      "Do not use caveat prose as the only typed source fact.",
+      "Do not repurpose an unrelated evidence envelope or add a seventh MCP tool."
+    ]
+  },
+  "frozen_surface_impact": {
+    "h1_conceptual_contract": {"reopen_required": true, "reason": "Amend/supersede the frozen conceptual model to distinguish native observations from canonical status items and define their semantics and coverage."},
+    "h1_v1_schema": {"reopen_required": false, "reason": "Keep v1 immutable; introduce trading_status_context_evidence.v2 with the additive native observation sibling."},
+    "h1_schema_freeze_manifest": {"reopen_required": true, "reason": "Add and freeze the new v2 schema with provenance; retain historical v1 hashes."},
+    "result_v3": {"reopen_required": true, "reason": "The frozen Result V3 schema currently pins embedded H1 to v1. An additive v1-or-v2 H1 union is needed to carry the new contract while preserving existing Result V3 artifacts."},
+    "audit_v3_schema": {"reopen_required": false, "reason": "Its existing evidence artifact reference already allows the trading_status_context capability and a string schema version, and records path/hash."},
+    "audit_v3_projection_acceptance": {"reopen_required": true, "reason": "Current artifact and audit builders recognize H1 v1 only; v2 lineage/source-attempt acceptance and tests must be explicitly added."},
+    "ai_handoff_contract_and_projection": {"reopen_required": true, "reason": "AI-ready H1 Markdown currently omits source-native item fields; the raw fact and unresolved guard must be rendered and accepted end-to-end."},
+    "mcp_tool_schema_and_count": {"reopen_required": false, "reason": "Existing read/export tools carry Result and handoff; retain exactly six tools and change no input schema."}
+  },
+  "versioning_and_backward_compatibility": {
+    "recommendation": "New H1 evidence schema v2; preserve H1 v1. Formally amend/supersede the frozen Result V3 schema to accept an explicit H1 v1-or-v2 union, then update its dated freeze manifest. Keep outer Result V3 and Audit V3 versions because their top-level shape and Audit V3 artifact-reference shape need not change.",
+    "result_v3_version_change": "Not recommended; a backward-compatible additive embedded-contract union is narrower than a whole Result V4 migration, but it requires an explicit Result V3 freeze reopening and owner acceptance.",
+    "audit_v3_version_change": "Not recommended if existing generic artifact reference shape remains sufficient; versioned implementation maps and acceptance tests must include H1 v2.",
+    "existing_h1_fixtures": "H1 v1 fixtures remain valid and immutable; add v2-specific fixtures for native-only and canonical-item cases.",
+    "existing_result_v3_artifacts": "Remain valid under the v1 branch of the union; do not rewrite historical artifacts.",
+    "existing_audit_v3_packages": "Remain valid; preserve hashes and references. New v2 artifacts must be recorded through the same path/hash and citation lineage.",
+    "existing_production_routes": "Existing active TPEx attention route continues emitting H1 v1; no route contract changes until an authorized implementation and acceptance gate.",
+    "existing_mcp_consumers": "Tool names/input contract stay unchanged. Consumers must tolerate the explicitly supported embedded H1 v2 branch; older strict v1-only clients require upgrade or fail-closed behavior."
+  },
+  "next_gate": {
+    "name": "J-B03-A2.1 — Minimal Native-Evidence Contract Amendment",
+    "entry_conditions": "Separate explicit Owner authorization; settle the proposed native_observations shape, coverage/item-count semantics, H1 conceptual addendum, Result V3 union, Audit mapping and handoff rendering acceptance before adapter work.",
+    "not_authorized_by_a2_0": "No schema/contract or runtime edits, source acquisition, adapter, activation, disposition implementation, J-B04 or Phase J work."
+  },
+  "issue_states": {
+    "H0-SRC-01E": "OPEN",
+    "H0-SRC-02": "OPEN",
+    "tpex_spendi_today": "OPTIONAL_CURRENT_EVENT_DETAIL_NOT_J_B03_BLOCKING",
+    "J-B03": "HOLD",
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT STARTED"
+  },
+  "network_accounting": {"market_data_get": 0, "market_data_head": 0, "market_data_post": 0, "market_acquisition": false},
+  "change_boundary": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "contract_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "activation_changed": false,
+    "mcp_changed": false,
+    "mcp_count": 6,
+    "data_directory_touched": false,
+    "frozen_historical_records_rewritten": false
+  }
+}
