@@ -26,30 +26,30 @@ For a future native-only H1 result, keep `status=partial`; declare all five cano
 
 Add `native_observations[]` to a new `trading_status_context_evidence.v2`, outside canonical `items[]`. Each observation should retain the exact source-native field, official label, raw value/type, source record date, `semantic_status=unresolved`, caveat and governed citation. The parent H1 target, source and observation time supply the exact binding. Do not add `status_type=unknown`, `native_only` or `unresolved`.
 
-Preserve the frozen H1 v1 and Result V3 schemas byte-for-byte. A native H1 v2 must be structurally present in the canonical Result, so the future contract requires a new Result version; `unified_market_evidence_result.v4` is the current candidate. Do not reopen or amend Result V3 and do not call a modified Result V3 backward-compatible. Keep Audit V3 schema unchanged: its generic artifact reference carries capability, schema version, path, hash, lineage and citations. Future builders, loaders and audit acceptance maps still need explicit H1 v2 / Result V4 support.
+Keep the history layers separate. The H0-G manifest was frozen at `286ef3dbb0acfffca10d35b0b13463c6b7357102` on 2026-09-21. It is immutable historical evidence and must not be edited. H1 v1 was introduced in that freeze commit and has no later modifying commit, so `trading_status_context_evidence.v1` remains unchanged.
 
-The H0-G V3 schema freeze manifest is immutable historical authority. Do not update it. A2.1 must author a new dated/versioned freeze and acceptance authority for H1 v2, Result V4 if accepted, and related projection and handoff changes. This follows the existing V3 promotion inventory rule that frozen schemas and historical artifacts remain immutable while current promotion/activation projections are mutable. The frozen V3 manifest and exact-contract record remain unchanged.
+The Result V3 hash difference is `HISTORICAL_FREEZE_HASH_DIFFERS_FROM_LATER_GOVERNED_CURRENT_ADDITIVE_SCHEMA`, not corruption. The manifest records the historical Result V3 SHA-256 `dae35eaa…`; the current schema path hashes to `e20a5456…`. Git history shows later Result V3 changes on 2026-09-29, 2026-09-30, and 2026-10-04. I0 explicitly left the exact Request/Result V3 additive schema shape for later bounded decisions. The current V3 validator lists Request/Result/Audit V3 schemas in `activation_mutable` and separately verifies later additive hashes. Historical snapshot immutability therefore does not prohibit governed additive evolution of the current V3 contract family.
 
-No Request V3 change is required by this output-representation decision: the existing `trading_status_context` request can request the capability. Future AI handoff must include the source-native label, exact value, source record date, unresolved caveat and citation; MCP remains six tools. Define separate canonical status item count, native observation count and operation/result evidence count, and preserve aggregation invariants rather than mechanically summing arrays.
+| Surface | Authority category | A2.0-R2 finding |
+| --- | --- | --- |
+| H0-G V3 freeze manifest | A: historical snapshot immutable | Preserve unchanged, including its historical hashes. |
+| H1 v1 | B: versioned contract immutable | Preserve unchanged; history shows no post-freeze edit. |
+| H1 v2 | New contract | Add `native_observations[]` outside canonical `items[]`. |
+| Result V3 H0-G snapshot | A: historical snapshot immutable | Keep as historical evidence; do not rewrite old artifacts. |
+| Current Result V3 schema path | C: additive-mutable under later explicit authority | H1 v1-or-v2 additive support is `CANDIDATE_ALLOWED_FOR_A2_1_DECISION`; not selected here. |
+| Result V4 | Optional versioning alternative | Use only if additive V3 is incompatible with current guarantees, strict consumers cannot safely accept it, or current versioning governance requires a new outer version. The old manifest alone does not require V4. |
+| Audit V3 H0-G snapshot / current path | A / C | Preserve historical snapshot. Current schema has later additive authority; no Audit schema change is currently required because generic references carry capability, schema version, relative path, hash and lineage/citations. |
+| Handoff renderer; loaders, lineage, builders, validators | D: current implementation/projection mutable | Future changes must carry H1 v2 and the chosen Result contract safely. |
 
-| Surface | A2.0 recommendation |
-| --- | --- |
-| H1 conceptual contract | New addendum or superseding current-state authority; leave historical frozen record unchanged. |
-| H1 v1 schema | Immutable. |
-| H1 v2 schema | New contract with `native_observations[]`. |
-| Result V3 schema | Immutable; no reopening or amendment. |
-| Result V4 | New Result contract version required; V4 is the current candidate. |
-| Audit V3 schema | No change currently required; implementation maps/builders/loaders may need extension. |
-| H0-G V3 freeze manifest | Immutable historical authority; do not update. |
-| A2.1 freeze/acceptance authority | New dated/versioned record required. |
-| Request V3 | No change required. |
-| AI handoff | Projection and acceptance change required; no new MCP tool. |
+A2.1 must create a new dated/current acceptance authority recording the accepted H1 v2 hash and either the current additive Result V3 hash or Result V4 hash, plus relevant projection, handoff, validator and acceptance evidence. The original H0-G manifest remains untouched.
 
-The existing H1 v1 fixtures, Result V3 artifacts, Audit V3 packages, active routes, and MCP consumers remain valid under their existing versions. Future Result V4 consumers must recognize the new version; no historical V3 artifact is rewritten.
+No Request V3 change is required: this is an output/evidence representation change and the existing `trading_status_context` request can request the capability. Future AI handoff must include the source-native label, exact value, source record date, unresolved caveat and citation; MCP remains six tools. Preserve the item-count finding: A2.1 must separately define canonical status item count, native observation count and operation/result evidence count without breaking aggregation invariants.
+
+Existing H1 v1 fixtures, Result V3 artifacts, Audit V3 packages, routes and MCP consumers must remain valid; additive evolution must not rewrite historical artifacts. A2.1 must explicitly test compatibility with strict consumers before selecting V3 or V4.
 
 ## Next gate and state
 
-Recommend **J-B03-A2.1 — Minimal Native-Evidence Contract Amendment** under separate Owner authorization, before adapter implementation. Its contract-authoring scope is H1 v2, a Result V4 candidate, a new dated/versioned freeze/acceptance authority, Result V4 projection, Audit V3 mapping support, AI handoff support, validators, fixtures and tests. It must not modify H1 v1, Result V3 or the original V3 freeze manifest. It must define separate canonical-item, native-observation and operation/result evidence counts. No route activation or `tpex_cmode` acquisition-adapter implementation is authorized by that gate without separate authority. J-B03 remains HOLD pending implementation and representative acceptance. `H0-SRC-01E` and `H0-SRC-02` remain OPEN; `tpex_spendi_today` remains `OPTIONAL_CURRENT_EVENT_DETAIL_NOT_J_B03_BLOCKING`.
+Recommend **J-B03-A2.1 — Minimal Native-Evidence Contract Amendment** under separate Owner authorization. Its first design decision is `RESULT_VERSIONING_DECISION`: choose `ADDITIVE_RESULT_V3` or `NEW_RESULT_V4` after compatibility and strict-consumer analysis. Then author H1 v2, support it in the chosen Result contract, create a new dated/current acceptance authority, add Audit V3 mapping support, handoff rendering, validators, fixtures and tests. Preserve H1 v1 and the H0-G manifest; do not assume Result V4 solely because the historical manifest exists. Define separate canonical-item, native-observation and operation/result evidence counts. No `tpex_cmode` acquisition adapter or route activation is authorized. J-B03 remains HOLD pending implementation and representative acceptance. `H0-SRC-01E` and `H0-SRC-02` remain OPEN; `tpex_spendi_today` remains `OPTIONAL_CURRENT_EVENT_DETAIL_NOT_J_B03_BLOCKING`.
 
 - Market-data GET/HEAD/POST = **0**; no source acquisition.
 - No production code, schema, contract, catalog, routing, registry, activation or MCP change; MCP remains 6.
