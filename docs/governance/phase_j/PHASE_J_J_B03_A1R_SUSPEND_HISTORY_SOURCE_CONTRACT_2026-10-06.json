@@ -1,0 +1,236 @@
+{
+  "schema_version": "phase_j_j_b03_a1r_suspend_history_source_contract.v1",
+  "decision_date": "2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_A1R_ONE_BOUNDED_COMPATIBILITY_GET_AUTHORIZATION",
+  "starting_main": {
+    "commit": "74e724f029b600c47d7d759f984f33975e41e07b",
+    "tree": "876bdfdf1756416dc9e3c7e7442aecb6a75eb665",
+    "pr_306": "MERGED / CLOSED"
+  },
+  "branch": "phase-j/j-b03-a1r-suspend-history-source-shape",
+  "prior_evidence": {
+    "pr_304": "J_B03_HOLD_LIVE_SOURCE_CONTRACT_OR_TRANSPORT",
+    "pr_305": "J_B03_T1_DIAGNOSIS_PROXY_OR_TLS_INTERCEPTION_DIFFERENCE",
+    "pr_306": "J_B03_T2_EXISTING_COMPATIBILITY_POLICY_VIABLE"
+  },
+  "source_authority": {
+    "source_id": "H1-TPEX-SUSPEND-HISTORY-OPENAPI",
+    "market": "TPEX",
+    "source_role": "governed_fallback",
+    "activation_state": "eligible",
+    "runtime_executable": false,
+    "route_activation_blockers": [],
+    "governance_issue_ids": ["H0-SRC-02"],
+    "license": "ODGL 1.0; free; https://data.gov.tw/dataset/48665",
+    "official_authority": "Taipei Exchange / Government Open Data",
+    "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_spendi_history",
+    "frozen_documented_fields": ["Serial", "SecuritiesCompanyCode", "CompanyName", "DateOfSuspendedTrading", "TimeOfSuspendedTrading", "DateOfResumedTrading", "TimeOfResumedTrading"],
+    "pre_network_static_reconciliation": "PASS"
+  },
+  "request_and_tls": {
+    "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_spendi_history",
+    "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_spendi_history",
+    "method": "GET",
+    "authorized_get_attempts": 1,
+    "actual_get_attempts": 1,
+    "http_responses": 1,
+    "retry_count": 0,
+    "redirect_follow_count": 0,
+    "fallback_get_count": 0,
+    "other_market_get_count": 0,
+    "head_count": 0,
+    "post_count": 0,
+    "tls_policy": "compatibility",
+    "context_type": "SSLContext",
+    "CERT_REQUIRED": true,
+    "check_hostname": true,
+    "VERIFY_X509_STRICT_available": true,
+    "VERIFY_X509_STRICT_set": false,
+    "tls_policy_assertions_passed_before_request": true,
+    "tls_handshake": "PASS",
+    "http_status": 200,
+    "content_type": "application/json",
+    "content_length_header": 79602,
+    "response_byte_limit": 4194304,
+    "response_bytes_read": 79602,
+    "response_sha256": "4e3747a4a27c1e45542ce476ff7ccd0384e5c420e9f2d5bbfd9257b9cc48e6a2",
+    "retrieved_at_utc": "2026-10-06T06:26:26Z",
+    "user_agent": "tw-market-live-data-intelligence/1.0",
+    "timeout_seconds": 30,
+    "response_limit_authority": "Reuse of accepted Phase I I3 official-source transport bound: scripts/phase_i_i3_a0_source_transport.py MAX_BYTES = 4 * 1024 * 1024",
+    "full_raw_response_persisted": false
+  },
+  "json_shape": {
+    "parse": "PASS",
+    "root_type": "array",
+    "row_count": 362,
+    "object_row_count": 362,
+    "non_object_row_count": 0,
+    "empty": false,
+    "field_name_union": ["CompanyName", "Date", "DateOfResumedTrading", "DateOfSuspendedTrading", "SecuritiesCompanyCode", "Serial", "TimeOfResumedTrading", "TimeOfSuspendedTrading"],
+    "field_name_intersection": ["CompanyName", "Date", "DateOfResumedTrading", "DateOfSuspendedTrading", "SecuritiesCompanyCode", "Serial", "TimeOfResumedTrading", "TimeOfSuspendedTrading"],
+    "field_presence_counts": {
+      "Serial": {"present": 362, "missing": 0, "null": 0, "blank_string": 0},
+      "SecuritiesCompanyCode": {"present": 362, "missing": 0, "null": 0, "blank_string": 0},
+      "CompanyName": {"present": 362, "missing": 0, "null": 0, "blank_string": 0},
+      "DateOfSuspendedTrading": {"present": 362, "missing": 0, "null": 0, "blank_string": 181},
+      "TimeOfSuspendedTrading": {"present": 362, "missing": 0, "null": 0, "blank_string": 181},
+      "DateOfResumedTrading": {"present": 362, "missing": 0, "null": 0, "blank_string": 181},
+      "TimeOfResumedTrading": {"present": 362, "missing": 0, "null": 0, "blank_string": 181},
+      "Date": {"present": 362, "missing": 0, "null": 0, "blank_string": 0}
+    },
+    "all_analyzed_values_are_json_strings": true
+  },
+  "value_grammar": {
+    "SecuritiesCompanyCode": {
+      "json_type": "string",
+      "numeric_string_count": 352,
+      "alphanumeric_or_other_string_count": 10,
+      "length_counts": {"4": 30, "5": 10, "6": 322},
+      "leading_zero_count": 0,
+      "blank_null_missing_count": 0,
+      "representative_numeric_sample": "1788",
+      "representative_additional_sample": "19094",
+      "preserve_as_source_string": true
+    },
+    "Serial": {
+      "json_type": "string",
+      "numeric_string_count": 362,
+      "blank_null_missing_count": 0,
+      "distinct_nonblank_values": 362,
+      "duplicate_nonblank_values": 0,
+      "representative_values": ["1", "2", "3"]
+    },
+    "DateOfSuspendedTrading": {
+      "json_type": "string",
+      "nonblank_count": 181,
+      "blank_string_count": 181,
+      "null_count": 0,
+      "missing_count": 0,
+      "analyzer_pattern_category": "other_string_pattern (not further subdivided)",
+      "observed_representative_values": ["1150618", "1150312", "1150812", "1150109"],
+      "calendar_validation": "not performed; the analyzer only deterministically parsed its supported Gregorian patterns and did not establish the calendar convention for these samples"
+    },
+    "TimeOfSuspendedTrading": {
+      "json_type": "string",
+      "nonblank_count": 181,
+      "blank_string_count": 181,
+      "null_count": 0,
+      "missing_count": 0,
+      "pattern_category_count": {"6-digit numeric / HHMMSS-like": 181},
+      "observed_representative_value": "080000",
+      "normalization_performed": false
+    },
+    "DateOfResumedTrading": {
+      "json_type": "string",
+      "nonblank_count": 181,
+      "blank_string_count": 181,
+      "null_count": 0,
+      "missing_count": 0,
+      "analyzer_pattern_category": "other_string_pattern (not further subdivided)",
+      "observed_representative_values": ["1150622", "1150313", "1150813", "1150112"],
+      "calendar_validation": "not performed; the analyzer only deterministically parsed its supported Gregorian patterns and did not establish the calendar convention for these samples"
+    },
+    "TimeOfResumedTrading": {
+      "json_type": "string",
+      "nonblank_count": 181,
+      "blank_string_count": 181,
+      "null_count": 0,
+      "missing_count": 0,
+      "pattern_category_count": {"6-digit numeric / HHMMSS-like": 181},
+      "observed_representative_value": "080000",
+      "normalization_performed": false
+    },
+    "Date": {
+      "json_type": "string",
+      "nonblank_count": 362,
+      "blank_null_missing_count": 0,
+      "observed_representative_value": "115",
+      "normalization_or_publication_date_interpretation_performed": false
+    },
+    "CompanyName": {
+      "json_type": "string",
+      "present_count": 362,
+      "bounded_name_samples_persisted": false,
+      "note": "The terminal rendering of non-ASCII values was unreliable; names were not used for identity binding or persisted in samples."
+    }
+  },
+  "event_multiplicity": {
+    "distinct_nonblank_security_codes": 181,
+    "security_codes_with_multiple_rows": 181,
+    "rows_per_security_code": "exactly 2 in this response",
+    "maximum_rows_per_security_code": 2,
+    "serial_present_on_all_rows": true,
+    "serial_unique_in_response": true,
+    "serial_correction_or_supersession_semantics": "not established by unique/increasing-looking values",
+    "chronological_order": "not assessed because event-date calendar grammar was not established by the one-pass analysis",
+    "observed_samples_max_3": [
+      {
+        "role": "row_with_resumption_fields_populated",
+        "Serial": "2",
+        "SecuritiesCompanyCode": "1788",
+        "DateOfSuspendedTrading": "",
+        "TimeOfSuspendedTrading": "",
+        "DateOfResumedTrading": "1150622",
+        "TimeOfResumedTrading": "080000",
+        "Date": "115"
+      },
+      {
+        "role": "row_with_blank_resumption_fields",
+        "Serial": "1",
+        "SecuritiesCompanyCode": "1788",
+        "DateOfSuspendedTrading": "1150618",
+        "TimeOfSuspendedTrading": "080000",
+        "DateOfResumedTrading": "",
+        "TimeOfResumedTrading": "",
+        "Date": "115"
+      },
+      {
+        "role": "additional_event_row",
+        "Serial": "3",
+        "SecuritiesCompanyCode": "1799",
+        "DateOfSuspendedTrading": "1150312",
+        "TimeOfSuspendedTrading": "080000",
+        "DateOfResumedTrading": "",
+        "TimeOfResumedTrading": "",
+        "Date": "115"
+      }
+    ]
+  },
+  "semantic_boundary": {
+    "source_can_support": [
+      "exact-code-bound source rows recording a suspension date/time when those source fields are populated",
+      "a separately reported resumption date/time when those source fields are populated",
+      "multiple historical rows for one security without treating that multiplicity as ambiguous target binding"
+    ],
+    "source_does_not_prove": [
+      "blank resumption means resumed",
+      "blank resumption means still suspended",
+      "a source row's Serial is a stable correction/supersession or lifecycle relation",
+      "absence of a security row means normal trading",
+      "present-day tradeability from this historical table alone",
+      "lifecycle ended based solely on local date comparison"
+    ],
+    "frozen_h1_semantics_preserved": true,
+    "event_relationship_between_same_code_rows": "not inferred"
+  },
+  "a1r_disposition": "J_B03_A1R_HOLD_SEMANTIC_INSUFFICIENCY",
+  "a1r_reason": "The one response shows populated and blank event-field rows and supports a safe event-only direction. However, the analysis categorized all nonblank event-date strings as an undifferentiated other_string_pattern and did not establish the full date grammar or calendar validity. The observed seven-digit examples are insufficient to claim the complete date/value grammar required for A1R PASS. No second GET is authorized here.",
+  "scope": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "source_activation_changed": false,
+    "catalog_changed": false,
+    "source_authority_changed": false,
+    "mcp_tool_count": 6,
+    "j_b03_status": "HOLD",
+    "j_b04_status": "BLOCKING",
+    "phase_j_started": false,
+    "a2_started": false,
+    "full_raw_response_committed": false,
+    "new_files_under_data": false
+  },
+  "next_boundary": "Stop. The one authorized GET is consumed. Owner review must decide whether the recorded grammar evidence is sufficient for a bounded A2 design or whether a separate new source-shape authorization is required."
+}
