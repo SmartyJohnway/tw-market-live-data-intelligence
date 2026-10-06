@@ -1,0 +1,189 @@
+{
+  "schema_version": "phase_j_j_b03_t1_tls_transport_diagnosis.v1",
+  "decision_date": "2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_T1_TLS_TRANSPORT_DIAGNOSIS_AUTHORIZATION",
+  "starting_main": {
+    "commit": "a46bc02e8d7d2b37746ba02f67c987598a6ce36e",
+    "tree": "8caa57c1d531a3b69176c5ffb2ab25e9109da1a5",
+    "pr_304": "merged"
+  },
+  "branch": "phase-j/j-b03-t1-tls-transport-diagnosis",
+  "historical_j_b03_hold": {
+    "reference": "docs/governance/phase_j/PHASE_J_J_B03_H1_TRADING_STATUS_CORRECTNESS_2026-10-06.json",
+    "disposition": "J_B03_HOLD_LIVE_SOURCE_CONTRACT_OR_TRANSPORT",
+    "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_spendi_history",
+    "historical_shape_probe_attempts": 1,
+    "historical_http_responses": 0,
+    "historical_payload_persisted": false,
+    "original_exception": {
+      "outer_class": "urllib.error.URLError",
+      "inner_class": "ssl.SSLCertVerificationError",
+      "message": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Missing Subject Key Identifier (_ssl.c:1032)",
+      "reproduced_verify_code": 86,
+      "reproduced_verify_message": "Missing Subject Key Identifier",
+      "hostname": "www.tpex.org.tw"
+    }
+  },
+  "original_client_path": {
+    "probe_code_path": "inline diagnostic using urllib.request.urlopen(url, timeout=15), default HTTPSHandler/default SSL context; no custom SSL context or CA file",
+    "repository_production_helper": "scripts/m8r_06_03_production_adapter.py::_fetch_official_payload uses urllib.request.Request and urllib.request.urlopen(request, timeout=timeout), with no explicit SSL context",
+    "python_executable": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_version": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+    "openssl": "OpenSSL 3.0.16 11 Feb 2025",
+    "http_library": "Python standard library urllib.request / urllib.error",
+    "urllib_proxy_handler_detected_proxies": {},
+    "tls_context": "ssl.create_default_context semantics; CERT_REQUIRED and hostname checking enabled; Python on Windows enumerates Windows ROOT certificates",
+    "default_verify_paths": {
+      "cafile": null,
+      "capath": null,
+      "openssl_cafile_env": "SSL_CERT_FILE",
+      "openssl_cafile": "C:\\Program Files\\Common Files\\SSL/cert.pem",
+      "openssl_capath_env": "SSL_CERT_DIR",
+      "openssl_capath": "C:\\Program Files\\Common Files\\SSL/certs",
+      "configured_file_and_directory_exist": false
+    }
+  },
+  "environment": {
+    "windows": "Microsoft Windows 10 Pro 10.0.19045 build 19045",
+    "powershell": "7.6.5",
+    "libraries": {
+      "certifi": {"installed": true, "version": "2026.2.25", "bundle": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\certifi\\cacert.pem"},
+      "requests": {"installed": true, "version": "2.32.4", "bundle": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\certifi\\cacert.pem", "session_trust_env": true},
+      "urllib3": {"installed": true, "version": "2.6.3"},
+      "httpx": {"installed": true, "version": "0.28.1"}
+    },
+    "curl": {"path": "C:\\Windows\\system32\\curl.exe", "version": "8.13.0", "tls_backend": "Schannel"},
+    "openssl_executable": {"path": "C:\\Users\\weitang\\AppData\\Local\\anaconda3\\Library\\bin\\openssl.exe", "version": "OpenSSL 3.0.18 30 Sep 2025", "openssldir": "C:\\Program Files\\Common Files\\ssl", "default_cert_file_and_directory_exist": false},
+    "environment_overrides": {
+      "HTTP_PROXY": {"set": false},
+      "HTTPS_PROXY": {"set": false},
+      "ALL_PROXY": {"set": false},
+      "NO_PROXY": {"set": false},
+      "REQUESTS_CA_BUNDLE": {"set": false},
+      "CURL_CA_BUNDLE": {"set": false},
+      "SSL_CERT_FILE": {"set": false},
+      "SSL_CERT_DIR": {"set": false},
+      "OPENSSL_CONF": {"set": false}
+    },
+    "proxy_configuration": {
+      "python_urllib_detected_proxy": false,
+      "windows_winhttp": "direct access; no proxy server",
+      "current_user_internet_settings": {"ProxyEnable": 0, "ProxyServer_set": false, "AutoConfigURL_set": false}
+    },
+    "python_windows_root_store": {
+      "root_certificates_enumerated": 84,
+      "eset_filter_ca_thumbprint_found": true,
+      "thumbprint": "81BA1DD335C1ECE9A4006E4B455F0C1741F916D3"
+    }
+  },
+  "dns_tcp": {
+    "market_http_requests": {"get": 0, "post": 0, "head": 0},
+    "dns_only_resolution": {
+      "cname": "www.tpex.org.tw -> www.tpex.com.tw",
+      "a_records_observed": ["210.63.162.130", "203.74.185.130", "218.210.125.130"],
+      "system_socket_resolver_and_windows_cache": ["172.65.90.67", "172.65.90.66"],
+      "observed_difference": "DNS-only lookup and Windows socket resolver/cache returned different address sets; cause not established",
+      "windows_dns_servers_by_interface": {"Ethernet": ["192.168.71.48"], "Wi-Fi": ["192.168.0.1"]}
+    },
+    "tcp_443": {"test_net_connection": "PASS", "remote_address": "172.65.90.67", "port": 443}
+  },
+  "tls_handshakes": {
+    "count": 5,
+    "market_gets": 0,
+    "market_heads": 0,
+    "windows_sslstream": {
+      "result": "PASS",
+      "remote": "172.65.90.67:443",
+      "target_host_sni": "www.tpex.org.tw",
+      "tls": "TLS 1.2",
+      "cipher": "AES-128",
+      "hostname_validation": "PASS",
+      "chain_errors": "none reported by successful strict AuthenticateAsClient",
+      "peer_certificate": {
+        "subject": "CN=www.tpex.org.tw, O=Taipei Exchange, L=Taipei, S=Taiwan, C=TW",
+        "issuer": "C=SK, O=ESET, spol. s r. o., CN=ESET SSL Filter CA",
+        "serial": "1CC70D0543F88411B428DFD0DF3C671C",
+        "windows_thumbprint_sha1": "5D23C960016A5D676E2822A365D78DD34CDD66FF",
+        "san": ["www.tpex.org.tw"],
+        "not_before_utc": "2026-09-07T09:17:11Z",
+        "not_after_utc": "2027-03-24T15:59:59Z"
+      },
+      "matching_trusted_root": {
+        "subject": "C=SK, O=ESET, spol. s r. o., CN=ESET SSL Filter CA",
+        "thumbprint_sha1": "81BA1DD335C1ECE9A4006E4B455F0C1741F916D3",
+        "store": "CurrentUser\\Root and LocalMachine\\Root"
+      }
+    },
+    "python_default_ssl": {
+      "result": "FAIL",
+      "remote_tcp_connect": "PASS",
+      "server_hostname": "www.tpex.org.tw",
+      "exception": "ssl.SSLCertVerificationError",
+      "verify_code": 86,
+      "verify_message": "Missing Subject Key Identifier",
+      "reason": "CERTIFICATE_VERIFY_FAILED",
+      "openssl": "OpenSSL 3.0.16 11 Feb 2025"
+    },
+    "python_explicit_certifi_default_context": {
+      "result": "PASS",
+      "verification": "strict; ssl.create_default_context(cafile=certifi.where()), CERT_REQUIRED and hostname validation enabled",
+      "remote": "172.65.90.67:443",
+      "tls": "TLS 1.3",
+      "cipher": "TLS_AES_256_GCM_SHA384",
+      "peer_certificate": {
+        "subject": "CN=www.tpex.org.tw, O=Taipei Exchange, L=Taipei, ST=Taiwan, C=TW",
+        "issuer": "CN=TWCA SSL Certification Authority, OU=SSL Sub-CA, O=TAIWAN-CA, C=TW",
+        "serial": "47EA000000096920677806E9469C99A3",
+        "sha256_fingerprint": "1858E81CD2CB6CDF5F184903E2AE374807F2D9CF160202D5641AF47C5B6BCDB2",
+        "san": ["www.tpex.org.tw"],
+        "not_before_utc": "2026-09-07T09:17:11Z",
+        "not_after_utc": "2027-03-24T15:59:59Z"
+      },
+      "interpretation": "A different peer certificate chain was presented under this trust/client path; it passed strict validation. This is not the original urllib default configuration."
+    },
+    "openssl_s_client": {
+      "result": "FAIL",
+      "verify_return_error": true,
+      "showcerts": true,
+      "verification_error": "verify error:num=19:self-signed certificate in certificate chain",
+      "exit_code": 1,
+      "note": "OpenSSL 3.0.18 default trust path was absent; supplemental result, not evidence that the endpoint chain is invalid. No HTTP bytes sent."
+    }
+  },
+  "comparison": {
+    "windows_schannel": "strict PASS on ESET SSL Filter CA-issued peer certificate trusted by Windows",
+    "python_default_openssl": "FAIL on verify code 86 Missing Subject Key Identifier",
+    "python_certifi_openssl": "strict PASS on a different TWCA-issued peer certificate",
+    "standalone_openssl": "FAIL self-signed certificate in chain with absent default CA paths",
+    "proxy_environment": "none detected",
+    "conclusion": "Client-dependent TLS interception/certificate-chain and trust behavior is demonstrated. The DNS resolver address-set difference is independently observed but its cause is unknown."
+  },
+  "classification": "J_B03_T1_DIAGNOSIS_PROXY_OR_TLS_INTERCEPTION_DIFFERENCE",
+  "root_cause_detail": "A local ESET SSL Filter CA-issued certificate was presented to Windows SslStream; that CA is installed in Windows Root stores. Python's default OpenSSL validation rejects the intercepted chain for missing Subject Key Identifier (verify code 86). A strict certifi-backed Python context received a TWCA-issued certificate and validated successfully. No explicit environment proxy or CA override was present. This is a client/trust-path-dependent TLS interception difference, not proof of a generally invalid TPEx endpoint certificate.",
+  "confidence": "HIGH",
+  "smallest_safe_repair_recommendation": "In a separately authorized remediation tranche, evaluate an explicit certifi-backed ssl.create_default_context passed to urllib.request.urlopen (or another supported strictly validating TLS backend) for the production acquisition client. Keep CERT_REQUIRED and hostname/SNI checking enabled, ensure certifi is a declared runtime dependency, test transport without HTTP first, and only then request fresh bounded source-acquisition authority. Do not suppress verification or change machine trust.",
+  "scope": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "source_authority_changed": false,
+    "mcp_changed": false,
+    "mcp_tool_count": 6,
+    "j_b03_status": "HOLD",
+    "j_b04_status": "BLOCKING_UNCHANGED",
+    "phase_j_started": false,
+    "phase_j_authorized": false,
+    "diagnosis_only": true
+  },
+  "market_data_boundary": {
+    "t1_market_get_count": 0,
+    "t1_market_post_count": 0,
+    "t1_market_head_count": 0,
+    "source_shape_acquisition_count": 0,
+    "tls_handshake_count": 5,
+    "raw_payload_persisted": false
+  },
+  "next_owner_decision": "Choose whether to authorize the narrowly scoped strict client-CA configuration remediation and a later new A1 shape-probe attempt. This T1 tranche did not resume J-B03 A1."
+}
