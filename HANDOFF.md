@@ -1,5 +1,19 @@
 # HANDOFF.md — Current Operational Handoff
 
+## Phase J readiness preflight (2026-10-05)
+
+Phase I is complete under the final exit closure. Phase J is not started or
+authorized. Draft PR #303 is undergoing Owner-authorized Product Intent
+Realignment. The original 27-scenario G/H/I inventory remains; its initial
+four-blocker interpretation is superseded by
+`PHASE_J_READINESS_PREFLIGHT_HOLD_FOR_BOUNDED_CONVERSATIONAL_CORRECTNESS_GAPS`.
+Current J-entry predecessors are limited to bounded H1 disposition/suspend-resume
+and H2 corporate-action/price-discontinuity correctness. Financial statements
+are optional evidence; unproven correction linkage must remain explicitly
+unresolved. This governance tranche performs no market GET or activation.
+See `docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.md`
+and its companion JSON for the exact scenario and acceptance-layer inventories.
+
 ## Current I3-A4 stopping point (2026-10-05)
 
 I3-A0 is `GO_PASS`, I3-A1 is `FROZEN_PASS`, and I3-A2-R1 is `PASS`.
