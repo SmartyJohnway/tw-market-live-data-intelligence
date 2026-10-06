@@ -1,0 +1,148 @@
+{
+  "record_id": "PHASE_J_J_B03_S2B_TPEX_CMODE_SOURCE_CONTRACT_2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_S2B_ONE_BOUNDED_TPEX_CMODE_GET_AUTHORIZATION",
+  "starting_state": {
+    "main_commit": "c05ceb4830e221e40aadc0280531ee9ad2521b80",
+    "main_tree": "a8163a4ae1116c86542c5cba87e4a0d91d3629ef",
+    "pr_309": "MERGED / CLOSED"
+  },
+  "source_authority": {
+    "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+    "source_contract_id": "tpex_cmode",
+    "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+    "data_gov_dataset_id": "11736",
+    "license": "ODGL 1.0; free",
+    "source_role": "default_candidate",
+    "activation_state": "eligible",
+    "runtime_executable": false,
+    "static_preflight": "PASS; matches frozen repository source authority and dormant descriptor; no post-PR-309 activation found"
+  },
+  "tls": {
+    "policy": "compatibility",
+    "context_type": "ssl.SSLContext",
+    "verify_mode": "CERT_REQUIRED",
+    "check_hostname": true,
+    "verify_x509_strict_available": true,
+    "verify_x509_strict_set": false,
+    "validation_bypassed": false
+  },
+  "network": {
+    "authorized_gets": 1,
+    "actual_get_attempts": 1,
+    "retry_count": 0,
+    "fallback_gets": 0,
+    "head_count": 0,
+    "post_count": 0,
+    "other_market_gets": 0,
+    "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+    "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+    "http_status": 200,
+    "content_type": "application/json",
+    "content_length": 4829,
+    "response_byte_limit": 4194304,
+    "response_bytes_read": 4829,
+    "response_sha256": "b03d4d86ea689e3367be6224598897bb3da4ac4d13dfb77ce98c2088100a8d29",
+    "retrieved_at_utc": "2026-10-06T07:43:12.319606+00:00",
+    "timeout_seconds": 30,
+    "user_agent": "tw-market-live-data-intelligence/1.0",
+    "redirect_followed": false,
+    "raw_response_persisted": false
+  },
+  "json_shape": {
+    "root_type": "array",
+    "row_count": 22,
+    "non_object_rows": 0,
+    "field_union": [" FinancialAnnouncements", "AlteredTrading", "CompanyName", "Date", "ManagedStock", "MatchingFrequency", "PeriodicTrading", "SecuritiesCompanyCode", "SuspensionOfTrading"],
+    "field_intersection": [" FinancialAnnouncements", "AlteredTrading", "CompanyName", "Date", "ManagedStock", "MatchingFrequency", "PeriodicTrading", "SecuritiesCompanyCode", "SuspensionOfTrading"],
+    "field_presence_count_each": 22,
+    "expected_vs_actual": {
+      "Date": {"actual": "Date", "exact_match": true, "leading_or_trailing_space": false},
+      "SecuritiesCompanyCode": {"actual": "SecuritiesCompanyCode", "exact_match": true, "leading_or_trailing_space": false},
+      "CompanyName": {"actual": "CompanyName", "exact_match": true, "leading_or_trailing_space": false},
+      "AlteredTrading": {"actual": "AlteredTrading", "exact_match": true, "leading_or_trailing_space": false},
+      "PeriodicTrading": {"actual": "PeriodicTrading", "exact_match": true, "leading_or_trailing_space": false},
+      "ManagedStock": {"actual": "ManagedStock", "exact_match": true, "leading_or_trailing_space": false},
+      "MatchingFrequency": {"actual": "MatchingFrequency", "exact_match": true, "leading_or_trailing_space": false},
+      "SuspensionOfTrading": {"actual": "SuspensionOfTrading", "exact_match": true, "leading_or_trailing_space": false},
+      " FinancialAnnouncements": {"actual": " FinancialAnnouncements", "exact_match": true, "leading_space": true, "trailing_space": false, "unspaced_variant_present": false}
+    }
+  },
+  "security_code_grammar": {
+    "field": "SecuritiesCompanyCode",
+    "json_type": "string for all 22 rows",
+    "length_counts": {"4": 22},
+    "numeric_strings": 22,
+    "non_numeric_alphanumeric": 0,
+    "leading_zero_count": 0,
+    "blank_count": 0,
+    "null_count": 0,
+    "missing_count": 0,
+    "duplicate_codes": 0,
+    "unique_codes": 22,
+    "binding_assessment": "Exact string binding is deterministic for the observed payload; do not cast codes to integers."
+  },
+  "date_grammar": {
+    "field": "Date",
+    "json_type": "string for all 22 rows",
+    "distinct_values_and_counts": {"1151006": 22},
+    "lexical_pattern": "seven decimal digits",
+    "candidate_interpretation": "115/10/06 (ROC-style year/month/day) is plausible, but this review did not normalize the value or independently verify an official date-format definition.",
+    "one_date_snapshot_observed": true,
+    "current_date_alignment": "The observed token is consistent with the 2026-10-06 retrieval date under ROC-calendar interpretation; interpretation remains unnormalized pending contract evidence.",
+    "blank_null_missing": {"blank": 0, "null": 0, "missing": 0}
+  },
+  "status_value_grammar": {
+    "capture_integrity_limitation": "The terminal/tool output rendered non-ASCII payload values as replacement glyphs (shown as U+FFFD-like characters). The one authorized response is no longer available in memory and was not persisted. Exact lexical CJK values therefore cannot be stated reliably; no second GET is authorized.",
+    "SuspensionOfTrading": {
+      "field_present_all_rows": true,
+      "json_type": "string",
+      "blank_count": 18,
+      "null_count": 0,
+      "missing_count": 0,
+      "nonblank_count": 4,
+      "distinct_nonblank_count": 1,
+      "exact_nonblank_lexical_value": null,
+      "captured_output_observation": "One nonblank value appeared four times but its exact characters were corrupted in captured output.",
+      "affirmative_stopped_value_established": false,
+      "semantic_classification": "unverified"
+    },
+    "AlteredTrading": {"field_present_all_rows": true, "json_type": "string", "blank_count": 4, "null_count": 0, "missing_count": 0, "nonblank_count": 18, "distinct_nonblank_count": 1, "exact_nonblank_lexical_value": null, "semantic_value": "unverified due output character corruption"},
+    "PeriodicTrading": {"field_present_all_rows": true, "json_type": "string", "blank_count": 16, "null_count": 0, "missing_count": 0, "nonblank_count": 6, "distinct_nonblank_count": 1, "exact_nonblank_lexical_value": null, "semantic_value": "unverified due output character corruption"},
+    "ManagedStock": {"field_present_all_rows": true, "json_type": "string", "blank_count": 22, "null_count": 0, "missing_count": 0, "nonblank_count": 0},
+    "MatchingFrequency": {"field_present_all_rows": true, "json_type": "string", "blank_count": 15, "null_count": 0, "missing_count": 0, "nonblank_values": {"030": 6, "010": 1}},
+    " FinancialAnnouncements": {"field_present_all_rows": true, "json_type": "string", "blank_count": 0, "null_count": 0, "missing_count": 0, "distinct_nonblank_count": 1, "exact_nonblank_lexical_value": null, "semantic_value": "unverified due output character corruption"}
+  },
+  "multiplicity": {
+    "rows_per_security_in_observed_snapshot": "one",
+    "duplicate_security_codes": 0,
+    "multiple_dates": false,
+    "duplicate_identical_rows": 0,
+    "event_relationship_inferred": false
+  },
+  "bounded_samples": {
+    "persisted_rows": [],
+    "reason": "Status-bearing sample values could not be captured with character fidelity; the response itself was not persisted. Aggregate counts and codes/date grammar are recorded instead."
+  },
+  "semantics": {
+    "blank": "Does not mean not stopped; preserve as blank/unknown.",
+    "null_or_missing": "None observed; if encountered later, fail closed.",
+    "target_absent": "No matching row in the retrieved special-status listing; does not establish normal or tradeable status.",
+    "nonblank_suspension_value": "Cannot be mapped to an affirmative stopped state without its exact characters and authoritative value semantics.",
+    "negative_tradeability_claim": "Not supported by this listing's coverage or this response."
+  },
+  "disposition": "J_B03_S2B_HOLD_POSITIVE_VALUE_GRAMMAR_UNPROVEN",
+  "issues": {"H0-SRC-01E": "OPEN", "H0-SRC-02": "OPEN"},
+  "phase_state": {"J_B03": "HOLD", "J_B04": "BLOCKING", "phase_j": "NOT_STARTED"},
+  "change_boundary": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "activation_changed": false,
+    "mcp_changed": false,
+    "mcp_count": 6,
+    "data_directory_touched": false
+  },
+  "stop_boundary": "No second GET, no implementation, no activation, no J-B04 or Phase J work. A future bounded evidence-capture method must preserve exact Unicode values on the first and only authorized response."
+}
