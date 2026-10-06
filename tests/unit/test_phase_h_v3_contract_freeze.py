@@ -34,6 +34,7 @@ V3_SCHEMAS = {
     "result": "unified_market_evidence_result.v3.schema.json",
     "audit": "unified_market_evidence_audit_package.v3.schema.json",
     "h1": "trading_status_context_evidence.v1.schema.json",
+    "h1_v2": "trading_status_context_evidence.v2.schema.json",
     "h2": "corporate_action_context_evidence.v1.schema.json",
     "h3": "recent_performance_evidence.v1.schema.json",
     "h4": "discontinuity_safety_evidence.v1.schema.json",
@@ -137,6 +138,12 @@ def test_h1_available_no_evidence_partial_and_failures_are_typed_and_fail_closed
     invalid["coverage"]["covered_status_types"] = ["attention"]
     with pytest.raises(PhaseHV3ContractValidationError):
         validate_trading_status_context_semantics(invalid)
+
+    canonical_not_covered = copy.deepcopy(EXAMPLES["h1_attention_available"])
+    canonical_not_covered["coverage"]["covered_status_types"].remove("attention")
+    canonical_not_covered["coverage"]["uncovered_status_types"].append("attention")
+    with pytest.raises(PhaseHV3ContractValidationError, match="h1_canonical_item_not_covered"):
+        validate_trading_status_context_semantics(canonical_not_covered)
 
 
 def test_h2_stage_revision_missing_zero_and_coverage_semantics():
@@ -323,10 +330,20 @@ def test_result_v3_embeds_typed_phase_h_contracts_and_audit_v3_binds_lineage():
     standalone = {"trading_status_context": "h1", "corporate_action_context": "h2", "recent_performance_v3": "h3", "discontinuity_safety": "h4"}
     for definition_name, standalone_name in standalone.items():
         embedded = copy.deepcopy(result_schema["definitions"][definition_name])
-        external = copy.deepcopy(schema(standalone_name))
-        for key in ("$schema", "$id", "title"):
-            external.pop(key, None)
-        assert embedded == external
+        if definition_name == "trading_status_context":
+            branches = embedded["oneOf"]
+            for branch, external_name in zip(branches, ("h1", "h1_v2"), strict=True):
+                external = copy.deepcopy(schema(external_name))
+                for key in ("$schema", "$id", "title"):
+                    external.pop(key, None)
+                branch_without_metadata = {key: value for key, value in branch.items()
+                                           if key not in {"$schema", "$id", "title"}}
+                assert branch_without_metadata == external
+        else:
+            external = copy.deepcopy(schema(standalone_name))
+            for key in ("$schema", "$id", "title"):
+                external.pop(key, None)
+            assert embedded == external
     audit_schema = schema("audit")
     assert "phase_h_governance" in audit_schema["required"]
     governance = audit_schema["properties"]["phase_h_governance"]

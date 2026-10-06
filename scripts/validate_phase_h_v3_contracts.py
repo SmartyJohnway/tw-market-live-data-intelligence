@@ -14,6 +14,15 @@ from math import isclose
 from pathlib import Path
 from typing import Any
 
+try:
+    from scripts.m8r_05c.phase_h_semantics import (
+        validate_trading_status_context_semantics as _validate_h1_semantics,
+    )
+except ModuleNotFoundError:  # Support direct execution as `python scripts/...py`.
+    from m8r_05c.phase_h_semantics import (
+        validate_trading_status_context_semantics as _validate_h1_semantics,
+    )
+
 
 class PhaseHV3ContractValidationError(ValueError):
     """A candidate Phase H V3 evidence object violates a frozen invariant."""
@@ -67,11 +76,6 @@ RETURN_PCT_ABS_TOLERANCE = 1e-9
 """Absolute tolerance for serialized JSON return percentages; no rounding."""
 
 
-H1_DECLARED_STATUS_TYPES = {
-    "attention", "disposition", "changed_trading_method", "suspension", "resumption",
-}
-
-
 def _validate_declared_scope(
     coverage: Mapping[str, Any], declared_key: str, covered_key: str, uncovered_key: str,
     *, required_declared: set[str] | None = None,
@@ -86,25 +90,11 @@ def _validate_declared_scope(
 
 
 def validate_trading_status_context_semantics(value: Mapping[str, Any]) -> None:
-    """H0-C scope is all five canonical types because Request V3 has no selector."""
-    coverage = value.get("coverage")
-    if not isinstance(coverage, Mapping):
-        _fail("missing_h1_coverage")
-    _validate_declared_scope(
-        coverage, "declared_status_types", "covered_status_types", "uncovered_status_types",
-        required_declared=H1_DECLARED_STATUS_TYPES,
-    )
-    if value.get("status") == "no_evidence_in_covered_scope":
-        required = (
-            coverage.get("declared_scope_complete") is True,
-            not coverage.get("uncovered_status_types"),
-            not coverage.get("failed_source_families"),
-            coverage.get("retrieval_succeeded") is True,
-            coverage.get("source_contract_validated") is True,
-            coverage.get("exact_target_search_succeeded") is True,
-        )
-        if not all(required):
-            _fail("h1_no_evidence_not_complete_exact_scope")
+    """H0-C scope is canonical; v2 native evidence remains unresolved."""
+    try:
+        _validate_h1_semantics(value)
+    except ValueError as exc:
+        raise PhaseHV3ContractValidationError(str(exc)) from exc
 
 
 def validate_corporate_action_context_semantics(value: Mapping[str, Any]) -> None:
@@ -331,12 +321,33 @@ def main() -> None:
         _fail("phase_i_v3_request_extension_not_additive")
     additive_v3_schema_hashes = {
         "schemas/unified_market_evidence_request.v3.schema.json": "b0901dbf63db3a8bc44b8fec4cb0cdc90f77e153d954266f98c690453864f3f6",
-        "schemas/unified_market_evidence_result.v3.schema.json": "e20a54563c9bf1454e705ccdaed8f002aed0cc4692e74eaaaa81568ac4278872",
+        "schemas/unified_market_evidence_result.v3.schema.json": "a8519bc4c444f59b24e74de702667c5570ed15f816a841b509e24b2f3bc788d5",
         "schemas/unified_market_evidence_audit_package.v3.schema.json": "94208ac6f4c13bcde294de1a8c7cf6be23245d738b5dcd36fffcac1ab134c4cc",
     }
     for relative_path, expected_hash in additive_v3_schema_hashes.items():
         if hashlib.sha256((root / relative_path).read_bytes()).hexdigest() != expected_hash:
             _fail(f"phase_i_v3_additive_schema_drift:{relative_path}")
+
+    h1_v1_path = "schemas/trading_status_context_evidence.v1.schema.json"
+    h1_v1_sha256 = hashlib.sha256((root / h1_v1_path).read_bytes()).hexdigest()
+    if h1_v1_sha256 != "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf":
+        _fail("h1_v1_schema_changed")
+    h1_v1 = _load_current_authority_json(root / h1_v1_path)
+    h1_v2 = _load_current_authority_json(root / "schemas/trading_status_context_evidence.v2.schema.json")
+    h1_v2_sha256 = hashlib.sha256((root / "schemas/trading_status_context_evidence.v2.schema.json").read_bytes()).hexdigest()
+    if h1_v2_sha256 != "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38":
+        _fail("h1_v2_schema_current_authority_drift")
+    if h1_v2.get("properties", {}).get("schema_version", {}).get("const") != "trading_status_context_evidence.v2":
+        _fail("h1_v2_schema_version_invalid")
+    if h1_v2.get("definitions", {}).get("status_type") != h1_v1.get("definitions", {}).get("status_type"):
+        _fail("h1_v2_canonical_status_types_changed")
+    result_v3 = _load_current_authority_json(root / "schemas/unified_market_evidence_result.v3.schema.json")
+    h1_union = result_v3.get("definitions", {}).get("trading_status_context", {}).get("oneOf", [])
+    if len(h1_union) != 2 or {
+        item.get("properties", {}).get("schema_version", {}).get("const")
+        for item in h1_union
+    } != {"trading_status_context_evidence.v1", "trading_status_context_evidence.v2"}:
+        _fail("result_v3_h1_version_union_invalid")
 
     catalog = _load_current_authority_json(
         root / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"

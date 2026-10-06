@@ -18,6 +18,37 @@ CANDIDATE_BASELINE = "5c26e7b541bdb6c0d70a39c1e0eab8e129823373"
 _DROP = object()
 
 
+def _normalize_current_h1_v2_addition(value):
+    """Project the authorized H1 v2 additive Result branch back to historical H1 v1.
+
+    Older Phase I containment gates compare their original V3 snapshot. The
+    current additive H1 acceptance is independently hash-pinned by the Phase H
+    V3 validator and dated Phase J authority, so those historical comparisons
+    retain their v1 baseline without treating the authorized sibling as I3 or
+    rewriting any historical record.
+    """
+    if isinstance(value, dict):
+        result = {}
+        for key, item in value.items():
+            if key == "trading_status_context" and isinstance(item, dict) and isinstance(item.get("oneOf"), list):
+                branches = item["oneOf"]
+                versions = {
+                    branch.get("properties", {}).get("schema_version", {}).get("const")
+                    for branch in branches if isinstance(branch, dict)
+                }
+                if versions == {"trading_status_context_evidence.v1", "trading_status_context_evidence.v2"}:
+                    v1 = [branch for branch in branches
+                          if branch.get("properties", {}).get("schema_version", {}).get("const")
+                          == "trading_status_context_evidence.v1"]
+                    if len(v1) == 1:
+                        item = v1[0]
+            result[key] = _normalize_current_h1_v2_addition(item)
+        return result
+    if isinstance(value, list):
+        return [_normalize_current_h1_v2_addition(item) for item in value]
+    return value
+
+
 def _without_i3(value):
     if value == CAPABILITY or value == EVIDENCE_V2:
         return _DROP
@@ -75,7 +106,8 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
     old = json.loads(subprocess.check_output(
         ["git", "show", f"{baseline}:{relative}"], cwd=ROOT
     ).decode("utf-8"))
-    if _without_i3(current) != old:
+    normalized = _normalize_current_h1_v2_addition(_without_i3(current))
+    if normalized != old:
         raise AssertionError(f"non_i3_production_authority_drift:{relative}")
 
 
