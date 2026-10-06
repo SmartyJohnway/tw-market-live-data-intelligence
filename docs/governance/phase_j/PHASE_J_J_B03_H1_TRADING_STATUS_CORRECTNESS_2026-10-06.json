@@ -1,0 +1,112 @@
+{
+  "schema_version": "phase_j_j_b03_h1_trading_status_correctness.v1",
+  "decision_date": "2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_H1_TRADING_STATUS_CORRECTNESS_BOUNDED_PREDECESSOR_AUTHORIZATION",
+  "starting_main": {
+    "commit": "94852cd4a953592f8a19787df08cf59c7d3c5f4d",
+    "tree": "2b2ae24cddf4809d61d5bf2ce249b228710c714a",
+    "pr_303": "merged"
+  },
+  "branch": "phase-j/j-b03-h1-trading-status-correctness",
+  "current_authority_reconciliation": {
+    "status": "PASS",
+    "capability": "trading_status_context",
+    "preferred_contract": "Unified V3",
+    "existing_executor": "phase_h_h1_tpex_attention_executor",
+    "existing_active_h1_source_count": 1,
+    "mcp_tool_count": 6,
+    "sources": [
+      {
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+        "market": "TPEX",
+        "source_contract": "tpex_trading_warning_information",
+        "source_role": "default_candidate",
+        "activation_state": "active",
+        "runtime_executable": true
+      },
+      {
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+        "market": "TPEX",
+        "source_contract": "tpex_disposal_information",
+        "source_role": "default_candidate",
+        "activation_state": "eligible",
+        "runtime_executable": false,
+        "route_blockers": []
+      },
+      {
+        "source_id": "H1-TPEX-SUSPEND-HISTORY-OPENAPI",
+        "market": "TPEX",
+        "source_contract": "official_openapi",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_spendi_history",
+        "source_role": "governed_fallback",
+        "license": "ODGL 1.0; https://data.gov.tw/dataset/48665",
+        "activation_state": "eligible",
+        "runtime_executable": false,
+        "route_blockers": []
+      }
+    ],
+    "twse_h1_routes_changed": false,
+    "tpex_suspend_today_activated": false,
+    "changed_trading_method_activated": false
+  },
+  "source_contract_review": {
+    "disposition": {
+      "status": "STATIC_CONTRACT_PRESENT_NOT_ACTIVATED",
+      "fields": ["Date", "SecuritiesCompanyCode", "CompanyName", "DispositionPeriod", "DispositionReasons", "DisposalCondition"],
+      "normalizer_present": "normalize_tpex_disposition",
+      "runtime_live_contract_verified": false
+    },
+    "suspend_resume_history": {
+      "official_fields_documented": ["Serial", "SecuritiesCompanyCode", "CompanyName", "DateOfSuspendedTrading", "TimeOfSuspendedTrading", "DateOfResumedTrading", "TimeOfResumedTrading"],
+      "blank_resumption_semantics": "unresolved; blank must not be interpreted as resumed or active",
+      "revision_semantics": "serial exists; correction/supersession semantics not documented as stable lifecycle",
+      "historical_depth": "unknown",
+      "static_event_semantics": "can represent source-documented suspension/resumption events; cannot establish current tradeability from blank fields, absence, or date comparison",
+      "live_value_grammar_verified": false
+    }
+  },
+  "network": {
+    "market_get_attempt_budget": 3,
+    "optional_shape_probe": {
+      "authorized_maximum": 1,
+      "attempts": 1,
+      "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_spendi_history",
+      "http_response_received": false,
+      "result": "TLS certificate verification failed before an HTTP response; no retry",
+      "raw_payload_persisted": false
+    },
+    "disposition_acceptance_gets": 0,
+    "suspend_resume_acceptance_gets": 0,
+    "total_get_attempts": 1,
+    "retries": 0,
+    "fallback_or_browser": false
+  },
+  "gates": {
+    "A0_current_authority_reconciliation": "PASS",
+    "A1_suspend_resume_semantic_viability": "INSUFFICIENT_FOR_J_B03",
+    "A1_reason": "The frozen source authority records official event fields and blank-resumption semantics, but the one authorized shape-probe attempt failed TLS verification before a response. Exact live date/time value grammar and transport compatibility therefore remain unverified; activation is not safe.",
+    "A2_deterministic_implementation": "NOT_STARTED",
+    "A3_offline_integrated_v3_acceptance": "NOT_RUN",
+    "A4_bounded_live_acceptance": "NOT_RUN",
+    "A5_conditional_activation": "NOT_AUTHORIZED_BY_GATES",
+    "A6_rollback_rehearsal": "NOT_RUN",
+    "A7_closure_review": "HOLD"
+  },
+  "production_boundary": {
+    "new_routes_activated": [],
+    "active_h1_subset_unchanged": ["H1-TPEX-ATTENTION-OPENAPI"],
+    "disposition_runtime_active": false,
+    "suspend_resume_history_runtime_active": false,
+    "production_code_changed": false,
+    "schema_changed": false,
+    "routing_or_executor_registry_changed": false,
+    "mcp_tool_count": 6,
+    "phase_j_started": false,
+    "j_b04_authorized_or_changed": false
+  },
+  "disposition": "J_B03_HOLD_LIVE_SOURCE_CONTRACT_OR_TRANSPORT",
+  "j_b03_status": "HOLD",
+  "j_b04_status": "BLOCKING_UNCHANGED",
+  "phase_j_started": false,
+  "next_required_evidence": "A separately authorized, successful, certificate-validated source-contract/live-shape check for the TPEx suspend-history endpoint; then restart J-B03 from A1 without retrying this attempt."
+}
