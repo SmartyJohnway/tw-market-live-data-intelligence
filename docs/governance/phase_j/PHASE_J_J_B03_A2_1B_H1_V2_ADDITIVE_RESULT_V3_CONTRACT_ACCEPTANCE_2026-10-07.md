@@ -84,7 +84,10 @@ Phase J    = NOT STARTED
 MCP        = 6 tools
 ```
 
-The next candidate gate is **J-B03-A2.2 — Deterministic tpex_cmode Native-Evidence
-Adapter Implementation**, subject to separate authorization. Multi-source
-representative composition and live/source activation remain outside this
-contract amendment.
+The next candidate gate is **J-B03-A2.2 — Representative H1 Composition / Adapter
+Integration Design**, subject to separate authorization. The existing one-binding,
+one-typed-artifact model is preserved, and this tranche did not establish a
+governed composition path for the representative attention + disposition +
+native current-status bundle. Design that composition before implementing the
+tpex_cmode adapter. Live/source activation remains outside this contract
+amendment.
