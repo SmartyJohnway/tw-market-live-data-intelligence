@@ -1,0 +1,130 @@
+{
+  "record_id": "PHASE_J_J_B03_S2D_TPEX_CMODE_MARKER_SEMANTICS_AUTHORITY_2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_S2D_MARKER_SEMANTICS_AUTHORITY_RESEARCH_AUTHORIZATION",
+  "starting_state": {
+    "main_commit": "e639ae4fade535971dcdb95ac654c89457dc7552",
+    "main_tree": "6602998567c990cb31bd420535d69dfffd7a7153",
+    "pr_311": "MERGED / CLOSED"
+  },
+  "accepted_evidence": {
+    "pr_309": "J_B03_S1B_ALTERNATIVE_CURRENT_STATUS_SEMANTICALLY_SUFFICIENT",
+    "pr_310": "J_B03_S2B_HOLD_POSITIVE_VALUE_GRAMMAR_UNPROVEN",
+    "pr_311": "J_B03_S2C_HOLD_AFFIRMATIVE_MARKER_SEMANTICS_UNPROVEN",
+    "s2c_payload_sha256": "b03d4d86ea689e3367be6224598897bb3da4ac4d13dfb77ce98c2088100a8d29",
+    "s2c_observed_marker": {"field": "SuspensionOfTrading", "unicode": "Ｙ", "codepoint": "U+FF39", "utf8_hex": "efbcb9", "frequency": 4},
+    "s2c_source_date": {"raw": "1151006", "normalized": "2026-10-06", "basis": "existing ROC_YYYMMDD precedent"}
+  },
+  "target": {
+    "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+    "source_contract_id": "tpex_cmode",
+    "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+    "data_gov_dataset_id": "11736",
+    "dataset_title": "上櫃股票變更交易、分盤交易、管理股票與停止交易資訊",
+    "field": "SuspensionOfTrading",
+    "official_field_label": "停止交易",
+    "observed_marker": {"unicode": "Ｙ", "unicode_name": "FULLWIDTH LATIN CAPITAL LETTER Y", "codepoint": "U+FF39", "json_ascii": "\"\\uff39\"", "utf8_hex": "efbcb9"}
+  },
+  "official_sources_consulted": [
+    {
+      "url": "https://data.gov.tw/dataset/11736",
+      "title": "上櫃股票變更交易、分盤交易、管理股票與停止交易資訊",
+      "publisher": "金融監督管理委員會證券期貨局",
+      "metadata_updated_at": "2024-12-05 08:55",
+      "official_facts": ["dataset title includes 停止交易", "field list includes 停止交易", "daily update frequency", "ODGL 1.0 and free", "official CSV resource is linked and hosted by TPEx", "generic TPEx OAS documentation URLs are listed"],
+      "marker_definition_found": false,
+      "evidence_level_for_U_FF39_semantics": "LEVEL 1",
+      "limitation": "Dataset metadata publishes field names and scope, not a codebook mapping U+FF39 or ASCII Y to the 停止交易 field's affirmative state. Resource rows were not downloaded."
+    },
+    {
+      "url": "https://www.tpex.org.tw/openapi/",
+      "title": "TPEx OpenAPI documentation portal",
+      "publisher": "Taipei Exchange",
+      "result": "HTTP 403 in the research documentation path",
+      "marker_definition_found": false,
+      "evidence_level_for_U_FF39_semantics": "NONE; content unavailable"
+    },
+    {
+      "url": "https://www.tpex.org.tw/openapi/swagger.json",
+      "title": "TPEx OpenAPI Swagger document",
+      "publisher": "Taipei Exchange",
+      "result": "HTTP 403 in the research documentation path",
+      "marker_definition_found": false,
+      "evidence_level_for_U_FF39_semantics": "NONE; content unavailable"
+    },
+    {
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/info/altered.html",
+      "title": "變更交易、分盤交易、管理股票與停止交易資訊",
+      "publisher": "Taipei Exchange",
+      "result": "HTTP 403 in the research documentation path. The accepted S1B record describes a date-query page with HTML/CSV export, but no machine-value-to-display mapping.",
+      "marker_definition_found": false,
+      "evidence_level_for_U_FF39_semantics": "NONE; no deterministic displayed-state/API-marker mapping available"
+    },
+    {
+      "url": "https://dsp.tpex.org.tw/storage/regular_system/%E6%AB%83%E6%AA%AF%E8%B2%B7%E8%B3%A3IP%E8%A1%8C%E6%83%85%E7%B6%B2%E8%B7%AF%E8%A6%8F%E6%A0%BC%E6%9B%B8%285.4l%E7%89%88%29.pdf",
+      "title": "櫃檯買賣IP行情網路規格書 (5.4l版)",
+      "publisher": "Taipei Exchange-related DSP domain; document was not successfully opened (HTTP 403)",
+      "relevance": "Not counted as marker authority: it is a general IP feed technical specification, and no evidence ties its separate file/field codes to tpex_cmode.SuspensionOfTrading.",
+      "marker_definition_found_for_target": false,
+      "evidence_level_for_U_FF39_semantics": "NONE"
+    }
+  ],
+  "marker_semantics": {
+    "direct_fullwidth_definition": false,
+    "ascii_y_definition_for_target": false,
+    "common_fullwidth_ascii_normalization_convention_for_target": false,
+    "same_route_example_mapping_U_FF39_to_stopped": false,
+    "strongest_definition_found": "None for this exact dataset/field. Official dataset metadata names 停止交易 but does not define the observed marker value.",
+    "evidence_level": "LEVEL 1",
+    "disposition": "Insufficient; field label, nonblank occurrence, cross-field repetition, and conventional letter reading are inference-only without a source-specific official code definition."
+  },
+  "fullwidth_ascii_analysis": {
+    "source_character": "Ｙ",
+    "codepoint": "U+FF39",
+    "nfkc_result": "Y",
+    "nfkc_is_only_technical_normalization": true,
+    "business_semantic_equivalence_established": false
+  },
+  "cross_field_evidence": {
+    "s2c_observed": {
+      "SuspensionOfTrading": {"U+FF39": 4, "blank": 18},
+      "AlteredTrading": {"U+FF39": 18, "blank": 4},
+      "PeriodicTrading": {"U+FF39": 6, "blank": 16},
+      "ManagedStock": {"blank": 22},
+      "MatchingFrequency": {"010": 1, "030": 6, "blank": 15},
+      " FinancialAnnouncements": {"U+FF39": 22}
+    },
+    "classification": "LEVEL 1 inference only",
+    "shared_marker_convention_officially_documented": false,
+    "semantic_transfer_between_fields": false
+  },
+  "official_human_query_page": {
+    "url": "https://www.tpex.org.tw/zh-tw/mainboard/trading/info/altered.html",
+    "static_page_access": "403",
+    "visible_output_marker_mapping": "NOT VERIFIED",
+    "deterministic_relation_to_api_marker": "NOT ESTABLISHED"
+  },
+  "repository_evidence_findings": {
+    "S2C_record": "Previous accepted live observation; exact lexical value evidence, not semantic authority.",
+    "S1B_record": "Accepted official dataset title/field/cadence evidence; no marker codebook.",
+    "source_matrix": "Frozen authority maps dataset 11736 to tpex_cmode, identifies SuspensionOfTrading among source fields, and closes H0-SRC-01G; it defines no marker values.",
+    "code_search": "No pre-existing production mapping or test contract defining U+FF39/Y as affirmative SuspensionOfTrading found. Existing U+FF39 occurrences are S2C governance observations.",
+    "implementation_or_test_assumption_used_as_authority": false
+  },
+  "decision": {
+    "s2d_disposition": "J_B03_S2D_HOLD_MARKER_AUTHORITY_NOT_PUBLISHED",
+    "affirmative_mapping_proven": false,
+    "SuspensionOfTrading_equals_U_FF39_means_stopped": "NOT AUTHORIZED",
+    "blank_semantics": "UNRESOLVED; blank != not stopped",
+    "target_absence_semantics": "No matching row in this special-status listing; absent != normal"
+  },
+  "product_fallback_assessment": {
+    "classification": "SAFE_NATIVE_EVIDENCE_FALLBACK_POSSIBLE",
+    "safe_wording": "TPEx 的「停止交易」欄位目前標示為「Ｙ」；本系統尚未取得足夠官方欄位代碼文件，因此不將該標記自動正規化為肯定停牌狀態。",
+    "conditions": ["bind exact target and source date", "cite dataset/source and retain native field/value", "present U+FF39 as source-native evidence only", "explicitly state semantics are not mapped", "never treat blank or absence as normal trading"],
+    "runtime_or_schema_change_authorized": false
+  },
+  "network_accounting": {"market_data_get": 0, "market_data_head": 0, "market_data_post": 0, "payload_acquisition": false, "dataset_csv_download": false},
+  "change_boundary": {"production_code_changed": false, "schema_changed": false, "catalog_changed": false, "routing_changed": false, "registry_changed": false, "activation_changed": false, "mcp_changed": false, "mcp_count": 6, "data_directory_touched": false},
+  "issues": {"H0-SRC-01E": "OPEN", "H0-SRC-02": "OPEN"},
+  "phase_state": {"J-B03": "HOLD", "J-B04": "BLOCKING", "Phase J": "NOT STARTED"}
+}
