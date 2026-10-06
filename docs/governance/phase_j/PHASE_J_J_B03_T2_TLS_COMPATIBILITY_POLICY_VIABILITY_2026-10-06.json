@@ -1,0 +1,133 @@
+{
+  "schema_version": "phase_j_j_b03_t2_tls_compatibility_policy_viability.v1",
+  "decision_date": "2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_T2_EXISTING_TLS_COMPATIBILITY_POLICY_VIABILITY_AUTHORIZATION",
+  "starting_main": {
+    "commit": "db0c66d0def18442a7428492fab17f5116df14e7",
+    "tree": "4a5dc9c52319132e049d5af9081b73c129c34b6e",
+    "pr_305": "MERGED / CLOSED",
+    "pr_305_merge_commit": "db0c66d0def18442a7428492fab17f5116df14e7",
+    "pr_305_accepted_head": "9e95d7bfa2f7755a7f16d86ae7eb21d91cb22c1e"
+  },
+  "branch": "phase-j/j-b03-t2-tls-compatibility-viability",
+  "t1_diagnosis": {
+    "reference": "docs/governance/phase_j/PHASE_J_J_B03_T1_TLS_TRANSPORT_DIAGNOSIS_2026-10-06.json",
+    "classification": "J_B03_T1_DIAGNOSIS_PROXY_OR_TLS_INTERCEPTION_DIFFERENCE",
+    "confidence": "HIGH",
+    "prior_python_error": {
+      "verify_code": 86,
+      "verify_message": "Missing Subject Key Identifier"
+    },
+    "prior_local_certifi_version": "2026.2.25",
+    "repository_locked_certifi_version": "2026.7.22"
+  },
+  "existing_policy_review": {
+    "source": "scripts/ssl_policy.py::build_ssl_context",
+    "strict": {
+      "repository_default": true,
+      "context_result": "None; callers use their normal verified default TLS behavior",
+      "unverified_context_created": false
+    },
+    "compatibility": {
+      "explicit_only": true,
+      "construction": "ssl.create_default_context()",
+      "removes_VERIFY_X509_STRICT_when_available": true,
+      "CERT_REQUIRED_retained": true,
+      "check_hostname_retained": true,
+      "silent_fallback": false
+    },
+    "unsafe_explicit": {
+      "implementation_exists": true,
+      "authorized_or_used": false,
+      "context_used": false
+    },
+    "existing_tests": "tests/unit/test_m6d_ssl_policy.py asserts compatibility is an SSLContext, CERT_REQUIRED, check_hostname true, VERIFY_X509_STRICT absent when available, and explicit policy reporting"
+  },
+  "compatibility_context_assertions_before_connect": {
+    "context_type": "SSLContext",
+    "verify_mode": "CERT_REQUIRED",
+    "check_hostname": true,
+    "verify_flags_integer": 557056,
+    "VERIFY_X509_STRICT_available": true,
+    "VERIFY_X509_STRICT_set": false,
+    "all_assertions_passed": true
+  },
+  "tls_test": {
+    "client": "Python 3.13.7 with repository scripts.ssl_policy.build_ssl_context('compatibility')",
+    "openssl": "OpenSSL 3.0.16 11 Feb 2025",
+    "host": "www.tpex.org.tw",
+    "port": 443,
+    "sni": "www.tpex.org.tw",
+    "handshake_count": 1,
+    "result": "PASS",
+    "http_bytes_sent": 0,
+    "market_http_get_count": 0,
+    "market_http_head_count": 0,
+    "market_http_post_count": 0,
+    "source_shape_acquisition_count": 0,
+    "tls_version": "TLSv1.2",
+    "cipher": "ECDHE-RSA-AES128-GCM-SHA256",
+    "remote_ip": "210.63.162.130",
+    "peer_certificate": {
+      "subject": "CN=www.tpex.org.tw,O=Taipei Exchange,L=Taipei,ST=Taiwan,C=TW",
+      "issuer": "CN=TWCA SSL Certification Authority,OU=SSL Sub-CA,O=TAIWAN-CA,C=TW",
+      "serial": "47EA000000096920677806E9469C99A3",
+      "sha256_fingerprint": "1858E81CD2CB6CDF5F184903E2AE374807F2D9CF160202D5641AF47C5B6BCDB2",
+      "san_dns": ["www.tpex.org.tw"],
+      "not_before_utc": "2026-09-07T09:17:11+00:00",
+      "not_after_utc": "2027-03-24T15:59:59+00:00"
+    },
+    "verification": {
+      "certificate_verification": "enabled and successful",
+      "hostname_verification": "enabled and successful for SNI www.tpex.org.tw",
+      "verification_bypass_used": false
+    },
+    "eset": {
+      "ESET_issued_certificate_observed_in_this_T2_handshake": false,
+      "prior_T1_ESET_filter_evidence_retained": true,
+      "endpoint_security_modified": false
+    }
+  },
+  "certifi_versions": {
+    "local_T1_diagnostic_version": "2026.2.25",
+    "repository_requirements_lock_version": "2026.7.22",
+    "certifi_backed_production_transport_introduced": false
+  },
+  "shared_transport_blast_radius": {
+    "helper": "scripts/m8r_06_03_production_adapter.py::_fetch_official_payload",
+    "direct_material_callers": [
+      {
+        "area": "Phase G",
+        "capabilities": ["material_disclosures", "monthly_revenue"],
+        "dispatch": "_research_batch_operation_adapter supplies the helper as JSON/CSV fetcher"
+      },
+      {
+        "area": "Phase H H1",
+        "capabilities": ["trading_status_context attention"],
+        "dispatch": "_phase_h_h1_tpex_attention calls the helper"
+      },
+      {
+        "area": "Phase H H2 acceptance tooling",
+        "dispatch": "run_phase_h_h_sb1_h2_source_live_acceptance reuses the helper"
+      }
+    ],
+    "Phase_I_I3": "uses separate scripts/phase_i_i3_production_transport.py transport and is not changed by this helper",
+    "assessment": "A global policy change to _fetch_official_payload would affect accepted Phase G execution and current H1 attention transport, as well as H2 acceptance tooling. Do not globally change it to address only the proposed H1 suspend-history source; any later remediation should be route/source-bound and separately governed."
+  },
+  "decision": "J_B03_T2_EXISTING_COMPATIBILITY_POLICY_VIABLE",
+  "interpretation": "The existing repository compatibility policy completed a strict TLS handshake while retaining certificate and hostname validation. This establishes TLS-policy viability only; it does not prove the H1 source response contract and does not resume A1.",
+  "next_authority_needed": "A separate explicit bounded authorization for one fresh TPEx suspend-history source-shape GET using this verified compatibility policy, with retry 0.",
+  "scope": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "source_authority_changed": false,
+    "mcp_changed": false,
+    "mcp_tool_count": 6,
+    "j_b03_status": "HOLD",
+    "j_b04_status": "BLOCKING",
+    "phase_j_started": false
+  }
+}
