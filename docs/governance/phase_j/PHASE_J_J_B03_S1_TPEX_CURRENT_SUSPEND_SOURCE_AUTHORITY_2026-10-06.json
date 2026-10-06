@@ -1,0 +1,119 @@
+{
+  "record_id": "PHASE_J_J_B03_S1_TPEX_CURRENT_SUSPEND_SOURCE_AUTHORITY_2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_S1_CURRENT_SUSPEND_RESUME_SOURCE_AUTHORITY_REPAIR_AUTHORIZATION",
+  "starting_state": {
+    "main_commit": "64d987f9f29f9661aa1775e2469206996c456c00",
+    "main_tree": "2f1bd82715d7a17d33b4f17ed13653509f95007c",
+    "pr_307": "MERGED / CLOSED"
+  },
+  "historical_references": {
+    "pr_304": "J_B03_HOLD_LIVE_SOURCE_CONTRACT_OR_TRANSPORT",
+    "pr_305": "J_B03_T1_DIAGNOSIS_PROXY_OR_TLS_INTERCEPTION_DIFFERENCE",
+    "pr_306": "J_B03_T2_EXISTING_COMPATIBILITY_POLICY_VIABLE",
+    "pr_307": "J_B03_A1R_HOLD_SEMANTIC_INSUFFICIENCY"
+  },
+  "scope": "Official metadata and license authority research only; no market payload access.",
+  "target_source": {
+    "source_id": "H1-TPEX-SUSPEND-TODAY-OPENAPI",
+    "market": "TPEX",
+    "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_spendi_today",
+    "expected_role": "default_candidate",
+    "expected_coverage": "current-day official status",
+    "expected_current_runtime_state": "inactive; runtime_executable=false"
+  },
+  "historical_blocker": {
+    "issue_id": "H0-SRC-01E",
+    "historical_state": "OPEN",
+    "question": "TPEx current suspension/resumption exact license/source-authority mapping"
+  },
+  "official_sources_consulted": [
+    {
+      "url": "https://data.gov.tw/dataset/48665",
+      "title": "上櫃歷史公布暫停/恢復交易股票",
+      "dataset_id": "48665",
+      "publisher": "金融監督管理委員會證券期貨局",
+      "license": "政府資料開放授權條款－第1版 (ODGL 1.0)",
+      "resource_url": "Official CSV resource linked from the dataset page; this research did not fetch the resource.",
+      "api_url": "https://www.tpex.org.tw/openapi/ and https://www.tpex.org.tw/openapi/swagger.json are listed as OAS documentation links on the page.",
+      "fields": ["資料日期", "編號", "證券代號", "證券名稱", "暫停交易日期", "暫停交易時間", "恢復交易日期", "恢復交易時間"],
+      "update_cadence": "不定期更新",
+      "metadata_updated_at": "2026-06-08 08:48",
+      "relevance": "Historical suspension/resumption dataset. It does not establish that the current-day endpoint is the same dataset or is licensed by this metadata record."
+    },
+    {
+      "url": "https://data.gov.tw/license",
+      "title": "政府資料開放授權條款－第1版",
+      "dataset_id": null,
+      "publisher": "數位發展部政府資料開放平臺",
+      "license": "ODGL 1.0 text; general terms only, not route-specific evidence.",
+      "relevance": "Explains the license only when a dataset is actually published under it; does not map the target endpoint to a dataset."
+    },
+    {
+      "url": "https://www.tpex.org.tw/openapi/",
+      "title": "TPEx OpenAPI documentation page",
+      "result": "HTTP 403 from the research browsing path; content not verified in this tranche."
+    },
+    {
+      "url": "https://www.tpex.org.tw/openapi/swagger.json",
+      "title": "TPEx OpenAPI Swagger metadata document",
+      "result": "HTTP 403 from the research browsing path; content not verified in this tranche."
+    }
+  ],
+  "candidate_mapping": {
+    "candidate_dataset_ids": ["48665"],
+    "candidate_titles": ["上櫃歷史公布暫停/恢復交易股票"],
+    "target_current_day_dataset_id": null,
+    "publisher_for_candidate": "金融監督管理委員會證券期貨局",
+    "candidate_license": "ODGL 1.0, free, per data.gov.tw/dataset/48665",
+    "target_route_license": "UNRESOLVED",
+    "target_resource_or_api_match": false,
+    "mapping_confidence": "INSUFFICIENT",
+    "reason": "The only directly matching data.gov record is explicitly historical. Neither that record nor the inaccessible TPEx OpenAPI metadata documents an exact mapping from the current-day route /tpex_spendi_today to dataset 48665 or another data.gov dataset. Similar subject matter and shared API documentation links do not prove identity or license."
+  },
+  "current_day_semantic_authority": {
+    "current_day_status_representation": "Repository's frozen source authority describes the endpoint as current-day official status; this tranche did not independently inspect the TPEx OpenAPI metadata because it returned 403.",
+    "target_identifier": "SecuritiesCompanyCode per current repository source contract; official target-route metadata not independently verified here.",
+    "publication_scope": "Unverified from accessible official metadata for the current-day route.",
+    "suspension_and_resumption_fields": "Not verified for the current-day route; history fields are not treated as equivalent.",
+    "update_cadence": "Unverified for the current-day route.",
+    "automation_authority": "Exact route-specific data.gov/license and machine-readable API authority not established."
+  },
+  "network_accounting": {
+    "market_data_get_count": 0,
+    "market_data_head_count": 0,
+    "market_data_post_count": 0,
+    "market_payload_endpoint_accessed": false,
+    "official_metadata_pages_consulted": [
+      "https://data.gov.tw/dataset/48665",
+      "https://data.gov.tw/license",
+      "https://www.tpex.org.tw/openapi/ (403)",
+      "https://www.tpex.org.tw/openapi/swagger.json (403)"
+    ]
+  },
+  "disposition": "J_B03_S1_HOLD_EXACT_LICENSE_MAPPING_UNRESOLVED",
+  "blocker_state": {
+    "H0-SRC-01E": {
+      "historical_state": "OPEN",
+      "current_state": "OPEN",
+      "closure_evidence": null
+    },
+    "H0-SRC-02": "OPEN; aggregate H1 lifecycle/completeness constraint not resolved by S1"
+  },
+  "smallest_unresolved_evidence": "An accessible official TPEx or data.gov metadata record that identifies the current-day tpex_spendi_today dataset/resource/API by exact URL or stable dataset ID and states its publisher, license, automation/API status, current-day scope, fields, and update cadence; alternatively, an authoritative TPEx statement explicitly mapping this route to an ODGL dataset.",
+  "change_boundary": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "route_activation_changed": false,
+    "mcp_count": 6,
+    "market_data_acquisition": false,
+    "data_directory_touched": false
+  },
+  "phase_state": {
+    "J_B03": "HOLD",
+    "J_B04": "BLOCKING",
+    "phase_j": "NOT_STARTED"
+  }
+}
