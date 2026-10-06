@@ -1,0 +1,169 @@
+{
+  "record_id": "PHASE_J_J_B03_S3_NATIVE_EVIDENCE_FALLBACK_PRODUCT_CONTRACT_2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_S3_NATIVE_EVIDENCE_FALLBACK_PRODUCT_CONTRACT_DECISION_AUTHORIZATION",
+  "starting_state": {
+    "main_commit": "36d0a35ccde3489e97861e29cacc4ff40d2def69",
+    "main_tree": "6c62d6497c6cb436023a40bd2c9edc4c3df10676",
+    "pr_312": "MERGED / CLOSED",
+    "working_branch": "phase-j/j-b03-s3-native-evidence-fallback-contract"
+  },
+  "authority_reviewed": {
+    "product_north_star": "TW-Market is a local-first, MCP-enabled, governed Taiwan-market evidence layer. It supplies trustworthy, bounded current or near-current observations and official evidence with identity, source, timing, missing/partial/failure semantics, citations, lineage and audit; the AI analyzes and converses with the human.",
+    "pr_303_product_relevance_principle": "A J.1 mention or incomplete roadmap scope alone does not make a runtime gap a J-entry blocker. Block when missing substrate can materially mislead normal conversation and cannot be safely represented with accepted fail-closed behavior. Valid acceptance can assert unsupported, unavailable, unresolved or missing.",
+    "pr_303_current_governance_reference": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.md and companion JSON",
+    "h1_frozen_contract": "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
+    "h1_contract_relevant_rules": [
+      "Source-specific flags may be retained as bounded source-native evidence and must not become canonical subtypes without a frozen-contract amendment.",
+      "Lifecycle values must be supported by official evidence; when official start/end or revision semantics are missing, lifecycle is unresolved.",
+      "No row is not no status unless the complete declared source scope was successfully retrieved, validated and searched for the exact target.",
+      "H1 remains explicit, target-bounded and auditable; no polling, scheduler, hidden market-wide acquisition or status warehouse."
+    ]
+  },
+  "accepted_j_b03_evidence": {
+    "pr_309": "J_B03_S1B_ALTERNATIVE_CURRENT_STATUS_SEMANTICALLY_SUFFICIENT; tpex_cmode is a scope-limited current-status source; absence and blank do not mean normal; tpex_spendi_today detail was classified optional for the representative J-B03 conversation.",
+    "pr_310": "J_B03_S2B_HOLD_POSITIVE_VALUE_GRAMMAR_UNPROVEN; 22-row source shape was observed but CJK value rendering did not preserve exact evidence.",
+    "pr_311": "J_B03_S2C_HOLD_AFFIRMATIVE_MARKER_SEMANTICS_UNPROVEN; exact marker captured as fullwidth Y U+FF39, UTF-8 efbcb9, source date 1151006 normalized to 2026-10-06 under existing ROC_YYYMMDD precedent.",
+    "pr_312": "J_B03_S2D_HOLD_MARKER_AUTHORITY_NOT_PUBLISHED; official codebook mapping for U+FF39 to affirmative stopped trading was not found; evidence level was LEVEL 1 inference only; SAFE_NATIVE_EVIDENCE_FALLBACK_POSSIBLE was identified.",
+    "source": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+    "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+    "dataset": "11736",
+    "license": "ODGL 1.0",
+    "field": "SuspensionOfTrading",
+    "official_field_label": "停止交易",
+    "observed_raw_value": "\uff39",
+    "observed_codepoint": "U+FF39",
+    "observed_source_date": "2026-10-06",
+    "exact_target_binding": "Possible using the exact TPEX security code; company name is not a binding fallback.",
+    "semantic_mapping": "NOT VERIFIED; raw marker must not be interpreted as affirmative stopped status."
+  },
+  "decision": {
+    "primary_disposition": "J_B03_S3_NATIVE_EVIDENCE_FALLBACK_ACCEPTED",
+    "product_classification": "NATIVE_EVIDENCE_FALLBACK_SUFFICIENT_FOR_J_B03_CONVERSATIONAL_CORRECTNESS",
+    "canonical_semantic_certainty": {
+      "stopped_boolean_from_marker_authorized": false,
+      "canonical_status_type_suspension_from_marker_authorized": false,
+      "reason": "S2D found no authoritative source-specific mapping from U+FF39 to affirmative stop. Product acceptance of native evidence does not alter that semantic authority result."
+    },
+    "conversational_native_evidence": {
+      "accepted_at_product_contract_level": true,
+      "conditions": [
+        "Report only that the exact official field for the exactly bound target and source date contains the exact source-native value.",
+        "Identify the official source/dataset and preserve retrieval provenance, citation and audit lineage.",
+        "Mark interpretation semantic_status=unresolved or an existing canonical equivalent, and state the caveat in the AI handoff.",
+        "A2 must validate how this native-only evidence is represented by the current contract without assigning a false canonical subtype; this S3 record approves no schema/runtime change."
+      ],
+      "information_value": "Materially greater than returning unsupported alone: the human and AI can see which official field was observed, its exact value, target, source date, dataset and provenance, and exactly which semantic step remains unresolved.",
+      "residual_risk_control": "The raw marker can invite downstream inference; the explicit unresolved state, caveat and binding AI prohibition are mandatory parts of the accepted product contract."
+    },
+    "pr_303_relevance_classification": {
+      "canonical_boolean_normalization": "MUST_HAVE_FOR_CONVERSATIONAL_J only if a positive/negative canonical claim is made; the current marker cannot support one.",
+      "native_marker_semantic_gap": "SAFE_FAIL_CLOSED_IS_SUFFICIENT",
+      "current_native_evidence_runtime_path": "Still requires bounded implementation and acceptance; this is why J-B03 remains HOLD.",
+      "tpex_spendi_today_precise_current_event_detail": "OPTIONAL_EVIDENCE_NOT_J_BLOCKING; H0-SRC-01E remains open and its source authority is not resolved by S3."
+    }
+  },
+  "conversation_scenarios": {
+    "A_official_field_value": {
+      "question": "TPEx 官方現在對這檔的停止交易欄位是什麼？",
+      "outcome": "SUFFICIENT_WITH_NATIVE_EVIDENCE",
+      "behavior": "Return the exact official label 停止交易, exact raw value \uff39, exact target, source date, source and citation. Do not translate the marker into a status conclusion."
+    },
+    "B_current_stopped_yes_no": {
+      "question": "這檔現在是不是停止交易？",
+      "outcome": "CORRECT_UNRESOLVED_ANSWER_ACCEPTABLE",
+      "behavior": "State that the TPEx field is marked \uff39 and that official marker semantics are not sufficiently documented to answer Yes/No. Do not assert stopped=true."
+    },
+    "C_normal_tradeability": {
+      "question": "所以它現在可以正常交易嗎？",
+      "outcome": "FAIL_CLOSED_REQUIRED_AND_ACCEPTABLE",
+      "behavior": "Do not infer normal or tradeable from blank, absent row, or an unverified marker. Return unresolved/insufficient evidence."
+    },
+    "D_exact_resumption_time": {
+      "question": "它今天幾點恢復交易？",
+      "outcome": "SAFE_UNSUPPORTED_OR_UNRESOLVED",
+      "behavior": "Do not invent event timing. This detail remains optional for representative J-B03 acceptance under S1B."
+    },
+    "E_historical_suspend_resume": {
+      "question": "以前有沒有停牌／恢復？",
+      "outcome": "BOUNDED_HISTORY_EVIDENCE_WHEN_SUPPORTED",
+      "behavior": "A separately governed history-source item may report officially recorded event evidence within its accepted limitations. Do not infer current state, event linkage, complete lifecycle or ended/effective status from history rows alone."
+    }
+  },
+  "correctness_and_information_value": {
+    "wrong_affirmative": "UNACCEPTABLE",
+    "wrong_negative": "UNACCEPTABLE",
+    "unsupported_normal_or_tradeable_claim": "UNACCEPTABLE",
+    "honest_unresolved_with_official_raw_evidence": "ACCEPTABLE",
+    "honest_raw_source_report": "ACCEPTABLE",
+    "material_misstatement_assessment": "An explicit unresolved answer prevents the dangerous inference while preserving useful official evidence. Returning only unsupported would discard target/date/source/value information without improving semantic certainty."
+  },
+  "ai_handoff_safety_contract": {
+    "required_conceptual_content": [
+      "source_family and source_contract",
+      "market TPEX and exact canonical security identity/security code",
+      "source_record_date and observed_at",
+      "source_native_field=SuspensionOfTrading and source_native_label=停止交易",
+      "exact source_native_value=\uff39",
+      "semantic_status=unresolved or existing equivalent",
+      "semantic caveat that no official marker mapping authorizes affirmative normalization",
+      "coverage state and limits of the special-status listing",
+      "citation, retrieval provenance and audit lineage"
+    ],
+    "ai_interpretation_guard": "An AI consuming this evidence MUST NOT translate SuspensionOfTrading=\uff39 alone into stopped=true, currently suspended, cannot trade, or an affirmative yes. It MAY quote the source-native field/value and explain unresolved semantics. An independent governed evidence item may be combined only within that item's authority.",
+    "blank_and_absence_guard": "Blank != not stopped. Target absence != normal trading. Neither supports a general negative tradeability conclusion.",
+    "schema_boundary": "The frozen H1 conceptual contract allows bounded source-native evidence and lifecycle unresolved. The current trading_status_context_evidence.v1 schema places source_native_provenance inside an item that also requires a canonical status_type. S3 does not claim that this schema already represents a native-only unresolved item without semantic mislabeling. A2 must first show a safe existing representation; if none exists, raise the smallest separate contract/schema decision before implementation."
+  },
+  "canonical_runtime_guard": {
+    "may_preserve_native_official_evidence": true,
+    "must_not_normalize_fullwidth_y_to_boolean_true": true,
+    "must_not_synthesize_effective_lifecycle": true,
+    "must_not_claim_suspension_or_resumption_from_marker_alone": true,
+    "must_not_claim_normal_trading_from_blank_or_absence": true,
+    "no_activation_or_runtime_change_authorized": true
+  },
+  "j_b03_scope_decision": {
+    "marker_semantic_gap": "NON_BLOCKING under the accepted native-evidence fallback contract, provided the product reports the official raw value and explicitly refuses unsupported interpretation.",
+    "j_b03_gate_state": "HOLD pending implementation and representative acceptance; S3 does not close J-B03.",
+    "representative_minimum": {
+      "required_representative_routes": [
+        "TPEx attention evidence",
+        "TPEx disposition evidence",
+        "TPEx tpex_cmode native current-status evidence with exact target/date binding, unresolved semantics and source citation"
+      ],
+      "optional_supporting_route": "tpex_spendi_history may provide bounded historical event evidence when the user asks about past suspension/resumption; it is not required to establish current status or full lifecycle.",
+      "safe_unsupported_detail": "Exact same-day resumption timing and unsupported market/subtype coverage may be answered as unsupported/unresolved with explicit coverage caveat.",
+      "closure_acceptance": "Requires representative Result/Audit/AI-handoff behavior and deterministic tests proving exact identity/source/date/citation, raw-value preservation, unresolved caveat, no Boolean inference, and fail-closed blank/absence behavior. No full-H1 coverage claim is permitted."
+    },
+    "roadmap_h1_completeness": "H0-SRC-02 remains OPEN as full-H1 lifecycle/completeness scope; it is not required for this representative J-B03 slice unless later evidence shows the slice cannot prevent material misstatement."
+  },
+  "next_recommended_gate": {
+    "name": "J-B03-A2 — Deterministic Native-Evidence Adapter / Aggregation Design",
+    "purpose": "Design the smallest deterministic, target-bound evidence path and acceptance contract for TPEx disposition plus source-native tpex_cmode evidence, first resolving safe representation in the current contract/schema.",
+    "authorization": "Requires a separate explicit Owner authorization. S3 performs no implementation, schema change, acquisition or activation."
+  },
+  "issues": {
+    "H0-SRC-01E": "OPEN; current-day tpex_spendi_today source/license authority remains unresolved and optional for the representative J-B03 slice.",
+    "H0-SRC-02": "OPEN; full-H1 lifecycle/completeness constraint.",
+    "J-B03": "HOLD pending implementation and representative acceptance.",
+    "J-B04": "BLOCKING.",
+    "Phase J": "NOT STARTED."
+  },
+  "network_accounting": {
+    "market_data_get": 0,
+    "market_data_head": 0,
+    "market_data_post": 0,
+    "source_acquisition": false
+  },
+  "change_boundary": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "activation_changed": false,
+    "mcp_changed": false,
+    "mcp_count": 6,
+    "data_directory_touched": false,
+    "historical_records_rewritten": false
+  }
+}
