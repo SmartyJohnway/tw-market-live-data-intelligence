@@ -1,0 +1,237 @@
+{
+  "record_id": "PHASE_J_J_B03_A2_1A_RESULT_VERSIONING_AND_NATIVE_EVIDENCE_CONTRACT_DECISION_2026-10-06",
+  "owner_authority": "USER_CHAT_2026-10-06_J_B03_A2_1A_RESULT_VERSIONING_DECISION_AUTHORIZATION",
+  "starting_state": {
+    "main_commit": "1bdedf97d939a7d99e9bc8e03069f9693e4952fb",
+    "main_tree": "567f0c1a883d7dc9e587616b966b73b5c3a5bcc7",
+    "pr_314": "MERGED / CLOSED",
+    "branch": "phase-j/j-b03-a2-1a-result-versioning-decision"
+  },
+  "entry_authority": {
+    "a2_0_disposition": "J_B03_A2_0_MINIMAL_CONTRACT_AMENDMENT_REQUIRED",
+    "accepted_findings": [
+      "H1 v1 cannot represent native-only unresolved evidence without a false canonical subtype or a prose-only fact.",
+      "status_type=suspension is forbidden for unresolved SuspensionOfTrading=Ｙ.",
+      "partial with items=[] is structurally legal but has no structured native fact slot.",
+      "No existing Result -> Audit -> AI handoff path safely carries the native-only evidence.",
+      "H1 v1 remains unchanged; native_observations[] is the preferred sibling outside items[].",
+      "A2.0-R2 deferred Result V3 versus Result V4 selection to this design gate."
+    ],
+    "h0_g_historical_manifest": "docs/governance/phase_h/PHASE_H_H0_G_V3_SCHEMA_FREEZE_MANIFEST.json",
+    "phase_i_i0_authority": "docs/governance/phase_i/Phase_I_I0_Evidence_Value_Source_Identity_Timing_Decision_Record_2026-09-29_FROZEN.md",
+    "current_result_v3_sha256": "e20a54563c9bf1454e705ccdaed8f002aed0cc4692e74eaaaa81568ac4278872"
+  },
+  "result_versioning_decision": "J_B03_A2_1A_SELECT_ADDITIVE_RESULT_V3",
+  "decision_basis": {
+    "reason": "The current Result V3 path has explicit later Phase I additive authority. An H1 v1-or-v2 oneOf is a narrow nested evidence-family extension with a schema_version const discriminator; it preserves the existing H1 v1 branch and does not change unrelated Result fields. Repository strict consumers are updateable behind the existing six MCP tools. No current rule requires a new outer Result major version for this nested additive extension.",
+    "historical_freeze_boundary": "The H0-G manifest and its 2026-09-21 snapshot hashes remain immutable historical evidence. They do not prohibit later additive evolution under bounded current authority.",
+    "version_choice_scope": "Design decision only. No Result V3 schema, H1 schema, runtime, route, or preferred-version promotion changed in A2.1A."
+  },
+  "h1_v2_candidate": {
+    "schema_version": "trading_status_context_evidence.v2",
+    "shape": "Mirror H1 v1 fields and semantics, plus a required native_observations array outside canonical items. Keep one top-level source per artifact and preserve all v1 fields/behavior in the v1 branch.",
+    "native_observation_fields": {
+      "source_native_field": "required non-empty string",
+      "source_native_label": "required non-empty string",
+      "source_native_value": "required JSON scalar; preserve its JSON type and value",
+      "source_native_value_type": ["string", "number", "boolean", "null"],
+      "source_record_date": "required date",
+      "semantic_status": ["unresolved"],
+      "semantic_caveat": "required non-empty string",
+      "citation_ids": "required non-empty unique citation ID array"
+    },
+    "j_b03_example": {
+      "source_native_field": "SuspensionOfTrading",
+      "source_native_label": "停止交易",
+      "source_native_value": "Ｙ",
+      "source_native_value_type": "string",
+      "source_record_date": "2026-10-06",
+      "semantic_status": "unresolved"
+    },
+    "semantic_invariants": [
+      "An unresolved native observation never adds a canonical status_type to covered_status_types.",
+      "An unresolved observation requires a non-empty caveat, citation IDs and source_record_date.",
+      "No canonical status_lifecycle is required for a native observation.",
+      "No-evidence-in-covered-scope is invalid when a native observation exists.",
+      "The exact JSON scalar type is preserved; do not stringify non-string values.",
+      "An unresolved SuspensionOfTrading marker does not justify status_type=suspension or a stopped/tradeable conclusion."
+    ],
+    "semantic_status_vocabulary_decision": "Use only unresolved for this native-observation contract. Do not add speculative source_defined or other future states; a later authoritative semantic mapping can produce a canonical item under a separately governed rule.",
+    "h1_v1_compatibility": {
+      "schema_unchanged": true,
+      "bytes_unchanged": true,
+      "semantics_unchanged": true,
+      "existing_attention_route": "Continues to emit H1 v1 unless separately authorized migration changes it.",
+      "persisted_v1_artifacts": "Remain unchanged and valid under the H1 v1 branch; no retroactive rewrite."
+    },
+    "native_only_status_and_coverage": {
+      "status": "partial",
+      "items": [],
+      "native_observations": "one or more",
+      "covered_status_types": [],
+      "uncovered_status_types": ["attention", "disposition", "changed_trading_method", "suspension", "resumption"],
+      "declared_scope_complete": false,
+      "retrieval_succeeded": true,
+      "source_contract_validated": "true only for payload/field/type/date grammar; it does not assert marker business semantics",
+      "exact_target_search_succeeded": true,
+      "no_evidence_in_covered_scope": "must not be emitted"
+    }
+  },
+  "source_and_composition_cardinality": {
+    "h1_v1_source_model": "One top-level source object per H1 artifact.",
+    "current_result_cardinality": "Result V3 has one trading_status_context object per target; TargetEvidenceProjection also has a single dict field.",
+    "current_lineage_cardinality": "One operation binding per (canonical_target_id, data_need); duplicate_binding is rejected, and multiple typed H1 artifacts for one binding raise duplicate_phase_h_typed_artifact.",
+    "h1_v2_recommendation": "Keep one source contract per H1 artifact. Mixed canonical items and native observations may coexist only when they are supported by that same top-level source and each canonical item is independently semantically established and covered. Do not combine attention from source A with tpex_cmode native evidence from source B in one single-source H1 artifact.",
+    "representative_j_b03_implication": "Current architecture does not aggregate separate attention, disposition and tpex_cmode operations for the same target/data_need into one Result field. A2.1B must preserve this boundary and explicitly determine how representative evidence from multiple source contracts is composed or separately surfaced; do not imply that selecting additive Result V3 solves source aggregation. This is an orthogonal composition design issue, not a Result V3 versus V4 incompatibility.",
+    "mixed_native_and_canonical_safety": "A mixed artifact is structurally useful only for one source. Each canonical item's status_type must be covered and supported by governed semantics; the unresolved tpex_cmode marker itself cannot supply suspension coverage."
+  },
+  "result_v3_additive_candidate": {
+    "candidate_shape": "Keep the Result V3 trading_status_context property and change its referenced definition to oneOf the unchanged H1 v1 definition and the new H1 v2 definition. The schema_version const makes the branches disjoint.",
+    "existing_v3_validity": "All existing documents valid under the current H1 v1 branch remain valid; current Result V3 fixtures passed the in-memory candidate schema.",
+    "persisted_artifact_policy": "Existing Result V3 artifacts remain byte-unchanged; readback validates the stored Result version and no artifact migration is required.",
+    "public_surface": "No MCP input schema or tool-count change; update internal validators, maps, projectors and handoff consumers before emitting H1 v2.",
+    "unrelated_families": "The proposed oneOf changes only the trading_status_context property. Other Phase G/H/I evidence definitions remain untouched.",
+    "current_authority": "A2.1B must create a new dated/current acceptance record with the new Result V3 path hash and validator/projection/handoff acceptance evidence; the H0-G manifest remains unchanged.",
+    "rollback": "The current preferred Result version remains server-owned. Rollback to V2 affects new materialization; persisted V3 packages remain read by their stored version. H1 v2 must fail closed when an authority/version path does not support it."
+  },
+  "result_v3_additive_gate": {
+    "old_result_v3_documents_remain_schema_valid": "PASS: preserve the current H1 v1 schema branch verbatim in the disjoint oneOf.",
+    "persisted_artifacts_never_rewritten": "PASS: stored package bytes/hashes remain immutable and are loaded by stored outer schema version.",
+    "h1_v1_unchanged": "PASS: no H1 v1 schema or artifact mutation.",
+    "h1_v2_without_oneof_ambiguity": "PASS: schema_version const values differ.",
+    "strict_consumers_update_without_public_mcp_tool_contract_change": "PASS_WITH_A2_1B_UPDATES: all repository consumers are mutable/updateable; read/export tools retain their control-package input and six-tool surface. No frozen external strict response-schema consumer is declared in repository authority; any supported external consumer compatibility must be tested before release.",
+    "existing_result_v3_semantics_unchanged": "PASS: only the nested trading_status_context accepted shape is extended; existing fields retain their definitions.",
+    "unrelated_evidence_families_unchanged": "PASS: additive schema edit is limited to the H1 definition.",
+    "rollback_and_current_authority_understandable": "PASS_WITH_TEST: current server-owned preferred version and stored-version readback are distinct; exercise additive V3 acceptance and V3-to-V2 rollback in A2.1B.",
+    "new_dated_authority_can_freeze_new_hash": "PASS: current V3 validator already separates immutable H0-G entries from mutable current V3 hashes.",
+    "new_outer_major_version_explicitly_required": "NO: Phase I I0 explicitly left the exact Request/Result V3 additive schema shape for later bounded decisions and requires additive changes to preserve compatibility.",
+    "overall": "PASS; select additive Result V3 for the native H1 v2 union, subject to the A2.1B strict-consumer and rollback acceptance gates."
+  },
+  "result_v4_candidate": {
+    "compatibility_assessment": "Viable alternative, but no concrete current incompatibility requires it. It would require new outer schema/version registration, result and audit path/version dispatch, persistence/readback coverage and consumer support.",
+    "select_only_if": [
+      "Strict repository or supported external consumers cannot safely accept a Result V3 schema update.",
+      "A current Result V3 semantic guarantee is found to pin trading_status_context to H1 v1.",
+      "Current versioning governance requires a new outer version for this nested contract expansion.",
+      "The v1/v2 union cannot be made disjoint or persisted V3 readback becomes ambiguous."
+    ],
+    "not_required_solely_because": "The historical 2026-09-21 H0-G manifest records an earlier snapshot."
+  },
+  "strict_consumer_inventory": [
+    {"path": "schemas/unified_market_evidence_result.v3.schema.json", "classification": "STRICT_H1_SCHEMA_VERSION", "finding": "Embedded H1 definition pins schema_version to v1; current V3 path is governed additive-mutable. A2.1B can add a disjoint v1/v2 oneOf."},
+    {"path": "scripts/m8r_05c/artifact_loader.py", "classification": "EXPLICITLY_V1_ONLY", "finding": "Research schema registry and capability-to-H1 contract map name v1 only; A2.1B must add v2 validation, preserving v1."},
+    {"path": "scripts/m8r_05c/lineage_resolver.py", "classification": "EXPLICITLY_V1_ONLY", "finding": "Typed H1 contract sets and expected-contract map name v1 only; one source artifact per target/need and duplicate bindings fail closed."},
+    {"path": "scripts/m8r_05c/result_builder.py", "classification": "EXPLICITLY_V1_ONLY", "finding": "Result V3 projection supplies expected H1 v1 and stores one typed artifact in the per-target field."},
+    {"path": "server/services/phase_h_trading_status_adapters.py", "classification": "EXPLICITLY_V1_ONLY", "finding": "The current accepted H1 adapter emits trading_status_context_evidence.v1 and validates against its schema. Keep this existing route on v1 unless a separately authorized migration is accepted; A2.1B native evidence support must be additive."},
+    {"path": "scripts/m8r_05c/evidence_projector.py", "classification": "VERSION_AGNOSTIC", "finding": "Accepts an expected schema_version argument, checks it against the artifact, verifies citations and copies without semantic rewriting."},
+    {"path": "scripts/m8r_05c/audit_package_builder.py", "classification": "EXPLICITLY_V1_ONLY", "finding": "H1 evidence contract-to-capability map lists v1 only; builder maps and source-attempt/citation lineage support must add v2. Audit V3 generic H1 reference schema accepts string schema_version, path and hash."},
+    {"path": "scripts/m8r_05c/markdown_renderer.py", "classification": "RESULT_V3_ONLY_BUT_H1_VERSION_AGNOSTIC", "finding": "Dispatches on outer Result V3 and generic H1 status/coverage/caveat/citation fields, but omits source/date/items/native observations; future handoff rendering must add guarded native details."},
+    {"path": "server/services/unified_mode_c.py", "classification": "RESULT_V3_ONLY_BUT_H1_VERSION_AGNOSTIC", "finding": "Has explicit outer-version materialization/readback paths; persisted packages are located and handled by stored version. No nested H1 v1 check here."},
+    {"path": "server/services/unified_contract_versions.py", "classification": "RESULT_V3_ONLY_BUT_H1_VERSION_AGNOSTIC", "finding": "Declares unified_market_evidence_result.v3 as the preferred Result contract; it is an outer-version selection point, not an H1 nested-version parser. A2.1B must preserve server-owned promotion/rollback boundaries."},
+    {"path": "server/services/unified_local_service.py", "classification": "VERSION_AGNOSTIC", "finding": "Delegates validated request and result/handoff operations to shared service paths; no H1 v1 parsing found."},
+    {"path": "server/services/unified_local_operator_action.py", "classification": "VERSION_AGNOSTIC", "finding": "Handles operator/control actions without an H1 schema-version assumption."},
+    {"path": "server/unified_mcp/local_service_client.py", "classification": "VERSION_AGNOSTIC", "finding": "Forwards read-result/export-handoff responses as JSON; it does not validate nested Result/H1 versions."},
+    {"path": "server/unified_mcp/tool_contracts.py", "classification": "VERSION_AGNOSTIC", "finding": "Read/export tools use the existing control-package input contract and declare no separate fixed Result response schema; tool count remains six."},
+    {"path": "scripts/validate_phase_h_v3_contracts.py", "classification": "STRICT_RESULT_SCHEMA_HASH", "finding": "Checks the current additive Result V3 hash separately from immutable H0-G manifest paths; A2.1B must deliberately advance this current hash authority and acceptance record."},
+    {"path": "tests/unit/test_phase_h_v3_contract_freeze.py", "classification": "OTHER", "finding": "Protects H0-G historical evidence while exercising current Result V3 fixtures; retain historical assertions and add current additive v2 cases."},
+    {"path": "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py", "classification": "EXPLICITLY_V1_ONLY", "finding": "Current projection/audit/handoff fixtures key H1 v1; add current H1 v2 cases without changing historical v1 fixtures."},
+    {"path": "tests/integration/test_m8r_05b_03_multi_artifact_contract.py", "classification": "EXPLICITLY_V1_ONLY", "finding": "Current H1 operation artifact and Result assertion use v1; add v2-compatible operation and projection fixtures."},
+    {"path": "tests/unit/test_m8r_05b_03_aggregation.py", "classification": "OTHER", "finding": "Protects primary artifact item_count and operation result aggregation invariants; native count support must be explicit and tested."}
+  ],
+  "versioning_evidence_matrix": [
+    {"dimension": "old artifact validity", "additive_result_v3": "PASS: unchanged H1 v1 branch remains in oneOf", "new_result_v4": "PASS: old V3 artifacts remain under their stored version; new V4 needs separate read support"},
+    {"dimension": "old consumer compatibility", "additive_result_v3": "PASS_WITH_UPDATE: repository strict maps can be extended; no MCP input/tool change", "new_result_v4": "PASS_WITH_UPDATE: consumers must add outer V4 dispatch"},
+    {"dimension": "H1 v1 compatibility", "additive_result_v3": "PASS: H1 v1 schema/artifacts remain unchanged", "new_result_v4": "PASS: H1 v1 remains in old V3 and can be supported in V4"},
+    {"dimension": "H1 v2 support", "additive_result_v3": "PASS: disjoint schema_version const union", "new_result_v4": "PASS: can embed H1 v2"},
+    {"dimension": "strict schema consumer impact", "additive_result_v3": "Current Result V3 schema hash and schema consumers must be updated under new dated authority", "new_result_v4": "V4 consumers/dispatch and new schema authority must be added; V3 validators stay unchanged"},
+    {"dimension": "persisted Result readback", "additive_result_v3": "Stored outer V3 remains V3; H1v1/v2 selected by nested const", "new_result_v4": "Requires distinct V4 stored-version readback and output paths"},
+    {"dimension": "Mode C behavior", "additive_result_v3": "Retains current V3 output path; add nested H1v2 support", "new_result_v4": "Add outer V4 dispatch, paths and selected-version behavior"},
+    {"dimension": "MCP read_result", "additive_result_v3": "Same tool/control input; response remains Result V3 with additive nested branch", "new_result_v4": "Same tool/control input but response outer version changes to V4 when selected"},
+    {"dimension": "MCP export_ai_handoff", "additive_result_v3": "Same tool; renderer must safely expose native fields", "new_result_v4": "Same tool; renderer must add V4 and native support"},
+    {"dimension": "rollback complexity", "additive_result_v3": "Use current server-owned preferred-version rollback; stored V3 readback stays versioned", "new_result_v4": "Add V4 preferred/rollback transitions and retain V3/V4 readback"},
+    {"dimension": "implementation size", "additive_result_v3": "Narrow nested contract and consumer-map changes", "new_result_v4": "Broader outer-version dispatch and persistence work"},
+    {"dimension": "governance clarity", "additive_result_v3": "Consistent with I0 deferred additive shape and current validator's mutable-path/current-hash split", "new_result_v4": "Clear outer boundary but not required by current evidence; adds a new version authority"}
+  ],
+  "request_v3": {"change_required": false, "reason": "The request already expresses trading_status_context; the change concerns emitted evidence representation."},
+  "audit_v3": {
+    "schema_change_required": false,
+    "schema_basis": "phase_h_governance.evidence_artifact_references permits capability trading_status_context, string schema_version, relative_path and sha256. Source-attempt governance and citation lineage remain separately represented.",
+    "implementation_change_required": true,
+    "implementation_scope": "Audit builder/loader/maps must recognize H1 v2 and its source attempts/citations; this does not require changing the Audit V3 schema."
+  },
+  "ai_handoff": {
+    "change_required": true,
+    "required_fields": ["official/source-native label", "raw scalar value", "source record date", "semantic_status=unresolved", "semantic caveat", "citation"],
+    "interpretation_guard": "Never render SuspensionOfTrading=Ｙ as stopped, suspended or cannot trade without independent governed evidence.",
+    "mcp_tool_count": 6
+  },
+  "count_semantics": {
+    "canonical_status_item_count": "len(items); retain current item_count meaning for canonical status items.",
+    "native_observation_count": "len(native_observations); explicit separate count.",
+    "operation_result_evidence_count": "Future explicit operation-level evidence count that accounts for canonical and native evidence without silently redefining legacy result_item_count or total_item_count.",
+    "evidence_present_rule": "canonical_status_item_count > 0 OR native_observation_count > 0.",
+    "recommendation": "Keep item_count canonical-only and add native_observation_count. Define operation_result_evidence_count separately in the operation/bundle contract. Existing aggregation sums primary artifact item_count into result_item_count and total_item_count; do not overload those fields or simply sum arrays until a separately versioned aggregation rule and compatibility tests establish the semantics."
+  },
+  "future_semantic_validator_invariants": [
+    "Every canonical item.status_type must occur in coverage.covered_status_types, unless a separately accepted contract rule explicitly permits otherwise.",
+    "An unresolved native observation cannot add its corresponding canonical subtype to covered_status_types.",
+    "An unresolved SuspensionOfTrading=Ｙ observation cannot stand in for a canonical suspension item.",
+    "A native observation requires source_record_date, non-empty citation_ids and non-empty semantic_caveat.",
+    "No status_lifecycle is required for native observations.",
+    "Native observations conflict with no_evidence_in_covered_scope.",
+    "Exact source JSON scalar value and scalar type must be preserved."
+  ],
+  "mechanical_in_memory_fixtures": {
+    "method": "Temporary in-memory copies of current H1 v1 and Result V3 schemas; no repository schema or code was edited and no fixture was committed.",
+    "A_existing_v3_with_h1_v1": "PASS under current Result V3 and candidate additive oneOf schema.",
+    "B_h1_v2_native_only": "PASS under candidate H1 v2 schema with partial status, empty items, native observation and full fail-closed coverage semantics.",
+    "C_result_v3_with_h1_v2": "PASS under candidate additive Result V3 oneOf schema.",
+    "D_unresolved_marker_canonical_shortcut": "REJECTED by proposed future semantic policy; schema alone is insufficient, so A2.1B must implement the semantic check/test.",
+    "E_native_observation_claiming_suspension_coverage": "REJECTED by proposed future semantic policy; schema alone is insufficient, so A2.1B must implement the coverage check/test.",
+    "F_missing_date_citation_or_caveat": "REJECTED by candidate H1 v2 schema.",
+    "oneOf_disambiguation": "PASS; schema_version const differs between v1 and v2, so an instance cannot match both branches.",
+    "network": false
+  },
+  "validation": {
+    "json_parse": "PASS",
+    "git_diff_check": "PASS",
+    "phase_h_v3_contract_validator": "PASS",
+    "required_pytest": {
+      "command": "python -m pytest -q tests/unit/test_phase_h_v3_contract_freeze.py tests/unit/test_phase_h_imp_6_v3_projection_handoff.py",
+      "result": "60 passed"
+    },
+    "additional_focused_pytest": {
+      "command": "python -m pytest -q tests/unit/test_phase_h_act_v3_promotion.py tests/unit/test_m8r_07b_local_service_contract.py tests/unit/test_m8r_08b_mcp_tool_contracts.py",
+      "result": "24 passed, 1 failed",
+      "failure": "test_capability_contract_is_deterministic_and_preserves_dispositions expected recent_performance routing_disposition=blocked, received resolved; no production change was made because this tranche is governance-only."
+    }
+  },
+  "next_gate": {
+    "name": "J-B03-A2.1B — Implement H1 v2 + Additive Result V3 Contract Amendment",
+    "first_work": "Author exact H1 v2 / additive Result V3 schemas and new current acceptance authority; preserve H1 v1 and the H0-G manifest.",
+    "must_resolve_before_acceptance": ["strict-consumer compatibility tests", "single-source H1 artifact and multi-source Result composition boundary", "native/canonical item counts and operation result evidence counts", "semantic validator strengthening", "Audit V3 evidence mapping and citation lineage", "AI handoff guard and rendering"],
+    "route_boundary": "No tpex_cmode acquisition adapter, route activation, live execution or runtime preferred-version promotion without separate authorization."
+  },
+  "disposition": "J_B03_A2_1A_SELECT_ADDITIVE_RESULT_V3",
+  "issue_states": {
+    "H0-SRC-01E": "OPEN",
+    "H0-SRC-02": "OPEN",
+    "J-B03": "HOLD",
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT STARTED",
+    "MCP tools": 6
+  },
+  "network_accounting": {"market_data_get": 0, "market_data_head": 0, "market_data_post": 0, "market_acquisition": false},
+  "change_boundary": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "runtime_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "activation_changed": false,
+    "mcp_changed": false,
+    "mcp_count": 6,
+    "data_directory_touched": false
+  }
+}
