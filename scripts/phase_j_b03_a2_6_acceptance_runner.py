@@ -29,7 +29,7 @@ def run_live_acceptance() -> dict:
         primary = next(item for item in execution["outcomes"][0]["evidence_artifacts"]
                        if item["artifact_role"] == "primary_evidence")
         from scripts.m8r_05c.trading_status_composer import validate_trading_status_context_composite
-        composite = json.loads((Path(temporary_root) / "package" / primary["relative_path"]).read_text(encoding="utf-8"))
+        composite = json.loads((execution["root"] / primary["relative_path"]).read_text(encoding="utf-8"))
         validate_trading_status_context_composite(composite)
         drift_codes = (
             "source_failed:invalid_top_level_rows", "source_failed:missing_required_field:",
