@@ -154,7 +154,7 @@ def test_mcp_dispatch_v3_validate_preview_and_fetch_reaches_existing_action():
     assert fetched.isError is False and client.fetch_count == 1
 
 
-def test_v3_selected_tpex_attention_route_is_executable_but_truthfully_partial():
+def test_v3_selected_tpex_h1_composite_route_is_executable_but_truthfully_partial():
     req = request(
         needs=[{"type": "trading_status_context", "priority": "required", "parameters": {}}],
         input_value="6488", market_hint="TPEX",
@@ -165,7 +165,8 @@ def test_v3_selected_tpex_attention_route_is_executable_but_truthfully_partial()
     assert result["preview"]["status"] == "ready_for_confirmation"
     operation = result["orchestration_plan"]["operations"][0]
     assert operation["operation_status"] == "executable_pending_approval"
-    assert operation["executor_id"] == "phase_h_h1_tpex_attention_executor"
+    assert operation["executor_id"] == "phase_h_h1_tpex_composite_executor"
+    assert operation["expected_evidence_contract"] == "trading_status_context_composite.v1"
     assert operation["market"] == "TPEX"
     assert operation["network_required"] is True
     assert result["authorization_created"] is False

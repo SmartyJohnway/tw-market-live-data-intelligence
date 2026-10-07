@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import socket
+import subprocess
 import sys
 from pathlib import Path
 from unittest.mock import patch
@@ -13,6 +14,7 @@ sys.path.insert(0, str(ROOT))
 CAPABILITY = "cash_institutional_flow_context"
 EXECUTOR = "phase_i_i3_cash_institutional_flow_context_executor"
 ACTIVATION = "docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json"
+PHASE_J_A2_6_BASELINE = "04af1d3ea63b058317facb8763a524c453bb9093"
 
 
 def _json(relative: str):
@@ -21,6 +23,12 @@ def _json(relative: str):
 
 def _sha(relative: str) -> str:
     return hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
+
+
+def _historical_git_sha(relative: str, commit: str) -> str:
+    """Hash an immutable prior authority snapshot without comparing it to current files."""
+    payload = subprocess.check_output(["git", "show", f"{commit}:{relative}"], cwd=ROOT)
+    return hashlib.sha256(payload).hexdigest()
 
 
 def validate() -> dict:
@@ -72,11 +80,19 @@ def validate() -> dict:
                    and s["raw_persistence"] is False for s in sources["sources"])
         assert sources["authorization_boundary"]["production_activation_authorized"] is True
         assert sources["authorization_boundary"]["live_acquisition_authorized"] is False
-        assert _sha("docs/data_capabilities/phase_i_i3_source_authority.v1.json") == record["active_authority"]["source_authority_sha256"]
-        assert _sha("docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json") == record["active_authority"]["catalog_authority_sha256"]
-        assert _sha("docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json") == record["active_authority"]["routing_authority_sha256"]
-        assert _sha("config/m8r_06_03_executor_registry_metadata.json") == record["active_authority"]["executor_metadata_sha256"]
-        assert _sha("docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json") == record["active_authority"]["orchestrator_disposition_sha256"]
+        # This A4 record predates the separately authorized Phase J A2.6
+        # additions to shared Phase-H catalog/routing/registry surfaces. Verify
+        # its stored hashes against the then-current committed snapshot instead
+        # of asserting that mutable current paths retain those historical bytes.
+        historical_authorities = (
+            ("docs/data_capabilities/phase_i_i3_source_authority.v1.json", "source_authority_sha256"),
+            ("docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json", "catalog_authority_sha256"),
+            ("docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json", "routing_authority_sha256"),
+            ("config/m8r_06_03_executor_registry_metadata.json", "executor_metadata_sha256"),
+            ("docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json", "orchestrator_disposition_sha256"),
+        )
+        for path, hash_key in historical_authorities:
+            assert _historical_git_sha(path, PHASE_J_A2_6_BASELINE) == record["active_authority"][hash_key]
 
         from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
         from scripts.m8r_05b_03.registry import ExecutorMetadataRegistry

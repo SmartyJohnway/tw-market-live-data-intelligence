@@ -32,7 +32,7 @@ def test_production_metadata_materializes_legacy_research_and_selected_phase_rou
     metadata = load_production_executor_metadata()
     registry = build_production_runtime_adapter_registry()
 
-    assert len(metadata["executors"]) == 15
+    assert len(metadata["executors"]) == 16
     i2 = registry.get_route("phase_i_i2_index_futures_context_executor", "index_futures_context", "TWSE")
     assert i2 is not None and i2.network_required and not i2.fake_adapter
     assert len(registry.routes_for_executor(i2.executor_id)) == 1
@@ -60,6 +60,11 @@ def test_production_metadata_materializes_legacy_research_and_selected_phase_rou
     assert h1.fake_adapter is False
     assert h1.network_required is True
     assert h1.batch_adapter is None
+    composite = registry.get_route("phase_h_h1_tpex_composite_executor", "trading_status_context", "TPEX")
+    assert composite is not None
+    assert composite.fake_adapter is False
+    assert composite.network_required is True
+    assert composite.batch_adapter is None
     h3 = registry.get_route(
         "phase_h_h3_twse_recent_performance_executor", "recent_performance", "TWSE"
     )

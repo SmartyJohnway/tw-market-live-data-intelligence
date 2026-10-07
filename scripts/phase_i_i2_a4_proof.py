@@ -73,21 +73,42 @@ def verify_candidate_authority():
     assert len(registry.routes_for_executor("phase_i_i1_market_state_executor")) == 2
     assert current_json("docs/data_capabilities/phase_i_i1_source_authority.v1.json")["active_source_count"] == 3
     assert len(build_tool_contract_snapshot().tools) == 6
-    # All non-I2 authority records must equal the accepted dormant baseline.
-    # I3-A4 is a separately authorized dormant candidate. Preserve its additive
-    # catalog/route candidate while this historical I2 proof compares all other
-    # authority rows to the I2-accepted baseline.
+    # All non-I2 authority records must equal the accepted dormant baseline,
+    # except for later independently authorized additive current-state work.
+    # I3-A4 and Phase J J-B03-A2.6 are current authorities layered on that
+    # historical baseline; compare only their exact bounded surfaces below.
     i3_capability = "cash_institutional_flow_context"
     i3_executor = "phase_i_i3_cash_institutional_flow_context_executor"
+    h1_capability = "trading_status_context"
+    h1_legacy_executor = "phase_h_h1_tpex_attention_executor"
+    h1_composite_executor = "phase_h_h1_tpex_composite_executor"
     for path, field, id_key, excluded_ids in (
-        (CATALOG, "data_need_capabilities", "capability_id", {CAPABILITY, i3_capability}),
-        (ROUTING, "routes", "capability_id", {CAPABILITY, i3_capability}),
-        (METADATA, "executors", "executor_id", {EXECUTOR, i3_executor}),
-        (DISPOSITION, "surfaces", "surface_id", {EXECUTOR, i3_executor}),
+        (CATALOG, "data_need_capabilities", "capability_id", {CAPABILITY, i3_capability, h1_capability}),
+        (ROUTING, "routes", "capability_id", {CAPABILITY, i3_capability, h1_capability}),
+        (METADATA, "executors", "executor_id", {EXECUTOR, i3_executor, h1_composite_executor}),
+        (DISPOSITION, "surfaces", "surface_id", {EXECUTOR, i3_executor, h1_legacy_executor, h1_composite_executor}),
     ):
         now, before = current_json(path), baseline_json(path)
         assert [x for x in now[field] if x.get(id_key) not in excluded_ids] == [x for x in before[field] if x.get(id_key) not in excluded_ids], path
-    assert r["phase_h_source_authority"] == baseline_json(ROUTING)["phase_h_source_authority"]
+    # The A2.6 activation changes only the two predeclared dormant TPEx H1
+    # sources. Keep every other source record byte-for-value equal to the
+    # historical I2 baseline, including the existing attention source.
+    old_h1_authority = baseline_json(ROUTING)["phase_h_source_authority"]
+    now_h1_authority = r["phase_h_source_authority"]
+    a26_sources = {"H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}
+    assert [x for x in now_h1_authority["records"] if x["source_id"] not in a26_sources] == [x for x in old_h1_authority["records"] if x["source_id"] not in a26_sources]
+    assert now_h1_authority["active_source_count"] == 4
+    assert {x["source_id"] for x in now_h1_authority["records"] if x["activation_state"] == "active" and x["runtime_executable"]} == {
+        "H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI",
+        "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED",
+    }
+    for source_id, family, contract in (
+        ("H1-TPEX-DISPOSITION-OPENAPI", "TPEX_DISPOSITION_OPEN_DATA", "tpex_disposal_information"),
+        ("H1-TPEX-CHANGED-TRADING-OPENAPI", "TPEX_CHANGED_TRADING_OPEN_DATA", "tpex_cmode"),
+    ):
+        row = next(x for x in now_h1_authority["records"] if x["source_id"] == source_id)
+        assert row.get("source_contract") == contract
+        assert (row["activation_state"], row["runtime_executable"]) == ("active", True)
     return registry
 
 
@@ -138,6 +159,7 @@ def rollback_authority():
     rolled = {p: copy.deepcopy(current_json(p)) for p in AUTHORITY_FILES}
     i3_capability = "cash_institutional_flow_context"
     i3_executor = "phase_i_i3_cash_institutional_flow_context_executor"
+    from scripts.phase_i_i3_a4_compat import project_current_a26_h1_addition
     for path, field, key, value in ((CATALOG, "data_need_capabilities", "capability_id", CAPABILITY), (ROUTING, "routes", "capability_id", CAPABILITY), (METADATA, "executors", "executor_id", EXECUTOR), (DISPOSITION, "surfaces", "surface_id", EXECUTOR)):
         baseline = baseline_json(path)
         if path in (CATALOG, ROUTING):
@@ -150,6 +172,7 @@ def rollback_authority():
             rolled[path][field] = restored
         else:
             rolled[path][field] = [x for x in rolled[path][field] if x.get(key) not in {value, i3_executor}]
+        rolled[path] = project_current_a26_h1_addition(path, rolled[path], baseline)
         assert rolled[path] == baseline, path
     rolled[SOURCE] = copy.deepcopy(baseline_json(SOURCE))
     regs = [registry.get_route(x["executor_id"], x["capability_id"], x["market"]) for x in rolled[METADATA]["executors"]]

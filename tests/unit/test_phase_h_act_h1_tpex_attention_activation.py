@@ -11,6 +11,7 @@ import pytest
 
 from scripts.m8r_06_02_mode_b1_preview import build_mode_b1_preview_package
 from scripts.m8r_06_03_production_adapter import (
+    PHASE_H_H1_COMPOSITE_EXECUTOR_ID,
     PHASE_H_H1_EXECUTOR_ID,
     build_production_runtime_adapter_registry,
 )
@@ -77,24 +78,28 @@ def test_h_act_h1_exact_route_scope_is_preserved_after_v3_promotion() -> None:
     assert catalog["contract_versions"]["preferred_request_schema_version"] == "unified_market_evidence_request.v3"
     assert catalog["contract_versions"]["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
     assert catalog["contract_versions"]["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
-    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 2
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
     assert capability["support_status"] == "runtime_executable"
     assert capability["phase_h_activation_state"] == "selected_route_active"
 
     assert route["routing_status"] == "resolved"
     assert route["supported_markets"] == ["TPEX"]
-    assert route["selected_executor_id"] == PHASE_H_H1_EXECUTOR_ID
+    assert route["selected_executor_id"] == PHASE_H_H1_COMPOSITE_EXECUTOR_ID
+    assert route["output_evidence_contract"] == "trading_status_context_composite.v1"
     assert route["network_required"] is True
     assert route["batching_scope"] == "none"
-    assert route["output_evidence_contract"] == "trading_status_context_evidence.v1"
-
+    assert routing["phase_h_source_authority"]["active_source_count"] == 4
     assert {(item["source_id"], item["runtime_executable"]) for item in active_records} == {
         ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H1-TPEX-DISPOSITION-OPENAPI", True),
+        ("H1-TPEX-CHANGED-TRADING-OPENAPI", True),
         ("H3-TWSE-DEFAULT-BOUNDED", True),
     }
-    assert len(active_records) == 2
+    assert len(active_records) == 4
     assert [(item["source_id"], item["runtime_executable"]) for item in active_descriptors] == [
-        ("H1-TPEX-ATTENTION-OPENAPI", True)
+        ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H1-TPEX-DISPOSITION-OPENAPI", True),
+        ("H1-TPEX-CHANGED-TRADING-OPENAPI", True),
     ]
     assert PREFERRED_REQUEST_SCHEMA_VERSION == "unified_market_evidence_request.v3"
     assert [tool.name for tool in build_tool_specs()] == [
@@ -112,10 +117,10 @@ def test_h_act_h1_preview_executes_only_tpex_selected_route() -> None:
     assert tpex["validation"]["validation_status"] == "valid"
     assert tpex["validation"]["capability_results"][0]["status"] == "runtime_executable"
     assert tpex["preview"]["status"] == "ready_for_confirmation"
-    assert tpex["preview"]["bounds"]["estimated_network_calls"] == 1
+    assert tpex["preview"]["bounds"]["estimated_network_calls"] == 3
     operation = tpex["orchestration_plan"]["operations"][0]
     assert operation["market"] == "TPEX"
-    assert operation["executor_id"] == PHASE_H_H1_EXECUTOR_ID
+    assert operation["executor_id"] == PHASE_H_H1_COMPOSITE_EXECUTOR_ID
     assert operation["operation_status"] == "executable_pending_approval"
     assert operation["network_required"] is True
 
@@ -133,10 +138,10 @@ def test_h_act_h1_registry_materialization_has_no_startup_network(monkeypatch: p
         lambda *_a, **_k: pytest.fail("startup network attempted"),
     )
     registry = build_production_runtime_adapter_registry()
-    selected = registry.get_route(PHASE_H_H1_EXECUTOR_ID, "trading_status_context", "TPEX")
-    assert selected.fake_adapter is False
-    assert selected.network_required is True
-    assert selected.batch_adapter is None
+    legacy = registry.get_route(PHASE_H_H1_EXECUTOR_ID, "trading_status_context", "TPEX")
+    selected = registry.get_route(PHASE_H_H1_COMPOSITE_EXECUTOR_ID, "trading_status_context", "TPEX")
+    assert legacy.fake_adapter is False and legacy.network_required is True and legacy.batch_adapter is None
+    assert selected.fake_adapter is False and selected.network_required is True and selected.batch_adapter is None
     assert registry.get_route(PHASE_H_H1_EXECUTOR_ID, "trading_status_context", "TWSE") is None
 
 
@@ -321,13 +326,13 @@ def test_h0h_roll_001_single_route_rollback_model_preserves_artifact_bytes() -> 
     route.pop("source_compatibility_key", None)
     rollback_routing["phase_h_source_authority"]["active_source_count"] = 1
     for item in rollback_routing["phase_h_source_authority"]["records"]:
-        if item["source_id"] == "H1-TPEX-ATTENTION-OPENAPI":
+        if item["source_id"] in {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}:
             item["activation_state"] = "eligible"
             item["runtime_executable"] = False
 
     rollback_descriptors["status"] = "dormant_fixture_only"
     for item in rollback_descriptors["sources"]:
-        if item["source_id"] == "H1-TPEX-ATTENTION-OPENAPI":
+        if item["source_id"] in {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}:
             item["activation_state"] = "eligible"
             item["runtime_executable"] = False
 

@@ -427,8 +427,8 @@
       "surface_id": "phase_h_h1_tpex_attention_executor",
       "path": "scripts/m8r_06_03_production_adapter.py",
       "surface_type": "controlled_phase_h_h1_executor",
-      "current_status": "H-ACT-H1 activation candidate for the single TPEx attention route",
-      "network_behavior": "one fixed official TPEx OpenAPI GET per approved exact target after 05B authorization and network confirmation",
+      "current_status": "retained non-selected legacy H1 attention executor for deterministic rollback; not selected by current trading_status_context routing",
+      "network_behavior": "one fixed official TPEx OpenAPI GET per explicitly approved exact target when invoked through its legacy registration; no automatic fallback",
       "input_contract": "05B execution request v1 bound to trading_status_context / TPEX / exact approved target",
       "output_contract": "trading_status_context_evidence.v1 plus phase_h_source_attempt_governance.v1",
       "approval_boundary": "05B plan, authorization, single-use claim and network confirmation",
@@ -453,6 +453,39 @@
         "server/services/phase_h_trading_status_adapters.py",
         "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md",
         "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json"
+      ]
+    },
+    {
+      "surface_id": "phase_h_h1_tpex_composite_executor",
+      "path": "scripts/m8r_06_03_production_adapter.py",
+      "surface_type": "controlled_phase_h_h1_composite_executor",
+      "current_status": "A2.6 selected production TPEx representative composite route; three fixed source components, partial canonical coverage",
+      "network_behavior": "exactly three fixed official TPEx OpenAPI GETs per approved exact target in the normal path; retry zero; fallback none",
+      "input_contract": "05B execution request v1-v3 bound to trading_status_context / TPEX / one exact approved equity target",
+      "output_contract": "trading_status_context_composite.v1 plus three source-bound H1 component artifacts and source-attempt governance",
+      "approval_boundary": "05B plan, authorization, single-use claim and network confirmation",
+      "authorization_binding": "operation, route, market, exact target, executor and composite evidence contract; fixed internal source set",
+      "single_use_enforced": true,
+      "supported_markets": [
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "trading_status_context"
+      ],
+      "batching_supported": false,
+      "deterministic": false,
+      "reusable_for_05b": true,
+      "reuse_mode": "adapter_required",
+      "disposition": "adapter_required",
+      "blocking_gaps": [],
+      "evidence_paths": [
+        "server/services/phase_h_h1_tpex_composite.py",
+        "server/services/phase_h_trading_status_adapters.py",
+        "scripts/m8r_05c/trading_status_composer.py",
+        "docs/governance/phase_j/PHASE_J_J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_AND_ACTIVATION_DECISION_2026-10-07.json"
       ]
     },
     {
@@ -567,9 +600,16 @@
       "approval_boundary": "05B plan, explicit authorization, single-use claim and network confirmation",
       "authorization_binding": "plan, operation, target, date, executor, source and evidence contract",
       "single_use_enforced": true,
-      "supported_markets": ["TWSE", "TPEX"],
-      "supported_security_types": ["equity"],
-      "supported_capabilities": ["cash_institutional_flow_context"],
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "cash_institutional_flow_context"
+      ],
       "batching_supported": true,
       "deterministic": false,
       "reusable_for_05b": true,

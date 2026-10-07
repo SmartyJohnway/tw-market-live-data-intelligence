@@ -59,8 +59,8 @@
       "transport": "official_json_openapi",
       "license_authority": "ODGL 1.0; free; https://data.gov.tw/dataset/11396",
       "source_role": "default_candidate",
-      "activation_state": "eligible",
-      "runtime_executable": false
+      "activation_state": "active",
+      "runtime_executable": true
     },
     {
       "source_id": "H1-TPEX-SUSPEND-TODAY-OPENAPI",
@@ -89,8 +89,8 @@
       "transport": "official_json_openapi",
       "license_authority": "ODGL 1.0; free; https://data.gov.tw/dataset/11736",
       "source_role": "default_candidate",
-      "activation_state": "eligible",
-      "runtime_executable": false
+      "activation_state": "active",
+      "runtime_executable": true
     }
   ]
 }

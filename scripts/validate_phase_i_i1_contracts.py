@@ -129,10 +129,10 @@ def validate_phase_i_i1_contracts() -> None:
         raise I1ValidationError("i1_route_scope_invalid")
     if route.get("output_evidence_contract") != "market_state_context_evidence.v1":
         raise I1ValidationError("i1_output_contract_mismatch")
-    if catalog.get("phase_h_contract", {}).get("active_phase_h_source_count") != 2 or routing.get("phase_h_source_authority", {}).get("active_source_count") != 2:
+    if catalog.get("phase_h_contract", {}).get("active_phase_h_source_count") != 4 or routing.get("phase_h_source_authority", {}).get("active_source_count") != 4:
         raise I1ValidationError("phase_h_source_count_changed")
     active = {x.get("source_id") for x in routing.get("phase_h_source_authority", {}).get("records", []) if x.get("activation_state") == "active" and x.get("runtime_executable") is True}
-    if active != {"H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}:
+    if active != {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}:
         raise I1ValidationError("phase_h_active_set_changed")
     expected_sources = {"I1-TWSE-FMTQIK-OPENAPI", "I1-TWSE-BREADTH-TWTAZU-OPENAPI", "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI"}
     if source_authority.get("active_source_count") != 3 or source_authority.get("runtime_executable") is not True or {x.get("source_id") for x in source_authority.get("records", [])} != expected_sources or any(x.get("activation_state") != "active" or x.get("runtime_executable") is not True for x in source_authority.get("records", [])):

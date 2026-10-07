@@ -1,0 +1,982 @@
+{
+  "record_type": "J_B03_A2_6_STAGE_A_STAGE_B_ACCEPTANCE_AND_ACTIVATION_CHAIN",
+  "owner_authority": "USER_CHAT_2026-10-07_J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_STAGE_A_AUTHORIZATION",
+  "starting_main": {
+    "commit": "04af1d3ea63b058317facb8763a524c453bb9093",
+    "tree": "de7095ffe36000096c1c2adbda4e84704b59f449",
+    "pr_320": "MERGED_CLOSED"
+  },
+  "branch": "phase-j/j-b03-a2-6-integrated-composite-acceptance",
+  "accepted_entry_states": {
+    "a2_3": "J_B03_A2_3_RESULT_LEVEL_H1_COMPOSITION_OFFLINE_ACCEPTED",
+    "a2_4": "J_B03_A2_4_TPEX_DISPOSITION_SOURCE_CONTRACT_VERIFIED",
+    "a2_5": "J_B03_A2_5_DETERMINISTIC_REPRESENTATIVE_COMPONENT_ADAPTERS_ACCEPTED"
+  },
+  "candidate": {
+    "executor_id": "phase_j_j_b03_tpex_trading_status_composite_candidate",
+    "registered_in_production": false,
+    "activation_performed": false,
+    "target": {
+      "canonical_target_id": "TPEX:6488",
+      "market": "TPEX",
+      "security_code": "6488"
+    },
+    "composite_contract": "trading_status_context_composite.v1",
+    "acceptance_authority_hash": "c87c0b4321a2f9ab94fcbf5335f59735ac4a827ca9d5190e750fb3c5241da8ce",
+    "authority_binding": {
+      "overlay_hash_in_operation_parameters": true,
+      "plan_hash_binds_overlay": true,
+      "authorization_binds_plan_hash": true,
+      "consumption_binding_binds_authorization_and_plan": true,
+      "execution_request_binds_plan_hash": true,
+      "candidate_checks_exact_internal_plan_and_bound_plan_hash": true,
+      "request_or_plan_schema_modified": false
+    },
+    "ordered_sources": [
+      {
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+        "source_family": "TPEX_ATTENTION_OPEN_DATA",
+        "source_contract_id": "tpex_trading_warning_information",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+        "evidence_contract": "trading_status_context_evidence.v1"
+      },
+      {
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+        "source_family": "TPEX_DISPOSITION_OPEN_DATA",
+        "source_contract_id": "tpex_disposal_information",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+        "evidence_contract": "trading_status_context_evidence.v1"
+      },
+      {
+        "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+        "source_family": "TPEX_CHANGED_TRADING_OPEN_DATA",
+        "source_contract_id": "tpex_cmode",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+        "evidence_contract": "trading_status_context_evidence.v2"
+      }
+    ],
+    "transport_controls": {
+      "tls_policy": "compatibility",
+      "certificate_verification": true,
+      "hostname_verification": true,
+      "timeout_seconds": 60,
+      "response_byte_ceiling": 4194304,
+      "retry": 0,
+      "redirect_policy": "none",
+      "fallback_policy": "none",
+      "network_authorized": true,
+      "request_budget": {
+        "GET": 3,
+        "HEAD": 0,
+        "POST": 0
+      }
+    }
+  },
+  "offline_acceptance": {
+    "status": "PASS",
+    "market_requests": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "scenarios": {
+      "C1_full_pipeline_three_sources": "PASS",
+      "C2_cmode_exact_no_match": "PASS",
+      "C3_disposition_multiple_rows_through_result_audit_handoff": "PASS",
+      "C4_component_failure_independence": "PASS",
+      "C5_blank_cmode_value_unresolved": "PASS",
+      "C6_fullwidth_y_preserved_without_suspension_promotion": "PASS",
+      "C7_component_hash_mismatch_rejected": "PASS",
+      "C8_target_mismatch_rejected": "PASS",
+      "C9_source_identity_mismatch_rejected": "PASS",
+      "C10_ordered_source_set_mismatch_rejected_before_transport": "PASS",
+      "C11_endpoint_substitution_rejected_before_transport": "PASS",
+      "C12_network_authorized_false_blocks_transport": "PASS",
+      "C13_attention_h1_v1_compatibility": "PASS"
+    },
+    "operation_result": "OperationResult v2 with one composite primary and three component_evidence artifacts",
+    "bundle": "Bundle v1 validated with component sidecars",
+    "receipt": "Execution Receipt v1 validated",
+    "lineage": "one binding, one composite primary, three source-bound H1 component artifacts",
+    "result": "Result V3 validated with composite retained",
+    "audit": "Audit V3 validated with three independent source attempts",
+    "handoff": "component-separated; disposition reason/condition, cmode raw value, date, caveat, and citations retained",
+    "focused_tests": {
+      "passed": 156,
+      "failed": 0,
+      "skipped": 0
+    },
+    "surfaces": {
+      "operation_result": "OperationResult v2 validated; one composite primary and three source-specific component_evidence artifacts",
+      "bundle": "Bundle v1 validated; component references and sidecars retained",
+      "receipt": "Execution Receipt v1 validated and bound to exact bundle",
+      "lineage": "one logical binding, one composite primary, three independently source-bound H1 components",
+      "mode_c_result": "build_mode_c_result_package materialized Result V3 and retained Composite v1",
+      "mode_c_audit": "read_mode_c_audit returned verified persisted Audit V3 with component lineage",
+      "mode_c_ai_handoff": "build_mode_c_ai_handoff returned component-separated markdown and citation references; no additional market request"
+    }
+  },
+  "live_acceptance": {
+    "status": "PASS_ACTIVATION_READY",
+    "performed": true,
+    "target": {
+      "canonical_target_id": "TPEX:6488",
+      "market": "TPEX",
+      "security_code": "6488"
+    },
+    "request_budget": {
+      "GET_max": 10,
+      "HEAD_max": 10,
+      "POST_max": 0
+    },
+    "request_accounting": {
+      "GET": 6,
+      "HEAD": 0,
+      "POST": 0,
+      "retry": 0,
+      "fallback": 0,
+      "polling": 0
+    },
+    "runner_history": [
+      {
+        "run": 1,
+        "purpose": "initial authorized integrated live execution after offline gate",
+        "market_requests": {
+          "GET": 3,
+          "HEAD": 0,
+          "POST": 0
+        },
+        "candidate_pipeline_completed": true,
+        "runner_output": "FAILED_AFTER_EXECUTION",
+        "failure": "temporary composite read used the outer directory instead of the authorization-bound package directory",
+        "response_metadata_retained": false,
+        "raw_payload_persisted": false,
+        "why_rerun_was_necessary": "the completed run’s per-source response metadata could not be emitted or audited after temporary-directory cleanup; repaired the runner path and repeated the bounded three-source acceptance"
+      },
+      {
+        "run": 2,
+        "purpose": "capture auditable source metadata and independently reverify the same fixed candidate path",
+        "market_requests": {
+          "GET": 3,
+          "HEAD": 0,
+          "POST": 0
+        },
+        "candidate_pipeline_completed": true,
+        "runner_output": "PASS",
+        "response_metadata_retained": true,
+        "raw_payload_persisted": false
+      }
+    ],
+    "successful_verification_requests": [
+      {
+        "request_ordinal": 1,
+        "method": "GET",
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+        "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+        "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+        "http_status": 200,
+        "content_type": "application/json",
+        "response_bytes": 9536,
+        "response_sha256": "bb91afe4e485ff63b04f38305573972104bd65499c876e2c2bb4e8ee4a641ec7",
+        "retrieved_at": "2026-10-07T08:07:45.098421Z",
+        "tls_policy": "compatibility",
+        "redirect_count": 0,
+        "attempt_number": 1,
+        "outcome": "succeeded"
+      },
+      {
+        "request_ordinal": 2,
+        "method": "GET",
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+        "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+        "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+        "http_status": 200,
+        "content_type": "application/json",
+        "response_bytes": 20222,
+        "response_sha256": "fb1f07af0caf6bef5b4545bd0323736bf70c6ca70bc21368c2fd19840d5789e0",
+        "retrieved_at": "2026-10-07T08:07:45.231610Z",
+        "tls_policy": "compatibility",
+        "redirect_count": 0,
+        "attempt_number": 1,
+        "outcome": "succeeded"
+      },
+      {
+        "request_ordinal": 3,
+        "method": "GET",
+        "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+        "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+        "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+        "http_status": 200,
+        "content_type": "application/json",
+        "response_bytes": 5039,
+        "response_sha256": "26c7ead445eda8427724b31255650c2c8edcc09d0e8b9abf8eae4f071003856e",
+        "retrieved_at": "2026-10-07T08:07:45.350017Z",
+        "tls_policy": "compatibility",
+        "redirect_count": 0,
+        "attempt_number": 1,
+        "outcome": "succeeded"
+      }
+    ],
+    "contract_drift": [],
+    "component_results": [
+      {
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+        "schema_version": "trading_status_context_evidence.v1",
+        "status": "partial",
+        "artifact_sha256": "f1661706a9d0eefa7dc04ac85075cb149689f21e172ee0d8cf48e26b13178622"
+      },
+      {
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+        "schema_version": "trading_status_context_evidence.v1",
+        "status": "partial",
+        "artifact_sha256": "150eeea2d408ee3c5d46117b4d7f708c5295021cac8dd08471bd097bc88fc8ff"
+      },
+      {
+        "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+        "schema_version": "trading_status_context_evidence.v2",
+        "status": "partial",
+        "artifact_sha256": "6d69a11430c11466c9c3b6a4412cb7bdce40c1199f3682f5f64d222a0db411b3"
+      }
+    ],
+    "composite": {
+      "schema_version": "trading_status_context_composite.v1",
+      "sha256": "adb055c3e933c2f79c3b5fe696ddae01e9f2c77124281810f5a9a3cb81b6b40d",
+      "status": "partial",
+      "aggregate_coverage": {
+        "covered_status_types": [
+          "attention",
+          "disposition"
+        ],
+        "uncovered_status_types": [
+          "changed_trading_method",
+          "resumption",
+          "suspension"
+        ],
+        "declared_scope_complete": false
+      },
+      "canonical_item_count": 1,
+      "native_observation_count": 0,
+      "component_count": 3
+    },
+    "operation_result": "succeeded; unified_market_evidence_operation_result.v2",
+    "bundle": "validated; unified_market_evidence_bundle.v1",
+    "receipt": "validated; unified_market_evidence_execution_receipt.v1",
+    "lineage": "validated; exact target, source, schema, path, hashes and citations retained for three components",
+    "result": "validated; unified_market_evidence_result.v3 with Composite v1 intact",
+    "audit": "validated; unified_market_evidence_audit_package.v3",
+    "handoff": "validated through Mode C; component-separated output and citation references retained; no raw marker was observed live, fixture covers U+FF39",
+    "failure_independence": "offline tests PASS; source-local failure preserves other components",
+    "raw_payload_persisted": false
+  },
+  "protected_contract_hashes": {
+    "h1_v1": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+    "h1_v2": "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38",
+    "composite_v1": "3d34a1cb2112716211e39536b221994952aabd1c2723d3ed5f61ee8b0f224106",
+    "result_v3": "9269fc9e5e07884fa2de791eae902ee57b3d937dbb793318ca4aff1a93fc5bcb",
+    "operation_result_v2": "9d6430254215ae0b4048e0352f6902c629e4069530b1c9a267f1ee50d4c5bd64",
+    "h0_g_manifest": "6c1f23ed12a0d3bffcb7b964197eda6ee6a36d8c95ef1a8c5d6106ef31ea89f6",
+    "request_v1": "c56add4bdb200d7dc1a1e9c27d576fefbf434dc7a8658fd17000c4ae8ee84cac",
+    "request_v2": "757d864c3a00d296f8ebf2eccdbb47a1d39ca8a222e9d939f34ef854f4245e3b",
+    "request_v3": "b0901dbf63db3a8bc44b8fec4cb0cdc90f77e153d954266f98c690453864f3f6",
+    "bundle_v1": "9eb901b99db3a7b56d251e70c00f83ebc99b0f0587fc77fee8aca573f9049aad",
+    "receipt_v1": "cd70b135e751214d467dbf7ca1924fc2ce8a61461b2276defae7bd30a23e4d26",
+    "audit_v3": "94208ac6f4c13bcde294de1a8c7cf6be23245d738b5dcd36fffcac1ab134c4cc"
+  },
+  "production_state": {
+    "selected_executor": "phase_h_h1_tpex_composite_executor",
+    "selected_output_contract": "trading_status_context_composite.v1",
+    "active_phase_h_source_count": 4,
+    "active_phase_h_sources": [
+      "H1-TPEX-ATTENTION-OPENAPI",
+      "H1-TPEX-DISPOSITION-OPENAPI",
+      "H1-TPEX-CHANGED-TRADING-OPENAPI",
+      "H3-TWSE-DEFAULT-BOUNDED"
+    ],
+    "attention_behavior_unchanged": true,
+    "disposition_activation_state": "active",
+    "disposition_runtime_executable": true,
+    "cmode_activation_state": "active",
+    "cmode_runtime_executable": true,
+    "suspend_today_active": false,
+    "suspend_history_active": false,
+    "twse_h1_active": false,
+    "preferred_version_changed": false,
+    "routing_changed": true,
+    "catalog_changed": true,
+    "registry_changed": true,
+    "mcp_tool_count": 6,
+    "raw_market_payload_committed": false,
+    "data_directory_touched": false
+  },
+  "issue_states": {
+    "H0-SRC-01E": "OPEN",
+    "H0-SRC-02": "OPEN",
+    "J-B03": "HOLD",
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT_STARTED"
+  },
+  "raw_market_payload_committed": false,
+  "data_directory_touched": false,
+  "current_record_stage": "A2_6_STAGE_B_PRODUCTION_ACTIVATION_PASS",
+  "network_accounting": {
+    "stage_a_historical": {
+      "live_run_1": {
+        "GET": 3,
+        "HEAD": 0,
+        "POST": 0,
+        "response_metadata_captured": false,
+        "reason": "runner post-processing path error after candidate completion"
+      },
+      "live_run_2": {
+        "GET": 3,
+        "HEAD": 0,
+        "POST": 0,
+        "response_metadata_captured": true
+      },
+      "chain_total": {
+        "GET": 6,
+        "HEAD": 0,
+        "POST": 0
+      },
+      "retries": 0,
+      "fallbacks": 0,
+      "polling": 0
+    },
+    "stage_b": {
+      "GET": 9,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "a2_6_cumulative": {
+      "GET": 15,
+      "HEAD": 0,
+      "POST": 0
+    }
+  },
+  "validation": {
+    "stage_a_historical": {
+      "pre_live": {
+        "focused_tests": {
+          "passed": 156,
+          "failed": 0,
+          "skipped": 0
+        },
+        "phase_h_v3_contracts": "PASS",
+        "compileall": "PASS",
+        "git_diff_check": "PASS",
+        "strict_duplicate_key_json": "PASS; duplicate member names=0"
+      },
+      "post_live_focused_tests": {
+        "passed": 156,
+        "failed": 0,
+        "skipped": 0
+      },
+      "default_ci": {
+        "command": "python scripts/run_test_profile.py default-ci",
+        "passed": 1282,
+        "failed": 0,
+        "skipped": 1,
+        "deselected": 5,
+        "warnings": 18,
+        "duration_seconds": 376.69,
+        "network_note": "market requests are separately accounted above; default-ci completed as the repository deterministic test profile"
+      },
+      "post_live_contract_validator": "PASS",
+      "post_live_compileall": "PASS",
+      "post_live_git_diff_check": "PASS"
+    },
+    "stage_b": {
+      "pre_live_broad_offline_suite": {
+        "passed": 332,
+        "failed": 0,
+        "skipped": 0
+      },
+      "post_live_focused_suite": {
+        "passed": 111,
+        "failed": 0,
+        "skipped": 0
+      },
+      "stage_b_activation_unit_suite": {
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      },
+      "phase_i_historical_compatibility_regression": {
+        "initial_default_ci_failures": 10,
+        "root_cause": "historical Phase I containment compared current shared catalog/routing hashes as if mutable Stage-B Phase-H additions were part of the old Phase-I snapshot",
+        "repair": "validate exact current A2.6 H1 route/source topology, project only that bounded current overlay out of historical comparisons, and verify I3-A4 stored hashes against the pre-A2.6 committed snapshot without editing historical records",
+        "focused_rerun": {
+          "passed": 210,
+          "failed": 0,
+          "skipped": 0
+        },
+        "changed_support_paths": [
+          "scripts/phase_i_i3_a4_compat.py",
+          "scripts/phase_i_i2_a4_proof.py",
+          "scripts/run_phase_i_i3_a3_bounded_live_acceptance.py",
+          "scripts/validate_phase_i_i3_a4_activation.py"
+        ]
+      },
+      "phase_h_v3_contract_validator": "PASS",
+      "phase_i_i1_contract_validator": "PASS",
+      "phase_i_i1_activation_validator": "PASS",
+      "phase_i_i3_a4_activation_validator": "PASS",
+      "portable_catalog_sync_validator": "PASS",
+      "runtime_skill_guide_sync_validator": {
+        "status": "PASS",
+        "tool_count": 6
+      },
+      "compileall": "PASS",
+      "git_diff_check": "PASS",
+      "strict_duplicate_key_json": {
+        "status": "PASS",
+        "duplicate_member_names": 0
+      },
+      "default_ci": {
+        "command": "python scripts/run_test_profile.py default-ci",
+        "status": "PASS",
+        "passed": 1282,
+        "failed": 0,
+        "skipped": 1,
+        "deselected": 5,
+        "warnings": 18,
+        "duration_seconds": 304.1,
+        "network_may_have_occurred": false
+      }
+    }
+  },
+  "activation_decision": {
+    "readiness": "J_B03_A2_6_PRODUCTION_ACTIVATION_ACCEPTED",
+    "production_activation_performed_in_authorized_branch": true,
+    "merged_or_deployed": false,
+    "owner_authority": "USER_CHAT_2026-10-07_J_B03_A2_6_PRODUCTION_ACTIVATION_AUTHORIZATION",
+    "rollback_proof": "PASS",
+    "automatic_fallback": false,
+    "schema_changes": false,
+    "preferred_version_changed": false,
+    "mcp_tool_count": 6
+  },
+  "final_disposition": "J_B03_A2_6_PRODUCTION_ACTIVATION_ACCEPTED",
+  "protected_contract_hash_basis": "SHA-256 of committed schema blob bytes; working-tree request.v1 is CRLF-converted by repository checkout behavior but its Git blob is unchanged from starting main",
+  "stage_a_historical_snapshot": {
+    "current_record_stage": "A2_6_STAGE_A_LIVE_ACCEPTANCE_PASS_ACTIVATION_READY",
+    "final_disposition": "J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_PASS_ACTIVATION_READY",
+    "production_state": {
+      "active_attention_route_unchanged": true,
+      "disposition_activation_state": "eligible",
+      "disposition_runtime_executable": false,
+      "cmode_activation_state": "eligible",
+      "cmode_runtime_executable": false,
+      "routing_changed": false,
+      "catalog_changed": false,
+      "registry_changed": false,
+      "preferred_version_changed": false,
+      "mcp_tool_count": 6
+    },
+    "activation_decision": {
+      "readiness": "J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_PASS_ACTIVATION_READY",
+      "production_activation_performed": false,
+      "owner_activation_authority_required": true,
+      "canonical_files_that_would_change_if_later_authorized": [
+        {
+          "path": "config/phase_h_h1_dormant_source_descriptors.json",
+          "purpose": "governed source activation/runtime-executable state for disposition and cmode"
+        },
+        {
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "purpose": "capability support/activation metadata and limitations"
+        },
+        {
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "purpose": "selected composite executor routing and bounded operation policy"
+        },
+        {
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "purpose": "canonical runtime executor registration and contract metadata"
+        },
+        {
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "purpose": "production-owned composite executor dispatch/adapter integration; acceptance-only candidate is not registered"
+        }
+      ],
+      "active_attention_executor_remains": "phase_h_h1_tpex_attention_executor",
+      "disposition_activation_state": "eligible",
+      "disposition_runtime_executable": false,
+      "cmode_activation_state": "eligible",
+      "cmode_runtime_executable": false,
+      "preferred_version_changed": false,
+      "routing_catalog_registry_changed": false
+    },
+    "network_accounting": {
+      "live_run_1": {
+        "GET": 3,
+        "HEAD": 0,
+        "POST": 0,
+        "response_metadata_captured": false,
+        "reason": "runner post-processing path error after candidate completion"
+      },
+      "live_run_2": {
+        "GET": 3,
+        "HEAD": 0,
+        "POST": 0,
+        "response_metadata_captured": true
+      },
+      "chain_total": {
+        "GET": 6,
+        "HEAD": 0,
+        "POST": 0
+      },
+      "retries": 0,
+      "fallbacks": 0,
+      "polling": 0
+    },
+    "validation": {
+      "pre_live": {
+        "focused_tests": {
+          "passed": 156,
+          "failed": 0,
+          "skipped": 0
+        },
+        "phase_h_v3_contracts": "PASS",
+        "compileall": "PASS",
+        "git_diff_check": "PASS",
+        "strict_duplicate_key_json": "PASS; duplicate member names=0"
+      },
+      "post_live_focused_tests": {
+        "passed": 156,
+        "failed": 0,
+        "skipped": 0
+      },
+      "default_ci": {
+        "command": "python scripts/run_test_profile.py default-ci",
+        "passed": 1282,
+        "failed": 0,
+        "skipped": 1,
+        "deselected": 5,
+        "warnings": 18,
+        "duration_seconds": 376.69,
+        "network_note": "market requests are separately accounted above; default-ci completed as the repository deterministic test profile"
+      },
+      "post_live_contract_validator": "PASS",
+      "post_live_compileall": "PASS",
+      "post_live_git_diff_check": "PASS"
+    },
+    "record_type": "J_B03_A2_6_STAGE_A_ACCEPTANCE"
+  },
+  "stage_b_activation": {
+    "owner_authority": "USER_CHAT_2026-10-07_J_B03_A2_6_PRODUCTION_ACTIVATION_AUTHORIZATION",
+    "branch": "phase-j/j-b03-a2-6-integrated-composite-acceptance",
+    "stage_b_start": {
+      "commit": "7a0e3c91fe08f41baf89c0423c0046524ddde0f3",
+      "tree": "67406c03c6829ad2b9e2406ad0456e2e7d7af1e5"
+    },
+    "stage_a_review": "INDEPENDENT_REVIEW_PASS",
+    "final_disposition": "J_B03_A2_6_PRODUCTION_ACTIVATION_ACCEPTED",
+    "implementation_commits": [
+      "414f904",
+      "d01a1cd",
+      "5cd743a",
+      "5b0d7d4",
+      "e6193e5",
+      "9c16b51"
+    ],
+    "route": {
+      "capability": "trading_status_context",
+      "market": "TPEX",
+      "security_type": "equity",
+      "executor_id": "phase_h_h1_tpex_composite_executor",
+      "output_contract": "trading_status_context_composite.v1",
+      "fallback": false,
+      "preferred_version_changed": false
+    },
+    "target_binding": {
+      "mode": "approved request resolved by active local Security Master",
+      "live_target": "TPEX:6488",
+      "instrument_id": "TW0006488000",
+      "hardcoded_to_6488": false,
+      "offline_targets_tested": [
+        "TPEX:6488",
+        "TPEX:1234"
+      ]
+    },
+    "fixed_sources": [
+      {
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+        "source_family": "TPEX_ATTENTION_OPEN_DATA",
+        "source_contract_id": "tpex_trading_warning_information",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+        "schema_version": "trading_status_context_evidence.v1",
+        "activation_state": "active",
+        "runtime_executable": true
+      },
+      {
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+        "source_family": "TPEX_DISPOSITION_OPEN_DATA",
+        "source_contract_id": "tpex_disposal_information",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+        "schema_version": "trading_status_context_evidence.v1",
+        "activation_state": "active",
+        "runtime_executable": true
+      },
+      {
+        "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+        "source_family": "TPEX_CHANGED_TRADING_OPEN_DATA",
+        "source_contract_id": "tpex_cmode",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+        "schema_version": "trading_status_context_evidence.v2",
+        "activation_state": "active",
+        "runtime_executable": true
+      }
+    ],
+    "active_phase_h_sources": {
+      "before_count": 2,
+      "after_count": 4,
+      "after": [
+        "H1-TPEX-ATTENTION-OPENAPI",
+        "H1-TPEX-DISPOSITION-OPENAPI",
+        "H1-TPEX-CHANGED-TRADING-OPENAPI",
+        "H3-TWSE-DEFAULT-BOUNDED"
+      ]
+    },
+    "not_activated": [
+      "H1-TPEX-SUSPEND-TODAY-OPENAPI",
+      "H1-TPEX-SUSPEND-HISTORY-OPENAPI",
+      "any TWSE H1 source"
+    ],
+    "shared_core": "Stage-A acceptance wrapper and production executor use the same source acquisition, normalization, persistence, component hash, composite, and OperationResult core; Stage A fixes TPEX:6488 while production uses the approved request target.",
+    "transport": {
+      "tls_policy": "compatibility",
+      "CERT_REQUIRED": true,
+      "hostname_verification": true,
+      "redirects": 0,
+      "retry": 0,
+      "fallback": "none",
+      "response_max_bytes": 4194304,
+      "timeout_seconds_max": 60,
+      "raw_response_persisted": false
+    },
+    "network_accounting": {
+      "stage_a_historical": {
+        "GET": 6,
+        "HEAD": 0,
+        "POST": 0
+      },
+      "stage_b": {
+        "GET": 9,
+        "HEAD": 0,
+        "POST": 0,
+        "retry": 0,
+        "fallback": 0,
+        "polling": 0,
+        "runs": [
+          {
+            "run": 1,
+            "GET": 3,
+            "result": "FAILED_AFTER_EXECUTION",
+            "cause": "reporter attempted source_id lookup in H1 source object",
+            "metadata_retained": false,
+            "HTTP_status_hashes": "unavailable and not inferred",
+            "payload_persisted": false
+          },
+          {
+            "run": 2,
+            "GET": 3,
+            "result": "FAILED_AFTER_EXECUTION",
+            "cause": "reporter expected Bundle artifacts instead of artifact_inventory after production checks",
+            "metadata_retained": true,
+            "all_http_200": true,
+            "payload_persisted": false
+          },
+          {
+            "run": 3,
+            "GET": 3,
+            "result": "PASS",
+            "metadata_retained": true,
+            "responses": [
+              {
+                "ordinal": 1,
+                "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+                "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+                "http_status": 200,
+                "content_type": "application/json",
+                "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+                "bytes": 9536,
+                "sha256": "bb91afe4e485ff63b04f38305573972104bd65499c876e2c2bb4e8ee4a641ec7",
+                "retrieved_at": "2026-10-07T09:32:30Z",
+                "tls": "compatibility",
+                "redirects": 0,
+                "retry": 0
+              },
+              {
+                "ordinal": 2,
+                "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+                "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+                "http_status": 200,
+                "content_type": "application/json",
+                "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+                "bytes": 20222,
+                "sha256": "fb1f07af0caf6bef5b4545bd0323736bf70c6ca70bc21368c2fd19840d5789e0",
+                "retrieved_at": "2026-10-07T09:32:31Z",
+                "tls": "compatibility",
+                "redirects": 0,
+                "retry": 0
+              },
+              {
+                "ordinal": 3,
+                "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+                "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+                "http_status": 200,
+                "content_type": "application/json",
+                "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+                "bytes": 5039,
+                "sha256": "26c7ead445eda8427724b31255650c2c8edcc09d0e8b9abf8eae4f071003856e",
+                "retrieved_at": "2026-10-07T09:32:31Z",
+                "tls": "compatibility",
+                "redirects": 0,
+                "retry": 0
+              }
+            ],
+            "payload_persisted": false
+          }
+        ],
+        "stage_b_total": {
+          "GET": 9,
+          "HEAD": 0,
+          "POST": 0
+        }
+      },
+      "cumulative": {
+        "GET": 15,
+        "HEAD": 0,
+        "POST": 0
+      },
+      "stage_b_ceiling": {
+        "GET": 10,
+        "HEAD": 10,
+        "POST": 0
+      }
+    },
+    "live_acceptance": {
+      "status": "PASS",
+      "executor_identity_all_surfaces": "phase_h_h1_tpex_composite_executor",
+      "operation_result": {
+        "schema_version": "unified_market_evidence_operation_result.v2",
+        "status": "succeeded",
+        "result_item_count": 1
+      },
+      "bundle": {
+        "schema_version": "unified_market_evidence_bundle.v1",
+        "artifact_count": 7,
+        "total_item_count": 1
+      },
+      "receipt": {
+        "schema_version": "unified_market_evidence_execution_receipt.v1",
+        "overall_status": "succeeded"
+      },
+      "components": [
+        {
+          "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+          "schema_version": "trading_status_context_evidence.v1",
+          "status": "partial",
+          "canonical_coverage": [
+            "attention"
+          ],
+          "item_count": 1,
+          "native_observation_count": 0,
+          "sha256": "ca622965ff00d93816ad5f001a934221e70feabb2ae9c7b61ae2bc3764b67848"
+        },
+        {
+          "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+          "schema_version": "trading_status_context_evidence.v1",
+          "status": "partial",
+          "canonical_coverage": [
+            "disposition"
+          ],
+          "item_count": 0,
+          "native_observation_count": 0,
+          "artifact_hash_capture_status": "NOT_RETAINED_IN_DURABLE_RUN_REPORT; the live runner verified the persisted artifact hash before temporary package cleanup, but the exact digest is unavailable from retained evidence and is not inferred."
+        },
+        {
+          "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+          "schema_version": "trading_status_context_evidence.v2",
+          "status": "partial",
+          "classification": "cmode_exact_no_match",
+          "canonical_coverage": [],
+          "item_count": 0,
+          "native_observation_count": 0,
+          "sha256": "144bd67020cd8563743d881c9b3904c364248171402d040d4408a22c159b347b"
+        }
+      ],
+      "composite": {
+        "schema_version": "trading_status_context_composite.v1",
+        "status": "partial",
+        "sha256": "24a78e5e5ac30e85b7261f429a4e36173a1eb258ff142280311689dff2bbdf8b",
+        "canonical_coverage": [
+          "attention",
+          "disposition"
+        ],
+        "uncovered": [
+          "changed_trading_method",
+          "resumption",
+          "suspension"
+        ],
+        "canonical_item_count": 1,
+        "native_observation_count": 0,
+        "component_count": 3
+      },
+      "lineage": "PASS",
+      "result_v3": "PASS",
+      "audit_v3": "PASS",
+      "mode_c_ai_handoff": "PASS; components remain distinct and exact no-match caveat is preserved",
+      "failure_independence": "PASS offline",
+      "raw_payload_persisted": false
+    },
+    "rollback": {
+      "status": "PASS",
+      "result": "rollback copy restored pre-Stage-B two-source topology; composite route/registration absent and attention registration retained; active branch unchanged"
+    },
+    "protected_contracts_unchanged": true,
+    "production_changes_in_branch": {
+      "descriptors": true,
+      "catalog": true,
+      "routing": true,
+      "executor_registry": true,
+      "production_adapter": true,
+      "attention_behavior_changed": false,
+      "schema_changes": false,
+      "preferred_version_promotion": false,
+      "mcp_tool_count": 6
+    },
+    "raw_market_payload_committed": false,
+    "data_directory_touched": false,
+    "pr": {
+      "number": 321,
+      "url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/pull/321",
+      "state": "OPEN",
+      "draft": true,
+      "merged": false
+    },
+    "validation": {
+      "pre_live_broad_offline_suite": {
+        "passed": 332,
+        "failed": 0,
+        "skipped": 0
+      },
+      "post_live_focused_suite": {
+        "passed": 111,
+        "failed": 0,
+        "skipped": 0
+      },
+      "stage_b_activation_unit_suite": {
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      },
+      "phase_i_historical_compatibility_regression": {
+        "initial_default_ci_failures": 10,
+        "root_cause": "historical Phase I containment compared current shared catalog/routing hashes as if mutable Stage-B Phase-H additions were part of the old Phase-I snapshot",
+        "repair": "validate exact current A2.6 H1 route/source topology, project only that bounded current overlay out of historical comparisons, and verify I3-A4 stored hashes against the pre-A2.6 committed snapshot without editing historical records",
+        "focused_rerun": {
+          "passed": 210,
+          "failed": 0,
+          "skipped": 0
+        },
+        "changed_support_paths": [
+          "scripts/phase_i_i3_a4_compat.py",
+          "scripts/phase_i_i2_a4_proof.py",
+          "scripts/run_phase_i_i3_a3_bounded_live_acceptance.py",
+          "scripts/validate_phase_i_i3_a4_activation.py"
+        ]
+      },
+      "phase_h_v3_contract_validator": "PASS",
+      "phase_i_i1_contract_validator": "PASS",
+      "phase_i_i1_activation_validator": "PASS",
+      "phase_i_i3_a4_activation_validator": "PASS",
+      "portable_catalog_sync_validator": "PASS",
+      "runtime_skill_guide_sync_validator": {
+        "status": "PASS",
+        "tool_count": 6
+      },
+      "compileall": "PASS",
+      "git_diff_check": "PASS",
+      "strict_duplicate_key_json": {
+        "status": "PASS",
+        "duplicate_member_names": 0
+      },
+      "default_ci": {
+        "command": "python scripts/run_test_profile.py default-ci",
+        "status": "PASS",
+        "passed": 1282,
+        "failed": 0,
+        "skipped": 1,
+        "deselected": 5,
+        "warnings": 18,
+        "duration_seconds": 304.1,
+        "network_may_have_occurred": false
+      }
+    }
+  },
+  "stage_b_r1_fail_closed_repair": {
+    "authority": "Owner chat instruction: Continue PR #321 — A2.6 Stage B R1 Fail-Closed Repair",
+    "reviewed_head": "1250b8cc48efa03e948c2890b1d1ddd76868ba2a",
+    "reviewed_tree": "180eb5dc979ce373c004bf4e124fdfeb7ba7c45a",
+    "independent_review_finding": "UNEXPECTED_INTERNAL_EXCEPTION_DOWNGRADED_TO_SOURCE_FAILURE",
+    "root_cause": "A broad Exception catch around source acquisition, decoding, validation and normalization converted unexpected internal errors into source_failed H1 components.",
+    "repair": {
+      "source_local_exception": "H1CompositeSourceAttemptError",
+      "source_local_conditions": [
+        "urllib URLError, TimeoutError or ConnectionError during the bounded source request",
+        "HTTP status or content-type source failure",
+        "redirect or effective URL mismatch",
+        "response byte ceiling exceeded",
+        "strict UTF-8 or JSON decode failure",
+        "invalid top-level source rows",
+        "required-field or required-field-type drift",
+        "source date contract drift",
+        "exact-target source-row ambiguity"
+      ],
+      "h1_normalization_boundary": "Only explicitly enumerated source_failed/binding_failed H1NormalizationError codes are source-local; assembled H1 schema/semantic errors and unapproved fixed-source plans propagate.",
+      "internal_failure_boundary": "Unexpected TypeError, KeyError, AssertionError, RuntimeError, provider invariants and TLS/plan configuration errors propagate out of the composite core; the dispatcher fails the operation without a composite result.",
+      "dispatcher_failure_version": "Composite adapter exceptions use failed OperationResult v2 with error_code=adapter_exception even when the approved execution request is v1; ordinary request-to-result mappings remain unchanged.",
+      "source_compatibility_key_before": "H1-TPEX-TPEX-COMPOSITE",
+      "source_compatibility_key_after": "H1-TPEX-COMPOSITE",
+      "batching_scope_changed": false
+    },
+    "regressions": {
+      "synthetic_normalizer_TypeError": "PASS: dispatch returned failed OperationResult v2 / adapter_exception, with no accepted evidence artifacts or composite",
+      "synthetic_provider_AssertionError": "PASS: dispatch returned failed OperationResult v2 / adapter_exception, with no accepted evidence artifacts",
+      "assembled_h1_schema_invariant": "PASS: propagated as OrchestrationError instead of source_failed component",
+      "disposition_transport_timeout": "PASS: source-local source_failed:transport_failure; attention and cmode remained visible; composite and OperationResult succeeded"
+    },
+    "validation": {
+      "r1_direct_dispatch_and_activation": "29 passed, 0 failed",
+      "r1_relevant_focused_suite": "202 passed, 0 failed",
+      "exploratory_receipt_suite": "234 passed, 1 pre-existing stale assertion failure: unchanged Receipt v1 test expects Request v3 ID rejection although current Receipt schema accepts v3; Receipt schema and test were not modified in R1",
+      "phase_h_v3_contract_validator": "PASS",
+      "compileall": "PASS",
+      "git_diff_check": "PASS",
+      "default_ci": {
+        "command": "python scripts/run_test_profile.py default-ci",
+        "passed": 1282,
+        "failed": 0,
+        "skipped": 1,
+        "deselected": 5,
+        "warnings": 18,
+        "duration_seconds": 353.93,
+        "network_may_have_occurred": false
+      }
+    },
+    "r1_market_requests": {"GET": 0, "HEAD": 0, "POST": 0},
+    "historical_stage_b_market_requests": {"GET": 9, "HEAD": 0, "POST": 0},
+    "historical_a2_6_cumulative_market_requests": {"GET": 15, "HEAD": 0, "POST": 0},
+    "live_evidence_rerun": false,
+    "live_history_preserved": "Stage-B runs 1 and 2 FAILED_AFTER_EXECUTION; run 3 PASS; disposition component digest remains NOT_RETAINED_IN_DURABLE_RUN_REPORT.",
+    "protected_schema_hashes_changed": false,
+    "selected_executor": "phase_h_h1_tpex_composite_executor",
+    "active_phase_h_source_count": 4,
+    "mcp_tool_count": 6,
+    "data_directory_touched": false,
+    "raw_market_payload_committed": false,
+    "issue_states": {"H0-SRC-01E": "OPEN", "H0-SRC-02": "OPEN", "J-B03": "HOLD", "J-B04": "BLOCKING", "Phase J": "NOT_STARTED"}
+  }
+}

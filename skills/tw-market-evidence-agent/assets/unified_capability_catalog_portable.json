@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "c2af4ad632730dc63f271390ddd92824cf884e54b764e56868d532c954d4165e",
+    "canonical_sha256": "35134ae437fccdaa2a95e261b2a7f81210c7175fbf9f1c05e251907c7f11ddf1",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "4dabe46edaddb0fc34c4e759cfcff48f27703522",
-    "canonical_git_blob_sha": "8362835432f30f2d6a42858ebdd4754c0b0a8d46"
+    "generated_from_commit": "d01a1cd2737df58e6e3962a976c1785933b3efbd",
+    "canonical_git_blob_sha": "85b106d762c45991764b9f82d38a0104599f0c9b"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -401,7 +401,7 @@
     },
     {
       "capability_id": "trading_status_context",
-      "description": "Official instrument-specific trading-status determinations with fail-closed governed coverage.",
+      "description": "TPEx representative trading-status evidence: canonical attention and disposition plus unresolved source-native cmode observation, with fail-closed partial coverage.",
       "support_status": "runtime_executable",
       "runtime_executable": true,
       "phase_h_activation_state": "selected_route_active",
@@ -418,9 +418,10 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "only H1-TPEX-ATTENTION-OPENAPI is active; all other H1 status subtypes/routes remain inactive or uncovered",
-        "H0-SRC-02 prevents complete H1 coverage claims",
-        "V3 is the preferred production request/result authority; V1/V2 remain compatibility contracts"
+        "The selected TPEx composite provides canonical attention and disposition evidence; cmode remains source-native with unresolved semantics and contributes no canonical coverage.",
+        "changed_trading_method, suspension, and resumption remain uncovered.",
+        "H0-SRC-02 prevents complete H1 coverage claims.",
+        "V3 is the preferred production request/result authority; V1/V2 remain compatibility contracts."
       ],
       "instrument_scope": {
         "instrument_families": [
@@ -431,7 +432,7 @@
         ]
       },
       "coverage_modes": [
-        "partial_attention_only"
+        "partial_attention_disposition_plus_native_cmode"
       ],
       "historical_lookup_supported": false
     },

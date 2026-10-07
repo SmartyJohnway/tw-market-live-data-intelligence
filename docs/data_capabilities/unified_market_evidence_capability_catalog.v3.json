@@ -274,12 +274,17 @@
       "support_status": "runtime_executable",
       "runtime_executable": true,
       "phase_i_activation_state": "selected_route_active",
-      "supported_markets": ["TWSE", "TPEX"],
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
       "provisional_markets": [],
       "allowed_parameters": {},
       "requires_target_resolution": true,
       "requires_approval_for_execution": true,
-      "possible_timing_classes": ["official_eod"],
+      "possible_timing_classes": [
+        "official_eod"
+      ],
       "possible_fallbacks": [],
       "known_limitations": [
         "TWSE market-state evidence may legitimately be partial when FMTQIK and exact 股票 breadth official dates do not align; TWSE breadth never falls back to 整體市場",
@@ -289,8 +294,17 @@
         "bounded live acceptance and I1-ROLL-001 passed; the selected TWSE and TPEx I1 sources have final Owner production activation acceptance",
         "no historical lookup, polling, scheduler, background refresh, or persistent source history"
       ],
-      "instrument_scope": {"instrument_families":["company_share"],"instrument_types":["common_share"]},
-      "coverage_modes": ["single_official_market_date"],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "single_official_market_date"
+      ],
       "historical_lookup_supported": false
     },
     {
@@ -336,32 +350,56 @@
       "support_status": "runtime_executable",
       "runtime_executable": true,
       "phase_i_activation_state": "selected_route_active",
-      "supported_markets": ["TWSE", "TPEX"],
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
       "provisional_markets": [],
       "allowed_parameters": {},
       "requires_target_resolution": true,
       "requires_approval_for_execution": true,
-      "possible_timing_classes": ["official_eod"],
+      "possible_timing_classes": [
+        "official_eod"
+      ],
       "possible_fallbacks": [],
-      "known_limitations": ["I3-A3 bounded-live acceptance is Owner-accepted", "TWSE source date is resolved through governed calendar/currentness authority before authorization and bound immutably per execution", "TPEx source-reported date remains source-native; finality and currentness remain unknown", "common shares only; no history, polling, scheduler, fallback, raw persistence, or retry"],
-      "instrument_scope": {"instrument_families": ["company_share"], "instrument_types": ["common_share"]},
-      "coverage_modes": ["latest_governed_source_observation"],
+      "known_limitations": [
+        "I3-A3 bounded-live acceptance is Owner-accepted",
+        "TWSE source date is resolved through governed calendar/currentness authority before authorization and bound immutably per execution",
+        "TPEx source-reported date remains source-native; finality and currentness remain unknown",
+        "common shares only; no history, polling, scheduler, fallback, raw persistence, or retry"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "latest_governed_source_observation"
+      ],
       "historical_lookup_supported": false,
-      "candidate_executor_ids": ["phase_i_i3_cash_institutional_flow_context_executor"],
+      "candidate_executor_ids": [
+        "phase_i_i3_cash_institutional_flow_context_executor"
+      ],
       "selected_executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
       "routing_status": "resolved",
       "batching_scope": "same_market",
       "network_required": true,
       "estimated_operation_rule": "One official acquisition per market for each authorized same-market batch; at most two dispatches for a mixed TWSE/TPEX execution; retry zero.",
       "output_evidence_contract": "cash_institutional_flow_context_evidence.v2",
-      "evidence_paths": ["docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json", "docs/data_capabilities/phase_i_i3_source_authority.v1.json"],
+      "evidence_paths": [
+        "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json"
+      ],
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
       "blocking_reasons": []
     },
     {
       "capability_id": "trading_status_context",
-      "description": "Official instrument-specific trading-status determinations with fail-closed governed coverage.",
+      "description": "TPEx representative trading-status evidence: canonical attention and disposition plus unresolved source-native cmode observation, with fail-closed partial coverage.",
       "support_status": "runtime_executable",
       "runtime_executable": true,
       "phase_h_activation_state": "selected_route_active",
@@ -378,9 +416,10 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "only H1-TPEX-ATTENTION-OPENAPI is active; all other H1 status subtypes/routes remain inactive or uncovered",
-        "H0-SRC-02 prevents complete H1 coverage claims",
-        "V3 is the preferred production request/result authority; V1/V2 remain compatibility contracts"
+        "The selected TPEx composite provides canonical attention and disposition evidence; cmode remains source-native with unresolved semantics and contributes no canonical coverage.",
+        "changed_trading_method, suspension, and resumption remain uncovered.",
+        "H0-SRC-02 prevents complete H1 coverage claims.",
+        "V3 is the preferred production request/result authority; V1/V2 remain compatibility contracts."
       ],
       "instrument_scope": {
         "instrument_families": [
@@ -391,7 +430,7 @@
         ]
       },
       "coverage_modes": [
-        "partial_attention_only"
+        "partial_attention_disposition_plus_native_cmode"
       ],
       "historical_lookup_supported": false
     },
@@ -554,7 +593,7 @@
   ],
   "phase_h_contract": {
     "runtime_authority": "v3_preferred_selected_routes_active",
-    "active_phase_h_source_count": 2,
+    "active_phase_h_source_count": 4,
     "source_role_vocabulary": [
       "default_candidate",
       "governed_fallback",

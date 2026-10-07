@@ -100,7 +100,7 @@ def validate() -> None:
 
     phase_h = routing.get("phase_h_source_authority", {})
     phase_h_active = {item.get("source_id") for item in phase_h.get("records", []) if item.get("activation_state") == "active" and item.get("runtime_executable") is True}
-    if phase_h.get("active_source_count") != 2 or phase_h_active != {"H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}:
+    if phase_h.get("active_source_count") != 4 or phase_h_active != {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}:
         raise ValueError("phase_h_active_routes_changed")
     if len(build_tool_contract_snapshot().tools) != 6:
         raise ValueError("mcp_surface_changed")

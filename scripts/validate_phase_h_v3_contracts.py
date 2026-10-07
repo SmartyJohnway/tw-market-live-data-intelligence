@@ -387,25 +387,52 @@ def main() -> None:
         _fail("phase_h_contract_runtime_authority_invalid")
     if catalog["phase_h_contract"].get("preferred_runtime_request_schema_version") != "unified_market_evidence_request.v3":
         _fail("phase_h_contract_preferred_request_invalid")
-    if catalog["phase_h_contract"].get("active_phase_h_source_count") != 2:
+    if catalog["phase_h_contract"].get("active_phase_h_source_count") != 4:
         _fail("phase_h_active_source_count_invalid")
     active = [item for item in routing["phase_h_source_authority"]["records"] if item.get("activation_state") == "active"]
-    if routing["phase_h_source_authority"].get("active_source_count") != 2:
+    if routing["phase_h_source_authority"].get("active_source_count") != 4:
         _fail("phase_h_routing_active_source_count_invalid")
     if {(item.get("source_id"), item.get("runtime_executable")) for item in active} != {
         ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H1-TPEX-DISPOSITION-OPENAPI", True),
+        ("H1-TPEX-CHANGED-TRADING-OPENAPI", True),
         ("H3-TWSE-DEFAULT-BOUNDED", True),
-    } or len(active) != 2:
+    } or len(active) != 4:
         _fail("phase_h_active_source_set_invalid")
     if routing.get("activation_status") != "selected_phase_h_routes_active":
         _fail("phase_h_routing_activation_status_invalid")
     routing_scope = routing.get("routing_scope", "")
     if not all(source_id in routing_scope for source_id in (
-        "H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"
+        "H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI",
+        "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"
     )) or any(token in routing_scope.lower() for token in (
         "branch-local candidate", "pending live", "pending rollback", "pending owner review"
     )):
         _fail("phase_h_routing_scope_current_truth_invalid")
+    h1_route = next((item for item in routing.get("routes", []) if item.get("capability_id") == "trading_status_context"), None)
+    h1_capability = next((item for item in catalog.get("data_need_capabilities", []) if item.get("capability_id") == "trading_status_context"), None)
+    if (h1_route is None or h1_capability is None
+            or h1_route.get("selected_executor_id") != "phase_h_h1_tpex_composite_executor"
+            or h1_route.get("candidate_executor_ids") != ["phase_h_h1_tpex_composite_executor"]
+            or h1_route.get("output_evidence_contract") != "trading_status_context_composite.v1"
+            or h1_route.get("source_compatibility_key") != "H1-TPEX-COMPOSITE"
+            or h1_route.get("supported_markets") != ["TPEX"]
+            or "partial_attention_disposition_plus_native_cmode" not in h1_capability.get("coverage_modes", [])):
+        _fail("phase_h_h1_composite_route_authority_invalid")
+    descriptors = _load_current_authority_json(root / "config/phase_h_h1_dormant_source_descriptors.json")
+    descriptor_states = {item.get("source_id"): (item.get("activation_state"), item.get("runtime_executable")) for item in descriptors.get("sources", [])}
+    for source_id in ("H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"):
+        if descriptor_states.get(source_id) != ("active", True):
+            _fail(f"phase_h_active_descriptor_mismatch:{source_id}")
+    if descriptor_states.get("H1-TPEX-SUSPEND-TODAY-OPENAPI") != ("inactive", False):
+        _fail("phase_h_tpex_suspend_today_must_remain_inactive")
+    if descriptor_states.get("H1-TPEX-SUSPEND-HISTORY-OPENAPI") != ("eligible", False):
+        _fail("phase_h_tpex_suspend_history_must_remain_dormant")
+    metadata = _load_current_authority_json(root / "config/m8r_06_03_executor_registry_metadata.json")
+    if not any(item.get("executor_id") == "phase_h_h1_tpex_composite_executor"
+               and item.get("expected_evidence_contract") == "trading_status_context_composite.v1"
+               for item in metadata.get("executors", [])):
+        _fail("phase_h_composite_executor_metadata_missing")
     recent = next((item for item in catalog["data_need_capabilities"] if item.get("capability_id") == "recent_performance"), None)
     recent_route = next((item for item in routing["routes"] if item.get("capability_id") == "recent_performance"), None)
     if recent is None or recent.get("support_status") != "runtime_executable" or recent.get("runtime_executable") is not True or recent.get("phase_h_activation_state") != "selected_route_active":

@@ -257,10 +257,18 @@ def _fmt_phase_h_evidence(evidence: dict, need: str) -> str:
                            or component_evidence.get("coverage", {}).get("source_snapshot_date"))
             if record_date:
                 lines.append(f"- **來源日期**: `{record_date}`")
+            for caveat in component_evidence.get("caveats", []):
+                lines.append(f"- **來源限制**: {caveat}")
             for item in component_evidence.get("items", []):
                 lines.append(f"- **標準狀態類型**: `{item['status_type']}`；生命週期：`{item['status_lifecycle']}`")
                 if item.get("source_record_date"):
                     lines.append(f"- **事件紀錄日期**: `{item['source_record_date']}`")
+                if item.get("official_reason") is not None:
+                    reason = str(item["official_reason"]).replace("\r", " ").replace("\n", " ")
+                    lines.append(f"- **官方理由原文**: {reason}")
+                if item.get("official_conditions") is not None:
+                    conditions = str(item["official_conditions"]).replace("\r", " ").replace("\n", " ")
+                    lines.append(f"- **官方條件原文**: {conditions}")
                 if item.get("citation_ids"):
                     lines.append(f"- **引用**: {', '.join(f'`{cit}`' for cit in item['citation_ids'])}")
             for observation in component_evidence.get("native_observations", []):
@@ -277,8 +285,6 @@ def _fmt_phase_h_evidence(evidence: dict, need: str) -> str:
                 ])
             if component_evidence.get("citation_ids"):
                 lines.append(f"- **元件引用 IDs**: {', '.join(f'`{cit}`' for cit in component_evidence['citation_ids'])}")
-            if component_evidence.get("caveats"):
-                lines.extend(f"- **來源限制**: {caveat}" for caveat in component_evidence["caveats"])
         lines.append("")
         lines.append("> 元件缺席或來源失敗不表示正常交易；歷史恢復事件也不表示目前可交易。")
         return "\n".join(lines)
