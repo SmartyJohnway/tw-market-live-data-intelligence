@@ -79,6 +79,52 @@ def _tpex_attention_date_value(raw: object) -> str | None:
     return None
 
 
+def _tpex_disposition_date_value(raw: object) -> str | None:
+    """Normalize the verified TPEx disposition date grammar source-specifically."""
+    canonical = _date_value(raw)
+    if canonical is not None:
+        return canonical
+    if raw is None or raw == "":
+        return None
+    if not isinstance(raw, str):
+        raise H1NormalizationError("source_failed:invalid_source_snapshot_date_type:Date")
+    if re.fullmatch(r"[0-9]{7}", raw):
+        normalized, validation = parse_roc_yyyymmdd(raw)
+        if validation.get("valid") is not True or normalized is None:
+            raise H1NormalizationError("source_failed:invalid_source_snapshot_date_calendar:Date")
+        return normalized
+    return None
+
+
+def _tpex_disposition_snapshot_date(
+    rows: Sequence[Mapping[str, object]],
+) -> tuple[str | None, list[str]]:
+    """Use a snapshot date only when every row resolves to the same date."""
+    if not rows:
+        return None, []
+    normalized_values: list[str] = []
+    for row in rows:
+        raw = row["Date"]
+        normalized = _tpex_disposition_date_value(raw)
+        if normalized is None:
+            reason = "blank" if raw in (None, "") else "raw_encoding"
+            return None, [f"source_snapshot_date_unresolved:Date:{reason}"]
+        normalized_values.append(normalized)
+    if len(set(normalized_values)) > 1:
+        return None, ["source_snapshot_date_unresolved:Date:multiple_values"]
+    return normalized_values[0], []
+
+
+def _tpex_disposition_rows_for_target(
+    rows: Sequence[Mapping[str, object]], target: Mapping[str, str]
+) -> list[Mapping[str, object]]:
+    """Bind every disposition row by exact non-empty lexical security code."""
+    code = target.get("security_code")
+    if not isinstance(code, str) or not code:
+        raise H1NormalizationError("binding_failed:invalid_exact_target_security_code")
+    return [row for row in rows if row["SecuritiesCompanyCode"] == code]
+
+
 def _snapshot_date(
     rows: Sequence[Mapping[str, object]], field: str, *, parser=_date_value
 ) -> tuple[str | None, list[str]]:
@@ -184,9 +230,26 @@ def normalize_tpex_attention(rows: object, target: Mapping[str, str], *, observe
 def normalize_tpex_disposition(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
     required = ("Date", "SecuritiesCompanyCode", "CompanyName", "DispositionPeriod", "DispositionReasons", "DisposalCondition")
     valid_rows = _validated_rows(rows, target, market="TPEX", required=required)
-    snapshot_date, date_caveats = _snapshot_date(valid_rows, "Date")
-    row = _bound_row(valid_rows, identifier="SecuritiesCompanyCode", target=target)
-    items = [] if row is None else [_item(status_type="disposition", source_record_date=_date_value(row["Date"]), reason=row["DispositionReasons"], conditions=row["DisposalCondition"], measures=None, provenance={key: row[key] for key in required}, citation_id=citation_id)]
+    for row in valid_rows:
+        for field in required:
+            if not isinstance(row[field], str):
+                raise H1NormalizationError(f"source_failed:invalid_required_field_type:{field}")
+    snapshot_date, date_caveats = _tpex_disposition_snapshot_date(valid_rows)
+    matching_rows = _tpex_disposition_rows_for_target(valid_rows, target)
+    items = []
+    for row in matching_rows:
+        source_record_date = _tpex_disposition_date_value(row["Date"])
+        if row["Date"] and source_record_date is None:
+            raise H1NormalizationError("source_failed:unresolved_source_record_date:Date")
+        items.append(_item(
+            status_type="disposition",
+            source_record_date=source_record_date,
+            reason=row["DispositionReasons"],
+            conditions=row["DisposalCondition"],
+            measures=None,
+            provenance=deepcopy(dict(row)),
+            citation_id=citation_id,
+        ))
     return _result(source_id="H1-TPEX-DISPOSITION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("disposition",), items=items, citation_ids=[citation_id], caveats=date_caveats)
 
 

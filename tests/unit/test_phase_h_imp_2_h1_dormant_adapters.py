@@ -140,6 +140,105 @@ def test_mixed_source_dates_are_not_source_failure() -> None:
     assert "source_snapshot_date_unresolved:Date:multiple_values" in result["caveats"]
 
 
+def test_tpex_disposition_roc_date_normalizes_and_retains_raw_provenance() -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows[0]["Date"] = "1151007"
+    result = normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="roc-disposition")
+    assert result["coverage"]["source_snapshot_date"] == "2026-10-07"
+    assert result["items"][0]["source_record_date"] == "2026-10-07"
+    assert result["items"][0]["source_native_provenance"]["Date"] == "1151007"
+
+
+def test_tpex_disposition_invalid_roc_calendar_date_fails_closed() -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows[0]["Date"] = "1150230"
+    with pytest.raises(H1NormalizationError, match="invalid_source_snapshot_date_calendar"):
+        normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="invalid-roc")
+
+
+def test_tpex_disposition_canonical_iso_date_remains_accepted() -> None:
+    result = normalize_tpex_disposition(ROWS["tpex_disposition"], TARGET_TPEX, observed_at=OBSERVED, citation_id="iso-disposition")
+    assert result["coverage"]["source_snapshot_date"] == "2026-09-21"
+    assert result["items"][0]["source_record_date"] == "2026-09-21"
+
+
+@pytest.mark.parametrize("count", [2, 3])
+def test_tpex_disposition_preserves_every_exact_code_row(count: int) -> None:
+    base = copy.deepcopy(ROWS["tpex_disposition"][0])
+    rows = [
+        {**base, "Date": f"115100{index + 1}", "DispositionReasons": f"reason-{index}", "row_marker": f"raw-{index}"}
+        for index in range(count)
+    ]
+    result = normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="multi-disposition")
+    assert len(result["items"]) == count
+    assert all(item["status_type"] == "disposition" for item in result["items"])
+    assert [item["source_native_provenance"]["row_marker"] for item in result["items"]] == [f"raw-{index}" for index in range(count)]
+    assert [item["source_native_provenance"]["Date"] for item in result["items"]] == [f"115100{index + 1}" for index in range(count)]
+    assert all(item["status_lifecycle"] == "reported" for item in result["items"])
+    assert all(item["effective_from"] is None and item["effective_to"] is None for item in result["items"])
+
+
+def test_tpex_disposition_no_match_remains_partial_without_normal_claim() -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows[0]["SecuritiesCompanyCode"] = "9999"
+    rows[0]["CompanyName"] = "name is not identity"
+    result = normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="disposition-no-match")
+    assert result["status"] == "partial"
+    assert result["items"] == []
+    assert result["coverage"]["covered_status_types"] == ["disposition"]
+    assert "normal" not in json.dumps(result).lower()
+
+
+def test_tpex_disposition_mixed_dates_keep_item_dates_and_unset_snapshot() -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows[0]["Date"] = "1151007"
+    rows.append({**rows[0], "Date": "1151008", "DispositionReasons": "second"})
+    result = normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="disposition-mixed-dates")
+    assert result["coverage"]["source_snapshot_date"] is None
+    assert "source_snapshot_date_unresolved:Date:multiple_values" in result["caveats"]
+    assert [item["source_record_date"] for item in result["items"]] == ["2026-10-07", "2026-10-08"]
+
+
+def test_tpex_disposition_identifier_is_exact_lexical_string() -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows[0]["SecuritiesCompanyCode"] = "06488"
+    numeric_target = {**TARGET_TPEX, "security_code": 6488}
+    with pytest.raises(H1NormalizationError, match="invalid_exact_target_security_code"):
+        normalize_tpex_disposition(rows, numeric_target, observed_at=OBSERVED, citation_id="numeric-target")
+    string_target = {**TARGET_TPEX, "security_code": "06488"}
+    result = normalize_tpex_disposition(rows, string_target, observed_at=OBSERVED, citation_id="lexical-target")
+    assert result["items"][0]["source_native_provenance"]["SecuritiesCompanyCode"] == "06488"
+
+
+@pytest.mark.parametrize("field,value", [("CompanyName", 1), ("DispositionReasons", True), ("DisposalCondition", []), ("Date", {})])
+def test_tpex_disposition_unsafe_required_types_fail_closed(field: str, value: object) -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows[0][field] = value
+    with pytest.raises(H1NormalizationError, match="invalid_required_field_type"):
+        normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="unsafe-type")
+
+
+def test_tpex_disposition_multitem_result_passes_h1_v1_schema_and_semantics() -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows.append({**rows[0], "DispositionReasons": "second record"})
+    result = normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="multi-h1")
+    validate_trading_status_context_semantics(result)
+    assert not list(Draft7Validator(SCHEMA).iter_errors(result))
+    assert len(result["items"]) == 2
+    assert result["coverage"]["covered_status_types"] == ["disposition"]
+
+
+def test_tpex_disposition_does_not_promote_multiple_records_to_current_state() -> None:
+    rows = copy.deepcopy(ROWS["tpex_disposition"])
+    rows.append({**rows[0], "Date": "1151008", "DispositionReasons": "another reported record"})
+    result = normalize_tpex_disposition(rows, TARGET_TPEX, observed_at=OBSERVED, citation_id="no-promotion")
+    serialized = json.dumps(result, ensure_ascii=False)
+    assert result["status"] == "partial"
+    assert [item["status_lifecycle"] for item in result["items"]] == ["reported", "reported"]
+    assert all(item["effective_from"] is None and item["effective_to"] is None for item in result["items"])
+    assert "currently_active" not in serialized and "tradeability" not in serialized
+
+
 def test_complete_scope_no_evidence_is_controlled_test_only() -> None:
     fixture = normalize_tpex_attention(ROWS["tpex_attention"], TARGET_TPEX, observed_at=OBSERVED, citation_id="complete-source")
     fixture["source"] = copy.deepcopy(SYNTHETIC_SOURCE)
