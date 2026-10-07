@@ -313,9 +313,9 @@ def make_candidate_adapter(
     response_provider: Callable[[Mapping[str, Any]], HTTPObservation] | None = None,
     response_log: list[dict[str, Any]] | None = None,
 ) -> Callable[[dict[str, Any], Any], dict[str, Any]]:
-    """Build a single-operation runtime callable, optionally with offline bytes."""
+    """Acceptance-only authority wrapper around the shared production core."""
     authority_hash = validate_acceptance_authority(authority)
-    observed_responses = response_log if response_log is not None else []
+    from .phase_h_h1_tpex_composite import execute_composite_operation
 
     def adapter(request: dict[str, Any], context: Any) -> dict[str, Any]:
         if (request.get("executor_id") != CANDIDATE_EXECUTOR_ID
@@ -326,106 +326,23 @@ def make_candidate_adapter(
             raise ValueError("a26_execution_binding_mismatch")
         if request.get("network_authorized") is not True:
             raise ValueError("a26_network_not_authorized")
-        operation_id = request["operation_id"]
-        req_id, req_hash = request_identity(request)
-        output_root = Path(context.governed_output_root)
-        components = []
-        artifact_records: list[dict[str, Any]] = []
-        sidecar_records: list[dict[str, Any]] = []
-        for index, source in enumerate(SOURCE_PLAN, start=1):
-            citation_id = _citation_for(operation_id, index, source["source_contract_id"])
-            source_meta: dict[str, Any] | None = None
-            try:
-                response = (response_provider(source) if response_provider is not None
-                            else official_get(source["endpoint"]))
-                if response.effective_url != source["endpoint"] or response.redirect_count != 0:
-                    raise ValueError("source_failed:redirect_or_effective_url_mismatch")
-                source_meta = {
-                    "request_ordinal": index, "method": "GET", "requested_url": source["endpoint"],
-                    "effective_url": response.effective_url, "http_status": response.status,
-                    "content_type": response.content_type, "response_bytes": len(response.raw_bytes),
-                    "response_sha256": _sha256(response.raw_bytes), "retrieved_at": response.retrieved_at,
-                    "tls_policy": response.tls_policy, "redirect_count": response.redirect_count,
-                    "attempt_number": 1,
-                }
-                rows = _decode_payload(response)
-                _validate_source_rows(source, rows, TARGET)
-                evidence = normalize_representative_tpex_h1_component(
-                    source["source_id"], rows, TARGET,
-                    observed_at=response.retrieved_at, citation_id=citation_id,
-                )
-                attempt_outcome = "succeeded"
-                failure_code = None
-                provider_availability = "available"
-            except Exception as exc:
-                # Transport and source outcomes are source-local. The live
-                # governance runner separately escalates source-contract drift.
-                code = str(exc) if isinstance(exc, (ValueError, H1NormalizationError)) else f"source_failed:{type(exc).__name__}"
-                observed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-                evidence = _h1_failure(source, TARGET, observed_at=observed_at,
-                                       citation_id=citation_id, code=code)
-                attempt_outcome = "failed"
-                failure_code = code
-                provider_availability = "unavailable"
-                source_meta = {**(source_meta or {"request_ordinal": index, "method": "GET", "requested_url": source["endpoint"],
-                               "attempt_number": 1}), "outcome": "failed", "failure_code": code}
-            observed_responses.append({**source_meta, "source_id": source["source_id"],
-                                       "outcome": attempt_outcome, "failure_code": failure_code})
-            relative_path = f"evidence/phase_j/a26/components/{index:02d}-{source['source_contract_id']}.json"
-            component_bytes = _write_json(output_root, relative_path, evidence)
-            component_hash = _sha256(component_bytes)
-            component = build_component_record(
-                TARGET, source["source_id"], evidence,
-                {"relative_path": relative_path, "sha256": component_hash},
-            )
-            components.append(component)
-            item_count = len(evidence.get("items", []))
-            artifact_records.append({"relative_path": relative_path, "sha256": component_hash,
-                                     "schema_version": evidence["schema_version"], "byte_size": len(component_bytes),
-                                     "item_count": item_count, "evidence_contract": evidence["schema_version"],
-                                     "artifact_role": "component_evidence"})
-            source_obj = evidence["source"]
-            sidecar_path = f"evidence/phase_j/a26/governance/{index:02d}-{source['source_contract_id']}.json"
-            sidecar = {"schema_version": "phase_h_source_attempt_governance.v1",
-                       "evidence_artifact_reference": relative_path,
-                       "canonical_target_id": TARGET["canonical_target_id"],
-                       "capability_id": "trading_status_context", "attempts": [{
-                           "source_family": source_obj["source_family"],
-                           "source_contract_id": source_obj["source_contract_id"],
-                           "source_role": source_obj["source_role"],
-                           "activation_state": source_obj["activation_state"],
-                           "provider_availability": provider_availability,
-                           "license_authority": source_obj["license_authority"],
-                           "coverage_result": evidence["status"],
-                           "outcome": attempt_outcome, "failure_code": failure_code,
-                           "citation_ids": evidence.get("citation_ids", []),
-                       }]}
-            sidecar_bytes = _write_json(output_root, sidecar_path, sidecar)
-            sidecar_records.append({"relative_path": sidecar_path, "sha256": _sha256(sidecar_bytes),
-                                    "schema_version": sidecar["schema_version"],
-                                    "byte_size": len(sidecar_bytes), "item_count": 1,
-                                    "evidence_contract": sidecar["schema_version"],
-                                    "artifact_role": "supporting_governance"})
+        selected_target = dict(TARGET)
 
-        composite = compose_trading_status_context(TARGET, components)
-        validate_trading_status_context_composite(composite)
-        composite_path = f"evidence/phase_j/a26/composite/{operation_id}.json"
-        composite_bytes = _write_json(output_root, composite_path, composite)
-        primary_record = {"relative_path": composite_path, "sha256": _sha256(composite_bytes),
-                          "schema_version": COMPOSITE_CONTRACT, "byte_size": len(composite_bytes),
-                          "item_count": composite["canonical_item_count"],
-                          "evidence_contract": COMPOSITE_CONTRACT,
-                          "artifact_role": "primary_evidence"}
-        evidence_artifacts = [primary_record, *artifact_records, *sidecar_records]
-        result = {
-            "schema_version": "unified_market_evidence_operation_result.v2",
-            "operation_id": operation_id, "execution_request_id": req_id,
-            "execution_request_hash": req_hash, "executor_id": CANDIDATE_EXECUTOR_ID,
-            "capability_id": "trading_status_context", "evidence_contract": COMPOSITE_CONTRACT,
-            "status": "succeeded", "error_code": None,
-            "result_item_count": composite["canonical_item_count"],
-            "evidence_artifacts": evidence_artifacts, "warnings": [],
-        }
+        def provider(source: Mapping[str, Any]) -> Mapping[str, Any]:
+            response = (response_provider(source) if response_provider is not None else official_get(source["endpoint"]))
+            return {"raw_bytes": response.raw_bytes, "status": response.status,
+                    "content_type": response.content_type, "effective_url": response.effective_url,
+                    "retrieved_at": response.retrieved_at, "tls_policy": response.tls_policy,
+                    "redirect_count": response.redirect_count}
+
+        result = execute_composite_operation(
+            request, context, target=selected_target, executor_id=CANDIDATE_EXECUTOR_ID,
+            response_provider=provider if response_provider is not None else None, response_log=response_log,
+        )
+        # Candidate plan binding remains an additional acceptance-only guard.
+        if request.get("plan_hash") != bound_plan_hash or authority_hash != acceptance_authority_hash(authority):
+            raise ValueError("a26_execution_binding_mismatch")
+        # Keep Stage-A artifact location stable in its historical runner.
         return result
 
     return adapter

@@ -62,6 +62,7 @@ RESEARCH_EXECUTOR_ID = "phase_g_official_research_executor"
 RESEARCH_CAPABILITIES = frozenset({"material_disclosures", "monthly_revenue"})
 
 PHASE_H_H1_EXECUTOR_ID = "phase_h_h1_tpex_attention_executor"
+PHASE_H_H1_COMPOSITE_EXECUTOR_ID = "phase_h_h1_tpex_composite_executor"
 PHASE_H_H1_SOURCE_ID = "H1-TPEX-ATTENTION-OPENAPI"
 PHASE_H_H1_TPEX_ATTENTION_URL = "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information"
 PHASE_H_H3_EXECUTOR_ID = "phase_h_h3_twse_recent_performance_executor"
@@ -873,6 +874,12 @@ def production_operation_adapter(request: dict[str, Any], context: DispatchRunti
         return _research_batch_operation_adapter((request,), context)[0]
     if request.get("executor_id") == PHASE_H_H1_EXECUTOR_ID:
         return _phase_h_h1_tpex_attention(request, context)
+    if request.get("executor_id") == PHASE_H_H1_COMPOSITE_EXECUTOR_ID:
+        from server.services.phase_h_h1_tpex_composite import production_composite_adapter
+        try:
+            return production_composite_adapter(request, context)
+        except ValueError as exc:
+            raise OrchestrationError(str(exc) or "phase_h_composite_execution_failed") from exc
     if request.get("executor_id") == PHASE_H_H3_EXECUTOR_ID:
         return _phase_h_h3_twse_recent_performance(request, context)
     if request.get("executor_id") != EXECUTOR_ID:
@@ -1008,6 +1015,7 @@ def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) 
         (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TWSE"),
         (RESEARCH_EXECUTOR_ID, "monthly_revenue", "TPEX"),
         (PHASE_H_H1_EXECUTOR_ID, "trading_status_context", "TPEX"),
+        (PHASE_H_H1_COMPOSITE_EXECUTOR_ID, "trading_status_context", "TPEX"),
         (PHASE_H_H3_EXECUTOR_ID, "recent_performance", "TWSE"),
         (PHASE_I_I1_EXECUTOR_ID, "market_state_context", "TWSE"),
         (PHASE_I_I1_EXECUTOR_ID, "market_state_context", "TPEX"),
@@ -1041,7 +1049,7 @@ def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) 
                 production_batch_operation_adapter_candidate
                 if is_i1
                 else None
-                if entry.executor_id in {PHASE_H_H1_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID}
+                if entry.executor_id in {PHASE_H_H1_EXECUTOR_ID, PHASE_H_H1_COMPOSITE_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID}
                 else production_batch_operation_adapter
             ),
             fake_adapter=False,
