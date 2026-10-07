@@ -120,7 +120,7 @@ Live response evidence for the final run (full payloads were not persisted):
 | Disposition | 200 | 20,222 | `fb1f07af0caf6bef5b4545bd0323736bf70c6ca70bc21368c2fd19840d5789e0` | `2026-10-07T09:32:31Z` |
 | `tpex_cmode` | 200 | 5,039 | `26c7ead445eda8427724b31255650c2c8edcc09d0e8b9abf8eae4f071003856e` | `2026-10-07T09:32:31Z` |
 
-The final composite SHA-256 is `24a78e5e5ac30e85b7261f429a4e36173a1eb258ff142280311689dff2bbdf8b`. Its source component hashes are `ca622965ff00d93816ad5f001a934221e70feabb2ae9c7b61ae2bc3764b67848` (attention), `bbc8816ec16c70dbc8275a80c494dad84f212798e70ca5406724a2fb4b96c` (disposition), and `144bd67020cd8563743d881c9b3904c364248171402d040d4408a22c159b347b` (`tpex_cmode`).
+The final composite SHA-256 is `24a78e5e5ac30e85b7261f429a4e36173a1eb258ff142280311689dff2bbdf8b`. Retained source component hashes are `ca622965ff00d93816ad5f001a934221e70feabb2ae9c7b61ae2bc3764b67848` (attention) and `144bd67020cd8563743d881c9b3904c364248171402d040d4408a22c159b347b` (`tpex_cmode`). The disposition component's exact SHA-256 was checked by the live runner before temporary package cleanup but was not retained in the durable run report; its digest is therefore reported as unavailable and not inferred.
 
 The deterministic rollback proof restored the pre-Stage-B two-source topology in a copy; the composite route and registration were absent after rollback, while the legacy attention registration remained. No production change was reverted in the active branch.
 

@@ -794,7 +794,7 @@
           ],
           "item_count": 0,
           "native_observation_count": 0,
-          "sha256": "bbc8816ec16c70dbc8275a80c494dad84f212798e70ca5406724a2fb4b96c"
+          "artifact_hash_capture_status": "NOT_RETAINED_IN_DURABLE_RUN_REPORT; the live runner verified the persisted artifact hash before temporary package cleanup, but the exact digest is unavailable from retained evidence and is not inferred."
         },
         {
           "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
