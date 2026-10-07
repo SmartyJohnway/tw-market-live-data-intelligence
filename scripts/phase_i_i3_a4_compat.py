@@ -19,7 +19,7 @@ _DROP = object()
 
 
 def _normalize_current_h1_v2_addition(value):
-    """Project the authorized H1 v2 additive Result branch back to historical H1 v1.
+    """Project authorized current H1/Composite additions to historical H1 v1.
 
     Older Phase I containment gates compare their original V3 snapshot. The
     current additive H1 acceptance is independently hash-pinned by the Phase H
@@ -35,14 +35,29 @@ def _normalize_current_h1_v2_addition(value):
                 versions = {
                     branch.get("properties", {}).get("schema_version", {}).get("const")
                     for branch in branches if isinstance(branch, dict)
+                    and branch.get("properties", {}).get("schema_version", {}).get("const") is not None
                 }
-                if versions == {"trading_status_context_evidence.v1", "trading_status_context_evidence.v2"}:
+                composite_branch = {"$ref": "#/definitions/trading_status_context_composite"}
+                if (versions == {"trading_status_context_evidence.v1", "trading_status_context_evidence.v2"}
+                        and branches.count(composite_branch) == 1 and len(branches) == 3):
                     v1 = [branch for branch in branches
                           if branch.get("properties", {}).get("schema_version", {}).get("const")
                           == "trading_status_context_evidence.v1"]
                     if len(v1) == 1:
                         item = v1[0]
             result[key] = _normalize_current_h1_v2_addition(item)
+        # The current Result V3 schema hash is independently pinned by the
+        # Phase H current-contract validator. These exact dated Phase J
+        # composite definitions are therefore projected out only when
+        # comparing an older Phase I historical snapshot.
+        definitions = result.get("definitions")
+        if isinstance(definitions, dict):
+            for key in (
+                "trading_status_context_composite_component",
+                "trading_status_context_composite_coverage",
+                "trading_status_context_composite",
+            ):
+                definitions.pop(key, None)
         return result
     if isinstance(value, list):
         return [_normalize_current_h1_v2_addition(item) for item in value]

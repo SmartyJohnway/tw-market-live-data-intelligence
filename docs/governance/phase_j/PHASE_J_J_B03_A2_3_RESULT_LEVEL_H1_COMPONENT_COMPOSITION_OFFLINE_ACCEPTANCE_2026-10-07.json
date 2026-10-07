@@ -1,0 +1,224 @@
+{
+  "schema_version": "phase_j_j_b03_a2_3_result_level_h1_composition_offline_acceptance.v1",
+  "decision_date": "2026-10-07",
+  "owner_authority": "USER_CHAT_2026-10-07_J_B03_A2_3_OFFLINE_COMPOSITION_IMPLEMENTATION_AUTHORIZATION",
+  "starting_main": {
+    "commit": "f915f57b91d77d08f9a8cb95d402bf6ec677cf6f",
+    "tree": "2b3e9f2b57a5abdb0f583f4cc4beedd59eb69f31",
+    "pr_317": "MERGED / CLOSED"
+  },
+  "accepted_architecture": "J_B03_A2_2_SELECT_RESULT_LEVEL_COMPONENT_COMPOSITION",
+  "operation_result_model": {
+    "decision": "J_B03_A2_3_OPERATION_RESULT_V2_ADDITIVE",
+    "contract": "unified_market_evidence_operation_result.v2",
+    "change": "Add explicit component_evidence role. Composite operation has exactly one composite_v1 primary and three predeclared H1 v1/v2 components. Component artifacts are not supporting_governance and do not contribute to result_item_count.",
+    "existing_ordinary_results": "Remain valid; legacy primary result_item_count behavior is unchanged."
+  },
+  "contracts": {
+    "component_contracts": [
+      "trading_status_context_evidence.v1",
+      "trading_status_context_evidence.v2"
+    ],
+    "composite_contract": {
+      "schema_version": "trading_status_context_composite.v1",
+      "schema_path": "schemas/trading_status_context_composite.v1.schema.json",
+      "sha256": "3d34a1cb2112716211e39536b221994952aabd1c2723d3ed5f61ee8b0f224106",
+      "is_source_artifact": false,
+      "result_path": "trading_status_context",
+      "component_sources_in_order": [
+        "H1-TPEX-ATTENTION-OPENAPI",
+        "H1-TPEX-DISPOSITION-OPENAPI",
+        "H1-TPEX-CHANGED-TRADING-OPENAPI"
+      ],
+      "component_fields": [
+        "component_id",
+        "source_id",
+        "source_contract_id",
+        "evidence_schema_version",
+        "component_status",
+        "artifact_reference.relative_path",
+        "artifact_reference.sha256",
+        "evidence"
+      ],
+      "identity_inputs": [
+        "canonical target",
+        "source contract and source id",
+        "component H1 schema version",
+        "component artifact SHA-256",
+        "composition schema version"
+      ],
+      "counts": {
+        "component_count": "number of source-specific components",
+        "canonical_item_count": "sum of canonical H1 items in usable components",
+        "native_observation_count": "sum of H1 v2 native observations",
+        "item_count": "composite primary artifact item_count equals canonical_item_count",
+        "operation_result_count": "legacy result_item_count counts primary artifact item_count only; component/native counts do not alter it"
+      }
+    },
+    "h1_v1": {
+      "sha256": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+      "unchanged": true
+    },
+    "h1_v2": {
+      "sha256": "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38",
+      "unchanged": true
+    },
+    "result_v3": {
+      "old_sha256": "a8519bc4c444f59b24e74de702667c5570ed15f816a841b509e24b2f3bc788d5",
+      "new_sha256": "9269fc9e5e07884fa2de791eae902ee57b3d937dbb793318ca4aff1a93fc5bcb",
+      "change": "Add a disjoint exact-schema-version branch for trading_status_context_composite.v1. Existing H1 v1/v2 branches and unrelated evidence families remain supported."
+    },
+    "operation_result_v2": {
+      "old_sha256": "a308263bfcaa1837133770321caa3f5e081588519cc96f607b27c3b97c578ab1",
+      "new_sha256": "9d6430254215ae0b4048e0352f6902c629e4069530b1c9a267f1ee50d4c5bd64"
+    },
+    "bundle_v1": {
+      "new_sha256": "9eb901b99db3a7b56d251e70c00f83ebc99b0f0587fc77fee8aca573f9049aad",
+      "purpose": "Carry explicit artifact role and evidence contract metadata through the operation bundle."
+    },
+    "execution_receipt_v1": {
+      "new_sha256": "cd70b135e751214d467dbf7ca1924fc2ce8a61461b2276defae7bd30a23e4d26",
+      "purpose": "Preserve explicit artifact role and contract metadata for lineage."
+    },
+    "audit_v3": {
+      "sha256": "94208ac6f4c13bcde294de1a8c7cf6be23245d738b5dcd36fffcac1ab134c4cc",
+      "schema_changed": false,
+      "result": "Generic artifact references remain sufficient; builder maps the composite primary while source-specific component artifacts and attempts remain independently traceable."
+    },
+    "h0_g_manifest": {
+      "path": "docs/governance/phase_h/PHASE_H_H0_G_V3_SCHEMA_FREEZE_MANIFEST.json",
+      "sha256": "6c1f23ed12a0d3bffcb7b964197eda6ee6a36d8c95ef1a8c5d6106ef31ea89f6",
+      "unchanged": true
+    }
+  },
+  "composition_semantics": {
+    "one_logical_operation": true,
+    "one_result_value": true,
+    "one_source_contract_per_h1_component": true,
+    "allowed_component_versions": [
+      "trading_status_context_evidence.v1",
+      "trading_status_context_evidence.v2"
+    ],
+    "aggregate_coverage": "Union only of usable canonical covered_status_types that pass the fixed source-specific composite authority table. Attention may cover attention only; disposition may cover disposition only; accepted native-only cmode covers no canonical types. Uncovered is the canonical five minus the validated union. Native observations add no canonical coverage.",
+    "aggregate_status": "partial while usable evidence is incomplete. With no usable component evidence, deterministic failure precedence is binding_failed, source_failed, unsupported, then not_applicable when all components are not applicable; each component status remains present.",
+    "no_match": "Preserve component-local status and coverage; do not infer normal trading or promote to no_evidence_in_covered_scope without its H1 completeness conditions.",
+    "semantic_non_promotion": [
+      "SuspensionOfTrading=Ｙ remains native unresolved evidence and adds no suspension coverage.",
+      "Blank or absent target row does not mean normal trading.",
+      "Historical resumption does not establish current tradeability.",
+      "Successful configured retrieval does not establish complete five-type H1 coverage."
+    ],
+    "identity_and_rejection_rules": [
+      "Exact target id, market, and security code must match every component.",
+      "Component sources are restricted to the predeclared ordered representative set.",
+      "Reject duplicate component id, source contract, artifact hash/reference, mismatched target, unapproved source, unsupported H1 schema, or artifact/reference/evidence hash mismatch."
+    ]
+  },
+  "support_chain": {
+    "lineage": "An explicit composite-operation path requires one composite primary and exactly the authorized source components; ordinary duplicate_binding and duplicate_phase_h_typed_artifact checks remain unchanged.",
+    "bundle": "Component artifacts preserve relative_path, SHA-256, schema_version, byte_size, item_count, evidence_contract, and artifact_role. Only primary evidence contributes to legacy result_item_count and total_item_count.",
+    "result_readback": "Result V3 H1 v1, H1 v2, and Composite v1 are accepted without rewriting persisted packages. Rollback/preferred-output changes affect new materialization only; stored Result V3 remains readable.",
+    "audit": "Audit V3 schema unchanged; composite primary and independent component source attempts/artifact references retain path, hash, schema version, and citation lineage.",
+    "handoff": "Composite components render separately. Native observations retain source-native label/value/date, unresolved caveat, citations, and explicit no-inference wording; no synthetic canonical status is produced.",
+    "mcp": "Existing read_result and export_ai_handoff surfaces carry the evolved Result; no public tool/schema expansion."
+  },
+  "offline_fixtures": {
+    "C1_all_components_success": "PASS: attention+disposition canonical coverage; cmode native evidence adds no suspension coverage; partial aggregate.",
+    "C2_independent_failure": "PASS: attention success, disposition source_failed, and cmode native partial remain visible.",
+    "C3_exact_target_no_match": "PASS: no normal-trading inference; component-local no-match semantics retained.",
+    "C4_duplicate_source_component": "PASS: rejected.",
+    "C5_target_mismatch": "PASS: rejected.",
+    "C6_native_marker_as_suspension_coverage": "PASS: rejected.",
+    "C7_reused_artifact": "PASS: rejected.",
+    "C8_unknown_h1_schema": "PASS: rejected.",
+    "C9_hash_or_reference_mismatch": "PASS: rejected.",
+    "C10_unapproved_component_source": "PASS: rejected."
+  },
+  "validation": {
+    "phase_h_v3_contract_validator": "PASS",
+    "compileall_scripts_server_tests": "PASS",
+    "focused_tests": {
+      "command_scope": "A2.1B focused suites, operation/bundle/lineage tests, and new composition tests",
+      "result": "122 passed, 0 failed"
+    },
+    "default_ci": {
+      "result": "1268 passed, 0 failed, 1 skipped, 5 deselected; 18 warnings",
+      "network_may_have_occurred": false
+    },
+    "note": "The first default-ci run exposed eight stale Phase I containment assertions rejecting the newly authorized Result V3 composite branch. The compatibility projection was updated to distinguish the historical frozen snapshot from the current additive branch; the rerun passed."
+  },
+  "network_accounting": {
+    "market_get": 0,
+    "market_head": 0,
+    "market_post": 0,
+    "network_may_have_occurred": false
+  },
+  "r1_repair": {
+    "authority": "USER_CHAT_2026-10-07_J_B03_A2_3_R1_COMPOSITE_SOURCE_AUTHORITY_COVERAGE_REPAIR_AUTHORIZATION",
+    "independent_review_finding": "COMPOSITE_SOURCE_COVERAGE_AUTHORITY_NOT_FAIL_CLOSED",
+    "root_cause": "H1 v1 correctly preserves frozen broad coverage semantics, while composite aggregation trusted source-declared covered_status_types without enforcing source-specific subtype authority.",
+    "repair": "A deterministic composite-layer authority table validates exact source_id, embedded source_family, source_contract_id, and allowed coverage before aggregation. H1 v1 semantics are unchanged.",
+    "source_authority_table": {
+      "H1-TPEX-ATTENTION-OPENAPI": {
+        "source_family": "TPEX_ATTENTION_OPEN_DATA",
+        "source_contract_id": "tpex_trading_warning_information",
+        "allowed_canonical_coverage": ["attention"]
+      },
+      "H1-TPEX-DISPOSITION-OPENAPI": {
+        "source_family": "TPEX_DISPOSITION_OPEN_DATA",
+        "source_contract_id": "tpex_disposal_information",
+        "allowed_canonical_coverage": ["disposition"]
+      },
+      "H1-TPEX-CHANGED-TRADING-OPENAPI": {
+        "source_family": "TPEX_CHANGED_TRADING_OPEN_DATA",
+        "source_contract_id": "tpex_cmode",
+        "allowed_canonical_coverage": []
+      }
+    },
+    "coverage_union_rule": "Aggregate coverage is the union of usable component coverage only after source-specific authority validation succeeds.",
+    "regressions": {
+      "schema_valid_v1_attention_extra_suspension_coverage": "REJECTED",
+      "schema_valid_v1_disposition_extra_resumption_coverage": "REJECTED",
+      "valid_attention_disposition_and_native_only_cmode": "PASS; aggregate coverage is attention+disposition, status remains partial",
+      "embedded_source_family_mismatch": "REJECTED with composite_component_source_identity_mismatch",
+      "exact_three_canonical_source_families": "PASS"
+    },
+    "h1_v1_semantics_changed": false,
+    "h1_v2_semantics_changed": false,
+    "schema_hashes_changed": false,
+    "market_get_head_post": "0/0/0",
+    "validation": {
+      "composition_and_prior_focused_suite": "126 passed, 0 failed",
+      "default_ci": "1268 passed, 0 failed, 1 skipped, 5 deselected, 18 warnings",
+      "default_ci_network_may_have_occurred": false,
+      "phase_h_v3_contract_validator": "PASS",
+      "compileall_scripts_server_tests": "PASS",
+      "git_diff_check": "PASS"
+    }
+  },
+  "change_boundary": {
+    "production_acquisition_adapter_changed": false,
+    "source_or_route_activation_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_selection_changed": false,
+    "preferred_version_promoted": false,
+    "existing_attention_route_behavior_changed": false,
+    "mcp_changed": false,
+    "mcp_count": 6,
+    "h1_v1_changed": false,
+    "h1_v2_changed": false,
+    "audit_v3_schema_changed": false,
+    "request_v3_changed": false,
+    "data_directory_touched": false
+  },
+  "disposition": "J_B03_A2_3_RESULT_LEVEL_H1_COMPOSITION_OFFLINE_ACCEPTED",
+  "next_gate": "J-B03-A2.4 — TPEx Disposition Source-Contract Verification",
+  "issue_states": {
+    "H0-SRC-01E": "OPEN",
+    "H0-SRC-02": "OPEN",
+    "J-B03": "HOLD",
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT STARTED"
+  }
+}

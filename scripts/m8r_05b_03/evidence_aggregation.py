@@ -5,6 +5,7 @@ from typing import Any
 
 from .dispatch import request_identity
 from .errors import OrchestrationError
+from .component_artifact_roles import validate_operation_artifact_roles
 
 
 def aggregate_dispatch_outcomes(
@@ -72,6 +73,10 @@ def aggregate_dispatch_outcomes(
             raise OrchestrationError("operation_result_schema_version_unsupported")
         arts = outcome.get("evidence_artifacts", [])
         if version == "unified_market_evidence_operation_result.v2":
+            try:
+                validate_operation_artifact_roles(outcome)
+            except ValueError as exc:
+                raise OrchestrationError(str(exc)) from exc
             primary = [a for a in arts if a.get("artifact_role") == "primary_evidence"]
             if outcome.get("status") == "succeeded" and not primary:
                 raise OrchestrationError("operation_result_primary_artifact_missing")
@@ -104,6 +109,8 @@ def aggregate_dispatch_outcomes(
                     "schema_version": a["schema_version"],
                     "byte_size": a["byte_size"],
                     "item_count": a["item_count"],
+                    **({"evidence_contract": a["evidence_contract"]} if "evidence_contract" in a else {}),
+                    **({"artifact_role": a["artifact_role"]} if "artifact_role" in a else {}),
                 }
                 for a in arts
             ],
@@ -122,6 +129,8 @@ def aggregate_dispatch_outcomes(
                     "schema_version": a["schema_version"],
                     "byte_size": a["byte_size"],
                     "item_count": a["item_count"],
+                    **({"evidence_contract": a["evidence_contract"]} if "evidence_contract" in a else {}),
+                    **({"artifact_role": a["artifact_role"]} if "artifact_role" in a else {}),
                 }
                 for a in arts
             ],
@@ -141,6 +150,7 @@ def aggregate_dispatch_outcomes(
                 "byte_size": a["byte_size"],
                 "item_count": a["item_count"],
                 "evidence_contract": evidence_contract,
+                **({"artifact_role": a["artifact_role"]} if "artifact_role" in a else {}),
             })
 
     if set(approved_order) != seen_ops:

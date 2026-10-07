@@ -135,7 +135,9 @@
                 "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
                 "schema_version": { "type": "string" },
                 "byte_size": { "type": "integer", "minimum": 0 },
-                "item_count": { "type": "integer", "minimum": 0 }
+                "item_count": { "type": "integer", "minimum": 0 },
+                "evidence_contract": { "type": "string", "minLength": 1 },
+                "artifact_role": { "enum": ["primary_evidence", "supporting_governance", "component_evidence"] }
               }
             }
           },

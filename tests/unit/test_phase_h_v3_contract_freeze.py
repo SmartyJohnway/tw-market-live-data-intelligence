@@ -333,13 +333,19 @@ def test_result_v3_embeds_typed_phase_h_contracts_and_audit_v3_binds_lineage():
         embedded = copy.deepcopy(result_schema["definitions"][definition_name])
         if definition_name == "trading_status_context":
             branches = embedded["oneOf"]
-            for branch, external_name in zip(branches, ("h1", "h1_v2"), strict=True):
+            assert len(branches) == 3
+            for branch, external_name in zip(branches[:2], ("h1", "h1_v2"), strict=True):
                 external = copy.deepcopy(schema(external_name))
                 for key in ("$schema", "$id", "title"):
                     external.pop(key, None)
                 branch_without_metadata = {key: value for key, value in branch.items()
                                            if key not in {"$schema", "$id", "title"}}
                 assert branch_without_metadata == external
+            assert branches[2] == {"$ref": "#/definitions/trading_status_context_composite"}
+            composite = result_schema["definitions"]["trading_status_context_composite"]
+            assert composite["properties"]["schema_version"]["const"] == "trading_status_context_composite.v1"
+            composite_schema = load(SCHEMAS / "trading_status_context_composite.v1.schema.json")
+            assert composite["required"] == composite_schema["required"]
         else:
             external = copy.deepcopy(schema(standalone_name))
             for key in ("$schema", "$id", "title"):

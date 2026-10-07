@@ -321,7 +321,7 @@ def main() -> None:
         _fail("phase_i_v3_request_extension_not_additive")
     additive_v3_schema_hashes = {
         "schemas/unified_market_evidence_request.v3.schema.json": "b0901dbf63db3a8bc44b8fec4cb0cdc90f77e153d954266f98c690453864f3f6",
-        "schemas/unified_market_evidence_result.v3.schema.json": "a8519bc4c444f59b24e74de702667c5570ed15f816a841b509e24b2f3bc788d5",
+        "schemas/unified_market_evidence_result.v3.schema.json": "9269fc9e5e07884fa2de791eae902ee57b3d937dbb793318ca4aff1a93fc5bcb",
         "schemas/unified_market_evidence_audit_package.v3.schema.json": "94208ac6f4c13bcde294de1a8c7cf6be23245d738b5dcd36fffcac1ab134c4cc",
     }
     for relative_path, expected_hash in additive_v3_schema_hashes.items():
@@ -343,11 +343,22 @@ def main() -> None:
         _fail("h1_v2_canonical_status_types_changed")
     result_v3 = _load_current_authority_json(root / "schemas/unified_market_evidence_result.v3.schema.json")
     h1_union = result_v3.get("definitions", {}).get("trading_status_context", {}).get("oneOf", [])
-    if len(h1_union) != 2 or {
+    h1_versions = {
         item.get("properties", {}).get("schema_version", {}).get("const")
         for item in h1_union
-    } != {"trading_status_context_evidence.v1", "trading_status_context_evidence.v2"}:
+        if isinstance(item, dict) and isinstance(item.get("properties"), dict)
+    }
+    composite_branches = [item for item in h1_union if item.get("$ref") == "#/definitions/trading_status_context_composite"]
+    if (len(h1_union) != 3
+            or h1_versions != {"trading_status_context_evidence.v1", "trading_status_context_evidence.v2"}
+            or len(composite_branches) != 1):
         _fail("result_v3_h1_version_union_invalid")
+    composite_path = root / "schemas/trading_status_context_composite.v1.schema.json"
+    if hashlib.sha256(composite_path.read_bytes()).hexdigest() != "3d34a1cb2112716211e39536b221994952aabd1c2723d3ed5f61ee8b0f224106":
+        _fail("h1_composite_schema_current_authority_drift")
+    operation_result_v2_path = root / "schemas/unified_market_evidence_operation_result.v2.schema.json"
+    if hashlib.sha256(operation_result_v2_path.read_bytes()).hexdigest() != "9d6430254215ae0b4048e0352f6902c629e4069530b1c9a267f1ee50d4c5bd64":
+        _fail("operation_result_v2_composition_authority_drift")
 
     catalog = _load_current_authority_json(
         root / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"

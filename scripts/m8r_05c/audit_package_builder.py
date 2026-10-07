@@ -48,6 +48,7 @@ def _load_audit_schema() -> dict:
 _PHASE_H_CAPABILITIES = {
     "trading_status_context_evidence.v1": "trading_status_context",
     "trading_status_context_evidence.v2": "trading_status_context",
+    "trading_status_context_composite.v1": "trading_status_context",
     "corporate_action_context_evidence.v1": "corporate_action_context",
     "recent_performance_evidence.v1": "recent_performance",
     "discontinuity_safety_evidence.v1": "discontinuity_safety",
@@ -133,6 +134,10 @@ def _phase_h_governance(inputs: ProjectionInputs) -> dict:
             "relative_path": relative_path,
             "sha256": artifact_hash,
         })
+        # The composite is a Result-level artifact, not a source attempt. Its
+        # source-specific H1 component artifacts are audited independently below.
+        if schema_version == "trading_status_context_composite.v1":
+            continue
         target = artifact.get("target") if isinstance(artifact.get("target"), dict) else {}
         if capability_id in {"trading_status_context", "corporate_action_context"}:
             sources = artifact.get("sources") if isinstance(artifact.get("sources"), list) else [artifact.get("source")]

@@ -76,7 +76,7 @@ def project_phase_h_typed_evidence(binding, citation_ids, expected_schema_versio
 
 
 def project_trading_status_context_evidence(binding, citation_ids):
-    """Project exactly one explicitly supported H1 v1 or v2 artifact unchanged."""
+    """Project one H1 artifact or a validated source-component composite unchanged."""
     artifact = _research_artifact(binding)
     if artifact is None:
         return None
@@ -84,8 +84,16 @@ def project_trading_status_context_evidence(binding, citation_ids):
     if schema_version not in {
         "trading_status_context_evidence.v1",
         "trading_status_context_evidence.v2",
+        "trading_status_context_composite.v1",
     }:
         raise ProjectionError("phase_h_evidence_schema_mismatch")
+    if schema_version == "trading_status_context_composite.v1":
+        from .trading_status_composer import validate_trading_status_context_composite
+        validate_trading_status_context_composite(artifact)
+        citations = artifact.get("citation_ids", [])
+        if not isinstance(citations, list) or not set(citations).issubset(set(citation_ids)):
+            raise ProjectionError("phase_h_citation_lineage_mismatch")
+        return artifact.copy()
     try:
         validate_trading_status_context_semantics(artifact)
     except (TypeError, ValueError) as exc:
@@ -96,6 +104,9 @@ def project_trading_status_context_evidence(binding, citation_ids):
 def _research_artifact(binding: OperationBinding | None) -> dict | None:
     if binding is None or not binding.artifact_objects:
         return None
+    if binding.primary_evidence_relative_path:
+        primary = binding.artifact_objects.get(binding.primary_evidence_relative_path)
+        return primary if isinstance(primary, dict) else None
     return next((obj for obj in binding.artifact_objects.values() if isinstance(obj, dict)), None)
 
 
