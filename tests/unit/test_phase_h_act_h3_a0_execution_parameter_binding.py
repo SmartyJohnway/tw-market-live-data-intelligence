@@ -95,7 +95,7 @@ def test_non_h3_projection_retains_v1_shape_and_identity():
     assert sha256_json(identity) == request["execution_request_hash"]
 
 
-def test_preflight_accepts_mixed_v1_v2_and_rejects_unknown_internal_version(tmp_path):
+def test_preflight_accepts_mixed_v1_v2_v3_and_rejects_unknown_internal_version(tmp_path):
     plan = json.loads((ROOT / "tests/fixtures/m8r_05b_01/golden/batching_none_two_unique_batches.json").read_text())
     from tests.unit.m8r_05b_03_test_helpers import EVALUATION_TIMESTAMP, artifacts, registry_metadata
     from scripts.m8r_05b_03.preflight import build_orchestrator_preflight
@@ -114,10 +114,12 @@ def test_preflight_accepts_mixed_v1_v2_and_rejects_unknown_internal_version(tmp_
         "capability_id": "recent_performance",
         "parameters": {"lookback_trading_days": 5},
     })
+    # V3 is a current accepted internal request version and shares the v2
+    # bounded-projection branch. Use v4 to exercise unknown-version rejection.
     schema = json.loads((ROOT / "schemas/unified_market_evidence_orchestrator_preflight.v1.schema.json").read_text())
     assert not list(Draft202012Validator(schema).iter_errors(preflight))
     unknown = copy.deepcopy(preflight)
-    unknown["bounded_execution_requests"][0]["schema_version"] = "unified_market_evidence_execution_request.v3"
+    unknown["bounded_execution_requests"][0]["schema_version"] = "unified_market_evidence_execution_request.v4"
     assert list(Draft202012Validator(schema).iter_errors(unknown))
 
 
@@ -139,13 +141,13 @@ def _result(version: int, request_id: str) -> dict:
 
 
 @pytest.mark.parametrize("version", [1, 2])
-def test_operation_result_schemas_accept_only_authorized_v1_v2_request_ids(version):
+def test_operation_result_schemas_accept_only_authorized_request_ids(version):
     schema = json.loads((ROOT / f"schemas/unified_market_evidence_operation_result.v{version}.schema.json").read_text())
     validator = Draft202012Validator(schema)
-    accepted_request_versions = (1,) if version == 1 else (1, 2)
+    accepted_request_versions = (1,) if version == 1 else (1, 2, 3)
     for request_version in accepted_request_versions:
         assert not list(validator.iter_errors(_result(version, f"umereq-v{request_version}-" + "a" * 20)))
-    invalid_ids = ["umereq-v3-" + "a" * 20, "umereq-v2-short", "not-an-execution-request-id"]
+    invalid_ids = ["umereq-v4-" + "a" * 20, "umereq-v2-short", "not-an-execution-request-id"]
     if version == 1:
         invalid_ids.append("umereq-v2-" + "a" * 20)
     for request_id in invalid_ids:
