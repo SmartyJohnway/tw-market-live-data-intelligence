@@ -47,6 +47,7 @@ def _load_audit_schema() -> dict:
 
 _PHASE_H_CAPABILITIES = {
     "trading_status_context_evidence.v1": "trading_status_context",
+    "trading_status_context_evidence.v2": "trading_status_context",
     "corporate_action_context_evidence.v1": "corporate_action_context",
     "recent_performance_evidence.v1": "recent_performance",
     "discontinuity_safety_evidence.v1": "discontinuity_safety",

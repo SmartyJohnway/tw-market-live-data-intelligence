@@ -24,6 +24,7 @@ from scripts.m8r_05b_03.canonical import sha256_json
 from scripts.m8r_05b_02.validator import validate_execution_authorization
 from scripts.m8r_05b_02.consumption_binding import validate_consumption_binding
 from scripts.m8r_05b_03.consumption_claim import validate_claim_destination, validate_operator_confirmation_reference
+from scripts.m8r_05c.phase_h_semantics import validate_trading_status_context_semantics
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMAS_DIR = ROOT / "schemas"
@@ -47,6 +48,7 @@ _RESEARCH_EVIDENCE_CONTRACTS = {
     "phase_g_material_disclosure_operation_evidence.v1": "phase_g_material_disclosure_operation_evidence.v1.schema.json",
     "phase_g_monthly_revenue_operation_evidence.v1": "phase_g_monthly_revenue_operation_evidence.v1.schema.json",
     "trading_status_context_evidence.v1": "trading_status_context_evidence.v1.schema.json",
+    "trading_status_context_evidence.v2": "trading_status_context_evidence.v2.schema.json",
     "corporate_action_context_evidence.v1": "corporate_action_context_evidence.v1.schema.json",
     "recent_performance_evidence.v1": "recent_performance_evidence.v1.schema.json",
     "discontinuity_safety_evidence.v1": "discontinuity_safety_evidence.v1.schema.json",
@@ -59,9 +61,13 @@ _DRAFT07_KEYS = {"request", "plan"}
 _M8R_06_03_EVIDENCE_SCHEMA = "m8r_06_03_operation_evidence.v1"
 _PHASE_H_GOVERNANCE_SCHEMA = "phase_h_source_attempt_governance.v1"
 _PHASE_H_TYPED_CONTRACTS = {
-    "trading_status_context": "trading_status_context_evidence.v1",
+    "trading_status_context": {"trading_status_context_evidence.v1", "trading_status_context_evidence.v2"},
     "corporate_action_context": "corporate_action_context_evidence.v1",
     "recent_performance": "recent_performance_evidence.v1",
+}
+_PHASE_H_TYPED_CONTRACT_VERSIONS = {
+    version for versions in _PHASE_H_TYPED_CONTRACTS.values()
+    for version in (versions if isinstance(versions, set) else {versions})
 }
 
 
@@ -139,8 +145,10 @@ def _load_phase_h_source_attempts(
         reference = sidecar["evidence_artifact_reference"]
         typed = evidence_artifacts.get(reference)
         capability = sidecar["capability_id"]
-        expected_contract = _PHASE_H_TYPED_CONTRACTS.get(capability)
-        if typed is None or typed.get("schema_version") != expected_contract:
+        expected_contracts = _PHASE_H_TYPED_CONTRACTS.get(capability)
+        if isinstance(expected_contracts, str):
+            expected_contracts = {expected_contracts}
+        if typed is None or typed.get("schema_version") not in (expected_contracts or set()):
             raise ProjectionError("phase_h_source_governance_reference_invalid")
         target = typed.get("target") if isinstance(typed.get("target"), dict) else {}
         if target.get("canonical_target_id") != sidecar["canonical_target_id"]:
@@ -185,7 +193,7 @@ def _load_phase_h_source_attempts(
                     raise ProjectionError("phase_h_source_governance_source_mismatch")
         attempts_by_evidence[reference] = attempts
     for relative_path, artifact in evidence_artifacts.items():
-        if artifact.get("schema_version") in _PHASE_H_TYPED_CONTRACTS.values() and relative_path not in attempts_by_evidence:
+        if artifact.get("schema_version") in _PHASE_H_TYPED_CONTRACT_VERSIONS and relative_path not in attempts_by_evidence:
             raise ProjectionError("phase_h_source_governance_unresolved")
     return attempts_by_evidence
 
@@ -409,12 +417,19 @@ def load_projection_inputs(
             if not schema_file.exists():
                 raise ProjectionError("missing_evidence_contract_schema")
             schema = json.loads(schema_file.read_text(encoding="utf-8"))
-            if evidence_contract in _RESEARCH_EVIDENCE_CONTRACTS and evidence_contract != "cash_institutional_flow_context_evidence.v2":
+            if evidence_contract == "trading_status_context_evidence.v2":
+                errors = list(Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(artifact_obj))
+            elif evidence_contract in _RESEARCH_EVIDENCE_CONTRACTS and evidence_contract != "cash_institutional_flow_context_evidence.v2":
                 errors = list(Draft7Validator(schema).iter_errors(artifact_obj))
             else:
                 errors = list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(artifact_obj))
             if errors:
                 raise ProjectionError("artifact_schema_invalid")
+            if evidence_contract in {"trading_status_context_evidence.v1", "trading_status_context_evidence.v2"}:
+                try:
+                    validate_trading_status_context_semantics(artifact_obj)
+                except (TypeError, ValueError) as exc:
+                    raise ProjectionError("artifact_schema_invalid") from exc
             if evidence_contract == "cash_institutional_flow_context_evidence.v2":
                 # V2 has cross-field provenance/arithmetic invariants in addition
                 # to its JSON Schema shape. Keep historical V1 validation separate.

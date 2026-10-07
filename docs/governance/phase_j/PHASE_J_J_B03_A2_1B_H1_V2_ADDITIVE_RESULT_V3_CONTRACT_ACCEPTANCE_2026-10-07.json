@@ -1,0 +1,176 @@
+{
+  "record_id": "J_B03_A2_1B_H1_V2_ADDITIVE_RESULT_V3_CONTRACT_ACCEPTANCE_2026-10-07",
+  "authority": "USER_CHAT_2026-10-06_J_B03_A2_1B_CONTRACT_AMENDMENT_AUTHORIZATION",
+  "record_status": "CONTRACT_ACCEPTED_ON_BRANCH_PENDING_DRAFT_PR_REVIEW",
+  "disposition": "J_B03_A2_1B_H1_V2_ADDITIVE_RESULT_V3_CONTRACT_ACCEPTED",
+  "starting_authority": {
+    "main_commit": "563f98f5783017b6af951d7437ba2c2df33e8791",
+    "main_tree": "cd09aa3005d48936dc87045076f7127ea69def4b",
+    "merged_pr": 315,
+    "branch": "phase-j/j-b03-a2-1b-h1-v2-additive-result-v3",
+    "test_only_repair_commit": "a207c32f1af4884d1bcca4b8e721f4970f880891"
+  },
+  "baseline_test_repair": {
+    "initial_command": "python -m pytest -q tests/unit/test_phase_h_act_v3_promotion.py tests/unit/test_m8r_07b_local_service_contract.py tests/unit/test_m8r_08b_mcp_tool_contracts.py",
+    "initial_result": {"passed": 24, "failed": 1},
+    "failure": "stale recent_performance.routing_disposition expectation: blocked; current accepted authority is resolved",
+    "repair": "tests/unit/test_m8r_07b_local_service_contract.py only; expected value changed to resolved",
+    "rerun_result": {"passed": 25, "failed": 0},
+    "separate_commit": true
+  },
+  "R1_backward_compatibility_repair": {
+    "independent_review_finding": "UNINTENDED_H1_V1_RUNTIME_SEMANTIC_TIGHTENING",
+    "defect": "The shared validator rejected duplicate canonical items with the same status_type because it compared set cardinality with item cardinality.",
+    "repair": "Restore H1 v1 semantic compatibility and permit repeated canonical subtype items; retain H1 v2 per-item canonical coverage validation without subtype uniqueness.",
+    "h1_v1_prior_authority": "The pre-A2.1B validator enforced declared scope and complete no_evidence_in_covered_scope claims; it did not require each item's subtype to occur in covered_status_types and did not impose subtype uniqueness.",
+    "h1_v1_repeated_status_type": "allowed under frozen semantics",
+    "h1_v2_canonical_item_rules": [
+      "each item is an object",
+      "each item.status_type is one of the five canonical values",
+      "each item's status_type is included in covered_status_types",
+      "repeated status_type values across items are allowed"
+    ],
+    "regressions": [
+      "schema-valid H1 v1 with two attention items remains valid",
+      "H1 v2 with two covered attention items remains valid",
+      "H1 v2 canonical item whose subtype is uncovered is rejected"
+    ],
+    "market_get_head_post": "0/0/0",
+    "validation": {
+      "phase_h_v3_validator": "PASS",
+      "compileall_scripts_server_tests": "PASS",
+      "focused_suite": {"passed": 107, "failed": 0},
+      "default_ci": {
+        "status": "PASS",
+        "passed": 1266,
+        "skipped": 1,
+        "deselected": 5,
+        "failed": 0,
+        "network_may_have_occurred": false
+      },
+      "git_diff_check": "PASS"
+    }
+  },
+  "contract_decision": {
+    "h1_v1": "unchanged; existing attention route remains on v1",
+    "h1_v1_sha256": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+    "h1_v2": "added as a new one-source-per-artifact contract with native_observations[] sibling to canonical items[]",
+    "h1_v2_sha256": "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38",
+    "result_strategy": "ADDITIVE_RESULT_V3",
+    "result_v4": "not selected",
+    "result_v3_old_current_sha256": "e20a54563c9bf1454e705ccdaed8f002aed0cc4692e74eaaaa81568ac4278872",
+    "result_v3_new_current_sha256": "a8519bc4c444f59b24e74de702667c5570ed15f816a841b509e24b2f3bc788d5",
+    "result_v3_union": "oneOf discriminated by exact schema_version const; H1 v1 and v2 branches are disjoint",
+    "historical_h0_g_manifest": {
+      "path": "docs/governance/phase_h/PHASE_H_H0_G_V3_SCHEMA_FREEZE_MANIFEST.json",
+      "sha256": "6c1f23ed12a0d3bffcb7b964197eda6ee6a36d8c95ef1a8c5d6106ef31ea89f6",
+      "changed": false
+    }
+  },
+  "native_observation_contract": {
+    "required_fields": [
+      "source_native_field",
+      "source_native_label",
+      "source_native_value",
+      "source_native_value_type",
+      "source_record_date",
+      "semantic_status",
+      "semantic_caveat",
+      "citation_ids"
+    ],
+    "source_native_value_json_types": ["string", "number", "boolean", "null"],
+    "source_native_value_type_must_match_json_type": true,
+    "semantic_status_enum": ["unresolved"],
+    "source_record_date_format": "date",
+    "citation_ids_minimum": 1,
+    "parent_binding": ["target", "source", "observed_at", "coverage"],
+    "source_cardinality": "one top-level source contract per H1 artifact",
+    "mixed_canonical_and_native": "permitted only within that same top-level source contract",
+    "canonical_status_type_enum_unchanged": [
+      "attention",
+      "disposition",
+      "changed_trading_method",
+      "suspension",
+      "resumption"
+    ],
+    "canonical_suspension_from_unresolved_native_marker": "forbidden",
+    "native_observation_adds_canonical_coverage": false,
+    "source_contract_validated_semantics": "transport, payload, field, JSON type, and date grammar validation only; it does not resolve business-marker meaning",
+    "native_only_status": "partial",
+    "native_only_coverage": {
+      "covered_status_types": [],
+      "uncovered_status_types": [
+        "attention",
+        "disposition",
+        "changed_trading_method",
+        "suspension",
+        "resumption"
+      ],
+      "declared_scope_complete": false,
+      "retrieval_succeeded": true,
+      "exact_target_search_succeeded": true
+    },
+    "no_evidence_status_with_native_observation": "rejected",
+    "blank_or_absent_tradeability_inference": "forbidden"
+  },
+  "count_semantics": {
+    "item_count": "canonical items[] count; legacy meaning unchanged",
+    "native_observation_count": "native_observations[] count, explicit in H1 v2",
+    "operation_evidence_presence": "canonical items > 0 OR native observations > 0",
+    "result_item_count_and_total_item_count": "unchanged; not redefined to include native observations"
+  },
+  "support_chain": {
+    "semantic_validator": "H1 v1 retains pre-A2.1B declared-scope and complete no-evidence checks only; H1 v2 adds per-item canonical subtype coverage (duplicates allowed) plus native value/type/citation/caveat/date/status and native-only constraints",
+    "artifact_loader": "loads and validates H1 v1 and v2 against their respective schemas",
+    "lineage_resolver": "accepts either version but rejects multiple typed H1 artifacts for one binding",
+    "result_projection": "projects the selected H1 artifact unchanged after validation and lineage checks",
+    "audit_v3_schema": "unchanged; generic artifact references carry capability, schema_version, relative path, and hash; v2 reference and citation lineage tested",
+    "handoff": "renders source-native label/value/date, unresolved state/caveat, citations, and explicit non-inference guard",
+    "mcp": {"tool_count": 6, "public_input_schema_changed": false},
+    "request_v3": {"changed": false, "sha256": "b0901dbf63db3a8bc44b8fec4cb0cdc90f77e153d954266f98c690453864f3f6"},
+    "preferred_result_version": "unchanged; no promotion performed"
+  },
+  "historical_phase_i_containment": {
+    "finding": "The initial default-ci run showed eight historical I3 containment failures because the current Result V3 schema acquired the authorized H1 v1/v2 union.",
+    "repair": "Containment comparison narrowly maps only the exact H1 v1/v2 oneOf branch back to its historical H1 v1 snapshot before comparison; all other bytes/structures remain compared.",
+    "historical_ledgers_or_freeze_manifest_rewritten": false,
+    "current_schema_hash_independently_pinned": true
+  },
+  "acceptance": {
+    "phase_h_v3_validator": "PASS",
+    "compileall_scripts_server_tests": "PASS",
+    "focused_test_command": "python -m pytest -q tests/unit/test_phase_h_v3_contract_freeze.py tests/unit/test_phase_h_imp_6_v3_projection_handoff.py tests/unit/test_phase_h_act_v3_promotion.py tests/unit/test_m8r_07b_local_service_contract.py tests/unit/test_m8r_08b_mcp_tool_contracts.py tests/integration/test_m8r_05b_03_multi_artifact_contract.py tests/unit/test_m8r_05b_03_aggregation.py",
+    "focused_tests": {"passed": 107, "failed": 0},
+    "default_ci": {
+      "status": "PASS",
+      "passed": 1266,
+      "skipped": 1,
+      "deselected": 5,
+      "failed": 0,
+      "network_may_have_occurred": false
+    },
+    "specific_rollback_readback_test": "PASS; existing persisted Result V3 remains pinned/readable when a different output version is requested"
+  },
+  "network": {"market_get": 0, "market_head": 0, "market_post": 0, "network_may_have_occurred": false},
+  "scope_changes": {
+    "production_support_code_changed": true,
+    "production_route_changed": false,
+    "adapter_or_source_acquisition_added": false,
+    "schema_changed": true,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "source_or_route_activation_changed": false,
+    "preferred_version_promoted": false,
+    "mcp_tool_count_changed": false
+  },
+  "issue_states": {
+    "H0-SRC-01E": "OPEN",
+    "H0-SRC-02": "OPEN",
+    "J-B03": "HOLD",
+    "J-B04": "BLOCKING",
+    "Phase_J": "NOT_STARTED",
+    "next_gate": "J-B03-A2.2 — Representative H1 Composition / Adapter Integration Design, subject to separate authorization"
+  },
+  "data_directory": "pre-existing untracked data/ left untouched"
+}

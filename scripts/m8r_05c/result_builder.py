@@ -35,6 +35,7 @@ from .evidence_projector import (
     CURRENT_PROJECTOR_VERSION,
     project_target_evidence,
     project_phase_h_typed_evidence,
+    project_trading_status_context_evidence,
     project_typed_research_evidence,
 )
 from .lineage_resolver import build_lineage_map
@@ -384,10 +385,9 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
             citation_map=citation_map, projector_version=projector_version,
         )
         if output_schema_version == "unified_market_evidence_result.v3":
-            evidence_proj.trading_status_context = project_phase_h_typed_evidence(
+            evidence_proj.trading_status_context = project_trading_status_context_evidence(
                 target_bindings.get("trading_status_context"),
                 citation_map.get(f"{canonical_target_id}::trading_status_context", []),
-                "trading_status_context_evidence.v1",
             )
             evidence_proj.corporate_action_context = project_phase_h_typed_evidence(
                 target_bindings.get("corporate_action_context"),

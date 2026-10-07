@@ -8,7 +8,7 @@ from pathlib import Path
 import shutil
 
 import pytest
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, Draft7Validator, FormatChecker
 
 from scripts.m8r_05c.audit_package_builder import build_audit_package
 from scripts.m8r_05c.artifact_loader import _load_phase_h_source_attempts, load_projection_inputs
@@ -18,16 +18,20 @@ from scripts.m8r_05c.citation_builder import _build_citation_id, build_citation_
 from scripts.m8r_05c.errors import ProjectionError
 from scripts.m8r_05c.lineage_resolver import build_lineage_map
 from scripts.m8r_05c.markdown_renderer import render_result_markdown
+from scripts.m8r_05c.phase_h_semantics import validate_trading_status_context_semantics
 from scripts.m8r_05c.models import ProjectionInputs
 from scripts.m8r_05c.result_builder import build_result
+from scripts.m8r_05c.containment import materialize_outputs
 from server.services import unified_mode_c
 from server.services.unified_mode_c import ModeCError, _OUTPUT_PATHS, build_mode_c_ai_handoff, build_mode_c_result_package
+from server.unified_mcp.server import _success as mcp_success
 
 ROOT = Path(__file__).resolve().parents[2]
 # These controlled contract examples exercise a dormant projection only; they
 # are not source-acquisition evidence.
 FIXTURE_KIND = "NON_AUTHORITATIVE_TEST_ONLY"
 EXAMPLES = json.loads((ROOT / "tests/fixtures/phase_h_contract_v3/contract_examples.json").read_text(encoding="utf-8"))
+DECLARED_STATUS_TYPES = ["attention", "disposition", "changed_trading_method", "suspension", "resumption"]
 
 
 def _replace_citations(value: object, citation_id: str) -> object:
@@ -291,6 +295,180 @@ def test_v3_is_deterministic_and_does_not_promote_legacy_generic_recent_performa
     assert "recent_performance" not in first["targets"][0]["evidence"]
 
 
+def _native_h1_v2_inputs() -> tuple[ProjectionInputs, str, dict]:
+    inputs = _inputs(include_h2=False, include_h3=False)
+    identity = inputs.f3_validation["target_results"][0]["canonical_identity"]
+    identity.update({"canonical_target_id": "TPEX:6488", "market": "TPEX", "security_code": "6488"})
+    inputs.request["targets"][0]["market_hint"] = "TPEX"
+    inputs.plan["operations"][0].update({
+        "market": "TPEX", "canonical_target_ids": ["TPEX:6488"],
+        "expected_evidence_contract": "trading_status_context_evidence.v2",
+    })
+    artifact_path = next(path for path, item in inputs.evidence_artifacts.items()
+                         if item.get("schema_version") == "trading_status_context_evidence.v1")
+    artifact = inputs.evidence_artifacts[artifact_path]
+    artifact.update({
+        "schema_version": "trading_status_context_evidence.v2",
+        "status": "partial",
+        "target": {"canonical_target_id": "TPEX:6488", "market": "TPEX", "security_code": "6488"},
+        "source": {"source_family": "TPEX_CHANGED_TRADING_OPENAPI", "source_contract_id": "tpex_cmode",
+                   "transport": "official_https_openapi", "license_authority": "data.gov.tw:11736:ODGL-1.0",
+                   "source_role": "default_candidate", "activation_state": "eligible"},
+        "items": [],
+        "coverage": {**artifact["coverage"], "status": "partial", "declared_scope_complete": False,
+                      "covered_status_types": [],
+                      "uncovered_status_types": ["attention", "disposition", "changed_trading_method", "suspension", "resumption"]},
+        "native_observation_count": 1,
+        "native_observations": [{
+            "source_native_field": "SuspensionOfTrading", "source_native_label": "停止交易",
+            "source_native_value": "Ｙ", "source_native_value_type": "string",
+            "source_record_date": "2026-10-06", "semantic_status": "unresolved",
+            "semantic_caveat": "Official marker semantics are unresolved; do not infer current tradeability.",
+            "citation_ids": artifact["citation_ids"],
+        }],
+    })
+    artifact["coverage"].update({"retrieval_succeeded": True, "source_contract_validated": True,
+                                  "exact_target_search_succeeded": True})
+    inputs.bundle["artifact_inventory"][0]["schema_version"] = artifact["schema_version"]
+    inputs.bundle["artifact_inventory"][0]["evidence_contract"] = artifact["schema_version"]
+    inputs.bundle["operation_evidence_entries"][0]["artifacts"][0]["schema_version"] = artifact["schema_version"]
+    inputs.phase_h_source_attempts[artifact_path] = [_attempt_metadata(
+        artifact["source"], coverage_result="partial", outcome="succeeded", citation_ids=artifact["citation_ids"]
+    )]
+    return inputs, artifact_path, artifact
+
+
+def test_h1_v2_native_only_and_mixed_contract_semantics():
+    inputs, _, native = _native_h1_v2_inputs()
+    schema_v2 = json.loads((ROOT / "schemas/trading_status_context_evidence.v2.schema.json").read_text(encoding="utf-8"))
+    assert not list(Draft7Validator(schema_v2).iter_errors(native))
+    validate_trading_status_context_semantics(native)
+    assert native["status"] == "partial" and native["items"] == []
+    assert native["native_observation_count"] == 1 and native["coverage"]["covered_status_types"] == []
+    assert set(native["coverage"]["uncovered_status_types"]) == set(DECLARED_STATUS_TYPES)
+
+    mixed = deepcopy(native)
+    mixed["status"] = "partial"
+    mixed["items"] = [deepcopy(EXAMPLES["h1_attention_available"]["items"][0])]
+    mixed["coverage"]["covered_status_types"] = ["attention"]
+    mixed["coverage"]["uncovered_status_types"] = [item for item in DECLARED_STATUS_TYPES if item != "attention"]
+    validate_trading_status_context_semantics(mixed)
+    assert not list(Draft7Validator(schema_v2).iter_errors(mixed))
+
+    repeated = deepcopy(mixed)
+    repeated["items"].append(deepcopy(repeated["items"][0]))
+    validate_trading_status_context_semantics(repeated)
+    assert not list(Draft7Validator(schema_v2).iter_errors(repeated))
+
+
+@pytest.mark.parametrize("mutation,code", [
+    ("native_coverage", "h1_native_only_requires_partial_uncovered_scope"),
+    ("canonical_coverage", "h1_canonical_item_not_covered"),
+    ("missing_caveat", "schema"),
+    ("missing_citation", "schema"),
+    ("missing_record_date", "schema"),
+    ("invalid_record_date", "schema"),
+    ("semantic_status", "schema"),
+    ("value_type_mismatch", "h1_native_value_type_mismatch"),
+    ("no_evidence", "schema"),
+])
+def test_h1_v2_rejects_unsafe_native_and_coverage_fixtures(mutation: str, code: str):
+    _, _, value = _native_h1_v2_inputs()
+    candidate = deepcopy(value)
+    if mutation == "native_coverage":
+        candidate["coverage"]["covered_status_types"] = ["suspension"]
+        candidate["coverage"]["uncovered_status_types"].remove("suspension")
+    elif mutation == "canonical_coverage":
+        candidate["items"] = [deepcopy(EXAMPLES["h1_attention_available"]["items"][0])]
+    elif mutation == "missing_caveat":
+        candidate["native_observations"][0]["semantic_caveat"] = ""
+    elif mutation == "missing_citation":
+        candidate["native_observations"][0]["citation_ids"] = []
+    elif mutation == "missing_record_date":
+        del candidate["native_observations"][0]["source_record_date"]
+    elif mutation == "invalid_record_date":
+        candidate["native_observations"][0]["source_record_date"] = "2026-02-30"
+    elif mutation == "semantic_status":
+        candidate["native_observations"][0]["semantic_status"] = "source_defined"
+    elif mutation == "value_type_mismatch":
+        candidate["native_observations"][0]["source_native_value_type"] = "number"
+    elif mutation == "no_evidence":
+        candidate["status"] = "no_evidence_in_covered_scope"
+    schema = json.loads((ROOT / "schemas/trading_status_context_evidence.v2.schema.json").read_text(encoding="utf-8"))
+    if code == "schema":
+        assert list(Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(candidate))
+    else:
+        with pytest.raises(ValueError, match=code):
+            validate_trading_status_context_semantics(candidate)
+
+
+def test_result_v3_union_projects_v1_and_v2_and_renders_native_evidence(tmp_path: Path):
+    result_schema = json.loads((ROOT / "schemas/unified_market_evidence_result.v3.schema.json").read_text(encoding="utf-8"))
+    union = result_schema["definitions"]["trading_status_context"]["oneOf"]
+    h1_v1 = deepcopy(EXAMPLES["h1_attention_available"])
+    _, _, h1_v2 = _native_h1_v2_inputs()
+    standalone_v2 = json.loads((ROOT / "schemas/trading_status_context_evidence.v2.schema.json").read_text(encoding="utf-8"))
+    assert {key: value for key, value in union[1].items() if key not in {"$schema", "$id", "title"}} == {
+        key: value for key, value in standalone_v2.items() if key not in {"$schema", "$id", "title"}
+    }
+    assert sum(not list(Draft7Validator(branch).iter_errors(h1_v1)) for branch in union) == 1
+    assert sum(not list(Draft7Validator(branch).iter_errors(h1_v2)) for branch in union) == 1
+
+    v1_inputs = _inputs()
+    v1_result, _ = _build_package(v1_inputs)
+    assert not list(Draft7Validator(result_schema).iter_errors(v1_result))
+    inputs, _, native = _native_h1_v2_inputs()
+    result, audit = _build_package(inputs)
+    projected = result["targets"][0]["evidence"]["trading_status_context"]
+    assert projected == native
+    audit_refs = [ref for ref in audit["phase_h_governance"]["evidence_artifact_references"]
+                  if ref["capability_id"] == "trading_status_context"]
+    assert len(audit_refs) == 1 and audit_refs[0]["schema_version"] == "trading_status_context_evidence.v2"
+    assert audit_refs[0]["relative_path"] == "evidence/phase_h/h1/TWSE_2330.json"
+    assert audit_refs[0]["sha256"] == inputs.bundle["artifact_inventory"][0]["sha256"]
+    assert native["citation_ids"][0] in json.dumps(audit["citation_to_operation_map"])
+    markdown = render_result_markdown(result)
+    for text in ("停止交易", "Ｙ", "2026-10-06", "unresolved", "Official marker semantics", native["citation_ids"][0]):
+        assert text in markdown
+    assert "currently suspended" not in markdown.lower()
+    assert "stopped trading" not in markdown.lower()
+    assert "cannot trade" not in markdown.lower()
+    mcp_result = mcp_success("market_export_ai_handoff", {
+        "canonical_result": result, "ai_ready_markdown": markdown,
+    })
+    assert mcp_result.structuredContent["canonical_result"]["targets"][0]["evidence"]["trading_status_context"] == native
+    assert mcp_result.content[0].text == markdown
+
+    result_path, markdown_path, audit_path, _ = _OUTPUT_PATHS["unified_market_evidence_result.v3"]
+    materialize_outputs(output_root=str(tmp_path), result_json=result, audit_package_json=audit,
+                        result_markdown=markdown, result_relative_path=result_path,
+                        audit_relative_path=audit_path, result_md_relative_path=markdown_path)
+    assert unified_mode_c._persisted_output_version(tmp_path) == "unified_market_evidence_result.v3"
+    readback = unified_mode_c._read_verified_outputs(tmp_path, "unified_market_evidence_result.v3", result, audit, markdown)
+    assert readback == (result, audit, markdown)
+
+    # The stored outer version remains authoritative for readback; no migration
+    # or rewrite is performed for the nested H1 v2 evidence.
+    assert unified_mode_c._persisted_output_version(tmp_path) == "unified_market_evidence_result.v3"
+    assert unified_mode_c._read_verified_outputs(tmp_path, "unified_market_evidence_result.v3", result, audit, markdown) == readback
+
+
+def test_lineage_rejects_two_h1_versions_for_one_operation_binding():
+    inputs, path, native = _native_h1_v2_inputs()
+    v1 = deepcopy(EXAMPLES["h1_attention_available"])
+    v1["target"] = deepcopy(native["target"])
+    v1["source"] = deepcopy(native["source"])
+    citation_id = native["citation_ids"][0]
+    v1 = _replace_citations(v1, citation_id)
+    second_path = "evidence/phase_h/h1/TPEX_6488_v1.json"
+    inputs.evidence_artifacts[second_path] = v1
+    reference = {"relative_path": second_path, "sha256": "b" * 64, "schema_version": v1["schema_version"], "byte_size": 1}
+    inputs.bundle["artifact_inventory"].append({**reference, "evidence_contract": v1["schema_version"]})
+    inputs.bundle["operation_evidence_entries"][0]["artifacts"].append(reference)
+    with pytest.raises(ProjectionError, match="duplicate_phase_h_typed_artifact"):
+        build_lineage_map(inputs)
+
+
 def test_mode_c_v3_output_is_explicit_and_uses_frozen_paths():
     assert FIXTURE_KIND == "NON_AUTHORITATIVE_TEST_ONLY"
     assert _OUTPUT_PATHS["unified_market_evidence_result.v3"][:3] == (
@@ -349,6 +527,13 @@ def test_real_mode_c_v3_materializes_and_handoff_is_deterministic(tmp_path: Path
     assert first["audit_reference"] == "audit/unified_market_evidence_audit_package.v3.json"
     assert first["external_market_network_executed"] is False and first["ai_ready_markdown"]
     assert build_mode_c_result_package({"control_package_id": control_id}, output_schema_version="unified_market_evidence_result.v3")["materialization"] == "existing_verified"
+    # A rollback request for a different output version affects new packages;
+    # an already persisted V3 package remains pinned to its verified version.
+    rollback_read = build_mode_c_result_package(
+        {"control_package_id": control_id}, output_schema_version="unified_market_evidence_result.v2"
+    )
+    assert rollback_read["output_schema_version"] == "unified_market_evidence_result.v3"
+    assert rollback_read["canonical_result"] == first["canonical_result"]
     handoff = build_mode_c_ai_handoff(control_id, output_schema_version="unified_market_evidence_result.v3")
     assert handoff["result_id"] == first["result_id"] and handoff["additional_market_network_executed"] is False
 
@@ -542,6 +727,23 @@ def test_package_bound_sidecars_supply_governance_without_runtime_injection():
     loaded = _load_phase_h_source_attempts({**inputs.evidence_artifacts, **sidecars}, plan=inputs.plan, bundle=inputs.bundle)
     assert loaded == {path: [{key: value for key, value in attempt.items() if key != "authority_marker"}
                              for attempt in attempts] for path, attempts in inputs.phase_h_source_attempts.items()}
+
+
+def test_package_bound_sidecar_accepts_h1_v2_with_exact_source_and_citation_lineage():
+    inputs, path, artifact = _native_h1_v2_inputs()
+    sidecar_path = "governance/tpex-cmode-native.json"
+    sidecar = {
+        "schema_version": "phase_h_source_attempt_governance.v1",
+        "evidence_artifact_reference": path,
+        "canonical_target_id": artifact["target"]["canonical_target_id"],
+        "capability_id": "trading_status_context",
+        "attempts": inputs.phase_h_source_attempts[path],
+    }
+    loaded = _load_phase_h_source_attempts(
+        {path: artifact, sidecar_path: sidecar}, plan=inputs.plan, bundle=inputs.bundle,
+    )
+    assert loaded[path][0]["source_contract_id"] == "tpex_cmode"
+    assert loaded[path][0]["citation_ids"] == artifact["citation_ids"]
 
 
 def test_real_loader_populates_sidecar_governance_from_verified_package(tmp_path: Path):

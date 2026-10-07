@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT))
 
 from scripts import phase_i_i3_a0_source_transport as transport
 from scripts.phase_i_i3_transport_mapping import transport_market_key
+from scripts.phase_i_i3_a4_compat import _normalize_current_h1_v2_addition
 from scripts.m8r_08g_security_master_releases import SECURITY_MASTER_ROOT, load_active_identity_service
 from scripts.m8r_filesystem_safety import atomic_write_bytes
 from scripts.run_phase_i_i3_a0_preflight import PROTECTED
@@ -152,6 +153,9 @@ def production_containment() -> None:
                 # The typed cash_flow projection is an I3-only definition added
                 # alongside the capability-specific evidence projection.
                 normalized.get("definitions", {}).pop("cash_flow", None)
+                # A separately accepted Phase J addendum may add the H1 v2
+                # sibling while preserving the historical H1 v1 snapshot.
+                normalized = _normalize_current_h1_v2_addition(normalized)
             require(normalized == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
         elif rel in {
             "config/m8r_06_03_executor_registry_metadata.json",

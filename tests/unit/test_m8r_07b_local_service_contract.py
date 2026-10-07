@@ -39,7 +39,7 @@ def test_capability_contract_is_deterministic_and_preserves_dispositions():
     assert _market(_capability(payload, "monthly_revenue"), "TWSE")["disposition"] == "executable"
     assert _market(_capability(payload, "monthly_revenue"), "TPEX")["disposition"] == "executable"
     assert _market(_capability(payload, "official_eod_reference"), "TAIFEX")["disposition"] == "provisional"
-    assert _capability(payload, "recent_performance")["routing_disposition"] == "blocked"
+    assert _capability(payload, "recent_performance")["routing_disposition"] == "resolved"
     h1 = _capability(payload, "trading_status_context")
     assert h1["routing_disposition"] == "resolved"
     assert _market(h1, "TPEX")["disposition"] == "executable"

@@ -14,6 +14,7 @@ from __future__ import annotations
 from .lineage_resolver import LineageMap, OperationBinding
 from .models import EvidenceEnvelopeProjection, TargetEvidenceProjection
 from .errors import ProjectionError
+from .phase_h_semantics import validate_trading_status_context_semantics
 from scripts.observation_contract import (
     build_ai_safe_market_context_projection_from_observation,
     promote_ai_safe_market_context_projection_for_controlled_context,
@@ -72,6 +73,24 @@ def project_typed_research_evidence(
 def project_phase_h_typed_evidence(binding, citation_ids, expected_schema_version):
     """Compatibility name for the established Phase H typed projection path."""
     return project_typed_research_evidence(binding, citation_ids, expected_schema_version)
+
+
+def project_trading_status_context_evidence(binding, citation_ids):
+    """Project exactly one explicitly supported H1 v1 or v2 artifact unchanged."""
+    artifact = _research_artifact(binding)
+    if artifact is None:
+        return None
+    schema_version = artifact.get("schema_version")
+    if schema_version not in {
+        "trading_status_context_evidence.v1",
+        "trading_status_context_evidence.v2",
+    }:
+        raise ProjectionError("phase_h_evidence_schema_mismatch")
+    try:
+        validate_trading_status_context_semantics(artifact)
+    except (TypeError, ValueError) as exc:
+        raise ProjectionError("phase_h_evidence_semantics_invalid") from exc
+    return project_typed_research_evidence(binding, citation_ids, schema_version)
 
 
 def _research_artifact(binding: OperationBinding | None) -> dict | None:

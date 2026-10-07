@@ -11,7 +11,10 @@ This module:
 """
 from __future__ import annotations
 
+import json
+
 from .evidence_projector import CURRENT_PROJECTOR_VERSION, LEGACY_PROJECTOR_VERSION
+from .phase_h_semantics import validate_trading_status_context_semantics
 
 _TIMING_CLASS_LABELS: dict[str, str] = {
     "intraday_live": "即時 (Intraday Live)",
@@ -237,6 +240,19 @@ def _fmt_phase_h_evidence(evidence: dict, need: str) -> str:
         coverage = evidence.get("coverage", {})
         lines.append(f"- **已覆蓋狀態類型**: {', '.join(coverage.get('covered_status_types', [])) or '（無）'}")
         lines.append(f"- **未覆蓋狀態類型**: {', '.join(coverage.get('uncovered_status_types', [])) or '（無）'}")
+        if evidence.get("schema_version") == "trading_status_context_evidence.v2":
+            validate_trading_status_context_semantics(evidence)
+            for observation in evidence.get("native_observations", []):
+                label = str(observation["source_native_label"]).replace("\r", " ").replace("\n", " ").replace("`", "\\`")
+                raw_value = json.dumps(observation["source_native_value"], ensure_ascii=False, separators=(",", ":"))
+                raw_value = raw_value.replace("`", "\\`")
+                lines.append(f"- **來源原生欄位**: {label} (`{observation['source_native_field']}`)")
+                lines.append(f"- **來源原始值**: `{raw_value}`")
+                lines.append(f"- **來源紀錄日期**: {observation['source_record_date']}")
+                lines.append(f"- **語義狀態**: `{observation['semantic_status']}`")
+                lines.append(f"- **語義限制**: {observation['semantic_caveat']}")
+                lines.append("- 此原始標記不可單獨解讀為停牌或可／不可交易結論。")
+                lines.append(f"- **原生觀察引用 IDs**: {', '.join(f'`{item}`' for item in observation['citation_ids'])}")
     elif need == "corporate_action_context":
         coverage = evidence.get("coverage", {})
         lines.append(f"- **已覆蓋事件類型**: {', '.join(coverage.get('covered_event_subtypes', [])) or '（無）'}")
