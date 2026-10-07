@@ -49,6 +49,7 @@ _RESEARCH_EVIDENCE_CONTRACTS = {
     "phase_g_monthly_revenue_operation_evidence.v1": "phase_g_monthly_revenue_operation_evidence.v1.schema.json",
     "trading_status_context_evidence.v1": "trading_status_context_evidence.v1.schema.json",
     "trading_status_context_evidence.v2": "trading_status_context_evidence.v2.schema.json",
+    "trading_status_context_composite.v1": "trading_status_context_composite.v1.schema.json",
     "corporate_action_context_evidence.v1": "corporate_action_context_evidence.v1.schema.json",
     "recent_performance_evidence.v1": "recent_performance_evidence.v1.schema.json",
     "discontinuity_safety_evidence.v1": "discontinuity_safety_evidence.v1.schema.json",
@@ -430,6 +431,12 @@ def load_projection_inputs(
                     validate_trading_status_context_semantics(artifact_obj)
                 except (TypeError, ValueError) as exc:
                     raise ProjectionError("artifact_schema_invalid") from exc
+            if evidence_contract == "trading_status_context_composite.v1":
+                from .trading_status_composer import validate_trading_status_context_composite
+                try:
+                    validate_trading_status_context_composite(artifact_obj)
+                except (TypeError, ValueError) as exc:
+                    raise ProjectionError("artifact_schema_invalid") from exc
             if evidence_contract == "cash_institutional_flow_context_evidence.v2":
                 # V2 has cross-field provenance/arithmetic invariants in addition
                 # to its JSON Schema shape. Keep historical V1 validation separate.
@@ -445,6 +452,8 @@ def load_projection_inputs(
             actual_items = (
                 len(artifact_obj["records"])
                 if artifact_obj.get("schema_version") == _M8R_06_03_EVIDENCE_SCHEMA
+                else artifact_obj.get("canonical_item_count", 0)
+                if artifact_obj.get("schema_version") == "trading_status_context_composite.v1"
                 else len(artifact_obj.get("items", [])) if "items" in artifact_obj else 1
             )
             if actual_items != expected_items:
@@ -467,6 +476,10 @@ def load_projection_inputs(
                 raise ProjectionError("operation_artifact_size_mismatch")
             if art.get("schema_version") != inv_entry.get("schema_version"):
                 raise ProjectionError("operation_artifact_schema_mismatch")
+            if art.get("artifact_role") is not None and inv_entry.get("artifact_role") != art.get("artifact_role"):
+                raise ProjectionError("operation_artifact_role_mismatch")
+            if art.get("evidence_contract") is not None and inv_entry.get("evidence_contract") != art.get("evidence_contract"):
+                raise ProjectionError("operation_artifact_contract_mismatch")
 
     if not calculated_at:
         raise ProjectionError("calculated_at_missing")

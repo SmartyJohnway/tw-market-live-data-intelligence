@@ -42,6 +42,7 @@ _TARGET_SCOPED_EVIDENCE_CONTRACTS = {
     "phase_g_monthly_revenue_operation_evidence.v1",
     "trading_status_context_evidence.v1",
     "trading_status_context_evidence.v2",
+    "trading_status_context_composite.v1",
     "corporate_action_context_evidence.v1",
     "recent_performance_evidence.v1",
     "market_state_context_evidence.v1",
@@ -110,6 +111,7 @@ class OperationBinding:
     evidence_artifacts: list[dict] = field(default_factory=list)
     # Resolved evidence artifact JSON objects keyed by relative_path
     artifact_objects: dict[str, dict] = field(default_factory=dict)
+    primary_evidence_relative_path: str | None = None
 
 
 @dataclass
@@ -228,6 +230,10 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
         for canonical_target_id in canonical_target_ids:
             target_artifacts: list[dict] = []
             target_artifact_objects: dict[str, dict] = {}
+            artifact_roles = {
+                art.get("relative_path"): art.get("artifact_role", "primary_evidence")
+                for art in raw_artifacts if isinstance(art, dict)
+            }
             for art in raw_artifacts:
                 if not isinstance(art, dict):
                     continue
@@ -245,12 +251,80 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                 target_artifacts.append(art)
                 if rel_path in artifact_objects:
                     target_artifact_objects[rel_path] = artifact_objects[rel_path]
+            composite_candidates = [
+                (path, obj) for path, obj in target_artifact_objects.items()
+                if isinstance(obj, dict) and obj.get("schema_version") == "trading_status_context_composite.v1"
+            ]
+            component_candidates = [
+                (path, obj) for path, obj in target_artifact_objects.items()
+                if isinstance(obj, dict) and obj.get("schema_version") in _allowed_typed_contracts(data_need)
+                and artifact_roles.get(path) == "component_evidence"
+            ]
+            primary_evidence_path = None
+            if composite_candidates or component_candidates:
+                if data_need != "trading_status_context" or len(composite_candidates) != 1:
+                    raise ProjectionError("composite_operation_artifact_model_invalid")
+                primary_evidence_path, composite = composite_candidates[0]
+                if op_status != "succeeded" or composite.get("target", {}).get("market") != market:
+                    raise ProjectionError("composite_operation_target_or_status_mismatch")
+                if artifact_roles.get(primary_evidence_path) != "primary_evidence":
+                    raise ProjectionError("composite_primary_role_invalid")
+                expected_components = composite.get("components", [])
+                if len(component_candidates) != 3 or len(expected_components) != 3:
+                    raise ProjectionError("composite_component_artifact_cardinality_invalid")
+                component_by_path = {path: obj for path, obj in component_candidates}
+                if len(component_by_path) != 3:
+                    raise ProjectionError("composite_duplicate_component_artifact")
+                inventory_by_path = {
+                    item.get("relative_path"): item for item in bundle.get("artifact_inventory", [])
+                    if isinstance(item, dict)
+                }
+                primary_inventory = inventory_by_path.get(primary_evidence_path)
+                primary_operation_ref = next(
+                    (item for item in raw_artifacts if isinstance(item, dict)
+                     and item.get("relative_path") == primary_evidence_path), None,
+                )
+                if (not isinstance(primary_inventory, dict) or not isinstance(primary_operation_ref, dict)
+                        or primary_inventory.get("artifact_role") != "primary_evidence"
+                        or primary_inventory.get("evidence_contract") != "trading_status_context_composite.v1"
+                        or primary_inventory.get("item_count") != composite.get("canonical_item_count")
+                        or primary_inventory.get("sha256") != primary_operation_ref.get("sha256")
+                        or primary_inventory.get("schema_version") != primary_operation_ref.get("schema_version")):
+                    raise ProjectionError("composite_primary_artifact_reference_mismatch")
+                try:
+                    from .trading_status_composer import (
+                        validate_component_artifact_bindings,
+                        validate_trading_status_context_composite,
+                    )
+                    validate_trading_status_context_composite(composite)
+                    validate_component_artifact_bindings(composite, component_by_path, inventory_by_path)
+                except (TypeError, ValueError) as exc:
+                    raise ProjectionError("composite_artifact_invalid") from exc
+                expected_paths = {item["artifact_reference"]["relative_path"] for item in expected_components}
+                if any(component.get("source_contract_id") != component.get("evidence", {}).get("source", {}).get("source_contract_id")
+                       or component.get("evidence", {}).get("target") != composite.get("target")
+                       for component in expected_components):
+                    raise ProjectionError("composite_component_reference_mismatch")
+                if expected_paths != set(component_by_path):
+                    raise ProjectionError("composite_unreferenced_component_artifact")
+                allowed_paths = expected_paths | {primary_evidence_path}
+                extra_typed = [
+                    path for path, obj in target_artifact_objects.items()
+                    if isinstance(obj, dict)
+                    and obj.get("schema_version") in _PHASE_H_TYPED_EVIDENCE_CONTRACTS
+                    and path not in allowed_paths
+                ]
+                if extra_typed:
+                    raise ProjectionError("composite_unapproved_h1_artifact")
+            elif any(role == "component_evidence" for role in artifact_roles.values()):
+                raise ProjectionError("component_evidence_without_composite")
+
             typed_artifact_count = sum(
                 artifact.get("schema_version") in _allowed_typed_contracts(data_need)
-                for artifact in target_artifact_objects.values()
-                if isinstance(artifact, dict)
+                for path, artifact in target_artifact_objects.items()
+                if isinstance(artifact, dict) and artifact_roles.get(path) != "component_evidence"
             )
-            if typed_artifact_count > 1:
+            if typed_artifact_count > 1 and not composite_candidates:
                 raise ProjectionError("duplicate_phase_h_typed_artifact")
             binding = OperationBinding(
                 operation_id=operation_id,
@@ -264,6 +338,7 @@ def build_lineage_map(inputs: ProjectionInputs) -> LineageMap:
                 plan_operation_status=plan_operation_status,
                 evidence_artifacts=target_artifacts,
                 artifact_objects=target_artifact_objects,
+                primary_evidence_relative_path=primary_evidence_path,
             )
 
             if canonical_target_id not in lineage.bindings:

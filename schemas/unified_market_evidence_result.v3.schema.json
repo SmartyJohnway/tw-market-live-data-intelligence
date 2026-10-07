@@ -1895,7 +1895,9 @@
                         ],
                         "additionalProperties": false
                   }
-            ]
+            ,
+        {"$ref": "#/definitions/trading_status_context_composite"}
+      ]
       },
     "corporate_action_context": {
       "type": "object",
@@ -3829,6 +3831,243 @@
         "cash_capital_increase_effect",
         "other_official_reference_price_event"
       ]
+    }
+,
+    "trading_status_context_composite_component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id",
+        "source_id",
+        "source_contract_id",
+        "evidence_schema_version",
+        "component_status",
+        "artifact_reference",
+        "evidence"
+      ],
+      "properties": {
+        "component_id": {
+          "type": "string",
+          "pattern": "^h1c-v1-[0-9a-f]{24}$"
+        },
+        "source_id": {
+          "enum": [
+            "H1-TPEX-ATTENTION-OPENAPI",
+            "H1-TPEX-DISPOSITION-OPENAPI",
+            "H1-TPEX-CHANGED-TRADING-OPENAPI"
+          ]
+        },
+        "source_contract_id": {
+          "enum": [
+            "tpex_trading_warning_information",
+            "tpex_disposal_information",
+            "tpex_cmode"
+          ]
+        },
+        "evidence_schema_version": {
+          "enum": [
+            "trading_status_context_evidence.v1",
+            "trading_status_context_evidence.v2"
+          ]
+        },
+        "component_status": {
+          "enum": [
+            "available",
+            "partial",
+            "no_evidence_in_covered_scope",
+            "source_failed",
+            "binding_failed",
+            "not_applicable",
+            "unsupported"
+          ]
+        },
+        "artifact_reference": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "relative_path",
+            "sha256"
+          ],
+          "properties": {
+            "relative_path": {
+              "type": "string",
+              "pattern": "^(?!.*(?:^|/)\\.{1,2}(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "evidence": {
+          "type": "object",
+          "required": [
+            "schema_version"
+          ],
+          "properties": {
+            "schema_version": {
+              "enum": [
+                "trading_status_context_evidence.v1",
+                "trading_status_context_evidence.v2"
+              ]
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "trading_status_context_composite_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "declared_scope_complete",
+        "declared_status_types",
+        "covered_status_types",
+        "uncovered_status_types"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "complete",
+            "partial"
+          ]
+        },
+        "declared_scope_complete": {
+          "type": "boolean"
+        },
+        "declared_status_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "attention",
+              "disposition",
+              "changed_trading_method",
+              "suspension",
+              "resumption"
+            ]
+          },
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true
+        },
+        "covered_status_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "attention",
+              "disposition",
+              "changed_trading_method",
+              "suspension",
+              "resumption"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "uncovered_status_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "attention",
+              "disposition",
+              "changed_trading_method",
+              "suspension",
+              "resumption"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "trading_status_context_composite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "status",
+        "target",
+        "components",
+        "aggregate_coverage",
+        "canonical_item_count",
+        "native_observation_count",
+        "component_count",
+        "caveats",
+        "citation_ids"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "trading_status_context_composite.v1"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "partial",
+            "source_failed",
+            "binding_failed",
+            "unsupported",
+            "not_applicable"
+          ]
+        },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "canonical_target_id",
+            "market",
+            "security_code"
+          ],
+          "properties": {
+            "canonical_target_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "market": {
+              "const": "TPEX"
+            },
+            "security_code": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "components": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/definitions/trading_status_context_composite_component"
+          }
+        },
+        "aggregate_coverage": {
+          "$ref": "#/definitions/trading_status_context_composite_coverage"
+        },
+        "canonical_item_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "native_observation_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "component_count": {
+          "const": 3
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
     }
   },
   "properties": {

@@ -27,7 +27,7 @@
           "byte_size": {"type": "integer", "minimum": 0},
           "item_count": {"type": "integer", "minimum": 0},
           "evidence_contract": {"type": "string", "minLength": 1},
-          "artifact_role": {"enum": ["primary_evidence", "supporting_governance"]}
+          "artifact_role": {"enum": ["primary_evidence", "supporting_governance", "component_evidence"]}
         }
       }
     },
@@ -35,6 +35,33 @@
   },
   "allOf": [
     {"if": {"properties": {"status": {"const": "succeeded"}}}, "then": {"properties": {"error_code": {"type": "null"}, "evidence_artifacts": {"type": "array", "minItems": 1}}}},
-    {"if": {"properties": {"status": {"const": "failed"}}}, "then": {"properties": {"error_code": {"type": "string", "minLength": 1}}}}
+    {"if": {"properties": {"status": {"const": "failed"}}}, "then": {"properties": {"error_code": {"type": "string", "minLength": 1}}}},
+    {
+      "if": {
+        "properties": {
+          "capability_id": {"const": "trading_status_context"},
+          "evidence_contract": {"const": "trading_status_context_composite.v1"},
+          "status": {"const": "succeeded"}
+        },
+        "required": ["capability_id", "evidence_contract", "status"]
+      },
+      "then": {
+        "properties": {
+          "evidence_artifacts": {
+            "allOf": [
+              {"contains": {"properties": {"artifact_role": {"const": "primary_evidence"}, "schema_version": {"const": "trading_status_context_composite.v1"}}, "required": ["artifact_role", "schema_version"]}, "minContains": 1, "maxContains": 1},
+              {"contains": {"properties": {"artifact_role": {"const": "component_evidence"}, "schema_version": {"enum": ["trading_status_context_evidence.v1", "trading_status_context_evidence.v2"]}}, "required": ["artifact_role", "schema_version"]}, "minContains": 3, "maxContains": 3}
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "evidence_artifacts": {
+            "items": {"not": {"properties": {"artifact_role": {"const": "component_evidence"}}, "required": ["artifact_role"]}}
+          }
+        }
+      }
+    }
   ]
 }

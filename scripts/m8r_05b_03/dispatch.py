@@ -16,6 +16,7 @@ from scripts.m8r_filesystem_safety import (
 
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
+from .component_artifact_roles import validate_operation_artifact_roles
 from .registry import ExecutorMetadata, ExecutorMetadataRegistry, executor_route_key
 
 
@@ -271,6 +272,10 @@ def dispatch_prepared(
             raise OrchestrationError("operation_result_schema_version_unsupported")
         if list(validator.iter_errors(raw_result)):
             raise OrchestrationError("operation_result_schema_invalid")
+        try:
+            validate_operation_artifact_roles(raw_result)
+        except ValueError as exc:
+            raise OrchestrationError(str(exc)) from exc
 
         if (
             raw_result["operation_id"] != item.request["operation_id"]

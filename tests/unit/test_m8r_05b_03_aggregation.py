@@ -5,6 +5,9 @@ import pytest
 from scripts.m8r_05b_03.errors import OrchestrationError
 from scripts.m8r_05b_03.evidence_aggregation import aggregate_dispatch_outcomes
 from tests.unit.m8r_05b_03_test_helpers import build_valid_preflight
+from jsonschema import Draft202012Validator
+import json
+from pathlib import Path
 
 
 def test_aggregate_all_succeeded(tmp_path):
@@ -95,10 +98,46 @@ def test_aggregate_v2_preserves_per_artifact_contract_and_excludes_supporting_it
     assert agg["total_item_count"] == 1
     assert {item["evidence_contract"] for item in agg["artifact_inventory"]} == {
         binding["expected_evidence_contract"], "phase_h_source_attempt_governance.v1"}
-    assert all(set(item) == {"relative_path", "sha256", "schema_version", "byte_size", "item_count"}
-               for item in agg["operation_receipts"][0]["evidence_artifacts"])
-    assert all(set(item) == {"relative_path", "sha256", "schema_version", "byte_size", "item_count"}
-               for item in agg["operation_evidence_entries"][0]["artifacts"])
+    assert all({"relative_path", "sha256", "schema_version", "byte_size", "item_count", "evidence_contract", "artifact_role"}
+               .issubset(item) for item in agg["operation_receipts"][0]["evidence_artifacts"])
+    assert all({"relative_path", "sha256", "schema_version", "byte_size", "item_count", "evidence_contract", "artifact_role"}
+               .issubset(item) for item in agg["operation_evidence_entries"][0]["artifacts"])
+
+
+def test_aggregate_v2_composite_components_do_not_change_primary_result_count(tmp_path):
+    preflight = build_valid_preflight(tmp_path)
+    op_id = preflight["approved_operation_order"][0]
+    req = preflight["bounded_execution_requests"][0]
+    binding = preflight["resolved_operation_bindings"][op_id]
+    req["capability_id"] = "trading_status_context"
+    binding["capability_id"] = "trading_status_context"
+    binding["expected_evidence_contract"] = "trading_status_context_composite.v1"
+    primary = {"relative_path": "evidence/composite.json", "sha256": "a" * 64,
+               "schema_version": "trading_status_context_composite.v1", "byte_size": 20, "item_count": 2,
+               "evidence_contract": "trading_status_context_composite.v1", "artifact_role": "primary_evidence"}
+    components = [
+        {"relative_path": f"evidence/component-{index}.json", "sha256": f"{index + 1}" * 64,
+         "schema_version": version, "byte_size": 10, "item_count": count,
+         "evidence_contract": version, "artifact_role": "component_evidence"}
+        for index, (version, count) in enumerate((
+            ("trading_status_context_evidence.v1", 1),
+            ("trading_status_context_evidence.v1", 1),
+            ("trading_status_context_evidence.v2", 0),
+        ))
+    ]
+    outcome = {"schema_version": "unified_market_evidence_operation_result.v2", "operation_id": op_id,
+               "execution_request_id": req["execution_request_id"], "execution_request_hash": req["execution_request_hash"],
+               "executor_id": req["executor_id"], "capability_id": req["capability_id"],
+               "evidence_contract": binding["expected_evidence_contract"], "status": "succeeded", "error_code": None,
+               "result_item_count": 2, "evidence_artifacts": [primary, *components], "warnings": []}
+    schema = json.loads((Path(__file__).resolve().parents[2] / "schemas/unified_market_evidence_operation_result.v2.schema.json").read_text(encoding="utf-8"))
+    assert not list(Draft202012Validator(schema).iter_errors(outcome))
+    aggregation = aggregate_dispatch_outcomes(preflight, [outcome])
+    assert aggregation["total_item_count"] == 2
+    entry = aggregation["operation_evidence_entries"][0]
+    assert entry["result_item_count"] == 2
+    assert [artifact["artifact_role"] for artifact in entry["artifacts"]].count("component_evidence") == 3
+    assert [artifact["item_count"] for artifact in entry["artifacts"] if artifact["artifact_role"] == "component_evidence"] == [1, 1, 0]
 
 
 @pytest.mark.parametrize("artifacts, count, code", [

@@ -411,8 +411,11 @@ def test_result_v3_union_projects_v1_and_v2_and_renders_native_evidence(tmp_path
     assert {key: value for key, value in union[1].items() if key not in {"$schema", "$id", "title"}} == {
         key: value for key, value in standalone_v2.items() if key not in {"$schema", "$id", "title"}
     }
-    assert sum(not list(Draft7Validator(branch).iter_errors(h1_v1)) for branch in union) == 1
-    assert sum(not list(Draft7Validator(branch).iter_errors(h1_v2)) for branch in union) == 1
+    h1_union_validator = Draft7Validator({"$schema": result_schema["$schema"],
+                                          "definitions": result_schema["definitions"],
+                                          "$ref": "#/definitions/trading_status_context"})
+    assert not list(h1_union_validator.iter_errors(h1_v1))
+    assert not list(h1_union_validator.iter_errors(h1_v2))
 
     v1_inputs = _inputs()
     v1_result, _ = _build_package(v1_inputs)
@@ -451,6 +454,122 @@ def test_result_v3_union_projects_v1_and_v2_and_renders_native_evidence(tmp_path
     # or rewrite is performed for the nested H1 v2 evidence.
     assert unified_mode_c._persisted_output_version(tmp_path) == "unified_market_evidence_result.v3"
     assert unified_mode_c._read_verified_outputs(tmp_path, "unified_market_evidence_result.v3", result, audit, markdown) == readback
+
+
+def test_result_v3_composite_lineage_audit_and_handoff_preserve_components(tmp_path: Path):
+    from scripts.m8r_05c.trading_status_composer import build_component_record, compose_trading_status_context
+
+    inputs = _inputs(include_h2=False, include_h3=False)
+    original_h1_path = next(iter(inputs.evidence_artifacts))
+    base = deepcopy(inputs.evidence_artifacts[original_h1_path])
+    identity = inputs.f3_validation["target_results"][0]["canonical_identity"]
+    identity.update({"canonical_target_id": "TPEX:6488", "market": "TPEX", "security_code": "6488"})
+    inputs.request["targets"][0].update({"input": "6488", "market_hint": "TPEX"})
+    inputs.evidence_artifacts.pop(original_h1_path)
+    inputs.bundle["artifact_inventory"] = []
+    inputs.bundle["operation_evidence_entries"][0]["artifacts"] = []
+    inputs.phase_h_source_attempts = {}
+    attention_path = "evidence/phase_h/h1/TPEX_6488_attention.json"
+    operation_id = "op-h1"
+    component_specs = [
+        ("H1-TPEX-ATTENTION-OPENAPI", "tpex_trading_warning_information", "attention", 1),
+        ("H1-TPEX-DISPOSITION-OPENAPI", "tpex_disposal_information", "disposition", 1),
+        ("H1-TPEX-CHANGED-TRADING-OPENAPI", "tpex_cmode", None, 2),
+    ]
+    components = []
+    for index, (source_id, contract, status_type, version) in enumerate(component_specs):
+        path = attention_path if index == 0 else f"evidence/phase_h/h1/TPEX_6488_{contract}.json"
+        citation_id = _build_citation_id(operation_id, path)
+        artifact = _replace_citations(deepcopy(base), citation_id)
+        artifact.update({
+            "schema_version": f"trading_status_context_evidence.v{version}",
+            "status": "partial", "target": {"canonical_target_id": "TPEX:6488", "market": "TPEX", "security_code": "6488"},
+            "source": {"source_family": f"TPEX_{contract.upper()}", "source_contract_id": contract,
+                       "transport": "official_https_openapi", "license_authority": "data.gov.tw:11736:ODGL-1.0",
+                       "source_role": "default_candidate", "activation_state": "eligible"},
+            "citation_ids": [citation_id],
+            "coverage": {**base["coverage"], "status": "partial", "declared_scope_complete": False,
+                          "source_snapshot_date": "2026-10-06", "covered_status_types": [status_type] if status_type else [],
+                          "uncovered_status_types": [item for item in DECLARED_STATUS_TYPES if item != status_type] if status_type else DECLARED_STATUS_TYPES},
+            "items": [],
+        })
+        if status_type:
+            item = deepcopy(EXAMPLES["h1_attention_available"]["items"][0])
+            item.update({"status_type": status_type, "source_record_date": "2026-10-06", "citation_ids": [citation_id]})
+            artifact["items"] = [item]
+        else:
+            artifact.update({"native_observation_count": 1, "native_observations": [{
+                "source_native_field": "SuspensionOfTrading", "source_native_label": "停止交易",
+                "source_native_value": "Ｙ", "source_native_value_type": "string", "source_record_date": "2026-10-06",
+                "semantic_status": "unresolved", "semantic_caveat": "Official marker semantics remain unresolved; do not infer tradeability.",
+                "citation_ids": [citation_id],
+            }]})
+        inputs.evidence_artifacts[path] = artifact
+        digest = f"{index + 1}" * 64
+        reference = {"relative_path": path, "sha256": digest}
+        components.append(build_component_record(artifact["target"], source_id, artifact, reference))
+        item_count = len(artifact["items"])
+        inputs.bundle["artifact_inventory"].append({
+            **reference, "schema_version": artifact["schema_version"], "byte_size": 100 + index,
+            "item_count": item_count, "evidence_contract": artifact["schema_version"], "artifact_role": "component_evidence",
+        })
+        if index > 0:
+            inputs.phase_h_source_attempts[path] = [_attempt_metadata(
+                artifact["source"], coverage_result="partial", outcome="succeeded", citation_ids=artifact["citation_ids"],
+            )]
+        else:
+            inputs.phase_h_source_attempts[path] = [_attempt_metadata(
+                artifact["source"], coverage_result="partial", outcome="succeeded", citation_ids=artifact["citation_ids"],
+            )]
+
+    composite = compose_trading_status_context({"canonical_target_id": "TPEX:6488", "market": "TPEX", "security_code": "6488"}, components)
+    composite_path = "evidence/phase_h/h1/TPEX_6488_composite.json"
+    composite_hash = "a" * 64
+    inputs.evidence_artifacts[composite_path] = composite
+    inputs.bundle["artifact_inventory"].append({
+        "relative_path": composite_path, "sha256": composite_hash, "schema_version": composite["schema_version"],
+        "byte_size": 1000, "item_count": composite["canonical_item_count"],
+        "evidence_contract": composite["schema_version"], "artifact_role": "primary_evidence",
+    })
+    operation = inputs.plan["operations"][0]
+    operation.update({"market": "TPEX", "canonical_target_ids": ["TPEX:6488"],
+                      "expected_evidence_contract": "trading_status_context_composite.v1"})
+    artifacts = [{"relative_path": composite_path, "sha256": composite_hash, "schema_version": composite["schema_version"],
+                  "byte_size": 1000, "item_count": composite["canonical_item_count"],
+                  "evidence_contract": composite["schema_version"], "artifact_role": "primary_evidence"}]
+    for entry in inputs.bundle["artifact_inventory"]:
+        if entry.get("artifact_role") == "component_evidence":
+            artifacts.append({key: entry[key] for key in ("relative_path", "sha256", "schema_version", "byte_size", "item_count", "evidence_contract", "artifact_role")})
+    inputs.bundle["operation_evidence_entries"][0].update({
+        "status": "succeeded", "result_item_count": composite["canonical_item_count"], "artifacts": artifacts,
+    })
+    inputs.bundle["total_item_count"] = composite["canonical_item_count"]
+
+    result, audit = _build_package(inputs)
+    projected = result["targets"][0]["evidence"]["trading_status_context"]
+    assert projected == composite
+    assert [item["schema_version"] for item in audit["phase_h_governance"]["evidence_artifact_references"]
+            if item["capability_id"] == "trading_status_context"].count("trading_status_context_composite.v1") == 1
+    assert len([item for item in audit["phase_h_governance"]["source_attempts"]
+                if item["source_contract_id"].startswith("tpex_")]) == 3
+    markdown = render_result_markdown(result)
+    for token in ("TPEx Attention", "TPEx Disposition", "TPEx Current Special-Status Native Evidence", "停止交易", "Ｙ", "unresolved", "不可單獨解讀"):
+        assert token in markdown
+    assert "currently suspended" not in markdown.lower()
+    assert "cannot trade" not in markdown.lower()
+    mcp_result = mcp_success("market_export_ai_handoff", {
+        "canonical_result": result, "ai_ready_markdown": markdown,
+    })
+    assert mcp_result.structuredContent["canonical_result"]["targets"][0]["evidence"]["trading_status_context"] == composite
+    assert mcp_result.content[0].text == markdown
+    result_path, markdown_path, audit_path, _ = _OUTPUT_PATHS["unified_market_evidence_result.v3"]
+    materialize_outputs(output_root=str(tmp_path), result_json=result, audit_package_json=audit,
+                        result_markdown=markdown, result_relative_path=result_path,
+                        audit_relative_path=audit_path, result_md_relative_path=markdown_path)
+    assert unified_mode_c._persisted_output_version(tmp_path) == "unified_market_evidence_result.v3"
+    assert unified_mode_c._read_verified_outputs(tmp_path, "unified_market_evidence_result.v3", result, audit, markdown) == (
+        result, audit, markdown,
+    )
 
 
 def test_lineage_rejects_two_h1_versions_for_one_operation_binding():

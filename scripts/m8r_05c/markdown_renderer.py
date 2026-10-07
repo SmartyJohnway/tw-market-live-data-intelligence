@@ -235,6 +235,53 @@ def _fmt_typed_research_evidence(evidence: dict, need: str) -> str:
 
 def _fmt_phase_h_evidence(evidence: dict, need: str) -> str:
     """Render factual Phase H typed evidence without interpretation or advice."""
+    if need == "trading_status_context" and evidence.get("schema_version") == "trading_status_context_composite.v1":
+        from .trading_status_composer import validate_trading_status_context_composite
+        validate_trading_status_context_composite(evidence)
+        aggregate = evidence.get("aggregate_coverage", {})
+        lines = [
+            f"- **組合狀態**: `{evidence.get('status', 'unknown')}`（各來源狀態分別列出）",
+            f"- **已覆蓋標準類型**: {', '.join(aggregate.get('covered_status_types', [])) or '（無）'}",
+            f"- **未覆蓋標準類型**: {', '.join(aggregate.get('uncovered_status_types', [])) or '（無）'}",
+        ]
+        for component in evidence["components"]:
+            native_title = {
+                "H1-TPEX-ATTENTION-OPENAPI": "TPEx Attention",
+                "H1-TPEX-DISPOSITION-OPENAPI": "TPEx Disposition",
+                "H1-TPEX-CHANGED-TRADING-OPENAPI": "TPEx Current Special-Status Native Evidence",
+            }[component["source_id"]]
+            lines.extend(["", f"**{native_title}**", f"- **狀態**: `{component['component_status']}`",
+                          f"- **來源**: `{component['source_id']}` / `{component['source_contract_id']}`"])
+            component_evidence = component["evidence"]
+            record_date = (component_evidence.get("coverage", {}).get("source_report_date")
+                           or component_evidence.get("coverage", {}).get("source_snapshot_date"))
+            if record_date:
+                lines.append(f"- **來源日期**: `{record_date}`")
+            for item in component_evidence.get("items", []):
+                lines.append(f"- **標準狀態類型**: `{item['status_type']}`；生命週期：`{item['status_lifecycle']}`")
+                if item.get("source_record_date"):
+                    lines.append(f"- **事件紀錄日期**: `{item['source_record_date']}`")
+                if item.get("citation_ids"):
+                    lines.append(f"- **引用**: {', '.join(f'`{cit}`' for cit in item['citation_ids'])}")
+            for observation in component_evidence.get("native_observations", []):
+                label = str(observation["source_native_label"]).replace("\r", " ").replace("\n", " ").replace("`", "\\`")
+                raw_value = json.dumps(observation["source_native_value"], ensure_ascii=False, separators=(",", ":")).replace("`", "\\`")
+                lines.extend([
+                    f"- **來源原生欄位**: {label} (`{observation['source_native_field']}`)",
+                    f"- **來源原始值**: `{raw_value}`",
+                    f"- **來源紀錄日期**: `{observation['source_record_date']}`",
+                    f"- **語義狀態**: `{observation['semantic_status']}`",
+                    f"- **語義限制**: {observation['semantic_caveat']}",
+                    "- 此原始值不可單獨解讀為停牌、停止交易或可／不可交易結論。",
+                    f"- **引用 IDs**: {', '.join(f'`{cit}`' for cit in observation['citation_ids'])}",
+                ])
+            if component_evidence.get("citation_ids"):
+                lines.append(f"- **元件引用 IDs**: {', '.join(f'`{cit}`' for cit in component_evidence['citation_ids'])}")
+            if component_evidence.get("caveats"):
+                lines.extend(f"- **來源限制**: {caveat}" for caveat in component_evidence["caveats"])
+        lines.append("")
+        lines.append("> 元件缺席或來源失敗不表示正常交易；歷史恢復事件也不表示目前可交易。")
+        return "\n".join(lines)
     lines = [f"- **狀態**: {evidence.get('status', evidence.get('coverage_status', 'unknown'))}"]
     if need == "trading_status_context":
         coverage = evidence.get("coverage", {})
