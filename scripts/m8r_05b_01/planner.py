@@ -193,7 +193,18 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
     logical=len(ops)+len(blocked); hard=catalog.get('bounds',{}).get('hard_operation_limit')
     if not isinstance(hard,int) or logical>hard: raise PlanningError('operation_limit_exceeded')
     if plan_status=='plan_ready' and warnings: plan_status='plan_ready_with_warnings'
-    accounting={'logical_operation_count':logical,'batch_group_count':len(batch_groups),'executor_invocation_count':len(batch_groups),'network_request_estimate':len(batch_groups),'planned_evidence_bundle_count':1 if executable else 0}
+    # Most selected routes make one source request per executor invocation.
+    # A fixed composite route may declare a larger bounded request count while
+    # remaining one logical operation and one executor invocation.
+    network_estimate = 0
+    for group in batch_groups:
+        operation = next(item for item in executable if item['operation_id'] in group['operation_ids'])
+        route = routes.get(operation['capability_id'], {})
+        per_invocation = route.get('estimated_network_requests_per_invocation', 1)
+        if type(per_invocation) is not int or per_invocation < 1:
+            raise PlanningError('selected_route_network_estimate_invalid')
+        network_estimate += per_invocation
+    accounting={'logical_operation_count':logical,'batch_group_count':len(batch_groups),'executor_invocation_count':len(batch_groups),'network_request_estimate':network_estimate,'planned_evidence_bundle_count':1 if executable else 0}
     approval={'package_requires_owner_approval':any(o['capability_requires_execution_approval'] for o in executable),'authorization_eligible':bool(executable) and plan_status in {'plan_ready','plan_ready_with_warnings'},'approval_policy':'strictest_operation_controls_package','approval_reason_codes':['execution_approval_required'] if any(o['capability_requires_execution_approval'] for o in executable) else []}
     bindings['security_master_evidence_references']=[r for r,_ in pairs]; bindings['security_master_artifact_hashes']=[h for _,h in pairs]
     plan={'schema_version':PLAN_SCHEMA_VERSION,'execution_authorized':False,'input_bindings':bindings,'planner_metadata':{'planning_timestamp':planning_timestamp,'offline':True,'deterministic':True,'limit_source':'catalog.hard_operation_limit'},'plan_status':plan_status,'operations':ops,'batch_groups':batch_groups,'accounting':accounting,'warnings':warnings,'blocked_operations':blocked,'omitted_optional_capabilities':omissions,'evidence_references':bindings['security_master_evidence_references'],'package_approval_requirements':approval}

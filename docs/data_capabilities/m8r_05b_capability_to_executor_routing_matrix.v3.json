@@ -1,7 +1,7 @@
 {
   "schema_version": "m8r_05b_capability_to_executor_routing_matrix.v3",
   "authoritative_capability_catalog": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-  "routing_scope": "current V3 runtime authority with explicitly selected routes; H1-TPEX-ATTENTION-OPENAPI and Owner-accepted H3-TWSE-DEFAULT-BOUNDED are active; H2 remains inactive and TPEX H3 remains blocked/non-executable",
+  "routing_scope": "Current active Phase H sources: H1-TPEX-ATTENTION-OPENAPI, H1-TPEX-DISPOSITION-OPENAPI, H1-TPEX-CHANGED-TRADING-OPENAPI, H3-TWSE-DEFAULT-BOUNDED. H0-SRC-02 remains open; complete H1 coverage is not claimed.",
   "routes": [
     {
       "capability_id": "identity",
@@ -376,8 +376,53 @@
     },
     {
       "capability_id": "trading_status_context",
-      "capability_status_source": "catalog v3 support_status=runtime_executable; H-ACT-H1 selected TPEx attention route",
+      "capability_status_source": "catalog v3 support_status=runtime_executable; A2.6 selected three-source TPEx H1 composite route",
       "supported_markets": [
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_instrument_families": [
+        "company_share"
+      ],
+      "supported_instrument_types": [
+        "common_share"
+      ],
+      "target_required": true,
+      "time_scope_required": false,
+      "runtime_executable": true,
+      "provisional": false,
+      "candidate_executor_ids": [
+        "phase_h_h1_tpex_composite_executor"
+      ],
+      "selected_executor_id": "phase_h_h1_tpex_composite_executor",
+      "routing_status": "resolved",
+      "batching_scope": "none",
+      "approval_required": true,
+      "network_required": true,
+      "estimated_operation_rule": "one logical operation per exact approved TPEx equity target; exactly three fixed official TPEx GETs in the normal production path; retry zero; fallback none",
+      "estimated_network_requests_per_invocation": 3,
+      "parameter_mapping": {},
+      "output_evidence_contract": "trading_status_context_composite.v1",
+      "known_limitations": [
+        "Canonical coverage includes attention and disposition; cmode is active native evidence with unresolved marker semantics and contributes zero canonical coverage.",
+        "changed_trading_method, suspension, and resumption remain uncovered; blank or target absence does not establish normal trading.",
+        "H0-SRC-02 prevents complete H1 coverage claims."
+      ],
+      "evidence_paths": [
+        "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md"
+      ],
+      "capability_requires_execution_approval": true,
+      "package_approval_policy": "strictest_operation_controls_package",
+      "blocking_reasons": [],
+      "source_compatibility_key": "H1-TPEX-TPEX-COMPOSITE"
+    },
+    {
+      "capability_id": "market_state_context",
+      "capability_status_source": "catalog v3 support_status=runtime_executable; final Owner-accepted I1 production activation authority",
+      "supported_markets": [
+        "TWSE",
         "TPEX"
       ],
       "supported_security_types": [],
@@ -392,40 +437,8 @@
       "runtime_executable": true,
       "provisional": false,
       "candidate_executor_ids": [
-        "phase_h_h1_tpex_attention_executor"
+        "phase_i_i1_market_state_executor"
       ],
-      "selected_executor_id": "phase_h_h1_tpex_attention_executor",
-      "routing_status": "resolved",
-      "batching_scope": "none",
-      "approval_required": true,
-      "network_required": true,
-      "estimated_operation_rule": "one logical operation and one bounded official TPEx OpenAPI request per exact approved target",
-      "parameter_mapping": {},
-      "output_evidence_contract": "trading_status_context_evidence.v1",
-      "known_limitations": [
-        "only TPEx attention is active; disposition, suspension/resumption and changed-trading routes remain uncovered",
-        "complete H1 no-status claims are forbidden while uncovered subtypes remain"
-      ],
-      "evidence_paths": [
-        "docs/governance/phase_h/Phase_H_H1_Trading_Status_Context_Contract_FROZEN.md"
-      ],
-      "capability_requires_execution_approval": true,
-      "package_approval_policy": "strictest_operation_controls_package",
-      "blocking_reasons": [],
-      "source_compatibility_key": "H1-TPEX-ATTENTION-OPENAPI"
-    },
-    {
-      "capability_id": "market_state_context",
-      "capability_status_source": "catalog v3 support_status=runtime_executable; final Owner-accepted I1 production activation authority",
-      "supported_markets": ["TWSE", "TPEX"],
-      "supported_security_types": [],
-      "supported_instrument_families": ["company_share"],
-      "supported_instrument_types": ["common_share"],
-      "target_required": true,
-      "time_scope_required": false,
-      "runtime_executable": true,
-      "provisional": false,
-      "candidate_executor_ids": ["phase_i_i1_market_state_executor"],
       "selected_executor_id": "phase_i_i1_market_state_executor",
       "routing_status": "resolved",
       "batching_scope": "same_market",
@@ -434,7 +447,14 @@
       "estimated_operation_rule": "One logical operation per eligible canonical target. Same-market targets share one market acquisition: TWSE at most 2 unique official GETs, TPEx at most 1, mixed TWSE + TPEx at most 3 per governed execution; retry zero.",
       "parameter_mapping": {},
       "output_evidence_contract": "market_state_context_evidence.v1",
-      "known_limitations": ["TWSE can return governed partial evidence when official dates differ; dates remain preserved and explicit", "TWSE breadth selects only 類型=股票 and never falls back to 整體市場", "TWSE and TPEx source-native monetary and volume units remain distinct", "currentness remains unknown unless separately governed currentness evidence proves otherwise", "market-level evidence does not establish target-specific causation", "no historical lookup, polling, scheduler, background refresh, retry, or persistent source history"],
+      "known_limitations": [
+        "TWSE can return governed partial evidence when official dates differ; dates remain preserved and explicit",
+        "TWSE breadth selects only 類型=股票 and never falls back to 整體市場",
+        "TWSE and TPEx source-native monetary and volume units remain distinct",
+        "currentness remains unknown unless separately governed currentness evidence proves otherwise",
+        "market-level evidence does not establish target-specific causation",
+        "no historical lookup, polling, scheduler, background refresh, retry, or persistent source history"
+      ],
       "evidence_paths": [
         "docs/governance/phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json",
         "docs/governance/phase_i/Phase_I_I1_Market_State_Source_Contract_2026-09-29_FROZEN.md",
@@ -495,15 +515,26 @@
     {
       "capability_id": "cash_institutional_flow_context",
       "capability_status_source": "catalog v3 runtime_executable; Owner-authorized I3-A4 bounded production activation",
-      "supported_markets": ["TWSE", "TPEX"],
-      "supported_security_types": ["equity"],
-      "supported_instrument_families": ["company_share"],
-      "supported_instrument_types": ["common_share"],
+      "supported_markets": [
+        "TWSE",
+        "TPEX"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_instrument_families": [
+        "company_share"
+      ],
+      "supported_instrument_types": [
+        "common_share"
+      ],
       "target_required": true,
       "time_scope_required": false,
       "runtime_executable": true,
       "provisional": false,
-      "candidate_executor_ids": ["phase_i_i3_cash_institutional_flow_context_executor"],
+      "candidate_executor_ids": [
+        "phase_i_i3_cash_institutional_flow_context_executor"
+      ],
       "selected_executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
       "routing_status": "resolved",
       "batching_scope": "same_market",
@@ -512,8 +543,14 @@
       "estimated_operation_rule": "One official acquisition per market for each authorized same-market batch; at most two dispatches for a mixed TWSE/TPEX execution; retry zero",
       "parameter_mapping": {},
       "output_evidence_contract": "cash_institutional_flow_context_evidence.v2",
-      "known_limitations": ["TWSE source date must be governed and bound before authorization", "TPEx date remains source-reported; publication finality and currentness remain unknown", "no history, polling, scheduler, fallback, raw persistence, or retry"],
-      "evidence_paths": ["docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json"],
+      "known_limitations": [
+        "TWSE source date must be governed and bound before authorization",
+        "TPEx date remains source-reported; publication finality and currentness remain unknown",
+        "no history, polling, scheduler, fallback, raw persistence, or retry"
+      ],
+      "evidence_paths": [
+        "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json"
+      ],
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
       "blocking_reasons": []
@@ -567,7 +604,7 @@
   },
   "activation_status": "selected_phase_h_routes_active",
   "phase_h_source_authority": {
-    "active_source_count": 2,
+    "active_source_count": 4,
     "records": [
       {
         "source_id": "H1-TWSE-ATTENTION-OPENAPI",
@@ -620,10 +657,10 @@
       {
         "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
         "market": "TPEX",
-        "source_contract": "official_openapi",
+        "source_contract": "tpex_disposal_information",
         "source_role": "default_candidate",
-        "activation_state": "eligible",
-        "runtime_executable": false
+        "activation_state": "active",
+        "runtime_executable": true
       },
       {
         "source_id": "H1-TPEX-SUSPEND-TODAY-OPENAPI",
@@ -646,8 +683,8 @@
         "market": "TPEX",
         "source_contract": "tpex_cmode",
         "source_role": "default_candidate",
-        "activation_state": "eligible",
-        "runtime_executable": false
+        "activation_state": "active",
+        "runtime_executable": true
       },
       {
         "source_id": "H2-TWSE-EXRIGHT-PRE-OPENAPI",
