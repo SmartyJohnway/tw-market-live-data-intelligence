@@ -106,13 +106,13 @@ allows this component to contribute `disposition` only.
 
 ## Decision and next gate
 
-The hard date and exact-target cardinality gates fail. The primary result is
-`J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE`. Recommend a separately
-authorized **J-B03-A2.4-R1 — Disposition Contract/Normalizer Repair** to define
-calendar-validated interpretation for the seven-digit TPEx date grammar using
-an accepted precedent, and to preserve multiple exact-code rows as separate
-same-subtype evidence (or fail closed under a governed rule). Do not infer a
-latest row or lifecycle. This repair was not implemented here.
+The initial A2.4 hard date and exact-target cardinality gates failed. The
+historical initial result remains
+`J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE`; it is not rewritten by
+later work. Under the continuation authorization, R1 repaired only the dormant
+TPEx disposition normalizer and passed offline validation. R2 fresh live
+re-verification is pending, so this record does not yet claim final source
+contract verification.
 
 H1 v1, H1 v2, Composite v1, Result V3, OperationResult v2, and the H0-G
 manifest retain their required hashes. No production/schema/catalog/routing/
@@ -120,3 +120,47 @@ registry/activation/preferred-version/MCP changes occurred. MCP remains 6.
 Market GET/HEAD/POST = 1/0/0. `data/` was untouched; no payload was committed.
 H0-SRC-01E and H0-SRC-02 remain OPEN; J-B03 remains HOLD; J-B04 remains
 BLOCKING; Phase J remains NOT STARTED.
+
+## A2.4-R1 — Offline normalizer repair
+
+**Authority:** `USER_CHAT_2026-10-07_J_B03_A2_4_R1_R2_CONTINUATION_AUTHORIZATION`
+
+R1 preserved the original A2.4 HOLD and added a TPEx disposition-specific
+date path. Canonical ISO dates are calendar-validated; seven ASCII digits are
+parsed only through the existing `parse_roc_yyyymmdd()` precedent. Invalid ROC
+calendar dates fail closed. The raw date token remains in each complete
+source-native row provenance, while `source_record_date` carries the normalized
+Gregorian date. A table snapshot date is emitted only when every row resolves
+to the same date; mixed normalized dates leave it null with a caveat.
+
+Disposition binding now requires a non-empty string target code and exact
+string equality. It preserves every matching source row as a separate
+`disposition` / `reported` item, including two or three rows for one code. It
+does not select or deduplicate rows, infer a latest record, or assign effective
+dates. Generic `_bound_row()` and generic `_date_value()` were not broadened.
+Required source fields must be strings; blank free-text values are retained.
+No-match remains a partial source-specific result and does not mean normal
+trading.
+
+R1 offline tests: **56 passed, 0 failed** across disposition normalizer and
+composition suites, including R1-C1 through R1-C12. The Phase H V3 validator,
+`compileall scripts server tests`, and `git diff --check` passed. R1 market
+GET/HEAD/POST was **0/0/0**. No schema or runtime activation changes were made.
+
+## A2.4-R2 — Fresh live re-verification
+
+Status: **PENDING**. No R2 request has been made yet. After the R1 repair
+commit, R2 may use the separately authorized bounded official endpoint and
+must record its own request accounting and response evidence. Final A2.4
+disposition remains pending R2.
+
+## Verification history
+
+1. Initial A2.4 live probe: `HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE` (one GET).
+2. R1 offline repair: PASS (zero market requests).
+3. R2 live re-verification: pending.
+
+The six protected H1/Composite/Result/OperationResult/H0-G hashes remain
+unchanged. MCP remains exactly 6; the source remains `eligible` and
+`runtime_executable=false`; `data/` remains untouched and the raw source
+payload is not committed.

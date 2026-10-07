@@ -19,6 +19,7 @@ from scripts.m8r_05c.trading_status_composer import (
     validate_component_artifact_bindings,
     validate_trading_status_context_composite,
 )
+from server.services.phase_h_trading_status_adapters import normalize_tpex_disposition
 
 ROOT = Path(__file__).resolve().parents[2]
 EXAMPLES = json.loads((ROOT / "tests/fixtures/phase_h_contract_v3/contract_examples.json").read_text(encoding="utf-8"))
@@ -131,6 +132,34 @@ def test_c1_uses_exact_predeclared_source_families():
         "TPEX_DISPOSITION_OPEN_DATA",
         "TPEX_CHANGED_TRADING_OPEN_DATA",
     ]
+
+
+def test_repaired_multirow_disposition_composes_with_attention_and_native_cmode():
+    rows = [
+        {
+            "Date": "1151007", "SecuritiesCompanyCode": TARGET["security_code"],
+            "CompanyName": "fixture", "DispositionPeriod": "period-1",
+            "DispositionReasons": "reason-1", "DisposalCondition": "condition-1",
+        },
+        {
+            "Date": "1151008", "SecuritiesCompanyCode": TARGET["security_code"],
+            "CompanyName": "fixture", "DispositionPeriod": "period-2",
+            "DispositionReasons": "reason-2", "DisposalCondition": "condition-2",
+        },
+    ]
+    disposition = normalize_tpex_disposition(
+        rows, TARGET, observed_at="2026-10-07T00:00:00Z", citation_id=CITATION
+    )
+    assert len(disposition["items"]) == 2
+    components = _components()
+    components[1] = _component("H1-TPEX-DISPOSITION-OPENAPI", evidence=disposition)
+    composite = compose_trading_status_context(TARGET, components)
+    validate_trading_status_context_composite(composite)
+    assert composite["aggregate_coverage"]["covered_status_types"] == ["attention", "disposition"]
+    assert composite["status"] == "partial"
+    assert composite["canonical_item_count"] == 3
+    assert composite["native_observation_count"] == 1
+    assert "suspension" in composite["aggregate_coverage"]["uncovered_status_types"]
 
 
 @pytest.mark.parametrize(
