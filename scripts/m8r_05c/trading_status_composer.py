@@ -42,6 +42,7 @@ SOURCE_AUTHORITY = {
 _COMPONENT_ID = re.compile(r"^h1c-v1-[0-9a-f]{24}$")
 _RELATIVE_PATH = re.compile(r"^(?!.*(?:^|/)\.{1,2}(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$")
 _NATIVE_GUARD = "Source-native unresolved evidence is not a canonical trading-status conclusion."
+_CMODE_NO_MATCH_CAVEAT_PREFIX = "cmode_exact_no_match:"
 
 
 def _canonical_hash(value: Mapping[str, Any]) -> str:
@@ -154,6 +155,38 @@ def _usable(component: Mapping[str, Any]) -> bool:
     )
 
 
+def _cmode_component_classification(evidence: Mapping[str, Any]) -> str | None:
+    """Classify only the accepted cmode native, exact-no-match, or failure shapes."""
+    items = evidence.get("items")
+    observations = evidence.get("native_observations")
+    coverage = evidence.get("coverage")
+    if not isinstance(items, list) or not isinstance(observations, list) or not isinstance(coverage, Mapping):
+        return None
+    if evidence.get("status") == "partial" and not items and observations:
+        return "cmode_native_observation"
+    no_match = (
+        evidence.get("status") == "partial"
+        and coverage.get("status") == "partial"
+        and coverage.get("declared_scope_complete") is False
+        and coverage.get("retrieval_succeeded") is True
+        and coverage.get("source_contract_validated") is True
+        and coverage.get("exact_target_search_succeeded") is True
+        and not coverage.get("covered_status_types")
+        and set(coverage.get("uncovered_status_types", [])) == STATUS_TYPES
+        and not items and not observations
+        and evidence.get("native_observation_count") == 0
+        and any(
+            isinstance(caveat, str) and caveat.startswith(_CMODE_NO_MATCH_CAVEAT_PREFIX)
+            for caveat in evidence.get("caveats", [])
+        )
+    )
+    if no_match:
+        return "cmode_exact_no_match"
+    if evidence.get("status") in {"source_failed", "binding_failed", "unsupported", "not_applicable"} and not items and not observations:
+        return "cmode_failed_without_payload"
+    return None
+
+
 def _aggregate_status(components: Sequence[Mapping[str, Any]], covered: set[str]) -> str:
     if not any(_usable(component) for component in components):
         statuses = {component["component_status"] for component in components}
@@ -216,9 +249,7 @@ def compose_trading_status_context(
         seen_sources.add(source_key)
         seen_refs.add(ref_key)
         if source_id == "H1-TPEX-CHANGED-TRADING-OPENAPI":
-            native_only = evidence.get("status") == "partial" and not evidence.get("items") and bool(evidence.get("native_observations"))
-            failed_without_payload = evidence.get("status") in {"source_failed", "binding_failed", "unsupported", "not_applicable"} and not evidence.get("items") and not evidence.get("native_observations")
-            if not (native_only or failed_without_payload):
+            if _cmode_component_classification(evidence) is None:
                 raise ProjectionError("composite_cmode_native_only_contract_invalid")
         else:
             allowed_type = expected[2]

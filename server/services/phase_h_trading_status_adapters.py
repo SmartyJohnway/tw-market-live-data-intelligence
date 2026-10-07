@@ -13,7 +13,7 @@ from pathlib import Path
 import re
 from datetime import date
 
-from jsonschema import Draft7Validator
+from jsonschema import Draft7Validator, FormatChecker
 
 from scripts.m8a_official_eod_observation import parse_roc_yyyymmdd
 from scripts.validate_phase_h_v3_contracts import validate_trading_status_context_semantics
@@ -251,6 +251,141 @@ def normalize_tpex_disposition(rows: object, target: Mapping[str, str], *, obser
             citation_id=citation_id,
         ))
     return _result(source_id="H1-TPEX-DISPOSITION-OPENAPI", target=target, observed_at=observed_at, snapshot_date=snapshot_date, covered=("disposition",), items=items, citation_ids=[citation_id], caveats=date_caveats)
+
+
+def _tpex_cmode_date_value(raw: object) -> str:
+    """Normalize only the accepted TPEx cmode ISO/ROC date grammars."""
+    canonical = _date_value(raw)
+    if canonical is not None:
+        return canonical
+    if isinstance(raw, str) and re.fullmatch(r"[0-9]{7}", raw):
+        normalized, validation = parse_roc_yyyymmdd(raw)
+        if validation.get("valid") is True and normalized is not None:
+            return normalized
+        raise H1NormalizationError("source_failed:invalid_source_snapshot_date_calendar:Date")
+    raise H1NormalizationError("source_failed:unresolved_source_record_date:Date")
+
+
+def _tpex_cmode_snapshot_date(rows: Sequence[Mapping[str, object]]) -> tuple[str | None, list[str]]:
+    if not rows:
+        return None, []
+    normalized = [_tpex_cmode_date_value(row["Date"]) for row in rows]
+    if len(set(normalized)) > 1:
+        return None, ["source_snapshot_date_unresolved:Date:multiple_values"]
+    return normalized[0], []
+
+
+def _h1_v2_result(
+    *, source_id: str, target: Mapping[str, str], observed_at: str,
+    snapshot_date: str | None, citation_id: str, native_observations: Sequence[Mapping[str, object]],
+    caveats: Sequence[str],
+) -> dict:
+    value = {
+        "schema_version": "trading_status_context_evidence.v2",
+        "status": "partial",
+        "target": dict(target),
+        "coverage": {
+            "status": "partial",
+            "declared_scope_complete": False,
+            "retrieval_succeeded": True,
+            "source_contract_validated": True,
+            "exact_target_search_succeeded": True,
+            "source_snapshot_date": snapshot_date,
+            "declared_status_types": list(DECLARED_STATUS_TYPES),
+            "covered_status_types": [],
+            "uncovered_status_types": list(DECLARED_STATUS_TYPES),
+            "failed_source_families": [],
+        },
+        "source": _source(source_id),
+        "observed_at": observed_at,
+        "items": [],
+        "caveats": sorted(set(caveats)),
+        "citation_ids": [citation_id] if citation_id else [],
+        "native_observation_count": len(native_observations),
+        "native_observations": [deepcopy(dict(item)) for item in native_observations],
+    }
+    root = Path(__file__).resolve().parents[2]
+    schema = json.loads((root / "schemas" / "trading_status_context_evidence.v2.schema.json").read_text(encoding="utf-8"))
+    errors = list(Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(value))
+    if errors:
+        raise H1NormalizationError(f"assembled_h1_schema_invalid:{errors[0].message}")
+    try:
+        validate_trading_status_context_semantics(value)
+    except ValueError as exc:
+        raise H1NormalizationError(f"assembled_h1_semantics_invalid:{exc}") from exc
+    return value
+
+
+def normalize_tpex_cmode_native(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
+    """Preserve one exact TPEx cmode row as unresolved H1 v2 native evidence."""
+    required = (
+        "Date", "SecuritiesCompanyCode", "CompanyName", "AlteredTrading",
+        "PeriodicTrading", "ManagedStock", "MatchingFrequency",
+        "SuspensionOfTrading", " FinancialAnnouncements",
+    )
+    valid_rows = _validated_rows(rows, target, market="TPEX", required=required)
+    for row in valid_rows:
+        for field in required:
+            if not isinstance(row[field], str):
+                raise H1NormalizationError(f"source_failed:invalid_required_field_type:{field}")
+        if not row["SecuritiesCompanyCode"]:
+            raise H1NormalizationError("source_failed:empty_source_security_code")
+    code = target.get("security_code")
+    if not isinstance(code, str) or not code:
+        raise H1NormalizationError("binding_failed:invalid_exact_target_security_code")
+    snapshot_date, caveats = _tpex_cmode_snapshot_date(valid_rows)
+    matching = [row for row in valid_rows if row["SecuritiesCompanyCode"] == code]
+    if len(matching) > 1:
+        raise H1NormalizationError("binding_failed:ambiguous_exact_target_rows")
+    if not matching:
+        return _h1_v2_result(
+            source_id="H1-TPEX-CHANGED-TRADING-OPENAPI", target=target,
+            observed_at=observed_at, snapshot_date=snapshot_date,
+            citation_id=citation_id,
+            native_observations=(),
+            caveats=[*caveats, "cmode_exact_no_match: no matching source row; absence does not establish normal trading, non-suspension, or tradeability."],
+        )
+
+    row = matching[0]
+    raw_date = row["Date"]
+    row_date = _tpex_cmode_date_value(raw_date)
+    raw_value = row["SuspensionOfTrading"]
+    semantic_caveat = (
+        "Blank source-native value has unresolved semantics; do not infer not suspended, normal trading, or tradeability."
+        if raw_value == "" else
+        "Source-native marker semantics are unresolved; do not infer suspension, stopped trading, or tradeability."
+    )
+    observation = {
+        "source_native_field": "SuspensionOfTrading",
+        "source_native_label": "停止交易",
+        "source_native_value": raw_value,
+        "source_native_value_type": "string",
+        "source_record_date": row_date,
+        "semantic_status": "unresolved",
+        "semantic_caveat": semantic_caveat,
+        "citation_ids": [citation_id],
+    }
+    return _h1_v2_result(
+        source_id="H1-TPEX-CHANGED-TRADING-OPENAPI", target=target,
+        observed_at=observed_at, snapshot_date=snapshot_date,
+        citation_id=citation_id, native_observations=[observation],
+        caveats=[*caveats, f"source_native_provenance:Date={raw_date}"],
+    )
+
+
+def normalize_representative_tpex_h1_component(
+    source_id: str, rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str,
+) -> dict:
+    """Offline deterministic dispatch for the frozen representative TPEx source set."""
+    adapters = {
+        "H1-TPEX-ATTENTION-OPENAPI": normalize_tpex_attention,
+        "H1-TPEX-DISPOSITION-OPENAPI": normalize_tpex_disposition,
+        "H1-TPEX-CHANGED-TRADING-OPENAPI": normalize_tpex_cmode_native,
+    }
+    adapter = adapters.get(source_id)
+    if adapter is None:
+        raise H1NormalizationError("source_failed:unapproved_representative_source")
+    return adapter(rows, target, observed_at=observed_at, citation_id=citation_id)
 
 
 def normalize_twse_changed_trading(rows: object, target: Mapping[str, str], *, observed_at: str, citation_id: str) -> dict:
