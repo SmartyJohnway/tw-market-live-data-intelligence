@@ -7,9 +7,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 import tempfile
 from pathlib import Path
 from typing import Any
+from datetime import datetime, timezone
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from jsonschema import Draft202012Validator
 
@@ -23,7 +28,6 @@ from server.services.unified_mode_a import validate_mode_a_request
 from tests.helpers.phase_h_imp_7d_control_package import fixture_request
 from tests.helpers.phase_j_b03_a2_6_stage_b import run_production_dispatch_fixture
 
-ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_TARGET = "TPEX:6488"
 EXPECTED_ENDPOINTS = [item["endpoint"] for item in composite_core.SOURCES]
 
@@ -38,6 +42,9 @@ def _validate(schema_name: str, value: dict[str, Any]) -> None:
 def run() -> dict[str, Any]:
     calls: list[dict[str, Any]] = []
     real_get = composite_core.official_get
+    run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    metadata_log = Path(tempfile.gettempdir()) / f"tw-market-a26-stage-b-{run_id}.jsonl"
+    metadata_log.write_text("", encoding="utf-8")
     request = fixture_request(request_id="a26-stage-b-live-6488")
     security_master = load_active_mode_a_security_master()
     if security_master.validation.get("valid") is not True:
@@ -56,21 +63,42 @@ def run() -> dict[str, Any]:
         expected = EXPECTED_ENDPOINTS[ordinal - 1] if ordinal <= len(EXPECTED_ENDPOINTS) else None
         if endpoint != expected:
             raise AssertionError("stage_b_fixed_source_order_or_endpoint_mismatch")
-        response = real_get(endpoint, timeout_seconds=timeout_seconds)
-        raw = response["raw_bytes"]
-        calls.append({
+        record: dict[str, Any] = {
             "request_ordinal": ordinal,
             "method": "GET",
             "requested_url": endpoint,
-            "effective_url": response.get("effective_url"),
-            "http_status": response.get("status"),
-            "content_type": response.get("content_type"),
-            "response_bytes": len(raw),
-            "response_sha256": hashlib.sha256(raw).hexdigest(),
-            "retrieved_at": response.get("retrieved_at"),
-            "tls_policy": response.get("tls_policy"),
-            "redirect_count": response.get("redirect_count"),
-        })
+            "attempted_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+            "timeout_seconds": timeout_seconds,
+            "retry": 0,
+        }
+        calls.append(record)
+        try:
+            response = real_get(endpoint, timeout_seconds=timeout_seconds)
+            raw = response["raw_bytes"]
+            record.update({
+                "effective_url": response.get("effective_url"),
+                "http_status": response.get("status"),
+                "content_type": response.get("content_type"),
+                "response_bytes": len(raw),
+                "response_sha256": hashlib.sha256(raw).hexdigest(),
+                "retrieved_at": response.get("retrieved_at"),
+                "tls_policy": response.get("tls_policy"),
+                "redirect_count": response.get("redirect_count"),
+                "outcome": "response_received",
+            })
+        except Exception as exc:
+            record.update({"outcome": "transport_exception", "error_type": type(exc).__name__})
+            line = json.dumps(record, ensure_ascii=True, sort_keys=True)
+            with metadata_log.open("a", encoding="utf-8", newline="\n") as log:
+                log.write(line + "\n")
+                log.flush()
+            print(f"STAGE_B_REQUEST {line}", flush=True)
+            raise
+        line = json.dumps(record, ensure_ascii=True, sort_keys=True)
+        with metadata_log.open("a", encoding="utf-8", newline="\n") as log:
+            log.write(line + "\n")
+            log.flush()
+        print(f"STAGE_B_REQUEST {line}", flush=True)
         return response
 
     with tempfile.TemporaryDirectory(prefix="tw-market-a26-stage-b-") as temp_dir:
@@ -129,7 +157,11 @@ def run() -> dict[str, Any]:
             entry = {key: artifact[key] for key in ("relative_path", "sha256", "schema_version", "artifact_role", "item_count")}
             if artifact["artifact_role"] == "component_evidence":
                 evidence = json.loads(payload.decode("utf-8"))
-                entry["source_id"] = evidence["source"]["source_id"]
+                source_contract_id = evidence["source"]["source_contract_id"]
+                entry["source_id"] = next(
+                    source["source_id"] for source in composite_core.SOURCES
+                    if source["source_contract_id"] == source_contract_id
+                )
                 entry["component_status"] = evidence["status"]
                 entry["canonical_coverage"] = evidence["coverage"]["covered_status_types"]
                 entry["native_observation_count"] = evidence.get("native_observation_count", 0)
@@ -189,8 +221,11 @@ def run() -> dict[str, Any]:
                           "canonical_item_count": result_value["canonical_item_count"],
                           "native_observation_count": result_value["native_observation_count"],
                           "component_count": result_value["component_count"], "sha256": composite_hash},
-            "bundle": {"schema_version": execution["bundle"]["schema_version"], "artifact_count": len(execution["bundle"]["artifacts"])},
-            "receipt": {"schema_version": execution["receipt"]["schema_version"], "status": execution["receipt"]["status"]},
+            "bundle": {"schema_version": execution["bundle"]["schema_version"],
+                       "artifact_count": len(execution["bundle"]["artifact_inventory"]),
+                       "total_item_count": execution["bundle"]["total_item_count"]},
+            "receipt": {"schema_version": execution["receipt"]["schema_version"],
+                        "overall_status": execution["receipt"]["overall_status"]},
             "lineage": "PASS",
             "result_v3": "PASS",
             "audit_v3": "PASS",
@@ -199,6 +234,7 @@ def run() -> dict[str, Any]:
                                 "raw_native_rendered": bool(cmode_observations),
                                 "markdown_sha256": hashlib.sha256(handoff_markdown.encode("utf-8")).hexdigest()},
             "temporary_package_removed": True,
+            "sanitized_request_metadata_log": str(metadata_log),
             "raw_response_persisted": False,
         }
 

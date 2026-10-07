@@ -228,3 +228,50 @@ def test_stage_b_b_c14_rollback_copy_restores_pre_stage_b_two_source_topology():
                for source_id in ("H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"))
     assert any(item["executor_id"] == PHASE_H_H1_EXECUTOR_ID for item in rolled_metadata["executors"])
     assert all(item["executor_id"] != PHASE_H_H1_COMPOSITE_EXECUTOR_ID for item in rolled_metadata["executors"])
+
+
+def test_stage_b_live_runner_report_shape_with_offline_production_fixtures(tmp_path, monkeypatch):
+    from tests.helpers.phase_h_imp_7d_control_package import fixture_f3
+    from tests.helpers.phase_j_b03_a2_6_stage_b import FakeSecurityMaster
+    from tests.helpers.phase_j_b03_a2_6_integrated import fixture_responses
+    import scripts.run_phase_j_b03_a2_6_stage_b_live_acceptance as live_runner
+
+    security_master = FakeSecurityMaster()
+    security_master.validation = {"valid": True}
+    request = __import__("tests.helpers.phase_h_imp_7d_control_package", fromlist=["fixture_request"]).fixture_request(
+        request_id="a26-stage-b-runner-report-test"
+    )
+    response_map = fixture_responses()
+
+    def fixture_get(endpoint: str, *, timeout_seconds: int = 60):
+        assert timeout_seconds <= 60
+        source = next(item for item in shared.SOURCES if item["endpoint"] == endpoint)
+        response = response_map[source["source_id"]]
+        return {"raw_bytes": response.raw_bytes, "status": response.status,
+                "content_type": response.content_type, "effective_url": response.effective_url,
+                "retrieved_at": response.retrieved_at, "tls_policy": response.tls_policy,
+                "redirect_count": response.redirect_count}
+
+    monkeypatch.setattr(live_runner, "load_active_mode_a_security_master", lambda: security_master)
+    monkeypatch.setattr(live_runner, "validate_mode_a_request", lambda value: fixture_f3(value))
+    monkeypatch.setattr(live_runner, "fixture_request", lambda **kwargs: request)
+    monkeypatch.setattr(live_runner.tempfile, "gettempdir", lambda: str(tmp_path))
+    monkeypatch.setattr(shared, "official_get", fixture_get)
+
+    summary = live_runner.run()
+    assert summary["stage_b_live_run"] == "PASS"
+    assert summary["network_accounting"] == {"GET": 3, "HEAD": 0, "POST": 0}
+    assert summary["executor_identity"] == {
+        "routing_selected_executor_id": PHASE_H_H1_COMPOSITE_EXECUTOR_ID,
+        "plan_executor_id": PHASE_H_H1_COMPOSITE_EXECUTOR_ID,
+        "execution_request_executor_id": PHASE_H_H1_COMPOSITE_EXECUTOR_ID,
+        "operation_result_executor_id": PHASE_H_H1_COMPOSITE_EXECUTOR_ID,
+        "registry_executor_id": PHASE_H_H1_COMPOSITE_EXECUTOR_ID,
+    }
+    assert summary["composite"]["status"] == "partial"
+    assert summary["composite"]["canonical_coverage"] == ["attention", "disposition"]
+    assert summary["result_v3"] == summary["audit_v3"] == "PASS"
+    log_path = Path(summary["sanitized_request_metadata_log"])
+    assert log_path.is_file()
+    assert "raw_bytes" not in log_path.read_text(encoding="utf-8")
+    log_path.unlink()
