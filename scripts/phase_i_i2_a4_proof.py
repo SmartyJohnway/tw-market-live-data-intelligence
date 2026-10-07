@@ -159,6 +159,7 @@ def rollback_authority():
     rolled = {p: copy.deepcopy(current_json(p)) for p in AUTHORITY_FILES}
     i3_capability = "cash_institutional_flow_context"
     i3_executor = "phase_i_i3_cash_institutional_flow_context_executor"
+    from scripts.phase_i_i3_a4_compat import project_current_a26_h1_addition
     for path, field, key, value in ((CATALOG, "data_need_capabilities", "capability_id", CAPABILITY), (ROUTING, "routes", "capability_id", CAPABILITY), (METADATA, "executors", "executor_id", EXECUTOR), (DISPOSITION, "surfaces", "surface_id", EXECUTOR)):
         baseline = baseline_json(path)
         if path in (CATALOG, ROUTING):
@@ -171,6 +172,7 @@ def rollback_authority():
             rolled[path][field] = restored
         else:
             rolled[path][field] = [x for x in rolled[path][field] if x.get(key) not in {value, i3_executor}]
+        rolled[path] = project_current_a26_h1_addition(path, rolled[path], baseline)
         assert rolled[path] == baseline, path
     rolled[SOURCE] = copy.deepcopy(baseline_json(SOURCE))
     regs = [registry.get_route(x["executor_id"], x["capability_id"], x["market"]) for x in rolled[METADATA]["executors"]]

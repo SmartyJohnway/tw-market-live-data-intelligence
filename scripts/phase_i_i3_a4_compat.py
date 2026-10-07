@@ -15,6 +15,9 @@ CAPABILITY = "cash_institutional_flow_context"
 EVIDENCE_V2 = "cash_institutional_flow_context_evidence.v2"
 I3_EXECUTOR = "phase_i_i3_cash_institutional_flow_context_executor"
 CANDIDATE_BASELINE = "5c26e7b541bdb6c0d70a39c1e0eab8e129823373"
+A26_COMPOSITE_EXECUTOR = "phase_h_h1_tpex_composite_executor"
+A26_H1_CAPABILITY = "trading_status_context"
+A26_ADDED_SOURCES = {"H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}
 _DROP = object()
 
 
@@ -90,6 +93,98 @@ def _without_i3(value):
     return value
 
 
+def validate_current_a26_h1_authority() -> None:
+    """Require the exact bounded Stage-B H1 state before historical projection."""
+    catalog_path = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+    routing_path = ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    routing = json.loads(routing_path.read_text(encoding="utf-8"))
+    cap = next(x for x in catalog["data_need_capabilities"] if x.get("capability_id") == A26_H1_CAPABILITY)
+    route = next(x for x in routing["routes"] if x.get("capability_id") == A26_H1_CAPABILITY)
+    assert cap["runtime_executable"] is True and cap["phase_h_activation_state"] == "selected_route_active"
+    assert route["runtime_executable"] is True and route["routing_status"] == "resolved"
+    assert route["selected_executor_id"] == A26_COMPOSITE_EXECUTOR
+    assert route["output_evidence_contract"] == "trading_status_context_composite.v1"
+    authority = routing["phase_h_source_authority"]
+    active = {x["source_id"] for x in authority["records"]
+              if x.get("activation_state") == "active" and x.get("runtime_executable") is True}
+    assert authority["active_source_count"] == 4
+    assert active == {
+        "H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI",
+        "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED",
+    }
+
+
+def project_current_a26_h1_addition(relative: str, current, historical):
+    """Remove only the authorized current A2.6 H1 overlay for old comparisons.
+
+    This is a comparison projection; it never writes canonical files. Current
+    Stage-B route/source authority is checked before projection so a missing or
+    altered A2.6 route cannot be hidden by a historical test.
+    """
+    if relative not in {
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+    }:
+        return current
+    validate_current_a26_h1_authority()
+    result = json.loads(json.dumps(current))
+    if relative.endswith("unified_market_evidence_capability_catalog.v3.json"):
+        field, key = "data_need_capabilities", "capability_id"
+        current_rows, old_rows = result[field], historical[field]
+        result[field] = [next((json.loads(json.dumps(old)) for old in old_rows if old.get(key) == row.get(key)), row)
+                         if row.get(key) == A26_H1_CAPABILITY else row for row in current_rows]
+        if isinstance(result.get("phase_h_contract"), dict) and isinstance(historical.get("phase_h_contract"), dict):
+            result["phase_h_contract"]["active_phase_h_source_count"] = historical["phase_h_contract"]["active_phase_h_source_count"]
+    elif relative.endswith("m8r_05b_capability_to_executor_routing_matrix.v3.json"):
+        field, key = "routes", "capability_id"
+        old_route = next(x for x in historical[field] if x.get(key) == A26_H1_CAPABILITY)
+        result[field] = [json.loads(json.dumps(old_route)) if row.get(key) == A26_H1_CAPABILITY else row
+                         for row in result[field]]
+        authority = result.get("phase_h_source_authority")
+        old_authority = historical.get("phase_h_source_authority")
+        if isinstance(authority, dict) and isinstance(old_authority, dict):
+            old_records = {x.get("source_id"): x for x in old_authority.get("records", [])}
+            authority["records"] = [json.loads(json.dumps(old_records[row["source_id"]]))
+                                     if row.get("source_id") in A26_ADDED_SOURCES
+                                     and row.get("source_id") in old_records else row
+                                     for row in authority.get("records", [])]
+            authority["active_source_count"] = old_authority["active_source_count"]
+        if "routing_scope" in historical:
+            result["routing_scope"] = historical["routing_scope"]
+    elif relative.endswith("executor_registry_metadata.json"):
+        result["executors"] = [x for x in result["executors"] if x.get("executor_id") != A26_COMPOSITE_EXECUTOR]
+    else:
+        old_surfaces = {x.get("surface_id"): x for x in historical.get("surfaces", [])}
+        result["surfaces"] = [
+            json.loads(json.dumps(old_surfaces[row["surface_id"]]))
+            if row.get("surface_id") == "phase_h_h1_tpex_attention_executor"
+            and row.get("surface_id") in old_surfaces else row
+            for row in result["surfaces"]
+            if row.get("surface_id") != A26_COMPOSITE_EXECUTOR
+        ]
+    return result
+
+
+def strip_a26_production_adapter_addition(text: str) -> str:
+    """Project the exact Stage-B dispatch/registration additions from old code comparisons."""
+    text = text.replace('PHASE_H_H1_COMPOSITE_EXECUTOR_ID = "phase_h_h1_tpex_composite_executor"\n', "", 1)
+    text = text.replace(
+        '    if request.get("executor_id") == PHASE_H_H1_COMPOSITE_EXECUTOR_ID:\n'
+        '        from server.services.phase_h_h1_tpex_composite import production_composite_adapter\n'
+        '        try:\n'
+        '            return production_composite_adapter(request, context)\n'
+        '        except ValueError as exc:\n'
+        '            raise OrchestrationError(str(exc) or "phase_h_composite_execution_failed") from exc\n',
+        "", 1)
+    text = text.replace('        (PHASE_H_H1_COMPOSITE_EXECUTOR_ID, "trading_status_context", "TPEX"),\n', "", 1)
+    text = text.replace('PHASE_H_H1_EXECUTOR_ID, PHASE_H_H1_COMPOSITE_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID',
+                        'PHASE_H_H1_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID', 1)
+    return text
+
+
 def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_BASELINE) -> None:
     """Require current shared JSON authority to equal baseline sans I3 additions."""
     if relative == "scripts/m8r_06_03_production_adapter.py":
@@ -114,6 +209,7 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
             "def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) -> RuntimeAdapterRegistry:",
             "def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:", 1,
         )
+        current_text = strip_a26_production_adapter_addition(current_text)
         if current_text != baseline_text:
             raise AssertionError(f"non_i3_production_adapter_drift:{relative}")
         return
@@ -122,6 +218,7 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
         ["git", "show", f"{baseline}:{relative}"], cwd=ROOT
     ).decode("utf-8"))
     normalized = _normalize_current_h1_v2_addition(_without_i3(current))
+    normalized = project_current_a26_h1_addition(relative, normalized, old)
     if normalized != old:
         raise AssertionError(f"non_i3_production_authority_drift:{relative}")
 

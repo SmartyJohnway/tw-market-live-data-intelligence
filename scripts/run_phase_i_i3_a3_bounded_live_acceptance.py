@@ -19,7 +19,11 @@ sys.path.insert(0, str(ROOT))
 
 from scripts import phase_i_i3_a0_source_transport as transport
 from scripts.phase_i_i3_transport_mapping import transport_market_key
-from scripts.phase_i_i3_a4_compat import _normalize_current_h1_v2_addition
+from scripts.phase_i_i3_a4_compat import (
+    _normalize_current_h1_v2_addition,
+    project_current_a26_h1_addition,
+    strip_a26_production_adapter_addition,
+)
 from scripts.m8r_08g_security_master_releases import SECURITY_MASTER_ROOT, load_active_identity_service
 from scripts.m8r_filesystem_safety import atomic_write_bytes
 from scripts.run_phase_i_i3_a0_preflight import PROTECTED
@@ -156,16 +160,32 @@ def production_containment() -> None:
                 # A separately accepted Phase J addendum may add the H1 v2
                 # sibling while preserving the historical H1 v1 snapshot.
                 normalized = _normalize_current_h1_v2_addition(normalized)
+            normalized = project_current_a26_h1_addition(rel, normalized, baseline_json(rel))
             require(normalized == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
         elif rel in {
             "config/m8r_06_03_executor_registry_metadata.json",
             "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
         }:
-            require(without_i3(current) == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
+            normalized = project_current_a26_h1_addition(rel, without_i3(current), baseline_json(rel))
+            require(normalized == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
         elif rel == "scripts/m8r_06_03_production_adapter.py":
-            # This shared factory has one additive I3 registration hook. Its
-            # current I1/I2 route counts are checked directly below.
-            continue
+            current_text = (ROOT / rel).read_text(encoding="utf-8")
+            baseline_text = subprocess.check_output(
+                ["git", "show", f"{CURRENT_CONTAINMENT_BASELINE}:{rel}"], cwd=ROOT
+            ).decode("utf-8")
+            current_text = current_text.replace(
+                "    from server.services.phase_i_i3_cash_institutional_flow_production_candidate import (\n"
+                "        build_i3_production_candidate_registrations,\n"
+                "    )\n", "", 1)
+            current_text = current_text.replace(
+                "    registrations.extend(build_i3_production_candidate_registrations(\n"
+                "        **({} if i3_acquire is None else {\"acquire\": i3_acquire})\n"
+                "    ))\n", "", 1)
+            current_text = current_text.replace(
+                "def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) -> RuntimeAdapterRegistry:",
+                "def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:", 1)
+            current_text = strip_a26_production_adapter_addition(current_text)
+            require(current_text == baseline_text, f"non_i3_production_authority_drift:{rel}")
         else:
             require((ROOT / rel).read_bytes() == subprocess.check_output(
                 ["git", "show", f"{CURRENT_CONTAINMENT_BASELINE}:{rel}"], cwd=ROOT
