@@ -416,7 +416,7 @@
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
       "blocking_reasons": [],
-      "source_compatibility_key": "H1-TPEX-TPEX-COMPOSITE"
+      "source_compatibility_key": "H1-TPEX-COMPOSITE"
     },
     {
       "capability_id": "market_state_context",

@@ -915,5 +915,68 @@
         "network_may_have_occurred": false
       }
     }
+  },
+  "stage_b_r1_fail_closed_repair": {
+    "authority": "Owner chat instruction: Continue PR #321 — A2.6 Stage B R1 Fail-Closed Repair",
+    "reviewed_head": "1250b8cc48efa03e948c2890b1d1ddd76868ba2a",
+    "reviewed_tree": "180eb5dc979ce373c004bf4e124fdfeb7ba7c45a",
+    "independent_review_finding": "UNEXPECTED_INTERNAL_EXCEPTION_DOWNGRADED_TO_SOURCE_FAILURE",
+    "root_cause": "A broad Exception catch around source acquisition, decoding, validation and normalization converted unexpected internal errors into source_failed H1 components.",
+    "repair": {
+      "source_local_exception": "H1CompositeSourceAttemptError",
+      "source_local_conditions": [
+        "urllib URLError, TimeoutError or ConnectionError during the bounded source request",
+        "HTTP status or content-type source failure",
+        "redirect or effective URL mismatch",
+        "response byte ceiling exceeded",
+        "strict UTF-8 or JSON decode failure",
+        "invalid top-level source rows",
+        "required-field or required-field-type drift",
+        "source date contract drift",
+        "exact-target source-row ambiguity"
+      ],
+      "h1_normalization_boundary": "Only explicitly enumerated source_failed/binding_failed H1NormalizationError codes are source-local; assembled H1 schema/semantic errors and unapproved fixed-source plans propagate.",
+      "internal_failure_boundary": "Unexpected TypeError, KeyError, AssertionError, RuntimeError, provider invariants and TLS/plan configuration errors propagate out of the composite core; the dispatcher fails the operation without a composite result.",
+      "dispatcher_failure_version": "Composite adapter exceptions use failed OperationResult v2 with error_code=adapter_exception even when the approved execution request is v1; ordinary request-to-result mappings remain unchanged.",
+      "source_compatibility_key_before": "H1-TPEX-TPEX-COMPOSITE",
+      "source_compatibility_key_after": "H1-TPEX-COMPOSITE",
+      "batching_scope_changed": false
+    },
+    "regressions": {
+      "synthetic_normalizer_TypeError": "PASS: dispatch returned failed OperationResult v2 / adapter_exception, with no accepted evidence artifacts or composite",
+      "synthetic_provider_AssertionError": "PASS: dispatch returned failed OperationResult v2 / adapter_exception, with no accepted evidence artifacts",
+      "assembled_h1_schema_invariant": "PASS: propagated as OrchestrationError instead of source_failed component",
+      "disposition_transport_timeout": "PASS: source-local source_failed:transport_failure; attention and cmode remained visible; composite and OperationResult succeeded"
+    },
+    "validation": {
+      "r1_direct_dispatch_and_activation": "29 passed, 0 failed",
+      "r1_relevant_focused_suite": "202 passed, 0 failed",
+      "exploratory_receipt_suite": "234 passed, 1 pre-existing stale assertion failure: unchanged Receipt v1 test expects Request v3 ID rejection although current Receipt schema accepts v3; Receipt schema and test were not modified in R1",
+      "phase_h_v3_contract_validator": "PASS",
+      "compileall": "PASS",
+      "git_diff_check": "PASS",
+      "default_ci": {
+        "command": "python scripts/run_test_profile.py default-ci",
+        "passed": 1282,
+        "failed": 0,
+        "skipped": 1,
+        "deselected": 5,
+        "warnings": 18,
+        "duration_seconds": 353.93,
+        "network_may_have_occurred": false
+      }
+    },
+    "r1_market_requests": {"GET": 0, "HEAD": 0, "POST": 0},
+    "historical_stage_b_market_requests": {"GET": 9, "HEAD": 0, "POST": 0},
+    "historical_a2_6_cumulative_market_requests": {"GET": 15, "HEAD": 0, "POST": 0},
+    "live_evidence_rerun": false,
+    "live_history_preserved": "Stage-B runs 1 and 2 FAILED_AFTER_EXECUTION; run 3 PASS; disposition component digest remains NOT_RETAINED_IN_DURABLE_RUN_REPORT.",
+    "protected_schema_hashes_changed": false,
+    "selected_executor": "phase_h_h1_tpex_composite_executor",
+    "active_phase_h_source_count": 4,
+    "mcp_tool_count": 6,
+    "data_directory_touched": false,
+    "raw_market_payload_committed": false,
+    "issue_states": {"H0-SRC-01E": "OPEN", "H0-SRC-02": "OPEN", "J-B03": "HOLD", "J-B04": "BLOCKING", "Phase J": "NOT_STARTED"}
   }
 }

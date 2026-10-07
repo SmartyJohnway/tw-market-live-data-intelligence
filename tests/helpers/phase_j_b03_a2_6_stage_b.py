@@ -52,6 +52,7 @@ def run_production_dispatch_fixture(
     request_override: dict[str, Any] | None = None,
     f3_validation: dict[str, Any] | None = None,
     security_master: Any | None = None,
+    stop_after_dispatch: bool = False,
 ) -> dict[str, Any]:
     """Use canonical plan, metadata, production registry/dispatch and Mode C offline."""
     package_root.mkdir(parents=True, exist_ok=True)
@@ -115,6 +116,8 @@ def run_production_dispatch_fixture(
     transport = official_transport or fake_get
     with patch.object(shared, "official_get", transport):
         outcomes = dispatch_prepared(prepared, governed_output_root=str(root), mode="execute-approved", accepted_preflight=preflight)
+    if stop_after_dispatch:
+        return {"outcomes": outcomes, "root": root, "plan": plan, "response_log": response_log}
     aggregation = aggregate_dispatch_outcomes(preflight, outcomes)
     final_claim, receipt, bundle = finalize_consumption_and_write_receipt(preflight, claim, claim_path, aggregation,
         output_root=str(root), finalized_at=FIXED_TIME, finalization_owner_id="umefo-v1-bbbbbbbbbbbbbbbbbbbb")

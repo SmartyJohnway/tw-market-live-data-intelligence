@@ -9,12 +9,14 @@ import pytest
 from jsonschema import Draft202012Validator
 
 from scripts.m8r_05b_03.dispatch import DispatchRuntimeContext
+from scripts.m8r_05b_03.errors import OrchestrationError
 from scripts.m8r_06_03_production_adapter import (
     PHASE_H_H1_COMPOSITE_EXECUTOR_ID, PHASE_H_H1_EXECUTOR_ID,
     build_production_runtime_adapter_registry, production_operation_adapter,
 )
 from scripts.m8r_05c.trading_status_composer import validate_trading_status_context_composite
 from server.services import phase_h_h1_tpex_composite as shared
+from server.services.phase_h_trading_status_adapters import H1NormalizationError
 from tests.helpers.phase_j_b03_a2_6_integrated import fixture_responses
 from tests.helpers.phase_j_b03_a2_6_stage_b import run_production_dispatch_fixture
 
@@ -38,6 +40,7 @@ def test_stage_b_current_authority_selects_composite_and_activates_exact_three_h
     assert route["selected_executor_id"] == PHASE_H_H1_COMPOSITE_EXECUTOR_ID
     assert route["candidate_executor_ids"] == [PHASE_H_H1_COMPOSITE_EXECUTOR_ID]
     assert route["output_evidence_contract"] == "trading_status_context_composite.v1"
+    assert route["source_compatibility_key"] == "H1-TPEX-COMPOSITE"
     assert route["estimated_network_requests_per_invocation"] == 3
     assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
     assert routing["phase_h_source_authority"]["active_source_count"] == 4
@@ -185,8 +188,61 @@ def test_stage_b_b_c11_source_failure_is_independent(tmp_path):
     composite = _composite(execution)
     assert execution["outcomes"][0]["status"] == "succeeded"
     assert [item["component_status"] for item in composite["components"]] == ["partial", "source_failed", "partial"]
+    assert "source_failed:transport_failure" in composite["components"][1]["evidence"]["caveats"]
     assert composite["aggregate_coverage"]["covered_status_types"] == ["attention"]
     assert composite["components"][2]["evidence"]["native_observation_count"] == 1
+
+
+def test_stage_b_r1_internal_normalizer_type_error_fails_operation(tmp_path, monkeypatch):
+    def broken_normalizer(source_id, *args, **kwargs):
+        if source_id == "H1-TPEX-DISPOSITION-OPENAPI":
+            raise TypeError("synthetic_internal_bug")
+        return original(source_id, *args, **kwargs)
+
+    original = shared.normalize_representative_tpex_h1_component
+    monkeypatch.setattr(shared, "normalize_representative_tpex_h1_component", broken_normalizer)
+    execution = run_production_dispatch_fixture(tmp_path / "internal-bug", stop_after_dispatch=True)
+    outcome = execution["outcomes"][0]
+    assert outcome["schema_version"] == "unified_market_evidence_operation_result.v2"
+    assert outcome["status"] == "failed"
+    assert outcome["error_code"] == "adapter_exception"
+    assert outcome["evidence_artifacts"] == []
+    assert not list((execution["root"] / "evidence/phase_h/h1/composite").glob("umeop-*.json"))
+
+
+def test_stage_b_r1_provider_assertion_fails_operation(tmp_path):
+    observations = fixture_responses()
+
+    def broken_provider(endpoint: str, *, timeout_seconds: int = 60):
+        source = next(item for item in shared.SOURCES if item["endpoint"] == endpoint)
+        if source["source_id"] == "H1-TPEX-DISPOSITION-OPENAPI":
+            raise AssertionError("synthetic_provider_invariant")
+        obs = observations[source["source_id"]]
+        return {"raw_bytes": obs.raw_bytes, "status": obs.status,
+                "content_type": obs.content_type, "effective_url": obs.effective_url,
+                "retrieved_at": obs.retrieved_at, "tls_policy": obs.tls_policy,
+                "redirect_count": obs.redirect_count}
+
+    execution = run_production_dispatch_fixture(tmp_path / "provider-bug", official_transport=broken_provider,
+                                               stop_after_dispatch=True)
+    outcome = execution["outcomes"][0]
+    assert outcome["schema_version"] == "unified_market_evidence_operation_result.v2"
+    assert outcome["status"] == "failed"
+    assert outcome["error_code"] == "adapter_exception"
+    assert outcome["evidence_artifacts"] == []
+
+
+def test_stage_b_r1_assembled_h1_invariant_does_not_become_source_failure(tmp_path, monkeypatch):
+    def broken_normalizer(source_id, *args, **kwargs):
+        if source_id == "H1-TPEX-DISPOSITION-OPENAPI":
+            raise H1NormalizationError("assembled_h1_schema_invalid:synthetic_invariant")
+        return original(source_id, *args, **kwargs)
+
+    original = shared.normalize_representative_tpex_h1_component
+    monkeypatch.setattr(shared, "normalize_representative_tpex_h1_component", broken_normalizer)
+    with pytest.raises(OrchestrationError, match="assembled_h1_schema_invalid:synthetic_invariant"):
+        run_production_dispatch_fixture(tmp_path / "assembled-bug", stop_after_dispatch=True)
+    assert not list((tmp_path / "assembled-bug").rglob("umeop-*.json"))
 
 
 def test_stage_b_b_c14_rollback_copy_restores_pre_stage_b_two_source_topology():

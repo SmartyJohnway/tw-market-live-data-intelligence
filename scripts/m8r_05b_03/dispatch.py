@@ -16,7 +16,7 @@ from scripts.m8r_filesystem_safety import (
 
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
-from .component_artifact_roles import validate_operation_artifact_roles
+from .component_artifact_roles import COMPOSITE_CONTRACT, validate_operation_artifact_roles
 from .registry import ExecutorMetadata, ExecutorMetadataRegistry, executor_route_key
 
 
@@ -311,6 +311,8 @@ def dispatch_prepared(
         result_version = REQUEST_TO_RESULT_SCHEMA_VERSIONS.get(request.get("schema_version"))
         if result_version is None:
             raise OrchestrationError("execution_request_schema_version_unsupported")
+        if item.metadata.expected_evidence_contract == COMPOSITE_CONTRACT:
+            result_version = "unified_market_evidence_operation_result.v2"
         expected_req_id, expected_req_hash = request_identity(request)
         result = {
             "schema_version": result_version,

@@ -415,6 +415,7 @@ def main() -> None:
             or h1_route.get("selected_executor_id") != "phase_h_h1_tpex_composite_executor"
             or h1_route.get("candidate_executor_ids") != ["phase_h_h1_tpex_composite_executor"]
             or h1_route.get("output_evidence_contract") != "trading_status_context_composite.v1"
+            or h1_route.get("source_compatibility_key") != "H1-TPEX-COMPOSITE"
             or h1_route.get("supported_markets") != ["TPEX"]
             or "partial_attention_disposition_plus_native_cmode" not in h1_capability.get("coverage_modes", [])):
         _fail("phase_h_h1_composite_route_authority_invalid")

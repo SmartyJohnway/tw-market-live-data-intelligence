@@ -55,6 +55,32 @@ SOURCES: tuple[dict[str, Any], ...] = (
 SOURCE_BY_ID = {source["source_id"]: source for source in SOURCES}
 
 
+class H1CompositeSourceAttemptError(Exception):
+    """An expected transport or source-payload failure for one fixed source."""
+
+
+_SOURCE_LOCAL_NORMALIZATION_PREFIXES = (
+    "source_failed:invalid_top_level_rows",
+    "source_failed:missing_required_field:",
+    "source_failed:invalid_required_field_type:",
+    "source_failed:invalid_source_snapshot_date_type:",
+    "source_failed:invalid_source_snapshot_date_calendar:",
+    "source_failed:unresolved_source_record_date:",
+    "source_failed:date_contract_drift:",
+    "source_failed:empty_source_security_code",
+    "binding_failed:ambiguous_exact_target_rows",
+    "binding_failed:invalid_exact_target_security_code",
+)
+
+
+def _expected_normalization_failure_code(exc: H1NormalizationError) -> str:
+    code = str(exc)
+    if not any(code == prefix or (prefix.endswith(":") and code.startswith(prefix))
+               for prefix in _SOURCE_LOCAL_NORMALIZATION_PREFIXES):
+        raise exc
+    return code
+
+
 def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -83,7 +109,7 @@ def official_get(endpoint: str, *, timeout_seconds: int = TIMEOUT_SECONDS) -> di
     except urllib.error.HTTPError as response:
         raw = response.read(MAX_RESPONSE_BYTES + 1)
         if len(raw) > MAX_RESPONSE_BYTES:
-            raise ValueError("phase_h_composite_response_ceiling_exceeded")
+            raise H1CompositeSourceAttemptError("source_failed:response_ceiling_exceeded")
         return {"raw_bytes": raw, "status": int(response.code),
                 "content_type": str(response.headers.get("Content-Type", "")),
                 "effective_url": response.geturl(), "retrieved_at": _now(),
@@ -91,7 +117,7 @@ def official_get(endpoint: str, *, timeout_seconds: int = TIMEOUT_SECONDS) -> di
     with response:
         raw = response.read(MAX_RESPONSE_BYTES + 1)
         if len(raw) > MAX_RESPONSE_BYTES:
-            raise ValueError("phase_h_composite_response_ceiling_exceeded")
+            raise H1CompositeSourceAttemptError("source_failed:response_ceiling_exceeded")
         return {"raw_bytes": raw, "status": int(response.status),
                 "content_type": str(response.headers.get("Content-Type", "")),
                 "effective_url": response.geturl(), "retrieved_at": _now(),
@@ -100,13 +126,13 @@ def official_get(endpoint: str, *, timeout_seconds: int = TIMEOUT_SECONDS) -> di
 
 def _decode_payload(response: Mapping[str, Any]) -> list[dict[str, Any]]:
     if response.get("status") != 200 or "json" not in str(response.get("content_type", "")).lower():
-        raise ValueError("source_failed:http_or_content_type")
+        raise H1CompositeSourceAttemptError("source_failed:http_or_content_type")
     try:
         value = json.loads(response["raw_bytes"].decode("utf-8", errors="strict"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise ValueError("source_failed:strict_json_decode") from exc
+        raise H1CompositeSourceAttemptError("source_failed:strict_json_decode") from exc
     if not isinstance(value, list) or any(not isinstance(row, dict) for row in value):
-        raise H1NormalizationError("source_failed:invalid_top_level_rows")
+        raise H1CompositeSourceAttemptError("source_failed:invalid_top_level_rows")
     return value
 
 
@@ -183,12 +209,17 @@ def execute_composite_operation(
         citation_id = _build_citation_id(operation_id, f"evidence/phase_h/h1/composite/components/{index:02d}-{source['source_contract_id']}.json")
         source_meta: dict[str, Any] | None = None
         try:
-            response = response_provider(source) if response_provider is not None else official_get(source["endpoint"], timeout_seconds=request.get("timeout_seconds", TIMEOUT_SECONDS))
+            try:
+                response = response_provider(source) if response_provider is not None else official_get(source["endpoint"], timeout_seconds=request.get("timeout_seconds", TIMEOUT_SECONDS))
+            except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+                raise H1CompositeSourceAttemptError("source_failed:transport_failure") from exc
             if response.get("effective_url") != source["endpoint"] or response.get("redirect_count") != 0:
-                raise ValueError("source_failed:redirect_or_effective_url_mismatch")
+                raise H1CompositeSourceAttemptError("source_failed:redirect_or_effective_url_mismatch")
             raw = response.get("raw_bytes")
-            if not isinstance(raw, bytes) or len(raw) > MAX_RESPONSE_BYTES:
-                raise ValueError("source_failed:response_bytes_invalid")
+            if not isinstance(raw, bytes):
+                raise TypeError("phase_h_composite_response_bytes_invariant_invalid")
+            if len(raw) > MAX_RESPONSE_BYTES:
+                raise H1CompositeSourceAttemptError("source_failed:response_ceiling_exceeded")
             source_meta = {"request_ordinal": index, "method": "GET", "requested_url": source["endpoint"],
                            "effective_url": response["effective_url"], "http_status": response.get("status"),
                            "content_type": response.get("content_type", ""), "response_bytes": len(raw),
@@ -200,8 +231,9 @@ def execute_composite_operation(
             evidence = normalize_representative_tpex_h1_component(source["source_id"], rows, target,
                          observed_at=source_meta["retrieved_at"], citation_id=citation_id)
             outcome, failure_code, availability = "succeeded", None, "available"
-        except Exception as exc:
-            code = str(exc) if isinstance(exc, (ValueError, H1NormalizationError)) else f"source_failed:{type(exc).__name__}"
+        except (H1CompositeSourceAttemptError, H1NormalizationError) as exc:
+            code = (_expected_normalization_failure_code(exc)
+                    if isinstance(exc, H1NormalizationError) else str(exc))
             observed_at = _now()
             evidence = _source_failure(source, target, observed_at=observed_at, citation_id=citation_id, code=code)
             outcome, failure_code, availability = "failed", code, "unavailable"
