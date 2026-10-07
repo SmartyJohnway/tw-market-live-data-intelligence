@@ -87,3 +87,59 @@ No activation is authorized by this Stage A. Stop and wait for explicit Owner au
 - Phase J: NOT_STARTED
 - `data/`: untouched
 - Raw market payload committed: no
+
+## J-B03-A2.6 Stage B — Production Activation
+
+**Owner authority:** `USER_CHAT_2026-10-07_J_B03_A2_6_PRODUCTION_ACTIVATION_AUTHORIZATION`
+**Disposition:** `J_B03_A2_6_PRODUCTION_ACTIVATION_ACCEPTED`
+**PR:** #321 remains OPEN / Draft; activation exists in this reviewed branch and has not been merged or deployed.
+**Stage-B commits:** `414f904`, `d01a1cd`, `5cd743a`, `5b0d7d4`, `e6193e5`, `9c16b51`.
+
+Stage A remains preserved above as historical acceptance evidence. Stage B promotes the production `trading_status_context` route for TPEX equities to `phase_h_h1_tpex_composite_executor`, returning `trading_status_context_composite.v1`. The approved request and active local Security Master resolved the live target to `TPEX:6488` / `TW0006488000`; production execution is not fixed to 6488. Offline tests also bound `TPEX:1234` through the same shared core.
+
+The fixed ordered source set is TPEx attention (H1 v1), TPEx disposition (H1 v1), and TPEx `tpex_cmode` (H1 v2). The Stage-A candidate wrapper and production executor share the acquisition/normalization/persistence/composition core. No fourth source or automatic fallback is configured. The legacy attention executor remains registered for rollback but is not selected.
+
+| Source | Activation | Runtime executable | Live result |
+|---|---|---:|---|
+| `H1-TPEX-ATTENTION-OPENAPI` | active | yes | H1 v1, partial, attention covered, 1 item |
+| `H1-TPEX-DISPOSITION-OPENAPI` | active | yes | H1 v1, partial, disposition covered, 0 matching items |
+| `H1-TPEX-CHANGED-TRADING-OPENAPI` | active | yes | H1 v2, partial exact no-match, 0 native observations |
+| `H3-TWSE-DEFAULT-BOUNDED` | active | yes | pre-existing H3 source |
+
+Active Phase-H source count is exactly **4**. Suspend-today, suspend-history, and TWSE H1 sources remain inactive. Attention route behavior remains unchanged. No preferred-version promotion or MCP surface change occurred; MCP remains six tools.
+
+The final production-path run made exactly 3 GETs in fixed order, all HTTP 200, with TLS policy `compatibility`, redirects 0, retries 0, and no response-body persistence. Stage-B run 1 made 3 GETs but failed after source execution while the report code looked up a non-existent `source_id` field; its response metadata was not retained and its HTTP outcomes/hashes are not inferred. Run 2 made 3 GETs, all HTTP 200 with metadata captured, and completed the production checks before the report code used the wrong Bundle property name. Run 3 repaired that reporting defect and passed end to end. Stage-B total is **9 GET / 0 HEAD / 0 POST**. Stage A's accepted history remains **6 GET / 0 HEAD / 0 POST**, so A2.6 cumulative total is **15 / 0 / 0**, within the Stage-B ceiling of 10 GETs for Stage B alone.
+
+The accepted live run used the production executor consistently in routing, plan, execution request, OperationResult, and registry. OperationResult v2 succeeded with `result_item_count=1`; Bundle v1 validated with 7 artifacts and total item count 1; Receipt v1 succeeded. Lineage, Result V3, Audit V3, and Mode C handoff passed. The composite status is `partial`, with canonical coverage `attention` + `disposition`; `changed_trading_method`, `suspension`, and `resumption` remain uncovered. It contains 1 canonical item, 0 native observations, and 3 source-separated components. The live snapshot had no matching disposition or `tpex_cmode` row for the bound target. This does not imply normal trading or tradeability. Offline tests retain coverage for blank and U+FF39 values as unresolved native evidence.
+
+Live response evidence for the final run (full payloads were not persisted):
+
+| Source | HTTP | Bytes | SHA-256 | Retrieved (UTC) |
+|---|---:|---:|---|---|
+| Attention | 200 | 9,536 | `bb91afe4e485ff63b04f38305573972104bd65499c876e2c2bb4e8ee4a641ec7` | `2026-10-07T09:32:30Z` |
+| Disposition | 200 | 20,222 | `fb1f07af0caf6bef5b4545bd0323736bf70c6ca70bc21368c2fd19840d5789e0` | `2026-10-07T09:32:31Z` |
+| `tpex_cmode` | 200 | 5,039 | `26c7ead445eda8427724b31255650c2c8edcc09d0e8b9abf8eae4f071003856e` | `2026-10-07T09:32:31Z` |
+
+The final composite SHA-256 is `24a78e5e5ac30e85b7261f429a4e36173a1eb258ff142280311689dff2bbdf8b`. Its source component hashes are `ca622965ff00d93816ad5f001a934221e70feabb2ae9c7b61ae2bc3764b67848` (attention), `bbc8816ec16c70dbc8275a80c494dad84f212798e70ca5406724a2fb4b96c` (disposition), and `144bd67020cd8563743d881c9b3904c364248171402d040d4408a22c159b347b` (`tpex_cmode`).
+
+The deterministic rollback proof restored the pre-Stage-B two-source topology in a copy; the composite route and registration were absent after rollback, while the legacy attention registration remained. No production change was reverted in the active branch.
+
+Post-live focused Stage-B tests: **111 passed, 0 failed, 0 skipped**. Stage-B activation tests including the sanitized-report regression: **12 passed**. Pre-live broad offline suite: **332 passed, 0 failed, 0 skipped**. Repository validators, compilation, and diff checks passed. The final `default-ci` result is recorded in the paired JSON after completion.
+
+Stage-B activation changes canonical descriptors, catalog, routing, registry, and production adapter in this branch only. No H1/Composite/Request/Result/OperationResult/Bundle/Receipt/Audit schema changed. No raw market payload was committed. The pre-existing `data/` directory was not touched.
+
+## Current A2.6 issue state after Stage B
+
+- H0-SRC-01E: OPEN
+- H0-SRC-02: OPEN
+- J-B03: HOLD
+- J-B04: BLOCKING
+- Phase J: NOT_STARTED
+- Complete H1 coverage: not claimed
+- PR #321: OPEN / Draft / unmerged
+
+#### Phase I historical compatibility repair
+
+The first full `default-ci` run exposed 10 historical Phase I comparison failures after the authorized A2.6 current Phase-H Catalog/Routing/Registry changes. The historical records themselves were unchanged; several validators compared the new shared current-state bytes directly with their earlier snapshots. The bounded repair now validates the exact active A2.6 H1 route and four-source authority before projecting only the authorized A2.6 overlay out of old comparisons. I3-A4 recorded hashes are checked against the committed pre-A2.6 snapshot. No Phase I source, executor, semantic contract, or historical record was changed. The previously failing Phase I focused group then passed: **210 passed, 0 failed, 0 skipped**.
+
+The complete `default-ci` profile then passed: **1,282 passed, 0 failed, 1 skipped, 5 deselected, 18 warnings** in 304.10 seconds. The deterministic profile reported `network_may_have_occurred=false`; Stage-B market calls are accounted separately above.
