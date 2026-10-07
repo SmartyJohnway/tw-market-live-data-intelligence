@@ -1,0 +1,189 @@
+{
+  "schema_version": "phase_j_j_b03_a2_2_representative_h1_composition_adapter_integration_design.v1",
+  "decision_date": "2026-10-07",
+  "owner_authority": "USER_CHAT_2026-10-07_J_B03_A2_2_REPRESENTATIVE_H1_COMPOSITION_DESIGN_AUTHORIZATION",
+  "starting_main": {
+    "commit": "e8550206d564368ec10dfdc5a0bf023d5aeb32fb",
+    "tree": "c4267d744a42defecc108995b3d613fc2b64e405",
+    "pr_316": "MERGED / CLOSED"
+  },
+  "branch": "phase-j/j-b03-a2-2-representative-h1-composition-design",
+  "accepted_a2_1b": {
+    "disposition": "J_B03_A2_1B_H1_V2_ADDITIVE_RESULT_V3_CONTRACT_ACCEPTED",
+    "h1_v1_sha256": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+    "h1_v2_sha256": "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38",
+    "result_v3_sha256": "a8519bc4c444f59b24e74de702667c5570ed15f816a841b509e24b2f3bc788d5",
+    "h0_g_manifest_sha256": "6c1f23ed12a0d3bffcb7b964197eda6ee6a36d8c95ef1a8c5d6106ef31ea89f6",
+    "entry_contract": "H1 v1 remains unchanged; H1 v2 adds source-native observations outside canonical items; each H1 artifact has one top-level source contract; Result V3 accepts H1 v1 or v2; MCP remains six tools."
+  },
+  "current_cardinality": {
+    "request_surface": "One requested trading_status_context data_need is represented per target in the request.",
+    "operation_binding": "LineageMap.bindings is target_id -> data_need -> one OperationBinding. A second plan operation for the same target/data_need raises duplicate_binding (scripts/m8r_05c/lineage_resolver.py).",
+    "typed_artifact_per_binding": "The current lineage resolver permits at most one selected H1 typed artifact in a binding; a second H1 v1/v2 artifact raises duplicate_phase_h_typed_artifact.",
+    "result_cardinality": "TargetEvidenceProjection.trading_status_context is one dict-or-null; Result V3 projects one value into that target field (scripts/m8r_05c/models.py and result_builder.py).",
+    "source_cardinality": "Each accepted H1 v1/v2 source artifact has one top-level source object. The H1 v2 acceptance explicitly preserves one source contract per artifact.",
+    "composition_path_exists": false
+  },
+  "source_readiness": {
+    "attention": {
+      "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+      "executor": "phase_h_h1_tpex_attention_executor",
+      "source_contract": "tpex_trading_warning_information",
+      "h1_contract": "trading_status_context_evidence.v1",
+      "activation_state": "active",
+      "runtime_executable": true,
+      "readiness": "READY_FOR_INTEGRATION",
+      "basis": "Current catalog, routing, executor registry, and accepted H-ACT-H1 ledger identify this as the only active H1 route. Preserve its H1 v1 output behavior."
+    },
+    "disposition": {
+      "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+      "source_contract": "tpex_disposal_information",
+      "dataset": "data.gov.tw/11396; ODGL 1.0",
+      "activation_state": "eligible",
+      "runtime_executable": false,
+      "static_normalizer_present": true,
+      "live_source_contract_verified": false,
+      "readiness": "NEEDS_SOURCE_CONTRACT_VERIFICATION",
+      "basis": "PR #303 records official fields and a dormant normalizer, but runtime/live value contract verification and route activation have not occurred."
+    },
+    "cmode": {
+      "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+      "source_contract": "tpex_cmode",
+      "dataset": "data.gov.tw/11736; ODGL 1.0",
+      "activation_state": "eligible",
+      "runtime_executable": false,
+      "source_shape": "verified in accepted S2B/S2C evidence",
+      "marker": "SuspensionOfTrading=Ｙ (U+FF39); official affirmative marker semantics remain unverified by S2D",
+      "h1_representation": "H1 v2 native_observations is accepted and preserves semantic_status=unresolved",
+      "readiness": "NEEDS_ADAPTER_IMPLEMENTATION",
+      "basis": "Source identity, license, payload shape, date precedent, and native-only representation are accepted; deterministic adapter and separate activation gate remain outstanding."
+    },
+    "suspend_resume_history": {
+      "source_id": "H1-TPEX-SUSPEND-HISTORY-OPENAPI",
+      "role": "bounded historical event evidence; not current tradeability proof",
+      "activation_state": "eligible",
+      "runtime_executable": false,
+      "accepted_shape_disposition": "J_B03_A1R_HOLD_SEMANTIC_INSUFFICIENCY",
+      "readiness": "OPTIONAL_ONLY",
+      "basis": "May remain optional historical support; full date/calendar grammar, lifecycle, retention, and revision semantics are not established."
+    },
+    "suspend_today": {
+      "source_id": "H1-TPEX-SUSPEND-TODAY-OPENAPI",
+      "activation_state": "inactive",
+      "runtime_executable": false,
+      "issue": "H0-SRC-01E remains OPEN",
+      "product_relevance": "OPTIONAL_CURRENT_EVENT_DETAIL_NOT_J_B03_BLOCKING",
+      "readiness": "OPTIONAL_ONLY"
+    }
+  },
+  "composition_options": {
+    "A_result_level_component_composition": {
+      "assessment": "SELECTED",
+      "reason": "Preserves one public data_need, one target-level logical operation, one-source-per-H1-artifact, independent component provenance/failure, and the single Result target field while adding an explicit higher-level composition contract."
+    },
+    "B_multiple_operations_same_target_need": {
+      "assessment": "NOT_SELECTED",
+      "reason": "Conflicts with current target/data_need -> one binding invariant. Supporting it would require coordinated changes to planning, control/approval, operation identity, aggregation, lineage, Result and Audit, and would increase authorization ambiguity. Do not weaken duplicate_binding or duplicate typed artifact protections as a shortcut."
+    },
+    "C_multi_source_h1_artifact": {
+      "assessment": "REJECTED",
+      "reason": "Would contradict the accepted A2.1B one-source-per-H1-artifact contract and blur source-specific authority, coverage, dates, citations, hashes, and failures."
+    },
+    "D_result_attention_but_other_evidence_only_in_audit_or_handoff": {
+      "assessment": "REJECTED",
+      "reason": "Would keep disposition/cmode facts outside the canonical Result evidence field, making the Result incomplete for readers and separating conversational facts from the normal persisted/readback surface."
+    }
+  },
+  "selected_architecture": {
+    "disposition": "J_B03_A2_2_SELECT_RESULT_LEVEL_COMPONENT_COMPOSITION",
+    "layer": "Higher-level Result projection/composition over independently source-bound H1 component artifacts, coordinated by one explicitly selected composite executor/operation for the predeclared representative source set.",
+    "candidate_contract": "trading_status_context_composite.v1",
+    "contract_is_not_a_source_artifact": true,
+    "component_contracts": [
+      "trading_status_context_evidence.v1",
+      "trading_status_context_evidence.v2"
+    ],
+    "component_requirements": [
+      "retain each component's source identity, H1 schema version, target, status, coverage, observed/source dates, canonical items or native observations, citations, and artifact identity/hash independently",
+      "one component per predeclared source contract; reject duplicate source/component and duplicate artifact identities",
+      "all components bind to the same exact canonical target and requested data_need",
+      "preserve H1 v1 attention output without migration"
+    ],
+    "aggregate_coverage": "Union only canonical covered_status_types from source-valid components. Native observations do not contribute a canonical subtype; unresolved tpex_cmode SuspensionOfTrading=Ｙ leaves suspension uncovered.",
+    "aggregate_status": "Keep a status/outcome on every source component. The composite remains partial while representative canonical scope or the five-type H1 scope is incomplete; component source_failed, binding_failed, no_evidence_in_covered_scope, unsupported, and successful partial outcomes remain distinguishable. Never infer complete/available solely from all configured requests having returned. If no usable component evidence remains, the aggregate may report failure while retaining every component failure detail.",
+    "failure_independence": "Failure of one component cannot erase another component's valid evidence. A failed or unmatched component is represented with its own status, source, coverage, and failure reason alongside successful/partial components.",
+    "semantic_guard": "Composition cannot add semantics absent from components: native Ｙ is not suspension; absence is not normal; history resumption is not current tradeability; partial components are not complete H1 coverage."
+  },
+  "integration_impacts": {
+    "lineage": "Future explicit component group/binding support is required. Keep current duplicate_binding and duplicate_phase_h_typed_artifact failures for ordinary bindings. Resolver must collect only the predeclared source-specific artifacts authorized for the one composite operation, validate target/source/hash/citation alignment, and return a typed component set rather than an arbitrary first artifact.",
+    "operation_bundle": "Current operation-result v2 has one operation-level evidence_contract and counts primary artifact item_count values; it requires each primary artifact contract to match the operation contract. Future work must explicitly model one composite primary result plus independently source-bound H1 component artifact references/payloads, without mislabeling H1 evidence or changing legacy item_count semantics. Native observations remain separately counted from canonical items.",
+    "result_v3_impact": "ADDITIVE_RESULT_V3_COMPOSITION_BRANCH_REQUIRED. The current Result V3 trading_status_context union accepts H1 v1/v2 only. A future dated current authority must add the composite contract branch and record new hashes; do not change Result V3 in A2.2. Result V4 is not indicated by a demonstrated incompatibility.",
+    "audit_v3_impact": "Audit V3 schema can remain unchanged in principle: its evidence_artifact_references and source_attempts arrays can record separate capability/schema_version/path/hash and source attempt lineage for each component. Future builder/loader mappings and exact one-to-one attempt/reference validation must be extended and tested.",
+    "ai_handoff_impact": "Render each source component separately with its own status, source/citations, dates, coverage, and caveat. Render cmode's raw Ｙ with semantic_status=unresolved and an explicit no-normalization guard; never flatten components into one status sentence.",
+    "mcp_impact": "Existing market_read_result and market_export_ai_handoff carry the Result/Markdown; no seventh tool is needed. Preserve exactly six tools and public tool schemas unless a separately evidenced contract blocker arises.",
+    "planner_and_routing": "Prefer one composite executor for one trading_status_context operation, with a fixed source set and exact component execution plan. Do not add parallel bindings for the same target/data_need. Existing attention route remains valid and emits H1 v1; future composite support must accept heterogeneous H1 v1/v2 components.",
+    "network_authorization": "Preview/approval/execution must bind the exact ordered source-contract set, official endpoint per component, exact target, TLS policy, timeout, response-byte bound, per-source request budget, retry count, redirect/fallback policy, and expected evidence contracts. No dynamic LLM-selected URL/source. A generic approval must not authorize sources outside the displayed predeclared set.",
+    "deterministic_identity": "Bind composition identity to canonical target, requested data_need, composition contract version, ordered predeclared source-contract set, and each component artifact identity/hash. Exclude absolute paths, host/machine name, wall-clock formatting, and UI labels."
+  },
+  "static_fixture_results": {
+    "method": "Ephemeral in-memory model of the proposed composite component invariants; no production files or schemas changed.",
+    "C1_all_required_components_succeed": "PASS; component outcomes retained, aggregate canonical coverage is attention+disposition only, native unresolved cmode does not cover suspension, aggregate remains partial.",
+    "C2_one_component_source_failed": "PASS; attention available, disposition source_failed, and cmode native partial remain independently visible.",
+    "C3_no_matching_disposition_evidence": "PASS; the source component records successful bounded retrieval with no exact-target row as component-local no-match while its H1 status remains partial. Do not emit H1 no_evidence_in_covered_scope because that status requires complete five-type H1 coverage.",
+    "C4_duplicate_source_component": "PASS; rejected.",
+    "C5_component_target_mismatch": "PASS; rejected.",
+    "C6_native_marker_adds_suspension_coverage": "PASS; rejected.",
+    "C7_same_artifact_reused_twice": "PASS; rejected by duplicate artifact identity."
+  },
+  "implementation_sequence": [
+    {
+      "gate": "J-B03-A2.3",
+      "name": "Result-level H1 component composition contract and offline support",
+      "scope": "Author composite contract; explicit component artifact/operation-bundle and lineage rules; additive Result V3 branch; Audit mapping and safe handoff; deterministic validators/fixtures. No source acquisition or activation."
+    },
+    {
+      "gate": "J-B03-A2.4",
+      "name": "TPEx disposition source-contract verification",
+      "scope": "Separate bounded source-shape/contract authorization because the dormant normalizer is not live contract acceptance."
+    },
+    {
+      "gate": "J-B03-A2.5",
+      "name": "Deterministic representative component adapters",
+      "scope": "Implement tpex_cmode native H1 v2 and, after its source-contract gate, TPEx disposition H1 v1/v2 component support. No activation implied."
+    },
+    {
+      "gate": "J-B03-A2.6",
+      "name": "Representative integrated acceptance and separate activation decisions",
+      "scope": "Offline composition/failure/handoff acceptance first; any bounded live acceptance and route activation require distinct explicit authority and gates."
+    }
+  ],
+  "network_accounting": {
+    "market_get": 0,
+    "market_head": 0,
+    "market_post": 0
+  },
+  "change_boundary": {
+    "production_code_changed": false,
+    "schema_changed": false,
+    "result_changed": false,
+    "lineage_or_runtime_changed": false,
+    "catalog_changed": false,
+    "routing_changed": false,
+    "executor_registry_changed": false,
+    "activation_changed": false,
+    "preferred_version_promoted": false,
+    "mcp_changed": false,
+    "mcp_count": 6,
+    "data_directory_touched": false
+  },
+  "issue_states": {
+    "H0-SRC-01E": "OPEN",
+    "H0-SRC-02": "OPEN",
+    "J-B03": "HOLD",
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT STARTED"
+  },
+  "disposition": "J_B03_A2_2_SELECT_RESULT_LEVEL_COMPONENT_COMPOSITION",
+  "next_gate": "J-B03-A2.3 — Result-level H1 component composition contract and offline support",
+  "data_directory_untouched": true
+}
