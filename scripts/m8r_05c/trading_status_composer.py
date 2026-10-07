@@ -20,7 +20,25 @@ COMPONENT_ORDER = (
     ("H1-TPEX-DISPOSITION-OPENAPI", "tpex_disposal_information", "disposition"),
     ("H1-TPEX-CHANGED-TRADING-OPENAPI", "tpex_cmode", "cmode"),
 )
-_SOURCE_CONTRACTS = {source_id: contract for source_id, contract, _ in COMPONENT_ORDER}
+# This is the composite's fixed source-authority boundary. Do not derive it
+# from mutable routing, activation, or executor-registry state.
+SOURCE_AUTHORITY = {
+    "H1-TPEX-ATTENTION-OPENAPI": {
+        "source_family": "TPEX_ATTENTION_OPEN_DATA",
+        "source_contract_id": "tpex_trading_warning_information",
+        "allowed_canonical_coverage": frozenset({"attention"}),
+    },
+    "H1-TPEX-DISPOSITION-OPENAPI": {
+        "source_family": "TPEX_DISPOSITION_OPEN_DATA",
+        "source_contract_id": "tpex_disposal_information",
+        "allowed_canonical_coverage": frozenset({"disposition"}),
+    },
+    "H1-TPEX-CHANGED-TRADING-OPENAPI": {
+        "source_family": "TPEX_CHANGED_TRADING_OPEN_DATA",
+        "source_contract_id": "tpex_cmode",
+        "allowed_canonical_coverage": frozenset(),
+    },
+}
 _COMPONENT_ID = re.compile(r"^h1c-v1-[0-9a-f]{24}$")
 _RELATIVE_PATH = re.compile(r"^(?!.*(?:^|/)\.{1,2}(?:/|$))[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$")
 _NATIVE_GUARD = "Source-native unresolved evidence is not a canonical trading-status conclusion."
@@ -69,8 +87,11 @@ def _validate_component_shape(
     }:
         raise ProjectionError("composite_component_shape_invalid")
     source_id, source_contract_id, _ = expected
+    authority = SOURCE_AUTHORITY[source_id]
+    if source_contract_id != authority["source_contract_id"]:
+        raise ProjectionError("composite_component_source_identity_mismatch")
     if component.get("source_id") != source_id or component.get("source_contract_id") != source_contract_id:
-        raise ProjectionError("composite_component_source_mismatch")
+        raise ProjectionError("composite_component_source_identity_mismatch")
     evidence = component.get("evidence")
     reference = component.get("artifact_reference")
     if not isinstance(evidence, Mapping) or not isinstance(reference, Mapping):
@@ -79,8 +100,13 @@ def _validate_component_shape(
     if evidence.get("target") != dict(target):
         raise ProjectionError("composite_component_target_mismatch")
     source = evidence.get("source")
-    if not isinstance(source, Mapping) or source.get("source_contract_id") != source_contract_id:
-        raise ProjectionError("composite_component_source_mismatch")
+    if (not isinstance(source, Mapping)
+            or source.get("source_family") != authority["source_family"]
+            or source.get("source_contract_id") != authority["source_contract_id"]):
+        raise ProjectionError("composite_component_source_identity_mismatch")
+    covered = set(evidence["coverage"].get("covered_status_types", []))
+    if not covered.issubset(authority["allowed_canonical_coverage"]):
+        raise ProjectionError("composite_component_source_coverage_mismatch")
     version = evidence.get("schema_version")
     if component.get("evidence_schema_version") != version or component.get("component_status") != evidence.get("status"):
         raise ProjectionError("composite_component_contract_mismatch")
@@ -100,7 +126,8 @@ def build_component_record(
     expected = next((row for row in COMPONENT_ORDER if row[0] == source_id), None)
     if expected is None:
         raise ProjectionError("composite_component_source_unapproved")
-    source_contract_id = expected[1]
+    authority = SOURCE_AUTHORITY[source_id]
+    source_contract_id = authority["source_contract_id"]
     version = evidence.get("schema_version")
     digest = artifact_reference.get("sha256")
     component = {
@@ -215,6 +242,8 @@ def compose_trading_status_context(
     for component in built:
         evidence = component["evidence"]
         if _usable(component):
+            # _validate_component_shape has already constrained source identity
+            # and subtype authority before any coverage enters the aggregate.
             covered.update(evidence["coverage"].get("covered_status_types", []))
         canonical_item_count += len(evidence.get("items", []))
         native_observation_count += int(evidence.get("native_observation_count", len(evidence.get("native_observations", []))))

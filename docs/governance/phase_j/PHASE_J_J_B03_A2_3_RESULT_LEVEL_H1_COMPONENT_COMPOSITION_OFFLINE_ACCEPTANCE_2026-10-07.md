@@ -39,8 +39,11 @@ Duplicate source contracts, component IDs, artifact identities, unsupported
 schema versions, target mismatches, hash/reference mismatches and unapproved
 sources fail closed.
 
-Aggregate canonical coverage is the union of validated component canonical
-coverage. The complement of the five canonical H1 types remains uncovered.
+Aggregate canonical coverage is the union of component canonical coverage
+only after source-specific authority validation. The composite authority table
+allows attention source coverage `{attention}`, disposition source coverage
+`{disposition}`, and no canonical coverage for the accepted native-only cmode
+path. The complement of the five canonical H1 types remains uncovered.
 Native observations add no canonical coverage: unresolved
 `SuspensionOfTrading=Ｙ` remains native evidence and does not establish
 `suspension`. Usable incomplete evidence is `partial`; every component outcome
@@ -89,3 +92,43 @@ H0-SRC-01E remains OPEN; H0-SRC-02 remains OPEN. J-B03 remains HOLD, J-B04
 remains BLOCKING, and Phase J remains NOT STARTED. The next gate is
 **J-B03-A2.4 — TPEx Disposition Source-Contract Verification**. A2.3 does not
 authorize market acquisition, source activation, A2.4 work, or merge.
+
+## R1 source-authority coverage repair
+
+Independent review found `COMPOSITE_SOURCE_COVERAGE_AUTHORITY_NOT_FAIL_CLOSED`.
+H1 v1 correctly preserves its frozen broad coverage semantics; the composite
+had trusted the source-declared coverage set without a source-specific subtype
+check. The repair is confined to the composite authority boundary and does not
+tighten H1 v1.
+
+The fixed mapping in `scripts/m8r_05c/trading_status_composer.py` is:
+
+| Source ID | Source family | Contract | Allowed canonical coverage |
+| --- | --- | --- | --- |
+| `H1-TPEX-ATTENTION-OPENAPI` | `TPEX_ATTENTION_OPEN_DATA` | `tpex_trading_warning_information` | `attention` |
+| `H1-TPEX-DISPOSITION-OPENAPI` | `TPEX_DISPOSITION_OPEN_DATA` | `tpex_disposal_information` | `disposition` |
+| `H1-TPEX-CHANGED-TRADING-OPENAPI` | `TPEX_CHANGED_TRADING_OPEN_DATA` | `tpex_cmode` | none for the accepted native-only path |
+
+Embedded `source_family` and `source_contract_id` must exactly match the fixed
+mapping. Coverage is checked against that mapping before it can enter the
+aggregate union. Identity mismatch fails with
+`composite_component_source_identity_mismatch`; over-coverage fails with
+`composite_component_source_coverage_mismatch`. Activation state is not part
+of identity, and offline composition does not require active routes.
+
+Regression tests prove schema-valid H1 v1 attention with extra suspension
+coverage and H1 v1 disposition with extra resumption coverage are rejected at
+the composite boundary; an embedded attention source-family mismatch is
+rejected; and exact source families with attention/disposition coverage plus
+native-only cmode still produce aggregate `[attention, disposition]` and
+`partial`. Existing C1–C10 cases remain covered.
+
+R1 changed no schema bytes: H1 v1/v2, Composite v1, Result V3,
+OperationResult v2, and the H0-G manifest hashes remain at their accepted A2.3
+values. H1 v1 semantics changed = false; H1 v2 semantics changed = false;
+market GET/HEAD/POST = 0/0/0.
+
+R1 validation: the A2.3 composition plus prior focused suite passed with 126
+tests and 0 failures. `default-ci` passed with 1268 passed, 0 failed, 1
+skipped, 5 deselected and 18 warnings; `network_may_have_occurred=false`.
+The Phase H V3 contract validator, compileall, and `git diff --check` passed.

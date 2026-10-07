@@ -99,7 +99,7 @@
       "trading_status_context_evidence.v1",
       "trading_status_context_evidence.v2"
     ],
-    "aggregate_coverage": "Union of validated canonical covered_status_types from usable components; uncovered is the canonical five minus that union. Native observations add no canonical coverage.",
+    "aggregate_coverage": "Union only of usable canonical covered_status_types that pass the fixed source-specific composite authority table. Attention may cover attention only; disposition may cover disposition only; accepted native-only cmode covers no canonical types. Uncovered is the canonical five minus the validated union. Native observations add no canonical coverage.",
     "aggregate_status": "partial while usable evidence is incomplete. With no usable component evidence, deterministic failure precedence is binding_failed, source_failed, unsupported, then not_applicable when all components are not applicable; each component status remains present.",
     "no_match": "Preserve component-local status and coverage; do not infer normal trading or promote to no_evidence_in_covered_scope without its H1 completeness conditions.",
     "semantic_non_promotion": [
@@ -152,6 +152,49 @@
     "market_head": 0,
     "market_post": 0,
     "network_may_have_occurred": false
+  },
+  "r1_repair": {
+    "authority": "USER_CHAT_2026-10-07_J_B03_A2_3_R1_COMPOSITE_SOURCE_AUTHORITY_COVERAGE_REPAIR_AUTHORIZATION",
+    "independent_review_finding": "COMPOSITE_SOURCE_COVERAGE_AUTHORITY_NOT_FAIL_CLOSED",
+    "root_cause": "H1 v1 correctly preserves frozen broad coverage semantics, while composite aggregation trusted source-declared covered_status_types without enforcing source-specific subtype authority.",
+    "repair": "A deterministic composite-layer authority table validates exact source_id, embedded source_family, source_contract_id, and allowed coverage before aggregation. H1 v1 semantics are unchanged.",
+    "source_authority_table": {
+      "H1-TPEX-ATTENTION-OPENAPI": {
+        "source_family": "TPEX_ATTENTION_OPEN_DATA",
+        "source_contract_id": "tpex_trading_warning_information",
+        "allowed_canonical_coverage": ["attention"]
+      },
+      "H1-TPEX-DISPOSITION-OPENAPI": {
+        "source_family": "TPEX_DISPOSITION_OPEN_DATA",
+        "source_contract_id": "tpex_disposal_information",
+        "allowed_canonical_coverage": ["disposition"]
+      },
+      "H1-TPEX-CHANGED-TRADING-OPENAPI": {
+        "source_family": "TPEX_CHANGED_TRADING_OPEN_DATA",
+        "source_contract_id": "tpex_cmode",
+        "allowed_canonical_coverage": []
+      }
+    },
+    "coverage_union_rule": "Aggregate coverage is the union of usable component coverage only after source-specific authority validation succeeds.",
+    "regressions": {
+      "schema_valid_v1_attention_extra_suspension_coverage": "REJECTED",
+      "schema_valid_v1_disposition_extra_resumption_coverage": "REJECTED",
+      "valid_attention_disposition_and_native_only_cmode": "PASS; aggregate coverage is attention+disposition, status remains partial",
+      "embedded_source_family_mismatch": "REJECTED with composite_component_source_identity_mismatch",
+      "exact_three_canonical_source_families": "PASS"
+    },
+    "h1_v1_semantics_changed": false,
+    "h1_v2_semantics_changed": false,
+    "schema_hashes_changed": false,
+    "market_get_head_post": "0/0/0",
+    "validation": {
+      "composition_and_prior_focused_suite": "126 passed, 0 failed",
+      "default_ci": "1268 passed, 0 failed, 1 skipped, 5 deselected, 18 warnings",
+      "default_ci_network_may_have_occurred": false,
+      "phase_h_v3_contract_validator": "PASS",
+      "compileall_scripts_server_tests": "PASS",
+      "git_diff_check": "PASS"
+    }
   },
   "change_boundary": {
     "production_acquisition_adapter_changed": false,

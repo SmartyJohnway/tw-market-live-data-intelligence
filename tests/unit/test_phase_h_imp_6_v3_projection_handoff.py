@@ -476,6 +476,11 @@ def test_result_v3_composite_lineage_audit_and_handoff_preserve_components(tmp_p
         ("H1-TPEX-DISPOSITION-OPENAPI", "tpex_disposal_information", "disposition", 1),
         ("H1-TPEX-CHANGED-TRADING-OPENAPI", "tpex_cmode", None, 2),
     ]
+    source_families = {
+        "tpex_trading_warning_information": "TPEX_ATTENTION_OPEN_DATA",
+        "tpex_disposal_information": "TPEX_DISPOSITION_OPEN_DATA",
+        "tpex_cmode": "TPEX_CHANGED_TRADING_OPEN_DATA",
+    }
     components = []
     for index, (source_id, contract, status_type, version) in enumerate(component_specs):
         path = attention_path if index == 0 else f"evidence/phase_h/h1/TPEX_6488_{contract}.json"
@@ -484,7 +489,7 @@ def test_result_v3_composite_lineage_audit_and_handoff_preserve_components(tmp_p
         artifact.update({
             "schema_version": f"trading_status_context_evidence.v{version}",
             "status": "partial", "target": {"canonical_target_id": "TPEX:6488", "market": "TPEX", "security_code": "6488"},
-            "source": {"source_family": f"TPEX_{contract.upper()}", "source_contract_id": contract,
+            "source": {"source_family": source_families[contract], "source_contract_id": contract,
                        "transport": "official_https_openapi", "license_authority": "data.gov.tw:11736:ODGL-1.0",
                        "source_role": "default_candidate", "activation_state": "eligible"},
             "citation_ids": [citation_id],

@@ -13,6 +13,7 @@ from scripts.m8r_05c.markdown_renderer import _fmt_phase_h_evidence
 from scripts.m8r_05c.phase_h_semantics import STATUS_TYPES, validate_trading_status_context_semantics
 from scripts.m8r_05c.trading_status_composer import (
     COMPONENT_ORDER,
+    SOURCE_AUTHORITY,
     build_component_record,
     compose_trading_status_context,
     validate_component_artifact_bindings,
@@ -27,6 +28,11 @@ CITATION = "cite-fixture"
 
 def _base_h1(source_contract: str, status_type: str | None, *, version: int = 1, failed: bool = False, no_match: bool = False):
     value = copy.deepcopy(EXAMPLES["h1_attention_available"])
+    source_family = next(
+        authority["source_family"]
+        for authority in SOURCE_AUTHORITY.values()
+        if authority["source_contract_id"] == source_contract
+    )
     covered = [status_type] if status_type and not failed else (["disposition"] if no_match else [])
     uncovered = sorted(STATUS_TYPES - set(covered))
     value.update({
@@ -34,7 +40,7 @@ def _base_h1(source_contract: str, status_type: str | None, *, version: int = 1,
         "status": "source_failed" if failed else "partial",
         "target": copy.deepcopy(TARGET),
         "source": {
-            "source_family": f"TPEX_{source_contract.upper()}",
+            "source_family": source_family,
             "source_contract_id": source_contract,
             "transport": "official_https_openapi",
             "license_authority": "data.gov.tw:11736:ODGL-1.0",
@@ -55,7 +61,7 @@ def _base_h1(source_contract: str, status_type: str | None, *, version: int = 1,
             "source_snapshot_date": "2026-10-06",
             "covered_status_types": covered,
             "uncovered_status_types": uncovered,
-            "failed_source_families": [f"TPEX_{source_contract.upper()}"] if failed else [],
+            "failed_source_families": [source_family] if failed else [],
         },
     })
     if status_type and not failed:
@@ -116,6 +122,39 @@ def test_c1_components_compose_with_native_unresolved_and_partial_coverage():
     assert composite["canonical_item_count"] == 2
     assert composite["native_observation_count"] == 1
     assert composite["component_count"] == 3
+
+
+def test_c1_uses_exact_predeclared_source_families():
+    composite = compose_trading_status_context(TARGET, _components())
+    assert [component["evidence"]["source"]["source_family"] for component in composite["components"]] == [
+        "TPEX_ATTENTION_OPEN_DATA",
+        "TPEX_DISPOSITION_OPEN_DATA",
+        "TPEX_CHANGED_TRADING_OPEN_DATA",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("source_id", "source_contract", "subtype", "extra"),
+    [
+        ("H1-TPEX-ATTENTION-OPENAPI", "tpex_trading_warning_information", "attention", "suspension"),
+        ("H1-TPEX-DISPOSITION-OPENAPI", "tpex_disposal_information", "disposition", "resumption"),
+    ],
+)
+def test_source_authority_rejects_schema_valid_v1_overcoverage(source_id, source_contract, subtype, extra):
+    evidence = _base_h1(source_contract, subtype, version=1)
+    evidence["coverage"]["covered_status_types"] = sorted({subtype, extra})
+    evidence["coverage"]["uncovered_status_types"] = sorted(STATUS_TYPES - {subtype, extra})
+    _schema_validate(evidence, 1)
+    validate_trading_status_context_semantics(evidence)
+    with pytest.raises(ProjectionError, match="composite_component_source_coverage_mismatch"):
+        _component(source_id, evidence=evidence)
+
+
+def test_source_identity_rejects_embedded_family_mismatch():
+    evidence = _base_h1("tpex_trading_warning_information", "attention", version=1)
+    evidence["source"]["source_family"] = "TPEX_WRONG_OPEN_DATA"
+    with pytest.raises(ProjectionError, match="composite_component_source_identity_mismatch"):
+        _component("H1-TPEX-ATTENTION-OPENAPI", evidence=evidence)
 
 
 def test_c2_failure_is_retained_while_other_components_survive():
