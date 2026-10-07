@@ -1,6 +1,8 @@
 # J-B03-A2.4 — TPEx Disposition Source-Contract Verification
 
-**Disposition:** `J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE`
+**Initial A2.4 disposition:** `J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE`
+
+**Final A2.4 disposition after R1/R2:** `J_B03_A2_4_TPEX_DISPOSITION_SOURCE_CONTRACT_VERIFIED`
 
 **Owner authority:** `USER_CHAT_2026-10-07_J_B03_A2_4_TPEX_DISPOSITION_SOURCE_CONTRACT_VERIFICATION_AUTHORIZATION`
 
@@ -149,16 +151,56 @@ GET/HEAD/POST was **0/0/0**. No schema or runtime activation changes were made.
 
 ## A2.4-R2 — Fresh live re-verification
 
-Status: **PENDING**. No R2 request has been made yet. After the R1 repair
-commit, R2 may use the separately authorized bounded official endpoint and
-must record its own request accounting and response evidence. Final A2.4
-disposition remains pending R2.
+R2 used one bounded GET after the R1 repair commit:
+
+- Request ordinal: 1; method: GET; HEAD/POST/retry/fallback: 0/0/0/0.
+- Requested/effective URL: `https://www.tpex.org.tw/openapi/v1/tpex_disposal_information`.
+- HTTP 200; `application/json`; Content-Length and bytes: 20,222.
+- Response SHA-256: `fb1f07af0caf6bef5b4545bd0323736bf70c6ca70bc21368c2fd19840d5789e0`.
+- Retrieved at `2026-10-07T06:23:15.651429Z`; compatibility TLS with certificate
+  validation and hostname verification enabled; no redirect; 30-second timeout;
+  4 MiB response ceiling.
+- Strict UTF-8 JSON parsed in memory only. The raw payload was neither persisted
+  nor committed.
+
+The fresh response was a non-empty array of 21 objects. All six required keys
+were present in every row, the key union and intersection matched the expected
+six fields, there were no additive/unexpected keys, and every required value
+was a string. All 21 dates were seven ASCII digits; the five distinct raw
+tokens normalized to five calendar-valid Gregorian dates through the existing
+`parse_roc_yyyymmdd()` precedent. Parser failures and invalid calendar dates:
+0.
+
+There were 19 distinct exact string security codes: 17 appeared once and 2
+appeared twice; maximum rows per code was 2. The deterministic lexicographically
+smallest unique code normalized to one item. Both duplicate-code targets were
+checked, and each yielded two separate disposition items preserving each raw
+row and date. No code list or full row dump is retained in this record.
+
+The normalized H1 v1 artifact passed schema and semantic validation. An offline
+composite check using the live-normalized disposition component plus an
+attention component and native-only cmode v2 component passed: aggregate
+coverage was `attention` + `disposition`, status remained `partial`, and the
+unresolved cmode observation contributed no canonical coverage. The TPEx
+disposition source remains limited to `disposition`; multiple reported rows do
+not establish active/current lifecycle, tradeability, or normal trading.
 
 ## Verification history
 
 1. Initial A2.4 live probe: `HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE` (one GET).
 2. R1 offline repair: PASS (zero market requests).
-3. R2 live re-verification: pending.
+3. R2 live re-verification: PASS (one fresh GET; response SHA-256
+   `fb1f07af0caf6bef5b4545bd0323736bf70c6ca70bc21368c2fd19840d5789e0`).
+
+The final A2.4 disposition is
+`J_B03_A2_4_TPEX_DISPOSITION_SOURCE_CONTRACT_VERIFIED`. Disposition source
+readiness is `SOURCE_CONTRACT_VERIFIED`, `DORMANT_NORMALIZER_COMPATIBLE`, and
+`READY_FOR_A2_5_INTEGRATION`; its activation state remains `eligible` and
+`runtime_executable=false`.
+
+Network accounting for the complete chain, including the initial A2.4 probe:
+2 GET, 0 HEAD, 0 POST. R1 itself remained zero-network. No retry or fallback
+request occurred.
 
 The six protected H1/Composite/Result/OperationResult/H0-G hashes remain
 unchanged. MCP remains exactly 6; the source remains `eligible` and
