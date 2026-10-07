@@ -1,0 +1,397 @@
+{
+  "record_type": "J_B03_A2_6_STAGE_A_ACCEPTANCE",
+  "owner_authority": "USER_CHAT_2026-10-07_J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_STAGE_A_AUTHORIZATION",
+  "starting_main": {
+    "commit": "04af1d3ea63b058317facb8763a524c453bb9093",
+    "tree": "de7095ffe36000096c1c2adbda4e84704b59f449",
+    "pr_320": "MERGED_CLOSED"
+  },
+  "branch": "phase-j/j-b03-a2-6-integrated-composite-acceptance",
+  "accepted_entry_states": {
+    "a2_3": "J_B03_A2_3_RESULT_LEVEL_H1_COMPOSITION_OFFLINE_ACCEPTED",
+    "a2_4": "J_B03_A2_4_TPEX_DISPOSITION_SOURCE_CONTRACT_VERIFIED",
+    "a2_5": "J_B03_A2_5_DETERMINISTIC_REPRESENTATIVE_COMPONENT_ADAPTERS_ACCEPTED"
+  },
+  "candidate": {
+    "executor_id": "phase_j_j_b03_tpex_trading_status_composite_candidate",
+    "registered_in_production": false,
+    "activation_performed": false,
+    "target": {
+      "canonical_target_id": "TPEX:6488",
+      "market": "TPEX",
+      "security_code": "6488"
+    },
+    "composite_contract": "trading_status_context_composite.v1",
+    "acceptance_authority_hash": "c87c0b4321a2f9ab94fcbf5335f59735ac4a827ca9d5190e750fb3c5241da8ce",
+    "authority_binding": {
+      "overlay_hash_in_operation_parameters": true,
+      "plan_hash_binds_overlay": true,
+      "authorization_binds_plan_hash": true,
+      "consumption_binding_binds_authorization_and_plan": true,
+      "execution_request_binds_plan_hash": true,
+      "candidate_checks_exact_internal_plan_and_bound_plan_hash": true,
+      "request_or_plan_schema_modified": false
+    },
+    "ordered_sources": [
+      {
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+        "source_family": "TPEX_ATTENTION_OPEN_DATA",
+        "source_contract_id": "tpex_trading_warning_information",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+        "evidence_contract": "trading_status_context_evidence.v1"
+      },
+      {
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+        "source_family": "TPEX_DISPOSITION_OPEN_DATA",
+        "source_contract_id": "tpex_disposal_information",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+        "evidence_contract": "trading_status_context_evidence.v1"
+      },
+      {
+        "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+        "source_family": "TPEX_CHANGED_TRADING_OPEN_DATA",
+        "source_contract_id": "tpex_cmode",
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+        "evidence_contract": "trading_status_context_evidence.v2"
+      }
+    ],
+    "transport_controls": {
+      "tls_policy": "compatibility",
+      "certificate_verification": true,
+      "hostname_verification": true,
+      "timeout_seconds": 60,
+      "response_byte_ceiling": 4194304,
+      "retry": 0,
+      "redirect_policy": "none",
+      "fallback_policy": "none",
+      "network_authorized": true,
+      "request_budget": {
+        "GET": 3,
+        "HEAD": 0,
+        "POST": 0
+      }
+    }
+  },
+  "offline_acceptance": {
+    "status": "PASS",
+    "market_requests": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "scenarios": {
+      "C1_full_pipeline_three_sources": "PASS",
+      "C2_cmode_exact_no_match": "PASS",
+      "C3_disposition_multiple_rows_through_result_audit_handoff": "PASS",
+      "C4_component_failure_independence": "PASS",
+      "C5_blank_cmode_value_unresolved": "PASS",
+      "C6_fullwidth_y_preserved_without_suspension_promotion": "PASS",
+      "C7_component_hash_mismatch_rejected": "PASS",
+      "C8_target_mismatch_rejected": "PASS",
+      "C9_source_identity_mismatch_rejected": "PASS",
+      "C10_ordered_source_set_mismatch_rejected_before_transport": "PASS",
+      "C11_endpoint_substitution_rejected_before_transport": "PASS",
+      "C12_network_authorized_false_blocks_transport": "PASS",
+      "C13_attention_h1_v1_compatibility": "PASS"
+    },
+    "operation_result": "OperationResult v2 with one composite primary and three component_evidence artifacts",
+    "bundle": "Bundle v1 validated with component sidecars",
+    "receipt": "Execution Receipt v1 validated",
+    "lineage": "one binding, one composite primary, three source-bound H1 component artifacts",
+    "result": "Result V3 validated with composite retained",
+    "audit": "Audit V3 validated with three independent source attempts",
+    "handoff": "component-separated; disposition reason/condition, cmode raw value, date, caveat, and citations retained",
+    "focused_tests": {
+      "passed": 156,
+      "failed": 0,
+      "skipped": 0
+    },
+    "surfaces": {
+      "operation_result": "OperationResult v2 validated; one composite primary and three source-specific component_evidence artifacts",
+      "bundle": "Bundle v1 validated; component references and sidecars retained",
+      "receipt": "Execution Receipt v1 validated and bound to exact bundle",
+      "lineage": "one logical binding, one composite primary, three independently source-bound H1 components",
+      "mode_c_result": "build_mode_c_result_package materialized Result V3 and retained Composite v1",
+      "mode_c_audit": "read_mode_c_audit returned verified persisted Audit V3 with component lineage",
+      "mode_c_ai_handoff": "build_mode_c_ai_handoff returned component-separated markdown and citation references; no additional market request"
+    }
+  },
+  "live_acceptance": {
+    "status": "PASS_ACTIVATION_READY",
+    "performed": true,
+    "target": {
+      "canonical_target_id": "TPEX:6488",
+      "market": "TPEX",
+      "security_code": "6488"
+    },
+    "request_budget": {
+      "GET_max": 10,
+      "HEAD_max": 10,
+      "POST_max": 0
+    },
+    "request_accounting": {
+      "GET": 6,
+      "HEAD": 0,
+      "POST": 0,
+      "retry": 0,
+      "fallback": 0,
+      "polling": 0
+    },
+    "runner_history": [
+      {
+        "run": 1,
+        "purpose": "initial authorized integrated live execution after offline gate",
+        "market_requests": {
+          "GET": 3,
+          "HEAD": 0,
+          "POST": 0
+        },
+        "candidate_pipeline_completed": true,
+        "runner_output": "FAILED_AFTER_EXECUTION",
+        "failure": "temporary composite read used the outer directory instead of the authorization-bound package directory",
+        "response_metadata_retained": false,
+        "raw_payload_persisted": false,
+        "why_rerun_was_necessary": "the completed run’s per-source response metadata could not be emitted or audited after temporary-directory cleanup; repaired the runner path and repeated the bounded three-source acceptance"
+      },
+      {
+        "run": 2,
+        "purpose": "capture auditable source metadata and independently reverify the same fixed candidate path",
+        "market_requests": {
+          "GET": 3,
+          "HEAD": 0,
+          "POST": 0
+        },
+        "candidate_pipeline_completed": true,
+        "runner_output": "PASS",
+        "response_metadata_retained": true,
+        "raw_payload_persisted": false
+      }
+    ],
+    "successful_verification_requests": [
+      {
+        "request_ordinal": 1,
+        "method": "GET",
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+        "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+        "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_trading_warning_information",
+        "http_status": 200,
+        "content_type": "application/json",
+        "response_bytes": 9536,
+        "response_sha256": "bb91afe4e485ff63b04f38305573972104bd65499c876e2c2bb4e8ee4a641ec7",
+        "retrieved_at": "2026-10-07T08:07:45.098421Z",
+        "tls_policy": "compatibility",
+        "redirect_count": 0,
+        "attempt_number": 1,
+        "outcome": "succeeded"
+      },
+      {
+        "request_ordinal": 2,
+        "method": "GET",
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+        "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+        "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+        "http_status": 200,
+        "content_type": "application/json",
+        "response_bytes": 20222,
+        "response_sha256": "fb1f07af0caf6bef5b4545bd0323736bf70c6ca70bc21368c2fd19840d5789e0",
+        "retrieved_at": "2026-10-07T08:07:45.231610Z",
+        "tls_policy": "compatibility",
+        "redirect_count": 0,
+        "attempt_number": 1,
+        "outcome": "succeeded"
+      },
+      {
+        "request_ordinal": 3,
+        "method": "GET",
+        "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+        "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+        "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_cmode",
+        "http_status": 200,
+        "content_type": "application/json",
+        "response_bytes": 5039,
+        "response_sha256": "26c7ead445eda8427724b31255650c2c8edcc09d0e8b9abf8eae4f071003856e",
+        "retrieved_at": "2026-10-07T08:07:45.350017Z",
+        "tls_policy": "compatibility",
+        "redirect_count": 0,
+        "attempt_number": 1,
+        "outcome": "succeeded"
+      }
+    ],
+    "contract_drift": [],
+    "component_results": [
+      {
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI",
+        "schema_version": "trading_status_context_evidence.v1",
+        "status": "partial",
+        "artifact_sha256": "f1661706a9d0eefa7dc04ac85075cb149689f21e172ee0d8cf48e26b13178622"
+      },
+      {
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+        "schema_version": "trading_status_context_evidence.v1",
+        "status": "partial",
+        "artifact_sha256": "150eeea2d408ee3c5d46117b4d7f708c5295021cac8dd08471bd097bc88fc8ff"
+      },
+      {
+        "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI",
+        "schema_version": "trading_status_context_evidence.v2",
+        "status": "partial",
+        "artifact_sha256": "6d69a11430c11466c9c3b6a4412cb7bdce40c1199f3682f5f64d222a0db411b3"
+      }
+    ],
+    "composite": {
+      "schema_version": "trading_status_context_composite.v1",
+      "sha256": "adb055c3e933c2f79c3b5fe696ddae01e9f2c77124281810f5a9a3cb81b6b40d",
+      "status": "partial",
+      "aggregate_coverage": {
+        "covered_status_types": [
+          "attention",
+          "disposition"
+        ],
+        "uncovered_status_types": [
+          "changed_trading_method",
+          "resumption",
+          "suspension"
+        ],
+        "declared_scope_complete": false
+      },
+      "canonical_item_count": 1,
+      "native_observation_count": 0,
+      "component_count": 3
+    },
+    "operation_result": "succeeded; unified_market_evidence_operation_result.v2",
+    "bundle": "validated; unified_market_evidence_bundle.v1",
+    "receipt": "validated; unified_market_evidence_execution_receipt.v1",
+    "lineage": "validated; exact target, source, schema, path, hashes and citations retained for three components",
+    "result": "validated; unified_market_evidence_result.v3 with Composite v1 intact",
+    "audit": "validated; unified_market_evidence_audit_package.v3",
+    "handoff": "validated through Mode C; component-separated output and citation references retained; no raw marker was observed live, fixture covers U+FF39",
+    "failure_independence": "offline tests PASS; source-local failure preserves other components",
+    "raw_payload_persisted": false
+  },
+  "protected_contract_hashes": {
+    "h1_v1": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+    "h1_v2": "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38",
+    "composite_v1": "3d34a1cb2112716211e39536b221994952aabd1c2723d3ed5f61ee8b0f224106",
+    "result_v3": "9269fc9e5e07884fa2de791eae902ee57b3d937dbb793318ca4aff1a93fc5bcb",
+    "operation_result_v2": "9d6430254215ae0b4048e0352f6902c629e4069530b1c9a267f1ee50d4c5bd64",
+    "h0_g_manifest": "6c1f23ed12a0d3bffcb7b964197eda6ee6a36d8c95ef1a8c5d6106ef31ea89f6",
+    "request_v1": "c56add4bdb200d7dc1a1e9c27d576fefbf434dc7a8658fd17000c4ae8ee84cac",
+    "request_v2": "757d864c3a00d296f8ebf2eccdbb47a1d39ca8a222e9d939f34ef854f4245e3b",
+    "request_v3": "b0901dbf63db3a8bc44b8fec4cb0cdc90f77e153d954266f98c690453864f3f6",
+    "bundle_v1": "9eb901b99db3a7b56d251e70c00f83ebc99b0f0587fc77fee8aca573f9049aad",
+    "receipt_v1": "cd70b135e751214d467dbf7ca1924fc2ce8a61461b2276defae7bd30a23e4d26",
+    "audit_v3": "94208ac6f4c13bcde294de1a8c7cf6be23245d738b5dcd36fffcac1ab134c4cc"
+  },
+  "production_state": {
+    "active_attention_route_unchanged": true,
+    "disposition_activation_state": "eligible",
+    "disposition_runtime_executable": false,
+    "cmode_activation_state": "eligible",
+    "cmode_runtime_executable": false,
+    "routing_changed": false,
+    "catalog_changed": false,
+    "registry_changed": false,
+    "preferred_version_changed": false,
+    "mcp_tool_count": 6
+  },
+  "issue_states": {
+    "H0-SRC-01E": "OPEN",
+    "H0-SRC-02": "OPEN",
+    "J-B03": "HOLD",
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT_STARTED"
+  },
+  "raw_market_payload_committed": false,
+  "data_directory_touched": false,
+  "current_record_stage": "A2_6_STAGE_A_LIVE_ACCEPTANCE_PASS_ACTIVATION_READY",
+  "network_accounting": {
+    "live_run_1": {
+      "GET": 3,
+      "HEAD": 0,
+      "POST": 0,
+      "response_metadata_captured": false,
+      "reason": "runner post-processing path error after candidate completion"
+    },
+    "live_run_2": {
+      "GET": 3,
+      "HEAD": 0,
+      "POST": 0,
+      "response_metadata_captured": true
+    },
+    "chain_total": {
+      "GET": 6,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "retries": 0,
+    "fallbacks": 0,
+    "polling": 0
+  },
+  "validation": {
+    "pre_live": {
+      "focused_tests": {
+        "passed": 156,
+        "failed": 0,
+        "skipped": 0
+      },
+      "phase_h_v3_contracts": "PASS",
+      "compileall": "PASS",
+      "git_diff_check": "PASS",
+      "strict_duplicate_key_json": "PASS; duplicate member names=0"
+    },
+    "post_live_focused_tests": {
+      "passed": 156,
+      "failed": 0,
+      "skipped": 0
+    },
+    "default_ci": {
+      "command": "python scripts/run_test_profile.py default-ci",
+      "passed": 1282,
+      "failed": 0,
+      "skipped": 1,
+      "deselected": 5,
+      "warnings": 18,
+      "duration_seconds": 376.69,
+      "network_note": "market requests are separately accounted above; default-ci completed as the repository deterministic test profile"
+    },
+    "post_live_contract_validator": "PASS",
+    "post_live_compileall": "PASS",
+    "post_live_git_diff_check": "PASS"
+  },
+  "activation_decision": {
+    "readiness": "J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_PASS_ACTIVATION_READY",
+    "production_activation_performed": false,
+    "owner_activation_authority_required": true,
+    "canonical_files_that_would_change_if_later_authorized": [
+      {
+        "path": "config/phase_h_h1_dormant_source_descriptors.json",
+        "purpose": "governed source activation/runtime-executable state for disposition and cmode"
+      },
+      {
+        "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "purpose": "capability support/activation metadata and limitations"
+      },
+      {
+        "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "purpose": "selected composite executor routing and bounded operation policy"
+      },
+      {
+        "path": "config/m8r_06_03_executor_registry_metadata.json",
+        "purpose": "canonical runtime executor registration and contract metadata"
+      },
+      {
+        "path": "scripts/m8r_06_03_production_adapter.py",
+        "purpose": "production-owned composite executor dispatch/adapter integration; acceptance-only candidate is not registered"
+      }
+    ],
+    "active_attention_executor_remains": "phase_h_h1_tpex_attention_executor",
+    "disposition_activation_state": "eligible",
+    "disposition_runtime_executable": false,
+    "cmode_activation_state": "eligible",
+    "cmode_runtime_executable": false,
+    "preferred_version_changed": false,
+    "routing_catalog_registry_changed": false
+  },
+  "final_disposition": "J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_PASS_ACTIVATION_READY",
+  "protected_contract_hash_basis": "SHA-256 of committed schema blob bytes; working-tree request.v1 is CRLF-converted by repository checkout behavior but its Git blob is unchanged from starting main"
+}
