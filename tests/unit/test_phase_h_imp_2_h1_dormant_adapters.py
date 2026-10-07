@@ -316,12 +316,15 @@ def test_h1_descriptors_exact_selected_activation_and_zero_network_normalizers(m
     assert descriptor_doc["status"] == "selected_route_active_v2_preferred"
     assert by_id["H1-TPEX-ATTENTION-OPENAPI"]["activation_state"] == "active"
     assert by_id["H1-TPEX-ATTENTION-OPENAPI"]["runtime_executable"] is True
-    assert by_id["H1-TPEX-DISPOSITION-OPENAPI"]["activation_state"] == "eligible"
+    assert by_id["H1-TPEX-DISPOSITION-OPENAPI"]["activation_state"] == "active"
+    assert by_id["H1-TPEX-DISPOSITION-OPENAPI"]["runtime_executable"] is True
+    assert by_id["H1-TPEX-CHANGED-TRADING-OPENAPI"]["activation_state"] == "active"
+    assert by_id["H1-TPEX-CHANGED-TRADING-OPENAPI"]["runtime_executable"] is True
     assert by_id["H1-TWSE-CHANGED-TRADING-OPENAPI"]["activation_state"] == "eligible"
     assert by_id["H1-TWSE-SUSPEND-RESUME-OPENAPI"]["activation_state"] == "inactive"
     assert by_id["H1-TPEX-SUSPEND-TODAY-OPENAPI"]["activation_state"] == "inactive"
     assert by_id["H1-TPEX-SUSPEND-HISTORY-OPENAPI"]["source_role"] == "governed_fallback"
-    assert sum(item["runtime_executable"] is True for item in descriptors) == 1
+    assert sum(item["runtime_executable"] is True for item in descriptors) == 3
 
     registry = json.loads((ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8"))
     h1_routes = [
@@ -329,7 +332,8 @@ def test_h1_descriptors_exact_selected_activation_and_zero_network_normalizers(m
         if item["capability_id"] == "trading_status_context"
     ]
     assert [(item["executor_id"], item["market"]) for item in h1_routes] == [
-        ("phase_h_h1_tpex_attention_executor", "TPEX")
+        ("phase_h_h1_tpex_attention_executor", "TPEX"),
+        ("phase_h_h1_tpex_composite_executor", "TPEX")
     ]
 
     catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
@@ -339,7 +343,7 @@ def test_h1_descriptors_exact_selected_activation_and_zero_network_normalizers(m
     assert capability["phase_h_activation_state"] == "selected_route_active"
     route = next(item for item in json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))["routes"] if item["capability_id"] == "trading_status_context")
     assert route["runtime_executable"] is True
-    assert route["selected_executor_id"] == "phase_h_h1_tpex_attention_executor"
+    assert route["selected_executor_id"] == "phase_h_h1_tpex_composite_executor"
     assert route["routing_status"] == "resolved"
     assert route["supported_markets"] == ["TPEX"]
     assert route["network_required"] is True

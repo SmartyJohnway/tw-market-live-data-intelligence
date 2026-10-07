@@ -221,14 +221,16 @@ def test_s11_fresh_root_is_safe_without_optional_providers_and_manual_routes_sta
     assert described["emitted_result_schema_version"] == "unified_market_evidence_result.v3"
     v3_catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
     v3_routing = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))
-    assert v3_catalog["phase_h_contract"]["active_phase_h_source_count"] == 2
-    assert v3_routing["phase_h_source_authority"]["active_source_count"] == 2
+    assert v3_catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
+    assert v3_routing["phase_h_source_authority"]["active_source_count"] == 4
     active = [record for record in v3_routing["phase_h_source_authority"]["records"] if record["activation_state"] == "active"]
     assert {(record["source_id"], record["runtime_executable"]) for record in active} == {
         ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H1-TPEX-DISPOSITION-OPENAPI", True),
+        ("H1-TPEX-CHANGED-TRADING-OPENAPI", True),
         ("H3-TWSE-DEFAULT-BOUNDED", True),
     }
-    assert len(active) == 2
+    assert len(active) == 4
     authority = json.loads((ROOT / "docs/governance/phase_h/Phase_H_Official_Source_and_Automation_Authority_Matrix_FROZEN.json").read_text(encoding="utf-8"))
     by_id = {item["source_id"]: item for item in authority["sources"]}
     assert by_id["H2-TWSE-EXRIGHT-FINAL-TWT49U"]["source_role"] == "optional_licensed_provider"

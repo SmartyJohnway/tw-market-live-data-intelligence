@@ -78,8 +78,8 @@ def test_h_act_v3_current_authority_keeps_v3_preferred_and_explicit_selected_rou
         "future_candidate_result_schema_version": None,
         "v3_runtime_authority_status": "v3_preferred_selected_routes_active",
     }
-    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 2
-    assert routing["phase_h_source_authority"]["active_source_count"] == 2
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
+    assert routing["phase_h_source_authority"]["active_source_count"] == 4
     active = [
         (item["source_id"], item["runtime_executable"])
         for item in routing["phase_h_source_authority"]["records"]
@@ -87,9 +87,11 @@ def test_h_act_v3_current_authority_keeps_v3_preferred_and_explicit_selected_rou
     ]
     assert set(active) == {
         ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H1-TPEX-DISPOSITION-OPENAPI", True),
+        ("H1-TPEX-CHANGED-TRADING-OPENAPI", True),
         ("H3-TWSE-DEFAULT-BOUNDED", True),
     }
-    assert len(active) == 2
+    assert len(active) == 4
 
 
 def test_h_act_v3_local_service_exposes_exact_route_truth_not_catalog_market_overclaim():
@@ -106,7 +108,7 @@ def test_h_act_v3_local_service_exposes_exact_route_truth_not_catalog_market_ove
 
     h1 = _capability(described, "trading_status_context")
     assert h1["routing_disposition"] == "resolved"
-    assert h1["selected_executor_id"] == "phase_h_h1_tpex_attention_executor"
+    assert h1["selected_executor_id"] == "phase_h_h1_tpex_composite_executor"
     assert _market(h1, "TPEX") == {
         "market": "TPEX",
         "disposition": "executable",

@@ -460,7 +460,7 @@ def test_v1_v2_frozen_bytes_unchanged_and_remain_readable():
         jsonschema.validators.validator_for(load(SCHEMAS / name)).check_schema(load(SCHEMAS / name))
 
 
-def test_catalog_routing_truth_exposes_selected_h1_and_h3_twse_routes_while_v3_remains_preferred():
+def test_catalog_routing_truth_exposes_selected_h1_composite_and_h3_twse_routes_while_v3_remains_preferred():
     catalog = load(DATA / "unified_market_evidence_capability_catalog.v3.json")
     routing = load(DATA / "m8r_05b_capability_to_executor_routing_matrix.v3.json")
     capabilities = {item["capability_id"]: item for item in catalog["data_need_capabilities"]}
@@ -473,7 +473,8 @@ def test_catalog_routing_truth_exposes_selected_h1_and_h3_twse_routes_while_v3_r
     assert h1["runtime_executable"] is True
     assert h1["phase_h_activation_state"] == "selected_route_active"
     assert routes["trading_status_context"]["runtime_executable"] is True
-    assert routes["trading_status_context"]["selected_executor_id"] == "phase_h_h1_tpex_attention_executor"
+    assert routes["trading_status_context"]["selected_executor_id"] == "phase_h_h1_tpex_composite_executor"
+    assert routes["trading_status_context"]["output_evidence_contract"] == "trading_status_context_composite.v1"
     assert routes["trading_status_context"]["supported_markets"] == ["TPEX"]
     assert routes["trading_status_context"]["network_required"] is True
 
@@ -512,14 +513,16 @@ def test_catalog_routing_truth_exposes_selected_h1_and_h3_twse_routes_while_v3_r
     assert h3_surface["current_status"] == "H-ACT-H3 selected TWSE route is Owner-accepted and active"
 
     assert catalog["contract_versions"]["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
-    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 2
-    assert routing["phase_h_source_authority"]["active_source_count"] == 2
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
+    assert routing["phase_h_source_authority"]["active_source_count"] == 4
     active = [item for item in routing["phase_h_source_authority"]["records"] if item["activation_state"] == "active"]
     assert {(item["source_id"], item["runtime_executable"]) for item in active} == {
         ("H1-TPEX-ATTENTION-OPENAPI", True),
+        ("H1-TPEX-DISPOSITION-OPENAPI", True),
+        ("H1-TPEX-CHANGED-TRADING-OPENAPI", True),
         ("H3-TWSE-DEFAULT-BOUNDED", True),
     }
-    assert len(active) == 2
+    assert len(active) == 4
     assert "discontinuity_safety" not in request_needs
     assert routing["derived_contracts"][0]["network_required"] is False
     assert routing["derived_contracts"][0]["request_capability"] is False
