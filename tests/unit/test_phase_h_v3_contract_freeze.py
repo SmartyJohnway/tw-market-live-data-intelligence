@@ -139,11 +139,12 @@ def test_h1_available_no_evidence_partial_and_failures_are_typed_and_fail_closed
     with pytest.raises(PhaseHV3ContractValidationError):
         validate_trading_status_context_semantics(invalid)
 
-    canonical_not_covered = copy.deepcopy(EXAMPLES["h1_attention_available"])
-    canonical_not_covered["coverage"]["covered_status_types"].remove("attention")
-    canonical_not_covered["coverage"]["uncovered_status_types"].append("attention")
-    with pytest.raises(PhaseHV3ContractValidationError, match="h1_canonical_item_not_covered"):
-        validate_trading_status_context_semantics(canonical_not_covered)
+    # Frozen H1 v1 permits repeated canonical event items of one subtype and
+    # did not impose the later v2 item-to-covered-subtype invariant.
+    repeated_v1 = copy.deepcopy(EXAMPLES["h1_attention_available"])
+    repeated_v1["items"].append(copy.deepcopy(repeated_v1["items"][0]))
+    validate(repeated_v1, "h1")
+    validate_trading_status_context_semantics(repeated_v1)
 
 
 def test_h2_stage_revision_missing_zero_and_coverage_semantics():

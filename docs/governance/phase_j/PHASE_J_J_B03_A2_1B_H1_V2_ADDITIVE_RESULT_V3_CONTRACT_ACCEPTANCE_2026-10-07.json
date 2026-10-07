@@ -18,6 +18,39 @@
     "rerun_result": {"passed": 25, "failed": 0},
     "separate_commit": true
   },
+  "R1_backward_compatibility_repair": {
+    "independent_review_finding": "UNINTENDED_H1_V1_RUNTIME_SEMANTIC_TIGHTENING",
+    "defect": "The shared validator rejected duplicate canonical items with the same status_type because it compared set cardinality with item cardinality.",
+    "repair": "Restore H1 v1 semantic compatibility and permit repeated canonical subtype items; retain H1 v2 per-item canonical coverage validation without subtype uniqueness.",
+    "h1_v1_prior_authority": "The pre-A2.1B validator enforced declared scope and complete no_evidence_in_covered_scope claims; it did not require each item's subtype to occur in covered_status_types and did not impose subtype uniqueness.",
+    "h1_v1_repeated_status_type": "allowed under frozen semantics",
+    "h1_v2_canonical_item_rules": [
+      "each item is an object",
+      "each item.status_type is one of the five canonical values",
+      "each item's status_type is included in covered_status_types",
+      "repeated status_type values across items are allowed"
+    ],
+    "regressions": [
+      "schema-valid H1 v1 with two attention items remains valid",
+      "H1 v2 with two covered attention items remains valid",
+      "H1 v2 canonical item whose subtype is uncovered is rejected"
+    ],
+    "market_get_head_post": "0/0/0",
+    "validation": {
+      "phase_h_v3_validator": "PASS",
+      "compileall_scripts_server_tests": "PASS",
+      "focused_suite": {"passed": 107, "failed": 0},
+      "default_ci": {
+        "status": "PASS",
+        "passed": 1266,
+        "skipped": 1,
+        "deselected": 5,
+        "failed": 0,
+        "network_may_have_occurred": false
+      },
+      "git_diff_check": "PASS"
+    }
+  },
   "contract_decision": {
     "h1_v1": "unchanged; existing attention route remains on v1",
     "h1_v1_sha256": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
@@ -87,7 +120,7 @@
     "result_item_count_and_total_item_count": "unchanged; not redefined to include native observations"
   },
   "support_chain": {
-    "semantic_validator": "H1 v1/v2 share fail-closed declared-scope and canonical-item coverage validation; v2 adds native value/type/citation/caveat/date/status and native-only constraints",
+    "semantic_validator": "H1 v1 retains pre-A2.1B declared-scope and complete no-evidence checks only; H1 v2 adds per-item canonical subtype coverage (duplicates allowed) plus native value/type/citation/caveat/date/status and native-only constraints",
     "artifact_loader": "loads and validates H1 v1 and v2 against their respective schemas",
     "lineage_resolver": "accepts either version but rejects multiple typed H1 artifacts for one binding",
     "result_projection": "projects the selected H1 artifact unchanged after validation and lineage checks",

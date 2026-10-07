@@ -24,13 +24,33 @@ Native-only H1 v2 is `partial`, has no canonical items or covered status types,
 keeps every declared canonical type uncovered, records successful retrieval
 and exact-target search, and cannot claim complete scope or
 `no_evidence_in_covered_scope`. Canonical item coverage is validated: every
-canonical item's type must be in `covered_status_types`. Same-source mixed
-canonical and native evidence is allowed; one H1 artifact still represents
-only one top-level source contract.
+H1 v2 canonical item's type must be in `covered_status_types`; repeated items
+with the same subtype are allowed. Same-source mixed canonical and native
+evidence is allowed; one H1 artifact still represents only one top-level
+source contract.
 
 `source_contract_validated=true` records only transport, payload, field, JSON
 type, and date-grammar validation. It does not mean that the business meaning
 of a source-native marker has been resolved.
+
+## R1 backward-compatibility repair
+
+Independent review found `UNINTENDED_H1_V1_RUNTIME_SEMANTIC_TIGHTENING`: the
+shared validator compared the number of distinct item subtypes with the number
+of items, rejecting repeated canonical items of the same subtype. The frozen
+pre-A2.1B H1 v1 validator checked declared scope and complete
+`no_evidence_in_covered_scope` claims, but had no item-subtype uniqueness or
+item-to-covered-subtype invariant.
+
+R1 restores that H1 v1 behavior. H1 v2 now validates each canonical item as an
+object, requires its `status_type` to be canonical and covered, and permits
+multiple items with the same `status_type`. Native-observation safety rules
+are unchanged. Regression tests cover duplicate `attention` items in both
+versions and rejection of an uncovered H1 v2 canonical item. Phase H validator,
+`compileall`, and `git diff --check` pass; the focused suite reports **107
+passed**. `default-ci` reports **1,266 passed, 1 skipped, 5 deselected, 0
+failed**, with `network_may_have_occurred=false`. Market GET/HEAD/POST remains
+`0/0/0`.
 
 ## Compatibility and propagation
 

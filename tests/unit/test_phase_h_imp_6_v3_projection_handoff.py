@@ -355,6 +355,11 @@ def test_h1_v2_native_only_and_mixed_contract_semantics():
     validate_trading_status_context_semantics(mixed)
     assert not list(Draft7Validator(schema_v2).iter_errors(mixed))
 
+    repeated = deepcopy(mixed)
+    repeated["items"].append(deepcopy(repeated["items"][0]))
+    validate_trading_status_context_semantics(repeated)
+    assert not list(Draft7Validator(schema_v2).iter_errors(repeated))
+
 
 @pytest.mark.parametrize("mutation,code", [
     ("native_coverage", "h1_native_only_requires_partial_uncovered_scope"),

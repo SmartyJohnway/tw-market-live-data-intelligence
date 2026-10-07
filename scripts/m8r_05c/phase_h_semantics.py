@@ -33,13 +33,6 @@ def validate_trading_status_context_semantics(value: Mapping[str, Any]) -> None:
     if declared != STATUS_TYPES:
         _fail("declared_coverage_scope_not_canonical")
 
-    items = value.get("items")
-    if not isinstance(items, list):
-        _fail("h1_items_invalid")
-    item_types = {item.get("status_type") for item in items if isinstance(item, Mapping)}
-    if len(item_types) != len(items) or not item_types.issubset(covered):
-        _fail("h1_canonical_item_not_covered")
-
     if value.get("status") == "no_evidence_in_covered_scope":
         if has_trading_status_evidence(value):
             _fail("h1_evidence_conflicts_with_no_evidence")
@@ -56,6 +49,21 @@ def validate_trading_status_context_semantics(value: Mapping[str, Any]) -> None:
 
     if value.get("schema_version") != "trading_status_context_evidence.v2":
         return
+
+    # Canonical item-to-coverage validation was introduced for H1 v2. H1 v1's
+    # frozen semantic validator checked declared scope and complete no-evidence
+    # claims only; do not tighten persisted v1 artifacts here.
+    items = value.get("items")
+    if not isinstance(items, list):
+        _fail("h1_items_invalid")
+    item_types: set[str] = set()
+    for item in items:
+        if not isinstance(item, Mapping):
+            _fail("h1_canonical_item_invalid")
+        status_type = item.get("status_type")
+        if not isinstance(status_type, str) or status_type not in STATUS_TYPES or status_type not in covered:
+            _fail("h1_canonical_item_not_covered")
+        item_types.add(status_type)
 
     observations = value.get("native_observations")
     if not isinstance(observations, list):
