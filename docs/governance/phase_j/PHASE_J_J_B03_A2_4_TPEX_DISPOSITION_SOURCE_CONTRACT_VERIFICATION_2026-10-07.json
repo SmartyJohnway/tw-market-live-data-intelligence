@@ -8,309 +8,245 @@
     "pr_318": "MERGED / CLOSED"
   },
   "branch": "phase-j/j-b03-a2-4-tpex-disposition-contract-verification",
-  "static_source_authority": {
-    "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
-    "source_family": "TPEX_DISPOSITION_OPEN_DATA",
-    "source_contract_id": "tpex_disposal_information",
-    "publisher": "Taipei Exchange",
-    "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
-    "dataset": "data.gov.tw/11396",
-    "license": "ODGL 1.0; free",
-    "source_role": "default_candidate",
-    "activation_state": "eligible",
-    "runtime_executable": false,
-    "authority_result": "PASS; descriptor and accepted A2.2/A2.3 authority agree"
-  },
-  "static_dormant_normalizer_contract": {
-    "function": "server.services.phase_h_trading_status_adapters.normalize_tpex_disposition",
-    "expected_root": "list of objects",
-    "required_fields": [
-      "Date",
-      "SecuritiesCompanyCode",
-      "CompanyName",
-      "DispositionPeriod",
-      "DispositionReasons",
-      "DisposalCondition"
-    ],
-    "date_parser": "_date_value accepts only valid YYYY-MM-DD strings; blank/null returns None; other strings return None.",
-    "identifier_binding": "_bound_row compares str(source identifier) to exact target security_code; zero rows gives no item, one row binds, multiple rows fail binding_failed:ambiguous_exact_target_rows.",
-    "output": "trading_status_context_evidence.v1 with canonical subtype disposition"
-  },
-  "network": {
-    "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
-    "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
-    "get_authorized": 1,
-    "get_attempts": 1,
-    "head_count": 0,
-    "post_count": 0,
-    "retry_count": 0,
-    "fallback_count": 0,
-    "http_status": 200,
-    "content_type": "application/json",
-    "content_length": 25231,
-    "response_bytes": 25231,
-    "response_sha256": "387fc06c42a3fabcd4dc81308c690d438044bb21e9434d67efa135a39e105864",
-    "retrieved_at_utc": "2026-10-07T05:40:21.117382Z",
-    "timeout_seconds": 30,
-    "maximum_response_bytes": 4194304,
-    "redirect_count": 0,
-    "tls": {
-      "policy": "compatibility",
-      "context_is_ssl_context": true,
-      "verify_mode_cert_required": true,
-      "check_hostname": true,
-      "verify_x509_strict_available": true,
-      "verify_x509_strict_removed": true,
-      "certificate_validation_bypassed": false
+  "initial_a2_4_evidence": {
+    "static_source_authority": {
+      "source_id": "H1-TPEX-DISPOSITION-OPENAPI",
+      "source_family": "TPEX_DISPOSITION_OPEN_DATA",
+      "source_contract_id": "tpex_disposal_information",
+      "publisher": "Taipei Exchange",
+      "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+      "dataset": "data.gov.tw/11396",
+      "license": "ODGL 1.0; free",
+      "source_role": "default_candidate",
+      "activation_state": "eligible",
+      "runtime_executable": false,
+      "authority_result": "PASS; descriptor and accepted A2.2/A2.3 authority agree"
     },
-    "proxy_configuration": "Python urllib reported no configured proxy schemes or HTTP(S)_PROXY/ALL_PROXY/NO_PROXY variables.",
-    "raw_payload_persisted": false
-  },
-  "payload_shape": {
-    "strict_utf8_json_parse": "PASS",
-    "root_type": "array",
-    "row_count": 26,
-    "non_object_rows": 0,
-    "empty": false,
-    "key_union": [
-      "CompanyName",
-      "Date",
-      "DisposalCondition",
-      "DispositionPeriod",
-      "DispositionReasons",
-      "SecuritiesCompanyCode"
-    ],
-    "key_intersection": [
-      "CompanyName",
-      "Date",
-      "DisposalCondition",
-      "DispositionPeriod",
-      "DispositionReasons",
-      "SecuritiesCompanyCode"
-    ],
-    "key_presence_counts": {
-      "CompanyName": 26,
-      "Date": 26,
-      "DisposalCondition": 26,
-      "DispositionPeriod": 26,
-      "DispositionReasons": 26,
-      "SecuritiesCompanyCode": 26
+    "static_dormant_normalizer_contract": {
+      "function": "server.services.phase_h_trading_status_adapters.normalize_tpex_disposition",
+      "expected_root": "list of objects",
+      "required_fields": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "CompanyName",
+        "DispositionPeriod",
+        "DispositionReasons",
+        "DisposalCondition"
+      ],
+      "date_parser": "_date_value accepts only valid YYYY-MM-DD strings; blank/null returns None; other strings return None.",
+      "identifier_binding": "_bound_row compares str(source identifier) to exact target security_code; zero rows gives no item, one row binds, multiple rows fail binding_failed:ambiguous_exact_target_rows.",
+      "output": "trading_status_context_evidence.v1 with canonical subtype disposition"
     },
-    "required_key_missing_row_counts": {
-      "Date": 0,
-      "SecuritiesCompanyCode": 0,
-      "CompanyName": 0,
-      "DispositionPeriod": 0,
-      "DispositionReasons": 0,
-      "DisposalCondition": 0
+    "network": {
+      "requested_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+      "effective_url": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
+      "get_authorized": 1,
+      "get_attempts": 1,
+      "head_count": 0,
+      "post_count": 0,
+      "retry_count": 0,
+      "fallback_count": 0,
+      "http_status": 200,
+      "content_type": "application/json",
+      "content_length": 25231,
+      "response_bytes": 25231,
+      "response_sha256": "387fc06c42a3fabcd4dc81308c690d438044bb21e9434d67efa135a39e105864",
+      "retrieved_at_utc": "2026-10-07T05:40:21.117382Z",
+      "timeout_seconds": 30,
+      "maximum_response_bytes": 4194304,
+      "redirect_count": 0,
+      "tls": {
+        "policy": "compatibility",
+        "context_is_ssl_context": true,
+        "verify_mode_cert_required": true,
+        "check_hostname": true,
+        "verify_x509_strict_available": true,
+        "verify_x509_strict_removed": true,
+        "certificate_validation_bypassed": false
+      },
+      "proxy_configuration": "Python urllib reported no configured proxy schemes or HTTP(S)_PROXY/ALL_PROXY/NO_PROXY variables.",
+      "raw_payload_persisted": false
     },
-    "unexpected_keys": [],
-    "type_frequencies_per_required_field": {
-      "Date": {"string": 26},
-      "SecuritiesCompanyCode": {"string": 26},
-      "CompanyName": {"string": 26},
-      "DispositionPeriod": {"string": 26},
-      "DispositionReasons": {"string": 26},
-      "DisposalCondition": {"string": 26}
-    },
-    "blank_null_missing_per_required_field": {
-      "Date": {"blank_string": 0, "null": 0, "missing": 0},
-      "SecuritiesCompanyCode": {"blank_string": 0, "null": 0, "missing": 0},
-      "CompanyName": {"blank_string": 0, "null": 0, "missing": 0},
-      "DispositionPeriod": {"blank_string": 0, "null": 0, "missing": 0},
-      "DispositionReasons": {"blank_string": 0, "null": 0, "missing": 0},
-      "DisposalCondition": {"blank_string": 0, "null": 0, "missing": 0}
-    }
-  },
-  "date_analysis": {
-    "type": "string for all 26 rows",
-    "observed_grammar": {"seven_digit_string": 26},
-    "distinct_nonblank_values": 7,
-    "blank_null_missing": {"blank": 0, "null": 0, "missing": 0},
-    "accepted_by_current_dormant_parser": 0,
-    "current_parser_compatibility": "FAIL; _date_value does not parse seven-digit date strings",
-    "calendar_validity_under_existing_disposition_parser": "UNRESOLVED; no seven-digit normalization is authorized or present in the dormant disposition parser",
-    "normalization_performed": false
-  },
-  "identifier_analysis": {
-    "field": "SecuritiesCompanyCode",
-    "type": "string for all 26 rows",
-    "length_frequencies": {"4": 12, "5": 12, "6": 2},
-    "numeric_string_count": 26,
-    "alphanumeric_string_count": 0,
-    "leading_zero_count": 0,
-    "blank_null_missing": {"blank": 0, "null": 0, "missing": 0},
-    "unique_nonblank_code_count": 20,
-    "duplicate_code_count": 4,
-    "codes_with_more_than_one_row": 4,
-    "maximum_rows_per_code": 3,
-    "exact_string_binding": "Identifier remains a string and must never be numerically coerced; current one-row _bound_row assumption is incompatible for observed duplicate codes."
-  },
-  "offline_normalizer_compatibility": {
-    "deterministic_sample_rule": "lexicographically smallest unique nonblank SecuritiesCompanyCode in the one fetched response",
-    "selected_target_value_persisted": false,
-    "normalizer_invoked_on_in_memory_payload": true,
-    "output_schema_version": "trading_status_context_evidence.v1",
-    "output_status": "partial",
-    "output_item_count": 1,
-    "canonical_coverage": ["disposition"],
-    "h1_schema_and_semantic_validation": "PASS",
-    "source_snapshot_date": null,
-    "target_item_source_record_date": null,
-    "overall_live_contract_compatibility": "FAIL; current parser leaves the seven-digit dates unresolved, and duplicate identifiers can trigger ambiguous_exact_target_rows"
-  },
-  "semantic_boundaries": {
-    "safe_native_surface": [
-      "Date is an official source field but its seven-digit grammar remains unnormalized here.",
-      "SecuritiesCompanyCode is a source identifier string; CompanyName is provenance/display only.",
-      "DispositionPeriod, DispositionReasons and DisposalCondition are preserved source-native text fields."
-    ],
-    "not_established": [
-      "effective_from or effective_to",
-      "disposition ended or remains currently effective",
-      "same-day current state",
-      "tradeability or normal trading"
-    ],
-    "no_match": "A missing exact target row is not normal trading and does not establish complete no_evidence_in_covered_scope; retain partial source-specific disposition coverage.",
-    "source_specific_canonical_coverage": ["disposition"],
-    "lifecycle_semantics": "PARTIAL / UNRESOLVED"
-  },
-  "evidence_matrix": {
-    "authority_identity": "PASS",
-    "license_dataset_mapping": "PASS",
-    "official_endpoint_identity": "PASS",
-    "transport": "PASS",
-    "top_level_json_shape": "PASS",
-    "required_fields": "PASS",
-    "field_types": "PASS for observed string types; no blank/null/missing values observed",
-    "date_grammar": "FAIL against current dormant parser",
-    "identifier_grammar": "PASS as numeric strings; preserve exact lexical string",
-    "identifier_uniqueness_cardinality": "FAIL; duplicate codes observed, up to three rows per code",
-    "dormant_normalizer_structural_compatibility": "FAIL overall; H1 projection itself validates for selected unique sample but date and duplicate-row assumptions do not cover the live payload contract",
-    "h1_v1_projection_compatibility": "PASS for deterministic unique-code sample; date fields remain null/unresolved",
-    "source_specific_canonical_coverage": "PASS; disposition only",
-    "lifecycle_semantics": "PARTIAL / UNRESOLVED"
-  },
-  "disposition": "J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE",
-  "source_readiness": "BLOCKED pending bounded contract/normalizer repair; source remains eligible and runtime_executable=false",
-  "recommended_next_gate": {
-    "name": "J-B03-A2.4-R1 — Disposition Contract/Normalizer Repair",
-    "scope": "Separately authorize a source-specific calendar-validated seven-digit date interpretation using an accepted TPEx date precedent, and deterministic exact-code handling that preserves every matching disposition row as separate same-subtype evidence or otherwise fails closed. Do not choose a latest row or infer lifecycle. Add offline tests before any later acquisition authority."
-  },
-  "contract_hashes_unchanged": {
-    "h1_v1": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
-    "h1_v2": "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38",
-    "composite_v1": "3d34a1cb2112716211e39536b221994952aabd1c2723d3ed5f61ee8b0f224106",
-    "result_v3": "9269fc9e5e07884fa2de791eae902ee57b3d937dbb793318ca4aff1a93fc5bcb",
-    "operation_result_v2": "9d6430254215ae0b4048e0352f6902c629e4069530b1c9a267f1ee50d4c5bd64",
-    "h0_g_manifest": "6c1f23ed12a0d3bffcb7b964197eda6ee6a36d8c95ef1a8c5d6106ef31ea89f6"
-  },
-  "network_accounting": {"market_get": 1, "market_head": 0, "market_post": 0},
-  "change_boundary": {
-    "production_code_changed": false,
-    "schema_changed": false,
-    "catalog_changed": false,
-    "routing_changed": false,
-    "executor_registry_changed": false,
-    "activation_changed": false,
-    "preferred_version_promoted": false,
-    "mcp_changed": false,
-    "mcp_count": 6,
-    "raw_payload_committed": false,
-    "data_directory_touched": false
-  },
-  "validation": {
-    "non_network_normalizer_composition_and_handoff_tests": "98 passed, 0 failed",
-    "json_parse": "PASS",
-    "git_diff_check": "PASS",
-    "phase_h_v3_contract_validator": "PASS",
-    "protected_contract_hashes": "all six required hashes unchanged"
-  },
-  "issue_states": {
-    "H0-SRC-01E": "OPEN",
-    "H0-SRC-02": "OPEN",
-    "J-B03": "HOLD",
-    "J-B04": "BLOCKING",
-    "Phase J": "NOT STARTED"
-  },
-  "data_directory_untouched": true
-,
-  "continuation_authority": "USER_CHAT_2026-10-07_J_B03_A2_4_R1_R2_CONTINUATION_AUTHORIZATION",
-  "verification_history": [
-    {
-      "stage": "A2.4_initial_live_probe",
-      "disposition": "J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE",
-      "evidence_sha256": "387fc06c42a3fabcd4dc81308c690d438044bb21e9434d67efa135a39e105864"
-    },
-    {
-      "stage": "A2.4-R1_offline_repair",
-      "disposition": "PASS",
-      "network": {
-        "get": 0,
-        "head": 0,
-        "post": 0
+    "payload_shape": {
+      "strict_utf8_json_parse": "PASS",
+      "root_type": "array",
+      "row_count": 26,
+      "non_object_rows": 0,
+      "empty": false,
+      "key_union": [
+        "CompanyName",
+        "Date",
+        "DisposalCondition",
+        "DispositionPeriod",
+        "DispositionReasons",
+        "SecuritiesCompanyCode"
+      ],
+      "key_intersection": [
+        "CompanyName",
+        "Date",
+        "DisposalCondition",
+        "DispositionPeriod",
+        "DispositionReasons",
+        "SecuritiesCompanyCode"
+      ],
+      "key_presence_counts": {
+        "CompanyName": 26,
+        "Date": 26,
+        "DisposalCondition": 26,
+        "DispositionPeriod": 26,
+        "DispositionReasons": 26,
+        "SecuritiesCompanyCode": 26
+      },
+      "required_key_missing_row_counts": {
+        "Date": 0,
+        "SecuritiesCompanyCode": 0,
+        "CompanyName": 0,
+        "DispositionPeriod": 0,
+        "DispositionReasons": 0,
+        "DisposalCondition": 0
+      },
+      "unexpected_keys": [],
+      "type_frequencies_per_required_field": {
+        "Date": {
+          "string": 26
+        },
+        "SecuritiesCompanyCode": {
+          "string": 26
+        },
+        "CompanyName": {
+          "string": 26
+        },
+        "DispositionPeriod": {
+          "string": 26
+        },
+        "DispositionReasons": {
+          "string": 26
+        },
+        "DisposalCondition": {
+          "string": 26
+        }
+      },
+      "blank_null_missing_per_required_field": {
+        "Date": {
+          "blank_string": 0,
+          "null": 0,
+          "missing": 0
+        },
+        "SecuritiesCompanyCode": {
+          "blank_string": 0,
+          "null": 0,
+          "missing": 0
+        },
+        "CompanyName": {
+          "blank_string": 0,
+          "null": 0,
+          "missing": 0
+        },
+        "DispositionPeriod": {
+          "blank_string": 0,
+          "null": 0,
+          "missing": 0
+        },
+        "DispositionReasons": {
+          "blank_string": 0,
+          "null": 0,
+          "missing": 0
+        },
+        "DisposalCondition": {
+          "blank_string": 0,
+          "null": 0,
+          "missing": 0
+        }
       }
     },
-    {
-      "stage": "A2.4-R2_live_reverification",
-      "disposition": "PENDING",
-      "network": {
-        "get": 0,
-        "head": 0,
-        "post": 0
-      }
-    }
-  ],
-  "r1_repair": {
-    "authority": "USER_CHAT_2026-10-07_J_B03_A2_4_R1_R2_CONTINUATION_AUTHORIZATION",
-    "original_a2_4_hold_preserved": true,
-    "initial_disposition": "J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE",
-    "date_repair": {
-      "scope": "TPEx disposition normalizer only; generic _date_value unchanged",
-      "canonical_iso": "calendar validated and retained",
-      "seven_ascii_digits": "parsed through existing parse_roc_yyyymmdd precedent; invalid calendar fails closed",
-      "source_record_date": "normalized Gregorian date",
-      "raw_date": "original source token retained in complete source_native_provenance",
-      "table_snapshot_date": "set only when all row dates normalize to the same date; multiple dates produce null and caveat"
+    "date_analysis": {
+      "type": "string for all 26 rows",
+      "observed_grammar": {
+        "seven_digit_string": 26
+      },
+      "distinct_nonblank_values": 7,
+      "blank_null_missing": {
+        "blank": 0,
+        "null": 0,
+        "missing": 0
+      },
+      "accepted_by_current_dormant_parser": 0,
+      "current_parser_compatibility": "FAIL; _date_value does not parse seven-digit date strings",
+      "calendar_validity_under_existing_disposition_parser": "UNRESOLVED; no seven-digit normalization is authorized or present in the dormant disposition parser",
+      "normalization_performed": false
     },
-    "duplicate_code_repair": {
-      "scope": "TPEx disposition exact lexical code binding only; generic _bound_row unchanged",
-      "zero_matches": "partial source-specific result with no items",
-      "one_match": "one disposition item",
-      "multiple_matches": "one distinct disposition item per matching source row; no selection, collapse, deduplication, or latest-row inference",
-      "identifier": "non-empty string and exact lexical equality; no numeric coercion or company-name fallback",
-      "lifecycle": "reported only; effective_from/effective_to remain null; no tradeability inference",
-      "required_source_fields": "must be strings; unsafe JSON types fail closed; blank free-text is not rejected solely for being blank"
+    "identifier_analysis": {
+      "field": "SecuritiesCompanyCode",
+      "type": "string for all 26 rows",
+      "length_frequencies": {
+        "4": 12,
+        "5": 12,
+        "6": 2
+      },
+      "numeric_string_count": 26,
+      "alphanumeric_string_count": 0,
+      "leading_zero_count": 0,
+      "blank_null_missing": {
+        "blank": 0,
+        "null": 0,
+        "missing": 0
+      },
+      "unique_nonblank_code_count": 20,
+      "duplicate_code_count": 4,
+      "codes_with_more_than_one_row": 4,
+      "maximum_rows_per_code": 3,
+      "exact_string_binding": "Identifier remains a string and must never be numerically coerced; current one-row _bound_row assumption is incompatible for observed duplicate codes."
     },
-    "offline_tests": {
-      "command": "python -m pytest -q tests/unit/test_phase_h_imp_2_h1_dormant_adapters.py tests/unit/test_m8r_05c_trading_status_composition.py",
-      "result": "56 passed, 0 failed",
-      "coverage": [
-        "R1-C1",
-        "R1-C2",
-        "R1-C3",
-        "R1-C4",
-        "R1-C5",
-        "R1-C6",
-        "R1-C7",
-        "R1-C8",
-        "R1-C9",
-        "R1-C10",
-        "R1-C11",
-        "R1-C12"
-      ]
+    "offline_normalizer_compatibility": {
+      "deterministic_sample_rule": "lexicographically smallest unique nonblank SecuritiesCompanyCode in the one fetched response",
+      "selected_target_value_persisted": false,
+      "normalizer_invoked_on_in_memory_payload": true,
+      "output_schema_version": "trading_status_context_evidence.v1",
+      "output_status": "partial",
+      "output_item_count": 1,
+      "canonical_coverage": [
+        "disposition"
+      ],
+      "h1_schema_and_semantic_validation": "PASS",
+      "source_snapshot_date": null,
+      "target_item_source_record_date": null,
+      "overall_live_contract_compatibility": "FAIL; current parser leaves the seven-digit dates unresolved, and duplicate identifiers can trigger ambiguous_exact_target_rows"
     },
-    "gates": {
-      "validate_phase_h_v3_contracts": "PASS",
-      "compileall_scripts_server_tests": "PASS",
-      "git_diff_check": "PASS",
-      "market_get_head_post": {
-        "get": 0,
-        "head": 0,
-        "post": 0
-      }
+    "semantic_boundaries": {
+      "safe_native_surface": [
+        "Date is an official source field but its seven-digit grammar remains unnormalized here.",
+        "SecuritiesCompanyCode is a source identifier string; CompanyName is provenance/display only.",
+        "DispositionPeriod, DispositionReasons and DisposalCondition are preserved source-native text fields."
+      ],
+      "not_established": [
+        "effective_from or effective_to",
+        "disposition ended or remains currently effective",
+        "same-day current state",
+        "tradeability or normal trading"
+      ],
+      "no_match": "A missing exact target row is not normal trading and does not establish complete no_evidence_in_covered_scope; retain partial source-specific disposition coverage.",
+      "source_specific_canonical_coverage": [
+        "disposition"
+      ],
+      "lifecycle_semantics": "PARTIAL / UNRESOLVED"
     },
-    "schema_hashes_changed": false,
+    "evidence_matrix": {
+      "authority_identity": "PASS",
+      "license_dataset_mapping": "PASS",
+      "official_endpoint_identity": "PASS",
+      "transport": "PASS",
+      "top_level_json_shape": "PASS",
+      "required_fields": "PASS",
+      "field_types": "PASS for observed string types; no blank/null/missing values observed",
+      "date_grammar": "FAIL against current dormant parser",
+      "identifier_grammar": "PASS as numeric strings; preserve exact lexical string",
+      "identifier_uniqueness_cardinality": "FAIL; duplicate codes observed, up to three rows per code",
+      "dormant_normalizer_structural_compatibility": "FAIL overall; H1 projection itself validates for selected unique sample but date and duplicate-row assumptions do not cover the live payload contract",
+      "h1_v1_projection_compatibility": "PASS for deterministic unique-code sample; date fields remain null/unresolved",
+      "source_specific_canonical_coverage": "PASS; disposition only",
+      "lifecycle_semantics": "PARTIAL / UNRESOLVED"
+    },
+    "disposition": "J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE",
     "contract_hashes_unchanged": {
       "h1_v1": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
       "h1_v2": "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38",
@@ -319,51 +255,61 @@
       "operation_result_v2": "9d6430254215ae0b4048e0352f6902c629e4069530b1c9a267f1ee50d4c5bd64",
       "h0_g_manifest": "6c1f23ed12a0d3bffcb7b964197eda6ee6a36d8c95ef1a8c5d6106ef31ea89f6"
     },
-    "r2_authorized_endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
-    "r2_next": "After the R1 commit, perform bounded fresh official-source re-verification under the continuation authorization."
-  },
-  "current_stage": "R1_OFFLINE_PASS_R2_LIVE_REVERIFICATION_PENDING",
-  "final_disposition": "PENDING_R2",
-  "recommended_next_gate": {
-    "name": "J-B03-A2.4-R2 — Live Re-verification of Repaired Disposition Contract",
-    "scope": "Fresh bounded official GET; verify date grammar, exact-string identifiers, duplicate-code multi-item output, H1 v1 and composite compatibility; no activation or lifecycle/tradeability inference."
-  },
-  "network_accounting": {
-    "historical_initial_probe": {
+    "change_boundary": {
+      "production_code_changed": false,
+      "schema_changed": false,
+      "catalog_changed": false,
+      "routing_changed": false,
+      "executor_registry_changed": false,
+      "activation_changed": false,
+      "preferred_version_promoted": false,
+      "mcp_changed": false,
+      "mcp_count": 6,
+      "raw_payload_committed": false,
+      "data_directory_touched": false
+    },
+    "validation": {
+      "non_network_normalizer_composition_and_handoff_tests": "98 passed, 0 failed",
+      "json_parse": "PASS",
+      "git_diff_check": "PASS",
+      "phase_h_v3_contract_validator": "PASS",
+      "protected_contract_hashes": "all six required hashes unchanged"
+    },
+    "issue_states": {
+      "H0-SRC-01E": "OPEN",
+      "H0-SRC-02": "OPEN",
+      "J-B03": "HOLD",
+      "J-B04": "BLOCKING",
+      "Phase J": "NOT STARTED"
+    },
+    "data_directory_untouched": true,
+    "source_readiness": "BLOCKED pending bounded contract/normalizer repair; source remains eligible and runtime_executable=false",
+    "recommended_next_gate": {
+      "name": "J-B03-A2.4-R1 — Disposition Contract/Normalizer Repair",
+      "scope": "Separately authorize a source-specific calendar-validated seven-digit date interpretation using an accepted TPEx date precedent, and deterministic exact-code handling that preserves every matching disposition row as separate same-subtype evidence or otherwise fails closed. Do not choose a latest row or infer lifecycle. Add offline tests before any later acquisition authority."
+    },
+    "network_accounting": {
       "market_get": 1,
       "market_head": 0,
       "market_post": 0
-    },
-    "r1_offline": {
-      "market_get": 0,
-      "market_head": 0,
-      "market_post": 0
-    },
-    "r2_live_reverification": {
-      "market_get": 0,
-      "market_head": 0,
-      "market_post": 0
     }
-  }
-,
+  },
   "continuation_authority": "USER_CHAT_2026-10-07_J_B03_A2_4_R1_R2_CONTINUATION_AUTHORIZATION",
   "verification_history": [
     {
-      "stage": "A2.4_initial_live_probe",
+      "stage": "A2.4 initial live probe",
       "disposition": "J_B03_A2_4_HOLD_LIVE_SOURCE_CONTRACT_INCOMPATIBLE",
-      "evidence_sha256": "387fc06c42a3fabcd4dc81308c690d438044bb21e9434d67efa135a39e105864"
+      "response_sha256": "387fc06c42a3fabcd4dc81308c690d438044bb21e9434d67efa135a39e105864",
+      "next_gate": "J-B03-A2.4-R1 — Disposition Contract/Normalizer Repair"
     },
     {
-      "stage": "A2.4-R1_offline_repair",
+      "stage": "A2.4-R1 offline repair",
       "disposition": "PASS",
-      "network": {
-        "get": 0,
-        "head": 0,
-        "post": 0
-      }
+      "market_get_head_post": "0/0/0",
+      "next_gate": "J-B03-A2.4-R2 — Live Re-verification of Repaired Disposition Contract"
     },
     {
-      "stage": "A2.4-R2_live_reverification",
+      "stage": "A2.4-R2 live re-verification",
       "disposition": "PASS",
       "request_ordinal": 1,
       "response_sha256": "fb1f07af0caf6bef5b4545bd0323736bf70c6ca70bc21368c2fd19840d5789e0"
@@ -429,35 +375,6 @@
     },
     "r2_authorized_endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_disposal_information",
     "r2_next": "After the R1 commit, perform bounded fresh official-source re-verification under the continuation authorization."
-  },
-  "current_stage": "A2_4_R2_LIVE_REVERIFICATION_PASS",
-  "final_disposition": "J_B03_A2_4_TPEX_DISPOSITION_SOURCE_CONTRACT_VERIFIED",
-  "recommended_next_gate": {
-    "name": "J-B03-A2.5 — Deterministic Representative Component Adapters",
-    "source_readiness": "READY_FOR_A2_5_INTEGRATION; source contract verified, dormant normalizer compatible; activation_state remains eligible and runtime_executable=false",
-    "scope": "Separate authorization required; no adapter activation or production route promotion is implied by A2.4."
-  },
-  "network_accounting": {
-    "historical_initial_probe": {
-      "market_get": 1,
-      "market_head": 0,
-      "market_post": 0
-    },
-    "r1_offline": {
-      "market_get": 0,
-      "market_head": 0,
-      "market_post": 0
-    },
-    "r2_live_reverification": {
-      "market_get": 1,
-      "market_head": 0,
-      "market_post": 0
-    },
-    "chain_total_including_initial_probe": {
-      "market_get": 2,
-      "market_head": 0,
-      "market_post": 0
-    }
   },
   "r2_live_reverification": {
     "authority": "USER_CHAT_2026-10-07_J_B03_A2_4_R1_R2_CONTINUATION_AUTHORIZATION",
@@ -572,5 +489,73 @@
     "raw_payload_persisted": false,
     "raw_payload_committed": false
   },
-  "source_readiness": "SOURCE_CONTRACT_VERIFIED; DORMANT_NORMALIZER_COMPATIBLE; READY_FOR_A2_5_INTEGRATION; activation_state=eligible; runtime_executable=false"
+  "current_stage": "A2_4_R2_LIVE_REVERIFICATION_PASS",
+  "final_disposition": "J_B03_A2_4_TPEX_DISPOSITION_SOURCE_CONTRACT_VERIFIED",
+  "recommended_next_gate": {
+    "name": "J-B03-A2.5 — Deterministic Representative Component Adapters",
+    "source_readiness": "READY_FOR_A2_5_INTEGRATION; source contract verified, dormant normalizer compatible; activation_state remains eligible and runtime_executable=false",
+    "scope": "Separate authorization required; no adapter activation or production route promotion is implied by A2.4."
+  },
+  "network_accounting": {
+    "initial_probe": {
+      "market_get": 1,
+      "market_head": 0,
+      "market_post": 0
+    },
+    "r1": {
+      "market_get": 0,
+      "market_head": 0,
+      "market_post": 0
+    },
+    "r2": {
+      "market_get": 1,
+      "market_head": 0,
+      "market_post": 0
+    },
+    "chain_total": {
+      "market_get": 2,
+      "market_head": 0,
+      "market_post": 0
+    }
+  },
+  "source_readiness": "SOURCE_CONTRACT_VERIFIED; DORMANT_NORMALIZER_COMPATIBLE; READY_FOR_A2_5_INTEGRATION; activation_state=eligible; runtime_executable=false",
+  "current_state": {
+    "activation_state": "eligible",
+    "runtime_executable": false,
+    "mcp_count": 6,
+    "issue_states": {
+      "H0-SRC-01E": "OPEN",
+      "H0-SRC-02": "OPEN",
+      "J-B03": "HOLD",
+      "J-B04": "BLOCKING",
+      "Phase J": "NOT STARTED"
+    },
+    "raw_full_payload_committed": false,
+    "data_directory_untouched": true
+  },
+  "protected_contract_hashes": {
+    "h1_v1": "638200509cde05613d17bd4158d1676c3c086d2b10aa2f50fb85d52febe30ecf",
+    "h1_v2": "818de1e9c501b4c4d0bb06d6a1503dafba7b63dc60977791f7842cd8b5a31d38",
+    "composite_v1": "3d34a1cb2112716211e39536b221994952aabd1c2723d3ed5f61ee8b0f224106",
+    "result_v3": "9269fc9e5e07884fa2de791eae902ee57b3d937dbb793318ca4aff1a93fc5bcb",
+    "operation_result_v2": "9d6430254215ae0b4048e0352f6902c629e4069530b1c9a267f1ee50d4c5bd64",
+    "h0_g_manifest": "6c1f23ed12a0d3bffcb7b964197eda6ee6a36d8c95ef1a8c5d6106ef31ea89f6"
+  },
+  "governance_json_canonicalization": {
+    "independent_review_finding": "DUPLICATE_TOP_LEVEL_JSON_MEMBER_NAMES",
+    "duplicate_member_occurrences_before": 10,
+    "distinct_duplicate_top_level_names_before": [
+      "continuation_authority",
+      "current_stage",
+      "final_disposition",
+      "network_accounting",
+      "r1_repair",
+      "recommended_next_gate",
+      "source_readiness",
+      "verification_history"
+    ],
+    "duplicate_member_names_after": 0,
+    "strict_validation": "PASS using Python json.loads(object_pairs_hook=reject_duplicate_names); normal JSON parse also PASS",
+    "repair": "Consolidated the original A2.4 HOLD evidence under initial_a2_4_evidence and retained one canonical continuation, verification history, R1, R2, final disposition, next gate, network accounting, and source readiness member."
+  }
 }
