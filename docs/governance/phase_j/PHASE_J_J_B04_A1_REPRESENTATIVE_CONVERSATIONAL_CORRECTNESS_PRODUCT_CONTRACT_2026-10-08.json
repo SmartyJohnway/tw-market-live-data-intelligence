@@ -1,0 +1,236 @@
+{
+  "schema_version": "phase_j_j_b04_a1_product_contract.v1",
+  "gate": "J-B04-A1",
+  "date": "2026-10-08",
+  "owner_authorization": "USER_CHAT_2026-10-08_J_B04_A1_REPRESENTATIVE_CONVERSATIONAL_CORRECTNESS_PRODUCT_CONTRACT_AND_EXIT_CRITERIA_FREEZE",
+  "starting_main": {
+    "commit": "a9346c0609aadf01c179981d5c1653c3efe3eb3c",
+    "pr_322": "MERGED / CLOSED; J-B03-C0 current authority"
+  },
+  "authority_reconciliation": {
+    "phase_j_readiness": {
+      "path": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+      "historical_finding": "J-B04 blocks Phase-J entry because contract-only H2 cannot supply price-basis events through normal governed runtime; the smallest gate is the J event set on one explicit representative market with H4 fail-closed interpretation and explicit caveats for unselected markets."
+    },
+    "j_b03_c0": {
+      "path": "docs/governance/phase_j/PHASE_J_J_B03_C0_CLOSURE_AND_READINESS_RECONCILIATION_2026-10-07.json",
+      "current_boundary": "J-B03 closed under bounded conversational correctness; J-B04 remains the next blocker; Phase J remains not started."
+    },
+    "frozen_phase_h_completion": {
+      "paths": [
+        "docs/governance/phase_h/Phase_H_Safety_Belt_Completion_Contract_FROZEN_2026-09-23.md",
+        "docs/governance/phase_h/Phase_H_H2_Price_Basis_Corporate_Action_Contract_FROZEN.md",
+        "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
+      ],
+      "distinction": "The broader H-SB0 production/live and phase-completion gates remain applicable to Phase H completion. They do not require complete H2 subtype coverage for the narrower J-B04 bounded conversational exit. H2 source gaps and per-window coverage requirements remain in force."
+    },
+    "h_sb1_market_alignment": {
+      "paths": [
+        "docs/governance/phase_h/Phase_H_H_SB1_H2_Minimal_Production_Activation_Preflight_2026-09-23.md",
+        "docs/governance/phase_h/Phase_H_H_SB1_A1_Comparison_Window_Binding_Preflight_2026-09-24.md"
+      ],
+      "historical_preference": "TPEx pre + final official OpenAPI was an earlier H2 activation candidate, not a current J-B04 market mandate.",
+      "reconciled_choice": "TWSE-first aligns the representative chain to the currently selected TWSE H3 baseline. The frozen H2 contract also permits a later TWSE first slice; TWT49U remains optional/inactive."
+    },
+    "contradiction_review": {
+      "direct_same_or_higher_authority_conflict": false,
+      "resolution": "No direct conflict found. The historical Phase-J blocker requires an executable bounded H2/H4 path; frozen H4 permits successful fail-closed coverage_incomplete behavior when relevant coverage or timing is unresolved. H-SB0 describes the broader Phase-H completion gate and is retained without weakening it."
+    }
+  },
+  "product_exit_contract": {
+    "exit_standard": "bounded_conversational_correctness",
+    "complete_h2_required_for_j_b04_closure": false,
+    "representative_market": "TWSE",
+    "representative_chain": [
+      "current selected TWSE H3 recent_performance baseline",
+      "governed H3-derived comparison window",
+      "bounded official TWSE H2 evidence for supported J event families",
+      "existing deterministic H4 interpretation-safety gate",
+      "Result/Audit/AI handoff that retains evidence, coverage and guard"
+    ],
+    "representative_market_rationale": [
+      "TWSE has the current selected production H3 recent_performance route and accepted comparison-window authority.",
+      "TPEx H3 remains blocked/non-executable, so TPEx-first would reopen a separate baseline-source gap.",
+      "The earlier TPEx H2 pre/final preference remains historically valid but does not override current H3/H4 alignment."
+    ],
+    "minimum_safe_behavior": [
+      "Surface only source-supported event facts with exact target, market, source/stage, supported dates, supplied official reference context, citations and coverage caveats.",
+      "Keep scheduled/preannouncement distinct from effective/final-reference evidence; never upgrade lifecycle without source authority.",
+      "For relevant unsupported, manual-only, source-gap, failed, binding-failed, timing-unresolved or historically uncovered evidence, return explicit coverage_incomplete and preserve component failure/caveat provenance.",
+      "When H4 state is not no_material_discontinuity_detected, block ordinary raw-return interpretation while retaining raw metrics as facts where available."
+    ],
+    "comparison_window": {
+      "comparison_window_authority": "H3 available baseline",
+      "h2_self_defined_window": "prohibited",
+      "plan_time_calendar_guess": "prohibited",
+      "event_returned_dates_define_window": "prohibited",
+      "public_h2_request_parameter_required": false,
+      "direction": "H3 governed evidence -> actual available baseline -> start/end observation dates -> H2 window binding -> H4 deterministic safety"
+    },
+    "event_and_coverage_semantics": {
+      "coverage_incomplete_is_accepted_safe_outcome": true,
+      "unsupported_relevant_subtype_safe_outcome": "coverage_incomplete",
+      "ordinary_return_interpretation_when_coverage_incomplete": "blocked",
+      "empty_h2_event_list_proves_no_event": false,
+      "no_row_proves_no_event_in_h3_window": false,
+      "no_material_discontinuity_requires_frozen_h4_complete_relevant_coverage": true,
+      "final_reference_required_for_all_j_b04_closure_paths": false,
+      "final_reference_unavailable_behavior": "If an effective in-window event is confirmed without an official reference, emit discontinuity_detected_reference_unavailable and block ordinary return interpretation.",
+      "coverage_or_timing_unresolved_behavior": "Emit coverage_incomplete and block ordinary return interpretation.",
+      "local_adjustment_allowed": false,
+      "guessed_reference_price_allowed": false,
+      "adjusted_or_total_return_calculation_allowed": false
+    },
+    "subtype_boundaries": {
+      "capital_reduction_positive_runtime_evidence_required_for_j_entry": false,
+      "capital_reduction_source_gap_closed": false,
+      "capital_reduction_current_authority": "manual_verification/inactive; unattended production automation authority is not established",
+      "capital_reduction_safe_outcome": "Explicit unavailable/unsupported/uncovered caveat; no absence inference; ordinary raw-return interpretation remains guarded when relevant.",
+      "par_value_change_resume": "uncovered/source_gap where relevant",
+      "split": "uncovered/source_gap where relevant",
+      "reverse_split": "uncovered/source_gap where relevant",
+      "share_consolidation": "uncovered/source_gap where relevant",
+      "complete_h2_claim_permitted": false
+    }
+  },
+  "scenario_acceptance_matrix": [
+    {
+      "scenario_id": "J1-13",
+      "scenario": "ex-dividend",
+      "positive_branch": "Governed official evidence may surface the exact event facts and stage. Scheduled/preannouncement remains scheduled; it is not effective/final-reference proof.",
+      "safe_branch": "If effective timing, comparison-window relation or relevant coverage is unresolved, H4 returns coverage_incomplete and blocks ordinary raw-return interpretation.",
+      "reference_rule": "If effective event is confirmed and official reference is supplied, use discontinuity_detected_reference_available. If confirmed without reference, use discontinuity_detected_reference_unavailable."
+    },
+    {
+      "scenario_id": "J1-14",
+      "scenario": "ex-right",
+      "positive_branch": "Same as J1-13; preserve preannouncement and final official reference stages independently.",
+      "safe_branch": "If effective timing, comparison-window relation or relevant coverage is unresolved, H4 returns coverage_incomplete and blocks ordinary raw-return interpretation.",
+      "reference_rule": "Official reference available/unavailable states follow the frozen H4 event timing and reference rules."
+    },
+    {
+      "scenario_id": "J1-15",
+      "scenario": "capital reduction",
+      "positive_branch": "No positive automated runtime evidence is required for J-B04 entry/closure while governed sources remain manual/inactive.",
+      "safe_branch": "Explicit unavailable/unsupported/uncovered status and caveat; no inference that no capital reduction occurred; H4 guards ordinary interpretation when relevant.",
+      "reference_rule": "Do not scrape manual browser/CSV sources or fabricate an event/reference."
+    },
+    {
+      "scenario_id": "J1-16",
+      "scenario": "reference-price discontinuity",
+      "positive_branch": "Runtime must preserve a confirmed in-window discontinuity with official reference available or unavailable.",
+      "safe_branch": "Relevant incomplete coverage or unresolved timing produces coverage_incomplete; ordinary interpretation blocked.",
+      "reference_rule": "no_material_discontinuity_detected need not be generally reachable; it is legal only under frozen H4 complete relevant-coverage conditions."
+    }
+  ],
+  "future_j_b04_exit_criteria": {
+    "normal_governed_twse_h2_route_required": true,
+    "explicit_activation_and_approval_bound_execution_required": true,
+    "bounded_live_source_acceptance_required": true,
+    "positive_event_facts_must_be_fixture_tested_for_supported_source_stage": true,
+    "scheduled_event_must_not_be_promoted_to_effective": true,
+    "h3_derived_window_binding_and_h4_integration_required": true,
+    "h4_states_required_for_representative_acceptance": [
+      "discontinuity_detected_reference_available",
+      "discontinuity_detected_reference_unavailable",
+      "coverage_incomplete"
+    ],
+    "reference_available_state_may_be_proved_by_deterministic_fixture": true,
+    "final_reference_live_evidence_required_for_j_b04_closure": false,
+    "ordinary_return_block_guard_must_reach_result_audit_handoff": true,
+    "unselected_markets_and_source_gaps_must_remain_explicit": true,
+    "complete_h2_coverage_required": false,
+    "no_material_discontinuity_required_to_be_generally_reachable": false,
+    "phase_h_completion_implied": false
+  },
+  "current_authoritative_runtime_snapshot": {
+    "h2_runtime": "inactive",
+    "h3_twse": {
+      "state": "active",
+      "selected_executor": "phase_h_h3_twse_recent_performance_executor"
+    },
+    "h3_tpex": "blocked/non-executable",
+    "h4": {
+      "implementation": "existing deterministic zero-network H4",
+      "routing": "derived_zero_network",
+      "selected_executor": null
+    },
+    "twse_h2_sources": {
+      "pre_openapi": "eligible/inactive",
+      "final_twt49u": "optional_licensed_provider/inactive",
+      "capital_reduction": "manual_verification/inactive",
+      "par_split_consolidation": "source_gap/blocked"
+    },
+    "tpex_h2_sources": {
+      "pre_openapi": "eligible/inactive",
+      "final_openapi": "eligible/inactive",
+      "capital_reduction": "manual_verification/inactive",
+      "par_split_consolidation": "source_gap/blocked"
+    }
+  },
+  "post_a1_state": {
+    "J-B01": "CLOSED",
+    "J-B02": "CLOSED",
+    "J-B03": "CLOSED",
+    "J-B04": "BLOCKING",
+    "J-B04-A0": "REVIEW COMPLETE",
+    "J-B04-A1": "PRODUCT CONTRACT / EXIT CRITERIA FROZEN",
+    "Phase J": "NOT_STARTED",
+    "phase_j_implementation_authorized": false,
+    "MCP": 6,
+    "H2 runtime": "INACTIVE",
+    "H3 TWSE": "ACTIVE",
+    "H3 TPEX": "BLOCKED / NON-EXECUTABLE",
+    "H4 deterministic implementation": "EXISTING / UNCHANGED"
+  },
+  "non_goals": [
+    "complete H2 coverage or full corporate-action history",
+    "complete Phase H closure",
+    "adjusted-price database, total-return history or corporate-action warehouse",
+    "background acquisition, scheduler, polling or backfill",
+    "seventh MCP tool",
+    "TPEx H3 activation or TWT49U subscription/integration",
+    "capital-reduction scraping or fabricated source-gap evidence",
+    "unproven correction/cancellation linkage",
+    "local adjustment formulas or guessed reference prices",
+    "trading, investment, causality or price-direction conclusions",
+    "Phase J start"
+  ],
+  "scope_and_network": {
+    "governance_only": true,
+    "production_code_changed": false,
+    "schema_changed": false,
+    "routing_changed": false,
+    "catalog_authority_changed": false,
+    "source_authority_changed": false,
+    "MCP_changed": false,
+    "H3_activation_changed": false,
+    "H4_implementation_changed": false,
+    "market_GETs": 0,
+    "market_HEADs": 0,
+    "market_POSTs": 0,
+    "mcp_tool_count": 6,
+    "phase_j_started": false
+  },
+  "machine_assertions": {
+    "exit_standard": "bounded_conversational_correctness",
+    "complete_h2_required_for_j_b04_closure": false,
+    "representative_market": "TWSE",
+    "comparison_window_authority": "H3 available baseline",
+    "h2_self_defined_window": "prohibited",
+    "capital_reduction_runtime_positive_evidence_required_for_j_entry": false,
+    "capital_reduction_source_gap_closed": false,
+    "unsupported_relevant_subtype_safe_outcome": "coverage_incomplete",
+    "ordinary_return_interpretation_when_coverage_incomplete": "blocked",
+    "final_reference_required_for_all_j_b04_closure_paths": false,
+    "local_adjustment_allowed": false,
+    "tpex_h3_activation_required": false,
+    "h2_runtime_after_a1": "inactive",
+    "j_b04_after_a1": "BLOCKING",
+    "phase_j_after_a1": "NOT_STARTED",
+    "mcp_tool_count": 6,
+    "market_GETs": 0,
+    "market_HEADs": 0,
+    "market_POSTs": 0
+  }
+}
