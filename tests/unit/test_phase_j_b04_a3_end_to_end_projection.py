@@ -1,0 +1,257 @@
+"""Self-contained network-free H3 -> H2 -> H4 -> Result/Audit/handoff test."""
+from __future__ import annotations
+
+import json
+from copy import deepcopy
+from datetime import datetime, timezone
+from pathlib import Path
+
+from scripts.m8r_05b_01.planner import build_plan
+from scripts.m8r_05b_02.authorization import build_execution_authorization
+from scripts.m8r_05b_02.consumption_binding import build_consumption_binding
+from scripts.m8r_05b_03.preflight import build_orchestrator_preflight
+from scripts.m8r_05b_03.orchestrator import execute_controlled_plan
+from scripts.m8r_05b_03.receipt import bundle_relative_path, receipt_relative_path
+from scripts.m8r_05c.artifact_loader import load_projection_inputs
+from scripts.m8r_05c.audit_package_builder import build_audit_package
+from scripts.m8r_05c.citation_builder import build_citation_index
+from scripts.m8r_05c.lineage_resolver import build_lineage_map
+from scripts.m8r_05c.markdown_renderer import render_result_markdown
+from scripts.m8r_05c.result_builder import build_result
+from scripts.m8r_06_02_mode_b1_preview import build_planning_bindings, load_planning_authorities
+from scripts.m8r_06_03_production_adapter import (
+    build_production_runtime_adapter_registry,
+    load_production_executor_metadata,
+)
+from server.services.phase_h_h3_twse_stock_day_adapter import (
+    SOURCE_CONTRACT_ID,
+    SOURCE_FAMILY,
+    TWSEStockDayResult,
+)
+from tests.unit.test_phase_h_h3_activation_candidate_preview import (
+    OfflineSecurityMaster,
+    _production_preview,
+    _request,
+)
+import scripts.m8r_06_03_production_adapter as production
+import server.services.phase_h_h2_twse_exright_executor as h2_executor
+
+ROOT = Path(__file__).resolve().parents[2]
+STAMP = "2026-10-08T00:00:00Z"
+
+
+class FixedDateTime(datetime):
+    @classmethod
+    def now(cls, tz=None):
+        return datetime(2026, 10, 8, 0, 0, tzinfo=timezone.utc).astimezone(tz or timezone.utc)
+
+
+def _decision() -> dict:
+    return {
+        "decision": "approved",
+        "owner_identity_reference": "A3_TEST_ONLY_OVERLAY",
+        "owner_review_reference": "A3_NETWORK_FREE_INTEGRATION_FIXTURE",
+        "decision_reason": "test-only fixture overlay; not canonical route authority",
+        "reviewed_at": STAMP,
+        "issued_at": STAMP,
+        "expires_at": "2026-10-08T01:00:00Z",
+        "approval_scope_mode": "whole_plan_executable_scope",
+        "approved_operation_ids": [],
+        "approved_batch_group_ids": [],
+        "approved_batch_membership": {},
+        "single_use": True,
+        "replay_policy": "deny_replay",
+        "maximum_use_count": 1,
+    }
+
+
+def _set_test_h2_overlay(validation: dict, authorities: dict) -> None:
+    cap = next(item for item in authorities["capability_catalog"]["data_need_capabilities"] if item["capability_id"] == "corporate_action_context")
+    cap["support_status"] = "runtime_executable"
+    cap["runtime_executable"] = True
+    cap["phase_h_activation_state"] = "selected_route_active"
+    route = next(item for item in authorities["routing_matrix"]["routes"] if item["capability_id"] == "corporate_action_context")
+    route.update({
+        "runtime_executable": True,
+        "selected_executor_id": "phase_h_h2_twse_exright_pre_executor",
+        "routing_status": "resolved",
+        "network_required": True,
+    })
+    inventory = next(item for item in authorities["executor_disposition"]["surfaces"] if item["surface_id"] == "phase_h_h3_twse_recent_performance_executor")
+    h2_inventory = deepcopy(inventory)
+    h2_inventory.update({
+        "surface_id": "phase_h_h2_twse_exright_pre_executor",
+        "surface_type": "controlled_phase_h_h2_executor",
+        "current_status": "test-only A3 overlay; canonical production route remains plan-only",
+        "reusable_for_05b": True,
+        "disposition": "adapter_required",
+    })
+    authorities["executor_disposition"]["surfaces"].append(h2_inventory)
+    f3_cap = next(item for item in validation["capability_results"] if item["capability_id"] == "corporate_action_context")
+    f3_cap["status"] = "runtime_executable"
+
+
+def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_handoff(tmp_path, monkeypatch):
+    request = _request("TWSE", "1423") | {"execution_mode": "execute"}
+    request["data_needs"] = [
+        {"type": "corporate_action_context", "priority": "required"},
+        {"type": "recent_performance", "priority": "required", "parameters": {"lookback_trading_days": 1}},
+    ]
+    preview = _production_preview(request, "TWSE", "1423")
+    validation = deepcopy(preview["validation"])
+    authorities = load_planning_authorities(request["schema_version"])
+    _set_test_h2_overlay(validation, authorities)
+    security_master = OfflineSecurityMaster("TWSE", "1423")
+    bindings = build_planning_bindings(
+        request, validation, security_master,
+        capability_catalog=authorities["capability_catalog"],
+        routing_matrix=authorities["routing_matrix"],
+        handoff_contract=authorities["handoff_contract"],
+    )
+    plan = build_plan(
+        validation,
+        capability_catalog=authorities["capability_catalog"],
+        routing_matrix=authorities["routing_matrix"],
+        handoff_contract=authorities["handoff_contract"],
+        executor_disposition=authorities["executor_disposition"],
+        input_bindings=bindings,
+        planning_timestamp=STAMP,
+    )
+    h2_plan = next(item for item in plan["operations"] if item["capability_id"] == "corporate_action_context")
+    h3_plan = next(item for item in plan["operations"] if item["capability_id"] == "recent_performance")
+    assert h2_plan["dependency_operation_ids"] == [h3_plan["operation_id"]]
+
+    authorization = build_execution_authorization(plan, _decision())
+    consumption_binding = build_consumption_binding(authorization)
+    output_root = tmp_path / authorization["authorization_id"]
+    output_root.mkdir()
+    (output_root / "claims").mkdir()
+    metadata = load_production_executor_metadata()
+    preflight = build_orchestrator_preflight(
+        plan, authorization, consumption_binding,
+        supplied_consumption_state={
+            "authorization_id": authorization["authorization_id"],
+            "authorization_hash": authorization["authorization_hash"],
+            "consumption_binding_id": consumption_binding["consumption_binding_id"],
+            "consumption_binding_hash": consumption_binding["consumption_binding_hash"],
+            "registry_contract_version": "m8r_05b_03.v1",
+            "state": "unused",
+        },
+        evaluation_timestamp=STAMP,
+        executor_registry_metadata=metadata,
+        output_root=str(output_root),
+    )
+    timestamps = []
+
+    def fake_h3_month(**kwargs):
+        timestamps.append(kwargs["requested_month"])
+        rows = []
+        for day, close in (("2026-10-06", 100.0), ("2026-10-07", 101.0)):
+            rows.append({
+                "canonical_target_id": "TWSE:1423", "market": "TWSE", "security_code": "1423",
+                "trade_date": day, "close": close, "volume": 1000,
+                "source_family": SOURCE_FAMILY, "source_contract_id": SOURCE_CONTRACT_ID,
+                "retrieved_at": kwargs["retrieved_at"], "citation_ids": [f"fixture-h3:{day}"],
+            })
+        return TWSEStockDayResult(
+            status="available", requested_month=kwargs["requested_month"],
+            requested_url=f"https://www.twse.com.tw/exchangeReport/STOCK_DAY?month={kwargs['requested_month']}",
+            effective_url=f"https://www.twse.com.tw/exchangeReport/STOCK_DAY?month={kwargs['requested_month']}",
+            http_status=200, content_type="text/html; charset=utf-8", retrieved_at=kwargs["retrieved_at"],
+            response_byte_count=123, response_sha256="a" * 64, observations=tuple(rows),
+        )
+
+    h2_calls = []
+
+    def fake_h2_get(**kwargs):
+        h2_calls.append(kwargs)
+        rows = [{
+            "Code": "1423", "Date": "2026-10-07", "Exdividend": "除息",
+            "StockDividendRatio": "0", "SubscriptionRatio": "0",
+            "SubscriptionPricePerShare": "尚未公告", "CashDividend": "1",
+        }]
+        return {
+            "raw_bytes": json.dumps(rows, ensure_ascii=False).encode("utf-8"),
+            "status": 200, "content_type": "application/json", "effective_url": h2_executor.ENDPOINT,
+            "retrieved_at": STAMP,
+        }
+
+    monkeypatch.setattr(production, "datetime", FixedDateTime)
+    monkeypatch.setattr(production, "fetch_twse_stock_day_month", fake_h3_month)
+    monkeypatch.setattr(h2_executor, "official_get_once", fake_h2_get)
+    supplied_state = {
+        "authorization_id": authorization["authorization_id"],
+        "authorization_hash": authorization["authorization_hash"],
+        "consumption_binding_id": consumption_binding["consumption_binding_id"],
+        "consumption_binding_hash": consumption_binding["consumption_binding_hash"],
+        "registry_contract_version": "m8r_05b_03.v1",
+        "state": "unused",
+    }
+    execution = execute_controlled_plan(
+        plan, authorization, consumption_binding,
+        supplied_consumption_state=supplied_state, accepted_preflight=preflight,
+        evaluation_timestamp=STAMP, claim_created_at=STAMP, finalized_at=STAMP,
+        executor_registry_metadata=metadata,
+        runtime_adapter_registry=build_production_runtime_adapter_registry(),
+        output_root=str(output_root), mode="execute-approved", confirm_execution=True,
+        operator_confirmation_reference="A3_NETWORK_FREE_TEST_FIXTURE", confirm_network_execution=True,
+    )
+    assert len(h2_calls) == 1
+    assert len(timestamps) == 1
+    assert [item["capability_id"] for item in execution["dispatch_outcomes"]] == ["corporate_action_context", "recent_performance"]
+    assert {item["capability_id"]: item["status"] for item in execution["dispatch_outcomes"]} == {
+        "corporate_action_context": "succeeded", "recent_performance": "succeeded",
+    }
+
+    control = output_root / "control"
+    control.mkdir()
+    f3_path = control / "f3-validation.json"
+    f3_path.write_text(json.dumps(validation, ensure_ascii=False), encoding="utf-8")
+    for filename, value in (("request.json", request), ("plan.json", plan), ("authorization.json", authorization), ("consumption_binding.json", consumption_binding)):
+        (control / filename).write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+    inputs = load_projection_inputs(
+        request_path=str(control / "request.json"), f3_validation_path=str(f3_path),
+        plan_path=str(control / "plan.json"), authorization_path=str(control / "authorization.json"),
+        consumption_binding_path=str(control / "consumption_binding.json"),
+        claim_path=str(output_root / execution["claim_relative_path"]),
+        receipt_path=str(output_root / receipt_relative_path(authorization["authorization_id"])),
+        bundle_path=str(output_root / bundle_relative_path(authorization["authorization_id"])),
+        artifact_root=str(output_root), calculated_at=STAMP,
+    )
+    h4_entries = [item for item in inputs.bundle["artifact_inventory"] if item["schema_version"] == "discontinuity_safety_evidence.v1"]
+    assert len(h4_entries) == 1
+    h4 = inputs.evidence_artifacts[h4_entries[0]["relative_path"]]
+    assert h4["state"] == "coverage_incomplete"
+    assert h4["ordinary_return_interpretation"] == "blocked"
+    h2_entries = [item for item in inputs.bundle["artifact_inventory"] if item["schema_version"] == "corporate_action_context_evidence.v1"]
+    h3_entries = [item for item in inputs.bundle["artifact_inventory"] if item["schema_version"] == "recent_performance_evidence.v1"]
+    assert len(h2_entries) == len(h3_entries) == 1
+    h2 = next(value for value in inputs.evidence_artifacts.values() if value.get("schema_version") == "corporate_action_context_evidence.v1")
+    h3 = next(value for value in inputs.evidence_artifacts.values() if value.get("schema_version") == "recent_performance_evidence.v1")
+    assert h2["coverage"]["requested_window"] == {
+        "start": h3["baselines"][0]["start_observation_date"],
+        "end": h3["baselines"][0]["end_observation_date"],
+    }
+    assert h2["coverage"]["declared_scope_complete"] is False
+
+    lineage = build_lineage_map(inputs)
+    citations = build_citation_index(lineage, inputs.bundle, "unified_market_evidence_result.v3")
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    audit = build_audit_package(
+        result, inputs, citations, "ai_context/unified_market_evidence_result.v3.json",
+        output_schema_version="unified_market_evidence_audit_package.v3",
+    )
+    assert result["targets"][0]["evidence"]["corporate_action_context"] == h2
+    assert result["targets"][0]["evidence"]["recent_performance"] == h3
+    assert result["targets"][0]["evidence"]["discontinuity_safety"] == h4
+    assert any(
+        item["derived_state"] == "coverage_incomplete"
+        for item in audit["phase_h_governance"]["h4_derivations"]
+    )
+    assert set(h4["input_evidence_references"]).issubset({
+        f"{item['relative_path']}#{item['sha256']}" for item in inputs.bundle["artifact_inventory"]
+    })
+    markdown = render_result_markdown(result)
+    assert "coverage_incomplete" in markdown
+    assert "blocked" in markdown
+    assert "coverage" in markdown.lower() or "覆蓋" in markdown

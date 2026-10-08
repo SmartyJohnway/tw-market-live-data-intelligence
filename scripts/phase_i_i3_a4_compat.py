@@ -18,6 +18,8 @@ CANDIDATE_BASELINE = "5c26e7b541bdb6c0d70a39c1e0eab8e129823373"
 A26_COMPOSITE_EXECUTOR = "phase_h_h1_tpex_composite_executor"
 A26_H1_CAPABILITY = "trading_status_context"
 A26_ADDED_SOURCES = {"H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}
+A3_H2_CAPABILITY = "corporate_action_context"
+A3_H2_EXECUTOR = "phase_h_h2_twse_exright_pre_executor"
 _DROP = object()
 
 
@@ -115,6 +117,44 @@ def validate_current_a26_h1_authority() -> None:
     }
 
 
+def validate_current_a3_h2_candidate() -> None:
+    """Require the exact A3 plan-only candidate before historical projection."""
+    routing = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))
+    registry = json.loads((ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8"))
+    route = next(x for x in routing["routes"] if x.get("capability_id") == A3_H2_CAPABILITY)
+    assert route["runtime_executable"] is False
+    assert route["routing_status"] == "plan_only"
+    assert route["selected_executor_id"] is None
+    assert route["candidate_executor_ids"] == [A3_H2_EXECUTOR]
+    assert route["network_required"] is True
+    assert route["estimated_operation_rule"] == "A3 implementation candidate only; one explicit TWSE TWT48U_ALL GET, retry zero; remains plan-only and inactive until separately accepted"
+    candidate = [x for x in registry["executors"] if x.get("executor_id") == A3_H2_EXECUTOR]
+    assert len(candidate) == 1
+    assert candidate[0]["capability_id"] == A3_H2_CAPABILITY
+    assert candidate[0]["expected_evidence_contract"] == "corporate_action_context_evidence.v1"
+    assert candidate[0]["network_required"] is True
+
+
+def project_current_a3_h2_addition(relative: str, current, historical):
+    """Project only the accepted inactive H2 candidate from old Phase-I comparisons."""
+    if relative not in {
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "config/m8r_06_03_executor_registry_metadata.json",
+    }:
+        return current
+    validate_current_a3_h2_candidate()
+    result = json.loads(json.dumps(current))
+    if relative.endswith("m8r_05b_capability_to_executor_routing_matrix.v3.json"):
+        old_route = next(x for x in historical["routes"] if x.get("capability_id") == A3_H2_CAPABILITY)
+        result["routes"] = [
+            json.loads(json.dumps(old_route)) if row.get("capability_id") == A3_H2_CAPABILITY else row
+            for row in result["routes"]
+        ]
+    else:
+        result["executors"] = [x for x in result["executors"] if x.get("executor_id") != A3_H2_EXECUTOR]
+    return result
+
+
 def project_current_a26_h1_addition(relative: str, current, historical):
     """Remove only the authorized current A2.6 H1 overlay for old comparisons.
 
@@ -185,6 +225,31 @@ def strip_a26_production_adapter_addition(text: str) -> str:
     return text
 
 
+def strip_a3_h2_production_adapter_addition(text: str) -> str:
+    """Project the A3 inactive H2 adapter registration from old code baselines."""
+    text = text.replace(
+        "from server.services.phase_h_h2_twse_exright_executor import (\n"
+        "    EXECUTOR_ID as PHASE_H_H2_EXECUTOR_ID,\n"
+        "    execute_h2_twse_exright_pre,\n"
+        ")\n", "", 1,
+    )
+    text = text.replace('PHASE_H_H2_SOURCE_ID = "H2-TWSE-EXRIGHT-PRE-OPENAPI"\n', "", 1)
+    text = text.replace(
+        "    if request.get(\"executor_id\") == PHASE_H_H2_EXECUTOR_ID:\n"
+        "        return execute_h2_twse_exright_pre(request, context)\n", "", 1,
+    )
+    text = text.replace('        (PHASE_H_H2_EXECUTOR_ID, "corporate_action_context", "TWSE"),\n', "", 1)
+    text = text.replace(
+        "{PHASE_H_H1_EXECUTOR_ID, PHASE_H_H1_COMPOSITE_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID, PHASE_H_H2_EXECUTOR_ID}",
+        "{PHASE_H_H1_EXECUTOR_ID, PHASE_H_H1_COMPOSITE_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID}", 1,
+    )
+    text = text.replace(
+        "{PHASE_H_H1_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID, PHASE_H_H2_EXECUTOR_ID}",
+        "{PHASE_H_H1_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID}", 1,
+    )
+    return text
+
+
 def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_BASELINE) -> None:
     """Require current shared JSON authority to equal baseline sans I3 additions."""
     if relative == "scripts/m8r_06_03_production_adapter.py":
@@ -210,6 +275,7 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
             "def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:", 1,
         )
         current_text = strip_a26_production_adapter_addition(current_text)
+        current_text = strip_a3_h2_production_adapter_addition(current_text)
         if current_text != baseline_text:
             raise AssertionError(f"non_i3_production_adapter_drift:{relative}")
         return
@@ -219,6 +285,7 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
     ).decode("utf-8"))
     normalized = _normalize_current_h1_v2_addition(_without_i3(current))
     normalized = project_current_a26_h1_addition(relative, normalized, old)
+    normalized = project_current_a3_h2_addition(relative, normalized, old)
     if normalized != old:
         raise AssertionError(f"non_i3_production_authority_drift:{relative}")
 

@@ -11,6 +11,8 @@ from .component_artifact_roles import validate_operation_artifact_roles
 def aggregate_dispatch_outcomes(
     preflight: dict[str, Any],
     dispatch_outcomes: list[dict[str, Any]],
+    *,
+    plan: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if not isinstance(dispatch_outcomes, list) or not dispatch_outcomes:
         raise OrchestrationError("dispatch_outcomes_empty")
@@ -23,6 +25,10 @@ def aggregate_dispatch_outcomes(
     requests = preflight.get("bounded_execution_requests", [])
     requests_by_op = {r.get("operation_id"): r for r in requests if isinstance(r, dict)}
     bindings = preflight.get("resolved_operation_bindings", {})
+    plan_operations = {
+        item.get("operation_id"): item for item in (plan or {}).get("operations", [])
+        if isinstance(item, dict)
+    }
 
     seen_ops = set()
     succeeded = 0
@@ -91,6 +97,11 @@ def aggregate_dispatch_outcomes(
             item_count = outcome.get("result_item_count", 0)
         total_items += item_count
         op_warnings = list(outcome.get("warnings", []))
+        planned_operation = plan_operations.get(op_id, {})
+        dependency_ids = planned_operation.get("dependency_operation_ids", [])
+        if dependency_ids:
+            op_warnings.extend(f"dependency_operation:{value}" for value in dependency_ids)
+            op_warnings = sorted(set(op_warnings))
         aggregate_warnings.extend(op_warnings)
 
         op_receipts.append({

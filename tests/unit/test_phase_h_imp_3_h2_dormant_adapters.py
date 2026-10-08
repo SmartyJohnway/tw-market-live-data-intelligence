@@ -245,8 +245,11 @@ def test_fresh_install_without_twt49u() -> None:
 
 
 def test_static_dormant_registry_and_plan_only_boundary() -> None:
-    registry = (ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8")
-    assert "corporate_action_context" not in registry
+    registry = json.loads((ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8"))
+    candidate = [item for item in registry["executors"] if item.get("executor_id") == "phase_h_h2_twse_exright_pre_executor"]
+    assert len(candidate) == 1
+    assert candidate[0]["capability_id"] == "corporate_action_context"
+    assert candidate[0]["network_required"] is True
     catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
     capability = next(item for item in catalog["data_need_capabilities"] if item["capability_id"] == "corporate_action_context")
     assert capability["runtime_executable"] is False
@@ -255,4 +258,4 @@ def test_static_dormant_registry_and_plan_only_boundary() -> None:
     assert route["runtime_executable"] is False
     assert route["selected_executor_id"] is None
     assert route["routing_status"] == "plan_only"
-    assert route["network_required"] is False
+    assert route["network_required"] is True

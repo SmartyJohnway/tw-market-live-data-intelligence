@@ -316,6 +316,7 @@ def _fmt_phase_h_evidence(evidence: dict, need: str) -> str:
                 lines.append(f"- **{key}**: {evidence[key]}")
     elif need == "discontinuity_safety":
         window = evidence.get("comparison_window", {})
+        lines.append(f"- **H4 狀態**: {evidence.get('state', 'unknown')}")
         lines.append(f"- **比較視窗**: {window.get('start_observation_date', '?')} → {window.get('end_observation_date', '?')}")
         lines.append(f"- **一般報酬解讀**: {evidence.get('ordinary_return_interpretation', 'unknown')}")
         lines.append(f"- **解讀護欄**: {evidence.get('interpretation_guard', 'unknown')}")

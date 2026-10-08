@@ -7,6 +7,7 @@ from .controlled_dispatch import claim_and_dispatch_approved
 from .dispatch import RuntimeAdapterRegistry
 from .evidence_aggregation import aggregate_dispatch_outcomes
 from .receipt import finalize_consumption_and_write_receipt
+from server.services.phase_h_h2_twse_exright_executor import derive_h4_for_completed_plan
 
 
 def execute_controlled_plan(
@@ -44,10 +45,18 @@ def execute_controlled_plan(
         confirm_network_execution=confirm_network_execution,
     )
 
+    derived_artifacts = []
+    if mode == "execute-approved":
+        derived_artifacts = derive_h4_for_completed_plan(
+            plan, dispatch_res["dispatch_outcomes"], output_root=output_root,
+        )
     aggregation = aggregate_dispatch_outcomes(
         accepted_preflight,
         dispatch_res["dispatch_outcomes"],
+        plan=plan,
     )
+    aggregation["artifact_inventory"].extend(derived_artifacts)
+    aggregation["artifact_inventory"].sort(key=lambda item: item["relative_path"])
 
     if mode == "execute-approved":
         final_claim, receipt, bundle = finalize_consumption_and_write_receipt(

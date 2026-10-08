@@ -203,11 +203,18 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
         assert h3_tpex["activation_state"] == "blocked"
         h2_route = routes["corporate_action_context"]
         assert h2_route["runtime_executable"] is False and h2_route["selected_executor_id"] is None
+        assert h2_route["routing_status"] == "plan_only"
+        assert h2_route["candidate_executor_ids"] == [machine["future_executor_id"]]
         h4_routes = routing["derived_contracts"]
         assert len(h4_routes) == 1 and h4_routes[0]["routing_status"] == "derived_zero_network"
         assert h4_routes[0]["selected_executor_id"] is None
         registry = _load(REGISTRY)
-        assert not any(item.get("executor_id") == machine["future_executor_id"] for item in registry["executors"])
+        candidate = [item for item in registry["executors"] if item.get("executor_id") == machine["future_executor_id"]]
+        assert len(candidate) == 1
+        assert candidate[0]["capability_id"] == "corporate_action_context"
+        assert candidate[0]["market"] == "TWSE"
+        assert candidate[0]["expected_evidence_contract"] == "corporate_action_context_evidence.v1"
+        assert candidate[0]["network_required"] is True
 
         ledger = _load(H3_LEDGER)
         assert ledger["status"] == "OWNER_ACTIVATION_ACCEPTED"

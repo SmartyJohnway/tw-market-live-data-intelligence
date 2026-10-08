@@ -19,6 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 BASELINE = "7ffbdf7fb102668457b2a15877c10ad7673da9bf"
 EXECUTOR = "phase_i_i2_index_futures_context_executor"
 CAPABILITY = "index_futures_context"
+H2_CAPABILITY = "corporate_action_context"
+H2_CANDIDATE_EXECUTOR = "phase_h_h2_twse_exright_pre_executor"
 AUTHORITY = "USER_CHAT_2026-10-01_PHASE_I_I2_A4_PRODUCTION_ACTIVATION_CANDIDATE_AND_ROLLBACK_AUTHORIZATION"
 CATALOG = "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
 ROUTING = "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
@@ -73,6 +75,10 @@ def verify_candidate_authority():
     assert len(registry.routes_for_executor("phase_i_i1_market_state_executor")) == 2
     assert current_json("docs/data_capabilities/phase_i_i1_source_authority.v1.json")["active_source_count"] == 3
     assert len(build_tool_contract_snapshot().tools) == 6
+    h2_route = next(x for x in r["routes"] if x.get("capability_id") == H2_CAPABILITY)
+    assert (h2_route["runtime_executable"], h2_route["routing_status"], h2_route["selected_executor_id"], h2_route["candidate_executor_ids"], h2_route["network_required"]) == (False, "plan_only", None, [H2_CANDIDATE_EXECUTOR], True)
+    h2_metadata = [x for x in m["executors"] if x.get("executor_id") == H2_CANDIDATE_EXECUTOR]
+    assert len(h2_metadata) == 1 and h2_metadata[0]["capability_id"] == H2_CAPABILITY
     # All non-I2 authority records must equal the accepted dormant baseline,
     # except for later independently authorized additive current-state work.
     # I3-A4 and Phase J J-B03-A2.6 are current authorities layered on that
@@ -84,8 +90,8 @@ def verify_candidate_authority():
     h1_composite_executor = "phase_h_h1_tpex_composite_executor"
     for path, field, id_key, excluded_ids in (
         (CATALOG, "data_need_capabilities", "capability_id", {CAPABILITY, i3_capability, h1_capability}),
-        (ROUTING, "routes", "capability_id", {CAPABILITY, i3_capability, h1_capability}),
-        (METADATA, "executors", "executor_id", {EXECUTOR, i3_executor, h1_composite_executor}),
+        (ROUTING, "routes", "capability_id", {CAPABILITY, i3_capability, h1_capability, H2_CAPABILITY}),
+        (METADATA, "executors", "executor_id", {EXECUTOR, i3_executor, h1_composite_executor, H2_CANDIDATE_EXECUTOR}),
         (DISPOSITION, "surfaces", "surface_id", {EXECUTOR, i3_executor, h1_legacy_executor, h1_composite_executor}),
     ):
         now, before = current_json(path), baseline_json(path)
@@ -159,7 +165,7 @@ def rollback_authority():
     rolled = {p: copy.deepcopy(current_json(p)) for p in AUTHORITY_FILES}
     i3_capability = "cash_institutional_flow_context"
     i3_executor = "phase_i_i3_cash_institutional_flow_context_executor"
-    from scripts.phase_i_i3_a4_compat import project_current_a26_h1_addition
+    from scripts.phase_i_i3_a4_compat import project_current_a26_h1_addition, project_current_a3_h2_addition
     for path, field, key, value in ((CATALOG, "data_need_capabilities", "capability_id", CAPABILITY), (ROUTING, "routes", "capability_id", CAPABILITY), (METADATA, "executors", "executor_id", EXECUTOR), (DISPOSITION, "surfaces", "surface_id", EXECUTOR)):
         baseline = baseline_json(path)
         if path in (CATALOG, ROUTING):
@@ -173,6 +179,7 @@ def rollback_authority():
         else:
             rolled[path][field] = [x for x in rolled[path][field] if x.get(key) not in {value, i3_executor}]
         rolled[path] = project_current_a26_h1_addition(path, rolled[path], baseline)
+        rolled[path] = project_current_a3_h2_addition(path, rolled[path], baseline)
         assert rolled[path] == baseline, path
     rolled[SOURCE] = copy.deepcopy(baseline_json(SOURCE))
     regs = [registry.get_route(x["executor_id"], x["capability_id"], x["market"]) for x in rolled[METADATA]["executors"]]
