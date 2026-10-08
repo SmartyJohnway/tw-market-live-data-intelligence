@@ -47,6 +47,23 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
     assert future["explicit_activation_and_approval_bound_execution_required"] is True
     assert future["bounded_live_source_acceptance_required"] is True
     assert future["reference_available_state_may_be_proved_by_deterministic_fixture"] is True
+    assert future["reference_unavailable_state_may_be_proved_by_deterministic_fixture"] is True
+    assert future["bounded_live_h2_must_encounter_effective_event"] is False
+    assert set(future["bounded_live_h2_source_acceptance_proves"]) == {
+        "source_transport",
+        "authorization_and_call_bounds",
+        "target_binding",
+        "source_contract_validation",
+        "normalization",
+        "lifecycle_and_stage_preservation",
+        "coverage_no_row_and_failure_semantics",
+        "citation_and_provenance",
+    }
+    assert set(future["deterministic_h4_fixture_constraints"]) == {
+        "validate_against_frozen_h2_and_h4_schema_and_semantics",
+        "must_not_be_represented_as_live_source_evidence",
+        "coverage_incomplete_exercised_through_real_integrated_behavior_where_appropriate",
+    }
     assert future["final_reference_live_evidence_required_for_j_b04_closure"] is False
     assert future["complete_h2_coverage_required"] is False
     assert future["phase_h_completion_implied"] is False

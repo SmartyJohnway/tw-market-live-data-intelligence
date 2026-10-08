@@ -92,11 +92,20 @@ and AI handoff. Positive event facts and their source stage must be tested;
 scheduled evidence cannot be promoted to effective. Representative acceptance
 must exercise confirmed discontinuity with reference available, confirmed
 discontinuity without reference, and `coverage_incomplete`, with ordinary
-return interpretation blocked for all non-normal states. Unselected markets
-and uncovered source families remain explicit. This does not require complete
-H2 coverage, a generally reachable no-discontinuity result, a live final-reference
-provider (the reference-available H4 branch may be proven with deterministic
-fixtures), or Phase H completion. A1 does not select the exact source adapter or execution plumbing.
+return interpretation blocked for all non-normal states. The reference-available
+and reference-unavailable H4 branches may each be proved with deterministic
+fixtures validated against the frozen H2/H4 schemas and semantics. Such fixtures
+are test evidence only and must never be represented as live source evidence.
+`coverage_incomplete` should be exercised through real integrated behavior where
+appropriate. Bounded-live H2 acceptance proves source transport, authorization
+and call bounds, target binding, source-contract validation, normalization,
+lifecycle/stage preservation, coverage/no-row/failure semantics, and
+citation/provenance; it does not require the live observation to contain an
+effective event. Scheduled/preannouncement evidence must retain its stage.
+Unselected markets and uncovered source families remain explicit. This does not
+require complete H2 coverage, a generally reachable no-discontinuity result, a
+live final-reference provider, or Phase H completion. A1 does not select the
+exact source adapter or execution plumbing.
 
 ## Coverage boundaries
 
