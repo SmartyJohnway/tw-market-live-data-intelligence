@@ -59,7 +59,7 @@ def validate_contract(record: dict[str, Any]) -> dict[str, Any]:
     assert digest == "d80f5c697d333f043df922a099a0f472780051c1d2abf79866954026b63aaa40"
     assert record["predeclared_source_target_canonical_json"] == serialized.decode("utf-8")
     assert record["source_target_binding_scope"] == "A5 exact TWT48U Code-field binding only"
-    assert record["secondary_stage_witness_policy"] == "captured payload only; prefer valid primary TWSE:2330 row, else lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows; no Security Master membership claim"
+    assert record["secondary_stage_witness_policy"] == "prefer normalizable TWSE:2330; otherwise lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows"
     assert record["live_authorization"] == "NOT PRESENT; P0-R2 is for independent review only; A5-L1 is not authorized"
     assert record["source_call_plan"] == {
         "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL", "method": "GET",
@@ -159,6 +159,9 @@ def validate_repository() -> dict[str, Any]:
     modified = set(_git("diff", "--name-only").splitlines()) | set(_git("diff", "--cached", "--name-only").splitlines())
     untracked = set(_git("ls-files", "--others", "--exclude-standard").splitlines())
     allowed = {"scripts/phase_j_b04_a5_bounded_live_acceptance.py", "scripts/validate_phase_j_b04_a5_bounded_live_acceptance.py",
+        "scripts/validate_phase_j_b04_a5_l1_p0_live_runner.py", "tests/unit/test_phase_j_b04_a5_l1_runner.py",
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_LIVE_RUNNER_HARDENING_2026-10-09.json",
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_LIVE_RUNNER_HARDENING_2026-10-09.md",
         "tests/unit/test_phase_j_b04_a5_runner.py", "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.json",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.md"}
     assert not (changed | modified | untracked) - allowed

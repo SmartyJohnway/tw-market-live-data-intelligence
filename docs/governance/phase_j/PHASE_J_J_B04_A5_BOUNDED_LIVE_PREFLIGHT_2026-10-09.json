@@ -69,7 +69,7 @@
   "predeclared_source_target_canonical_json": "{\"canonical_target_id\":\"TWSE:2330\",\"market\":\"TWSE\",\"security_code\":\"2330\"}",
   "predeclared_source_target_sha256": "d80f5c697d333f043df922a099a0f472780051c1d2abf79866954026b63aaa40",
   "source_target_binding_scope": "A5 exact TWT48U Code-field binding only",
-  "secondary_stage_witness_policy": "captured payload only; prefer valid primary TWSE:2330 row, else lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows; no Security Master membership claim",
+  "secondary_stage_witness_policy": "prefer normalizable TWSE:2330; otherwise lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows",
   "secondary_stage_witness_product_scope_identity_verified": false,
   "secondary_stage_witness_only": true,
   "security_master_bootstrap": {

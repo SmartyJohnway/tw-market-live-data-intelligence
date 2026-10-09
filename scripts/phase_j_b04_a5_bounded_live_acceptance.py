@@ -4,13 +4,13 @@ from __future__ import annotations
 import argparse
 from contextlib import contextmanager
 from dataclasses import dataclass
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
 from pathlib import Path
 import subprocess
 import sys
-import tempfile
 from typing import Any, Mapping
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,10 +29,28 @@ PREFLIGHT_JSON = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_P
 EXECUTION_ENVIRONMENTS = {"installation_bound", "cloud_clean_source_acceptance"}
 PREDECLARED_SOURCE_TARGET = {"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}
 PREDECLARED_SOURCE_TARGET_SHA256 = "d80f5c697d333f043df922a099a0f472780051c1d2abf79866954026b63aaa40"
+STAGE_WITNESS_POLICY = "prefer normalizable TWSE:2330; otherwise lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows"
+ACCEPTANCE_RUNS = ROOT / "docs/governance/phase_j/acceptance_runs"
+FORBIDDEN_RAW_KEYS = {"raw_bytes", "rows", "rows_in_memory", "raw_payload", "raw_body", "source_rows", "full_payload"}
 
 
 class A5Error(RuntimeError):
     pass
+
+
+@dataclass
+class EphemeralLiveCapture:
+    """Source bytes and decoded rows retained only in process memory."""
+    raw_bytes: bytes
+    rows: list[dict[str, Any]] | None
+    retrieved_at: str
+    telemetry: dict[str, Any]
+    root_type: str | None
+    parse_error: str | None = None
+
+    def release(self) -> None:
+        self.raw_bytes = b""
+        self.rows = None
 
 
 @dataclass(frozen=True)
@@ -59,25 +77,39 @@ class PredeclaredSourceTargetAuthority:
 
 class SingleUseAuthority:
     """A chat authorization must be recorded against the exact current commit."""
-    def __init__(self, record: Mapping[str, Any], *, head: str):
-        if record.get("gate") != "J-B04-A5" or record.get("authorized_head_sha") != head:
-            raise A5Error("live_authorization_missing_or_stale_head")
-        statement = record.get("statement", "")
+    def __init__(self, record: Mapping[str, Any], *, head: str, tree: str | None = None,
+                 execution_environment: str = "cloud_clean_source_acceptance"):
+        if record.get("gate") != "J-B04-A5":
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+        if record.get("authorized_head_sha") != head:
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_HEAD")
+        if tree is not None and record.get("authorized_tree_sha") != tree:
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_TREE")
+        if record.get("execution_environment_class") != execution_environment:
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+        expected_keys = {"gate", "authorized_head_sha", "authorized_tree_sha", "execution_environment_class",
+                         "statement", "statement_sha256", "consumed"}
+        if set(record) != expected_keys:
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+        statement = record.get("statement")
+        statement_hash = record.get("statement_sha256")
+        if not isinstance(statement, str) or not isinstance(statement_hash, str):
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
         expected = (
             f"AUTHORIZE J-B04-A5 LIVE ON HEAD {head}:\nexactly 1 GET to\n{ENDPOINT},\n"
             "retry 0,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\n"
             "no TWT49U/TPEx/browser fallback,\nno raw payload persistence,\n"
             "no H2 activation,\nno J-B04 closure,\nno Phase J start."
         )
-        if statement != expected or record.get("statement_sha256") != hashlib.sha256(statement.encode()).hexdigest():
-            raise A5Error("live_authorization_statement_invalid")
-        if record.get("consumed") is True:
-            raise A5Error("live_authorization_already_consumed")
+        if statement != expected or statement_hash != hashlib.sha256(statement.encode("utf-8")).hexdigest():
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+        if record.get("consumed") is not False:
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
         self.consumed = False
 
     def consume(self) -> None:
         if self.consumed:
-            raise A5Error("single_use_live_authorization_consumed")
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED")
         self.consumed = True
 
 
@@ -233,7 +265,7 @@ def select_offline_stage_witness(rows: object, *, observed_at: str, citation_pre
         return {"source_target": target, "source_row_hash": digest, "source_date": date,
             "normalized_evidence": normalized, "product_scope_identity_verified": False,
             "source_stage_witness_only": True,
-            "selection_rule": "lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows"}
+            "selection_rule": STAGE_WITNESS_POLICY}
     return None
 
 
@@ -253,27 +285,59 @@ def acceptance_h3_fixture(target: Mapping[str, str]) -> dict[str, Any]:
     return evidence
 
 
-def response_telemetry(response: Mapping[str, Any]) -> dict[str, Any]:
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def expected_owner_statement(head: str) -> str:
+    return (
+        f"AUTHORIZE J-B04-A5 LIVE ON HEAD {head}:\nexactly 1 GET to\n{ENDPOINT},\n"
+        "retry 0,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\n"
+        "no TWT49U/TPEx/browser fallback,\nno raw payload persistence,\n"
+        "no H2 activation,\nno J-B04 closure,\nno Phase J start."
+    )
+
+
+def _safe_capture_response(response: Mapping[str, Any]) -> EphemeralLiveCapture:
     raw = response.get("raw_bytes")
     if not isinstance(raw, bytes):
         raise A5Error("response_bytes_invalid")
     content_type = str(response.get("content_type", ""))
-    if response.get("effective_url") != ENDPOINT:
-        raise A5Error("effective_url_mismatch_or_redirect")
-    if len(raw) > MAX_BYTES:
-        raise A5Error("response_ceiling_exceeded")
-    if response.get("status") != 200 or "json" not in content_type.casefold():
-        raise A5Error("http_or_content_type_invalid")
+    effective_url = response.get("effective_url")
+    retrieved_at = response.get("retrieved_at") if isinstance(response.get("retrieved_at"), str) else _utc_now()
+    parsed: Any = None
+    parse_error = None
+    root_type = None
     try:
-        parsed = json.loads(raw.decode("utf-8", errors="strict"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise A5Error("json_invalid") from exc
-    if not isinstance(parsed, list):
-        raise A5Error("json_root_not_array")
-    return {"http_status": 200, "content_type": content_type, "effective_url": ENDPOINT,
+        if len(raw) > MAX_BYTES:
+            parse_error = "response_ceiling_exceeded"
+        elif effective_url != ENDPOINT:
+            parse_error = "effective_url_mismatch_or_redirect"
+        elif isinstance(response.get("status"), int) and 300 <= response["status"] < 400:
+            parse_error = "redirect_response_rejected"
+        elif response.get("status") != 200:
+            parse_error = "http_status_not_200"
+        elif "json" not in content_type.casefold():
+            parse_error = "content_type_not_json"
+        else:
+            parsed = json.loads(raw.decode("utf-8", errors="strict"))
+            root_type = "array" if isinstance(parsed, list) else type(parsed).__name__
+            if not isinstance(parsed, list):
+                parse_error = "json_root_not_array"
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        parse_error = "json_invalid"
+    telemetry = {"http_status": response.get("status"), "content_type": content_type,
+        "effective_url": effective_url,
         "response_byte_count": len(raw), "response_sha256": hashlib.sha256(raw).hexdigest(),
-        "json_root_type": "array", "root_row_count": len(parsed), "rows_in_memory": parsed,
-        "retrieved_at": response.get("retrieved_at")}
+        "json_root_type": root_type, "root_row_count": len(parsed) if isinstance(parsed, list) else None,
+        "retrieved_at": retrieved_at}
+    return EphemeralLiveCapture(raw, parsed if isinstance(parsed, list) else None, retrieved_at,
+                                telemetry, root_type, parse_error)
+
+
+def response_telemetry(response: Mapping[str, Any]) -> dict[str, Any]:
+    """Return only persistable transport metadata; decoded rows never escape."""
+    return _safe_capture_response(response).telemetry
 
 
 @contextmanager
@@ -282,9 +346,9 @@ def count_actual_dispatches(counter: dict[str, int]):
     import urllib.request
     original = urllib.request.OpenerDirector.open
     def counted(opener, *args, **kwargs):
-        counter["http_dispatch_attempts"] += 1
-        if counter["http_dispatch_attempts"] > 1:
+        if counter["http_dispatch_attempts"] >= 1:
             raise A5Error("http_dispatch_limit_exceeded")
+        counter["http_dispatch_attempts"] += 1
         return original(opener, *args, **kwargs)
     urllib.request.OpenerDirector.open = counted
     try:
@@ -293,23 +357,413 @@ def count_actual_dispatches(counter: dict[str, int]):
         urllib.request.OpenerDirector.open = original
 
 
-def execute_single_authorized_get(authority: SingleUseAuthority, *, get_once=None) -> tuple[dict[str, Any], dict[str, int], dict[str, Any]]:
-    """Invoke production transport once; keep exact response bytes only in memory."""
-    from scripts.m8r_05b_03.canonical import canonical_json as _canonical_json  # primes the production import boundary
-    del _canonical_json
-    from server.services.phase_h_h2_twse_exright_executor import official_get_once
-    authority.consume()  # Consumed on entering the one authorized transport attempt.
+def _strict_auth_json(path: Path) -> dict[str, Any]:
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+            result[key] = value
+        return result
+    try:
+        if path.resolve(strict=True).is_relative_to(ROOT.resolve()):
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+        value = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=pairs)
+    except A5Error:
+        raise
+    except Exception as exc:
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID") from exc
+    if not isinstance(value, dict):
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+    return value
+
+
+def _canonical_runtime_state() -> dict[str, Any]:
+    def read(path: str) -> dict[str, Any]:
+        return json.loads((ROOT / path).read_text(encoding="utf-8"))
+    descriptor = read("config/phase_h_h2_dormant_source_descriptors.json")
+    source = next(item for item in descriptor["sources"] if item["source_id"] == SOURCE_ID)
+    routes = read("docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json")
+    route = next(item for item in routes["routes"] if item["capability_id"] == "corporate_action_context")
+    from server.unified_mcp.tool_contracts import build_tool_contract_snapshot
+    return {"H2_source_runtime_executable": source["runtime_executable"],
+        "corporate_action_context_routing": route["routing_status"],
+        "selected_executor_id": route["selected_executor_id"],
+        "H2_runtime": "INACTIVE", "J-B04": "BLOCKING", "Phase J": "NOT_STARTED",
+        "MCP": len(build_tool_contract_snapshot().tools)}
+
+
+def validate_live_runtime_invariants(preflight: Mapping[str, Any]) -> None:
+    if preflight.get("preflight_status") != "J_B04_A5_P0_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW":
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+    state = _canonical_runtime_state()
+    if state != {"H2_source_runtime_executable": False, "corporate_action_context_routing": "plan_only",
+        "selected_executor_id": None, "H2_runtime": "INACTIVE", "J-B04": "BLOCKING",
+        "Phase J": "NOT_STARTED", "MCP": 6}:
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+    if preflight.get("security_master_status") not in {"NOT_INITIALIZED", "ACTIVE"}:
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+    if preflight.get("security_master_status") == "NOT_INITIALIZED" and (
+        preflight.get("identity_assurance_level") != "acceptance_only_predeclared_source_target"
+        or preflight.get("production_identity_verified") is not False
+        or preflight.get("A6_identity_reverification_required") is not True
+    ):
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+    try:
+        from scripts.validate_phase_j_b04_a5_bounded_live_acceptance import validate_repository
+        validate_repository()
+    except Exception as exc:
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED") from exc
+
+
+def _contains_forbidden_raw_key(value: Any) -> bool:
+    if isinstance(value, dict):
+        return any(key in FORBIDDEN_RAW_KEYS or _contains_forbidden_raw_key(item) for key, item in value.items())
+    if isinstance(value, list):
+        return any(_contains_forbidden_raw_key(item) for item in value)
+    return False
+
+
+def _write_sanitized_json(run_root: Path, relative_path: str, value: Mapping[str, Any], *, overwrite: bool = True) -> Path:
+    if _contains_forbidden_raw_key(value):
+        raise A5Error("J_B04_A5_RAW_FIELD_PERSISTENCE_BLOCKED")
+    from scripts.m8r_filesystem_safety import atomic_write_bytes
+    content = (json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode("utf-8")
+    return atomic_write_bytes(str(run_root), relative_path, content, allow_overwrite=overwrite)
+
+
+def _verify_sanitized_package(run_root: Path, *, raw_bytes: bytes | None = None,
+                              _summary_finalized: bool = False) -> tuple[dict[str, Any], bool]:
+    files = sorted(path for path in run_root.rglob("*") if path.is_file())
+    manifest_path = run_root / "artifact_manifest.json"
+    entries = []
+    for path in files:
+        if path == manifest_path:
+            continue
+        if path.suffix.lower() != ".json" or any(token in path.name.casefold() for token in ("raw", "payload", "body")):
+            raise A5Error("J_B04_A5_RAW_BODY_FILE_PERSISTENCE_BLOCKED")
+        data = path.read_bytes()
+        if raw_bytes and (data == raw_bytes or (len(raw_bytes) >= 16 and raw_bytes in data)):
+            raise A5Error("J_B04_A5_RAW_BODY_PERSISTENCE_DETECTED")
+        if path.suffix.lower() == ".json":
+            try:
+                parsed = json.loads(data.decode("utf-8"))
+            except Exception as exc:
+                raise A5Error("J_B04_A5_SANITIZED_PACKAGE_INVALID") from exc
+            if _contains_forbidden_raw_key(parsed):
+                raise A5Error("J_B04_A5_RAW_FIELD_PERSISTENCE_BLOCKED")
+        entries.append({"relative_path": path.relative_to(run_root).as_posix(),
+            "sha256": hashlib.sha256(data).hexdigest(), "byte_size": len(data),
+            "artifact_role": path.stem})
+    manifest = {"schema_version": "j_b04_a5_acceptance_artifact_manifest.v1",
+        "artifacts": entries, "manifest_excludes_self": True}
+    _write_sanitized_json(run_root, "artifact_manifest.json", manifest)
+    listed = {item["relative_path"] for item in entries}
+    actual = {path.relative_to(run_root).as_posix() for path in run_root.rglob("*") if path.is_file()}
+    if actual != listed | {"artifact_manifest.json"}:
+        raise A5Error("J_B04_A5_SANITIZED_PACKAGE_UNLISTED_ARTIFACT")
+    for item in entries:
+        path = run_root / item["relative_path"]
+        data = path.read_bytes()
+        if len(data) != item["byte_size"] or hashlib.sha256(data).hexdigest() != item["sha256"]:
+            raise A5Error("J_B04_A5_ARTIFACT_MANIFEST_INTEGRITY_FAILED")
+    manifest_bytes = manifest_path.read_bytes()
+    manifest_value = json.loads(manifest_bytes.decode("utf-8"))
+    if _contains_forbidden_raw_key(manifest_value) or (raw_bytes and (manifest_bytes == raw_bytes
+            or (len(raw_bytes) >= 16 and raw_bytes in manifest_bytes))):
+        raise A5Error("J_B04_A5_SANITIZED_PACKAGE_INVALID")
+    summary_path = run_root / "acceptance_summary.json"
+    if summary_path.exists() and not _summary_finalized:
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        summary["raw_body_absence_verified"] = True
+        _write_sanitized_json(run_root, "acceptance_summary.json", summary)
+        return _verify_sanitized_package(run_root, raw_bytes=raw_bytes, _summary_finalized=True)
+    return manifest, True
+
+
+def _persist_live_result(run_root: Path, *, preflight: Mapping[str, Any], counts: Mapping[str, int],
+                         attempt: dict[str, Any], capture: EphemeralLiveCapture | None,
+                         h2_run: Mapping[str, Any] | None, stage_witness: Mapping[str, Any] | None,
+                         h4_artifacts: list[dict[str, Any]], primary_summary: Mapping[str, Any],
+                         disposition: str) -> tuple[dict[str, Any], bool]:
+    attempt["actual_http_dispatch_attempts"] = counts["http_dispatch_attempts"]
+    attempt["completed_at"] = _utc_now()
+    _write_sanitized_json(run_root, "transport_attempt.json", attempt)
+    if capture is not None:
+        telemetry = dict(capture.telemetry)
+        if isinstance(telemetry.get("http_status"), int) and 300 <= telemetry["http_status"] < 400:
+            redirect_result = "rejected_status_3xx"
+        elif telemetry.get("effective_url") != ENDPOINT:
+            redirect_result = "rejected_effective_url_mismatch"
+        else:
+            redirect_result = "none"
+        telemetry.update({"logical_get_attempts": counts["logical_get_attempts"],
+            "http_dispatch_attempts": counts["http_dispatch_attempts"], "retry_count": 0,
+            "redirect_result": redirect_result})
+        _write_sanitized_json(run_root, "source_telemetry.json", telemetry)
+    if h2_run is not None:
+        _write_sanitized_json(run_root, "primary_target_summary.json", primary_summary)
+        _write_sanitized_json(run_root, "h3_acceptance_fixture_summary.json", {
+            "artifact_path": h2_run["h3_fixture_path"],
+            "label": h2_run["h3_fixture_label"],
+            "requested_window": h2_run["h3_fixture_window"],
+            "live_h3_calls": 0, "historical_source_completeness_authority": False})
+    if stage_witness is not None:
+        evidence = stage_witness["normalized_evidence"]
+        _write_sanitized_json(run_root, "stage_witness_summary.json", {
+            "canonical_target_id": stage_witness["source_target"]["canonical_target_id"],
+            "security_code": stage_witness["source_target"]["security_code"],
+            "source_row_hash": stage_witness["source_row_hash"], "selection_rule": STAGE_WITNESS_POLICY,
+            "product_scope_identity_verified": False, "source_stage_witness_only": True,
+            "source_evidence_stage": evidence["events"][0]["source_evidence_stage"],
+            "event_lifecycle": evidence["events"][0]["event_lifecycle"]})
+        _write_sanitized_json(run_root, "stage_witness_normalized_evidence.json", evidence)
+    h4 = None
+    if h4_artifacts:
+        h4 = json.loads((run_root / h4_artifacts[0]["relative_path"]).read_text(encoding="utf-8"))
+        _write_sanitized_json(run_root, "h4_acceptance_replay.json", {
+            "artifacts": h4_artifacts, "state": h4["state"],
+            "ordinary_return_interpretation": h4["ordinary_return_interpretation"]})
+    summary = {"disposition": disposition,
+        "source_transport_accepted": bool(capture and capture.telemetry.get("http_status") == 200
+            and capture.telemetry.get("effective_url") == ENDPOINT and capture.parse_error is None),
+        "source_contract_accepted": bool(capture and capture.parse_error is None),
+        "primary_target": primary_summary, "stage_witness_available": stage_witness is not None,
+        "stage_witness_selection_rule": STAGE_WITNESS_POLICY, "h4_artifact_count": len(h4_artifacts),
+        "h4_state": h4["state"] if h4 else None,
+        "ordinary_return_interpretation": h4["ordinary_return_interpretation"] if h4 else None,
+        "identity_assurance_level": preflight["identity_assurance_level"],
+        "production_identity_verified": preflight["production_identity_verified"],
+        "A6_identity_reverification_required": preflight["A6_identity_reverification_required"],
+        "raw_payload_persistence": "NONE", "transport_attempted": attempt["transport_attempted"],
+        "canonical_h2_runtime": "INACTIVE", "selected_executor_id": None,
+        "J-B04": "BLOCKING", "Phase J": "NOT_STARTED", "MCP": 6}
+    _write_sanitized_json(run_root, "acceptance_summary.json", summary)
+    return _verify_sanitized_package(run_root, raw_bytes=capture.raw_bytes if capture is not None else None)
+
+
+def _is_transient_transport_exception(exc: Exception) -> bool:
+    if isinstance(exc, (OSError, TimeoutError, ConnectionError)):
+        return True
+    try:
+        from server.services.phase_h_h2_twse_exright_executor import H2SourceAttemptError
+        return isinstance(exc, H2SourceAttemptError) and str(exc) == "source_failed:transport_unavailable"
+    except Exception:
+        return False
+
+
+def _safe_h2_error_code(value: Any) -> str | None:
+    if not isinstance(value, str):
+        return None
+    if value.startswith("source_failed"):
+        return "source_failed"
+    if value.startswith("binding_failed"):
+        return "binding_failed"
+    return None
+
+
+def run_live_acceptance(owner_authorization_path: Path, execution_environment: str, *,
+                        get_once=None, git_state_provider=None, dirty_check=None,
+                        preflight_fn=None, runtime_invariant_fn=None, now_fn=None,
+                        acceptance_runs_root: Path | None = None) -> dict[str, Any]:
+    """Execute the explicitly authorized one-shot path; tests inject only fake transport."""
+    if execution_environment not in EXECUTION_ENVIRONMENTS:
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+    record = _strict_auth_json(owner_authorization_path)
+    state_provider = current_git_state if git_state_provider is None else git_state_provider
+    head, tree, main = state_provider()
+    authority = SingleUseAuthority(record, head=head, tree=tree, execution_environment=execution_environment)
+    if main != STARTING_MAIN:
+        raise A5Error("J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW")
+    is_dirty = ((subprocess.run(["git", "diff", "--quiet"], cwd=ROOT, check=False).returncode != 0
+                or subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False).returncode != 0)
+                if dirty_check is None else dirty_check())
+    if is_dirty:
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+    preflight = (run_p0_preflight if preflight_fn is None else preflight_fn)(execution_environment)
+    (validate_live_runtime_invariants if runtime_invariant_fn is None else runtime_invariant_fn)(preflight)
+    statement_hash = record["statement_sha256"]
+    runs_root = ACCEPTANCE_RUNS if acceptance_runs_root is None else Path(acceptance_runs_root)
+    run_root = runs_root / f"j-b04-a5-authority-{statement_hash[:16]}"
+    if run_root.exists():
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED")
+    # Construct/check the output path before consuming; utility validates root containment.
+    from scripts.m8r_filesystem_safety import FilesystemSafetyError, atomic_create_text_exclusive, safe_destination
+    try:
+        safe_destination(str(runs_root), str(Path(run_root.name) / "owner_authorization_consumed.json"), create_parent=False)
+    except FilesystemSafetyError as exc:
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED") from exc
+    # Recheck the lease after all preflight work and immediately before consuming it.
+    final_head, final_tree, final_main = state_provider()
+    if final_head != record["authorized_head_sha"]:
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_HEAD")
+    if final_tree != record["authorized_tree_sha"]:
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_TREE")
+    if final_main != STARTING_MAIN:
+        raise A5Error("J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW")
+    final_dirty = ((subprocess.run(["git", "diff", "--quiet"], cwd=ROOT, check=False).returncode != 0
+                   or subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False).returncode != 0)
+                   if dirty_check is None else dirty_check())
+    if final_dirty:
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+    consumed_at = (now_fn or _utc_now)()
+    receipt = {"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": tree,
+        "statement_sha256": statement_hash, "execution_environment_class": execution_environment,
+        "consumed_at_utc": consumed_at, "consumption_state": "CONSUMED_BEFORE_TRANSPORT"}
+    try:
+        atomic_create_text_exclusive(str(runs_root), str(Path(run_root.name) / "owner_authorization_consumed.json"),
+            json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n")
+    except FilesystemSafetyError as exc:
+        if getattr(exc, "reason_code", "") == "already_consumed_or_replayed":
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED") from exc
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED") from exc
+    authority.consume()
     counts = {"logical_get_attempts": 0, "http_dispatch_attempts": 0}
-    transport = official_get_once if get_once is None else get_once
-    counts["logical_get_attempts"] += 1
-    if counts["logical_get_attempts"] != 1:
-        raise A5Error("logical_get_limit_exceeded")
-    with count_actual_dispatches(counts):
-        response = transport(timeout_seconds=TIMEOUT)
-    return response_telemetry(response), counts, response
+    attempt = {"transport_attempted": False, "logical_get_attempts": 0,
+        "actual_http_dispatch_attempts": 0, "retry_count": 0, "redirect_follow_count": 0,
+        "started_at": None, "completed_at": None, "outcome": "in_progress", "failure_class": None}
+    response = None
+    capture = None
+    h2_run = None
+    disposition = None
+    h4_artifacts: list[dict[str, Any]] = []
+    stage_witness = None
+    primary_summary: dict[str, Any] = {"outcome": "unavailable"}
+    exact_rows: list[dict[str, Any]] | None = None
+    noncanonical_code_match = False
+    try:
+        attempt["started_at"] = (now_fn or _utc_now)()
+        _write_sanitized_json(run_root, "owner_authorization.json", {
+            "authorization_source": "external_owner_authorization_file", "authorized_head_sha": head,
+            "authorized_tree_sha": tree, "statement_sha256": statement_hash,
+            "execution_environment_class": execution_environment, "consumed_at_utc": consumed_at})
+        _write_sanitized_json(run_root, "transport_attempt.json", attempt, overwrite=False)
+        transport = get_once
+        if transport is None:
+            from server.services.phase_h_h2_twse_exright_executor import official_get_once
+            transport = official_get_once
+        counts["logical_get_attempts"] = 1
+        attempt["transport_attempted"] = True
+        attempt["logical_get_attempts"] = 1
+        _write_sanitized_json(run_root, "transport_attempt.json", attempt)
+        try:
+            with count_actual_dispatches(counts):
+                response = transport(timeout_seconds=TIMEOUT)
+        except Exception as transport_exc:
+            if not _is_transient_transport_exception(transport_exc):
+                raise
+            attempt["failure_class"] = "transport_failure"
+            h2_run = execute_primary_target(None, PREDECLARED_SOURCE_TARGET, run_root, transport_error=True)
+            h2_result = h2_run["operation_result"]
+            h2_primary = next((item for item in h2_result.get("evidence_artifacts", [])
+                if item.get("artifact_role") == "primary_evidence"
+                and item.get("evidence_contract") == "corporate_action_context_evidence.v1"), None)
+            h2_evidence = json.loads((run_root / h2_primary["relative_path"]).read_text(encoding="utf-8")) if h2_primary else None
+            primary_summary = {"outcome": "not_observed_transport_failure",
+                "h2_evidence_status": h2_evidence.get("status") if h2_evidence else None,
+                "operation_result_status": h2_result.get("status"),
+                "operation_error_code": _safe_h2_error_code(h2_result.get("error_code")),
+                "historical_absence_asserted": False}
+            h4_artifacts = derive_a5_h4_replay(h2_run, output_root=run_root)
+            disposition = "J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION"
+            attempt["outcome"] = disposition
+        if response is not None:
+            attempt["actual_http_dispatch_attempts"] = counts["http_dispatch_attempts"]
+            attempt["outcome"] = "response_received"
+            capture = _safe_capture_response(response)
+            # Production H2 receives this exact response object and performs its normal decode/binding path.
+            h2_run = execute_primary_target(response, PREDECLARED_SOURCE_TARGET, run_root)
+            h2_result = h2_run["operation_result"]
+            h2_artifacts = h2_result.get("evidence_artifacts", [])
+            h2_primary = next((item for item in h2_artifacts if item.get("artifact_role") == "primary_evidence"
+                               and item.get("evidence_contract") == "corporate_action_context_evidence.v1"), None)
+            h2_evidence = None
+            if h2_primary is not None:
+                h2_evidence = json.loads((run_root / h2_primary["relative_path"]).read_text(encoding="utf-8"))
+            exact_rows = [row for row in (capture.rows or []) if row.get("Code") == "2330"]
+            noncanonical_code_match = any(str(row.get("Code")) == "2330" and row.get("Code") != "2330"
+                for row in (capture.rows or []))
+            if noncanonical_code_match:
+                primary_summary = {"outcome": "noncanonical_exact_code_type",
+                    "semantic": "source_contract_binding_rejected; Code must be the exact string 2330",
+                    "historical_absence_asserted": False, "h2_evidence_status": h2_evidence.get("status") if h2_evidence else None}
+            elif len(exact_rows) == 0:
+                primary_summary = {"outcome": "zero_exact_code_matches", "semantic": "no_evidence_in_retrieved_current_source_slice",
+                    "historical_absence_asserted": False, "h2_evidence_status": h2_evidence.get("status") if h2_evidence else None}
+            elif len(exact_rows) == 1:
+                primary_summary = {"outcome": "one_exact_code_match", "semantic": "normalized_by_production_h2_path",
+                    "h2_evidence_status": h2_evidence.get("status") if h2_evidence else None}
+            else:
+                primary_summary = {"outcome": "multiple_exact_code_matches", "semantic": "binding_failed_no_row_selected",
+                    "h2_evidence_status": h2_evidence.get("status") if h2_evidence else None}
+            primary_summary["operation_result_status"] = h2_result.get("status")
+            primary_summary["operation_error_code"] = _safe_h2_error_code(h2_result.get("error_code"))
+            if capture.rows is not None:
+                stage_witness = select_offline_stage_witness(capture.rows, observed_at=capture.retrieved_at)
+            h4_artifacts = derive_a5_h4_replay(h2_run, output_root=run_root)
+            h4_evidence = (json.loads((run_root / h4_artifacts[0]["relative_path"]).read_text(encoding="utf-8"))
+                           if h4_artifacts else None)
+            if noncanonical_code_match:
+                disposition = "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED"
+            elif h2_primary is not None and (len(h4_artifacts) != 1 or h4_evidence is None
+                    or h4_evidence.get("state") != "coverage_incomplete"
+                    or h4_evidence.get("ordinary_return_interpretation") != "blocked"):
+                disposition = "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED"
+            elif capture.parse_error == "http_status_not_200":
+                disposition = "J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION"
+            elif capture.parse_error is not None:
+                disposition = "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED"
+            elif stage_witness is None:
+                disposition = "J_B04_A5_INCONCLUSIVE_LIVE_STAGE_SAMPLE_UNAVAILABLE"
+            else:
+                disposition = "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW"
+            attempt["outcome"] = disposition
+    except Exception as exc:
+        # Never serialize exception text; HTTP/adapter errors may contain source content.
+        transport_failure = _is_transient_transport_exception(exc)
+        attempt["failure_class"] = "transport_failure" if transport_failure else "runner_or_source_failure"
+        attempt["outcome"] = "failure_after_authority_consumption"
+        disposition = ("J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION"
+            if transport_failure
+            else "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED")
+    finally:
+        try:
+            manifest, raw_absence = _persist_live_result(run_root, preflight=preflight, counts=counts,
+                attempt=attempt, capture=capture, h2_run=h2_run, stage_witness=stage_witness,
+                h4_artifacts=h4_artifacts, primary_summary=primary_summary,
+                disposition=disposition or "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED")
+        except Exception:
+            disposition = "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED"
+            attempt["failure_class"] = "evidence_finalization_failure"
+            attempt["outcome"] = disposition
+            attempt["completed_at"] = _utc_now()
+            try:
+                _write_sanitized_json(run_root, "transport_attempt.json", attempt)
+                _write_sanitized_json(run_root, "acceptance_summary.json", {
+                    "disposition": disposition, "transport_attempted": attempt["transport_attempted"],
+                    "identity_assurance_level": preflight["identity_assurance_level"],
+                    "production_identity_verified": preflight["production_identity_verified"],
+                    "A6_identity_reverification_required": preflight["A6_identity_reverification_required"],
+                    "raw_payload_persistence": "NONE", "canonical_h2_runtime": "INACTIVE",
+                    "selected_executor_id": None, "J-B04": "BLOCKING", "Phase J": "NOT_STARTED", "MCP": 6})
+                manifest, raw_absence = _verify_sanitized_package(run_root, raw_bytes=capture.raw_bytes if capture is not None else None)
+            except Exception:
+                manifest, raw_absence = {"artifacts": []}, False
+        finally:
+            response = None
+            if capture is not None:
+                capture.release()
+                capture = None
+            if exact_rows is not None:
+                exact_rows.clear()
+    return {"disposition": disposition, "run_directory": run_root.name,
+        "logical_get_attempts": counts["logical_get_attempts"], "http_dispatch_attempts": counts["http_dispatch_attempts"],
+        "raw_body_absence_verified": raw_absence, "artifact_count": len(manifest["artifacts"]),
+        "market_GET": counts["logical_get_attempts"], "market_HEAD": 0, "market_POST": 0}
 
 
-def execute_primary_target(response: Mapping[str, Any], target: Mapping[str, str], output_root: Path) -> dict[str, Any]:
+def execute_primary_target(response: Mapping[str, Any] | None, target: Mapping[str, str], output_root: Path,
+                           *, transport_error: bool = False) -> dict[str, Any]:
     """Replay the captured in-memory response through the unchanged H2 executor."""
     from scripts.m8r_05b_03.canonical import canonical_json
     from scripts.m8r_05b_03.dispatch import DispatchRuntimeContext
@@ -328,7 +782,8 @@ def execute_primary_target(response: Mapping[str, Any], target: Mapping[str, str
         "evidence_contract": "recent_performance_evidence.v1", "artifact_role": "primary_evidence"}
     h3_op = {"operation_id": "a5-acceptance-only-h3-fixture", "capability_id": "recent_performance",
         "executor_id": "phase_h_h3_twse_recent_performance_executor", "market": "TWSE",
-        "canonical_target_ids": [target["canonical_target_id"]], "dependency_operation_ids": []}
+        "canonical_target_ids": [target["canonical_target_id"]], "dependency_operation_ids": [],
+        "operation_status": "executable_pending_approval", "executor_invocation_eligible": True}
     dependency = {"operation_id": h3_op["operation_id"], "operation": h3_op, "result": {
         "operation_id": h3_op["operation_id"], "status": "succeeded", "capability_id": "recent_performance",
         "executor_id": h3_op["executor_id"], "evidence_contract": "recent_performance_evidence.v1",
@@ -338,10 +793,35 @@ def execute_primary_target(response: Mapping[str, Any], target: Mapping[str, str
         "execution_request_hash": hashlib.sha256(b"J-B04-A5 acceptance-only request").hexdigest(),
         "executor_id": EXECUTOR_ID, "capability_id": "corporate_action_context", "market": "TWSE",
         "approved_security_identifiers": [target["canonical_target_id"]], "timeout_seconds": TIMEOUT}
+    def fetch_response(**kwargs):
+        if transport_error:
+            from server.services.phase_h_h2_twse_exright_executor import H2SourceAttemptError
+            raise H2SourceAttemptError("source_failed:transport_unavailable")
+        if response is None:
+            raise RuntimeError("a captured transport response is required")
+        return dict(response)
     result = execute_h2_twse_exright_pre(request, DispatchRuntimeContext(str(output_root), "A5 acceptance-only", {"dependencies": [dependency]}),
-        fetch_response=lambda **kwargs: dict(response))
+        fetch_response=fetch_response)
+    h2_op = {"operation_id": request["operation_id"], "capability_id": "corporate_action_context",
+        "executor_id": EXECUTOR_ID, "market": "TWSE", "canonical_target_ids": [target["canonical_target_id"]],
+        "dependency_operation_ids": [h3_op["operation_id"]], "operation_status": "executable_pending_approval",
+        "executor_invocation_eligible": True}
+    h3_result = {"operation_id": h3_op["operation_id"], "status": "succeeded",
+        "capability_id": "recent_performance", "executor_id": h3_op["executor_id"],
+        "evidence_contract": "recent_performance_evidence.v1", "evidence_artifacts": [h3_ref]}
     return {"operation_result": result, "h3_fixture_path": h3_path,
-        "h3_fixture_label": "TEST / ACCEPTANCE-ONLY; NOT LIVE H3 EVIDENCE; NOT SOURCE COMPLETENESS AUTHORITY"}
+        "h3_fixture_label": "TEST / ACCEPTANCE-ONLY; NOT LIVE H3 EVIDENCE; NOT SOURCE COMPLETENESS AUTHORITY",
+        "h3_fixture_window": {"start": h3["baselines"][0]["start_observation_date"],
+            "end": h3["baselines"][0]["end_observation_date"]},
+        "h2_operation": h2_op, "h3_operation": h3_op, "h3_result": h3_result}
+
+
+def derive_a5_h4_replay(h2_run: Mapping[str, Any], *, output_root: Path) -> list[dict[str, Any]]:
+    """Use the frozen production H4 derivation path over A5 H2/H3 artifacts."""
+    from server.services.phase_h_h2_twse_exright_executor import derive_h4_for_completed_plan
+    h2_result = h2_run["operation_result"]
+    plan = {"operations": [h2_run["h3_operation"], h2_run["h2_operation"]]}
+    return derive_h4_for_completed_plan(plan, [h2_run["h3_result"], h2_result], output_root=str(output_root))
 
 
 def run_p0_preflight(execution_environment: str) -> dict[str, Any]:
@@ -408,7 +888,7 @@ def run_p0_preflight(execution_environment: str) -> dict[str, Any]:
         "predeclared_source_target_canonical_json": descriptor_json,
         "predeclared_source_target_sha256": descriptor_hash,
         "source_target_binding_scope": target_state.get("source_target_binding_scope", "A5 exact TWT48U Code-field binding only"),
-        "secondary_stage_witness_policy": "captured payload only; prefer valid primary TWSE:2330 row, else lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows; no Security Master membership claim",
+        "secondary_stage_witness_policy": STAGE_WITNESS_POLICY,
         "identity_error_code": None if target_state["production_identity_verified"] or target_state["identity_assurance_level"] == "acceptance_only_predeclared_source_target" else identity_status,
         "canonical_identity_authority": "installation_local_security_master_release",
         "selected_root_class": target_state["selected_root_class"],
@@ -441,11 +921,27 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--preflight", action="store_true", help="run network-free A5 authority preflight")
     parser.add_argument("--execution-environment", choices=sorted(EXECUTION_ENVIRONMENTS), required=True,
         help="explicit installation identity assurance class; never inferred")
-    parser.add_argument("--live-acceptance", action="store_true", help="reserved for a later exact-head Owner authorization")
+    parser.add_argument("--live-acceptance", action="store_true", help="run one exact-head Owner-authorized bounded-live acceptance")
     parser.add_argument("--owner-authorization-json", type=Path)
     args = parser.parse_args(argv)
     if args.live_acceptance:
-        raise SystemExit("A5-L1 is disabled in this P0 runner; exact-head Owner authorization is required after P0 review")
+        if args.preflight or args.owner_authorization_json is None:
+            parser.error("--live-acceptance requires --owner-authorization-json and cannot be combined with --preflight")
+        try:
+            result = run_live_acceptance(args.owner_authorization_json, args.execution_environment)
+        except A5Error as exc:
+            disposition = str(exc) if str(exc).startswith("J_B04_A5_") else "J_B04_A5_LIVE_AUTHORIZATION_INVALID"
+            print(json.dumps({"disposition": disposition, "transport_attempted": False,
+                "market_GET": 0, "market_HEAD": 0, "market_POST": 0}, sort_keys=True))
+            return 3
+        except Exception:
+            print(json.dumps({"disposition": "J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED",
+                "transport_attempted": False, "market_GET": 0, "market_HEAD": 0, "market_POST": 0}, sort_keys=True))
+            return 3
+        print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+        return 0 if result["disposition"] == "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW" else 2
+    if args.owner_authorization_json is not None:
+        parser.error("--owner-authorization-json is valid only with --live-acceptance")
     if not args.preflight:
         parser.error("--preflight is required; no implicit network behavior")
     print(json.dumps(run_p0_preflight(args.execution_environment), ensure_ascii=False, indent=2, sort_keys=True))

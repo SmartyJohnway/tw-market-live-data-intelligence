@@ -14,7 +14,7 @@ For this A5 source gate only, the frozen descriptor is `{"canonical_target_id":"
 
 The only planned source call remains one GET to `https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL`, with at most one actual HTTP dispatch, zero retries, redirects rejected, a 15-second timeout ceiling, and a 4 MiB response ceiling. H3, TWT49U, TPEx, browser fallback, and Security Master live acquisition are prohibited. Raw payload persistence is `NONE`.
 
-The secondary lifecycle witness may use only the captured payload. It prefers a valid normalizable primary `TWSE:2330` row; if absent, it selects the lexicographically smallest `(Code, Date, canonical raw-row SHA-256)` among rows the unchanged normalizer can safely normalize. It proves only source-stage behavior; product-scope identity is unverified.
+The secondary lifecycle witness may use only the captured payload. Its exact selection rule is: `prefer normalizable TWSE:2330; otherwise lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows`. It proves only source-stage behavior; product-scope identity is unverified.
 
 ## History
 
@@ -23,3 +23,5 @@ The secondary lifecycle witness may use only the captured payload. It prefers a 
 - P0-R2 refines the gate scope for an explicitly declared clean cloud source-acceptance environment. It does not change or dispute R1’s runtime finding.
 
 No Owner A5 live authorization is present or requested at P0-R2. No TWT48U request has been made. H2 remains `INACTIVE`, selected H2 executor remains `null`, J-B04 remains `BLOCKING`, Phase J remains `NOT_STARTED`, and MCP remains 6.
+
+The network-free L1-P0 runner-hardening tranche adds durable exact-head consumption and sanitized ephemeral-capture controls. It does not change the P0-R2 identity-assurance decision and does not itself authorize a live attempt.

@@ -9,7 +9,7 @@ import pytest
 
 from scripts.phase_j_b04_a5_bounded_live_acceptance import (
     A5Error, ENDPOINT, MAX_BYTES, SingleUseAuthority, response_telemetry,
-    resolve_predeclared_target, resolve_execution_target, run_p0_preflight,
+    resolve_predeclared_target, resolve_execution_target, run_p0_preflight, expected_owner_statement,
     predeclared_source_target, select_offline_stage_witness,
 )
 from server.services.phase_h_corporate_action_adapters import normalize_twse_twt48u_all
@@ -45,72 +45,51 @@ def test_response_telemetry_accepts_exact_endpoint_array_and_hashes_only() -> No
     assert result["effective_url"] == ENDPOINT
     assert result["json_root_type"] == "array" and result["root_row_count"] == 1
     assert len(result["response_sha256"]) == 64
+    assert "rows" not in result and "rows_in_memory" not in result and "raw_bytes" not in result
 
 
 def test_live_call_without_explicit_authority_is_rejected_before_transport() -> None:
-    with pytest.raises(A5Error, match="live_authorization_missing_or_stale_head"):
+    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_INVALID"):
         SingleUseAuthority({}, head="a" * 40)
 
 
 def test_authorization_is_single_use() -> None:
     head = "a" * 40
-    statement = (f"AUTHORIZE J-B04-A5 LIVE ON HEAD {head}:\nexactly 1 GET to\n{ENDPOINT},\n"
-        "retry 0,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\n"
-        "no TWT49U/TPEx/browser fallback,\nno raw payload persistence,\n"
-        "no H2 activation,\nno J-B04 closure,\nno Phase J start.")
+    statement = expected_owner_statement(head)
     import hashlib
-    token = SingleUseAuthority({"gate": "J-B04-A5", "authorized_head_sha": head, "statement": statement,
-        "statement_sha256": hashlib.sha256(statement.encode()).hexdigest()}, head=head)
+    token = SingleUseAuthority({"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": "t" * 40,
+        "execution_environment_class": "cloud_clean_source_acceptance", "statement": statement,
+        "statement_sha256": hashlib.sha256(statement.encode()).hexdigest(), "consumed": False}, head=head)
     token.consume()
-    with pytest.raises(A5Error, match="single_use_live_authorization_consumed"):
+    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED"):
         token.consume()
-
-
-def test_authorized_transport_invokes_one_logical_get_with_zero_retries() -> None:
-    import hashlib
-    from scripts.phase_j_b04_a5_bounded_live_acceptance import execute_single_authorized_get
-    head = "b" * 40
-    statement = (f"AUTHORIZE J-B04-A5 LIVE ON HEAD {head}:\nexactly 1 GET to\n{ENDPOINT},\n"
-        "retry 0,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\n"
-        "no TWT49U/TPEx/browser fallback,\nno raw payload persistence,\n"
-        "no H2 activation,\nno J-B04 closure,\nno Phase J start.")
-    token = SingleUseAuthority({"gate": "J-B04-A5", "authorized_head_sha": head,
-        "statement": statement, "statement_sha256": hashlib.sha256(statement.encode()).hexdigest()}, head=head)
-    calls = []
-    telemetry, counts, _ = execute_single_authorized_get(token,
-        get_once=lambda **kwargs: calls.append(kwargs) or _response([]))
-    assert calls == [{"timeout_seconds": 15}]
-    assert counts == {"logical_get_attempts": 1, "http_dispatch_attempts": 0}
-    assert telemetry["root_row_count"] == 0
-    with pytest.raises(A5Error, match="single_use_live_authorization_consumed"):
-        execute_single_authorized_get(token, get_once=lambda **kwargs: pytest.fail("second GET invoked"))
 
 
 @pytest.mark.parametrize("url", ["https://openapi.twse.com.tw/redirect", ENDPOINT + "?x=1"])
 def test_redirect_or_wrong_effective_url_is_rejected(url: str) -> None:
-    with pytest.raises(A5Error, match="effective_url_mismatch_or_redirect"):
-        response_telemetry(_response([], url=url))
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import _safe_capture_response
+    assert _safe_capture_response(_response([], url=url)).parse_error == "effective_url_mismatch_or_redirect"
 
 
 def test_response_over_4_mib_is_rejected() -> None:
-    with pytest.raises(A5Error, match="response_ceiling_exceeded"):
-        response_telemetry({"raw_bytes": b" " * (MAX_BYTES + 1), "status": 200,
-            "content_type": "application/json", "effective_url": ENDPOINT})
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import _safe_capture_response
+    assert _safe_capture_response({"raw_bytes": b" " * (MAX_BYTES + 1), "status": 200,
+        "content_type": "application/json", "effective_url": ENDPOINT}).parse_error == "response_ceiling_exceeded"
 
 
 def test_non_json_content_type_is_rejected() -> None:
-    with pytest.raises(A5Error, match="http_or_content_type_invalid"):
-        response_telemetry(_response([], content_type="text/html"))
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import _safe_capture_response
+    assert _safe_capture_response(_response([], content_type="text/html")).parse_error == "content_type_not_json"
 
 
 def test_invalid_json_is_rejected() -> None:
-    with pytest.raises(A5Error, match="json_invalid"):
-        response_telemetry({"raw_bytes": b"{bad", "status": 200, "content_type": "application/json", "effective_url": ENDPOINT})
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import _safe_capture_response
+    assert _safe_capture_response({"raw_bytes": b"{bad", "status": 200, "content_type": "application/json", "effective_url": ENDPOINT}).parse_error == "json_invalid"
 
 
 def test_non_list_json_root_is_rejected() -> None:
-    with pytest.raises(A5Error, match="json_root_not_array"):
-        response_telemetry(_response({"rows": []}))
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import _safe_capture_response
+    assert _safe_capture_response(_response({"rows": []})).parse_error == "json_root_not_array"
 
 
 def test_exact_target_zero_rows_preserves_current_scope_no_evidence() -> None:
@@ -162,14 +141,14 @@ def test_captured_fake_response_flows_through_production_h2_and_binds_fixture_wi
     assert all(path.read_bytes() != response["raw_bytes"] for path in tmp_path.rglob("*" ) if path.is_file())
 
 
-def test_p0_cli_has_no_implicit_live_mode(monkeypatch):
+def test_live_cli_requires_external_authorization_file(monkeypatch):
     from scripts.phase_j_b04_a5_bounded_live_acceptance import main
     with pytest.raises(SystemExit):
         main([])
     with pytest.raises(SystemExit):
         main(["--preflight"])
-    with pytest.raises(SystemExit, match="A5-L1 is disabled"):
-        main(["--live-acceptance", "--execution-environment", "cloud_clean_source_acceptance"])
+    assert main(["--live-acceptance", "--execution-environment", "cloud_clean_source_acceptance",
+        "--owner-authorization-json", "/tmp/not-present-owner-auth.json"]) == 3
 
 
 def _release_record(*, canonical="TWSE:2330", market="TWSE", code="2330", family="company_share",
