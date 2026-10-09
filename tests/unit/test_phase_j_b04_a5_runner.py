@@ -9,7 +9,8 @@ import pytest
 
 from scripts.phase_j_b04_a5_bounded_live_acceptance import (
     A5Error, ENDPOINT, MAX_BYTES, SingleUseAuthority, response_telemetry,
-    resolve_predeclared_target, run_p0_preflight,
+    resolve_predeclared_target, resolve_execution_target, run_p0_preflight,
+    predeclared_source_target, select_offline_stage_witness,
 )
 from server.services.phase_h_corporate_action_adapters import normalize_twse_twt48u_all
 
@@ -165,8 +166,10 @@ def test_p0_cli_has_no_implicit_live_mode(monkeypatch):
     from scripts.phase_j_b04_a5_bounded_live_acceptance import main
     with pytest.raises(SystemExit):
         main([])
+    with pytest.raises(SystemExit):
+        main(["--preflight"])
     with pytest.raises(SystemExit, match="A5-L1 is disabled"):
-        main(["--live-acceptance"])
+        main(["--live-acceptance", "--execution-environment", "cloud_clean_source_acceptance"])
 
 
 def _release_record(*, canonical="TWSE:2330", market="TWSE", code="2330", family="company_share",
@@ -205,40 +208,67 @@ def test_valid_installation_local_release_resolves_without_legacy_candidate_arti
     assert identity["security_master_release_id"] == rid
     assert identity["canonical_identity_authority"] == "installation_local_security_master_release"
     assert identity["environment_root_selected"] is True
+    target = resolve_execution_target("installation_bound")
+    assert target["identity_assurance_level"] == "production_identity_verified"
+    assert target["production_identity_verified"] is True
+    assert target["A6_identity_reverification_required"] is False
 
 
 def test_environment_selected_root_is_used_by_production_mode_a_loader(tmp_path, monkeypatch):
     rid = _activate_local_release(tmp_path)
     monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(tmp_path))
-    preflight = run_p0_preflight()
-    assert preflight["preflight_status"] == "J_B04_A5_P0_R1_READY_FOR_INDEPENDENT_REVIEW"
+    preflight = run_p0_preflight("cloud_clean_source_acceptance")
+    assert preflight["preflight_status"] == "J_B04_A5_P0_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW"
     assert preflight["security_master_status"] == "ACTIVE"
+    assert preflight["identity_assurance_level"] == "production_identity_verified"
+    assert preflight["production_identity_verified"] is True
+    assert preflight["A6_identity_reverification_required"] is False
     assert preflight["TW_MARKET_SECURITY_MASTER_ROOT_selected"] is True
     assert preflight["identity_resolution"]["security_master_release_id"] == rid
 
 
 def test_canonical_not_initialized_does_not_fallback_or_make_market_calls(tmp_path, monkeypatch):
-    from scripts.m8r_06_01c2_mode_a_security_master_loader import ModeASecurityMasterUnavailable
     monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(tmp_path / "empty-root"))
-    record = run_p0_preflight()
-    assert record["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED"
+    record = run_p0_preflight("cloud_clean_source_acceptance")
+    assert record["preflight_status"] == "J_B04_A5_P0_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW"
     assert record["security_master_status"] == "NOT_INITIALIZED"
+    assert record["identity_assurance_level"] == "acceptance_only_predeclared_source_target"
+    assert record["production_identity_verified"] is False
+    assert record["A6_identity_reverification_required"] is True
+    assert record["predeclared_source_target"] == {"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}
     assert record["identity_resolution"]["security_master_release_id"] is None
     assert record["legacy_candidate_fallback"] is False
     assert record["fixture_identity_fallback"] is False
     assert record["company_name_fallback"] is False
     assert record["live_security_master_bootstrap_performed"] is False
-    assert record["network_calls_so_far"] == {"market_GET": 0, "market_HEAD": 0, "market_POST": 0}
+    assert record["network_calls_so_far"] == {"market_GET": 0, "market_HEAD": 0, "market_POST": 0,
+        "security_master_live_acquisition": 0}
+
+
+def test_installation_bound_not_initialized_remains_blocked(tmp_path, monkeypatch):
+    monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(tmp_path / "empty-root"))
+    state = resolve_execution_target("installation_bound")
+    assert state["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED"
+    assert state["identity_assurance_level"] is None
+    assert state["target_binding"] is None
+
+
+def test_execution_environment_is_explicit_and_unknown_values_rejected():
+    with pytest.raises(A5Error, match="execution_environment_class_required_or_invalid"):
+        resolve_execution_target("")
+    with pytest.raises(A5Error, match="execution_environment_class_required_or_invalid"):
+        resolve_execution_target("guessed_from_cloud")
 
 
 def test_invalid_active_release_fails_closed(tmp_path, monkeypatch):
     (tmp_path / "active.json").write_text("{bad", encoding="utf-8")
     monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(tmp_path))
-    record = run_p0_preflight()
+    record = run_p0_preflight("cloud_clean_source_acceptance")
     assert record["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID"
     assert record["security_master_status"] == "INVALID"
     assert record["identity_resolution"]["security_master_release_id"] is None
-    assert record["network_calls_so_far"] == {"market_GET": 0, "market_HEAD": 0, "market_POST": 0}
+    assert record["network_calls_so_far"] == {"market_GET": 0, "market_HEAD": 0, "market_POST": 0,
+        "security_master_live_acquisition": 0}
 
 
 @pytest.mark.parametrize("mutation", [
@@ -274,7 +304,7 @@ def test_a5_validator_accepts_canonical_not_initialized_record_and_rejects_legac
     import copy
     from scripts.validate_phase_j_b04_a5_bounded_live_acceptance import RECORD, validate_contract
     record = json.loads(RECORD.read_text(encoding="utf-8"))
-    assert validate_contract(record)["status"] == "BLOCKED"
+    assert validate_contract(record)["status"] == "READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW"
     mutated = copy.deepcopy(record)
     mutated["canonical_identity_authority"] = "config/m8r_06_mode_a_security_master_pointer.json"
     with pytest.raises(AssertionError):
@@ -283,4 +313,54 @@ def test_a5_validator_accepts_canonical_not_initialized_record_and_rejects_legac
     mutated["identity_resolution"]["security_master_release_id"] = "fake-release"
     with pytest.raises(AssertionError):
         validate_contract(mutated)
+
+
+def test_predeclared_source_target_hash_is_immutable(monkeypatch):
+    from scripts import phase_j_b04_a5_bounded_live_acceptance as runner
+    target, digest = predeclared_source_target()
+    assert target == {"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}
+    assert len(digest) == 64
+    monkeypatch.setitem(runner.PREDECLARED_SOURCE_TARGET, "security_code", "2331")
+    with pytest.raises(A5Error, match="predeclared_source_target_authority_corrupt"):
+        predeclared_source_target()
+
+
+def test_mutating_source_target_after_authority_construction_is_rejected():
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import (
+        PREDECLARED_SOURCE_TARGET_SHA256, PredeclaredSourceTargetAuthority,
+        _canonical_target_bytes,
+    )
+    authority = PredeclaredSourceTargetAuthority(
+        _canonical_target_bytes({"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}).decode(),
+        PREDECLARED_SOURCE_TARGET_SHA256,
+    )
+    mutated = authority.descriptor()
+    mutated["security_code"] = "2331"
+    with pytest.raises(A5Error, match="predeclared_source_target_mutated"):
+        authority.bind(mutated)
+
+
+def test_cloud_clean_descriptor_contains_no_fabricated_identity_fields():
+    target, _ = predeclared_source_target()
+    assert set(target) == {"canonical_target_id", "market", "security_code"}
+    assert not {"isin", "instrument_family", "instrument_type", "execution_eligibility"}.intersection(target)
+
+
+def test_offline_stage_witness_selects_deterministically_without_identity_lookup():
+    rows = [_row("2317", Date="2026-10-07"), _row("1101", Date="2026-10-08")]
+    first = select_offline_stage_witness(rows, observed_at="2026-10-09T00:00:00Z")
+    second = select_offline_stage_witness(list(reversed(rows)), observed_at="2026-10-09T00:00:00Z")
+    assert first == second
+    assert first["source_target"] == {"canonical_target_id": "TWSE:1101", "market": "TWSE", "security_code": "1101"}
+    assert first["product_scope_identity_verified"] is False
+    assert first["source_stage_witness_only"] is True
+    assert first["normalized_evidence"]["events"][0]["source_evidence_stage"] == "preannouncement"
+    assert first["normalized_evidence"]["events"][0]["event_lifecycle"] == "scheduled"
+
+
+def test_offline_stage_witness_prefers_normalizable_primary_target():
+    rows = [_row("1101", Date="2026-10-07"), _row("2330", Date="2026-10-08")]
+    selected = select_offline_stage_witness(rows, observed_at="2026-10-09T00:00:00Z")
+    assert selected["source_target"] == {"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}
+    assert selected["product_scope_identity_verified"] is False
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from contextlib import contextmanager
+from dataclasses import dataclass
 import hashlib
 import json
 import os
@@ -25,10 +26,35 @@ CONTRACT = "TWT48U_ALL"
 MAX_BYTES = 4 * 1024 * 1024
 TIMEOUT = 15
 PREFLIGHT_JSON = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.json"
+EXECUTION_ENVIRONMENTS = {"installation_bound", "cloud_clean_source_acceptance"}
+PREDECLARED_SOURCE_TARGET = {"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}
+PREDECLARED_SOURCE_TARGET_SHA256 = "d80f5c697d333f043df922a099a0f472780051c1d2abf79866954026b63aaa40"
 
 
 class A5Error(RuntimeError):
     pass
+
+
+@dataclass(frozen=True)
+class PredeclaredSourceTargetAuthority:
+    canonical_json: str
+    sha256: str
+
+    def descriptor(self) -> dict[str, str]:
+        raw = self.canonical_json.encode("utf-8")
+        if hashlib.sha256(raw).hexdigest() != self.sha256 or self.sha256 != PREDECLARED_SOURCE_TARGET_SHA256:
+            raise A5Error("predeclared_source_target_authority_corrupt")
+        value = json.loads(self.canonical_json)
+        if value != {"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}:
+            raise A5Error("predeclared_source_target_authority_corrupt")
+        return value
+
+    def bind(self, candidate: Mapping[str, Any]) -> dict[str, str]:
+        expected = self.descriptor()
+        selected = {key: candidate.get(key) for key in expected}
+        if selected != expected:
+            raise A5Error("predeclared_source_target_mutated")
+        return expected
 
 
 class SingleUseAuthority:
@@ -59,6 +85,18 @@ def current_git_state() -> tuple[str, str, str]:
     def git(*args: str) -> str:
         return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
     return git("rev-parse", "HEAD"), git("rev-parse", "HEAD^{tree}"), git("rev-parse", "origin/main")
+
+
+def _canonical_target_bytes(target: Mapping[str, Any]) -> bytes:
+    return json.dumps(dict(target), ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+
+
+def predeclared_source_target() -> tuple[dict[str, str], str]:
+    authority = PredeclaredSourceTargetAuthority(
+        canonical_json=_canonical_target_bytes(PREDECLARED_SOURCE_TARGET).decode("utf-8"),
+        sha256=PREDECLARED_SOURCE_TARGET_SHA256)
+    target = authority.descriptor()
+    return target, authority.sha256
 
 
 def resolve_predeclared_target() -> dict[str, Any]:
@@ -121,6 +159,82 @@ def resolve_predeclared_target() -> dict[str, Any]:
         "selected_root_class": "environment_selected_installation_local" if root_selected_by_env else "canonical_installation_local_default",
         "environment_root_selected": root_selected_by_env,
     }
+
+
+def resolve_execution_target(execution_environment: str) -> dict[str, Any]:
+    """Apply explicit environment semantics without weakening production identity checks."""
+    if execution_environment not in EXECUTION_ENVIRONMENTS:
+        raise A5Error("execution_environment_class_required_or_invalid")
+    try:
+        identity = resolve_predeclared_target()
+        return {
+            "preflight_status": "J_B04_A5_P0_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW",
+            "security_master_status": "ACTIVE",
+            "identity_assurance_level": "production_identity_verified",
+            "production_identity_verified": True,
+            "A6_identity_reverification_required": False,
+            "target_binding": {key: identity[key] for key in ("canonical_target_id", "market", "security_code", "isin",
+                "instrument_family", "instrument_type", "execution_eligibility", "resolution_reason")},
+            "security_master_release_id": identity["security_master_release_id"],
+            "security_master_manifest_hash": identity["security_master_manifest_hash"],
+            "security_master_release_index_sha256": identity["security_master_release_index_sha256"],
+            "selected_root_class": identity["selected_root_class"],
+        }
+    except A5Error as exc:
+        if str(exc) == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED":
+            if execution_environment == "installation_bound":
+                return {"preflight_status": str(exc), "security_master_status": "NOT_INITIALIZED",
+                    "identity_assurance_level": None, "production_identity_verified": False,
+                    "A6_identity_reverification_required": True, "target_binding": None,
+                    "security_master_release_id": None, "security_master_manifest_hash": None,
+                    "security_master_release_index_sha256": None, "selected_root_class": None}
+            target, digest = predeclared_source_target()
+            return {"preflight_status": "J_B04_A5_P0_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW",
+                "security_master_status": "NOT_INITIALIZED",
+                "identity_assurance_level": "acceptance_only_predeclared_source_target",
+                "production_identity_verified": False, "A6_identity_reverification_required": True,
+                "target_binding": target, "predeclared_source_target": target,
+                "predeclared_source_target_sha256": digest,
+                "source_target_binding_scope": "A5 exact TWT48U Code-field binding only",
+                "security_master_release_id": None, "security_master_manifest_hash": None,
+                "security_master_release_index_sha256": None,
+                "selected_root_class": "environment_selected_installation_local" if os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT") else "canonical_installation_local_default"}
+        return {"preflight_status": str(exc), "security_master_status": "INVALID" if "CANONICAL_SECURITY_MASTER_INVALID" in str(exc) else "TARGET_SCOPE_INVALID",
+            "identity_assurance_level": None, "production_identity_verified": False,
+            "A6_identity_reverification_required": True, "target_binding": None,
+            "security_master_release_id": None, "security_master_manifest_hash": None,
+            "security_master_release_index_sha256": None, "selected_root_class": None}
+
+
+def select_offline_stage_witness(rows: object, *, observed_at: str, citation_prefix: str = "a5-offline-stage") -> dict[str, Any] | None:
+    """Select a deterministic normalizable live row without claiming product identity."""
+    from server.services.phase_h_corporate_action_adapters import H2NormalizationError, normalize_twse_twt48u_all
+    if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+        return None
+    candidates = []
+    for row in rows:
+        code = row.get("Code")
+        date = row.get("Date")
+        if not isinstance(code, str) or not code or not code.isascii() or not code.isdigit():
+            continue
+        if not isinstance(date, str) or not date:
+            continue
+        digest = hashlib.sha256(_canonical_target_bytes(row)).hexdigest()
+        candidates.append((code, date, digest, row))
+    for code, date, digest, row in sorted(candidates, key=lambda item: (item[0] != "2330", item[0], item[1], item[2])):
+        target = {"canonical_target_id": f"TWSE:{code}", "market": "TWSE", "security_code": code}
+        try:
+            normalized = normalize_twse_twt48u_all(rows, target, observed_at=observed_at,
+                citation_id=f"{citation_prefix}-{digest[:16]}")
+        except (H2NormalizationError, ValueError, TypeError):
+            continue
+        if normalized.get("status") != "available" or len(normalized.get("events", [])) != 1:
+            continue
+        return {"source_target": target, "source_row_hash": digest, "source_date": date,
+            "normalized_evidence": normalized, "product_scope_identity_verified": False,
+            "source_stage_witness_only": True,
+            "selection_rule": "lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows"}
+    return None
 
 
 def acceptance_h3_fixture(target: Mapping[str, str]) -> dict[str, Any]:
@@ -201,6 +315,10 @@ def execute_primary_target(response: Mapping[str, Any], target: Mapping[str, str
     from scripts.m8r_05b_03.dispatch import DispatchRuntimeContext
     from scripts.m8r_filesystem_safety import atomic_write_bytes
     from server.services.phase_h_h2_twse_exright_executor import execute_h2_twse_exright_pre
+    target_authority = PredeclaredSourceTargetAuthority(
+        canonical_json=_canonical_target_bytes(PREDECLARED_SOURCE_TARGET).decode("utf-8"),
+        sha256=PREDECLARED_SOURCE_TARGET_SHA256)
+    target = target_authority.bind(target)
     h3 = acceptance_h3_fixture(target)
     h3_path = "evidence/phase_h/h3/a5-acceptance-only-h3-fixture.json"
     h3_bytes = (canonical_json(h3) + "\n").encode("utf-8")
@@ -226,51 +344,84 @@ def execute_primary_target(response: Mapping[str, Any], target: Mapping[str, str
         "h3_fixture_label": "TEST / ACCEPTANCE-ONLY; NOT LIVE H3 EVIDENCE; NOT SOURCE COMPLETENESS AUTHORITY"}
 
 
-def run_p0_preflight() -> dict[str, Any]:
+def run_p0_preflight(execution_environment: str) -> dict[str, Any]:
     head, tree, main = current_git_state()
-    identity = None
-    identity_status = "J_B04_A5_P0_R1_READY_FOR_INDEPENDENT_REVIEW"
-    identity_error = None
-    try:
-        identity = resolve_predeclared_target()
-    except A5Error as exc:
-        identity_status = str(exc)
-        identity_error = str(exc)
+    target_state = resolve_execution_target(execution_environment)
+    identity_status = target_state["preflight_status"]
+    identity = target_state.get("target_binding")
     root_selected = bool(os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT"))
-    if identity is not None:
-        security_master_status = "ACTIVE"
+    if target_state["production_identity_verified"]:
         identity_resolution = {
             "target": TARGET_ID, "authority": "installation-local Taiwan Market Identity Service",
             "result": "resolved", "resolution_status": "resolved", "resolution_reason": "exact_listing_id",
-            "reason_code": None, "selected_root_class": identity["selected_root_class"],
+            "reason_code": None, "selected_root_class": target_state["selected_root_class"],
             "TW_MARKET_SECURITY_MASTER_ROOT_selected": root_selected,
-            "security_master_release_id": identity["security_master_release_id"],
-            "security_master_manifest_hash": identity["security_master_manifest_hash"],
-            "target_binding": {key: identity[key] for key in ("canonical_target_id", "market", "security_code", "isin",
-                "instrument_family", "instrument_type", "execution_eligibility", "resolution_reason")},
-        }
-    else:
-        security_master_status = ("NOT_INITIALIZED" if identity_error ==
-            "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED" else "INVALID"
-            if identity_error == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID" else "TARGET_SCOPE_INVALID")
-        reason_code = "NOT_INITIALIZED" if security_master_status == "NOT_INITIALIZED" else identity_error
-        identity_resolution = {
-            "target": TARGET_ID, "authority": "installation-local Taiwan Market Identity Service",
-            "result": "not_resolved", "reason_code": reason_code,
-            "selected_root_class": "environment_selected_installation_local" if root_selected else "canonical_installation_local_default",
-            "TW_MARKET_SECURITY_MASTER_ROOT_selected": root_selected,
-            "security_master_release_id": None, "security_master_manifest_hash": None,
+            "security_master_release_id": target_state["security_master_release_id"],
+            "security_master_manifest_hash": target_state["security_master_manifest_hash"],
+            "security_master_release_index_sha256": target_state["security_master_release_index_sha256"],
+            "target_binding": identity,
+            "product_scope_identity_verified": True,
             "legacy_candidate_fallback": False, "fixture_identity_fallback": False,
             "company_name_fallback": False, "live_security_master_bootstrap_performed": False,
         }
+    elif target_state["identity_assurance_level"] == "acceptance_only_predeclared_source_target":
+        identity_resolution = {
+            "target": TARGET_ID, "authority": "predeclared A5 source-binding descriptor",
+            "result": "predeclared_source_target_only", "resolution_status": None,
+            "resolution_reason": "fixed_descriptor; no identity lookup performed",
+            "reason_code": "NOT_INITIALIZED", "selected_root_class": target_state["selected_root_class"],
+            "TW_MARKET_SECURITY_MASTER_ROOT_selected": root_selected,
+            "security_master_release_id": None, "security_master_manifest_hash": None,
+            "security_master_release_index_sha256": None,
+            "target_binding": identity,
+            "product_scope_identity_verified": False,
+            "legacy_candidate_fallback": False, "fixture_identity_fallback": False,
+            "company_name_fallback": False, "live_security_master_bootstrap_performed": False,
+        }
+    else:
+        identity_resolution = {
+            "target": TARGET_ID, "authority": "installation-local Taiwan Market Identity Service",
+            "result": "not_resolved", "resolution_status": None,
+            "resolution_reason": "production_identity_required_for_installation_bound_execution",
+            "reason_code": "NOT_INITIALIZED" if target_state["security_master_status"] == "NOT_INITIALIZED" else identity_status,
+            "selected_root_class": target_state["selected_root_class"],
+            "TW_MARKET_SECURITY_MASTER_ROOT_selected": root_selected,
+            "security_master_release_id": None, "security_master_manifest_hash": None,
+            "security_master_release_index_sha256": None, "target_binding": None,
+            "product_scope_identity_verified": False,
+            "legacy_candidate_fallback": False, "fixture_identity_fallback": False,
+            "company_name_fallback": False, "live_security_master_bootstrap_performed": False,
+        }
+    target_descriptor, descriptor_hash = predeclared_source_target()
+    descriptor_json = _canonical_target_bytes(target_descriptor).decode("utf-8")
     return {"gate": "J-B04-A5", "preflight_status": identity_status,
+        "execution_environment_class": execution_environment,
         "starting_main": STARTING_MAIN, "observed_origin_main": main,
         "branch_head_sha": head, "tree_sha": tree, "target": TARGET_ID,
         "target_identity": identity, "identity_resolution": identity_resolution,
-        "security_master_status": security_master_status, "identity_error_code": identity_error,
+        "security_master_status": target_state["security_master_status"],
+        "identity_assurance_level": target_state["identity_assurance_level"],
+        "production_identity_verified": target_state["production_identity_verified"],
+        "A6_identity_reverification_required": target_state["A6_identity_reverification_required"],
+        "A6_requires_canonical_security_master": True,
+        "predeclared_source_target": target_descriptor,
+        "predeclared_source_target_canonical_json": descriptor_json,
+        "predeclared_source_target_sha256": descriptor_hash,
+        "source_target_binding_scope": target_state.get("source_target_binding_scope", "A5 exact TWT48U Code-field binding only"),
+        "secondary_stage_witness_policy": "captured payload only; prefer valid primary TWSE:2330 row, else lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows; no Security Master membership claim",
+        "identity_error_code": None if target_state["production_identity_verified"] or target_state["identity_assurance_level"] == "acceptance_only_predeclared_source_target" else identity_status,
         "canonical_identity_authority": "installation_local_security_master_release",
+        "selected_root_class": target_state["selected_root_class"],
+        "security_master_release_id": target_state["security_master_release_id"],
+        "security_master_manifest_hash": target_state["security_master_manifest_hash"],
+        "security_master_release_index_sha256": target_state["security_master_release_index_sha256"],
         "legacy_candidate_fallback": False, "fixture_identity_fallback": False,
         "company_name_fallback": False, "live_security_master_bootstrap_performed": False,
+        "security_master_bootstrap": {"performed": False, "live_update_performed": False,
+            "legacy_migration_performed": False, "records_imported": False,
+            "candidate_b_reconstructed": False, "fixture_security_master_used": False},
+        "secondary_stage_witness_product_scope_identity_verified": False,
+        "secondary_stage_witness_only": True,
         "TW_MARKET_SECURITY_MASTER_ROOT_selected": root_selected,
         "endpoint": ENDPOINT, "method": "GET",
         "logical_get_maximum": 1, "http_dispatch_maximum": 1, "retry": 0,
@@ -280,13 +431,16 @@ def run_p0_preflight() -> dict[str, Any]:
         "raw_payload_persistence": "NONE", "H2_activation": "NOT_AUTHORIZED",
         "J-B04_closure": "NOT_AUTHORIZED", "Phase_J_start": "NOT_AUTHORIZED",
         "live_authorization": ("NOT PRESENT; not requested because P0 is blocked" if identity is None
-                               else "NOT PRESENT; requires independent review before Owner authorization"),
-        "network_calls_so_far": {"market_GET": 0, "market_HEAD": 0, "market_POST": 0}}
+                               else "NOT PRESENT; P0-R2 is for independent review only; A5-L1 is not authorized"),
+        "network_calls_so_far": {"market_GET": 0, "market_HEAD": 0, "market_POST": 0,
+            "security_master_live_acquisition": 0}}
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--preflight", action="store_true", help="run network-free A5 authority preflight")
+    parser.add_argument("--execution-environment", choices=sorted(EXECUTION_ENVIRONMENTS), required=True,
+        help="explicit installation identity assurance class; never inferred")
     parser.add_argument("--live-acceptance", action="store_true", help="reserved for a later exact-head Owner authorization")
     parser.add_argument("--owner-authorization-json", type=Path)
     args = parser.parse_args(argv)
@@ -294,7 +448,7 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit("A5-L1 is disabled in this P0 runner; exact-head Owner authorization is required after P0 review")
     if not args.preflight:
         parser.error("--preflight is required; no implicit network behavior")
-    print(json.dumps(run_p0_preflight(), ensure_ascii=False, indent=2, sort_keys=True))
+    print(json.dumps(run_p0_preflight(args.execution_environment), ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 
 
