@@ -165,6 +165,9 @@ def validate_repository() -> dict[str, Any]:
         "tests/unit/test_phase_j_b04_a5_runner.py", "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.json",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.md",
         "scripts/validate_phase_j_b04_a5_l1_p0_r1_execution_lease.py",
+        "scripts/validate_phase_j_b04_a5_l1_p0_r2_bounded_session.py",
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R2_BOUNDED_LIVE_SESSION_2026-10-09.json",
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R2_BOUNDED_LIVE_SESSION_2026-10-09.md",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R1_EXECUTION_INSTANCE_LEASE_HARDENING_2026-10-09.json",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R1_EXECUTION_INSTANCE_LEASE_HARDENING_2026-10-09.md"}
     assert not (changed | modified | untracked) - allowed

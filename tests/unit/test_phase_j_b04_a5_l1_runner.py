@@ -10,7 +10,8 @@ import pytest
 
 from scripts.phase_j_b04_a5_bounded_live_acceptance import (
     A5Error, ENDPOINT, STARTING_MAIN, STAGE_WITNESS_POLICY,
-    expected_owner_statement, run_live_acceptance,
+    MAX_SESSION_GETS, BoundedSessionAuthority, expected_owner_statement,
+    reserve_next_session_attempt, run_live_acceptance,
 )
 
 
@@ -37,8 +38,8 @@ def auth_file(tmp_path: Path, *, head="a" * 40, tree="b" * 40, environment="clou
     statement = expected_owner_statement(head, lease_sha256)
     record = {"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": tree,
         "execution_environment_class": environment, "execution_instance_lease_sha256": lease_sha256,
-        "statement": statement,
-        "statement_sha256": hashlib.sha256(statement.encode("utf-8")).hexdigest(), "consumed": False}
+        "max_market_gets": MAX_SESSION_GETS, "statement": statement,
+        "statement_sha256": hashlib.sha256(statement.encode("utf-8")).hexdigest()}
     path = tmp_path / "owner-auth.json"
     path.write_text(json.dumps(record), encoding="utf-8")
     return path
@@ -61,7 +62,7 @@ def kwargs_for(tmp_path: Path, response, calls: list):
             "Phase J": "NOT_STARTED", "MCP": 6},
         "runtime_invariant_fn": lambda p: None,
         "acceptance_runs_root": tmp_path / "acceptance_runs",
-        "now_fn": iter(["2026-10-09T12:00:00Z", "2026-10-09T12:00:01Z", "2026-10-09T12:00:02Z", "2026-10-09T12:00:03Z"]).__next__}
+        "now_fn": lambda: "2026-10-09T12:00:00Z"}
 
 
 def response(rows):
@@ -70,29 +71,32 @@ def response(rows):
 
 
 def load_package(result, tmp_path):
-    root = tmp_path / "acceptance_runs" / result["run_directory"]
+    root = tmp_path / "acceptance_runs" / result["session_directory"] / result["run_directory"]
     return root, {p.relative_to(root).as_posix(): p for p in root.rglob("*") if p.is_file()}
 
 
-def test_fake_e2e_pass_consumes_once_replays_h2_h4_and_persists_no_raw(tmp_path):
+def test_fake_e2e_pass_reserves_attempt_replays_h2_h4_and_persists_no_raw(tmp_path):
     calls = []
     source = response([row("2330")])
     kwargs = kwargs_for(tmp_path, source, calls)
     owner_record = json.loads(kwargs["owner_authorization_path"].read_text())
-    consumed_file = tmp_path / "acceptance_runs" / f"j-b04-a5-authority-{owner_record['statement_sha256'][:16]}" / "owner_authorization_consumed.json"
-    def check_consumed_before_fake_transport(**kw):
-        assert consumed_file.is_file()
-        assert json.loads(consumed_file.read_text())["consumption_state"] == "CONSUMED_BEFORE_TRANSPORT"
+    reserved_file = (tmp_path / "acceptance_runs" / f"j-b04-a5-session-{owner_record['statement_sha256'][:16]}"
+        / "attempt-001" / "attempt_reserved.json")
+    def check_reserved_before_fake_transport(**kw):
+        assert reserved_file.is_file()
+        reservation = json.loads(reserved_file.read_text())
+        assert reservation["state"] == "RESERVED_BEFORE_TRANSPORT"
+        assert reservation["attempt_number"] == 1
         calls.append(kw)
         return source
-    kwargs["get_once"] = check_consumed_before_fake_transport
+    kwargs["get_once"] = check_reserved_before_fake_transport
     result = run_live_acceptance(**kwargs)
     assert result["disposition"] == "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW"
     assert result["logical_get_attempts"] == 1 and len(calls) == 1
     assert result["http_dispatch_attempts"] == 0  # injected fake transport, no HTTP opener dispatch
     root, files = load_package(result, tmp_path)
-    assert (root / "owner_authorization_consumed.json").is_file()
-    receipt = json.loads((root / "owner_authorization_consumed.json").read_text())
+    session_root = tmp_path / "acceptance_runs" / result["session_directory"]
+    receipt = json.loads((session_root / "attempt-001" / "attempt_reserved.json").read_text())
     assert receipt["execution_instance_lease_sha256"] == hashlib.sha256(TEST_SECRET).hexdigest()
     summary = json.loads((root / "acceptance_summary.json").read_text())
     assert summary["raw_body_absence_verified"] is True
@@ -120,6 +124,14 @@ def test_fake_e2e_pass_consumes_once_replays_h2_h4_and_persists_no_raw(tmp_path)
         assert len(payload) == artifact["byte_size"]
         assert hashlib.sha256(payload).hexdigest() == artifact["sha256"]
     assert result["raw_body_absence_verified"] is True
+    with pytest.raises(A5Error, match="J_B04_A5_SESSION_TERMINAL"):
+        run_live_acceptance(**kwargs)
+    assert len(calls) == 1
+    assert result["session_raw_body_absence_verified"] is True
+    assert result["session_terminal"] is True and result["session_terminal_reason"] == "PASS"
+    session_summary = json.loads((session_root / "session_summary.json").read_text())
+    assert session_summary["max_market_gets"] == 10 and session_summary["attempts_reserved"] == 1
+    assert session_summary["attempts_remaining"] == 9 and session_summary["successful_attempt_number"] == 1
 
 
 def test_fake_zero_rows_is_not_historical_absence_and_stage_is_inconclusive(tmp_path):
@@ -181,7 +193,7 @@ def test_non_string_code_that_production_would_coerce_is_blocked(tmp_path):
     assert not (root / "stage_witness_summary.json").exists()
 
 
-def test_fake_transport_failure_receipt_and_same_authority_reuse_rejected(tmp_path):
+def test_fake_transport_failure_keeps_same_session_eligible_for_next_invocation(tmp_path):
     calls = []
     kwargs = kwargs_for(tmp_path, None, calls)
     def fail(**kw):
@@ -198,7 +210,134 @@ def test_fake_transport_failure_receipt_and_same_authority_reuse_rejected(tmp_pa
     assert primary["outcome"] == "not_observed_transport_failure" and primary["h2_evidence_status"] == "source_failed"
     h4 = json.loads((root / "h4_acceptance_replay.json").read_text())
     assert h4["state"] == "coverage_incomplete" and h4["ordinary_return_interpretation"] == "blocked"
-    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED"):
+    second = run_live_acceptance(**kwargs)
+    assert second["attempt_number"] == 2 and second["session_terminal"] is False
+    assert len(calls) == 2
+
+
+def test_transient_attempt_one_then_pass_attempt_two_terminates_session(tmp_path):
+    calls = []
+    source = response([row("2330")])
+    kwargs = kwargs_for(tmp_path, None, calls)
+    def attempt(**kw):
+        number = len(calls) + 1
+        session = tmp_path / "acceptance_runs" / f"j-b04-a5-session-{json.loads(kwargs['owner_authorization_path'].read_text())['statement_sha256'][:16]}"
+        reserved = session / f"attempt-{number:03d}" / "attempt_reserved.json"
+        assert reserved.is_file()
+        assert json.loads(reserved.read_text())["state"] == "RESERVED_BEFORE_TRANSPORT"
+        calls.append(number)
+        if number == 1:
+            raise OSError("temporary unavailable")
+        return source
+    kwargs["get_once"] = attempt
+    first = run_live_acceptance(**kwargs)
+    second = run_live_acceptance(**kwargs)
+    assert first["attempt_number"] == 1
+    assert first["disposition"] == "J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION"
+    assert second["attempt_number"] == 2
+    assert second["disposition"] == "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW"
+    assert second["session_terminal"] and second["session_terminal_reason"] == "PASS"
+    with pytest.raises(A5Error, match="J_B04_A5_SESSION_TERMINAL"):
+        run_live_acceptance(**kwargs)
+    assert calls == [1, 2]
+
+
+def test_ten_inconclusive_attempts_exhaust_budget_and_attempt_eleven_is_blocked(tmp_path):
+    calls = []
+    kwargs = kwargs_for(tmp_path, response([]), calls)
+    results = [run_live_acceptance(**kwargs) for _ in range(10)]
+    assert [result["attempt_number"] for result in results] == list(range(1, 11))
+    assert len(calls) == 10
+    assert results[-1]["disposition"] == "J_B04_A5_SESSION_ATTEMPT_BUDGET_EXHAUSTED"
+    assert results[-1]["attempts_remaining"] == 0
+    assert results[-1]["session_terminal_reason"] == "BUDGET_EXHAUSTED"
+    with pytest.raises(A5Error, match="J_B04_A5_SESSION_ATTEMPT_BUDGET_EXHAUSTED"):
+        run_live_acceptance(**kwargs)
+    assert len(calls) == 10
+
+
+def test_hard_block_on_attempt_two_terminates_without_attempt_three(tmp_path):
+    calls = []
+    kwargs = kwargs_for(tmp_path, None, calls)
+    def attempt(**kw):
+        calls.append(kw)
+        if len(calls) == 1:
+            raise OSError("temporary unavailable")
+        return {"raw_bytes": b"not-json", "status": 200, "content_type": "application/json",
+            "effective_url": ENDPOINT, "retrieved_at": "2026-10-09T11:00:00Z"}
+    kwargs["get_once"] = attempt
+    assert run_live_acceptance(**kwargs)["attempt_number"] == 1
+    second = run_live_acceptance(**kwargs)
+    assert second["attempt_number"] == 2
+    assert second["disposition"] == "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED"
+    assert second["session_terminal_reason"] == "HARD_BLOCK"
+    with pytest.raises(A5Error, match="J_B04_A5_SESSION_TERMINAL"):
+        run_live_acceptance(**kwargs)
+    assert len(calls) == 2
+
+
+def test_crash_after_reservation_counts_slot_and_next_invocation_uses_two(tmp_path):
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import ensure_session_authorization
+    calls = []
+    kwargs = kwargs_for(tmp_path, response([row("2330")]), calls)
+    record = json.loads(kwargs["owner_authorization_path"].read_text())
+    session_root = tmp_path / "acceptance_runs" / f"j-b04-a5-session-{record['statement_sha256'][:16]}"
+    ensure_session_authorization(session_root, record)
+    first_number, _ = reserve_next_session_attempt(session_root, record)
+    assert first_number == 1  # simulated crash happens after this durable reservation
+    result = run_live_acceptance(**kwargs)
+    assert result["attempt_number"] == 2
+    assert len(calls) == 1
+    summary = json.loads((session_root / "session_summary.json").read_text())
+    assert summary["attempts_reserved"] == 2 and summary["attempts_remaining"] == 8
+
+
+def test_concurrent_attempt_reservations_allocate_distinct_slots(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    import threading
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import ensure_session_authorization
+    calls = []
+    kwargs = kwargs_for(tmp_path, response([]), calls)
+    record = json.loads(kwargs["owner_authorization_path"].read_text())
+    session_root = tmp_path / "acceptance_runs" / f"j-b04-a5-session-{record['statement_sha256'][:16]}"
+    ensure_session_authorization(session_root, record)
+    barrier = threading.Barrier(2)
+    def reserve():
+        barrier.wait()
+        return reserve_next_session_attempt(session_root, record)[0]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        first = pool.submit(reserve)
+        second = pool.submit(reserve)
+        numbers = sorted([first.result(), second.result()])
+    assert numbers == [1, 2]
+    assert len(list(session_root.glob("attempt-*/attempt_reserved.json"))) == 2
+
+
+def test_git_change_after_first_attempt_terminalizes_session_before_next_get(tmp_path):
+    calls = []
+    kwargs = kwargs_for(tmp_path, None, calls)
+    kwargs["get_once"] = lambda **kw: calls.append(kw) or (_ for _ in ()).throw(OSError("temporary"))
+    run_live_acceptance(**kwargs)
+    kwargs["git_state_provider"] = lambda: ("c" * 40, "b" * 40, STARTING_MAIN)
+    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_STALE_HEAD"):
+        run_live_acceptance(**kwargs)
+    session_root = tmp_path / "acceptance_runs" / f"j-b04-a5-session-{json.loads(kwargs['owner_authorization_path'].read_text())['statement_sha256'][:16]}"
+    terminal = json.loads((session_root / "session_terminal.json").read_text())
+    assert terminal["terminal_reason"] == "HARD_BLOCK"
+    assert len(calls) == 1
+
+
+def test_session_authorization_cannot_be_rebound_to_different_tree(tmp_path):
+    calls = []
+    kwargs = kwargs_for(tmp_path, None, calls)
+    kwargs["get_once"] = lambda **kw: calls.append(kw) or (_ for _ in ()).throw(OSError("temporary"))
+    run_live_acceptance(**kwargs)
+    path = kwargs["owner_authorization_path"]
+    record = json.loads(path.read_text())
+    record["authorized_tree_sha"] = "d" * 40
+    path.write_text(json.dumps(record))
+    kwargs["git_state_provider"] = lambda: ("a" * 40, "d" * 40, STARTING_MAIN)
+    with pytest.raises(A5Error, match="J_B04_A5_SESSION_AUTHORIZATION_MISMATCH"):
         run_live_acceptance(**kwargs)
     assert len(calls) == 1
 
@@ -256,7 +395,7 @@ def test_non_exact_owner_statement_rejected_before_consumption(tmp_path):
     kwargs = kwargs_for(tmp_path, response([row("2330")]), calls)
     auth_path = kwargs["owner_authorization_path"]
     record = json.loads(auth_path.read_text())
-    record["statement"] = record["statement"].replace("retry 0", "retry 1")
+    record["statement"] = record["statement"].replace("up to 10 GET attempts total", "up to 9 GET attempts total")
     auth_path.write_text(json.dumps(record), encoding="utf-8")
     with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_INVALID"):
         run_live_acceptance(**kwargs)
@@ -378,14 +517,14 @@ def test_head_lease_is_rechecked_after_preflight_before_consumption(tmp_path):
     calls = []
     kwargs = kwargs_for(tmp_path, response([row("2330")]), calls)
     owner_record = json.loads(kwargs["owner_authorization_path"].read_text())
-    consumed_path = (tmp_path / "acceptance_runs" /
-        f"j-b04-a5-authority-{owner_record['statement_sha256'][:16]}" / "owner_authorization_consumed.json")
+    reserved_path = (tmp_path / "acceptance_runs" /
+        f"j-b04-a5-session-{owner_record['statement_sha256'][:16]}" / "attempt-001" / "attempt_reserved.json")
     states = iter([("a" * 40, "b" * 40, STARTING_MAIN), ("c" * 40, "b" * 40, STARTING_MAIN)])
     kwargs["git_state_provider"] = lambda: next(states)
     with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_STALE_HEAD"):
         run_live_acceptance(**kwargs)
     assert calls == []
-    assert not consumed_path.exists()
+    assert not reserved_path.exists()
 
 
 def test_invalid_security_master_blocks_before_consumption(tmp_path):

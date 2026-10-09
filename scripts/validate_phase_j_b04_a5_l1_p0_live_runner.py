@@ -54,9 +54,13 @@ def validate_contract(record: dict[str, Any]) -> dict[str, Any]:
         "--execution-environment", "--owner-authorization-json", "--execution-lease-file"]
     assert record["authorization_contract"]["external_file_required"] is True
     assert record["authorization_contract"]["execution_lease_required"] is True
+    assert record["authorization_contract"]["max_market_gets"] == 10
+    assert record["authorization_contract"]["consumed_field_required"] is False
     assert "execution_instance_lease_sha256" in record["authorization_contract"]["record_fields"]
-    assert "execution_instance_lease_sha256" in record["authority_consumption"]["receipt_fields"]
-    assert record["authority_consumption"]["state"] == "CONSUMED_BEFORE_TRANSPORT"
+    assert record["authority_consumption"]["historical_state"] == "CONSUMED_BEFORE_TRANSPORT"
+    assert record["authority_consumption"]["state"] == "HISTORICAL_R1_SINGLE_USE_CONTRACT_SUPERSEDED_BY_R2_SESSION_POLICY"
+    assert record["authority_consumption"]["current_state"] == "ATTEMPT_RESERVED_BEFORE_TRANSPORT"
+    assert "execution_instance_lease_sha256" in record["authority_consumption"]["attempt_receipt_fields"]
     assert record["authority_consumption"]["exclusive_atomic_create"] is True
     assert record["stage_witness_selection_policy"] == RULE
     assert record["raw_payload_persistence"] == "NONE"
@@ -110,10 +114,10 @@ def validate_repository() -> dict[str, Any]:
     assert source.count("official_get_once") == 2
     assert live_source.count("response = transport(timeout_seconds=TIMEOUT)") == 1
     assert "derive_h4_for_completed_plan" in source
-    assert "atomic_create_text_exclusive" in live_source
-    assert live_source.index("load_execution_lease(Path(") < live_source.index("atomic_create_text_exclusive(str(")
-    assert live_source.index("atomic_create_text_exclusive") < live_source.index("authority.consume()")
-    assert live_source.index("authority.consume()") < live_source.index("transport(timeout_seconds=TIMEOUT)")
+    assert "reserve_next_session_attempt" in live_source
+    assert live_source.index("load_execution_lease(Path(") < live_source.index("reserve_next_session_attempt(session_root")
+    assert "attempt_reserved.json" in source
+    assert live_source.index("reserve_next_session_attempt(session_root") < live_source.index("transport(timeout_seconds=TIMEOUT)")
     assert "retry_count\": 0" in live_source and "redirect_follow_count\": 0" in live_source
 
     fake_response = {"raw_bytes": b"[]", "status": 200, "content_type": "application/json",

@@ -5,6 +5,8 @@
   "starting_tree": "34cd17b7811db209c6e4d4c999864ef2a1f95442",
   "main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
   "parent_disposition": "HOLD / R1 REQUIRED",
+  "attempt_budget_policy_status": "HISTORICAL_SINGLE_USE_MODEL_SUPERSEDED_BY_R2_BOUNDED_SESSION",
+  "R1_lease_protection_status": "PRESERVED",
   "blocker_addressed": "Cloud workspace-loss replay protection",
   "disposition": "J_B04_A5_L1_P0_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW",
   "execution_instance_secret_required": true,

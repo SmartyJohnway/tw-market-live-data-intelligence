@@ -1,0 +1,134 @@
+{
+  "schema_version": "phase_j_j_b04_a5_l1_p0_r2_bounded_live_session.v1",
+  "gate": "J-B04-A5-L1-P0-R2",
+  "starting_head": "1e84554c250d92e05b44eb8a543cd76fc154e55b",
+  "starting_tree": "e334c92f20db5be0813b254665c7ebdada4552ca",
+  "main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "parent_disposition": "J-B04-A5-P0-R2 PASS; J-B04-A5-L1-P0-R1 PASS",
+  "disposition": "J_B04_A5_L1_P0_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW",
+  "owner_policy_change": "one exact-head, tree, and execution-lease-bound authorization permits up to 10 total TWT48U GET attempts in one session",
+  "max_market_gets": 10,
+  "per_attempt_get_maximum": 1,
+  "per_attempt_http_dispatch_maximum": 1,
+  "per_attempt_internal_retry": 0,
+  "redirect_follow": 0,
+  "stop_on_pass": true,
+  "stop_on_hard_block": true,
+  "reattempt_eligible_dispositions": [
+    "J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION",
+    "J_B04_A5_INCONCLUSIVE_LIVE_STAGE_SAMPLE_UNAVAILABLE"
+  ],
+  "execution_instance_lease_required": true,
+  "production_execution_lease_prepared": false,
+  "owner_live_authorization": "NOT PRESENT",
+  "real_live_execution": false,
+  "network_calls": {
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0,
+    "security_master_live_acquisition": 0
+  },
+  "future_authorization_schema": {
+    "required_fields": [
+      "gate",
+      "authorized_head_sha",
+      "authorized_tree_sha",
+      "execution_environment_class",
+      "execution_instance_lease_sha256",
+      "max_market_gets",
+      "statement",
+      "statement_sha256"
+    ],
+    "max_market_gets": 10,
+    "consumed_field": "not present",
+    "execution_lease_sha256_lowercase_hex": true,
+    "external_authorization_immutable": true
+  },
+  "future_owner_statement_template": "AUTHORIZE J-B04-A5 BOUNDED LIVE SESSION ON HEAD <EXACT_HEAD_SHA>\nWITH EXECUTION LEASE <EXECUTION_INSTANCE_LEASE_SHA256>:\nup to 10 GET attempts total to\nhttps://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL,\nstop early when J-B04-A5 acceptance succeeds,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\nno TWT49U/TPEx/browser fallback,\nno raw payload persistence,\nno H2 activation,\nno J-B04 closure,\nno Phase J start.",
+  "future_owner_statement_example": "AUTHORIZE J-B04-A5 BOUNDED LIVE SESSION ON HEAD aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nWITH EXECUTION LEASE 20806de6752b977e523f8f521ac63a15d45e232c94ebded2fb519294ef1e2003:\nup to 10 GET attempts total to\nhttps://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL,\nstop early when J-B04-A5 acceptance succeeds,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\nno TWT49U/TPEx/browser fallback,\nno raw payload persistence,\nno H2 activation,\nno J-B04 closure,\nno Phase J start.",
+  "session_directory_pattern": "j-b04-a5-session-<STATEMENT_SHA_PREFIX>",
+  "session_receipts": {
+    "authorization": "session_authorization.json; atomically created once; exact metadata match required on reuse",
+    "session_summary": "derived from durable attempt reservations and outcomes",
+    "terminal": "session_terminal.json; exclusive atomic creation"
+  },
+  "attempt_reservation": {
+    "path_pattern": "attempt-NNN/attempt_reserved.json",
+    "state": "RESERVED_BEFORE_TRANSPORT",
+    "authoritative_for_budget": true,
+    "numbers": "contiguous 1..10; crash-reserved slots count",
+    "exclusive_atomic_create": true,
+    "concurrent_reservation_lock": true,
+    "per_invocation_get_maximum": 1
+  },
+  "terminal_states": {
+    "PASS": true,
+    "HARD_BLOCK": true,
+    "BUDGET_EXHAUSTED": true
+  },
+  "session_state_policy": {
+    "derived_from_attempt_receipts": true,
+    "same_authorization_reused_for_eligible_inconclusive": true,
+    "attempt_11_possible": false,
+    "stale_git_between_attempts_blocks_session": true,
+    "execution_lease_revalidated_each_attempt": true,
+    "pass_is_terminal": true,
+    "hard_block_is_terminal": true
+  },
+  "session_directory_structure": [
+    "session_authorization.json",
+    "session_summary.json",
+    "attempt-001/attempt_reserved.json",
+    "attempt-001/transport_attempt.json",
+    "attempt-001/source_telemetry.json",
+    "attempt-001/acceptance_summary.json",
+    "session_terminal.json"
+  ],
+  "stage_witness_rule": "prefer normalizable TWSE:2330; otherwise lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows",
+  "raw_payload_persistence": "NONE",
+  "historical_policy": {
+    "L1_single_use": "superseded in attempt-budget policy only",
+    "R1_single_use": "superseded in attempt-budget policy only",
+    "execution_lease": "preserved",
+    "P0_R2_identity_semantics": "unchanged"
+  },
+  "validation": {
+    "test_file": "tests/unit/test_phase_j_b04_a5_l1_runner.py",
+    "required_scenarios": [
+      "attempt 1 transient then attempt 2 PASS",
+      "10 inconclusive reservations then attempt 11 rejection",
+      "PASS terminal on first attempt",
+      "hard-block terminal on second attempt",
+      "crash after reservation counts and advances slot",
+      "concurrent reservation claims unique slots",
+      "workspace-loss and lease replay protection",
+      "stale Git between attempts terminalizes before another GET"
+    ],
+    "network_denied": true,
+    "focused_test_count": null,
+    "focused_test_result": "pending validation",
+    "P0_R2_validator": "pending validation",
+    "L1_P0_validator": "pending validation",
+    "R1_validator": "pending validation",
+    "R2_validator": "pending validation",
+    "governance_validators": "pending validation",
+    "compileall": "pending validation",
+    "git_diff_check": "pending validation",
+    "duplicate_key_json_scan": "pending validation",
+    "default_ci_comparison": {
+      "base": "1e84554c250d92e05b44eb8a543cd76fc154e55b",
+      "candidate": null,
+      "environment": "pending validation",
+      "base_failed_nodes": [],
+      "candidate_failed_nodes": [],
+      "new_failure_delta": null
+    }
+  },
+  "canonical_state": {
+    "H2_runtime": "INACTIVE",
+    "selected_executor_id": null,
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT_STARTED",
+    "MCP": 6
+  }
+}

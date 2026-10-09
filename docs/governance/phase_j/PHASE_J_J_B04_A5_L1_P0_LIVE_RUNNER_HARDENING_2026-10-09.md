@@ -5,13 +5,19 @@ requirement for live authorization. Any eventual live invocation also requires
 `--execution-lease-file`; the Owner statement and consumption receipt bind its
 SHA-256. The external secret is never included in this historical record.
 
+Attempt-budget history: the original L1-P0 one-authorization/one-GET consume
+model and R1's durable single-use receipt are preserved as historical
+implementation steps. R2 supersedes only that attempt-budget policy with one
+lease-bound session authorization for up to ten individually reserved GET
+attempts. Each invocation still issues at most one GET.
+
 Disposition: `J_B04_A5_L1_P0_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW`.
 
-This tranche adds the exact-head live CLI and its network-free acceptance path. The command requires `--live-acceptance`, `--execution-environment`, and an external `--owner-authorization-json`. The authorization binds exact HEAD, tree, canonical main, the explicit environment class, the byte-exact Owner statement, its SHA-256, and `consumed: false`. Tracked staged or unstaged changes block before consumption.
+This tranche adds the exact-head live CLI and its network-free acceptance path. The command requires `--live-acceptance`, `--execution-environment`, an external `--owner-authorization-json`, and the R1 external execution lease. Under the R2 session contract, the authorization binds exact HEAD, tree, environment class, lease hash, maximum session attempts, and the byte-exact Owner statement and SHA-256; the authorization JSON has no `consumed` field.
 
-The runner rechecks the P0-R2 Security Master outcome and canonical dormancy immediately before consumption. A clean cloud `NOT_INITIALIZED` state retains `acceptance_only_predeclared_source_target`, `production_identity_verified=false`, and `A6_identity_reverification_required=true`; an invalid Security Master blocks.
+The runner rechecks the P0-R2 Security Master outcome and canonical dormancy before every attempt. A clean cloud `NOT_INITIALIZED` state retains `acceptance_only_predeclared_source_target`, `production_identity_verified=false`, and `A6_identity_reverification_required=true`; an invalid Security Master blocks.
 
-The deterministic run directory is derived from the Owner statement hash. The runner atomically creates `owner_authorization_consumed.json` exclusively before invoking the production `official_get_once` transport. Existing consumption rejects reuse. The run then replays the captured response through the production H2 executor, selects the stage witness offline, and invokes the frozen `derive_h4_for_completed_plan` path. It writes only governed normalized evidence, H4 evidence, sanitized telemetry and receipts. The artifact manifest verifies hashes and sizes; package validation rejects unlisted artifacts and forbidden raw fields.
+The deterministic session directory is derived from the Owner statement hash. Before each transport, the runner atomically reserves the next `attempt-NNN/attempt_reserved.json` slot; this receipt counts even if the process crashes before dispatch. The same valid authorization and lease may continue after eligible inconclusive outcomes, with at most one GET per invocation and ten reservations total. PASS, hard-block, or budget exhaustion terminates the session. Each response is replayed through the production H2 executor, the stage witness is selected offline, and the frozen `derive_h4_for_completed_plan` path is invoked. Per-attempt manifests verify hashes and sizes; package validation rejects unlisted artifacts and forbidden raw fields.
 
 Raw bytes and decoded source rows live only in `EphemeralLiveCapture` during processing. Persisted telemetry is limited to HTTP status, content type, effective URL, byte count, response hash, JSON root type, row count, retrieval time, call counters, retry count and redirect result. CLI output contains only sanitized outcome data.
 

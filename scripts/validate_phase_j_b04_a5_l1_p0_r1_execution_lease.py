@@ -75,16 +75,16 @@ def validate_repository() -> dict[str, Any]:
     old_l1 = strict_json(OLD_L1_RECORD)
     validate_contract(record)
     assert old_l1["authorization_contract"]["execution_lease_required"] is True
-    assert "execution_instance_lease_sha256" in old_l1["authorization_contract"]["record_fields"]
-    assert "execution_instance_lease_sha256" in old_l1["authority_consumption"]["receipt_fields"]
-    assert old_l1["authority_consumption"]["receipt_fields"] == ["gate", "authorized_head_sha",
-        "authorized_tree_sha", "statement_sha256", "execution_environment_class",
-        "execution_instance_lease_sha256", "consumed_at_utc", "consumption_state"]
+    assert old_l1["authorization_contract"]["max_market_gets"] == 10
+    assert old_l1["authority_consumption"]["historical_state"] == "CONSUMED_BEFORE_TRANSPORT"
+    assert old_l1["authority_consumption"]["current_state"] == "ATTEMPT_RESERVED_BEFORE_TRANSPORT"
+    assert old_l1["authority_consumption"]["state"] == "HISTORICAL_R1_SINGLE_USE_CONTRACT_SUPERSEDED_BY_R2_SESSION_POLICY"
+    assert "execution_instance_lease_sha256" in old_l1["authority_consumption"]["attempt_receipt_fields"]
 
     from scripts.phase_j_b04_a5_bounded_live_acceptance import (
         EXECUTION_LEASE_MIN_BYTES, EXECUTION_ENVIRONMENTS, LEASE_SHA256_RE,
         expected_owner_statement, load_execution_lease, prepare_execution_lease,
-        run_live_acceptance, SingleUseAuthority,
+        run_live_acceptance, BoundedSessionAuthority,
     )
     assert EXECUTION_LEASE_MIN_BYTES >= 32
     assert EXECUTION_ENVIRONMENTS == {"installation_bound", "cloud_clean_source_acceptance"}
@@ -92,9 +92,10 @@ def validate_repository() -> dict[str, Any]:
     fake_hash = hashlib.sha256(b"x" * 32).hexdigest()
     statement = expected_owner_statement("a" * 40, fake_hash)
     assert f"WITH EXECUTION LEASE {fake_hash}:" in statement
-    assert "AUTHORIZE J-B04-A5 LIVE ON HEAD aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:\n" not in statement
+    assert "AUTHORIZE J-B04-A5 BOUNDED LIVE SESSION ON HEAD aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n" in statement
+    assert "up to 10 GET attempts total" in statement
     try:
-        SingleUseAuthority({"gate": "J-B04-A5"}, head="a" * 40)
+        BoundedSessionAuthority({"gate": "J-B04-A5"}, head="a" * 40)
     except Exception:
         pass
     else:
@@ -111,16 +112,15 @@ def validate_repository() -> dict[str, Any]:
     assert "J_B04_A5_EXECUTION_LEASE_INVALID" in source
     assert "J_B04_A5_EXECUTION_LEASE_HASH_MISMATCH" in source
     assert "load_execution_lease" in live_source
-    assert live_source.index("load_execution_lease(Path(") < live_source.index("atomic_create_text_exclusive(str(")
-    assert live_source.index("atomic_create_text_exclusive(str(") < live_source.index("authority.consume()")
-    assert live_source.index("authority.consume()") < live_source.index("transport(timeout_seconds=TIMEOUT)")
+    assert live_source.index("load_execution_lease(Path(") < live_source.index("reserve_next_session_attempt(session_root")
+    assert live_source.index("reserve_next_session_attempt(session_root") < live_source.index("transport(timeout_seconds=TIMEOUT)")
     assert '"execution_instance_lease_sha256"' in live_source
 
     tests = (ROOT / "tests/unit/test_phase_j_b04_a5_l1_runner.py").read_text(encoding="utf-8")
     required = ("test_lease_preparation_creates_random_external_secret",
         "test_lease_prepare_never_overwrites_existing_secret", "test_lease_paths_inside_repository_and_symlink",
         "test_missing_wrong_and_truncated_lease", "test_cloud_workspace_loss_replay_requires_original_lease",
-        "test_cloud_workspace_loss_with_new_unrelated_lease", "test_fake_transport_failure_receipt",
+        "test_cloud_workspace_loss_with_new_unrelated_lease", "test_fake_transport_failure_keeps_same_session",
         "test_old_lease_free_owner_statement")
     assert all(name in tests for name in required)
 
@@ -142,7 +142,7 @@ def validate_repository() -> dict[str, Any]:
     validate_l1()
     assert subprocess.check_output(["git", "rev-parse", "origin/main"], cwd=ROOT, text=True).strip() == record["main"]
     runs = ROOT / "docs/governance/phase_j/acceptance_runs"
-    assert not any(runs.rglob("owner_authorization_consumed.json")) if runs.exists() else True
+    assert not any(runs.rglob("attempt_reserved.json")) if runs.exists() else True
     return {"status": "PASS", "disposition": record["disposition"], "P0_validator": "PASS",
         "L1_P0_validator": "PASS", "market_GET_HEAD_POST": "0/0/0", "security_master_live_calls": 0,
         "MCP": 6}

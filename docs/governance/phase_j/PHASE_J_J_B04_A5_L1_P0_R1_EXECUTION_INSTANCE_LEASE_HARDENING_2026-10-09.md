@@ -2,6 +2,13 @@
 
 Disposition: `J_B04_A5_L1_P0_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW`.
 
+Historical policy note: R1 originally bound the lease to a one-GET
+single-use authorization. The Owner later replaced that attempt budget with the
+R2 bounded-session policy: one authorization allows up to ten individually
+reserved attempts. R1's lease, workspace-loss replay protection, and test
+evidence remain in force; only the single-use attempt-budget model is
+superseded.
+
 The L1-P0 review blocker was Cloud workspace-loss replay: the local consumed
 receipt and authorization could disappear with the workspace while the same
 Owner authorization and Git revision remained available elsewhere. R1 adds a

@@ -8,7 +8,7 @@ from types import SimpleNamespace
 import pytest
 
 from scripts.phase_j_b04_a5_bounded_live_acceptance import (
-    A5Error, ENDPOINT, MAX_BYTES, SingleUseAuthority, response_telemetry,
+    A5Error, ENDPOINT, MAX_BYTES, MAX_SESSION_GETS, BoundedSessionAuthority, response_telemetry,
     resolve_predeclared_target, resolve_execution_target, run_p0_preflight, expected_owner_statement,
     predeclared_source_target, select_offline_stage_witness,
 )
@@ -50,21 +50,26 @@ def test_response_telemetry_accepts_exact_endpoint_array_and_hashes_only() -> No
 
 def test_live_call_without_explicit_authority_is_rejected_before_transport() -> None:
     with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_INVALID"):
-        SingleUseAuthority({}, head="a" * 40)
+        BoundedSessionAuthority({}, head="a" * 40)
 
 
-def test_authorization_is_single_use() -> None:
+def test_authorization_is_exact_bounded_session_not_single_use():
     head = "a" * 40
     import hashlib
     lease_hash = hashlib.sha256(b"fake test lease" * 3).hexdigest()
     statement = expected_owner_statement(head, lease_hash)
-    token = SingleUseAuthority({"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": "t" * 40,
+    record = {"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": "t" * 40,
         "execution_environment_class": "cloud_clean_source_acceptance",
-        "execution_instance_lease_sha256": lease_hash, "statement": statement,
-        "statement_sha256": hashlib.sha256(statement.encode()).hexdigest(), "consumed": False}, head=head)
-    token.consume()
-    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED"):
-        token.consume()
+        "execution_instance_lease_sha256": lease_hash, "max_market_gets": 10, "statement": statement,
+        "statement_sha256": hashlib.sha256(statement.encode()).hexdigest()}
+    assert BoundedSessionAuthority(record, head=head, tree="t" * 40)
+    for value in (0, -1, 11, True, 10.0, "10"):
+        changed = {**record, "max_market_gets": value}
+        with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_INVALID"):
+            BoundedSessionAuthority(changed, head=head, tree="t" * 40)
+    changed = {**record, "consumed": False}
+    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_INVALID"):
+        BoundedSessionAuthority(changed, head=head, tree="t" * 40)
 
 
 @pytest.mark.parametrize("url", ["https://openapi.twse.com.tw/redirect", ENDPOINT + "?x=1"])

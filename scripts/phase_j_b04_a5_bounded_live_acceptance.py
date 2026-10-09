@@ -1,4 +1,4 @@
-"""Acceptance-only J-B04-A5 runner. No implicit or repeatable live access."""
+"""Acceptance-only J-B04-A5 runner with an explicitly authorized bounded session."""
 from __future__ import annotations
 
 import argparse
@@ -28,6 +28,7 @@ SOURCE_ID = "H2-TWSE-EXRIGHT-PRE-OPENAPI"
 CONTRACT = "TWT48U_ALL"
 MAX_BYTES = 4 * 1024 * 1024
 TIMEOUT = 15
+MAX_SESSION_GETS = 10
 PREFLIGHT_JSON = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.json"
 EXECUTION_ENVIRONMENTS = {"installation_bound", "cloud_clean_source_acceptance"}
 PREDECLARED_SOURCE_TARGET = {"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"}
@@ -80,8 +81,8 @@ class PredeclaredSourceTargetAuthority:
         return expected
 
 
-class SingleUseAuthority:
-    """A chat authorization must be recorded against the exact current commit."""
+class BoundedSessionAuthority:
+    """Validate one exact-head Owner authorization for a bounded A5 session."""
     def __init__(self, record: Mapping[str, Any], *, head: str, tree: str | None = None,
                  execution_environment: str = "cloud_clean_source_acceptance"):
         if record.get("gate") != "J-B04-A5":
@@ -93,8 +94,11 @@ class SingleUseAuthority:
         if record.get("execution_environment_class") != execution_environment:
             raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
         expected_keys = {"gate", "authorized_head_sha", "authorized_tree_sha", "execution_environment_class",
-                         "execution_instance_lease_sha256", "statement", "statement_sha256", "consumed"}
+                         "execution_instance_lease_sha256", "max_market_gets", "statement", "statement_sha256"}
         if set(record) != expected_keys:
+            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+        maximum = record.get("max_market_gets")
+        if type(maximum) is not int or maximum != MAX_SESSION_GETS:
             raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
         statement = record.get("statement")
         statement_hash = record.get("statement_sha256")
@@ -106,14 +110,6 @@ class SingleUseAuthority:
         expected = expected_owner_statement(head, lease_hash)
         if statement != expected or statement_hash != hashlib.sha256(statement.encode("utf-8")).hexdigest():
             raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
-        if record.get("consumed") is not False:
-            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
-        self.consumed = False
-
-    def consume(self) -> None:
-        if self.consumed:
-            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED")
-        self.consumed = True
 
 
 def current_git_state() -> tuple[str, str, str]:
@@ -294,9 +290,9 @@ def _utc_now() -> str:
 
 def expected_owner_statement(head: str, lease_sha256: str) -> str:
     return (
-        f"AUTHORIZE J-B04-A5 LIVE ON HEAD {head}\n"
-        f"WITH EXECUTION LEASE {lease_sha256}:\nexactly 1 GET to\n{ENDPOINT},\n"
-        "retry 0,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\n"
+        f"AUTHORIZE J-B04-A5 BOUNDED LIVE SESSION ON HEAD {head}\n"
+        f"WITH EXECUTION LEASE {lease_sha256}:\nup to 10 GET attempts total to\n{ENDPOINT},\n"
+        "stop early when J-B04-A5 acceptance succeeds,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\n"
         "no TWT49U/TPEx/browser fallback,\nno raw payload persistence,\n"
         "no H2 activation,\nno J-B04 closure,\nno Phase J start."
     )
@@ -647,69 +643,415 @@ def _safe_h2_error_code(value: Any) -> str | None:
     return None
 
 
+def _strict_json_file(path: Path) -> dict[str, Any]:
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                raise A5Error("J_B04_A5_SESSION_STATE_INVALID")
+            result[key] = value
+        return result
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=pairs)
+    except A5Error:
+        raise
+    except Exception as exc:
+        raise A5Error("J_B04_A5_SESSION_STATE_INVALID") from exc
+    if not isinstance(value, dict):
+        raise A5Error("J_B04_A5_SESSION_STATE_INVALID")
+    return value
+
+
+def _session_authorization_record(record: Mapping[str, Any], created_at: str) -> dict[str, Any]:
+    return {"gate": "J-B04-A5", "authorized_head_sha": record["authorized_head_sha"],
+        "authorized_tree_sha": record["authorized_tree_sha"],
+        "execution_environment_class": record["execution_environment_class"],
+        "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
+        "statement_sha256": record["statement_sha256"], "max_market_gets": MAX_SESSION_GETS,
+        "session_created_at_utc": created_at}
+
+
+def _write_session_json(session_root: Path, name: str, value: Mapping[str, Any], *, exclusive: bool = False) -> None:
+    from scripts.m8r_filesystem_safety import atomic_create_text_exclusive, atomic_write_bytes
+    content = (json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode("utf-8")
+    try:
+        if exclusive:
+            atomic_create_text_exclusive(str(session_root.parent), str(Path(session_root.name) / name), content.decode())
+        else:
+            atomic_write_bytes(str(session_root), name, content)
+    except Exception as exc:
+        reason = getattr(exc, "reason_code", "")
+        if exclusive and reason == "already_consumed_or_replayed":
+            raise
+        raise A5Error("J_B04_A5_SESSION_STATE_INVALID") from exc
+
+
+def ensure_session_authorization(session_root: Path, record: Mapping[str, Any], *, now_fn=None) -> dict[str, Any]:
+    expected = _session_authorization_record(record, "")
+    path = session_root / "session_authorization.json"
+    if path.exists():
+        existing = _strict_json_file(path)
+        expected["session_created_at_utc"] = existing.get("session_created_at_utc")
+        if existing != expected:
+            raise A5Error("J_B04_A5_SESSION_AUTHORIZATION_MISMATCH")
+        return existing
+    if session_root.exists() and any(item.name not in {"session.lock", "session.execution.lock"}
+                                     for item in session_root.iterdir()):
+        raise A5Error("J_B04_A5_SESSION_AUTHORIZATION_MISMATCH")
+    expected["session_created_at_utc"] = (now_fn or _utc_now)()
+    try:
+        _write_session_json(session_root, "session_authorization.json", expected, exclusive=True)
+    except Exception:
+        if path.exists():
+            existing = _strict_json_file(path)
+            expected["session_created_at_utc"] = existing.get("session_created_at_utc")
+            if existing == expected:
+                return existing
+        raise
+    return expected
+
+
+def _session_terminal(session_root: Path) -> dict[str, Any] | None:
+    path = session_root / "session_terminal.json"
+    return _strict_json_file(path) if path.exists() else None
+
+
+def _attempt_reservations(session_root: Path, record: Mapping[str, Any]) -> list[dict[str, Any]]:
+    expected = {"statement_sha256": record["statement_sha256"],
+        "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
+        "authorized_head_sha": record["authorized_head_sha"], "authorized_tree_sha": record["authorized_tree_sha"]}
+    directories = sorted(session_root.glob("attempt-*")) if session_root.exists() else []
+    reservations = []
+    for directory in directories:
+        if not directory.is_dir() or not re.fullmatch(r"attempt-\d{3}", directory.name):
+            raise A5Error("J_B04_A5_SESSION_STATE_INVALID")
+        path = directory / "attempt_reserved.json"
+        if not path.exists():
+            raise A5Error("J_B04_A5_SESSION_STATE_INVALID")
+        value = _strict_json_file(path)
+        number = int(directory.name[-3:])
+        if value.get("attempt_number") != number or value.get("state") != "RESERVED_BEFORE_TRANSPORT":
+            raise A5Error("J_B04_A5_SESSION_STATE_INVALID")
+        if any(value.get(key) != expected_value for key, expected_value in expected.items()):
+            raise A5Error("J_B04_A5_SESSION_AUTHORIZATION_MISMATCH")
+        reservations.append(value)
+    numbers = [item["attempt_number"] for item in reservations]
+    if (len(numbers) > MAX_SESSION_GETS or len(numbers) != len(set(numbers))
+            or numbers != list(range(1, len(numbers) + 1))):
+        raise A5Error("J_B04_A5_SESSION_STATE_INVALID")
+    return reservations
+
+
+def _session_summary(session_root: Path, record: Mapping[str, Any], reservations: list[dict[str, Any]], terminal=None) -> dict[str, Any]:
+    outcomes = []
+    completed = []
+    for reservation in reservations:
+        number = reservation["attempt_number"]
+        attempt_root = session_root / f"attempt-{number:03d}"
+        summary_path = attempt_root / "acceptance_summary.json"
+        transport_path = attempt_root / "transport_attempt.json"
+        disposition = None
+        completed_at = None
+        if summary_path.exists():
+            attempt_summary = _strict_json_file(summary_path)
+            disposition = attempt_summary.get("disposition")
+            completed.append(number)
+        if transport_path.exists():
+            completed_at = _strict_json_file(transport_path).get("completed_at")
+        outcomes.append({"attempt_number": number, "disposition": disposition,
+            "reserved_at": reservation.get("reserved_at_utc"), "completed_at": completed_at})
+    successful = next((item["attempt_number"] for item in outcomes if item["disposition"] ==
+        "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW"), None)
+    terminal_value = terminal or {}
+    return {"gate": "J-B04-A5", "statement_sha256": record["statement_sha256"],
+        "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
+        "authorized_head_sha": record["authorized_head_sha"], "authorized_tree_sha": record["authorized_tree_sha"],
+        "max_market_gets": MAX_SESSION_GETS, "attempts_reserved": len(reservations),
+        "attempts_completed": len(completed), "attempts_remaining": MAX_SESSION_GETS - len(reservations),
+        "attempt_dispositions": outcomes,
+        "terminal": bool(terminal_value), "terminal_reason": terminal_value.get("terminal_reason"),
+        "first_attempt_at": outcomes[0]["reserved_at"] if outcomes else None,
+        "last_attempt_at": max((item["completed_at"] or item["reserved_at"] for item in outcomes), default=None),
+        "successful_attempt_number": successful, "session_raw_body_absence_verified": False}
+
+
+def _verify_session_package(session_root: Path) -> bool:
+    allowed_root_files = {"session_authorization.json", "session_summary.json", "session_terminal.json",
+        "session.lock", "session.execution.lock"}
+    for child in session_root.iterdir():
+        if child.is_file() and child.name not in allowed_root_files:
+            raise A5Error("J_B04_A5_SESSION_UNDECLARED_ARTIFACT")
+        if child.is_dir() and not re.fullmatch(r"attempt-\d{3}", child.name):
+            raise A5Error("J_B04_A5_SESSION_UNDECLARED_ARTIFACT")
+    for attempt_dir in session_root.glob("attempt-*"):
+        files = sorted(path for path in attempt_dir.rglob("*") if path.is_file())
+        if any(path.suffix.lower() != ".json" or any(token in path.name.casefold() for token in ("raw", "payload", "body"))
+                for path in files):
+            raise A5Error("J_B04_A5_RAW_BODY_FILE_PERSISTENCE_BLOCKED")
+        manifest_path = attempt_dir / "artifact_manifest.json"
+        if not manifest_path.exists():
+            # A reserved slot with no manifest is an auditable in-progress or
+            # crashed attempt; its reservation still counts against the budget.
+            if {path.relative_to(attempt_dir).as_posix() for path in files} != {"attempt_reserved.json"}:
+                raise A5Error("J_B04_A5_SESSION_UNDECLARED_ARTIFACT")
+            for path in files:
+                _strict_json_file(path)
+            continue
+        manifest = _strict_json_file(manifest_path)
+        entries = manifest.get("artifacts")
+        if not isinstance(entries, list):
+            raise A5Error("J_B04_A5_SESSION_UNDECLARED_ARTIFACT")
+        listed = set()
+        for entry in entries:
+            relative = entry.get("relative_path")
+            if not isinstance(relative, str) or relative in listed:
+                raise A5Error("J_B04_A5_SESSION_UNDECLARED_ARTIFACT")
+            listed.add(relative)
+            path = attempt_dir / relative
+            data = path.read_bytes()
+            if len(data) != entry.get("byte_size") or hashlib.sha256(data).hexdigest() != entry.get("sha256"):
+                raise A5Error("J_B04_A5_SESSION_MANIFEST_INVALID")
+        actual = {path.relative_to(attempt_dir).as_posix() for path in files if path != manifest_path}
+        if actual != listed:
+            raise A5Error("J_B04_A5_SESSION_UNDECLARED_ARTIFACT")
+        for path in files:
+            parsed = _strict_json_file(path)
+            if _contains_forbidden_raw_key(parsed):
+                raise A5Error("J_B04_A5_RAW_FIELD_PERSISTENCE_BLOCKED")
+    for root_name in allowed_root_files:
+        path = session_root / root_name
+        if root_name in {"session.lock", "session.execution.lock"} and path.exists():
+            if not path.is_file() or path.stat().st_size != 0:
+                raise A5Error("J_B04_A5_SESSION_UNDECLARED_ARTIFACT")
+            continue
+        if path.exists() and _contains_forbidden_raw_key(_strict_json_file(path)):
+            raise A5Error("J_B04_A5_RAW_FIELD_PERSISTENCE_BLOCKED")
+    return True
+
+
+def _write_terminal(session_root: Path, record: Mapping[str, Any], reason: str, attempt_number: int | None, *, now_fn=None) -> dict[str, Any]:
+    terminal = {"gate": "J-B04-A5", "statement_sha256": record["statement_sha256"],
+        "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
+        "terminal": True, "terminal_reason": reason, "attempt_number": attempt_number,
+        "terminal_at_utc": (now_fn or _utc_now)()}
+    try:
+        _write_session_json(session_root, "session_terminal.json", terminal, exclusive=True)
+        return terminal
+    except Exception:
+        existing = _session_terminal(session_root)
+        if existing is not None:
+            return existing
+        raise
+
+
+def _write_session_summary(session_root: Path, record: Mapping[str, Any], *, now_fn=None,
+                           verify_package: bool = False) -> dict[str, Any]:
+    reservations = _attempt_reservations(session_root, record)
+    terminal = _session_terminal(session_root)
+    summary = _session_summary(session_root, record, reservations, terminal)
+    _write_session_json(session_root, "session_summary.json", summary)
+    if verify_package and _verify_session_package(session_root):
+        summary["session_raw_body_absence_verified"] = True
+        _write_session_json(session_root, "session_summary.json", summary)
+        _verify_session_package(session_root)
+    return summary
+
+
+def _reconcile_terminal_state(session_root: Path, record: Mapping[str, Any], reservations: list[dict[str, Any]], *, now_fn=None):
+    if _session_terminal(session_root) is not None:
+        return _session_terminal(session_root)
+    summary = _session_summary(session_root, record, reservations)
+    reason = None
+    number = None
+    for item in summary["attempt_dispositions"]:
+        if item["disposition"] == "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW":
+            reason, number = "PASS", item["attempt_number"]
+            break
+        if item["disposition"] and _hard_block_disposition(item["disposition"]):
+            reason, number = "HARD_BLOCK", item["attempt_number"]
+            break
+    if reason is None and len(reservations) >= MAX_SESSION_GETS:
+        reason, number = "BUDGET_EXHAUSTED", MAX_SESSION_GETS
+    return _write_terminal(session_root, record, reason, number, now_fn=now_fn) if reason else None
+
+
+@contextmanager
+def _session_file_lock(session_root: Path, filename: str):
+    from scripts.m8r_filesystem_safety import safe_destination
+    destination = safe_destination(str(session_root.parent), f"{session_root.name}/{filename}", create_parent=True)
+    fd = os.open(destination.path, os.O_CREAT | os.O_RDWR, 0o600)
+    try:
+        if os.name == "nt":
+            import msvcrt
+            msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+            try:
+                yield
+            finally:
+                msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
+
+
+def _session_reservation_lock(session_root: Path):
+    return _session_file_lock(session_root, "session.lock")
+
+
+def _session_execution_lock(session_root: Path):
+    return _session_file_lock(session_root, "session.execution.lock")
+
+
+def reserve_next_session_attempt(session_root: Path, record: Mapping[str, Any], *, now_fn=None) -> tuple[int, Path]:
+    from scripts.m8r_filesystem_safety import FilesystemSafetyError, atomic_create_text_exclusive
+    with _session_reservation_lock(session_root):
+        ensure_session_authorization(session_root, record, now_fn=now_fn)
+        existing = _attempt_reservations(session_root, record)
+        terminal = _reconcile_terminal_state(session_root, record, existing, now_fn=now_fn)
+        if terminal is not None:
+            _write_session_summary(session_root, record, now_fn=now_fn)
+            if terminal["terminal_reason"] == "BUDGET_EXHAUSTED":
+                raise A5Error("J_B04_A5_SESSION_ATTEMPT_BUDGET_EXHAUSTED")
+            raise A5Error("J_B04_A5_SESSION_TERMINAL")
+        while True:
+            reservations = _attempt_reservations(session_root, record)
+            used = {item["attempt_number"] for item in reservations}
+            if len(used) >= MAX_SESSION_GETS:
+                terminal = _reconcile_terminal_state(session_root, record, reservations, now_fn=now_fn)
+                if terminal is None:
+                    _write_terminal(session_root, record, "BUDGET_EXHAUSTED", None, now_fn=now_fn)
+                _write_session_summary(session_root, record, now_fn=now_fn)
+                if terminal is not None and terminal["terminal_reason"] != "BUDGET_EXHAUSTED":
+                    raise A5Error("J_B04_A5_SESSION_TERMINAL")
+                raise A5Error("J_B04_A5_SESSION_ATTEMPT_BUDGET_EXHAUSTED")
+            number = next(index for index in range(1, MAX_SESSION_GETS + 1) if index not in used)
+            attempt_dir = session_root / f"attempt-{number:03d}"
+            reservation = {"attempt_number": number, "statement_sha256": record["statement_sha256"],
+                "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
+                "authorized_head_sha": record["authorized_head_sha"], "authorized_tree_sha": record["authorized_tree_sha"],
+                "reserved_at_utc": (now_fn or _utc_now)(), "state": "RESERVED_BEFORE_TRANSPORT"}
+            try:
+                atomic_create_text_exclusive(str(session_root), f"{attempt_dir.name}/attempt_reserved.json",
+                    json.dumps(reservation, sort_keys=True, separators=(",", ":")) + "\n")
+                _write_session_summary(session_root, record, now_fn=now_fn)
+                return number, attempt_dir
+            except FilesystemSafetyError as exc:
+                if getattr(exc, "reason_code", "") == "already_consumed_or_replayed":
+                    if _session_terminal(session_root) is not None:
+                        raise A5Error("J_B04_A5_SESSION_TERMINAL") from exc
+                    continue
+                raise A5Error("J_B04_A5_SESSION_STATE_INVALID") from exc
+
+
+def _hard_block_disposition(disposition: str) -> bool:
+    return disposition.startswith("J_B04_A5_BLOCKED_") or disposition in {
+        "J_B04_A5_LIVE_AUTHORIZATION_INVALID", "J_B04_A5_LIVE_AUTHORIZATION_STALE_HEAD",
+        "J_B04_A5_LIVE_AUTHORIZATION_STALE_TREE", "J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW",
+        "J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED", "J_B04_A5_EXECUTION_LEASE_MISSING",
+        "J_B04_A5_EXECUTION_LEASE_INVALID", "J_B04_A5_EXECUTION_LEASE_HASH_MISMATCH"}
+
+
+def _terminalize_existing_session_if_bound(runs_root: Path, record: Mapping[str, Any], *, now_fn=None) -> None:
+    statement_hash = record.get("statement_sha256")
+    if not isinstance(statement_hash, str) or not LEASE_SHA256_RE.fullmatch(statement_hash):
+        return
+    session_root = runs_root / f"j-b04-a5-session-{statement_hash[:16]}"
+    auth_path = session_root / "session_authorization.json"
+    if not auth_path.exists():
+        return
+    try:
+        stored = _strict_json_file(auth_path)
+        if (stored.get("statement_sha256") != statement_hash
+                or stored.get("execution_instance_lease_sha256") != record.get("execution_instance_lease_sha256")):
+            return
+        _write_terminal(session_root, record, "HARD_BLOCK", None, now_fn=now_fn)
+        _write_session_summary(session_root, record, now_fn=now_fn)
+    except Exception:
+        return
+
+
 def run_live_acceptance(owner_authorization_path: Path, execution_environment: str,
                         execution_lease_file: Path, *,
                         get_once=None, git_state_provider=None, dirty_check=None,
                         preflight_fn=None, runtime_invariant_fn=None, now_fn=None,
                         acceptance_runs_root: Path | None = None) -> dict[str, Any]:
-    """Execute the explicitly authorized one-shot path; tests inject only fake transport."""
+    """Execute at most one attempt in the explicitly authorized bounded session."""
     if execution_environment not in EXECUTION_ENVIRONMENTS:
         raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
     record = _strict_auth_json(owner_authorization_path)
+    runs_root = ACCEPTANCE_RUNS if acceptance_runs_root is None else Path(acceptance_runs_root)
     state_provider = current_git_state if git_state_provider is None else git_state_provider
     head, tree, main = state_provider()
-    authority = SingleUseAuthority(record, head=head, tree=tree, execution_environment=execution_environment)
+    try:
+        authority = BoundedSessionAuthority(record, head=head, tree=tree, execution_environment=execution_environment)
+    except A5Error:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
+        raise
     if main != STARTING_MAIN:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
         raise A5Error("J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW")
     is_dirty = ((subprocess.run(["git", "diff", "--quiet"], cwd=ROOT, check=False).returncode != 0
                 or subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False).returncode != 0)
                 if dirty_check is None else dirty_check())
     if is_dirty:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
         raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
     preflight = (run_p0_preflight if preflight_fn is None else preflight_fn)(execution_environment)
-    (validate_live_runtime_invariants if runtime_invariant_fn is None else runtime_invariant_fn)(preflight)
-    statement_hash = record["statement_sha256"]
-    runs_root = ACCEPTANCE_RUNS if acceptance_runs_root is None else Path(acceptance_runs_root)
-    run_root = runs_root / f"j-b04-a5-authority-{statement_hash[:16]}"
-    if run_root.exists():
-        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED")
-    # Construct/check the output path before consuming; utility validates root containment.
-    from scripts.m8r_filesystem_safety import FilesystemSafetyError, atomic_create_text_exclusive, safe_destination
     try:
-        safe_destination(str(runs_root), str(Path(run_root.name) / "owner_authorization_consumed.json"), create_parent=False)
+        (validate_live_runtime_invariants if runtime_invariant_fn is None else runtime_invariant_fn)(preflight)
+    except Exception:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+    statement_hash = record["statement_sha256"]
+    session_root = runs_root / f"j-b04-a5-session-{statement_hash[:16]}"
+    # Construct/check session and attempt output destinations before creating authorization state.
+    from scripts.m8r_filesystem_safety import FilesystemSafetyError, safe_destination
+    try:
+        safe_destination(str(runs_root), str(Path(session_root.name) / "session_authorization.json"), create_parent=False)
     except FilesystemSafetyError as exc:
         raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED") from exc
     # A missing lease after workspace loss cannot be regenerated by live mode.
-    lease_secret = load_execution_lease(Path(execution_lease_file), record["execution_instance_lease_sha256"])
+    try:
+        lease_secret = load_execution_lease(Path(execution_lease_file), record["execution_instance_lease_sha256"])
+    except A5Error:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
+        raise
     del lease_secret
-    # Recheck the lease after all preflight work and immediately before consuming it.
+    # Recheck Git state after all preflight and lease work, immediately before session reservation.
     final_head, final_tree, final_main = state_provider()
     if final_head != record["authorized_head_sha"]:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
         raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_HEAD")
     if final_tree != record["authorized_tree_sha"]:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
         raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_TREE")
     if final_main != STARTING_MAIN:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
         raise A5Error("J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW")
     final_dirty = ((subprocess.run(["git", "diff", "--quiet"], cwd=ROOT, check=False).returncode != 0
                    or subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False).returncode != 0)
                    if dirty_check is None else dirty_check())
     if final_dirty:
+        _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
         raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
-    consumed_at = (now_fn or _utc_now)()
-    receipt = {"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": tree,
-        "statement_sha256": statement_hash, "execution_environment_class": execution_environment,
-        "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
-        "consumed_at_utc": consumed_at, "consumption_state": "CONSUMED_BEFORE_TRANSPORT"}
+    execution_lock = _session_execution_lock(session_root)
+    execution_lock.__enter__()
     try:
-        atomic_create_text_exclusive(str(runs_root), str(Path(run_root.name) / "owner_authorization_consumed.json"),
-            json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n")
-    except FilesystemSafetyError as exc:
-        if getattr(exc, "reason_code", "") == "already_consumed_or_replayed":
-            raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED") from exc
-        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED") from exc
-    authority.consume()
+        ensure_session_authorization(session_root, record, now_fn=now_fn)
+        attempt_number, run_root = reserve_next_session_attempt(session_root, record, now_fn=now_fn)
+    except A5Error:
+        execution_lock.__exit__(*sys.exc_info())
+        raise
+    except Exception as exc:
+        execution_lock.__exit__(*sys.exc_info())
+        raise A5Error("J_B04_A5_SESSION_STATE_INVALID") from exc
     counts = {"logical_get_attempts": 0, "http_dispatch_attempts": 0}
-    attempt = {"transport_attempted": False, "logical_get_attempts": 0,
+    attempt = {"attempt_number": attempt_number, "transport_attempted": False, "logical_get_attempts": 0,
         "actual_http_dispatch_attempts": 0, "retry_count": 0, "redirect_follow_count": 0,
         "started_at": None, "completed_at": None, "outcome": "in_progress", "failure_class": None}
     response = None
@@ -722,13 +1064,18 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
     exact_rows: list[dict[str, Any]] | None = None
     noncanonical_code_match = False
     try:
+        if _session_terminal(session_root) is not None:
+            attempt["outcome"] = "session_terminal_before_transport"
+            disposition = "J_B04_A5_SESSION_TERMINAL"
+            raise A5Error(disposition)
         attempt["started_at"] = (now_fn or _utc_now)()
-        _write_sanitized_json(run_root, "owner_authorization.json", {
+        _write_sanitized_json(run_root, "session_authorization.json", {
             "authorization_source": "external_owner_authorization_file", "authorized_head_sha": head,
             "authorized_tree_sha": tree, "statement_sha256": statement_hash,
             "execution_environment_class": execution_environment,
             "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
-            "consumed_at_utc": consumed_at})
+            "max_market_gets": MAX_SESSION_GETS,
+            "session_created_at_utc": _strict_json_file(session_root / "session_authorization.json")["session_created_at_utc"]})
         _write_sanitized_json(run_root, "transport_attempt.json", attempt, overwrite=False)
         transport = get_once
         if transport is None:
@@ -812,14 +1159,24 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
             attempt["outcome"] = disposition
     except Exception as exc:
         # Never serialize exception text; HTTP/adapter errors may contain source content.
-        transport_failure = _is_transient_transport_exception(exc)
-        attempt["failure_class"] = "transport_failure" if transport_failure else "runner_or_source_failure"
-        attempt["outcome"] = "failure_after_authority_consumption"
-        disposition = ("J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION"
-            if transport_failure
-            else "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED")
+        if isinstance(exc, A5Error) and str(exc) == "J_B04_A5_SESSION_TERMINAL":
+            attempt["failure_class"] = "session_terminal"
+            attempt["outcome"] = "session_terminal_before_transport"
+            disposition = "J_B04_A5_SESSION_TERMINAL"
+        else:
+            transport_failure = _is_transient_transport_exception(exc)
+            attempt["failure_class"] = "transport_failure" if transport_failure else "runner_or_source_failure"
+            attempt["outcome"] = "failure_after_authority_reservation"
+            disposition = ("J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION"
+                if transport_failure
+                else "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED")
     finally:
         try:
+            if attempt_number == MAX_SESSION_GETS and disposition in {
+                "J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION",
+                "J_B04_A5_INCONCLUSIVE_LIVE_STAGE_SAMPLE_UNAVAILABLE"}:
+                disposition = "J_B04_A5_SESSION_ATTEMPT_BUDGET_EXHAUSTED"
+                attempt["outcome"] = disposition
             manifest, raw_absence = _persist_live_result(run_root, preflight=preflight, counts=counts,
                 attempt=attempt, capture=capture, h2_run=h2_run, stage_witness=stage_witness,
                 h4_artifacts=h4_artifacts, primary_summary=primary_summary,
@@ -848,7 +1205,31 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
                 capture = None
             if exact_rows is not None:
                 exact_rows.clear()
+    terminal_reason = None
+    if disposition == "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW":
+        terminal_reason = "PASS"
+    elif _hard_block_disposition(str(disposition)) or disposition == "J_B04_A5_SESSION_TERMINAL":
+        terminal_reason = "HARD_BLOCK"
+    elif disposition == "J_B04_A5_SESSION_ATTEMPT_BUDGET_EXHAUSTED":
+        terminal_reason = "BUDGET_EXHAUSTED"
+    try:
+        terminal = _write_terminal(session_root, record, terminal_reason, attempt_number, now_fn=now_fn) if terminal_reason else None
+        session_summary = _write_session_summary(session_root, record, now_fn=now_fn, verify_package=True)
+    except Exception:
+        disposition = "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED"
+        terminal = _write_terminal(session_root, record, "HARD_BLOCK", attempt_number, now_fn=now_fn)
+        try:
+            session_summary = _write_session_summary(session_root, record, now_fn=now_fn)
+        except Exception:
+            session_summary = {"session_raw_body_absence_verified": False}
+    finally:
+        execution_lock.__exit__(None, None, None)
     return {"disposition": disposition, "run_directory": run_root.name,
+        "session_directory": session_root.name, "attempt_number": attempt_number,
+        "attempts_reserved": session_summary.get("attempts_reserved"),
+        "attempts_remaining": session_summary.get("attempts_remaining"),
+        "session_terminal": bool(terminal), "session_terminal_reason": terminal.get("terminal_reason") if terminal else None,
+        "session_raw_body_absence_verified": session_summary.get("session_raw_body_absence_verified", False),
         "logical_get_attempts": counts["logical_get_attempts"], "http_dispatch_attempts": counts["http_dispatch_attempts"],
         "raw_body_absence_verified": raw_absence, "artifact_count": len(manifest["artifacts"]),
         "market_GET": counts["logical_get_attempts"], "market_HEAD": 0, "market_POST": 0}
