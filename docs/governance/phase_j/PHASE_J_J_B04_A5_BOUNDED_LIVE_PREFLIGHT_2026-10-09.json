@@ -4,12 +4,35 @@
   "starting_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
   "preflight_source_revision": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
   "preflight_source_tree": "f140dac79cb2fbe177ca481c61629ca7a8e91d24",
-  "preflight_status": "J_B04_A5_PREFLIGHT_BLOCKED_SECURITY_MASTER_IDENTITY_UNAVAILABLE",
+  "initial_p0_revision": "7dd04753dbcd0ac39aac9229b3329d32f2e18478",
+  "revision_history": [
+    {
+      "revision": "7dd04753dbcd0ac39aac9229b3329d32f2e18478",
+      "disposition": "J_B04_A5_PREFLIGHT_BLOCKED_SECURITY_MASTER_IDENTITY_UNAVAILABLE",
+      "finding": "Initial runner incorrectly treated historical Candidate-B ignored artifacts as a current production prerequisite before consulting the installation-local Security Master Release authority."
+    }
+  ],
+  "preflight_status": "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED",
+  "security_master_status": "NOT_INITIALIZED",
+  "canonical_identity_authority": "installation_local_security_master_release",
+  "legacy_candidate_fallback": false,
+  "fixture_identity_fallback": false,
+  "company_name_fallback": false,
+  "live_security_master_bootstrap_performed": false,
+  "TW_MARKET_SECURITY_MASTER_ROOT_selected": false,
   "identity_resolution": {
     "target": "TWSE:2330",
-    "authority": "config/m8r_06_mode_a_security_master_pointer.json selected canonical compact runtime identity index",
+    "authority": "installation-local Taiwan Market Identity Service",
     "result": "not_resolved",
-    "reason": "selected index.json and manifest.json are absent from this environment; no fixture/name matching used"
+    "reason_code": "NOT_INITIALIZED",
+    "selected_root_class": "canonical_installation_local_default",
+    "TW_MARKET_SECURITY_MASTER_ROOT_selected": false,
+    "security_master_release_id": null,
+    "security_master_manifest_hash": null,
+    "legacy_candidate_fallback": false,
+    "fixture_identity_fallback": false,
+    "company_name_fallback": false,
+    "live_security_master_bootstrap_performed": false
   },
   "source_call_plan": {
     "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",
@@ -61,5 +84,6 @@
     "J-B04_closure": "NOT AUTHORIZED",
     "Phase_J_start": "NOT AUTHORIZED"
   },
+  "live_authorization": "NOT REQUESTED; P0 blocked",
   "network_calls_so_far": {"market_GET": 0, "market_HEAD": 0, "market_POST": 0}
 }

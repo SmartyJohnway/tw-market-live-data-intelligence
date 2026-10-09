@@ -1,7 +1,6 @@
 """Validate A5 preflight and canonical dormancy without contacting sources."""
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -33,9 +32,17 @@ def _git(*args: str) -> str:
 def validate_contract(record: dict[str, Any]) -> dict[str, Any]:
     assert record["gate"] == "J-B04-A5"
     assert record["starting_main"] == STARTING_MAIN
-    assert record["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_SECURITY_MASTER_IDENTITY_UNAVAILABLE"
     assert record["identity_resolution"]["target"] == "TWSE:2330"
-    assert record["identity_resolution"]["result"] == "not_resolved"
+    assert record["canonical_identity_authority"] == "installation_local_security_master_release"
+    assert record["identity_resolution"]["authority"] == "installation-local Taiwan Market Identity Service"
+    assert "m8r_06_mode_a_security_master_pointer.json" not in record["identity_resolution"]["authority"]
+    assert record["legacy_candidate_fallback"] is False
+    assert record["identity_resolution"]["legacy_candidate_fallback"] is False
+    assert record["identity_resolution"]["fixture_identity_fallback"] is False
+    assert record["identity_resolution"]["company_name_fallback"] is False
+    assert record["identity_resolution"]["live_security_master_bootstrap_performed"] is False
+    assert record["live_security_master_bootstrap_performed"] is False
+    assert record["TW_MARKET_SECURITY_MASTER_ROOT_selected"] is record["identity_resolution"]["TW_MARKET_SECURITY_MASTER_ROOT_selected"]
     assert record["source_call_plan"] == {
         "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL", "method": "GET",
         "logical_get_maximum": 1, "http_dispatch_maximum": 1, "retry": 0,
@@ -46,6 +53,33 @@ def validate_contract(record: dict[str, Any]) -> dict[str, Any]:
     assert (overlay["source"], overlay["source_contract"], overlay["executor"], overlay["production_activation"]) == (
         "H2-TWSE-EXRIGHT-PRE-OPENAPI", "TWT48U_ALL", "phase_h_h2_twse_exright_pre_executor", "NOT_AUTHORIZED")
     assert overlay["single_use"] is True and overlay["owner_live_authorization"] == "NOT PRESENT"
+    assert record["preflight_status"] != "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED" or record["live_authorization"] == "NOT REQUESTED; P0 blocked"
+    identity = record["identity_resolution"]
+    if record["preflight_status"] == "J_B04_A5_P0_R1_READY_FOR_INDEPENDENT_REVIEW":
+        assert record["security_master_status"] == "ACTIVE"
+        assert identity["result"] == "resolved"
+        assert identity["resolution_status"] == "resolved"
+        assert identity["resolution_reason"] == "exact_listing_id"
+        assert identity["security_master_release_id"]
+        assert len(identity["security_master_manifest_hash"]) == 64
+        assert len(identity["security_master_release_index_sha256"]) == 64
+        binding = identity["target_binding"]
+        assert (binding["canonical_target_id"], binding["market"], binding["security_code"],
+                binding["instrument_family"], binding["instrument_type"], binding["execution_eligibility"]) == (
+                    "TWSE:2330", "TWSE", "2330", "company_share", "common_share", "allowed")
+    elif record["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED":
+        assert record["security_master_status"] == "NOT_INITIALIZED"
+        assert identity["result"] == "not_resolved" and identity["reason_code"] == "NOT_INITIALIZED"
+        assert identity["security_master_release_id"] is None
+        assert identity["security_master_manifest_hash"] is None
+    elif record["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID":
+        assert record["security_master_status"] == "INVALID"
+        assert identity["result"] == "not_resolved" and identity["security_master_release_id"] is None
+    elif record["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_TARGET_IDENTITY_SCOPE_INVALID":
+        assert record["security_master_status"] == "TARGET_SCOPE_INVALID"
+        assert identity["result"] == "not_resolved" and identity["security_master_release_id"] is None
+    else:
+        raise AssertionError("unknown_a5_p0_disposition")
     state = record["canonical_state"]
     assert state == {"H2_source_activation_state": "eligible", "H2_source_runtime_executable": False,
         "corporate_action_context_routing": "plan_only", "candidate_executor_ids": ["phase_h_h2_twse_exright_pre_executor"],
@@ -58,9 +92,15 @@ def validate_contract(record: dict[str, Any]) -> dict[str, Any]:
 def validate_repository() -> dict[str, Any]:
     record = _strict_json(RECORD)
     status = validate_contract(record)
-    pointer = _strict_json(ROOT / "config/m8r_06_mode_a_security_master_pointer.json")
-    assert not (ROOT / pointer["index_path"]).is_file()
-    assert not (ROOT / pointer["manifest_path"]).is_file()
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import run_p0_preflight
+    current = run_p0_preflight()
+    assert current["preflight_status"] == record["preflight_status"]
+    assert current["canonical_identity_authority"] == record["canonical_identity_authority"]
+    assert current["TW_MARKET_SECURITY_MASTER_ROOT_selected"] == record["TW_MARKET_SECURITY_MASTER_ROOT_selected"]
+    assert current["security_master_status"] == record["security_master_status"]
+    if record["security_master_status"] == "ACTIVE":
+        assert current["identity_resolution"]["security_master_release_id"] == record["identity_resolution"]["security_master_release_id"]
+        assert current["identity_resolution"]["target_binding"] == record["identity_resolution"]["target_binding"]
     descriptors = _strict_json(ROOT / "config/phase_h_h2_dormant_source_descriptors.json")
     source = next(item for item in descriptors["sources"] if item["source_id"] == "H2-TWSE-EXRIGHT-PRE-OPENAPI")
     assert source["activation_state"] == "eligible" and source["runtime_executable"] is False

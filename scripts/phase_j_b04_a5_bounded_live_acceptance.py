@@ -25,7 +25,6 @@ CONTRACT = "TWT48U_ALL"
 MAX_BYTES = 4 * 1024 * 1024
 TIMEOUT = 15
 PREFLIGHT_JSON = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.json"
-POINTER = ROOT / "config/m8r_06_mode_a_security_master_pointer.json"
 
 
 class A5Error(RuntimeError):
@@ -63,33 +62,65 @@ def current_git_state() -> tuple[str, str, str]:
 
 
 def resolve_predeclared_target() -> dict[str, Any]:
-    """Resolve the fixed target only through the selected canonical runtime index."""
+    """Resolve through the process-lifetime production Mode A identity service."""
+    from scripts.m8r_06_01c2_mode_a_security_master_loader import (
+        ModeASecurityMasterUnavailable,
+        get_production_mode_a_security_master,
+    )
+
+    root_selected_by_env = bool(os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT"))
     try:
-        pointer = json.loads(POINTER.read_text(encoding="utf-8"))
-        index = ROOT / pointer["index_path"]
-        manifest = ROOT / pointer["manifest_path"]
-        if not index.is_file() or not manifest.is_file():
-            raise A5Error("security_master_identity_unavailable")
-        from scripts.m8r_06_01c2_mode_a_security_master_loader import load_active_mode_a_security_master
-        runtime = load_active_mode_a_security_master(security_master_root=ROOT / "data/security_master")
-        record = runtime.lookup["by_canonical"].get(TARGET_ID)
-        if not record:
-            raise A5Error("security_master_identity_unavailable")
-        cls = record.get("classification", {})
-        if (record.get("canonical_target_id"), cls.get("market"), cls.get("instrument_family"), cls.get("instrument_type")) != (
-                TARGET_ID, "TWSE", "company_share", "common_share"):
-            raise A5Error("security_master_target_scope_invalid")
-        ident = record.get("identity", {})
-        if ident.get("security_code") != "2330":
-            raise A5Error("security_master_target_code_invalid")
-        return {"canonical_target_id": TARGET_ID, "market": "TWSE", "security_code": "2330",
-                "snapshot_id": runtime.snapshot.get("snapshot_id"), "record_id": record.get("record_id"),
-                "record_hash": record.get("record_hash"), "instrument_family": cls["instrument_family"],
-                "instrument_type": cls["instrument_type"]}
-    except A5Error:
-        raise
+        runtime = get_production_mode_a_security_master()
+    except ModeASecurityMasterUnavailable as exc:
+        code = getattr(exc, "reason_code", "")
+        disposition = ("J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED"
+                      if code == "NOT_INITIALIZED"
+                      else "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID")
+        raise A5Error(disposition) from exc
     except Exception as exc:
-        raise A5Error("security_master_identity_unavailable") from exc
+        raise A5Error("J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID") from exc
+
+    service = getattr(runtime, "identity_service", None)
+    if service is None or not callable(getattr(service, "resolve", None)):
+        raise A5Error("J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID")
+    try:
+        resolution = service.resolve(TARGET_ID, market_hint="TWSE")
+    except Exception as exc:
+        raise A5Error("J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID") from exc
+    selected = getattr(resolution, "selected", None) or {}
+    identity = selected.get("identity") or {}
+    classification = selected.get("classification") or {}
+    eligibility = selected.get("execution_eligibility") or {}
+    if (getattr(resolution, "status", None), list(getattr(resolution, "reason_codes", []))) != (
+            "resolved", ["exact_listing_id"]):
+        raise A5Error("J_B04_A5_PREFLIGHT_BLOCKED_TARGET_IDENTITY_SCOPE_INVALID")
+    if (selected.get("canonical_target_id"), identity.get("security_code"), classification.get("market"),
+            classification.get("instrument_family"), classification.get("instrument_type"), eligibility.get("status")) != (
+            TARGET_ID, "2330", "TWSE", "company_share", "common_share", "allowed"):
+        raise A5Error("J_B04_A5_PREFLIGHT_BLOCKED_TARGET_IDENTITY_SCOPE_INVALID")
+
+    pointer = runtime.pointer
+    release_id = pointer.get("release_id")
+    manifest_hash = pointer.get("release_manifest_sha256")
+    index_hash = pointer.get("release_index_sha256")
+    if not all(isinstance(value, str) and value for value in (release_id, manifest_hash, index_hash)):
+        raise A5Error("J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID")
+    return {
+        "canonical_target_id": TARGET_ID,
+        "market": "TWSE",
+        "security_code": "2330",
+        "isin": identity.get("isin"),
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "execution_eligibility": "allowed",
+        "resolution_reason": "exact_listing_id",
+        "security_master_release_id": release_id,
+        "security_master_manifest_hash": manifest_hash,
+        "security_master_release_index_sha256": index_hash,
+        "canonical_identity_authority": "installation_local_security_master_release",
+        "selected_root_class": "environment_selected_installation_local" if root_selected_by_env else "canonical_installation_local_default",
+        "environment_root_selected": root_selected_by_env,
+    }
 
 
 def acceptance_h3_fixture(target: Mapping[str, str]) -> dict[str, Any]:
@@ -198,22 +229,58 @@ def execute_primary_target(response: Mapping[str, Any], target: Mapping[str, str
 def run_p0_preflight() -> dict[str, Any]:
     head, tree, main = current_git_state()
     identity = None
-    identity_status = "resolved"
+    identity_status = "J_B04_A5_P0_R1_READY_FOR_INDEPENDENT_REVIEW"
+    identity_error = None
     try:
         identity = resolve_predeclared_target()
-    except A5Error:
-        identity_status = "J_B04_A5_PREFLIGHT_BLOCKED_SECURITY_MASTER_IDENTITY_UNAVAILABLE"
+    except A5Error as exc:
+        identity_status = str(exc)
+        identity_error = str(exc)
+    root_selected = bool(os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT"))
+    if identity is not None:
+        security_master_status = "ACTIVE"
+        identity_resolution = {
+            "target": TARGET_ID, "authority": "installation-local Taiwan Market Identity Service",
+            "result": "resolved", "resolution_status": "resolved", "resolution_reason": "exact_listing_id",
+            "reason_code": None, "selected_root_class": identity["selected_root_class"],
+            "TW_MARKET_SECURITY_MASTER_ROOT_selected": root_selected,
+            "security_master_release_id": identity["security_master_release_id"],
+            "security_master_manifest_hash": identity["security_master_manifest_hash"],
+            "target_binding": {key: identity[key] for key in ("canonical_target_id", "market", "security_code", "isin",
+                "instrument_family", "instrument_type", "execution_eligibility", "resolution_reason")},
+        }
+    else:
+        security_master_status = ("NOT_INITIALIZED" if identity_error ==
+            "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED" else "INVALID"
+            if identity_error == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID" else "TARGET_SCOPE_INVALID")
+        reason_code = "NOT_INITIALIZED" if security_master_status == "NOT_INITIALIZED" else identity_error
+        identity_resolution = {
+            "target": TARGET_ID, "authority": "installation-local Taiwan Market Identity Service",
+            "result": "not_resolved", "reason_code": reason_code,
+            "selected_root_class": "environment_selected_installation_local" if root_selected else "canonical_installation_local_default",
+            "TW_MARKET_SECURITY_MASTER_ROOT_selected": root_selected,
+            "security_master_release_id": None, "security_master_manifest_hash": None,
+            "legacy_candidate_fallback": False, "fixture_identity_fallback": False,
+            "company_name_fallback": False, "live_security_master_bootstrap_performed": False,
+        }
     return {"gate": "J-B04-A5", "preflight_status": identity_status,
         "starting_main": STARTING_MAIN, "observed_origin_main": main,
         "branch_head_sha": head, "tree_sha": tree, "target": TARGET_ID,
-        "target_identity": identity, "endpoint": ENDPOINT, "method": "GET",
+        "target_identity": identity, "identity_resolution": identity_resolution,
+        "security_master_status": security_master_status, "identity_error_code": identity_error,
+        "canonical_identity_authority": "installation_local_security_master_release",
+        "legacy_candidate_fallback": False, "fixture_identity_fallback": False,
+        "company_name_fallback": False, "live_security_master_bootstrap_performed": False,
+        "TW_MARKET_SECURITY_MASTER_ROOT_selected": root_selected,
+        "endpoint": ENDPOINT, "method": "GET",
         "logical_get_maximum": 1, "http_dispatch_maximum": 1, "retry": 0,
         "redirect_policy": "reject", "timeout_seconds_maximum": TIMEOUT,
         "response_ceiling_bytes": MAX_BYTES, "H3_live_GETs": 0, "TPEx_GETs": 0,
         "TWT49U_GETs": 0, "browser_fallback": "prohibited",
         "raw_payload_persistence": "NONE", "H2_activation": "NOT_AUTHORIZED",
         "J-B04_closure": "NOT_AUTHORIZED", "Phase_J_start": "NOT_AUTHORIZED",
-        "live_authorization": "NOT PRESENT; requires explicit Owner message naming exact current HEAD",
+        "live_authorization": ("NOT PRESENT; not requested because P0 is blocked" if identity is None
+                               else "NOT PRESENT; requires independent review before Owner authorization"),
         "network_calls_so_far": {"market_GET": 0, "market_HEAD": 0, "market_POST": 0}}
 
 

@@ -3,11 +3,13 @@ from __future__ import annotations
 
 import json
 import socket
+from types import SimpleNamespace
 
 import pytest
 
 from scripts.phase_j_b04_a5_bounded_live_acceptance import (
     A5Error, ENDPOINT, MAX_BYTES, SingleUseAuthority, response_telemetry,
+    resolve_predeclared_target, run_p0_preflight,
 )
 from server.services.phase_h_corporate_action_adapters import normalize_twse_twt48u_all
 
@@ -17,6 +19,14 @@ def deny_sockets(monkeypatch):
     def denied(*args, **kwargs):
         raise AssertionError("network access forbidden in A5-P0 tests")
     monkeypatch.setattr(socket, "create_connection", denied)
+
+
+@pytest.fixture(autouse=True)
+def reset_mode_a_cache():
+    from scripts.m8r_06_01c2_mode_a_security_master_loader import reset_production_mode_a_security_master_for_tests
+    reset_production_mode_a_security_master_for_tests()
+    yield
+    reset_production_mode_a_security_master_for_tests()
 
 
 def _response(rows: object, *, url: str = ENDPOINT, content_type: str = "application/json") -> dict:
@@ -157,4 +167,120 @@ def test_p0_cli_has_no_implicit_live_mode(monkeypatch):
         main([])
     with pytest.raises(SystemExit, match="A5-L1 is disabled"):
         main(["--live-acceptance"])
+
+
+def _release_record(*, canonical="TWSE:2330", market="TWSE", code="2330", family="company_share",
+                    instrument_type="common_share", eligible="allowed"):
+    return {
+        "canonical_target_id": canonical,
+        "identity": {"security_code": code, "isin": "TW0002330008"},
+        "classification": {"market": market, "instrument_family": family, "instrument_type": instrument_type},
+        "lifecycle": {"state": "listed", "resolution_status": "resolved", "basis_event_ids": [], "events": []},
+        "execution_eligibility": {"status": eligible, "reason_codes": []},
+    }
+
+
+def _activate_local_release(root):
+    from scripts.m8r_08g_security_master_releases import build_candidate_release, qualify_candidate_release, activate_qualified_release
+    rid = "security-master-20261009T010203Z"
+    provenance = {"source_type": "test", "snapshot_id": "fixture", "source_content_hashes": {"fixture": "a" * 64},
+        "producer_skill": {"name": "test", "skill_version": "1", "skill_contract_hash": "b" * 64}}
+    build_candidate_release(root=root, release_id=rid, records=[_release_record()], source_provenance=provenance)
+    qualified, report = qualify_candidate_release(root=root, release_id=rid)
+    assert qualified and report["status"] == "PASS"
+    activate_qualified_release(root=root, release_id=rid)
+    return rid
+
+
+def test_valid_installation_local_release_resolves_without_legacy_candidate_artifacts(tmp_path, monkeypatch):
+    from scripts.m8r_06_01c2_mode_a_security_master_loader import POINTER_PATH
+    rid = _activate_local_release(tmp_path)
+    monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(tmp_path))
+    legacy = json.loads(POINTER_PATH.read_text())
+    assert not (POINTER_PATH.parents[1] / legacy["index_path"]).exists()
+    assert not (POINTER_PATH.parents[1] / legacy["manifest_path"]).exists()
+    identity = resolve_predeclared_target()
+    assert identity["canonical_target_id"] == "TWSE:2330"
+    assert identity["resolution_reason"] == "exact_listing_id"
+    assert identity["security_master_release_id"] == rid
+    assert identity["canonical_identity_authority"] == "installation_local_security_master_release"
+    assert identity["environment_root_selected"] is True
+
+
+def test_environment_selected_root_is_used_by_production_mode_a_loader(tmp_path, monkeypatch):
+    rid = _activate_local_release(tmp_path)
+    monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(tmp_path))
+    preflight = run_p0_preflight()
+    assert preflight["preflight_status"] == "J_B04_A5_P0_R1_READY_FOR_INDEPENDENT_REVIEW"
+    assert preflight["security_master_status"] == "ACTIVE"
+    assert preflight["TW_MARKET_SECURITY_MASTER_ROOT_selected"] is True
+    assert preflight["identity_resolution"]["security_master_release_id"] == rid
+
+
+def test_canonical_not_initialized_does_not_fallback_or_make_market_calls(tmp_path, monkeypatch):
+    from scripts.m8r_06_01c2_mode_a_security_master_loader import ModeASecurityMasterUnavailable
+    monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(tmp_path / "empty-root"))
+    record = run_p0_preflight()
+    assert record["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_NOT_INITIALIZED"
+    assert record["security_master_status"] == "NOT_INITIALIZED"
+    assert record["identity_resolution"]["security_master_release_id"] is None
+    assert record["legacy_candidate_fallback"] is False
+    assert record["fixture_identity_fallback"] is False
+    assert record["company_name_fallback"] is False
+    assert record["live_security_master_bootstrap_performed"] is False
+    assert record["network_calls_so_far"] == {"market_GET": 0, "market_HEAD": 0, "market_POST": 0}
+
+
+def test_invalid_active_release_fails_closed(tmp_path, monkeypatch):
+    (tmp_path / "active.json").write_text("{bad", encoding="utf-8")
+    monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(tmp_path))
+    record = run_p0_preflight()
+    assert record["preflight_status"] == "J_B04_A5_PREFLIGHT_BLOCKED_CANONICAL_SECURITY_MASTER_INVALID"
+    assert record["security_master_status"] == "INVALID"
+    assert record["identity_resolution"]["security_master_release_id"] is None
+    assert record["network_calls_so_far"] == {"market_GET": 0, "market_HEAD": 0, "market_POST": 0}
+
+
+@pytest.mark.parametrize("mutation", [
+    {"canonical": "TWSE:2331"}, {"market": "TPEX"}, {"code": "2331"},
+    {"family": "etf"}, {"instrument_type": "preferred_share"}, {"eligible": "blocked"},
+])
+def test_target_scope_mutations_block(mutation, monkeypatch):
+    from scripts import m8r_06_01c2_mode_a_security_master_loader as loader
+    record = _release_record(**mutation)
+    selected = {**record}
+    resolved = SimpleNamespace(status="resolved", reason_codes=["exact_listing_id"], selected=selected)
+    service = SimpleNamespace(resolve=lambda query, market_hint=None: resolved, release_id="release-x", manifest_hash="a" * 64)
+    runtime = SimpleNamespace(identity_service=service, pointer={"release_id": "release-x",
+        "release_manifest_sha256": "a" * 64, "release_index_sha256": "b" * 64})
+    monkeypatch.setattr(loader, "get_production_mode_a_security_master", lambda: runtime)
+    with pytest.raises(A5Error, match="TARGET_IDENTITY_SCOPE_INVALID"):
+        resolve_predeclared_target()
+
+
+def test_name_only_result_is_never_accepted(monkeypatch):
+    from scripts import m8r_06_01c2_mode_a_security_master_loader as loader
+    calls = []
+    resolution = SimpleNamespace(status="not_found", reason_codes=["exact_normalized_name"], selected=None)
+    service = SimpleNamespace(resolve=lambda query, market_hint=None: calls.append((query, market_hint)) or resolution)
+    runtime = SimpleNamespace(identity_service=service, pointer={})
+    monkeypatch.setattr(loader, "get_production_mode_a_security_master", lambda: runtime)
+    with pytest.raises(A5Error, match="TARGET_IDENTITY_SCOPE_INVALID"):
+        resolve_predeclared_target()
+    assert calls == [("TWSE:2330", "TWSE")]
+
+
+def test_a5_validator_accepts_canonical_not_initialized_record_and_rejects_legacy_authority():
+    import copy
+    from scripts.validate_phase_j_b04_a5_bounded_live_acceptance import RECORD, validate_contract
+    record = json.loads(RECORD.read_text(encoding="utf-8"))
+    assert validate_contract(record)["status"] == "BLOCKED"
+    mutated = copy.deepcopy(record)
+    mutated["canonical_identity_authority"] = "config/m8r_06_mode_a_security_master_pointer.json"
+    with pytest.raises(AssertionError):
+        validate_contract(mutated)
+    mutated = copy.deepcopy(record)
+    mutated["identity_resolution"]["security_master_release_id"] = "fake-release"
+    with pytest.raises(AssertionError):
+        validate_contract(mutated)
 
