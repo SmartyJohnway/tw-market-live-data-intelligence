@@ -69,7 +69,7 @@
   },
   "baseline_comparison": {
     "exact_baseline": "a833a5728501d99b942928fdebb790a993a5e838",
-    "tested_r1_head": "R1 worktree candidate based on 82322276da59a06193b749454ab82c6a02a867d9",
+    "tested_r1_head": "49255340f73b58a8883ce07731459f042b782be1",
     "exact_base": {
       "revision": "a833a5728501d99b942928fdebb790a993a5e838",
       "worktree_path": "/workspace/tw-market-r1-base",
@@ -244,7 +244,7 @@
       }
     },
     "r1_head": {
-      "revision": "R1 worktree candidate based on 82322276da59a06193b749454ab82c6a02a867d9",
+      "revision": "49255340f73b58a8883ce07731459f042b782be1",
       "worktree_path": "/workspace/tw-market-r1-head",
       "working_directory": ".",
       "command": "env PYTHONHASHSEED=0 TZ=UTC /workspace/.venv-r1/bin/python -m pytest -vv -p no:cacheprovider tests/unit/m8r_05c tests/unit/test_m8r_05c_containment.py tests/unit/test_m8r_05c_determinism.py tests/unit/test_m8r_05c_lineage.py tests/unit/test_m8r_05c_result_status_semantics.py tests/unit/test_m8r_05c_trading_status_composition.py",

@@ -19,7 +19,7 @@
 - Phase-H/H3/H4 and offline I2 A1/A2 regression selection: **464 passed**.
 - Phase-I compatibility selection: **78 passed**.
 - M8R-05C clean exact-base comparison: **47 passed, 0 failed**.
-- M8R-05C R1 candidate comparison: **47 passed, 0 failed**.
+- M8R-05C implementation revision `49255340f73b58a8883ce07731459f042b782be1` comparison: **47 passed, 0 failed**.
 - Computed M8R-05C new-failure delta: **0**.
 - Phase-H V3, J-B04-A1, J-B04-A2, Phase-J GHI, portable catalog, runtime Skill/guide, and strict duplicate-key JSON validators: **PASS**.
 - `compileall` and `git diff --check`: **PASS**.
