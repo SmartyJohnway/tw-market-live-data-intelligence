@@ -161,6 +161,7 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
                     executor_registry_metadata=load_production_executor_metadata(), output_root=str(selected_root),
                 )
             assert not list((selected_root / "claims").iterdir())
+            assert selected_state["state"] == "unused"
             return None
         result = build_orchestrator_preflight(
             selected_plan, selected_authorization, selected_binding,

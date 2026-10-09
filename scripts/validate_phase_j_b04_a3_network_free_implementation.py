@@ -131,6 +131,18 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
     assert baseline["exact_base"]["passed_count"] == 47
     assert baseline["r1_head"]["passed_count"] == 47
     assert baseline["exact_base"]["failed_count"] == baseline["r1_head"]["failed_count"] == 0
+    r2_head = baseline["r2_head"]
+    assert baseline["tested_r2_head"] == r2_head["revision"]
+    assert r2_head["command"] == exact_base["command"]
+    assert r2_head["environment"] == exact_base["environment"]
+    assert r2_head["fixture_manifest"] == exact_base["fixture_manifest"]
+    assert r2_head["collected_nodes"] == exact_base["collected_nodes"]
+    assert r2_head["collected_count"] == len(r2_head["collected_nodes"]) == 47
+    assert r2_head["passed_count"] == len(r2_head["passed_nodes"]) == 47
+    assert r2_head["failed_count"] == len(r2_head["failed_nodes"]) == 0
+    r2_delta = sorted(set(r2_head["failed_nodes"]) - set(exact_base["failed_nodes"]))
+    assert baseline["r2_new_failure_nodes"] == r2_delta
+    assert baseline["r2_new_failure_delta"] == len(r2_delta) == 0
 
     if "default_ci_comparison" in record:
         comparison = record["default_ci_comparison"]
@@ -148,10 +160,15 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
         for result in (base_ci, head_ci):
             assert result["failed_count"] == len(result["failed_nodes"])
             assert set(result["failure_codes"]) == set(result["failed_nodes"])
+            assert result["collected_count"] == result["selected_count"] + result["deselected_count"]
+            assert result["selected_count"] == result["passed_count"] + result["failed_count"] + result["skipped_count"]
         assert comparison["shared_failure_nodes"] == shared
         assert comparison["new_failure_nodes"] == new_failed
         assert comparison["resolved_failure_nodes"] == resolved
         assert comparison["default_ci_new_failure_delta"] == len(new_failed)
+        assert comparison["failure_codes_base"] == base_ci["failure_codes"]
+        assert comparison["failure_codes_head"] == head_ci["failure_codes"]
+        assert all(base_ci["failure_codes"][node] == head_ci["failure_codes"][node] for node in shared)
         if head_ci["failed_count"]:
             assert comparison["default_ci_new_failure_delta"] == 0
 

@@ -35,7 +35,13 @@ def test_a3_validator_computes_default_ci_new_failure_delta() -> None:
         "revision": "a833a5728501d99b942928fdebb790a993a5e838",
         "command": "python scripts/run_test_profile.py default-ci --json",
         "environment": {"python": "3.11.16", "security_master": "absent"},
+        "status": "fail",
+        "collected_count": 1,
+        "selected_count": 1,
+        "passed_count": 0,
         "failed_count": 1,
+        "skipped_count": 0,
+        "deselected_count": 0,
         "failed_nodes": ["tests/test_shared.py::test_environment_failure"],
         "failure_codes": {"tests/test_shared.py::test_environment_failure": "security_master_not_initialized"},
     }
@@ -50,6 +56,8 @@ def test_a3_validator_computes_default_ci_new_failure_delta() -> None:
         "new_failure_nodes": [],
         "resolved_failure_nodes": [],
         "default_ci_new_failure_delta": 0,
+        "failure_codes_base": base["failure_codes"],
+        "failure_codes_head": head["failure_codes"],
     }
     assert validate_contract(record)["status"] == "PASS"
     record["default_ci_comparison"]["new_failure_nodes"] = ["tests/test_new.py::test_regression"]
