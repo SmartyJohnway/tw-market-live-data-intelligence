@@ -66,6 +66,16 @@ def _validate_inputs(validation, catalog, routing, handoff, inventory, bindings)
 def _warning(cap, targets, reason): return {'code':'optional_capability_omitted','capability_id':cap,'canonical_target_ids':canonical_target_ids(targets),'severity':'warning','omission_reason':reason}
 
 
+def _refresh_operation_id(op: dict[str, Any]) -> None:
+    identity={'capability_id':op['capability_id'],'canonical_target_ids':op['canonical_target_ids'],'market':op['market'],
+              'security_types':op['security_types'],'normalized_parameters':op['parameters'],'executor_id':op['executor_id'],
+              'batch_key':op['_batch_key'],'expected_evidence_contract':op['expected_evidence_contract'],
+              'operation_status':op['operation_status'],'network_required':op['network_required'],
+              'capability_requires_execution_approval':op['capability_requires_execution_approval'],
+              'dependency_operation_ids':op['dependency_operation_ids']}
+    op['operation_id']=operation_id(identity)
+
+
 def validate_batch_integrity(operations: list[dict[str, Any]], batch_groups: list[dict[str, Any]]) -> None:
     """Fail closed when executable batch membership is not a bijection."""
     ids=[group.get("batch_group_id") for group in batch_groups]
@@ -150,14 +160,40 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
                 scope={'capability_id':cid,'canonical_target_ids':canonical_target_ids(tids),'market':market,'security_types':[unit['security_type']] if unit['security_type'] else [],'normalized_parameters':params,'executor_id':route.get('selected_executor_id') if executable else None,'batch_key':bkey,'expected_evidence_contract':route['output_evidence_contract'],'operation_status':'executable_pending_approval' if executable else 'plan_only_not_executable','network_required':bool(executable and route.get('network_required')),'capability_requires_execution_approval':bool(route.get('capability_requires_execution_approval')),'dependency_operation_ids':[]}
                 op={'operation_id':operation_id(scope),'capability_id':cid,'canonical_target_ids':scope['canonical_target_ids'],'market':market,'security_types':scope['security_types'],'parameters':params,'executor_id':scope['executor_id'],'batch_group_id':None,'operation_status':scope['operation_status'],'network_required':scope['network_required'],'capability_requires_execution_approval':scope['capability_requires_execution_approval'],'expected_evidence_contract':scope['expected_evidence_contract'],'blocking_reason_codes':[],'warnings':[],'executor_invocation_eligible':executable,'dependency_operation_ids':[],'_batch_key':bkey,'_batching_scope':route.get('batching_scope'),'_source_compatibility_key':route.get('source_compatibility_key') or route.get('selected_executor_id')}
                 ops.append(op)
+    # The bounded TWSE H2 route is explicitly dependent on the same-target H3
+    # operation only when both needs were requested.  H2 is never injected.
+    for op in ops:
+        if op['capability_id'] != 'corporate_action_context' or op['market'] != 'TWSE':
+            continue
+        matching_h3=[candidate for candidate in ops
+                     if candidate['capability_id']=='recent_performance'
+                     and candidate['market']=='TWSE'
+                     and candidate['canonical_target_ids']==op['canonical_target_ids']]
+        if len(matching_h3)==1:
+            op['dependency_operation_ids']=[matching_h3[0]['operation_id']]
+            _refresh_operation_id(op)
+        elif op['operation_status']=='executable_pending_approval':
+            # An H2 executor is never invocation-eligible without its explicit
+            # same-target H3 operation in the approved request.
+            op['executor_id']=None
+            op['operation_status']='plan_only_not_executable'
+            op['network_required']=False
+            op['executor_invocation_eligible']=False
+            op['dependency_operation_ids']=[]
+            op['warnings']=[{'code':'required_h3_dependency_missing','capability_id':'corporate_action_context',
+                             'canonical_target_ids':op['canonical_target_ids'],'severity':'warning',
+                             'omission_reason':'required_h3_dependency_missing'}]
+            if plan_status not in {'blocked'}:
+                plan_status='plan_only_not_executable'
+            _refresh_operation_id(op)
+
     # Derived capabilities never invoke a source and bind by deterministic operation ID.
     primary_ids=sorted(op['operation_id'] for op in ops if op['operation_status']=='executable_pending_approval')
     for op in ops:
         if op['capability_id'] in {'source_currentness','evidence_quality'}:
             op['dependency_operation_ids']=primary_ids
             if not primary_ids: op['warnings']=[{'code':'upstream_evidence_operation_missing','capability_id':op['capability_id'],'canonical_target_ids':op['canonical_target_ids'],'severity':'warning','omission_reason':'upstream_evidence_operation_missing'}]
-            identity={'capability_id':op['capability_id'],'canonical_target_ids':op['canonical_target_ids'],'market':op['market'],'security_types':op['security_types'],'normalized_parameters':op['parameters'],'executor_id':op['executor_id'],'batch_key':op['_batch_key'],'expected_evidence_contract':op['expected_evidence_contract'],'operation_status':op['operation_status'],'network_required':op['network_required'],'capability_requires_execution_approval':op['capability_requires_execution_approval'],'dependency_operation_ids':op['dependency_operation_ids']}
-            op['operation_id']=operation_id(identity)
+            _refresh_operation_id(op)
     # Group only executable operations according to the declared routing batching scope.
     groups={}
     for op in ops:
@@ -184,10 +220,28 @@ def build_plan(validation: Mapping[str,Any], *, capability_catalog: Mapping[str,
     batch_keys={op['operation_id']:op['_batch_key'] for op in ops}; ops=[{k:v for k,v in op.items() if k not in {'_batch_key','_batching_scope','_source_compatibility_key'}} for op in canonical_operation_order(ops,capability_order_by_id=order,batch_key_by_operation_id=batch_keys)] if ops else []
     validate_batch_integrity(ops, batch_groups)
     operation_ids={op['operation_id'] for op in ops}
+    operation_by_id={op['operation_id']:op for op in ops}
+    graph={op['operation_id']:list(op['dependency_operation_ids']) for op in ops}
     for op in ops:
         dependencies=op['dependency_operation_ids']
         if dependencies != sorted(set(dependencies)) or op['operation_id'] in dependencies or not set(dependencies).issubset(operation_ids):
             raise PlanningError('target_binding_invalid','dependency_operation_ids_invalid')
+        if op['capability_id']=='corporate_action_context' and op['market']=='TWSE' and op['operation_status']=='executable_pending_approval':
+            if len(dependencies)!=1:
+                raise PlanningError('target_binding_invalid','h2_h3_dependency_required')
+            dependency=operation_by_id[dependencies[0]]
+            if (dependency.get('capability_id')!='recent_performance' or dependency.get('market')!='TWSE'
+                    or dependency.get('canonical_target_ids')!=op.get('canonical_target_ids')):
+                raise PlanningError('target_binding_invalid','h2_h3_dependency_binding_mismatch')
+    remaining={key:set(value) for key,value in graph.items()}
+    while remaining:
+        ready=[key for key,value in remaining.items() if not value]
+        if not ready:
+            raise PlanningError('target_binding_invalid','dependency_cycle')
+        for key in ready:
+            remaining.pop(key)
+        for value in remaining.values():
+            value.difference_update(ready)
     warnings=canonical_warning_order(warnings); omissions=sorted(omissions,key=canonical_json); blocked=sorted(blocked,key=canonical_json); batch_groups=sorted(batch_groups,key=lambda x:x['batch_group_id'])
     executable=[o for o in ops if o['operation_status']=='executable_pending_approval']
     logical=len(ops)+len(blocked); hard=catalog.get('bounds',{}).get('hard_operation_limit')

@@ -72,6 +72,17 @@ def project_typed_research_evidence(
 
 def project_phase_h_typed_evidence(binding, citation_ids, expected_schema_version):
     """Compatibility name for the established Phase H typed projection path."""
+    if (expected_schema_version == "corporate_action_context_evidence.v1"
+            and binding is not None and binding.status == "failed"
+            and binding.error_code in {"source_failed", "binding_failed"}):
+        artifact = _research_artifact(binding)
+        if (artifact is None or artifact.get("schema_version") != expected_schema_version
+                or artifact.get("status") != binding.error_code):
+            raise ProjectionError("phase_h_failed_typed_evidence_inconsistent")
+        typed_citation_ids = artifact.get("citation_ids", [])
+        if not isinstance(typed_citation_ids, list) or not set(typed_citation_ids).issubset(set(citation_ids)):
+            raise ProjectionError("phase_h_citation_lineage_mismatch")
+        return artifact.copy()
     return project_typed_research_evidence(binding, citation_ids, expected_schema_version)
 
 

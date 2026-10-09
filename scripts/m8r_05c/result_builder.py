@@ -687,7 +687,25 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
     }
     if pf_dicts:
         body_without_hash["partial_failures"] = pf_dicts
-    body_without_hash["request_caveats"] = []
+    request_caveats = []
+    plan_operations = {
+        item.get("operation_id"): item for item in inputs.plan.get("operations", [])
+        if isinstance(item, dict)
+    }
+    receipt_operations = {
+        item.get("operation_id"): item for item in inputs.receipt.get("operation_receipts", [])
+        if isinstance(item, dict)
+    }
+    for operation in plan_operations.values():
+        if operation.get("capability_id") != "corporate_action_context" or len(operation.get("dependency_operation_ids", [])) != 1:
+            continue
+        h2_receipt = receipt_operations.get(operation.get("operation_id"), {})
+        h3_receipt = receipt_operations.get(operation["dependency_operation_ids"][0], {})
+        if h2_receipt.get("error_code") == "h3_dependency_unusable" or h3_receipt.get("status") != "succeeded":
+            request_caveats.append(
+                "Comparison is unavailable because the approved H3 baseline dependency was unusable. H2 source acquisition was not attempted, no H4 clearance was derived, and ordinary return interpretation is not supported."
+            )
+    body_without_hash["request_caveats"] = sorted(set(request_caveats))
 
     # Compute result_hash.
     result_hash = hash_body_excluding_key(body_without_hash, "result_hash")

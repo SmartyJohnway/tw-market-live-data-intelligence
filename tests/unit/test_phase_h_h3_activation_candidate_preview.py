@@ -20,36 +20,39 @@ FIXED_TIME = "2026-09-28T00:00:00Z"
 class OfflineSecurityMaster:
     """Minimal deterministic identity input; all planning authorities stay real."""
 
-    def __init__(self, market: str, code: str):
-        canonical = f"{market}:{code}"
+    def __init__(self, market: str, code: str, additional_codes: tuple[str, ...] = ()):
         self.pointer = {
             "schema_version": "taiwan_market_identity_active_pointer.v1",
             "release_id": "offline-preview-fixture",
             "release_index_sha256": "a" * 64,
             "release_manifest_sha256": "b" * 64,
         }
-        record = {
-            "canonical_target_id": canonical,
-            "identity": {
-                "security_code": code,
-                "isin": "TW0001423007" if code == "1423" else "TW0006488000",
-                "security_name_zh": "offline identity fixture",
-                "security_name_en": "offline identity fixture",
-            },
-            "classification": {
-                "market": market,
-                "instrument_family": "company_share",
-                "instrument_type": "common_share",
-                "classification_status": "confirmed",
-            },
-            "execution_eligibility": {"status": "allowed", "reason_codes": []},
-            "observation": {"status": "official_snapshot"},
-        }
+        records = []
+        for item_code in (code, *additional_codes):
+            canonical = f"{market}:{item_code}"
+            record = {
+                "canonical_target_id": canonical,
+                "identity": {
+                    "security_code": item_code,
+                    "isin": {"1423": "TW0001423007", "2330": "TW0002330008", "6488": "TW0006488000"}.get(item_code, "TW0000000000"),
+                    "security_name_zh": "offline identity fixture",
+                    "security_name_en": "offline identity fixture",
+                },
+                "classification": {
+                    "market": market,
+                    "instrument_family": "company_share",
+                    "instrument_type": "common_share",
+                    "classification_status": "confirmed",
+                },
+                "execution_eligibility": {"status": "allowed", "reason_codes": []},
+                "observation": {"status": "official_snapshot"},
+            }
+            records.append(record)
         self.lookup = {
-            "snapshot": {"snapshot_id": "offline-preview-fixture", "records": [record]},
-            "by_canonical": {canonical: record},
-            "by_isin": {record["identity"]["isin"]: [record]},
-            "by_code": {(market, code): [record], (None, code): [record]},
+            "snapshot": {"snapshot_id": "offline-preview-fixture", "records": records},
+            "by_canonical": {record["canonical_target_id"]: record for record in records},
+            "by_isin": {record["identity"]["isin"]: [record] for record in records},
+            "by_code": {key: [record] for record in records for key in ((market, record["identity"]["security_code"]), (None, record["identity"]["security_code"]))},
             "by_name": {},
         }
 
@@ -70,11 +73,11 @@ def _request(market: str, code: str) -> dict:
     }
 
 
-def _production_preview(request: dict, market: str, code: str) -> dict:
+def _production_preview(request: dict, market: str, code: str, additional_codes: tuple[str, ...] = ()) -> dict:
     version = request["schema_version"]
     catalog = json.loads(REQUEST_CAPABILITY_CATALOG_PATHS[version].read_text(encoding="utf-8"))
     schema = json.loads(REQUEST_SCHEMA_PATHS[version].read_text(encoding="utf-8"))
-    security_master = OfflineSecurityMaster(market, code)
+    security_master = OfflineSecurityMaster(market, code, additional_codes)
     validation = validate_unified_market_evidence_request(
         request,
         security_master=security_master,

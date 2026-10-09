@@ -22,7 +22,9 @@ from scripts.phase_i_i3_transport_mapping import transport_market_key
 from scripts.phase_i_i3_a4_compat import (
     _normalize_current_h1_v2_addition,
     project_current_a26_h1_addition,
+    project_current_a3_h2_addition,
     strip_a26_production_adapter_addition,
+    strip_a3_h2_production_adapter_addition,
 )
 from scripts.m8r_08g_security_master_releases import SECURITY_MASTER_ROOT, load_active_identity_service
 from scripts.m8r_filesystem_safety import atomic_write_bytes
@@ -161,12 +163,14 @@ def production_containment() -> None:
                 # sibling while preserving the historical H1 v1 snapshot.
                 normalized = _normalize_current_h1_v2_addition(normalized)
             normalized = project_current_a26_h1_addition(rel, normalized, baseline_json(rel))
+            normalized = project_current_a3_h2_addition(rel, normalized, baseline_json(rel))
             require(normalized == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
         elif rel in {
             "config/m8r_06_03_executor_registry_metadata.json",
             "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
         }:
             normalized = project_current_a26_h1_addition(rel, without_i3(current), baseline_json(rel))
+            normalized = project_current_a3_h2_addition(rel, normalized, baseline_json(rel))
             require(normalized == baseline_json(rel), f"non_i3_production_authority_drift:{rel}")
         elif rel == "scripts/m8r_06_03_production_adapter.py":
             current_text = (ROOT / rel).read_text(encoding="utf-8")
@@ -185,6 +189,7 @@ def production_containment() -> None:
                 "def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) -> RuntimeAdapterRegistry:",
                 "def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:", 1)
             current_text = strip_a26_production_adapter_addition(current_text)
+            current_text = strip_a3_h2_production_adapter_addition(current_text)
             require(current_text == baseline_text, f"non_i3_production_authority_drift:{rel}")
         else:
             require((ROOT / rel).read_bytes() == subprocess.check_output(

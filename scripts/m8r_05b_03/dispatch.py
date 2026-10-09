@@ -16,6 +16,7 @@ from scripts.m8r_filesystem_safety import (
 
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
+from .dependency_graph import validate_dependency_graph
 from .component_artifact_roles import COMPOSITE_CONTRACT, validate_operation_artifact_roles
 from .registry import ExecutorMetadata, ExecutorMetadataRegistry, executor_route_key
 
@@ -41,6 +42,7 @@ REQUEST_TO_RESULT_SCHEMA_VERSIONS = {
 class DispatchRuntimeContext:
     governed_output_root: str
     mode: str
+    dependency_context: dict[str, Any] | None = None
 
 
 AdapterCallable = Callable[[dict, DispatchRuntimeContext], dict[str, Any]]
@@ -247,7 +249,10 @@ def dispatch_prepared(
     governed_output_root: str,
     mode: str,
     accepted_preflight: dict | None = None,
+    plan: dict | None = None,
 ) -> list[dict]:
+    if plan is not None:
+        validate_dependency_graph(plan, (item.request["operation_id"] for item in prepared))
     context = DispatchRuntimeContext(governed_output_root=governed_output_root, mode=mode)
     outcomes: list[dict] = []
     validators = {
@@ -258,6 +263,61 @@ def dispatch_prepared(
     by_batch: dict[str, list[PreparedDispatch]] = {}
     for item in prepared:
         by_batch.setdefault(item.request["batch_group_id"], []).append(item)
+
+    # The plan is the authority for operation dependencies.  Validate and
+    # topologically order batches before invoking any adapter or source.
+    plan_operations = {
+        item.get("operation_id"): item for item in (plan or {}).get("operations", [])
+        if isinstance(item, dict) and isinstance(item.get("operation_id"), str)
+    }
+    prepared_by_operation = {item.request["operation_id"]: item for item in prepared}
+    dependencies: dict[str, list[str]] = {}
+    for operation_id, item in prepared_by_operation.items():
+        operation = plan_operations.get(operation_id)
+        if plan is not None and operation is None:
+            raise OrchestrationError("dependency_operation_missing_from_plan")
+        declared = operation.get("dependency_operation_ids", []) if operation else []
+        if not isinstance(declared, list) or any(not isinstance(value, str) for value in declared):
+            raise OrchestrationError("dependency_graph_invalid")
+        if len(declared) != len(set(declared)) or operation_id in declared:
+            raise OrchestrationError("dependency_graph_invalid")
+        if any(value not in plan_operations for value in declared):
+            raise OrchestrationError("dependency_operation_missing")
+        if any(value not in prepared_by_operation for value in declared):
+            raise OrchestrationError("dependency_operation_not_approved")
+        dependencies[operation_id] = declared
+        if item.request.get("executor_id") == "phase_h_h2_twse_exright_pre_executor":
+            if len(declared) != 1:
+                raise OrchestrationError("h2_h3_dependency_required")
+            dependency = plan_operations[declared[0]]
+            if (dependency.get("capability_id") != "recent_performance"
+                    or dependency.get("market") != "TWSE"
+                    or dependency.get("canonical_target_ids") != operation.get("canonical_target_ids")):
+                raise OrchestrationError("h2_h3_dependency_binding_mismatch")
+
+    batch_for_operation = {item.request["operation_id"]: item.request["batch_group_id"] for item in prepared}
+    batch_dependencies: dict[str, set[str]] = {batch_id: set() for batch_id in by_batch}
+    for operation_id, declared in dependencies.items():
+        child_batch = batch_for_operation[operation_id]
+        for dependency_id in declared:
+            parent_batch = batch_for_operation[dependency_id]
+            if parent_batch == child_batch:
+                raise OrchestrationError("dependency_batch_collision")
+            batch_dependencies[child_batch].add(parent_batch)
+
+    batch_order = list(by_batch)
+    position = {batch_id: index for index, batch_id in enumerate(batch_order)}
+    remaining = {batch_id: set(values) for batch_id, values in batch_dependencies.items()}
+    ordered_batch_ids: list[str] = []
+    while remaining:
+        ready = sorted((batch_id for batch_id, parents in remaining.items() if not parents), key=position.__getitem__)
+        if not ready:
+            raise OrchestrationError("dependency_cycle")
+        for batch_id in ready:
+            ordered_batch_ids.append(batch_id)
+            remaining.pop(batch_id)
+        for parents in remaining.values():
+            parents.difference_update(ready)
 
     def validate_result(item: PreparedDispatch, raw_result: dict) -> dict:
         validate_contained_relative_paths(
@@ -330,7 +390,10 @@ def dispatch_prepared(
         }
         return validate_result(item, result)
 
-    for batch_group_id, items in by_batch.items():
+    outcome_by_operation: dict[str, dict] = {}
+    base_context = DispatchRuntimeContext(governed_output_root=governed_output_root, mode=mode)
+    for batch_group_id in ordered_batch_ids:
+        items = by_batch[batch_group_id]
         first = items[0]
         route = (first.request["executor_id"], first.request["capability_id"], first.request["market"])
         if any((x.request["executor_id"], x.request["capability_id"], x.request["market"]) != route or x.registration != first.registration for x in items):
@@ -345,15 +408,33 @@ def dispatch_prepared(
             if len(items) > 1:
                 if first.registration.batch_adapter is None:
                     raise OrchestrationError("batch_runtime_adapter_required")
-                raw_results = first.registration.batch_adapter(tuple(x.request for x in items), context)
+                raw_results = first.registration.batch_adapter(tuple(x.request for x in items), base_context)
                 if not isinstance(raw_results, list) or len(raw_results) != len(items):
                     raise OrchestrationError("batch_operation_result_count_mismatch")
                 by_operation = {item.get("operation_id"): item for item in raw_results if isinstance(item, dict)}
                 if len(by_operation) != len(items) or set(by_operation) != {x.request["operation_id"] for x in items}:
                     raise OrchestrationError("batch_operation_result_membership_mismatch")
-                outcomes.extend(validate_result(item, by_operation[item.request["operation_id"]]) for item in items)
+                for item in items:
+                    validated = validate_result(item, by_operation[item.request["operation_id"]])
+                    outcomes.append(validated)
+                    outcome_by_operation[item.request["operation_id"]] = validated
             else:
-                outcomes.append(validate_result(first, first.registration.adapter(first.request, context)))
+                operation_id = first.request["operation_id"]
+                dependency_values = []
+                for dependency_id in dependencies.get(operation_id, []):
+                    dependency_values.append({
+                        "operation_id": dependency_id,
+                        "operation": plan_operations.get(dependency_id),
+                        "result": outcome_by_operation.get(dependency_id),
+                    })
+                context = DispatchRuntimeContext(
+                    governed_output_root=governed_output_root,
+                    mode=mode,
+                    dependency_context={"dependencies": dependency_values},
+                )
+                validated = validate_result(first, first.registration.adapter(first.request, context))
+                outcomes.append(validated)
+                outcome_by_operation[operation_id] = validated
         except OrchestrationError:
             raise
         except TimeoutError:

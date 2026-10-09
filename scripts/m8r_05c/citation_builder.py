@@ -74,8 +74,23 @@ def build_citation_index(
         for data_need, binding in need_map.items():
             if not isinstance(binding, OperationBinding):
                 continue
-            if binding.status == "failed" or not binding.evidence_artifacts:
-                # No successful artifacts → no citations.
+            primary_h2_artifacts = [
+                item for item in binding.evidence_artifacts
+                if item.get("artifact_role") == "primary_evidence"
+                and item.get("evidence_contract") == "corporate_action_context_evidence.v1"
+            ]
+            primary_h2 = (
+                binding.artifact_objects.get(primary_h2_artifacts[0].get("relative_path"), {})
+                if len(primary_h2_artifacts) == 1 else {}
+            )
+            governed_h2_failure = (
+                data_need == "corporate_action_context"
+                and primary_h2.get("schema_version") == "corporate_action_context_evidence.v1"
+                and primary_h2.get("status") in {"source_failed", "binding_failed"}
+            )
+            if (binding.status == "failed" and not governed_h2_failure) or not binding.evidence_artifacts:
+                # Preserve citations for governed typed H2 failures: they are
+                # real, schema-validated evidence inputs to fail-closed H4.
                 key = f"{canonical_target_id}::{data_need}"
                 index.target_need_citations[key] = []
                 continue

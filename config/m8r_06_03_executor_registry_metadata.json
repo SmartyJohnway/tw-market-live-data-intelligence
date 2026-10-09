@@ -156,6 +156,20 @@
       "output_policy": "contained_artifact_only"
     },
     {
+      "executor_id": "phase_h_h2_twse_exright_pre_executor",
+      "capability_id": "corporate_action_context",
+      "market": "TWSE",
+      "supported_security_types": [
+        "equity"
+      ],
+      "expected_evidence_contract": "corporate_action_context_evidence.v1",
+      "network_required": true,
+      "bounded_execution_supported": true,
+      "timeout_seconds": 15,
+      "maximum_result_items": 1,
+      "output_policy": "contained_artifact_only"
+    },
+    {
       "executor_id": "phase_i_i1_market_state_executor",
       "capability_id": "market_state_context",
       "market": "TWSE",

@@ -14,6 +14,7 @@ from .authorization_gate import approved_operations, authorize
 from .canonical import sha256_json
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
+from .dependency_graph import validate_dependency_graph
 from .registry import ExecutorMetadataRegistry, executor_route_key, validate_executor_for_operation
 from .request_projection import build_execution_request_projection, relative_operation_request_path
 
@@ -59,6 +60,7 @@ def build_orchestrator_preflight(
     )
     operation_pairs = approved_operations(plan, authorization)
     approved_operation_order = [operation["operation_id"] for operation, _binding in operation_pairs]
+    validate_dependency_graph(plan, approved_operation_order)
     contained_paths = validate_contained_relative_paths(
         output_root,
         [relative_operation_request_path(operation_id) for operation_id in approved_operation_order],

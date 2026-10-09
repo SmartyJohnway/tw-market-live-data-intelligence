@@ -44,6 +44,10 @@ from server.services.phase_h_h3_twse_stock_day_adapter import (
 )
 from server.services.phase_h_h3_twse_stock_day_walker import collect_twse_stock_day_lookback
 from server.services.phase_h_recent_performance import H3DerivationError, build_recent_performance_evidence
+from server.services.phase_h_h2_twse_exright_executor import (
+    EXECUTOR_ID as PHASE_H_H2_EXECUTOR_ID,
+    execute_h2_twse_exright_pre,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,6 +73,7 @@ PHASE_H_H3_EXECUTOR_ID = "phase_h_h3_twse_recent_performance_executor"
 PHASE_H_H3_SOURCE_ID = "H3-TWSE-DEFAULT-BOUNDED"
 PHASE_H_H3_MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 PHASE_H_H3_MAX_UNIQUE_MONTH_REQUESTS = 3
+PHASE_H_H2_SOURCE_ID = "H2-TWSE-EXRIGHT-PRE-OPENAPI"
 _H3_OBSERVATION_FIELDS = {
     "canonical_target_id", "market", "security_code", "trade_date", "close", "volume",
     "source_family", "source_contract_id", "retrieved_at", "citation_ids",
@@ -882,6 +887,8 @@ def production_operation_adapter(request: dict[str, Any], context: DispatchRunti
             raise OrchestrationError(str(exc) or "phase_h_composite_execution_failed") from exc
     if request.get("executor_id") == PHASE_H_H3_EXECUTOR_ID:
         return _phase_h_h3_twse_recent_performance(request, context)
+    if request.get("executor_id") == PHASE_H_H2_EXECUTOR_ID:
+        return execute_h2_twse_exright_pre(request, context)
     if request.get("executor_id") != EXECUTOR_ID:
         raise OrchestrationError("executor_mismatch")
     capability = request.get("capability_id")
@@ -1017,6 +1024,7 @@ def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) 
         (PHASE_H_H1_EXECUTOR_ID, "trading_status_context", "TPEX"),
         (PHASE_H_H1_COMPOSITE_EXECUTOR_ID, "trading_status_context", "TPEX"),
         (PHASE_H_H3_EXECUTOR_ID, "recent_performance", "TWSE"),
+        (PHASE_H_H2_EXECUTOR_ID, "corporate_action_context", "TWSE"),
         (PHASE_I_I1_EXECUTOR_ID, "market_state_context", "TWSE"),
         (PHASE_I_I1_EXECUTOR_ID, "market_state_context", "TPEX"),
         (PHASE_I_I2_EXECUTOR_ID, "index_futures_context", "TWSE"),
@@ -1049,7 +1057,7 @@ def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) 
                 production_batch_operation_adapter_candidate
                 if is_i1
                 else None
-                if entry.executor_id in {PHASE_H_H1_EXECUTOR_ID, PHASE_H_H1_COMPOSITE_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID}
+                if entry.executor_id in {PHASE_H_H1_EXECUTOR_ID, PHASE_H_H1_COMPOSITE_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID, PHASE_H_H2_EXECUTOR_ID}
                 else production_batch_operation_adapter
             ),
             fake_adapter=False,
