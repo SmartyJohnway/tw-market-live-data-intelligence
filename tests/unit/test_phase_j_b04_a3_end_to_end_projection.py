@@ -174,9 +174,14 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
     assert h3_only_preflight["approved_operation_order"] == [scope_h3["operation_id"]]
     assert scope_h2["operation_id"] not in h3_only_preflight["approved_operation_order"]
     unrelated_plan = deepcopy(plan)
-    x_operation = next(item for item in unrelated_plan["operations"]
-                       if item["capability_id"] == "recent_performance"
-                       and item["canonical_target_ids"] != scope_h2["canonical_target_ids"])
+    x_operation = deepcopy(h3_plan)
+    x_operation["operation_id"] = "umeop-op-v1-ffffffffffffffffffff"
+    x_operation["dependency_operation_ids"] = []
+    unrelated_plan["operations"].append(x_operation)
+    x_batch = next(item for item in unrelated_plan["batch_groups"]
+                   if item["batch_group_id"] == x_operation["batch_group_id"])
+    x_batch["operation_ids"] = sorted([*x_batch["operation_ids"], x_operation["operation_id"]])
+    unrelated_plan["plan_hash"], unrelated_plan["plan_id"] = plan_hash_and_id(plan_identity_scope(unrelated_plan))
     x_preflight = selected_scope(unrelated_plan, [x_operation["operation_id"]], "unrelated-x")
     assert x_preflight["approved_operation_order"] == [x_operation["operation_id"]]
     pair_preflight = selected_scope(selected_h2_only, [scope_h2["operation_id"], scope_h3["operation_id"]], "h2-h3")
