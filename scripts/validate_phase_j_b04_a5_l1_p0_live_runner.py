@@ -14,6 +14,8 @@ if str(ROOT) not in sys.path:
 STARTING_HEAD = "0aa73c9369200ec855143f26de16bf58430af5d3"
 STARTING_TREE = "a4a691b47205236d950fb9ed4e6c85a6d79877fc"
 STARTING_MAIN = "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a"
+IMPLEMENTATION_HEAD = "6675b64a2a84632edd64e948e1adf6a2b88fc24e"
+IMPLEMENTATION_TREE = "b22adc8c96de9446a3b82e1c90f1396c827eaf98"
 RECORD = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_LIVE_RUNNER_HARDENING_2026-10-09.json"
 P0_RECORD = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.json"
 RULE = "prefer normalizable TWSE:2330; otherwise lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows"
@@ -61,6 +63,7 @@ def validate_contract(record: dict[str, Any]) -> dict[str, Any]:
     assert record["forbidden_persisted_raw_fields"] == sorted(FORBIDDEN)
     default_ci = record["default_ci_comparison"]
     assert default_ci["base"] == STARTING_MAIN
+    assert default_ci["head"] == IMPLEMENTATION_HEAD and default_ci["head_tree"] == IMPLEMENTATION_TREE
     assert default_ci["environment"] == {"TZ": "Etc/UTC", "PYTHONHASHSEED": "0"}
     assert default_ci["base_collected"] == default_ci["head_collected"] == 1230
     assert default_ci["base_selected"] == default_ci["head_selected"] == 1225
@@ -123,6 +126,7 @@ def validate_repository() -> dict[str, Any]:
     from scripts.validate_phase_j_b04_a5_bounded_live_acceptance import validate_repository as validate_p0
     validate_p0()
     assert _git("rev-parse", "origin/main") == STARTING_MAIN
+    assert _git("rev-parse", f"{IMPLEMENTATION_HEAD}^{{tree}}") == IMPLEMENTATION_TREE
     for frozen in ("server/services/phase_h_h2_twse_exright_executor.py",
         "server/services/phase_h_corporate_action_adapters.py", "server/services/phase_h_discontinuity_safety.py",
         "schemas/corporate_action_context_evidence.v1.schema.json", "schemas/recent_performance_evidence.v1.schema.json",
