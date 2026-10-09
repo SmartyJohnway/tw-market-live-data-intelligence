@@ -222,7 +222,8 @@
   },
   "default_ci_comparison": {
     "base": "6a8209d622447d0116659ee316db8cf181e7d18d",
-    "candidate": "P1 implementation commit (recorded after commit)",
+    "candidate": "11f593d2052da2ce75f8f182e1a02e12efa32aed",
+    "candidate_tree": "dc128d5fc2732d8b63aebf4a3562e5ac95dda3f8",
     "python": "CPython 3.12.14 via shared /tmp/a5test-venv",
     "command": "python scripts/run_test_profile.py default-ci --json",
     "base_counts": {"collected": 1288, "selected": 1283, "passed": 1251, "failed": 28, "skipped": 4, "deselected": 5},

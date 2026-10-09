@@ -62,6 +62,10 @@ The proposed integrated vertical has at most three H3 TWSE `STOCK_DAY` month GET
 
 ## Validation and terminal state
 
-The P1 tests and validator inspect repository evidence only and deny sockets in the test path. Market GET/HEAD/POST remained `0/0/0`; Security Master live acquisition was `0`; bootstrap was not executed. H2 is `INACTIVE`, selected executor is `null`, J-B04 is `BLOCKING`, Phase J is `NOT_STARTED`, and MCP remains 6.
+The P1 unit suite passed **6/6**; the broader selected network-free integration/regression group passed **182**, skipped **1**. The P1 validator passed. A1, A2, A3, Phase-H V3, Phase-J GHI, A6-P0, portable catalog, and runtime Skill/guide validators passed. The A6-P0 check confirmed the A5 closeout and both historical A5 sessions were unchanged. Strict duplicate-key JSON validation passed for **1,042 files**; compileall and `git diff --check` passed.
+
+Default-CI was run at base `6a8209d622447d0116659ee316db8cf181e7d18d` and implementation commit `11f593d2052da2ce75f8f182e1a02e12efa32aed`, with identical Python 3.12.14, dependency environment, profile command, and test selection. Both had 1,288 collected, 1,283 selected, 1,251 passed, 28 failed, 4 skipped, and 5 deselected. All 28 failures were the same Phase-I A4 tests requiring an active local Security Master, which is intentionally `NOT_INITIALIZED` in this Cloud installation. New failure delta: **0**. Resolved failure delta: **0**. The exact failed node IDs are in the companion JSON. `network_may_have_occurred=false` in both reports.
+
+Market GET/HEAD/POST remained `0/0/0`; Security Master live acquisition was `0`; bootstrap was not executed. H2 is `INACTIVE`, selected executor is `null`, J-B04 is `BLOCKING`, Phase J is `NOT_STARTED`, and MCP remains 6.
 
 The exact bootstrap probe inventory and machine checks are in the companion JSON and `scripts/validate_phase_j_b04_a6_p1_prerequisite_authority.py`. No Owner authorization template is included because the transport dispatch ceiling is unproven.
