@@ -9,6 +9,9 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
+import secrets
+import stat
 import subprocess
 import sys
 from typing import Any, Mapping
@@ -32,6 +35,8 @@ PREDECLARED_SOURCE_TARGET_SHA256 = "d80f5c697d333f043df922a099a0f472780051c1d2ab
 STAGE_WITNESS_POLICY = "prefer normalizable TWSE:2330; otherwise lexicographically smallest (Code, Date, canonical raw-row SHA-256) among normalizable rows"
 ACCEPTANCE_RUNS = ROOT / "docs/governance/phase_j/acceptance_runs"
 FORBIDDEN_RAW_KEYS = {"raw_bytes", "rows", "rows_in_memory", "raw_payload", "raw_body", "source_rows", "full_payload"}
+LEASE_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+EXECUTION_LEASE_MIN_BYTES = 32
 
 
 class A5Error(RuntimeError):
@@ -88,19 +93,17 @@ class SingleUseAuthority:
         if record.get("execution_environment_class") != execution_environment:
             raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
         expected_keys = {"gate", "authorized_head_sha", "authorized_tree_sha", "execution_environment_class",
-                         "statement", "statement_sha256", "consumed"}
+                         "execution_instance_lease_sha256", "statement", "statement_sha256", "consumed"}
         if set(record) != expected_keys:
             raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
         statement = record.get("statement")
         statement_hash = record.get("statement_sha256")
-        if not isinstance(statement, str) or not isinstance(statement_hash, str):
+        lease_hash = record.get("execution_instance_lease_sha256")
+        if (not isinstance(statement, str) or not isinstance(statement_hash, str)
+                or not isinstance(lease_hash, str) or not LEASE_SHA256_RE.fullmatch(lease_hash)
+                or not LEASE_SHA256_RE.fullmatch(statement_hash)):
             raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
-        expected = (
-            f"AUTHORIZE J-B04-A5 LIVE ON HEAD {head}:\nexactly 1 GET to\n{ENDPOINT},\n"
-            "retry 0,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\n"
-            "no TWT49U/TPEx/browser fallback,\nno raw payload persistence,\n"
-            "no H2 activation,\nno J-B04 closure,\nno Phase J start."
-        )
+        expected = expected_owner_statement(head, lease_hash)
         if statement != expected or statement_hash != hashlib.sha256(statement.encode("utf-8")).hexdigest():
             raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
         if record.get("consumed") is not False:
@@ -289,13 +292,95 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
-def expected_owner_statement(head: str) -> str:
+def expected_owner_statement(head: str, lease_sha256: str) -> str:
     return (
-        f"AUTHORIZE J-B04-A5 LIVE ON HEAD {head}:\nexactly 1 GET to\n{ENDPOINT},\n"
+        f"AUTHORIZE J-B04-A5 LIVE ON HEAD {head}\n"
+        f"WITH EXECUTION LEASE {lease_sha256}:\nexactly 1 GET to\n{ENDPOINT},\n"
         "retry 0,\nno redirects,\ntarget TWSE:2330,\nno H3 live calls,\n"
         "no TWT49U/TPEx/browser fallback,\nno raw payload persistence,\n"
         "no H2 activation,\nno J-B04 closure,\nno Phase J start."
     )
+
+
+def _external_lease_path(path: Path) -> Path:
+    try:
+        resolved = path.expanduser().resolve(strict=False)
+        if resolved.is_relative_to(ROOT.resolve()):
+            raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID")
+        return resolved
+    except A5Error:
+        raise
+    except Exception as exc:
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID") from exc
+
+
+def prepare_execution_lease(path: Path, execution_environment: str) -> dict[str, Any]:
+    """Create a random external secret once; disclose only its public SHA-256."""
+    if execution_environment not in EXECUTION_ENVIRONMENTS:
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID")
+    target = _external_lease_path(Path(path))
+    if not target.parent.is_dir():
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID")
+    secret = secrets.token_bytes(EXECUTION_LEASE_MIN_BYTES)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    fd = None
+    permission_hardening = False
+    try:
+        fd = os.open(target, flags, 0o600)
+        try:
+            os.fchmod(fd, 0o600)
+            permission_hardening = True
+        except (AttributeError, OSError):
+            permission_hardening = False
+        with os.fdopen(fd, "wb", closefd=True) as stream:
+            fd = None
+            stream.write(secret)
+            stream.flush()
+            os.fsync(stream.fileno())
+    except FileExistsError as exc:
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID") from exc
+    except Exception as exc:
+        try:
+            target.unlink(missing_ok=True)
+        except OSError:
+            pass
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID") from exc
+    finally:
+        if fd is not None:
+            os.close(fd)
+    lease_hash = hashlib.sha256(secret).hexdigest()
+    del secret
+    return {"gate": "J-B04-A5", "execution_environment_class": execution_environment,
+        "execution_instance_lease_sha256": lease_hash, "lease_file_created": True,
+        "permission_hardening_applied": permission_hardening, "secret_disclosed": False,
+        "market_GET": 0, "market_HEAD": 0, "market_POST": 0}
+
+
+def load_execution_lease(path: Path, expected_sha256: str) -> bytes:
+    """Load a pre-existing external secret. Live mode never creates/replaces it."""
+    if not isinstance(expected_sha256, str) or not LEASE_SHA256_RE.fullmatch(expected_sha256):
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
+    target = _external_lease_path(Path(path))
+    if not target.exists():
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_MISSING")
+    try:
+        mode = target.stat().st_mode
+        if not stat.S_ISREG(mode):
+            raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID")
+        secret = target.read_bytes()
+    except A5Error:
+        raise
+    except FileNotFoundError as exc:
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_MISSING") from exc
+    except Exception as exc:
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID") from exc
+    if len(secret) < EXECUTION_LEASE_MIN_BYTES:
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_INVALID")
+    if hashlib.sha256(secret).hexdigest() != expected_sha256:
+        raise A5Error("J_B04_A5_EXECUTION_LEASE_HASH_MISMATCH")
+    return secret
 
 
 def _safe_capture_response(response: Mapping[str, Any]) -> EphemeralLiveCapture:
@@ -562,7 +647,8 @@ def _safe_h2_error_code(value: Any) -> str | None:
     return None
 
 
-def run_live_acceptance(owner_authorization_path: Path, execution_environment: str, *,
+def run_live_acceptance(owner_authorization_path: Path, execution_environment: str,
+                        execution_lease_file: Path, *,
                         get_once=None, git_state_provider=None, dirty_check=None,
                         preflight_fn=None, runtime_invariant_fn=None, now_fn=None,
                         acceptance_runs_root: Path | None = None) -> dict[str, Any]:
@@ -593,6 +679,9 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
         safe_destination(str(runs_root), str(Path(run_root.name) / "owner_authorization_consumed.json"), create_parent=False)
     except FilesystemSafetyError as exc:
         raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED") from exc
+    # A missing lease after workspace loss cannot be regenerated by live mode.
+    lease_secret = load_execution_lease(Path(execution_lease_file), record["execution_instance_lease_sha256"])
+    del lease_secret
     # Recheck the lease after all preflight work and immediately before consuming it.
     final_head, final_tree, final_main = state_provider()
     if final_head != record["authorized_head_sha"]:
@@ -609,6 +698,7 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
     consumed_at = (now_fn or _utc_now)()
     receipt = {"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": tree,
         "statement_sha256": statement_hash, "execution_environment_class": execution_environment,
+        "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
         "consumed_at_utc": consumed_at, "consumption_state": "CONSUMED_BEFORE_TRANSPORT"}
     try:
         atomic_create_text_exclusive(str(runs_root), str(Path(run_root.name) / "owner_authorization_consumed.json"),
@@ -636,7 +726,9 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
         _write_sanitized_json(run_root, "owner_authorization.json", {
             "authorization_source": "external_owner_authorization_file", "authorized_head_sha": head,
             "authorized_tree_sha": tree, "statement_sha256": statement_hash,
-            "execution_environment_class": execution_environment, "consumed_at_utc": consumed_at})
+            "execution_environment_class": execution_environment,
+            "execution_instance_lease_sha256": record["execution_instance_lease_sha256"],
+            "consumed_at_utc": consumed_at})
         _write_sanitized_json(run_root, "transport_attempt.json", attempt, overwrite=False)
         transport = get_once
         if transport is None:
@@ -922,13 +1014,31 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--execution-environment", choices=sorted(EXECUTION_ENVIRONMENTS), required=True,
         help="explicit installation identity assurance class; never inferred")
     parser.add_argument("--live-acceptance", action="store_true", help="run one exact-head Owner-authorized bounded-live acceptance")
+    parser.add_argument("--prepare-execution-lease", action="store_true",
+        help="create a random external execution-instance lease; does not authorize live execution")
     parser.add_argument("--owner-authorization-json", type=Path)
+    parser.add_argument("--execution-lease-file", type=Path)
     args = parser.parse_args(argv)
-    if args.live_acceptance:
-        if args.preflight or args.owner_authorization_json is None:
-            parser.error("--live-acceptance requires --owner-authorization-json and cannot be combined with --preflight")
+    modes = sum((args.preflight, args.prepare_execution_lease, args.live_acceptance))
+    if modes != 1:
+        parser.error("choose exactly one of --preflight, --prepare-execution-lease, or --live-acceptance")
+    if args.prepare_execution_lease:
+        if args.execution_lease_file is None or args.owner_authorization_json is not None:
+            parser.error("--prepare-execution-lease requires --execution-lease-file and prohibits --owner-authorization-json")
         try:
-            result = run_live_acceptance(args.owner_authorization_json, args.execution_environment)
+            print(json.dumps(prepare_execution_lease(args.execution_lease_file, args.execution_environment),
+                ensure_ascii=False, sort_keys=True))
+            return 0
+        except A5Error as exc:
+            print(json.dumps({"disposition": str(exc), "lease_file_created": False,
+                "market_GET": 0, "market_HEAD": 0, "market_POST": 0}, sort_keys=True))
+            return 3
+    if args.live_acceptance:
+        if args.owner_authorization_json is None or args.execution_lease_file is None:
+            parser.error("--live-acceptance requires --owner-authorization-json and --execution-lease-file")
+        try:
+            result = run_live_acceptance(args.owner_authorization_json, args.execution_environment,
+                args.execution_lease_file)
         except A5Error as exc:
             disposition = str(exc) if str(exc).startswith("J_B04_A5_") else "J_B04_A5_LIVE_AUTHORIZATION_INVALID"
             print(json.dumps({"disposition": disposition, "transport_attempted": False,
@@ -940,10 +1050,8 @@ def main(argv: list[str] | None = None) -> int:
             return 3
         print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
         return 0 if result["disposition"] == "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW" else 2
-    if args.owner_authorization_json is not None:
-        parser.error("--owner-authorization-json is valid only with --live-acceptance")
-    if not args.preflight:
-        parser.error("--preflight is required; no implicit network behavior")
+    if args.owner_authorization_json is not None or args.execution_lease_file is not None:
+        parser.error("authorization and lease paths are valid only in their explicit modes")
     print(json.dumps(run_p0_preflight(args.execution_environment), ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 

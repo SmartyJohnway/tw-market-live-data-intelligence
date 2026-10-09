@@ -163,7 +163,10 @@ def validate_repository() -> dict[str, Any]:
         "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_LIVE_RUNNER_HARDENING_2026-10-09.json",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_LIVE_RUNNER_HARDENING_2026-10-09.md",
         "tests/unit/test_phase_j_b04_a5_runner.py", "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.json",
-        "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.md"}
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.md",
+        "scripts/validate_phase_j_b04_a5_l1_p0_r1_execution_lease.py",
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R1_EXECUTION_INSTANCE_LEASE_HARDENING_2026-10-09.json",
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R1_EXECUTION_INSTANCE_LEASE_HARDENING_2026-10-09.md"}
     assert not (changed | modified | untracked) - allowed
     for frozen in ("server/services/phase_h_discontinuity_safety.py", "schemas/corporate_action_context_evidence.v1.schema.json",
         "schemas/recent_performance_evidence.v1.schema.json", "schemas/discontinuity_safety_evidence.v1.schema.json",

@@ -19,6 +19,8 @@ def deny_network(monkeypatch):
     def denied(*args, **kwargs):
         raise AssertionError("network is forbidden in L1-P0 tests")
     monkeypatch.setattr(socket, "create_connection", denied)
+    monkeypatch.setattr(socket.socket, "connect", denied)
+    monkeypatch.setattr(socket.socket, "connect_ex", denied)
 
 
 def row(code: str, *, day="2026-10-06", ex="除息", cash="1"):
@@ -26,10 +28,16 @@ def row(code: str, *, day="2026-10-06", ex="除息", cash="1"):
         "SubscriptionRatio": "0", "SubscriptionPricePerShare": "尚未公告", "CashDividend": cash}
 
 
-def auth_file(tmp_path: Path, *, head="a" * 40, tree="b" * 40, environment="cloud_clean_source_acceptance") -> Path:
-    statement = expected_owner_statement(head)
+TEST_SECRET = bytes(range(32))
+
+
+def auth_file(tmp_path: Path, *, head="a" * 40, tree="b" * 40, environment="cloud_clean_source_acceptance",
+              lease_sha256=None) -> Path:
+    lease_sha256 = lease_sha256 or hashlib.sha256(TEST_SECRET).hexdigest()
+    statement = expected_owner_statement(head, lease_sha256)
     record = {"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": tree,
-        "execution_environment_class": environment, "statement": statement,
+        "execution_environment_class": environment, "execution_instance_lease_sha256": lease_sha256,
+        "statement": statement,
         "statement_sha256": hashlib.sha256(statement.encode("utf-8")).hexdigest(), "consumed": False}
     path = tmp_path / "owner-auth.json"
     path.write_text(json.dumps(record), encoding="utf-8")
@@ -37,8 +45,12 @@ def auth_file(tmp_path: Path, *, head="a" * 40, tree="b" * 40, environment="clou
 
 
 def kwargs_for(tmp_path: Path, response, calls: list):
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    lease_path = tmp_path / "execution-instance.lease"
+    lease_path.write_bytes(TEST_SECRET)
     return {"owner_authorization_path": auth_file(tmp_path),
         "execution_environment": "cloud_clean_source_acceptance",
+        "execution_lease_file": lease_path,
         "get_once": lambda **kw: calls.append(kw) or response,
         "git_state_provider": lambda: ("a" * 40, "b" * 40, STARTING_MAIN),
         "dirty_check": lambda: False,
@@ -80,6 +92,8 @@ def test_fake_e2e_pass_consumes_once_replays_h2_h4_and_persists_no_raw(tmp_path)
     assert result["http_dispatch_attempts"] == 0  # injected fake transport, no HTTP opener dispatch
     root, files = load_package(result, tmp_path)
     assert (root / "owner_authorization_consumed.json").is_file()
+    receipt = json.loads((root / "owner_authorization_consumed.json").read_text())
+    assert receipt["execution_instance_lease_sha256"] == hashlib.sha256(TEST_SECRET).hexdigest()
     summary = json.loads((root / "acceptance_summary.json").read_text())
     assert summary["raw_body_absence_verified"] is True
     assert summary["identity_assurance_level"] == "acceptance_only_predeclared_source_target"
@@ -249,6 +263,117 @@ def test_non_exact_owner_statement_rejected_before_consumption(tmp_path):
     assert calls == [] and not (tmp_path / "acceptance_runs").exists()
 
 
+def test_lease_preparation_creates_random_external_secret_without_changing_git(monkeypatch, capsys, tmp_path):
+    import subprocess
+    import scripts.phase_j_b04_a5_bounded_live_acceptance as runner
+    before = (subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=runner.ROOT, text=True).strip(),
+        subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=runner.ROOT, text=True).strip())
+    lease_path = tmp_path / "new-instance.lease"
+    code = runner.main(["--prepare-execution-lease", "--execution-environment", "cloud_clean_source_acceptance",
+        "--execution-lease-file", str(lease_path)])
+    assert code == 0
+    output = capsys.readouterr().out
+    metadata = json.loads(output)
+    secret = lease_path.read_bytes()
+    assert len(secret) >= 32 and metadata["execution_instance_lease_sha256"] == hashlib.sha256(secret).hexdigest()
+    assert metadata["secret_disclosed"] is False
+    assert secret.hex() not in output and __import__("base64").b64encode(secret).decode() not in output
+    if hasattr(lease_path.stat(), "st_mode") and __import__("os").name == "posix":
+        assert lease_path.stat().st_mode & 0o777 == 0o600
+    after = (subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=runner.ROOT, text=True).strip(),
+        subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=runner.ROOT, text=True).strip())
+    assert before == after
+
+
+def test_lease_prepare_never_overwrites_existing_secret(tmp_path):
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import prepare_execution_lease
+    path = tmp_path / "existing.lease"
+    path.write_bytes(b"original lease bytes" * 2)
+    before = path.read_bytes()
+    with pytest.raises(A5Error, match="J_B04_A5_EXECUTION_LEASE_INVALID"):
+        prepare_execution_lease(path, "cloud_clean_source_acceptance")
+    assert path.read_bytes() == before
+
+
+def test_lease_paths_inside_repository_and_symlink_into_repository_rejected(tmp_path):
+    from scripts.phase_j_b04_a5_bounded_live_acceptance import ROOT, load_execution_lease, prepare_execution_lease
+    digest = hashlib.sha256(TEST_SECRET).hexdigest()
+    with pytest.raises(A5Error, match="J_B04_A5_EXECUTION_LEASE_INVALID"):
+        prepare_execution_lease(ROOT / "config" / "not-a-real-lease", "cloud_clean_source_acceptance")
+    external_link = tmp_path / "repo-link.lease"
+    external_link.symlink_to(ROOT / "config" / "phase_h_h2_dormant_source_descriptors.json")
+    with pytest.raises(A5Error, match="J_B04_A5_EXECUTION_LEASE_INVALID"):
+        load_execution_lease(external_link, digest)
+
+
+def test_missing_wrong_and_truncated_lease_block_before_consumption(tmp_path):
+    for case in ("missing", "wrong", "short"):
+        calls = []
+        kwargs = kwargs_for(tmp_path / case, response([row("2330")]), calls)
+        lease = kwargs["execution_lease_file"]
+        if case == "missing":
+            lease.unlink()
+            expected = "J_B04_A5_EXECUTION_LEASE_MISSING"
+        elif case == "wrong":
+            lease.write_bytes(b"x" * 32)
+            expected = "J_B04_A5_EXECUTION_LEASE_HASH_MISMATCH"
+        else:
+            lease.write_bytes(b"short")
+            expected = "J_B04_A5_EXECUTION_LEASE_INVALID"
+        with pytest.raises(A5Error, match=expected):
+            run_live_acceptance(**kwargs)
+        assert calls == []
+        consumed = list((tmp_path / case / "acceptance_runs").rglob("owner_authorization_consumed.json"))
+        assert consumed == []
+
+
+def test_cloud_workspace_loss_replay_requires_original_lease(tmp_path):
+    calls = []
+    kwargs = kwargs_for(tmp_path / "workspace-a", response([row("2330")]), calls)
+    result = run_live_acceptance(**kwargs)
+    assert result["logical_get_attempts"] == 1 and len(calls) == 1
+    # Workspace B has the same Git lease and external Owner authorization, but no local receipt or secret.
+    kwargs["execution_lease_file"].unlink()
+    kwargs["acceptance_runs_root"] = tmp_path / "workspace-b" / "acceptance_runs"
+    with pytest.raises(A5Error, match="J_B04_A5_EXECUTION_LEASE_MISSING"):
+        run_live_acceptance(**kwargs)
+    assert len(calls) == 1
+
+
+def test_cloud_workspace_loss_with_new_unrelated_lease_cannot_replay(tmp_path):
+    calls = []
+    kwargs = kwargs_for(tmp_path / "workspace-a", response([row("2330")]), calls)
+    run_live_acceptance(**kwargs)
+    kwargs["execution_lease_file"].write_bytes(b"y" * 32)
+    kwargs["acceptance_runs_root"] = tmp_path / "workspace-b" / "acceptance_runs"
+    with pytest.raises(A5Error, match="J_B04_A5_EXECUTION_LEASE_HASH_MISMATCH"):
+        run_live_acceptance(**kwargs)
+    assert len(calls) == 1
+
+
+def test_old_lease_free_owner_statement_and_malformed_lease_hash_are_rejected(tmp_path):
+    calls = []
+    kwargs = kwargs_for(tmp_path, response([row("2330")]), calls)
+    auth_path = kwargs["owner_authorization_path"]
+    record = json.loads(auth_path.read_text())
+    record["statement"] = record["statement"].replace("\nWITH EXECUTION LEASE " + record["execution_instance_lease_sha256"] + ":", ":")
+    record["statement_sha256"] = hashlib.sha256(record["statement"].encode()).hexdigest()
+    auth_path.write_text(json.dumps(record))
+    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_INVALID"):
+        run_live_acceptance(**kwargs)
+    record = json.loads(auth_file(tmp_path).read_text())
+    record.pop("execution_instance_lease_sha256")
+    auth_path.write_text(json.dumps(record))
+    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_INVALID"):
+        run_live_acceptance(**kwargs)
+    record = json.loads(auth_file(tmp_path).read_text())
+    record["execution_instance_lease_sha256"] = "A" * 64
+    auth_path.write_text(json.dumps(record))
+    with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_INVALID"):
+        run_live_acceptance(**kwargs)
+    assert calls == []
+
+
 def test_head_lease_is_rechecked_after_preflight_before_consumption(tmp_path):
     calls = []
     kwargs = kwargs_for(tmp_path, response([row("2330")]), calls)
@@ -326,7 +451,8 @@ def test_live_cli_exit_codes_and_output_are_deterministic(monkeypatch, capsys, d
         "disposition": disposition, "logical_get_attempts": 1, "http_dispatch_attempts": 0,
         "raw_body_absence_verified": True, "market_GET": 1, "market_HEAD": 0, "market_POST": 0})
     result = runner.main(["--live-acceptance", "--execution-environment", "cloud_clean_source_acceptance",
-        "--owner-authorization-json", "/tmp/external-owner-auth.json"])
+        "--owner-authorization-json", "/tmp/external-owner-auth.json", "--execution-lease-file",
+        "/tmp/external-execution-lease"])
     assert result == expected
     output = capsys.readouterr().out
     assert disposition in output and "raw_bytes" not in output and "rows_in_memory" not in output

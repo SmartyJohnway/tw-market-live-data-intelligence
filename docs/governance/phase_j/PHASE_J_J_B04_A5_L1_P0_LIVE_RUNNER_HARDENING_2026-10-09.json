@@ -21,9 +21,11 @@
     "sha256": "d80f5c697d333f043df922a099a0f472780051c1d2abf79866954026b63aaa40"
   },
   "authorization_contract": {
-    "required_cli_flags": ["--live-acceptance", "--execution-environment", "--owner-authorization-json"],
+    "required_cli_flags": ["--live-acceptance", "--execution-environment", "--owner-authorization-json", "--execution-lease-file"],
     "external_file_required": true,
-    "record_fields": ["gate", "authorized_head_sha", "authorized_tree_sha", "execution_environment_class", "statement", "statement_sha256", "consumed"],
+    "record_fields": ["gate", "authorized_head_sha", "authorized_tree_sha", "execution_environment_class", "execution_instance_lease_sha256", "statement", "statement_sha256", "consumed"],
+    "execution_lease_required": true,
+    "lease_secret_external_only": true,
     "statement_byte_exact": true,
     "consumed_must_be": false,
     "head_tree_main_bound": true,
@@ -34,7 +36,7 @@
     "exclusive_atomic_create": true,
     "directory_derivation": "authorized head + exact owner statement SHA-256 prefix",
     "reuse_rejected": true,
-    "receipt_fields": ["gate", "authorized_head_sha", "authorized_tree_sha", "statement_sha256", "execution_environment_class", "consumed_at_utc", "consumption_state"]
+    "receipt_fields": ["gate", "authorized_head_sha", "authorized_tree_sha", "statement_sha256", "execution_environment_class", "execution_instance_lease_sha256", "consumed_at_utc", "consumption_state"]
   },
   "transport_contract": {
     "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",

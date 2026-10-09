@@ -51,8 +51,11 @@ def validate_contract(record: dict[str, Any]) -> dict[str, Any]:
     assert record["canonical_state"] == {"H2_runtime": "INACTIVE", "selected_executor_id": None,
         "J-B04": "BLOCKING", "Phase J": "NOT_STARTED", "MCP": 6}
     assert record["authorization_contract"]["required_cli_flags"] == ["--live-acceptance",
-        "--execution-environment", "--owner-authorization-json"]
+        "--execution-environment", "--owner-authorization-json", "--execution-lease-file"]
     assert record["authorization_contract"]["external_file_required"] is True
+    assert record["authorization_contract"]["execution_lease_required"] is True
+    assert "execution_instance_lease_sha256" in record["authorization_contract"]["record_fields"]
+    assert "execution_instance_lease_sha256" in record["authority_consumption"]["receipt_fields"]
     assert record["authority_consumption"]["state"] == "CONSUMED_BEFORE_TRANSPORT"
     assert record["authority_consumption"]["exclusive_atomic_create"] is True
     assert record["stage_witness_selection_policy"] == RULE
@@ -101,11 +104,14 @@ def validate_repository() -> dict[str, Any]:
     assert 'parser.add_argument("--live-acceptance"' in source
     assert 'parser.add_argument("--execution-environment"' in source
     assert 'parser.add_argument("--owner-authorization-json"' in source
+    assert 'parser.add_argument("--prepare-execution-lease"' in source
+    assert 'parser.add_argument("--execution-lease-file"' in source
     assert "official_get_once" in source
     assert source.count("official_get_once") == 2
     assert live_source.count("response = transport(timeout_seconds=TIMEOUT)") == 1
     assert "derive_h4_for_completed_plan" in source
     assert "atomic_create_text_exclusive" in live_source
+    assert live_source.index("load_execution_lease(Path(") < live_source.index("atomic_create_text_exclusive(str(")
     assert live_source.index("atomic_create_text_exclusive") < live_source.index("authority.consume()")
     assert live_source.index("authority.consume()") < live_source.index("transport(timeout_seconds=TIMEOUT)")
     assert "retry_count\": 0" in live_source and "redirect_follow_count\": 0" in live_source

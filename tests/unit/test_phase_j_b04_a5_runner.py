@@ -55,10 +55,12 @@ def test_live_call_without_explicit_authority_is_rejected_before_transport() -> 
 
 def test_authorization_is_single_use() -> None:
     head = "a" * 40
-    statement = expected_owner_statement(head)
     import hashlib
+    lease_hash = hashlib.sha256(b"fake test lease" * 3).hexdigest()
+    statement = expected_owner_statement(head, lease_hash)
     token = SingleUseAuthority({"gate": "J-B04-A5", "authorized_head_sha": head, "authorized_tree_sha": "t" * 40,
-        "execution_environment_class": "cloud_clean_source_acceptance", "statement": statement,
+        "execution_environment_class": "cloud_clean_source_acceptance",
+        "execution_instance_lease_sha256": lease_hash, "statement": statement,
         "statement_sha256": hashlib.sha256(statement.encode()).hexdigest(), "consumed": False}, head=head)
     token.consume()
     with pytest.raises(A5Error, match="J_B04_A5_LIVE_AUTHORIZATION_ALREADY_CONSUMED"):
@@ -147,8 +149,9 @@ def test_live_cli_requires_external_authorization_file(monkeypatch):
         main([])
     with pytest.raises(SystemExit):
         main(["--preflight"])
-    assert main(["--live-acceptance", "--execution-environment", "cloud_clean_source_acceptance",
-        "--owner-authorization-json", "/tmp/not-present-owner-auth.json"]) == 3
+    with pytest.raises(SystemExit):
+        main(["--live-acceptance", "--execution-environment", "cloud_clean_source_acceptance",
+            "--owner-authorization-json", "/tmp/not-present-owner-auth.json"])
 
 
 def _release_record(*, canonical="TWSE:2330", market="TWSE", code="2330", family="company_share",

@@ -1,5 +1,10 @@
 # J-B04-A5-L1-P0 live-runner hardening
 
+Authorization schema note: this L1-P0 record is superseded by the R1 lease
+requirement for live authorization. Any eventual live invocation also requires
+`--execution-lease-file`; the Owner statement and consumption receipt bind its
+SHA-256. The external secret is never included in this historical record.
+
 Disposition: `J_B04_A5_L1_P0_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW`.
 
 This tranche adds the exact-head live CLI and its network-free acceptance path. The command requires `--live-acceptance`, `--execution-environment`, and an external `--owner-authorization-json`. The authorization binds exact HEAD, tree, canonical main, the explicit environment class, the byte-exact Owner statement, its SHA-256, and `consumed: false`. Tracked staged or unstaged changes block before consumption.
