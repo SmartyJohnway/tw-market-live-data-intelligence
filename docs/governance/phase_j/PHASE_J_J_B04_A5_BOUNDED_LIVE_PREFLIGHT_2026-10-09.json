@@ -1,0 +1,65 @@
+{
+  "schema_version": "phase_j_j_b04_a5_preflight.v1",
+  "gate": "J-B04-A5",
+  "starting_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "preflight_source_revision": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "preflight_source_tree": "f140dac79cb2fbe177ca481c61629ca7a8e91d24",
+  "preflight_status": "J_B04_A5_PREFLIGHT_BLOCKED_SECURITY_MASTER_IDENTITY_UNAVAILABLE",
+  "identity_resolution": {
+    "target": "TWSE:2330",
+    "authority": "config/m8r_06_mode_a_security_master_pointer.json selected canonical compact runtime identity index",
+    "result": "not_resolved",
+    "reason": "selected index.json and manifest.json are absent from this environment; no fixture/name matching used"
+  },
+  "source_call_plan": {
+    "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",
+    "method": "GET",
+    "logical_get_maximum": 1,
+    "http_dispatch_maximum": 1,
+    "retry": 0,
+    "redirect_policy": "reject",
+    "timeout_seconds_maximum": 15,
+    "response_ceiling_bytes": 4194304,
+    "target": "TWSE:2330",
+    "H3_live_GETs": 0,
+    "TPEx_GETs": 0,
+    "TWT49U_GETs": 0,
+    "browser_fallback": "prohibited",
+    "raw_payload_persistence": "NONE"
+  },
+  "authority_overlay": {
+    "gate": "J-B04-A5",
+    "executor": "phase_h_h2_twse_exright_pre_executor",
+    "source": "H2-TWSE-EXRIGHT-PRE-OPENAPI",
+    "source_contract": "TWT48U_ALL",
+    "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",
+    "method": "GET",
+    "maximum_logical_source_attempts": 1,
+    "maximum_http_dispatch_attempts": 1,
+    "retry": 0,
+    "timeout_seconds_maximum": 15,
+    "response_ceiling_bytes": 4194304,
+    "production_activation": "NOT_AUTHORIZED",
+    "single_use": true,
+    "owner_live_authorization": "NOT PRESENT"
+  },
+  "canonical_state": {
+    "H2_source_activation_state": "eligible",
+    "H2_source_runtime_executable": false,
+    "corporate_action_context_routing": "plan_only",
+    "candidate_executor_ids": ["phase_h_h2_twse_exright_pre_executor"],
+    "selected_executor_id": null,
+    "H2_runtime": "INACTIVE",
+    "H3_TWSE": "ACTIVE",
+    "H3_TPEX": "BLOCKED / NON-EXECUTABLE",
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT_STARTED",
+    "MCP": 6
+  },
+  "authority_limits": {
+    "H2_activation": "NOT AUTHORIZED",
+    "J-B04_closure": "NOT AUTHORIZED",
+    "Phase_J_start": "NOT AUTHORIZED"
+  },
+  "network_calls_so_far": {"market_GET": 0, "market_HEAD": 0, "market_POST": 0}
+}
