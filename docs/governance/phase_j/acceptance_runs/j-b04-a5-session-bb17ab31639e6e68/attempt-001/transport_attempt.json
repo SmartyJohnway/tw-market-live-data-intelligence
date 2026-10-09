@@ -1,0 +1,1 @@
+{"actual_http_dispatch_attempts":1,"attempt_number":1,"completed_at":"2026-10-09T09:01:56Z","failure_class":null,"failure_stage":"h4_replay","logical_get_attempts":1,"outcome":"J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW","redirect_follow_count":0,"retry_count":0,"started_at":"2026-10-09T09:01:54Z","transport_attempted":true}
