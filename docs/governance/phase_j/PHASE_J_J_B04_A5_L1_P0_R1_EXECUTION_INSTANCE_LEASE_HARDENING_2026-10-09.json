@@ -49,6 +49,8 @@
     "MCP": 6
   },
   "validation": {
+    "A5_P0_R2_and_L1_P0_runner_tests": "63 passed",
+    "focused_network_denied_phase_h_j_and_identity_regressions": "179 passed / 2 skipped",
     "lease_test_cases": [
       "prepare random external lease and keep HEAD/TREE unchanged",
       "refuse overwrite, repository path, and symlink into repository",
@@ -63,6 +65,38 @@
     "A5_P0_R2_validator": "PASS",
     "A5_L1_P0_validator": "PASS",
     "R1_validator": "PASS",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "strict_duplicate_key_json_scan": "1011 files PASS",
+    "default_ci_comparison": {
+      "command": "python scripts/run_test_profile.py default-ci --json",
+      "python_runtime": "CPython 3.12.14 via /tmp/a5test-venv/bin/python",
+      "environment": {"TZ": "Etc/UTC", "PYTHONHASHSEED": "0"},
+      "dependency_environment": "same /tmp/a5test-venv for immutable git-archive base and candidate trees",
+      "base": "247e66f28424b205ddff1da3dd7cd07e0be9151c",
+      "candidate": "4a9bc84c6d59d9475d1b136eecb8b5c0a97f0b95",
+      "candidate_tree": "655d3d53ba0cafd49691436f5d8d06132387b5d6",
+      "base_counts": {"collected": 1230, "collection_errors": 5, "deselected": 5, "selected": 1225, "test_passes": null, "test_failures": null},
+      "candidate_counts": {"collected": 1230, "collection_errors": 5, "deselected": 5, "selected": 1225, "test_passes": null, "test_failures": null},
+      "base_failed_nodes": [
+        "tests/unit/test_twse_mis_normalization_v2.py",
+        "tests/unit/test_twse_openapi_normalization_v1.py",
+        "tests/unit/test_tpex_openapi_normalization_v1.py",
+        "tests/unit/test_yahoo_normalized_chart_v1.py",
+        "tests/unit/test_m8c_01_taifex_mis_runtime.py"
+      ],
+      "candidate_failed_nodes": [
+        "tests/unit/test_twse_mis_normalization_v2.py",
+        "tests/unit/test_twse_openapi_normalization_v1.py",
+        "tests/unit/test_tpex_openapi_normalization_v1.py",
+        "tests/unit/test_yahoo_normalized_chart_v1.py",
+        "tests/unit/test_m8c_01_taifex_mis_runtime.py"
+      ],
+      "shared_failure_classification": "collection_import_error: ModuleNotFoundError: requests",
+      "new_failure_delta": 0,
+      "resolved_failures": [],
+      "network_may_have_occurred": false
+    },
     "market_GET_HEAD_POST": "0/0/0",
     "security_master_live_calls": 0
   }

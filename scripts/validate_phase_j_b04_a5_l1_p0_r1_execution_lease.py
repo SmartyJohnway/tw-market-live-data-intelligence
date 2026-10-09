@@ -56,6 +56,17 @@ def validate_contract(record: dict[str, Any]) -> dict[str, str]:
         "security_master_live_acquisition": 0}
     assert record["canonical_state"] == {"H2_runtime": "INACTIVE", "selected_executor_id": None,
         "J-B04": "BLOCKING", "Phase J": "NOT_STARTED", "MCP": 6}
+    ci = record["validation"]["default_ci_comparison"]
+    assert ci["base"] == "247e66f28424b205ddff1da3dd7cd07e0be9151c"
+    assert ci["candidate"] == "4a9bc84c6d59d9475d1b136eecb8b5c0a97f0b95"
+    assert ci["base_counts"] == ci["candidate_counts"] == {"collected": 1230,
+        "collection_errors": 5, "deselected": 5, "selected": 1225,
+        "test_passes": None, "test_failures": None}
+    expected_nodes = ["tests/unit/test_twse_mis_normalization_v2.py",
+        "tests/unit/test_twse_openapi_normalization_v1.py", "tests/unit/test_tpex_openapi_normalization_v1.py",
+        "tests/unit/test_yahoo_normalized_chart_v1.py", "tests/unit/test_m8c_01_taifex_mis_runtime.py"]
+    assert ci["base_failed_nodes"] == ci["candidate_failed_nodes"] == expected_nodes
+    assert ci["new_failure_delta"] == 0 and ci["network_may_have_occurred"] is False
     return {"status": "PASS", "disposition": record["disposition"]}
 
 

@@ -95,6 +95,26 @@ stays not started, and MCP remains six. PR #326 remains Draft and unmerged.
 
 ## Validation
 
-Network-denied lease, runner, governance, and focused regression results are
-recorded in the companion JSON ledger. No market or Security Master source was
-contacted.
+The network-denied A5 runner tests passed: 63 passed. The combined Phase H/J,
+Security Master loader/lifecycle, and Taiwan Market Identity regressions passed:
+179 passed, 2 skipped. P0-R2, L1-P0, R1, A1/A2/A3, Phase-H V3, Phase-J GHI,
+portable catalog, and runtime Skill/guide validators passed. Compileall, diff
+check, and a strict duplicate-key scan of 1,011 JSON files passed.
+
+Default-CI was compared on the exact R1 baseline
+`247e66f28424b205ddff1da3dd7cd07e0be9151c` and implementation commit
+`4a9bc84c6d59d9475d1b136eecb8b5c0a97f0b95`, using immutable archived trees,
+CPython 3.12.14, the same `/tmp/a5test-venv`, `TZ=Etc/UTC`,
+`PYTHONHASHSEED=0`, and `python scripts/run_test_profile.py default-ci --json`.
+Both collected 1,230 nodes, selected 1,225, deselected 5, and stopped at the
+same five collection errors caused by `ModuleNotFoundError: requests`:
+
+- `tests/unit/test_twse_mis_normalization_v2.py`
+- `tests/unit/test_twse_openapi_normalization_v1.py`
+- `tests/unit/test_tpex_openapi_normalization_v1.py`
+- `tests/unit/test_yahoo_normalized_chart_v1.py`
+- `tests/unit/test_m8c_01_taifex_mis_runtime.py`
+
+No tests completed after collection. The new failure delta is zero. The
+profile recorded `network_may_have_occurred=false`. No market or Security
+Master source was contacted.
