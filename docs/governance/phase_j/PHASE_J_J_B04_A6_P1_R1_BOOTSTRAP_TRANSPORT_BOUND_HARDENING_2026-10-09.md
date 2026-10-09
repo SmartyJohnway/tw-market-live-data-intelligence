@@ -35,3 +35,12 @@ Security Master remains `NOT_INITIALIZED`; production identity is not verified. 
 ## Validation
 
 All tests use fake transport and deny real sockets. The full five-probe envelope test uses exactly ten fake dispatches; the next reservation fails before fake transport. No Security Master bootstrap or market call was made. The machine validator is `scripts/validate_phase_j_b04_a6_p1_r1_bootstrap_transport_bound.py`.
+
+## Validation results
+
+- Redirect-budget and P1 authority tests: **13 passed**.
+- A6-P0, materializer, Security Master release/loader tests: **69 passed, 2 skipped**.
+- Phase-H H2/H3/H4 regressions: **159 passed**.
+- A1/A2/A3, A6-P0, historical P1, R1, Phase-H V3, Phase-J GHI, catalog, and runtime-guide validators: **PASS**. The GHI validator itself passes while reporting its governed readiness HOLD.
+- `compileall`, `git diff --check`, and strict duplicate-key JSON scan: **PASS**; 1,043 JSON files scanned.
+- Exact `default-ci` comparison used clean archives of base `3944c1330e29b3f20132fe4ca0a04cc604f26094` and implementation `f25b3b4`, with CPython 3.12.14, the same virtualenv, command, and dependency environment. Both collected 1,288, selected 1,283, passed 1,234, failed 45, skipped 4, and deselected 5. Failed-node sets were identical: 45 shared, **0 new**, 0 resolved. `network_may_have_occurred=false` for both. The detailed node lists are recorded in the JSON.

@@ -101,6 +101,18 @@ def main() -> int:
     assert record["security_master"]["bootstrap_executed"] is False
     assert record["network_counts"] == {"market_GET_HEAD_POST": "0/0/0", "security_master_live_acquisition": 0}
 
+    ci = record["default_ci_comparison"]
+    assert ci["base"] == "3944c1330e29b3f20132fe4ca0a04cc604f26094"
+    assert ci["candidate"] == record["implementation_head"]
+    assert ci["new_failure_delta"] == 0
+    assert ci["new_failure_node_ids"] == []
+    assert ci["resolved_failure_node_ids"] == []
+    assert ci["shared_failure_count"] == 45
+    assert ci["base_counts"] == ci["head_counts"]
+    assert ci["network_may_have_occurred"] is False
+    assert len(ci["base_failed_node_ids"]) == 45
+    assert ci["base_failed_node_ids"] == ci["head_failed_node_ids"]
+
     h3 = record["h3_authority"]
     assert h3["disposition"] == "ACCEPTED_AT_OWNER_PRODUCT_AUTHORITY_LEVEL"
     assert h3["provider_automation_permission"] == "NOT_ESTABLISHED_TERMS_CONFLICTED"
