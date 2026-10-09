@@ -84,26 +84,47 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
     machine = record["machine_assertions"]
     for key, value in expected.items():
         assert machine.get(key) == value, f"machine_assertion_mismatch:{key}"
-    assert record["disposition"] == "J_B04_A3_NETWORK_FREE_IMPLEMENTATION_READY_FOR_A4_REVIEW"
+    assert record["disposition"] == "J_B04_A3_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW"
     assert record["disposition"] == machine["disposition"]
     assert machine["active_phase_h_source_count"] == 4
     assert machine["h3_twse"] == "ACTIVE" and machine["h3_tpex"] == "BLOCKED_NON_EXECUTABLE"
     assert machine["j_b01"] == machine["j_b02"] == machine["j_b03"] == "CLOSED"
     assert machine["j_b04_a3"] == "IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW"
+    assert machine["j_b04_a3_r1"] == "READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW"
     assert machine["h2_source_activation_state"] == "eligible"
     assert machine["h2_source_runtime_executable"] is False
     assert machine["h4_implementation"] == "EXISTING_UNCHANGED_ZERO_NETWORK"
 
     baseline = record["baseline_comparison"]
     assert baseline["exact_baseline"] == BASELINE
-    assert baseline["m8r_05c_baseline_passed"] == 47
-    assert baseline["m8r_05c_baseline_failed"] == 0
-    assert baseline["a3_head_m8r_05c_passed"] == 42
-    assert baseline["a3_head_m8r_05c_failed"] == 5
+    exact_base = baseline["exact_base"]
+    r1_head = baseline["r1_head"]
+    assert exact_base["revision"] == BASELINE
+    assert r1_head["revision"] == baseline["tested_r1_head"]
+    assert exact_base["command"] == r1_head["command"]
+    assert exact_base["environment"] == r1_head["environment"]
+    assert exact_base["fixture_manifest"] == r1_head["fixture_manifest"]
+    assert exact_base["collected_nodes"] == r1_head["collected_nodes"]
+    for result in (exact_base, r1_head):
+        assert result["collected_count"] == len(result["collected_nodes"])
+        assert result["passed_count"] == len(result["passed_nodes"])
+        assert result["failed_count"] == len(result["failed_nodes"])
+        assert result["skipped_count"] == len(result["skipped_nodes"])
+        assert result["deselected_count"] == len(result["deselected_nodes"])
+        assert set(result["passed_nodes"]).issubset(result["collected_nodes"])
+        assert set(result["failed_nodes"]).issubset(result["collected_nodes"])
+        assert set(result["skipped_nodes"]).issubset(result["collected_nodes"])
+        assert set(result["deselected_nodes"]).isdisjoint(result["collected_nodes"])
+        assert set(result["failure_codes"]) == set(result["failed_nodes"])
+    computed_delta = sorted(set(r1_head["failed_nodes"]) - set(exact_base["failed_nodes"]))
+    assert baseline["new_failure_nodes"] == computed_delta
+    assert baseline["new_failure_delta"] == len(computed_delta)
+    assert baseline["new_failure_delta"] == baseline["computed_new_failure_delta"]
     assert baseline["new_failure_delta"] == 0
-    assert set(baseline["same_inherited_failure_nodes"]) == set(baseline["a3_head_failure_nodes"])
-    assert all("artifact_hash_mismatch" in item for item in baseline["a3_head_failure_codes"])
-    assert baseline["new_a3_owned_regression_failures"] == []
+    assert baseline["new_a3_owned_regression_failures"] == computed_delta
+    assert baseline["exact_base"]["passed_count"] == 47
+    assert baseline["r1_head"]["passed_count"] == 47
+    assert baseline["exact_base"]["failed_count"] == baseline["r1_head"]["failed_count"] == 0
 
     checks = record["acceptance_evidence"]
     assert checks["h2_executor_tests"] == "PASS"
@@ -118,6 +139,11 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
     assert checks["h3_unavailable_h4_artifact"] is False
     assert checks["unexpected_internal_exception_propagates"] is True
     assert checks["network_isolation"] == "PASS"
+    assert checks["multi_target_h3_h2_h4"].startswith("PASS:")
+    assert checks["partial_multi_target_outcome"].startswith("PASS:")
+    assert checks["dependency_preflight"].startswith("PASS:")
+    assert checks["claim_before_dependency_failure"].startswith("PASS:")
+    assert record["validation"]["focused_tests"]["a3_owned_tests"]["passed"] == 48
 
     scope = record["scope_and_state"]
     assert scope["market_GETs"] == scope["market_HEADs"] == scope["market_POSTs"] == 0

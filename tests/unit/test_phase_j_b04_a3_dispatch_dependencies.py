@@ -8,6 +8,7 @@ from scripts.m8r_05b_03.dispatch import (
     dispatch_prepared,
 )
 from scripts.m8r_05b_03.errors import OrchestrationError
+from scripts.m8r_05b_03.dependency_graph import validate_dependency_graph
 from scripts.m8r_05b_03.registry import ExecutorMetadata
 
 TARGET = ["TWSE:2330"]
@@ -58,8 +59,8 @@ def _prepared(operation_id: str, capability: str, executor: str, contract: str, 
 
 def _plan(h2_dep: list[str], *, h3_capability: str = "recent_performance", h3_target: list[str] | None = None):
     return {"operations": [
-        {"operation_id": "h2", "capability_id": "corporate_action_context", "market": "TWSE", "canonical_target_ids": TARGET, "dependency_operation_ids": h2_dep},
-        {"operation_id": "h3", "capability_id": h3_capability, "market": "TWSE", "canonical_target_ids": h3_target or TARGET, "dependency_operation_ids": []},
+        {"operation_id": "h2", "capability_id": "corporate_action_context", "market": "TWSE", "canonical_target_ids": TARGET, "operation_status": "executable_pending_approval", "executor_invocation_eligible": True, "dependency_operation_ids": h2_dep},
+        {"operation_id": "h3", "capability_id": h3_capability, "market": "TWSE", "canonical_target_ids": h3_target or TARGET, "operation_status": "executable_pending_approval", "executor_invocation_eligible": True, "dependency_operation_ids": []},
     ]}
 
 
@@ -83,7 +84,7 @@ def test_dispatch_executes_h3_before_h2_even_if_input_order_is_reversed(tmp_path
 def test_graph_errors_fail_before_any_adapter_call(tmp_path):
     cases = [
         (_plan(["missing"]), "dependency_operation_missing"),
-        (_plan(["h2"]), "dependency_graph_invalid"),
+        (_plan(["h2"]), "dependency_self_reference"),
         (_plan(["h3"], h3_capability="corporate_action_context"), "h2_h3_dependency_binding_mismatch"),
         (_plan(["h3"], h3_target=["TWSE:0050"]), "h2_h3_dependency_binding_mismatch"),
     ]
@@ -92,6 +93,29 @@ def test_graph_errors_fail_before_any_adapter_call(tmp_path):
         with pytest.raises(OrchestrationError, match=message):
             dispatch_prepared(_items(log), governed_output_root=str(tmp_path), mode="execute-approved", plan=plan)
         assert log == []
+
+
+def test_shared_dependency_validator_rejects_invalid_graph_shapes():
+    cases = [
+        (_plan(["missing"]), {"h2", "h3"}, "dependency_operation_missing"),
+        (_plan(["h2"]), {"h2", "h3"}, "dependency_self_reference"),
+        (_plan(["h3", "h3"]), {"h2", "h3"}, "dependency_duplicate_or_invalid"),
+        ({"operations": _plan(["h3"])["operations"]}, {"h2"}, "dependency_operation_not_approved"),
+        (_plan(["h3"], h3_capability="corporate_action_context"), {"h2", "h3"}, "h2_h3_dependency_binding_mismatch"),
+        (_plan(["h3"], h3_target=["TWSE:0050"]), {"h2", "h3"}, "h2_h3_dependency_binding_mismatch"),
+    ]
+    cycle = _plan(["h3"])
+    cycle["operations"][1]["dependency_operation_ids"] = ["h2"]
+    cases.append((cycle, {"h2", "h3"}, "dependency_cycle"))
+    cross_market = _plan(["h3"])
+    cross_market["operations"][1]["market"] = "TPEX"
+    cases.append((cross_market, {"h2", "h3"}, "h2_h3_dependency_binding_mismatch"))
+    no_h2_dependency = _plan(["h3"])
+    no_h2_dependency["operations"][0]["dependency_operation_ids"] = []
+    cases.append((no_h2_dependency, {"h2", "h3"}, "h2_dependency_count_invalid"))
+    for plan, approved, error in cases:
+        with pytest.raises(OrchestrationError, match=error):
+            validate_dependency_graph(plan, approved)
 
 
 import pytest

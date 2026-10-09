@@ -261,7 +261,7 @@ def test_real_partial_h2_derives_verified_h4_coverage_incomplete(tmp_path: Path)
     h2_result = execute_h2_twse_exright_pre(
         _request(), _context(tmp_path, h3_context), fetch_response=lambda **kwargs: _response([_row()]),
     )
-    plan = {"operations": [{"operation_id": "a3-h3-operation", "capability_id": "recent_performance", "canonical_target_ids": [TARGET["canonical_target_id"]]}, {"operation_id": "a3-h2-operation", "capability_id": "corporate_action_context", "canonical_target_ids": [TARGET["canonical_target_id"]], "dependency_operation_ids": ["a3-h3-operation"]}]}
+    plan = {"operations": [{"operation_id": "a3-h3-operation", "capability_id": "recent_performance", "market": "TWSE", "operation_status": "executable_pending_approval", "executor_invocation_eligible": True, "canonical_target_ids": [TARGET["canonical_target_id"]]}, {"operation_id": "a3-h2-operation", "capability_id": "corporate_action_context", "market": "TWSE", "operation_status": "executable_pending_approval", "canonical_target_ids": [TARGET["canonical_target_id"]], "dependency_operation_ids": ["a3-h3-operation"]}]}
     h2_result["operation_id"] = "a3-h2-operation"
     artifacts = derive_h4_for_completed_plan(plan, [h3_result, h2_result], output_root=str(tmp_path))
     assert len(artifacts) == 1

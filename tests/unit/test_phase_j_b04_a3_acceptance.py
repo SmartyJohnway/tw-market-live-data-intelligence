@@ -16,6 +16,19 @@ def test_a3_acceptance_record_passes_machine_contract() -> None:
     assert validate_contract(record)["status"] == "PASS"
 
 
+def test_a3_validator_rejects_head_only_failure_with_a_false_zero_delta() -> None:
+    record = copy.deepcopy(_load(RECORD))
+    baseline = record["baseline_comparison"]
+    head = baseline["r1_head"]
+    node = head["passed_nodes"].pop()
+    head["passed_count"] -= 1
+    head["failed_nodes"].append(node)
+    head["failed_count"] += 1
+    head["failure_codes"][node] = "fixture_hash_mismatch"
+    with pytest.raises(AssertionError):
+        validate_contract(record)
+
+
 @pytest.mark.parametrize(
     ("key", "value"),
     [

@@ -4,7 +4,7 @@
   "date": "2026-10-08",
   "owner_authority": "USER_REQUEST_PASTED_2026-10-08_J_B04_A3_NETWORK_FREE_PRODUCTION_IMPLEMENTATION",
   "baseline_main": "a833a5728501d99b942928fdebb790a993a5e838",
-  "disposition": "J_B04_A3_NETWORK_FREE_IMPLEMENTATION_READY_FOR_A4_REVIEW",
+  "disposition": "J_B04_A3_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW",
   "implementation": {
     "status": "NETWORK_FREE_IMPLEMENTED",
     "executor_id": "phase_h_h2_twse_exright_pre_executor",
@@ -69,37 +69,371 @@
   },
   "baseline_comparison": {
     "exact_baseline": "a833a5728501d99b942928fdebb790a993a5e838",
-    "historical_a2_reported_failure_families": [
-      "committed M8R-05C fixture artifact_hash_mismatch",
-      "lineage expected operation_artifact_hash_mismatch but loader returned artifact_hash_mismatch"
-    ],
-    "m8r_05c_baseline_passed": 47,
-    "m8r_05c_baseline_failed": 0,
-    "a3_head_m8r_05c_passed": 42,
-    "a3_head_m8r_05c_failed": 5,
-    "a3_head_failure_nodes": [
-      "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
-      "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
-      "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
-      "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
-      "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only"
-    ],
-    "a3_head_failure_codes": [
-      "artifact_hash_mismatch",
-      "artifact_hash_mismatch",
-      "artifact_hash_mismatch",
-      "artifact_hash_mismatch",
-      "artifact_hash_mismatch"
-    ],
-    "same_inherited_failure_nodes": [
-      "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
-      "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
-      "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
-      "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
-      "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only"
-    ],
+    "tested_r1_head": "R1 worktree candidate based on 82322276da59a06193b749454ab82c6a02a867d9",
+    "exact_base": {
+      "revision": "a833a5728501d99b942928fdebb790a993a5e838",
+      "worktree_path": "/workspace/tw-market-r1-base",
+      "working_directory": ".",
+      "command": "env PYTHONHASHSEED=0 TZ=UTC /workspace/.venv-r1/bin/python -m pytest -vv -p no:cacheprovider tests/unit/m8r_05c tests/unit/test_m8r_05c_containment.py tests/unit/test_m8r_05c_determinism.py tests/unit/test_m8r_05c_lineage.py tests/unit/test_m8r_05c_result_status_semantics.py tests/unit/test_m8r_05c_trading_status_composition.py",
+      "environment": {
+        "python": "3.11.16",
+        "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+        "pytest": "9.1.1",
+        "jsonschema": "4.26.0",
+        "PYTHONHASHSEED": "0",
+        "TZ": "UTC",
+        "cache_provider": "disabled"
+      },
+      "collected_count": 47,
+      "collected_nodes": [
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+        "tests/unit/test_m8r_05c_containment.py::test_relative_output_path_validation",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_outputs_success",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_outputs_size_limit",
+        "tests/unit/test_m8r_05c_containment.py::test_validate_output_paths_only",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_collision",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_receipt_id_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_receipt_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_binding_id_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_binding_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_receipt_claim_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_tampering",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_no_targets_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_unresolved_only_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_all_required_evidence_missing_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_mixed_success_and_required_failure_is_partially_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_optional_coverage_gap_without_failure_is_success_with_partial_coverage",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_complete_resolved_coverage_is_full_success",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_preserves_all_required_missing_status_behavior",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_failed_eod_is_explicitly_failed_without_market_values",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_failed_eod_preserves_pre_v1_3_shape",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_failed_markdown_uses_failure_status_and_failure_section",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_partially_failed_markdown_preserves_g5_presentation",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_markdown_preserves_historical_failed_eod_presentation",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_successful_eod_regression_preserves_available_price_and_activity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c1_components_compose_with_native_unresolved_and_partial_coverage",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c1_uses_exact_predeclared_source_families",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_repaired_multirow_disposition_composes_with_attention_and_native_cmode",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_authority_rejects_schema_valid_v1_overcoverage[H1-TPEX-ATTENTION-OPENAPI-tpex_trading_warning_information-attention-suspension]",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_authority_rejects_schema_valid_v1_overcoverage[H1-TPEX-DISPOSITION-OPENAPI-tpex_disposal_information-disposition-resumption]",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_identity_rejects_embedded_family_mismatch",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c2_failure_is_retained_while_other_components_survive",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c3_exact_no_match_does_not_claim_normal_trading",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c4_duplicate_source_or_reordered_component_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c5_target_mismatch_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c6_native_marker_cannot_create_suspension_coverage",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c7_same_artifact_reuse_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c8_unknown_h1_component_schema_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c9_reference_hash_or_path_tampering_fails_component_identity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c10_extra_source_is_not_permitted",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_result_v3_h1_union_accepts_v1_v2_and_composite_without_ambiguity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_composite_v3_schema_branch_and_native_handoff_guard",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_operation_result_component_role_preserves_primary_item_count_semantics"
+      ],
+      "passed_count": 47,
+      "passed_nodes": [
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+        "tests/unit/test_m8r_05c_containment.py::test_relative_output_path_validation",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_outputs_success",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_outputs_size_limit",
+        "tests/unit/test_m8r_05c_containment.py::test_validate_output_paths_only",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_collision",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_receipt_id_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_receipt_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_binding_id_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_binding_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_receipt_claim_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_tampering",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_no_targets_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_unresolved_only_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_all_required_evidence_missing_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_mixed_success_and_required_failure_is_partially_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_optional_coverage_gap_without_failure_is_success_with_partial_coverage",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_complete_resolved_coverage_is_full_success",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_preserves_all_required_missing_status_behavior",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_failed_eod_is_explicitly_failed_without_market_values",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_failed_eod_preserves_pre_v1_3_shape",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_failed_markdown_uses_failure_status_and_failure_section",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_partially_failed_markdown_preserves_g5_presentation",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_markdown_preserves_historical_failed_eod_presentation",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_successful_eod_regression_preserves_available_price_and_activity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c1_components_compose_with_native_unresolved_and_partial_coverage",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c1_uses_exact_predeclared_source_families",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_repaired_multirow_disposition_composes_with_attention_and_native_cmode",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_authority_rejects_schema_valid_v1_overcoverage[H1-TPEX-ATTENTION-OPENAPI-tpex_trading_warning_information-attention-suspension]",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_authority_rejects_schema_valid_v1_overcoverage[H1-TPEX-DISPOSITION-OPENAPI-tpex_disposal_information-disposition-resumption]",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_identity_rejects_embedded_family_mismatch",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c2_failure_is_retained_while_other_components_survive",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c3_exact_no_match_does_not_claim_normal_trading",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c4_duplicate_source_or_reordered_component_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c5_target_mismatch_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c6_native_marker_cannot_create_suspension_coverage",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c7_same_artifact_reuse_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c8_unknown_h1_component_schema_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c9_reference_hash_or_path_tampering_fails_component_identity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c10_extra_source_is_not_permitted",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_result_v3_h1_union_accepts_v1_v2_and_composite_without_ambiguity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_composite_v3_schema_branch_and_native_handoff_guard",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_operation_result_component_role_preserves_primary_item_count_semantics"
+      ],
+      "failed_count": 0,
+      "failed_nodes": [],
+      "failure_codes": {},
+      "skipped_count": 0,
+      "skipped_nodes": [],
+      "deselected_count": 0,
+      "deselected_nodes": [],
+      "fixture_manifest": {
+        "file_count": 9,
+        "tree_sha256": "2da51e8de8d021a39c5f8fa41f2fc4877858bf658a9eaf1301aade5e51aef757",
+        "files": [
+          {
+            "path": "tests/fixtures/m8r_05c/artifact_root/operations/op_identity/evidence.json",
+            "byte_size": 216,
+            "sha256": "b39ac561c9cd66126c5301a4f3c09ccb2ca2a138aee1711e39cb18dc77bb449c"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/authorization.json",
+            "byte_size": 4147,
+            "sha256": "7abf40d4a4b3cc59732b30c8daa5efa7349c1dade2bf49eb43e4d44d08dcaf63"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/bundle.json",
+            "byte_size": 1964,
+            "sha256": "341cca731162692ff82f36024edd49aacb041a769ad19d9951b2402de6ab9cf7"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/claim.json",
+            "byte_size": 1483,
+            "sha256": "9ccfa3fcde6717657eb20573beb15e9cd7c3820b5e7c124410a96358580005a8"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/consumption_binding.json",
+            "byte_size": 2821,
+            "sha256": "1e9b2c858802010f12622fd817223a144d7dda4c2a4478a2023a06dad8811000"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/f3_validation.json",
+            "byte_size": 1684,
+            "sha256": "3bb8e38f58d77960c7e95924ffd509c8d950c7b64250eb24284faa735586446d"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/plan_single_target.json",
+            "byte_size": 3321,
+            "sha256": "028726f4e87e0a3a6940906cf270958bce3c6c04ca707d7fd764c71a597390c6"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/receipt.json",
+            "byte_size": 1634,
+            "sha256": "019c4849b448fe9d4a362bded39ede481bc0d0e6795b2cdcb35fb914d502260c"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/request_single_target.json",
+            "byte_size": 628,
+            "sha256": "0611d539e9a0da7f9484591f3fb36bfd2b7be1645a6a26889764537134ff7d90"
+          }
+        ]
+      }
+    },
+    "r1_head": {
+      "revision": "R1 worktree candidate based on 82322276da59a06193b749454ab82c6a02a867d9",
+      "worktree_path": "/workspace/tw-market-r1-head",
+      "working_directory": ".",
+      "command": "env PYTHONHASHSEED=0 TZ=UTC /workspace/.venv-r1/bin/python -m pytest -vv -p no:cacheprovider tests/unit/m8r_05c tests/unit/test_m8r_05c_containment.py tests/unit/test_m8r_05c_determinism.py tests/unit/test_m8r_05c_lineage.py tests/unit/test_m8r_05c_result_status_semantics.py tests/unit/test_m8r_05c_trading_status_composition.py",
+      "environment": {
+        "python": "3.11.16",
+        "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+        "pytest": "9.1.1",
+        "jsonschema": "4.26.0",
+        "PYTHONHASHSEED": "0",
+        "TZ": "UTC",
+        "cache_provider": "disabled"
+      },
+      "collected_count": 47,
+      "collected_nodes": [
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+        "tests/unit/test_m8r_05c_containment.py::test_relative_output_path_validation",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_outputs_success",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_outputs_size_limit",
+        "tests/unit/test_m8r_05c_containment.py::test_validate_output_paths_only",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_collision",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_receipt_id_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_receipt_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_binding_id_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_binding_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_receipt_claim_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_tampering",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_no_targets_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_unresolved_only_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_all_required_evidence_missing_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_mixed_success_and_required_failure_is_partially_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_optional_coverage_gap_without_failure_is_success_with_partial_coverage",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_complete_resolved_coverage_is_full_success",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_preserves_all_required_missing_status_behavior",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_failed_eod_is_explicitly_failed_without_market_values",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_failed_eod_preserves_pre_v1_3_shape",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_failed_markdown_uses_failure_status_and_failure_section",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_partially_failed_markdown_preserves_g5_presentation",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_markdown_preserves_historical_failed_eod_presentation",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_successful_eod_regression_preserves_available_price_and_activity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c1_components_compose_with_native_unresolved_and_partial_coverage",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c1_uses_exact_predeclared_source_families",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_repaired_multirow_disposition_composes_with_attention_and_native_cmode",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_authority_rejects_schema_valid_v1_overcoverage[H1-TPEX-ATTENTION-OPENAPI-tpex_trading_warning_information-attention-suspension]",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_authority_rejects_schema_valid_v1_overcoverage[H1-TPEX-DISPOSITION-OPENAPI-tpex_disposal_information-disposition-resumption]",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_identity_rejects_embedded_family_mismatch",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c2_failure_is_retained_while_other_components_survive",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c3_exact_no_match_does_not_claim_normal_trading",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c4_duplicate_source_or_reordered_component_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c5_target_mismatch_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c6_native_marker_cannot_create_suspension_coverage",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c7_same_artifact_reuse_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c8_unknown_h1_component_schema_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c9_reference_hash_or_path_tampering_fails_component_identity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c10_extra_source_is_not_permitted",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_result_v3_h1_union_accepts_v1_v2_and_composite_without_ambiguity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_composite_v3_schema_branch_and_native_handoff_guard",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_operation_result_component_role_preserves_primary_item_count_semantics"
+      ],
+      "passed_count": 47,
+      "passed_nodes": [
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+        "tests/unit/test_m8r_05c_containment.py::test_relative_output_path_validation",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_outputs_success",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_outputs_size_limit",
+        "tests/unit/test_m8r_05c_containment.py::test_validate_output_paths_only",
+        "tests/unit/test_m8r_05c_containment.py::test_materialize_collision",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_receipt_id_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_receipt_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_binding_id_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_binding_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_receipt_claim_hash_mismatch",
+        "tests/unit/test_m8r_05c_lineage.py::test_lineage_claim_tampering",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_no_targets_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_unresolved_only_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_all_required_evidence_missing_is_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_mixed_success_and_required_failure_is_partially_failed",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_optional_coverage_gap_without_failure_is_success_with_partial_coverage",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_complete_resolved_coverage_is_full_success",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_preserves_all_required_missing_status_behavior",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_failed_eod_is_explicitly_failed_without_market_values",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_failed_eod_preserves_pre_v1_3_shape",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_failed_markdown_uses_failure_status_and_failure_section",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_3_partially_failed_markdown_preserves_g5_presentation",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_v1_2_markdown_preserves_historical_failed_eod_presentation",
+        "tests/unit/test_m8r_05c_result_status_semantics.py::test_successful_eod_regression_preserves_available_price_and_activity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c1_components_compose_with_native_unresolved_and_partial_coverage",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c1_uses_exact_predeclared_source_families",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_repaired_multirow_disposition_composes_with_attention_and_native_cmode",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_authority_rejects_schema_valid_v1_overcoverage[H1-TPEX-ATTENTION-OPENAPI-tpex_trading_warning_information-attention-suspension]",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_authority_rejects_schema_valid_v1_overcoverage[H1-TPEX-DISPOSITION-OPENAPI-tpex_disposal_information-disposition-resumption]",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_source_identity_rejects_embedded_family_mismatch",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c2_failure_is_retained_while_other_components_survive",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c3_exact_no_match_does_not_claim_normal_trading",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c4_duplicate_source_or_reordered_component_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c5_target_mismatch_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c6_native_marker_cannot_create_suspension_coverage",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c7_same_artifact_reuse_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c8_unknown_h1_component_schema_fails_closed",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c9_reference_hash_or_path_tampering_fails_component_identity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_c10_extra_source_is_not_permitted",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_result_v3_h1_union_accepts_v1_v2_and_composite_without_ambiguity",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_composite_v3_schema_branch_and_native_handoff_guard",
+        "tests/unit/test_m8r_05c_trading_status_composition.py::test_operation_result_component_role_preserves_primary_item_count_semantics"
+      ],
+      "failed_count": 0,
+      "failed_nodes": [],
+      "failure_codes": {},
+      "skipped_count": 0,
+      "skipped_nodes": [],
+      "deselected_count": 0,
+      "deselected_nodes": [],
+      "fixture_manifest": {
+        "file_count": 9,
+        "tree_sha256": "2da51e8de8d021a39c5f8fa41f2fc4877858bf658a9eaf1301aade5e51aef757",
+        "files": [
+          {
+            "path": "tests/fixtures/m8r_05c/artifact_root/operations/op_identity/evidence.json",
+            "byte_size": 216,
+            "sha256": "b39ac561c9cd66126c5301a4f3c09ccb2ca2a138aee1711e39cb18dc77bb449c"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/authorization.json",
+            "byte_size": 4147,
+            "sha256": "7abf40d4a4b3cc59732b30c8daa5efa7349c1dade2bf49eb43e4d44d08dcaf63"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/bundle.json",
+            "byte_size": 1964,
+            "sha256": "341cca731162692ff82f36024edd49aacb041a769ad19d9951b2402de6ab9cf7"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/claim.json",
+            "byte_size": 1483,
+            "sha256": "9ccfa3fcde6717657eb20573beb15e9cd7c3820b5e7c124410a96358580005a8"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/consumption_binding.json",
+            "byte_size": 2821,
+            "sha256": "1e9b2c858802010f12622fd817223a144d7dda4c2a4478a2023a06dad8811000"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/f3_validation.json",
+            "byte_size": 1684,
+            "sha256": "3bb8e38f58d77960c7e95924ffd509c8d950c7b64250eb24284faa735586446d"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/plan_single_target.json",
+            "byte_size": 3321,
+            "sha256": "028726f4e87e0a3a6940906cf270958bce3c6c04ca707d7fd764c71a597390c6"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/receipt.json",
+            "byte_size": 1634,
+            "sha256": "019c4849b448fe9d4a362bded39ede481bc0d0e6795b2cdcb35fb914d502260c"
+          },
+          {
+            "path": "tests/fixtures/m8r_05c/request_single_target.json",
+            "byte_size": 628,
+            "sha256": "0611d539e9a0da7f9484591f3fb36bfd2b7be1645a6a26889764537134ff7d90"
+          }
+        ]
+      }
+    },
+    "computed_new_failure_delta": 0,
+    "new_failure_nodes": [],
     "new_failure_delta": 0,
-    "new_a3_owned_regression_failures": []
+    "new_a3_owned_regression_failures": [],
+    "shared_failure_nodes": [],
+    "previously_reported_discrepancy": {
+      "reported_base": "47 passed / 0 failed",
+      "reported_prior_head": "42 passed / 5 failed",
+      "clean_worktree_result": "47 passed / 0 failed on both exact base and R1 candidate",
+      "prior_five_failure_nodes_now_passed": [
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_end_to_end_single_target",
+        "tests/unit/m8r_05c/test_m8r_05c_integration.py::test_m8r_05c_cli_check_only_mode",
+        "tests/unit/test_m8r_05c_lineage.py::test_inventory_referential_integrity",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_determinism",
+        "tests/unit/test_m8r_05c_determinism.py::test_m8r_05c_check_only"
+      ],
+      "attribution": "The earlier five failures were not reproducible in isolated clean worktrees. All tracked JSON fixture bytes and hashes match between exact base and R1 worktree; no claim is made that an unavailable earlier local contamination has been proven."
+    }
   },
   "acceptance_evidence": {
     "h2_executor_tests": "PASS",
@@ -119,7 +453,11 @@
       "tests/unit/test_phase_j_b04_a3_dependency_planning.py",
       "tests/unit/test_phase_j_b04_a3_dispatch_dependencies.py",
       "tests/unit/test_phase_j_b04_a3_end_to_end_projection.py"
-    ]
+    ],
+    "multi_target_h3_h2_h4": "PASS: TWSE:1423 and TWSE:2330 integrated independently through Result V3 and Audit V3",
+    "partial_multi_target_outcome": "PASS: failed H3 for TWSE:2330 yields H4 only for TWSE:1423; Result V3 omits B H4",
+    "dependency_preflight": "PASS: missing, self, duplicate, cyclic, wrong-capability, cross-target, cross-market, and unapproved dependencies rejected",
+    "claim_before_dependency_failure": "PASS: invalid authorization-consistent plan fails preflight; no claim, unused state retained, adapter/source call logs empty"
   },
   "protected_hashes": {
     "h4_sha256": "91163c3f1988c75c5f4b413d109e19d646b5ad9bfcb40e96a485a356f9180727",
@@ -165,7 +503,7 @@
   "machine_assertions": {
     "gate": "J-B04-A3",
     "baseline_main": "a833a5728501d99b942928fdebb790a993a5e838",
-    "disposition": "J_B04_A3_NETWORK_FREE_IMPLEMENTATION_READY_FOR_A4_REVIEW",
+    "disposition": "J_B04_A3_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW",
     "implementation_status": "NETWORK_FREE_IMPLEMENTED",
     "executor_id": "phase_h_h2_twse_exright_pre_executor",
     "source_id": "H2-TWSE-EXRIGHT-PRE-OPENAPI",
@@ -213,7 +551,8 @@
     "mcp_tool_count": 6,
     "market_GETs": 0,
     "market_HEADs": 0,
-    "market_POSTs": 0
+    "market_POSTs": 0,
+    "j_b04_a3_r1": "READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW"
   },
   "change_inventory": {
     "production_and_execution_support": [
@@ -231,7 +570,9 @@
       "scripts/phase_i_i2_a4_proof.py",
       "scripts/phase_i_i3_a4_compat.py",
       "scripts/run_phase_i_i3_a3_bounded_live_acceptance.py",
-      "scripts/validate_phase_j_b04_a2_twse_h2_preflight.py"
+      "scripts/validate_phase_j_b04_a2_twse_h2_preflight.py",
+      "scripts/m8r_05b_03/dependency_graph.py",
+      "scripts/m8r_05b_03/preflight.py"
     ],
     "tests": [
       "tests/unit/test_m8r_06_03_production_adapter.py",
@@ -240,7 +581,8 @@
       "tests/unit/test_phase_j_b04_a3_dependency_planning.py",
       "tests/unit/test_phase_j_b04_a3_dispatch_dependencies.py",
       "tests/unit/test_phase_j_b04_a3_end_to_end_projection.py",
-      "tests/unit/test_phase_j_b04_a3_h2_executor.py"
+      "tests/unit/test_phase_j_b04_a3_h2_executor.py",
+      "tests/unit/test_phase_h_h3_activation_candidate_preview.py"
     ],
     "governance_and_validator": [
       "docs/governance/phase_j/PHASE_J_J_B04_A3_NETWORK_FREE_IMPLEMENTATION_ACCEPTANCE_2026-10-08.json",
@@ -264,36 +606,62 @@
     },
     "focused_tests": {
       "a3_owned_tests": {
-        "passed": 45,
+        "command": "python -m pytest -q tests/unit/test_phase_j_b04_a3_*.py",
+        "passed": 48,
         "failed": 0
       },
       "phase_h_a2_h3_h4_regression": {
-        "passed": 209,
+        "command": "python -m pytest -q -m \"not network and not live and not release_preflight\" <selected Phase-H, H3/H4, I2 A1/A2 offline tests>",
+        "passed": 464,
         "failed": 0
       },
       "phase_i_compatibility_recheck": {
-        "passed": 13,
+        "command": "python -m pytest -q tests/unit/test_phase_i_i2_a1_contract.py tests/unit/test_phase_i_i2_a2_offline.py tests/unit/test_phase_i_i2_a3_live_transport.py tests/unit/test_phase_i_i2_a3_operation_result_mapping.py tests/unit/test_phase_i_i2_a3_request_projection.py tests/unit/test_phase_i_i2_production_transport.py",
+        "passed": 78,
         "failed": 0
       },
       "m8r_05c_exact_base": {
         "passed": 47,
-        "failed": 0
+        "failed": 0,
+        "collected": 47
       },
       "m8r_05c_a3_head": {
         "passed": 42,
         "failed": 5,
         "inherited_failure_delta": 0
-      }
+      },
+      "m8r_05c_r1_head": {
+        "passed": 47,
+        "failed": 0,
+        "collected": 47
+      },
+      "m8r_05c_failure_delta": 0
     },
     "default_ci": {
-      "command": "python scripts/run_test_profile.py default-ci",
+      "command": "python scripts/run_test_profile.py default-ci --json",
       "collected": 1288,
       "selected": 1283,
-      "passed": 1282,
-      "failed": 0,
-      "skipped": 1,
+      "passed": 1250,
+      "failed": 29,
+      "skipped": 4,
       "deselected": 5,
-      "warnings": 18
+      "warnings": 20,
+      "status": "FAIL: 28 tests require production Security Master absent in clean environment; 1 existing TLS-handler assertion fails under CPython 3.11.16"
     }
-  }
+  },
+  "exact_changed_files_since_reviewed_head": [
+    "docs/governance/phase_j/PHASE_J_J_B04_A3_NETWORK_FREE_IMPLEMENTATION_ACCEPTANCE_2026-10-08.json",
+    "docs/governance/phase_j/PHASE_J_J_B04_A3_NETWORK_FREE_IMPLEMENTATION_ACCEPTANCE_2026-10-08.md",
+    "scripts/m8r_05b_03/dependency_graph.py",
+    "scripts/m8r_05b_03/dispatch.py",
+    "scripts/m8r_05b_03/preflight.py",
+    "scripts/validate_phase_j_b04_a3_network_free_implementation.py",
+    "server/services/phase_h_h2_twse_exright_executor.py",
+    "tests/unit/test_phase_h_h3_activation_candidate_preview.py",
+    "tests/unit/test_phase_j_b04_a3_acceptance.py",
+    "tests/unit/test_phase_j_b04_a3_dependency_planning.py",
+    "tests/unit/test_phase_j_b04_a3_dispatch_dependencies.py",
+    "tests/unit/test_phase_j_b04_a3_end_to_end_projection.py",
+    "tests/unit/test_phase_j_b04_a3_h2_executor.py"
+  ]
 }

@@ -38,6 +38,26 @@ def test_h2_alone_does_not_inject_h3_and_remains_non_executable() -> None:
     assert h2["executor_invocation_eligible"] is False
 
 
+def test_each_multi_target_h2_binds_only_its_same_target_h3_dependency() -> None:
+    request = _request("TWSE", "1423")
+    request["targets"].append({"input": "TWSE:2330", "market_hint": "TWSE"})
+    request["data_needs"] = [
+        {"type": "corporate_action_context", "priority": "required"},
+        {"type": "recent_performance", "priority": "required", "parameters": {"lookback_trading_days": 20}},
+    ]
+    plan = _production_preview(request, "TWSE", "1423", additional_codes=("2330",))["orchestration_plan"]
+    operations = {item["operation_id"]: item for item in plan["operations"]}
+    h2s = [item for item in plan["operations"] if item["capability_id"] == "corporate_action_context"]
+    h3s = [item for item in plan["operations"] if item["capability_id"] == "recent_performance"]
+    assert len(h2s) == len(h3s) == 2
+    for h2 in h2s:
+        assert len(h2["dependency_operation_ids"]) == 1
+        h3 = operations[h2["dependency_operation_ids"][0]]
+        assert h3["capability_id"] == "recent_performance"
+        assert h3["canonical_target_ids"] == h2["canonical_target_ids"]
+        assert h3["market"] == h2["market"] == "TWSE"
+
+
 def test_h3_alone_does_not_inject_h2() -> None:
     plan = _plan(("recent_performance",))
     assert [item["capability_id"] for item in plan["operations"]] == ["recent_performance"]

@@ -2,15 +2,23 @@
 from __future__ import annotations
 
 import json
+import shutil
 from copy import deepcopy
+from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
+import pytest
 
 from scripts.m8r_05b_01.planner import build_plan
+from scripts.m8r_05b_01.planner import plan_identity_scope
+from scripts.m8r_05b_01.canonical import plan_hash_and_id
 from scripts.m8r_05b_02.authorization import build_execution_authorization
 from scripts.m8r_05b_02.consumption_binding import build_consumption_binding
 from scripts.m8r_05b_03.preflight import build_orchestrator_preflight
 from scripts.m8r_05b_03.orchestrator import execute_controlled_plan
+from scripts.m8r_05b_03.errors import OrchestrationError
+from scripts.m8r_05b_03.consumption_claim import claim_relative_path
+from scripts.m8r_05b_03.dispatch import RuntimeAdapterRegistry
 from scripts.m8r_05b_03.receipt import bundle_relative_path, receipt_relative_path
 from scripts.m8r_05c.artifact_loader import load_projection_inputs
 from scripts.m8r_05c.audit_package_builder import build_audit_package
@@ -93,15 +101,16 @@ def _set_test_h2_overlay(validation: dict, authorities: dict) -> None:
 
 def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_handoff(tmp_path, monkeypatch):
     request = _request("TWSE", "1423") | {"execution_mode": "execute"}
+    request["targets"].append({"input": "TWSE:2330", "market_hint": "TWSE"})
     request["data_needs"] = [
         {"type": "corporate_action_context", "priority": "required"},
         {"type": "recent_performance", "priority": "required", "parameters": {"lookback_trading_days": 1}},
     ]
-    preview = _production_preview(request, "TWSE", "1423")
+    preview = _production_preview(request, "TWSE", "1423", additional_codes=("2330",))
     validation = deepcopy(preview["validation"])
     authorities = load_planning_authorities(request["schema_version"])
     _set_test_h2_overlay(validation, authorities)
-    security_master = OfflineSecurityMaster("TWSE", "1423")
+    security_master = OfflineSecurityMaster("TWSE", "1423", ("2330",))
     bindings = build_planning_bindings(
         request, validation, security_master,
         capability_catalog=authorities["capability_catalog"],
@@ -120,6 +129,46 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
     h2_plan = next(item for item in plan["operations"] if item["capability_id"] == "corporate_action_context")
     h3_plan = next(item for item in plan["operations"] if item["capability_id"] == "recent_performance")
     assert h2_plan["dependency_operation_ids"] == [h3_plan["operation_id"]]
+
+    invalid_plan = deepcopy(plan)
+    invalid_h2 = next(item for item in invalid_plan["operations"] if item["capability_id"] == "corporate_action_context")
+    invalid_h2["dependency_operation_ids"] = [invalid_h2["operation_id"]]
+    invalid_plan["plan_hash"], invalid_plan["plan_id"] = plan_hash_and_id(plan_identity_scope(invalid_plan))
+    invalid_authorization = build_execution_authorization(invalid_plan, _decision())
+    invalid_binding = build_consumption_binding(invalid_authorization)
+    invalid_root = tmp_path / "invalid-dependency-plan"
+    invalid_root.mkdir()
+    (invalid_root / "claims").mkdir()
+    invalid_state = {
+        "authorization_id": invalid_authorization["authorization_id"],
+        "authorization_hash": invalid_authorization["authorization_hash"],
+        "consumption_binding_id": invalid_binding["consumption_binding_id"],
+        "consumption_binding_hash": invalid_binding["consumption_binding_hash"],
+        "registry_contract_version": "m8r_05b_03.v1", "state": "unused",
+    }
+    blocked_calls: list[str] = []
+    adapter_calls: list[str] = []
+    monkeypatch.setattr(production, "fetch_twse_stock_day_month", lambda **kwargs: blocked_calls.append("H3"))
+    monkeypatch.setattr(h2_executor, "official_get_once", lambda **kwargs: blocked_calls.append("H2"))
+    production_registry = build_production_runtime_adapter_registry()
+    guarded_registry = RuntimeAdapterRegistry([
+        replace(registration, adapter=lambda request, context: adapter_calls.append(request["operation_id"]))
+        for registration in production_registry._by_route.values()
+    ])
+    with pytest.raises(OrchestrationError, match="dependency_self_reference"):
+        execute_controlled_plan(
+            invalid_plan, invalid_authorization, invalid_binding,
+            supplied_consumption_state=invalid_state, accepted_preflight={},
+            evaluation_timestamp=STAMP, claim_created_at=STAMP, finalized_at=STAMP,
+            executor_registry_metadata=load_production_executor_metadata(),
+            runtime_adapter_registry=guarded_registry,
+            output_root=str(invalid_root), mode="execute-approved", confirm_execution=True,
+            operator_confirmation_reference="R1_INVALID_GRAPH", confirm_network_execution=True,
+        )
+    assert not (invalid_root / claim_relative_path(invalid_authorization["authorization_id"])).exists()
+    assert invalid_state["state"] == "unused"
+    assert adapter_calls == []
+    assert blocked_calls == []
 
     authorization = build_execution_authorization(plan, _decision())
     consumption_binding = build_consumption_binding(authorization)
@@ -145,10 +194,13 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
 
     def fake_h3_month(**kwargs):
         timestamps.append(kwargs["requested_month"])
+        target = kwargs["target"]
+        code = target["security_code"]
+        days = (("2026-10-06", 100.0), ("2026-10-07", 101.0)) if code == "1423" else (("2026-10-05", 90.0), ("2026-10-07", 91.0))
         rows = []
-        for day, close in (("2026-10-06", 100.0), ("2026-10-07", 101.0)):
+        for day, close in days:
             rows.append({
-                "canonical_target_id": "TWSE:1423", "market": "TWSE", "security_code": "1423",
+                "canonical_target_id": target["canonical_target_id"], "market": "TWSE", "security_code": code,
                 "trade_date": day, "close": close, "volume": 1000,
                 "source_family": SOURCE_FAMILY, "source_contract_id": SOURCE_CONTRACT_ID,
                 "retrieved_at": kwargs["retrieved_at"], "citation_ids": [f"fixture-h3:{day}"],
@@ -166,10 +218,10 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
     def fake_h2_get(**kwargs):
         h2_calls.append(kwargs)
         rows = [{
-            "Code": "1423", "Date": "2026-10-07", "Exdividend": "除息",
+            "Code": code, "Date": "2026-10-07", "Exdividend": "除息",
             "StockDividendRatio": "0", "SubscriptionRatio": "0",
             "SubscriptionPricePerShare": "尚未公告", "CashDividend": "1",
-        }]
+        } for code in ("1423", "2330")]
         return {
             "raw_bytes": json.dumps(rows, ensure_ascii=False).encode("utf-8"),
             "status": 200, "content_type": "application/json", "effective_url": h2_executor.ENDPOINT,
@@ -196,12 +248,10 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
         output_root=str(output_root), mode="execute-approved", confirm_execution=True,
         operator_confirmation_reference="A3_NETWORK_FREE_TEST_FIXTURE", confirm_network_execution=True,
     )
-    assert len(h2_calls) == 1
-    assert len(timestamps) == 1
-    assert [item["capability_id"] for item in execution["dispatch_outcomes"]] == ["corporate_action_context", "recent_performance"]
-    assert {item["capability_id"]: item["status"] for item in execution["dispatch_outcomes"]} == {
-        "corporate_action_context": "succeeded", "recent_performance": "succeeded",
-    }
+    assert len(h2_calls) == 2
+    assert len(timestamps) == 2
+    assert len(execution["dispatch_outcomes"]) == 4
+    assert all(item["status"] == "succeeded" for item in execution["dispatch_outcomes"])
 
     control = output_root / "control"
     control.mkdir()
@@ -219,20 +269,34 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
         artifact_root=str(output_root), calculated_at=STAMP,
     )
     h4_entries = [item for item in inputs.bundle["artifact_inventory"] if item["schema_version"] == "discontinuity_safety_evidence.v1"]
-    assert len(h4_entries) == 1
-    h4 = inputs.evidence_artifacts[h4_entries[0]["relative_path"]]
-    assert h4["state"] == "coverage_incomplete"
-    assert h4["ordinary_return_interpretation"] == "blocked"
+    assert len(h4_entries) == 2
     h2_entries = [item for item in inputs.bundle["artifact_inventory"] if item["schema_version"] == "corporate_action_context_evidence.v1"]
     h3_entries = [item for item in inputs.bundle["artifact_inventory"] if item["schema_version"] == "recent_performance_evidence.v1"]
-    assert len(h2_entries) == len(h3_entries) == 1
-    h2 = next(value for value in inputs.evidence_artifacts.values() if value.get("schema_version") == "corporate_action_context_evidence.v1")
-    h3 = next(value for value in inputs.evidence_artifacts.values() if value.get("schema_version") == "recent_performance_evidence.v1")
-    assert h2["coverage"]["requested_window"] == {
-        "start": h3["baselines"][0]["start_observation_date"],
-        "end": h3["baselines"][0]["end_observation_date"],
-    }
-    assert h2["coverage"]["declared_scope_complete"] is False
+    assert len(h2_entries) == len(h3_entries) == 2
+    h4_by_target = {inputs.evidence_artifacts[item["relative_path"]]["target"]["canonical_target_id"]: inputs.evidence_artifacts[item["relative_path"]] for item in h4_entries}
+    h2_by_target = {inputs.evidence_artifacts[item["relative_path"]]["target"]["canonical_target_id"]: inputs.evidence_artifacts[item["relative_path"]] for item in h2_entries}
+    h3_by_target = {inputs.evidence_artifacts[item["relative_path"]]["target"]["canonical_target_id"]: inputs.evidence_artifacts[item["relative_path"]] for item in h3_entries}
+    assert set(h4_by_target) == set(h2_by_target) == set(h3_by_target) == {"TWSE:1423", "TWSE:2330"}
+    assert [item["relative_path"] for item in h4_entries] == sorted(item["relative_path"] for item in h4_entries)
+    for target_id in ("TWSE:1423", "TWSE:2330"):
+        h2, h3, h4 = h2_by_target[target_id], h3_by_target[target_id], h4_by_target[target_id]
+        assert h2["coverage"]["requested_window"] == {
+            "start": h3["baselines"][0]["start_observation_date"],
+            "end": h3["baselines"][0]["end_observation_date"],
+        }
+        assert h2["coverage"]["declared_scope_complete"] is False
+        assert h4["state"] == "coverage_incomplete"
+        assert h4["ordinary_return_interpretation"] == "blocked"
+        h4_refs = h4["input_evidence_references"]
+        assert len(h4_refs) == 2
+        assert all(inputs.evidence_artifacts[ref.split("#", 1)[0]]["target"]["canonical_target_id"] == target_id for ref in h4_refs)
+        expected_refs = {
+            f"{entry['relative_path']}#{entry['sha256']}"
+            for entry in (h2_entries + h3_entries)
+            if inputs.evidence_artifacts[entry["relative_path"]]["target"]["canonical_target_id"] == target_id
+        }
+        assert set(h4_refs) == expected_refs
+    assert h2_by_target["TWSE:1423"]["coverage"]["requested_window"] != h2_by_target["TWSE:2330"]["coverage"]["requested_window"]
 
     lineage = build_lineage_map(inputs)
     citations = build_citation_index(lineage, inputs.bundle, "unified_market_evidence_result.v3")
@@ -241,16 +305,44 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
         result, inputs, citations, "ai_context/unified_market_evidence_result.v3.json",
         output_schema_version="unified_market_evidence_audit_package.v3",
     )
-    assert result["targets"][0]["evidence"]["corporate_action_context"] == h2
-    assert result["targets"][0]["evidence"]["recent_performance"] == h3
-    assert result["targets"][0]["evidence"]["discontinuity_safety"] == h4
-    assert any(
-        item["derived_state"] == "coverage_incomplete"
-        for item in audit["phase_h_governance"]["h4_derivations"]
-    )
-    assert set(h4["input_evidence_references"]).issubset({
-        f"{item['relative_path']}#{item['sha256']}" for item in inputs.bundle["artifact_inventory"]
-    })
+    result_by_target = {item["resolution"]["canonical_target_id"]: item for item in result["targets"]}
+    for target_id in ("TWSE:1423", "TWSE:2330"):
+        evidence = result_by_target[target_id]["evidence"]
+        assert evidence["corporate_action_context"] == h2_by_target[target_id]
+        assert evidence["recent_performance"] == h3_by_target[target_id]
+        assert evidence["discontinuity_safety"] == h4_by_target[target_id]
+    audit_h4 = audit["phase_h_governance"]["h4_derivations"]
+    assert [item["canonical_target_id"] for item in audit_h4] == ["TWSE:1423", "TWSE:2330"]
+    for item in audit_h4:
+        target_id = item["canonical_target_id"]
+        assert all(inputs.evidence_artifacts[ref.split("#", 1)[0]]["target"]["canonical_target_id"] == target_id for ref in item["input_evidence_references"])
+
+    partial_root = tmp_path / "partial-outcomes"
+    partial_root.mkdir()
+    for artifact in [*h2_entries, *h3_entries]:
+        source = output_root / artifact["relative_path"]
+        destination = partial_root / artifact["relative_path"]
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+    partial_outcomes = deepcopy(execution["dispatch_outcomes"])
+    h3_b_plan = next(item for item in plan["operations"] if item["capability_id"] == "recent_performance" and item["canonical_target_ids"] == ["TWSE:2330"])
+    h3_b = next(item for item in partial_outcomes if item["operation_id"] == h3_b_plan["operation_id"])
+    h3_b["status"] = "failed"
+    partial_h4 = h2_executor.derive_h4_for_completed_plan(plan, partial_outcomes, output_root=str(partial_root))
+    partial_targets = {json.loads((partial_root / item["relative_path"]).read_text())["target"]["canonical_target_id"] for item in partial_h4}
+    assert partial_targets == {"TWSE:1423"}
+    h2_b_plan = next(item for item in plan["operations"] if item["capability_id"] == "corporate_action_context" and item["canonical_target_ids"] == ["TWSE:2330"])
+    assert not (partial_root / f"evidence/phase_h/h4/{h2_b_plan['operation_id']}.json").exists()
+    partial_projection_inputs = deepcopy(inputs)
+    h4_b_path = next(entry["relative_path"] for entry in h4_entries if inputs.evidence_artifacts[entry["relative_path"]]["target"]["canonical_target_id"] == "TWSE:2330")
+    partial_projection_inputs.bundle["artifact_inventory"] = [
+        entry for entry in partial_projection_inputs.bundle["artifact_inventory"] if entry["relative_path"] != h4_b_path
+    ]
+    partial_projection_inputs.evidence_artifacts.pop(h4_b_path)
+    partial_result = build_result(partial_projection_inputs, output_schema_version="unified_market_evidence_result.v3")
+    partial_by_target = {item["resolution"]["canonical_target_id"]: item for item in partial_result["targets"]}
+    assert partial_by_target["TWSE:1423"]["evidence"]["discontinuity_safety"] is not None
+    assert partial_by_target["TWSE:2330"]["evidence"].get("discontinuity_safety") is None
     markdown = render_result_markdown(result)
     assert "coverage_incomplete" in markdown
     assert "blocked" in markdown

@@ -285,20 +285,16 @@ def execute_h2_twse_exright_pre(request: dict[str, Any], context: DispatchRuntim
 
 def derive_h4_for_completed_plan(plan: Mapping[str, Any], outcomes: list[dict[str, Any]], *, output_root: str) -> list[dict[str, Any]]:
     """Persist H4 only when the approved exact H2/H3 dependency chain is usable."""
-    h2_ops = [op for op in plan.get("operations", []) if op.get("capability_id") == "corporate_action_context" and op.get("dependency_operation_ids")]
-    if not h2_ops:
-        return []
-    if len(h2_ops) != 1 or len(h2_ops[0]["dependency_operation_ids"]) != 1:
-        raise OrchestrationError("h2_dependency_graph_invalid")
-    h2_op = h2_ops[0]
-    h3_id = h2_op["dependency_operation_ids"][0]
+    h2_ops = sorted(
+        (op for op in plan.get("operations", [])
+         if op.get("capability_id") == "corporate_action_context"
+         and op.get("operation_status") == "executable_pending_approval"),
+        key=lambda op: op.get("operation_id", ""),
+    )
     outcome_by_id = {item.get("operation_id"): item for item in outcomes}
-    h2_result, h3_result = outcome_by_id.get(h2_op["operation_id"]), outcome_by_id.get(h3_id)
-    if not isinstance(h2_result, dict) or not isinstance(h3_result, dict) or h3_result.get("status") != "succeeded":
-        return []
-    if not any(item.get("artifact_role") == "primary_evidence" and item.get("evidence_contract") == "corporate_action_context_evidence.v1"
-               for item in h2_result.get("evidence_artifacts", []) if isinstance(item, dict)):
-        return []
+    operation_by_id = {item.get("operation_id"): item for item in plan.get("operations", [])}
+    if len(outcome_by_id) != len(outcomes) or len(operation_by_id) != len(plan.get("operations", [])):
+        raise OrchestrationError("h4_operation_identity_ambiguous")
 
     def load_primary(result: dict, contract: str) -> tuple[dict, dict]:
         matches = [item for item in result.get("evidence_artifacts", []) if item.get("artifact_role") == "primary_evidence" and item.get("evidence_contract") == contract and item.get("schema_version") == contract]
@@ -312,24 +308,55 @@ def derive_h4_for_completed_plan(plan: Mapping[str, Any], outcomes: list[dict[st
         value = json.loads(data.decode("utf-8", errors="strict"))
         return value, item
 
-    h2, h2_ref = load_primary(h2_result, "corporate_action_context_evidence.v1")
-    h3, h3_ref = load_primary(h3_result, "recent_performance_evidence.v1")
-    target = h2.get("target", {})
-    if h2_op.get("canonical_target_ids") != [target.get("canonical_target_id")] or target != h3.get("target"):
-        raise OrchestrationError("h4_input_target_mismatch")
-    from .phase_h_discontinuity_safety import derive_discontinuity_safety
-    event_refs = {index: h2_ref["relative_path"] for index in range(len(h2.get("events", [])))}
-    official_refs = {index: h2_ref["relative_path"] for index, event in enumerate(h2.get("events", [])) if event.get("official_reference_price", {}).get("state") == "value"}
-    h4 = derive_discontinuity_safety(h2_evidence=h2, h3_evidence=h3,
-                                     h2_evidence_reference=f"{h2_ref['relative_path']}#{h2_ref['sha256']}",
-                                     h3_evidence_reference=f"{h3_ref['relative_path']}#{h3_ref['sha256']}",
-                                     event_evidence_references=event_refs,
-                                     official_reference_evidence_references=official_refs)
-    path = f"evidence/phase_h/h4/{h2_op['operation_id']}.json"
-    schema = json.loads((ROOT / "schemas/discontinuity_safety_evidence.v1.schema.json").read_text(encoding="utf-8"))
-    if list(Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(h4)):
-        raise OrchestrationError("h4_artifact_schema_invalid")
-    content = (canonical_json(h4) + "\n").encode("utf-8")
-    atomic_write_bytes(output_root, path, content)
-    return [{"relative_path": path, "sha256": hashlib.sha256(content).hexdigest(), "schema_version": "discontinuity_safety_evidence.v1",
-             "byte_size": len(content), "item_count": 1, "evidence_contract": "discontinuity_safety_evidence.v1"}]
+    def derive_one(h2_op: Mapping[str, Any]) -> dict[str, Any] | None:
+        dependencies = h2_op.get("dependency_operation_ids")
+        if not isinstance(dependencies, list) or len(dependencies) != 1:
+            raise OrchestrationError("h2_dependency_graph_invalid")
+        h3_id = dependencies[0]
+        h3_op = operation_by_id.get(h3_id)
+        if (h2_op.get("market") != "TWSE"
+                or not isinstance(h3_op, dict)
+                or h3_op.get("capability_id") != "recent_performance"
+                or h3_op.get("market") != "TWSE"
+                or h3_op.get("operation_status") != "executable_pending_approval"
+                or h3_op.get("executor_invocation_eligible") is not True
+                or h3_op.get("canonical_target_ids") != h2_op.get("canonical_target_ids")):
+            raise OrchestrationError("h2_h3_dependency_binding_mismatch")
+        h2_result = outcome_by_id.get(h2_op.get("operation_id"))
+        h3_result = outcome_by_id.get(h3_id)
+        if (not isinstance(h2_result, dict) or h2_result.get("status") != "succeeded"
+                or h2_result.get("operation_id") != h2_op.get("operation_id")
+                or h2_result.get("capability_id") != "corporate_action_context"
+                or not isinstance(h3_result, dict) or h3_result.get("status") != "succeeded"
+                or h3_result.get("operation_id") != h3_id
+                or h3_result.get("capability_id") != "recent_performance"):
+            return None
+        h2, h2_ref = load_primary(h2_result, "corporate_action_context_evidence.v1")
+        h3, h3_ref = load_primary(h3_result, "recent_performance_evidence.v1")
+        target = h2.get("target", {})
+        if (h2_op.get("canonical_target_ids") != [target.get("canonical_target_id")]
+                or target != h3.get("target")):
+            raise OrchestrationError("h4_input_target_mismatch")
+        for contract, evidence in (("corporate_action_context_evidence.v1", h2), ("recent_performance_evidence.v1", h3)):
+            schema = json.loads((ROOT / f"schemas/{contract}.schema.json").read_text(encoding="utf-8"))
+            if list(Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(evidence)):
+                raise OrchestrationError("h4_input_artifact_schema_invalid")
+        from .phase_h_discontinuity_safety import derive_discontinuity_safety
+        event_refs = {index: h2_ref["relative_path"] for index in range(len(h2.get("events", [])))}
+        official_refs = {index: h2_ref["relative_path"] for index, event in enumerate(h2.get("events", [])) if event.get("official_reference_price", {}).get("state") == "value"}
+        h4 = derive_discontinuity_safety(h2_evidence=h2, h3_evidence=h3,
+                                         h2_evidence_reference=f"{h2_ref['relative_path']}#{h2_ref['sha256']}",
+                                         h3_evidence_reference=f"{h3_ref['relative_path']}#{h3_ref['sha256']}",
+                                         event_evidence_references=event_refs,
+                                         official_reference_evidence_references=official_refs)
+        path = f"evidence/phase_h/h4/{h2_op['operation_id']}.json"
+        schema = json.loads((ROOT / "schemas/discontinuity_safety_evidence.v1.schema.json").read_text(encoding="utf-8"))
+        if list(Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(h4)):
+            raise OrchestrationError("h4_artifact_schema_invalid")
+        content = (canonical_json(h4) + "\n").encode("utf-8")
+        atomic_write_bytes(output_root, path, content)
+        return {"relative_path": path, "sha256": hashlib.sha256(content).hexdigest(), "schema_version": "discontinuity_safety_evidence.v1",
+                "byte_size": len(content), "item_count": 1, "evidence_contract": "discontinuity_safety_evidence.v1"}
+
+    artifacts = [artifact for op in h2_ops if (artifact := derive_one(op)) is not None]
+    return artifacts

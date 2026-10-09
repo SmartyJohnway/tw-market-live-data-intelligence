@@ -16,6 +16,7 @@ from scripts.m8r_filesystem_safety import (
 
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
+from .dependency_graph import validate_dependency_graph
 from .component_artifact_roles import COMPOSITE_CONTRACT, validate_operation_artifact_roles
 from .registry import ExecutorMetadata, ExecutorMetadataRegistry, executor_route_key
 
@@ -250,6 +251,8 @@ def dispatch_prepared(
     accepted_preflight: dict | None = None,
     plan: dict | None = None,
 ) -> list[dict]:
+    if plan is not None:
+        validate_dependency_graph(plan, (item.request["operation_id"] for item in prepared))
     context = DispatchRuntimeContext(governed_output_root=governed_output_root, mode=mode)
     outcomes: list[dict] = []
     validators = {
