@@ -7,7 +7,7 @@ from scripts.phase_j_b04_a6_p1_prerequisite_authority import (
     BOOTSTRAP_AUTHORIZATION_TEMPLATE,
     EXPECTED_LOGICAL_PROBES,
     classify_bootstrap_dispatch,
-    classify_dispatch_budget,
+    bootstrap_authorization_template,
     h2_activation_current_state,
     h3_automation_authority,
     post_bootstrap_identity_acceptance,
@@ -33,13 +33,18 @@ def test_bootstrap_inventory_is_the_five_materializer_probes_and_manifest_hosts(
     assert len(EXPECTED_LOGICAL_PROBES) == 5
 
 
-def test_redirect_dispatch_is_unproven_and_no_bootstrap_auth_template_is_emitted():
-    assert classify_dispatch_budget("class SafeRedirectHandler: pass") == "NOT_PROVEN"
-    assert classify_dispatch_budget(
-        "class SafeRedirectHandler:\n    max_redirections = 3\n"
-    ) == "PROVEN"
-    assert classify_bootstrap_dispatch() == "NOT_PROVEN"
-    assert BOOTSTRAP_AUTHORIZATION_TEMPLATE is None
+def test_redirect_dispatch_uses_inherited_runtime_values_and_project_bound():
+    from scripts.phase_j_b04_a6_p1_prerequisite_authority import inspect_redirect_runtime_bounds
+
+    bounds = inspect_redirect_runtime_bounds()
+    assert bounds["is_subclass"] is True
+    assert isinstance(bounds["max_repeats"], int) and bounds["max_repeats"] > 0
+    assert isinstance(bounds["max_redirections"], int) and bounds["max_redirections"] > 0
+    assert classify_bootstrap_dispatch() == "PROJECT_OWNED_BOUNDED"
+    metadata = bootstrap_authorization_template()
+    assert metadata["template_type"] == "FUTURE_OWNER_AUTHORIZATION_METADATA_ONLY"
+    assert metadata["authorization_status"] == "NOT_AUTHORIZED"
+    assert BOOTSTRAP_AUTHORIZATION_TEMPLATE["bootstrap_http_dispatch_hard_ceiling"] == 10
 
 
 def test_post_bootstrap_identity_contract_requires_production_exact_identity():
@@ -94,5 +99,5 @@ def test_inventory_and_authority_helpers_are_network_free(monkeypatch):
 
     monkeypatch.setattr(socket, "socket", denied)
     assert len(source_inventory()) == 5
-    assert classify_bootstrap_dispatch() == "NOT_PROVEN"
+    assert classify_bootstrap_dispatch() == "PROJECT_OWNED_BOUNDED"
     assert h2_activation_current_state()["catalog"]["runtime_executable"] is False

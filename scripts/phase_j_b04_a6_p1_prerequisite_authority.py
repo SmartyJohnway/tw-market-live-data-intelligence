@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import json
 import ast
+import importlib.util
 import re
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -59,7 +61,44 @@ EXPECTED_LOGICAL_PROBES = [
     },
 ]
 
-BOOTSTRAP_AUTHORIZATION_TEMPLATE: dict[str, Any] | None = None
+BOOTSTRAP_AUTHORIZATION_TEMPLATE: dict[str, Any] = {
+    "template_type": "FUTURE_OWNER_AUTHORIZATION_METADATA_ONLY",
+    "authorization_status": "NOT_AUTHORIZED",
+    "authorized_head_sha": "<EXACT_FUTURE_REVIEWED_HEAD>",
+    "authorized_tree_sha": "<EXACT_FUTURE_REVIEWED_TREE>",
+    "logical_source_probes": [
+        "TWSE listed ISIN",
+        "TPEx listed ISIN",
+        "TWSE delisted lifecycle",
+        "TPEx delisted lifecycle",
+        "TWSE ETN expiry lifecycle",
+    ],
+    "maximum_redirects_followed_per_probe": 1,
+    "maximum_http_dispatches_per_probe": 2,
+    "bootstrap_http_dispatch_hard_ceiling": 10,
+    "retry_count": 0,
+    "redirect_policy": "HTTPS and allowlisted host only",
+    "prohibited": [
+        "H3 live",
+        "H2 live",
+        "A6 execution",
+        "H2 activation",
+        "J-B04 closure",
+        "Phase J start",
+    ],
+    "stop_conditions": [
+        "unexpected source inventory",
+        "redirect limit exceeded",
+        "redirect host violation",
+        "dispatch budget exhaustion",
+        "source contract mismatch",
+        "qualification-invalidating schema drift",
+        "qualification failure",
+        "identity conflict",
+        "release rejection",
+        "activation failure",
+    ],
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -67,19 +106,6 @@ def load_json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"expected_object:{path.name}")
     return value
-
-
-def classify_dispatch_budget(probe_source: str) -> str:
-    """Only return proven if this project's transport explicitly caps redirects."""
-    redirect_class = re.search(r"class\s+SafeRedirectHandler\b([\s\S]*?)(?:\nclass\s|\Z)", probe_source)
-    if not redirect_class:
-        return "NOT_PROVEN"
-    body = redirect_class.group(1)
-    explicit_bound = re.search(
-        r"(?:max_redirections|max_repeats|redirect_limit|maximum_redirects)\s*=\s*\d+",
-        body,
-    )
-    return "PROVEN" if explicit_bound else "NOT_PROVEN"
 
 
 def h3_automation_authority(owner_record: dict[str, Any]) -> dict[str, Any]:
@@ -153,12 +179,47 @@ def post_bootstrap_identity_acceptance(snapshot: dict[str, Any]) -> bool:
 
 
 def classify_bootstrap_dispatch() -> str:
+    bounds = inspect_redirect_runtime_bounds()
+    materializer = MATERIALIZER_PATH.read_text(encoding="utf-8")
     probe_source = PROBE_PATH.read_text(encoding="utf-8")
-    return classify_dispatch_budget(probe_source)
+    explicit_project_limits = (
+        "BOOTSTRAP_MAX_REDIRECTS_PER_PROBE = 1" in materializer
+        and "BOOTSTRAP_MAX_DISPATCHES_PER_PROBE = 1 + BOOTSTRAP_MAX_REDIRECTS_PER_PROBE" in materializer
+        and "BOOTSTRAP_MAX_TOTAL_DISPATCHES = 10" in materializer
+        and materializer.count("dispatch_budget=dispatch_budget") == 2
+        and "dispatch_budget.reserve_before_dispatch()" in probe_source
+        and "self.redirect_count >= self.max_followed_redirects" in probe_source
+    )
+    return "PROJECT_OWNED_BOUNDED" if bounds["is_subclass"] and explicit_project_limits else "NOT_PROVEN"
+
+
+def inspect_redirect_runtime_bounds() -> dict[str, Any]:
+    """Load the real probe module without acquiring sources and read effective attrs."""
+    script_path = str(PROBE_PATH.parent)
+    sys.path.insert(0, script_path)
+    try:
+        spec = importlib.util.spec_from_file_location("a6p1_probe_sources_runtime", PROBE_PATH)
+        if spec is None or spec.loader is None:
+            raise ImportError("probe_sources_runtime_loader_unavailable")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+    finally:
+        try:
+            sys.path.remove(script_path)
+        except ValueError:
+            pass
+    handler = module.SafeRedirectHandler([])
+    parent = module.urllib.request.HTTPRedirectHandler
+    return {
+        "is_subclass": issubclass(module.SafeRedirectHandler, parent),
+        "max_repeats": handler.max_repeats,
+        "max_redirections": handler.max_redirections,
+        "python_version": sys.version.split()[0],
+    }
 
 
 def bootstrap_authorization_template() -> dict[str, Any] | None:
-    if classify_bootstrap_dispatch() != "PROVEN":
+    if classify_bootstrap_dispatch() != "PROJECT_OWNED_BOUNDED":
         return None
     return BOOTSTRAP_AUTHORIZATION_TEMPLATE
 
@@ -209,7 +270,11 @@ def source_inventory() -> list[dict[str, Any]]:
             **probe,
             "allowed_host_present": probe["allowed_host"] in allowed,
             "http_method": "GET",
-            "redirect_policy": "follows redirects only when HTTPS and host is allowlisted; no explicit redirect ceiling",
+            "redirect_policy": "production bootstrap follows at most one redirect; HTTPS and allowlisted host only; credentials prohibited",
+            "maximum_redirects_followed_per_probe": 1,
+            "maximum_http_dispatches_per_probe": 2,
+            "bootstrap_http_dispatch_hard_ceiling": 10,
+            "redirect_behavior": "project-owned redirect limit is checked before target dispatch; shared global slot is reserved before redirect request is returned",
             "timeout_seconds": 20,
             "response_size_bound_bytes": 20 * 1024 * 1024,
             "raw_acquisition_retention": "successful response bytes saved to ignored input-bundle raw_payloads; HTTP error stores only hash of up to 256 KiB read",

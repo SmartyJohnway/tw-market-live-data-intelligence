@@ -39,7 +39,12 @@ from merge_lifecycle_events import merge as merge_lifecycle  # noqa: E402
 from parse_etn_termination import parse as parse_etn  # noqa: E402
 from parse_tpex_delisted import parse as parse_tpex_delisted  # noqa: E402
 from parse_twse_delisted import parse as parse_twse_delisted  # noqa: E402
-from probe_sources import probe, load_manifest, find_source_contract  # noqa: E402
+from probe_sources import (  # noqa: E402
+    BootstrapDispatchBudget,
+    probe,
+    load_manifest,
+    find_source_contract,
+)
 from schema_validation import validate as validate_schema  # noqa: E402
 
 # Remove skill scripts from path after importing
@@ -77,6 +82,15 @@ TWSE_ETN_EXPIRED_URL = "https://www.twse.com.tw/zh/products/securities/etn/produ
 
 # Bounded scope: modes 2 (TWSE listed) and 4 (TPEX listed)
 IDENTITY_MODES = [2, 4]
+BOOTSTRAP_LOGICAL_PROBE_COUNT = 5
+BOOTSTRAP_MAX_REDIRECTS_PER_PROBE = 1
+BOOTSTRAP_MAX_DISPATCHES_PER_PROBE = 1 + BOOTSTRAP_MAX_REDIRECTS_PER_PROBE
+BOOTSTRAP_MAX_TOTAL_DISPATCHES = 10
+BOOTSTRAP_TERMINAL_TRANSPORT_CODES = {
+    "BOOTSTRAP_REDIRECT_LIMIT_EXCEEDED",
+    "BOOTSTRAP_DISPATCH_BUDGET_EXHAUSTED",
+    "BOOTSTRAP_REDIRECT_REJECTED",
+}
 
 # Qualification taxonomy
 QUAL_PRODUCTION = "QUALIFIED_PRODUCTION_INPUT"
@@ -131,6 +145,13 @@ def qualify_record(record: dict[str, Any], schemas: dict[str, dict]) -> str:
     return QUAL_QUARANTINED
 
 
+def _stop_on_bootstrap_transport_limit(probe_result: dict[str, Any]) -> None:
+    """Stop the entire bootstrap after a governed redirect/dispatch violation."""
+    code = probe_result.get("transport_error_code")
+    if code in BOOTSTRAP_TERMINAL_TRANSPORT_CODES:
+        raise RuntimeError(code)
+
+
 def main() -> int:
     now_utc = datetime.now(timezone.utc)
     generated_at = now_utc.isoformat()
@@ -147,6 +168,25 @@ def main() -> int:
     # Load manifest for allowed hosts
     manifest = load_manifest(MANIFEST_PATH)
     allowed_hosts = manifest["allowed_hosts"]
+    # One shared budget spans both identity probes and all three lifecycle probes.
+    dispatch_budget = BootstrapDispatchBudget(BOOTSTRAP_MAX_TOTAL_DISPATCHES)
+    lifecycle_sources = [
+        ("twse_delisted", TWSE_DELISTED_URL, "parse_twse_delisted"),
+        ("tpex_delisted", TPEX_DELISTED_URL, "parse_tpex_delisted"),
+        ("twse_etn_expired", TWSE_ETN_EXPIRED_URL, "parse_etn_twse"),
+    ]
+    expected_probe_ids = [
+        "twse_isin_mode2_zh",
+        "twse_isin_mode4_zh",
+        "twse_delisted",
+        "tpex_delisted",
+        "twse_etn_expired",
+    ]
+    actual_probe_ids = [f"twse_isin_mode{mode}_zh" for mode in IDENTITY_MODES] + [
+        source_id for source_id, _url, _parser in lifecycle_sources
+    ]
+    if actual_probe_ids != expected_probe_ids or len(actual_probe_ids) != BOOTSTRAP_LOGICAL_PROBE_COUNT:
+        raise RuntimeError("BOOTSTRAP_SOURCE_INVENTORY_MISMATCH")
     schemas = {}
     for name in ["classification-result", "lifecycle-event", "probe-result"]:
         schema_path = SCHEMA_DIR / f"{name}.schema.json"
@@ -172,10 +212,19 @@ def main() -> int:
             except ValueError:
                 raise ValueError(f"SOURCE_CONTRACT_UNRESOLVED for {source_id or url}")
         raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
-        probe_result = probe(url, allowed_hosts, contract=contract, save_raw=raw_path)
+        probe_result = probe(
+            url,
+            allowed_hosts,
+            contract=contract,
+            save_raw=raw_path,
+            dispatch_budget=dispatch_budget,
+            max_followed_redirects=BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+        )
         probe_result["source_id"] = source_id
+        probe_result["bootstrap_dispatch_reservations"] = probe_result.get("dispatch_reservations")
         probe_result["parser_selected"] = "isin_parser.parse_html"
         source_probes.append(probe_result)
+        _stop_on_bootstrap_transport_limit(probe_result)
 
         if probe_result["acquisition_status"] not in {"data", "schema_drift", "semantic_error"}:
             log(f"    FAILED: {probe_result.get('error', probe_result.get('error_type', 'unknown'))}")
@@ -254,12 +303,6 @@ def main() -> int:
     log("\n── Phase D: Probing lifecycle sources ──")
     lifecycle_groups: list[list[dict]] = []
 
-    lifecycle_sources = [
-        ("twse_delisted", TWSE_DELISTED_URL, "parse_twse_delisted"),
-        ("tpex_delisted", TPEX_DELISTED_URL, "parse_tpex_delisted"),
-        ("twse_etn_expired", TWSE_ETN_EXPIRED_URL, "parse_etn_twse"),
-    ]
-
     for source_id, url, parser_name in lifecycle_sources:
         log(f"  Probing {source_id}: {url}")
         try:
@@ -270,10 +313,19 @@ def main() -> int:
             except ValueError:
                 raise ValueError(f"SOURCE_CONTRACT_UNRESOLVED for {source_id or url}")
         raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
-        probe_result = probe(url, allowed_hosts, contract=contract, save_raw=raw_path)
+        probe_result = probe(
+            url,
+            allowed_hosts,
+            contract=contract,
+            save_raw=raw_path,
+            dispatch_budget=dispatch_budget,
+            max_followed_redirects=BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+        )
         probe_result["source_id"] = source_id
+        probe_result["bootstrap_dispatch_reservations"] = probe_result.get("dispatch_reservations")
         probe_result["parser_selected"] = parser_name
         source_probes.append(probe_result)
+        _stop_on_bootstrap_transport_limit(probe_result)
 
         if probe_result["acquisition_status"] not in {"data", "schema_drift", "semantic_error"}:
             log(f"    FAILED: {probe_result.get('error', probe_result.get('error_type', 'unknown'))}")
@@ -407,6 +459,16 @@ def main() -> int:
         "failed_count": len(probe_failures),
         "identity_modes_probed": IDENTITY_MODES,
         "lifecycle_sources_probed": [s[0] for s in lifecycle_sources],
+        "bootstrap_dispatch_budget": {
+            "logical_probe_count": len(source_probes),
+            "expected_logical_probe_count": BOOTSTRAP_LOGICAL_PROBE_COUNT,
+            "max_redirects_per_probe": BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+            "max_dispatches_per_probe": BOOTSTRAP_MAX_DISPATCHES_PER_PROBE,
+            "max_total_dispatches": BOOTSTRAP_MAX_TOTAL_DISPATCHES,
+            "reserved_dispatches": dispatch_budget.used_dispatches,
+            "remaining_dispatches": dispatch_budget.remaining_dispatches,
+            "retry_count": 0,
+        },
     }
     sem_path = bundle_dir / "source_evidence_manifest.json"
     sem_path.write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -539,6 +601,15 @@ def main() -> int:
         "skill_path": "skills/tw-security-master-classifier",
         "skill_contract_hash": compute_skill_contract_hash(),
         "official_sources_probed": total_probes,
+        "bootstrap_dispatch_budget": {
+            "logical_probe_count": total_probes,
+            "max_redirects_per_probe": BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+            "max_dispatches_per_probe": BOOTSTRAP_MAX_DISPATCHES_PER_PROBE,
+            "max_total_dispatches": BOOTSTRAP_MAX_TOTAL_DISPATCHES,
+            "reserved_dispatches": dispatch_budget.used_dispatches,
+            "remaining_dispatches": dispatch_budget.remaining_dispatches,
+            "retry_count": 0,
+        },
         "transport_successful_sources": len([p for p in source_probes if p.get("transport_success")]),
         "transport_failed_sources": len([p for p in source_probes if not p.get("transport_success")]),
         "parser_qualified_sources": len([p for p in source_probes if p.get("acquisition_status") == "data"]),

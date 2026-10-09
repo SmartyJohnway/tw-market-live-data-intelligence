@@ -26,6 +26,36 @@ class RedirectRejected(Exception):
     pass
 
 
+class BootstrapRedirectLimitExceeded(Exception):
+    code = "BOOTSTRAP_REDIRECT_LIMIT_EXCEEDED"
+
+
+class BootstrapDispatchBudgetExhausted(Exception):
+    code = "BOOTSTRAP_DISPATCH_BUDGET_EXHAUSTED"
+
+
+class BootstrapDispatchBudget:
+    """Shared fail-closed counter for one production Security Master bootstrap."""
+
+    def __init__(self, maximum_total_dispatches: int = 10) -> None:
+        if type(maximum_total_dispatches) is not int or maximum_total_dispatches < 1:
+            raise ValueError("bootstrap_dispatch_budget_invalid")
+        self.maximum_total_dispatches = maximum_total_dispatches
+        self.used_dispatches = 0
+
+    @property
+    def remaining_dispatches(self) -> int:
+        return self.maximum_total_dispatches - self.used_dispatches
+
+    def reserve_before_dispatch(self) -> int:
+        if self.used_dispatches >= self.maximum_total_dispatches:
+            raise BootstrapDispatchBudgetExhausted(
+                "BOOTSTRAP_DISPATCH_BUDGET_EXHAUSTED"
+            )
+        self.used_dispatches += 1
+        return self.used_dispatches
+
+
 def load_manifest(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -37,17 +67,35 @@ def validate_url(url: str, allowed_hosts: list[str]) -> None:
 
 
 class SafeRedirectHandler(urllib.request.HTTPRedirectHandler):
-    def __init__(self, allowed_hosts: list[str]) -> None:
+    def __init__(
+        self,
+        allowed_hosts: list[str],
+        *,
+        dispatch_budget: BootstrapDispatchBudget | None = None,
+        max_followed_redirects: int | None = None,
+    ) -> None:
         super().__init__()
         self.allowed_hosts = allowed_hosts
         self.redirect_count = 0
+        self.dispatch_budget = dispatch_budget
+        self.max_followed_redirects = max_followed_redirects
 
     def redirect_request(self, req: urllib.request.Request, fp: Any, code: int, msg: str, headers: Any, newurl: str) -> urllib.request.Request | None:
         absolute = urljoin(req.full_url, newurl)
         try:
             validate_url(absolute, self.allowed_hosts)
         except ValueError as exc:
-            raise RedirectRejected(str(exc)) from exc
+            raise RedirectRejected("BOOTSTRAP_REDIRECT_REJECTED") from exc
+        if (
+            self.max_followed_redirects is not None
+            and self.redirect_count >= self.max_followed_redirects
+        ):
+            raise BootstrapRedirectLimitExceeded(
+                "BOOTSTRAP_REDIRECT_LIMIT_EXCEEDED"
+            )
+        if self.dispatch_budget is not None:
+            # urllib dispatches the returned request only after this reservation.
+            self.dispatch_budget.reserve_before_dispatch()
         self.redirect_count += 1
         return super().redirect_request(req, fp, code, msg, headers, absolute)
 
@@ -113,14 +161,31 @@ def _base(url: str, observed_at: str) -> dict[str, Any]:
     }
 
 
-def probe(url: str, allowed_hosts: list[str], *, contract: dict[str, Any] | None = None, timeout: float = 20, save_raw: Path | None = None) -> dict[str, Any]:
+def probe(
+    url: str,
+    allowed_hosts: list[str],
+    *,
+    contract: dict[str, Any] | None = None,
+    timeout: float = 20,
+    save_raw: Path | None = None,
+    dispatch_budget: BootstrapDispatchBudget | None = None,
+    max_followed_redirects: int | None = None,
+) -> dict[str, Any]:
     validate_url(url, allowed_hosts)
     observed_at = datetime.now(timezone.utc).isoformat()
     base = _base(url, observed_at)
-    handler = SafeRedirectHandler(allowed_hosts)
+    handler = SafeRedirectHandler(
+        allowed_hosts,
+        dispatch_budget=dispatch_budget,
+        max_followed_redirects=max_followed_redirects,
+    )
     opener = urllib.request.build_opener(handler, urllib.request.HTTPSHandler(context=ssl.create_default_context()))
     request = urllib.request.Request(url, headers={"User-Agent": "tw-security-master-classifier/1.1 (+official-source-validation)"})
+    dispatches_before = dispatch_budget.used_dispatches if dispatch_budget else None
     try:
+        if dispatch_budget is not None:
+            # Reserve the initial request before opener.open can dispatch it.
+            dispatch_budget.reserve_before_dispatch()
         with opener.open(request, timeout=timeout) as response:
             final_url = response.geturl()
             validate_url(final_url, allowed_hosts)
@@ -130,12 +195,43 @@ def probe(url: str, allowed_hosts: list[str], *, contract: dict[str, Any] | None
             content_type = response.headers.get_content_type()
             status = response.status
     except RedirectRejected as exc:
-        return {**base, "redirect_count": handler.redirect_count + 1, "acquisition_status": "redirect_rejected", "error": str(exc)}
+        return {
+            **base,
+            "redirect_count": handler.redirect_count,
+            "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before),
+            "acquisition_status": "redirect_rejected",
+            "transport_error_code": "BOOTSTRAP_REDIRECT_REJECTED",
+            "error": str(exc),
+        }
+    except BootstrapRedirectLimitExceeded:
+        return {
+            **base,
+            "redirect_count": handler.redirect_count,
+            "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before),
+            "acquisition_status": "redirect_limit_exceeded",
+            "transport_error_code": "BOOTSTRAP_REDIRECT_LIMIT_EXCEEDED",
+        }
+    except BootstrapDispatchBudgetExhausted:
+        return {
+            **base,
+            "redirect_count": handler.redirect_count,
+            "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before),
+            "acquisition_status": "dispatch_budget_exhausted",
+            "transport_error_code": "BOOTSTRAP_DISPATCH_BUDGET_EXHAUSTED",
+        }
     except urllib.error.HTTPError as exc:
         data = exc.read(256 * 1024)
-        return {**base, "final_url": exc.geturl(), "redirect_count": handler.redirect_count, "http_status": exc.code, "acquisition_status": "http_error", "raw_payload_sha256": file_sha256(data)}
+        return {
+            **base,
+            "final_url": exc.geturl(),
+            "redirect_count": handler.redirect_count,
+            "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before),
+            "http_status": exc.code,
+            "acquisition_status": "http_error",
+            "raw_payload_sha256": file_sha256(data),
+        }
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        return {**base, "redirect_count": handler.redirect_count, "acquisition_status": "network_error", "error_type": type(exc).__name__}
+        return {**base, "redirect_count": handler.redirect_count, "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before), "acquisition_status": "network_error", "error_type": type(exc).__name__}
 
     if save_raw:
         save_raw.parent.mkdir(parents=True, exist_ok=True)
@@ -144,6 +240,7 @@ def probe(url: str, allowed_hosts: list[str], *, contract: dict[str, Any] | None
         **base,
         "final_url": final_url,
         "redirect_count": handler.redirect_count,
+        "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before),
         "transport_success": True,
         "http_status": status,
         "content_type": content_type,
@@ -156,6 +253,14 @@ def probe(url: str, allowed_hosts: list[str], *, contract: dict[str, Any] | None
     acquisition = classify_payload(text)
     semantic = acquisition == "data"
     return {**common, "payload_parseable": True, "schema_valid": semantic, "semantic_data_present": semantic, "acquisition_status": acquisition}
+
+
+def _dispatch_delta(
+    dispatch_budget: BootstrapDispatchBudget | None, before: int | None
+) -> int | None:
+    if dispatch_budget is None or before is None:
+        return None
+    return dispatch_budget.used_dispatches - before
 
 
 def main() -> int:

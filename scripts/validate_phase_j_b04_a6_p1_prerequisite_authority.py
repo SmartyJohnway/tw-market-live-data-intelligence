@@ -22,6 +22,7 @@ from scripts.phase_j_b04_a6_p1_prerequisite_authority import (  # noqa: E402
 
 RECORD = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A6_P1_PREREQUISITE_AUTHORITY_CLOSURE_2026-10-09.json"
 P0 = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A6_P0_INTEGRATED_ACCEPTANCE_PREFLIGHT_2026-10-09.json"
+R1 = ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A6_P1_R1_BOOTSTRAP_TRANSPORT_BOUND_HARDENING_2026-10-09.json"
 
 
 def main() -> int:
@@ -41,7 +42,15 @@ def main() -> int:
     assert [p["initial_url"] for p in declared] == [p["initial_url"] for p in inventory]
     assert all(p["method"] == "GET" for p in declared)
     assert all(p["source_contract_identifier"] is None for p in declared)
-    assert classify_bootstrap_dispatch() == "NOT_PROVEN"
+    # Keep P1's original disposition as history; R1 supersedes only the
+    # redirect-bound classification and supplies the project-owned budget.
+    correction = load_json(R1)
+    assert record["overall_disposition"] == "J_B04_A6_P1_BOOTSTRAP_DISPATCH_BOUND_NOT_PROVEN"
+    assert correction["p1_correction"]["history_rewritten"] is False
+    assert correction["p1_correction"]["prior_disposition_superseded_for"] == "redirect-bound classification only"
+    assert correction["runtime_redirect_analysis"]["inherited_redirect_bound_exists"] is True
+    assert correction["project_owned_bootstrap_transport_bound"]["bootstrap_http_dispatch_hard_ceiling"] == 10
+    assert classify_bootstrap_dispatch() == "PROJECT_OWNED_BOUNDED"
     assert record["security_master"]["maximum_actual_http_dispatches"] == "NOT_PROVEN"
     assert record["bootstrap_authorization"]["template_emitted"] is False
     assert record["bootstrap_authorization"]["reason"]
@@ -85,7 +94,9 @@ def main() -> int:
         "MCP": 6,
     }
     assert record["overall_disposition"] == "J_B04_A6_P1_BOOTSTRAP_DISPATCH_BOUND_NOT_PROVEN"
-    print("A6-P1 validator: PASS (network-free; bootstrap dispatch ceiling NOT_PROVEN)")
+    assert correction["future_bootstrap_authorization_template"]["authorization_status"] == "NOT_AUTHORIZED"
+    assert correction["future_bootstrap_authorization_template"]["is_authorization"] is False
+    print("A6-P1 historical validator: PASS (R1 correction is additive; bootstrap remains unexecuted)")
     return 0
 
 
