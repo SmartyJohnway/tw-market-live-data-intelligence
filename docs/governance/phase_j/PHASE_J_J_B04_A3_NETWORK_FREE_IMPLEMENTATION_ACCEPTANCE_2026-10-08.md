@@ -1,32 +1,28 @@
-# J-B04-A3-R1 — Network-Free Implementation Review Package
+# J-B04-A3-R2 — Network-Free Implementation Review Package
 
-**Disposition:** `J_B04_A3_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW`
+**Disposition:** `J_B04_A3_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW`
 **Exact base:** `a833a5728501d99b942928fdebb790a993a5e838`
-**Reviewed head before R1:** `82322276da59a06193b749454ab82c6a02a867d9`
+**R1 head:** `6696401a31e36ca561bd5036f277a63ac38e6ae3`
 
-## R1 changes
+## R2 changes
 
-- Exact-base M8R-05C regression accounting now stores the command, collected/passed/failed/skipped/deselected node IDs, failure codes, runtime details, and byte-size/SHA-256 manifests for every JSON fixture. The validator computes `head failed nodes - base failed nodes` and checks that the declared delta matches the computed set.
-- Clean isolated worktrees both produced **47 passed, 0 failed** with the same CPython 3.11.16 environment, command, selected nodes, and identical nine-file JSON fixture manifest. Computed new-failure delta: **0**. The earlier five reported head failures did not reproduce; the checked-out fixture bytes match. Their prior cause cannot be established from the current snapshot, so this record does not call them inherited.
-- H4 derivation processes executable H2 operations in deterministic operation-ID order, resolves each exact same-target H3 operation and result, verifies one primary artifact per input, byte count, SHA-256, JSON schema, and target, then writes a unique H2-operation-scoped H4 artifact. Failed or unusable operation results produce no H4 for that target. Frozen `derive_discontinuity_safety()` and H4 semantics remain unchanged.
-- The integrated two-target test covers `TWSE:1423` and `TWSE:2330` through H3 → H2 → H4, verified inventory, Result V3, and Audit V3. It checks different comparison windows, exact input hashes, target-local references and projection. A partial-outcome case confirms failed H3 for B leaves H4 only for A and no H4 projection for B.
-- Shared dependency-graph validation runs in governed preflight before `ready_for_claim` and atomic claim, and remains in dispatch as defense-in-depth. It rejects missing, self, duplicate, cyclic, unapproved, wrong-capability, cross-target, and cross-market dependencies. The bounded TWSE H2 route requires exactly one same-target TWSE H3 operation.
-- The controlled-execution proof uses an authorization-consistent invalid plan. Preflight fails; no claim file is created; consumption remains `unused`; adapter and source-call logs stay empty.
+- H4 derivation now consumes an H2 operation with `status=failed` only when its error code is `source_failed` or `binding_failed` and its unique primary H2 artifact passes byte-size, SHA-256, schema, and target checks with an evidence status matching that error code. The unchanged frozen H4 function derives `coverage_incomplete` and blocks ordinary-return interpretation for both typed statuses.
+- H3-unusable results still prevent H2 source acquisition and H4 derivation. Unexpected H2 failures without governed primary evidence produce no synthetic evidence or H4. Inconsistent failed result/artifact pairs raise an orchestration invariant error.
+- Failed typed H2 evidence is retained through citation and Result V3 projection only after its typed status and operation error code agree. Integrated fixtures cover source failure and binding failure through H3, H2, H4, Result V3, Audit V3, and Markdown guard output.
+- Dependency graph semantics are validated globally, while approval closure is required only for an approved child. Real authorization/preflight tests cover H2-only rejection before claim, H3-only acceptance without H2 approval, unrelated X-only acceptance, and H2+H3 acceptance. Dispatch keeps the same validator as defense in depth.
 
 ## Verification
 
-- A3-owned deterministic tests: see paired JSON for exact count.
-- Phase-H/H3/H4 and offline I2 A1/A2 regression selection: **464 passed**.
+- A3/R2-owned tests: **55 passed**.
+- Phase-H/H2/H3/H4 focused regression: **144 passed** (rerun after final implementation commit).
+- M8R-05B planner/authorization/preflight/dispatch: **51 passed**.
+- M8R-05C focused exact-base comparison: **47 passed** on the implementation candidate; exact committed-head comparison follows.
 - Phase-I compatibility selection: **78 passed**.
-- M8R-05C clean exact-base comparison: **47 passed, 0 failed**.
-- M8R-05C implementation revision `49255340f73b58a8883ce07731459f042b782be1` comparison: **47 passed, 0 failed**.
-- Computed M8R-05C new-failure delta: **0**.
-- Phase-H V3, J-B04-A1, J-B04-A2, Phase-J GHI, portable catalog, runtime Skill/guide, and strict duplicate-key JSON validators: **PASS**.
-- `compileall` and `git diff --check`: **PASS**.
-- `default-ci`: **1,250 passed, 29 failed, 4 skipped, 5 deselected**. Twenty-eight failures require an initialized production Security Master absent from a clean environment. One existing TLS test expects an explicit `HTTPSHandler._context`; CPython 3.11.16 uses its verified default context (`None`) in that case. Neither failure was hidden or worked around.
+- Result V3, Audit V3, Markdown integration selection: **25 passed**.
+- Phase-H V3, A1, A2, A3, Phase-J GHI, portable catalog, runtime Skill/guide validators: **PASS**.
+- `compileall`, `git diff --check`, and strict duplicate-key JSON scan (1008 files): **PASS**.
+- Exact-base `default-ci` comparison is being captured against the R2 implementation revision. Both isolated clean worktrees lack `data/security_master`; no runtime market data is initialized or committed.
 - No live market test or source request was run.
-
-The clean base/head M8R-05C command, environment, node sets, exact failure codes, and per-file fixture byte/hash manifests are recorded in the paired JSON acceptance record.
 
 ## Preserved state
 
@@ -38,21 +34,20 @@ Phase J = NOT_STARTED
 MCP = 6
 Market GET/HEAD/POST = 0/0/0
 Frozen H2/H3/H4/Result/Audit schemas = unchanged
-H4 semantics = unchanged
+Frozen derive_discontinuity_safety() semantics = unchanged
 ```
 
-## Changed files
+The exact default-ci counts, node sets, shared/new/resolved failures and computed delta will be recorded in the paired JSON before R2 is pushed.
 
-- `scripts/m8r_05b_03/dependency_graph.py` (new)
-- `scripts/m8r_05b_03/preflight.py`
-- `scripts/m8r_05b_03/dispatch.py`
+## Changed files since R1 head
+
+- `scripts/m8r_05b_03/dependency_graph.py`
+- `scripts/m8r_05c/citation_builder.py`
+- `scripts/m8r_05c/evidence_projector.py`
 - `server/services/phase_h_h2_twse_exright_executor.py`
-- `tests/unit/test_phase_h_h3_activation_candidate_preview.py`
-- `tests/unit/test_phase_j_b04_a3_acceptance.py`
-- `tests/unit/test_phase_j_b04_a3_dependency_planning.py`
 - `tests/unit/test_phase_j_b04_a3_dispatch_dependencies.py`
 - `tests/unit/test_phase_j_b04_a3_end_to_end_projection.py`
 - `tests/unit/test_phase_j_b04_a3_h2_executor.py`
 - `scripts/validate_phase_j_b04_a3_network_free_implementation.py`
-- `docs/governance/phase_j/PHASE_J_J_B04_A3_NETWORK_FREE_IMPLEMENTATION_ACCEPTANCE_2026-10-08.json`
-- This Markdown review package.
+- `tests/unit/test_phase_j_b04_a3_acceptance.py`
+- This acceptance JSON and Markdown.

@@ -84,13 +84,19 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
     machine = record["machine_assertions"]
     for key, value in expected.items():
         assert machine.get(key) == value, f"machine_assertion_mismatch:{key}"
-    assert record["disposition"] == "J_B04_A3_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW"
+    assert record["disposition"] == "J_B04_A3_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW"
     assert record["disposition"] == machine["disposition"]
     assert machine["active_phase_h_source_count"] == 4
     assert machine["h3_twse"] == "ACTIVE" and machine["h3_tpex"] == "BLOCKED_NON_EXECUTABLE"
     assert machine["j_b01"] == machine["j_b02"] == machine["j_b03"] == "CLOSED"
     assert machine["j_b04_a3"] == "IMPLEMENTED_AWAITING_INDEPENDENT_REVIEW"
     assert machine["j_b04_a3_r1"] == "READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW"
+    assert machine["j_b04_a3_r2"] == "READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW"
+    assert machine["typed_h2_failure_h4_states"] == {
+        "source_failed": "coverage_incomplete",
+        "binding_failed": "coverage_incomplete",
+    }
+    assert machine["dependency_approval_closure"] == "approved_child_operations_only"
     assert machine["h2_source_activation_state"] == "eligible"
     assert machine["h2_source_runtime_executable"] is False
     assert machine["h4_implementation"] == "EXISTING_UNCHANGED_ZERO_NETWORK"
@@ -126,6 +132,29 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
     assert baseline["r1_head"]["passed_count"] == 47
     assert baseline["exact_base"]["failed_count"] == baseline["r1_head"]["failed_count"] == 0
 
+    if "default_ci_comparison" in record:
+        comparison = record["default_ci_comparison"]
+        base_ci, head_ci = comparison["base"], comparison["head"]
+        base_failed, head_failed = set(base_ci["failed_nodes"]), set(head_ci["failed_nodes"])
+        new_failed = sorted(head_failed - base_failed)
+        resolved = sorted(base_failed - head_failed)
+        shared = sorted(base_failed & head_failed)
+        assert comparison["exact_base_revision"] == BASELINE
+        assert comparison["r2_implementation_revision"] == comparison["head_revision"]
+        assert base_ci["revision"] == BASELINE
+        assert head_ci["revision"] == comparison["r2_implementation_revision"]
+        assert base_ci["command"] == head_ci["command"] == "python scripts/run_test_profile.py default-ci --json"
+        assert base_ci["environment"] == head_ci["environment"]
+        for result in (base_ci, head_ci):
+            assert result["failed_count"] == len(result["failed_nodes"])
+            assert set(result["failure_codes"]) == set(result["failed_nodes"])
+        assert comparison["shared_failure_nodes"] == shared
+        assert comparison["new_failure_nodes"] == new_failed
+        assert comparison["resolved_failure_nodes"] == resolved
+        assert comparison["default_ci_new_failure_delta"] == len(new_failed)
+        if head_ci["failed_count"]:
+            assert comparison["default_ci_new_failure_delta"] == 0
+
     checks = record["acceptance_evidence"]
     assert checks["h2_executor_tests"] == "PASS"
     assert checks["planner_dispatch_tests"] == "PASS"
@@ -143,7 +172,12 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
     assert checks["partial_multi_target_outcome"].startswith("PASS:")
     assert checks["dependency_preflight"].startswith("PASS:")
     assert checks["claim_before_dependency_failure"].startswith("PASS:")
-    assert record["validation"]["focused_tests"]["a3_owned_tests"]["passed"] == 48
+    assert checks["typed_source_failed_h4"].startswith("PASS:")
+    assert checks["typed_binding_failed_h4"].startswith("PASS:")
+    assert checks["h3_unusable_h2_unattempted_no_h4"].startswith("PASS:")
+    assert checks["unexpected_h2_failure_without_typed_evidence"].startswith("PASS:")
+    assert checks["approval_closure_scoped_to_approved_child"].startswith("PASS:")
+    assert record["validation"]["focused_tests"]["a3_owned_tests"]["passed"] == 55
 
     scope = record["scope_and_state"]
     assert scope["market_GETs"] == scope["market_HEADs"] == scope["market_POSTs"] == 0

@@ -2,9 +2,9 @@
   "schema_version": "phase_j_j_b04_a3_network_free_implementation_acceptance.v1",
   "gate": "J-B04-A3",
   "date": "2026-10-08",
-  "owner_authority": "USER_REQUEST_PASTED_2026-10-08_J_B04_A3_NETWORK_FREE_PRODUCTION_IMPLEMENTATION",
+  "owner_authority": "USER_REQUEST_PASTED_2026-10-09_J_B04_A3_R2_REVIEW_REPAIR",
   "baseline_main": "a833a5728501d99b942928fdebb790a993a5e838",
-  "disposition": "J_B04_A3_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW",
+  "disposition": "J_B04_A3_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW",
   "implementation": {
     "status": "NETWORK_FREE_IMPLEMENTED",
     "executor_id": "phase_h_h2_twse_exright_pre_executor",
@@ -50,6 +50,12 @@
         "discontinuity_detected_reference_available",
         "discontinuity_detected_reference_unavailable"
       ]
+    },
+    "typed_failure_handling": {
+      "source_failed": "derive H4 from exact verified H2/H3 artifacts; coverage_incomplete; ordinary return blocked",
+      "binding_failed": "derive H4 from exact verified H2/H3 artifacts; coverage_incomplete; ordinary return blocked",
+      "h3_dependency_unusable": "zero H2 source calls; no H2 primary artifact; no H4",
+      "unexpected_failure_without_typed_h2_evidence": "no fabricated H2 evidence; no H4"
     }
   },
   "projection": {
@@ -65,7 +71,8 @@
     "markdown_renderer_exposes_h4_state_and_interpretation_guard": true,
     "clean_a3_owned_package": "PASS",
     "h2_requested_window_equals_exact_h3_baseline_window": true,
-    "h4_artifact_hash_verified": true
+    "h4_artifact_hash_verified": true,
+    "result_contains_typed_failed_h2_evidence": true
   },
   "baseline_comparison": {
     "exact_baseline": "a833a5728501d99b942928fdebb790a993a5e838",
@@ -457,7 +464,12 @@
     "multi_target_h3_h2_h4": "PASS: TWSE:1423 and TWSE:2330 integrated independently through Result V3 and Audit V3",
     "partial_multi_target_outcome": "PASS: failed H3 for TWSE:2330 yields H4 only for TWSE:1423; Result V3 omits B H4",
     "dependency_preflight": "PASS: missing, self, duplicate, cyclic, wrong-capability, cross-target, cross-market, and unapproved dependencies rejected",
-    "claim_before_dependency_failure": "PASS: invalid authorization-consistent plan fails preflight; no claim, unused state retained, adapter/source call logs empty"
+    "claim_before_dependency_failure": "PASS: invalid authorization-consistent plan fails preflight; no claim, unused state retained, adapter/source call logs empty",
+    "typed_source_failed_h4": "PASS: source_failed primary H2 evidence produces coverage_incomplete H4 and blocked ordinary interpretation",
+    "typed_binding_failed_h4": "PASS: binding_failed primary H2 evidence produces coverage_incomplete H4 and blocked ordinary interpretation",
+    "h3_unusable_h2_unattempted_no_h4": "PASS: zero H2 source calls, no H2 artifact, and no H4",
+    "unexpected_h2_failure_without_typed_evidence": "PASS: adapter_exception with no governed H2 primary evidence yields no H4",
+    "approval_closure_scoped_to_approved_child": "PASS: selected_operations tests cover H2-only reject, H3-only accept, X-only accept, H2+H3 accept"
   },
   "protected_hashes": {
     "h4_sha256": "91163c3f1988c75c5f4b413d109e19d646b5ad9bfcb40e96a485a356f9180727",
@@ -503,7 +515,7 @@
   "machine_assertions": {
     "gate": "J-B04-A3",
     "baseline_main": "a833a5728501d99b942928fdebb790a993a5e838",
-    "disposition": "J_B04_A3_R1_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW",
+    "disposition": "J_B04_A3_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW",
     "implementation_status": "NETWORK_FREE_IMPLEMENTED",
     "executor_id": "phase_h_h2_twse_exright_pre_executor",
     "source_id": "H2-TWSE-EXRIGHT-PRE-OPENAPI",
@@ -552,7 +564,13 @@
     "market_GETs": 0,
     "market_HEADs": 0,
     "market_POSTs": 0,
-    "j_b04_a3_r1": "READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW"
+    "j_b04_a3_r1": "READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW",
+    "j_b04_a3_r2": "READY_FOR_EXACT_HEAD_INDEPENDENT_RE_REVIEW",
+    "typed_h2_failure_h4_states": {
+      "source_failed": "coverage_incomplete",
+      "binding_failed": "coverage_incomplete"
+    },
+    "dependency_approval_closure": "approved_child_operations_only"
   },
   "change_inventory": {
     "production_and_execution_support": [
@@ -607,7 +625,7 @@
     "focused_tests": {
       "a3_owned_tests": {
         "command": "python -m pytest -q tests/unit/test_phase_j_b04_a3_*.py",
-        "passed": 48,
+        "passed": 55,
         "failed": 0
       },
       "phase_h_a2_h3_h4_regression": {
@@ -637,7 +655,7 @@
       },
       "m8r_05c_failure_delta": 0
     },
-    "default_ci": {
+    "default_ci_r1": {
       "command": "python scripts/run_test_profile.py default-ci --json",
       "collected": 1288,
       "selected": 1283,
@@ -655,6 +673,8 @@
     "scripts/m8r_05b_03/dependency_graph.py",
     "scripts/m8r_05b_03/dispatch.py",
     "scripts/m8r_05b_03/preflight.py",
+    "scripts/m8r_05c/citation_builder.py",
+    "scripts/m8r_05c/evidence_projector.py",
     "scripts/validate_phase_j_b04_a3_network_free_implementation.py",
     "server/services/phase_h_h2_twse_exright_executor.py",
     "tests/unit/test_phase_h_h3_activation_candidate_preview.py",
