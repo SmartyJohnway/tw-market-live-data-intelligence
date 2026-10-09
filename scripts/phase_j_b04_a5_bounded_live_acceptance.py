@@ -38,10 +38,19 @@ ACCEPTANCE_RUNS = ROOT / "docs/governance/phase_j/acceptance_runs"
 FORBIDDEN_RAW_KEYS = {"raw_bytes", "rows", "rows_in_memory", "raw_payload", "raw_body", "source_rows", "full_payload"}
 LEASE_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 EXECUTION_LEASE_MIN_BYTES = 32
+FAILURE_STAGES = {"authorization_validation", "runtime_preflight", "lease_validation",
+    "transport_adapter_resolution", "session_initialization", "attempt_reservation",
+    "attempt_artifact_initialization", "transport", "source_decode", "h2_replay",
+    "h4_replay", "evidence_finalization"}
 
 
 class A5Error(RuntimeError):
-    pass
+    def __init__(self, message: str, *, failure_stage: str | None = None,
+                 exception_module: str | None = None, exception_type: str | None = None):
+        super().__init__(message)
+        self.failure_stage = failure_stage
+        self.exception_module = exception_module
+        self.exception_type = exception_type
 
 
 @dataclass
@@ -438,6 +447,25 @@ def count_actual_dispatches(counter: dict[str, int]):
         urllib.request.OpenerDirector.open = original
 
 
+def resolve_production_transport_adapter():
+    """Resolve the existing production GET callable, without invoking it.
+
+    Import the canonical package first because its initialization order primes
+    the H2 executor's H4 dependency and avoids the cold-start import cycle.
+    """
+    try:
+        import scripts.m8r_05b_03  # noqa: F401
+        from server.services.phase_h_h2_twse_exright_executor import official_get_once
+    except Exception as exc:
+        raise A5Error("J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE",
+            failure_stage="transport_adapter_resolution", exception_module=type(exc).__module__,
+            exception_type=type(exc).__name__) from exc
+    if not callable(official_get_once):
+        raise A5Error("J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE",
+            failure_stage="transport_adapter_resolution", exception_module="builtins", exception_type="TypeError")
+    return official_get_once
+
+
 def _strict_auth_json(path: Path) -> dict[str, Any]:
     def pairs(items):
         result = {}
@@ -533,6 +561,8 @@ def _verify_sanitized_package(run_root: Path, *, raw_bytes: bytes | None = None,
                 raise A5Error("J_B04_A5_SANITIZED_PACKAGE_INVALID") from exc
             if _contains_forbidden_raw_key(parsed):
                 raise A5Error("J_B04_A5_RAW_FIELD_PERSISTENCE_BLOCKED")
+            if path.name == "transport_attempt.json" and parsed.get("failure_stage") not in (None, *FAILURE_STAGES):
+                raise A5Error("J_B04_A5_SANITIZED_PACKAGE_INVALID")
         entries.append({"relative_path": path.relative_to(run_root).as_posix(),
             "sha256": hashlib.sha256(data).hexdigest(), "byte_size": len(data),
             "artifact_role": path.stem})
@@ -978,35 +1008,41 @@ def _terminalize_existing_session_if_bound(runs_root: Path, record: Mapping[str,
 def run_live_acceptance(owner_authorization_path: Path, execution_environment: str,
                         execution_lease_file: Path, *,
                         get_once=None, git_state_provider=None, dirty_check=None,
+                        adapter_resolver=None,
                         preflight_fn=None, runtime_invariant_fn=None, now_fn=None,
                         acceptance_runs_root: Path | None = None) -> dict[str, Any]:
     """Execute at most one attempt in the explicitly authorized bounded session."""
     if execution_environment not in EXECUTION_ENVIRONMENTS:
-        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID")
-    record = _strict_auth_json(owner_authorization_path)
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_INVALID", failure_stage="authorization_validation")
+    try:
+        record = _strict_auth_json(owner_authorization_path)
+    except A5Error as exc:
+        exc.failure_stage = exc.failure_stage or "authorization_validation"
+        raise
     runs_root = ACCEPTANCE_RUNS if acceptance_runs_root is None else Path(acceptance_runs_root)
     state_provider = current_git_state if git_state_provider is None else git_state_provider
     head, tree, main = state_provider()
     try:
         authority = BoundedSessionAuthority(record, head=head, tree=tree, execution_environment=execution_environment)
-    except A5Error:
+    except A5Error as exc:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
+        exc.failure_stage = exc.failure_stage or "authorization_validation"
         raise
     if main != STARTING_MAIN:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
-        raise A5Error("J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW")
+        raise A5Error("J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW", failure_stage="runtime_preflight")
     is_dirty = ((subprocess.run(["git", "diff", "--quiet"], cwd=ROOT, check=False).returncode != 0
                 or subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False).returncode != 0)
                 if dirty_check is None else dirty_check())
     if is_dirty:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
-        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED", failure_stage="runtime_preflight")
     preflight = (run_p0_preflight if preflight_fn is None else preflight_fn)(execution_environment)
     try:
         (validate_live_runtime_invariants if runtime_invariant_fn is None else runtime_invariant_fn)(preflight)
     except Exception:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
-        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED", failure_stage="runtime_preflight")
     statement_hash = record["statement_sha256"]
     session_root = runs_root / f"j-b04-a5-session-{statement_hash[:16]}"
     # Construct/check session and attempt output destinations before creating authorization state.
@@ -1018,42 +1054,69 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
     # A missing lease after workspace loss cannot be regenerated by live mode.
     try:
         lease_secret = load_execution_lease(Path(execution_lease_file), record["execution_instance_lease_sha256"])
-    except A5Error:
+    except A5Error as exc:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
+        exc.failure_stage = exc.failure_stage or "lease_validation"
         raise
     del lease_secret
+    transport = get_once
+    if transport is None:
+        try:
+            transport = (resolve_production_transport_adapter if adapter_resolver is None else adapter_resolver)()
+        except A5Error as exc:
+            _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
+            if str(exc) != "J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE":
+                raise A5Error("J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE",
+                    failure_stage="transport_adapter_resolution", exception_module=type(exc).__module__,
+                    exception_type=type(exc).__name__) from exc
+            raise
+        except Exception as exc:
+            _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
+            raise A5Error("J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE",
+                failure_stage="transport_adapter_resolution", exception_module=type(exc).__module__,
+                exception_type=type(exc).__name__) from exc
+        if not callable(transport):
+            _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
+            raise A5Error("J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE",
+                failure_stage="transport_adapter_resolution", exception_module="builtins", exception_type="TypeError")
     # Recheck Git state after all preflight and lease work, immediately before session reservation.
     final_head, final_tree, final_main = state_provider()
     if final_head != record["authorized_head_sha"]:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
-        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_HEAD")
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_HEAD", failure_stage="runtime_preflight")
     if final_tree != record["authorized_tree_sha"]:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
-        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_TREE")
+        raise A5Error("J_B04_A5_LIVE_AUTHORIZATION_STALE_TREE", failure_stage="runtime_preflight")
     if final_main != STARTING_MAIN:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
-        raise A5Error("J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW")
+        raise A5Error("J_B04_A5_LIVE_MAIN_DRIFT_REQUIRES_REVIEW", failure_stage="runtime_preflight")
     final_dirty = ((subprocess.run(["git", "diff", "--quiet"], cwd=ROOT, check=False).returncode != 0
                    or subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False).returncode != 0)
                    if dirty_check is None else dirty_check())
     if final_dirty:
         _terminalize_existing_session_if_bound(runs_root, record, now_fn=now_fn)
-        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED")
+        raise A5Error("J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED", failure_stage="runtime_preflight")
     execution_lock = _session_execution_lock(session_root)
     execution_lock.__enter__()
     try:
+        stage = "session_initialization"
         ensure_session_authorization(session_root, record, now_fn=now_fn)
+        stage = "attempt_reservation"
         attempt_number, run_root = reserve_next_session_attempt(session_root, record, now_fn=now_fn)
-    except A5Error:
+    except A5Error as exc:
         execution_lock.__exit__(*sys.exc_info())
+        exc.failure_stage = exc.failure_stage or stage
         raise
     except Exception as exc:
         execution_lock.__exit__(*sys.exc_info())
-        raise A5Error("J_B04_A5_SESSION_STATE_INVALID") from exc
+        raise A5Error("J_B04_A5_SESSION_STATE_INVALID", failure_stage=stage,
+            exception_module=type(exc).__module__, exception_type=type(exc).__name__) from exc
     counts = {"logical_get_attempts": 0, "http_dispatch_attempts": 0}
+    stage = "session_initialization"
     attempt = {"attempt_number": attempt_number, "transport_attempted": False, "logical_get_attempts": 0,
         "actual_http_dispatch_attempts": 0, "retry_count": 0, "redirect_follow_count": 0,
-        "started_at": None, "completed_at": None, "outcome": "in_progress", "failure_class": None}
+        "started_at": None, "completed_at": None, "outcome": "in_progress", "failure_class": None,
+        "failure_stage": None}
     response = None
     capture = None
     h2_run = None
@@ -1068,6 +1131,8 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
             attempt["outcome"] = "session_terminal_before_transport"
             disposition = "J_B04_A5_SESSION_TERMINAL"
             raise A5Error(disposition)
+        stage = "attempt_artifact_initialization"
+        attempt["failure_stage"] = stage
         attempt["started_at"] = (now_fn or _utc_now)()
         _write_sanitized_json(run_root, "session_authorization.json", {
             "authorization_source": "external_owner_authorization_file", "authorized_head_sha": head,
@@ -1077,14 +1142,12 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
             "max_market_gets": MAX_SESSION_GETS,
             "session_created_at_utc": _strict_json_file(session_root / "session_authorization.json")["session_created_at_utc"]})
         _write_sanitized_json(run_root, "transport_attempt.json", attempt, overwrite=False)
-        transport = get_once
-        if transport is None:
-            from server.services.phase_h_h2_twse_exright_executor import official_get_once
-            transport = official_get_once
         counts["logical_get_attempts"] = 1
         attempt["transport_attempted"] = True
         attempt["logical_get_attempts"] = 1
         _write_sanitized_json(run_root, "transport_attempt.json", attempt)
+        stage = "transport"
+        attempt["failure_stage"] = stage
         try:
             with count_actual_dispatches(counts):
                 response = transport(timeout_seconds=TIMEOUT)
@@ -1109,8 +1172,12 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
         if response is not None:
             attempt["actual_http_dispatch_attempts"] = counts["http_dispatch_attempts"]
             attempt["outcome"] = "response_received"
+            stage = "source_decode"
+            attempt["failure_stage"] = stage
             capture = _safe_capture_response(response)
             # Production H2 receives this exact response object and performs its normal decode/binding path.
+            stage = "h2_replay"
+            attempt["failure_stage"] = stage
             h2_run = execute_primary_target(response, PREDECLARED_SOURCE_TARGET, run_root)
             h2_result = h2_run["operation_result"]
             h2_artifacts = h2_result.get("evidence_artifacts", [])
@@ -1139,6 +1206,8 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
             primary_summary["operation_error_code"] = _safe_h2_error_code(h2_result.get("error_code"))
             if capture.rows is not None:
                 stage_witness = select_offline_stage_witness(capture.rows, observed_at=capture.retrieved_at)
+            stage = "h4_replay"
+            attempt["failure_stage"] = stage
             h4_artifacts = derive_a5_h4_replay(h2_run, output_root=run_root)
             h4_evidence = (json.loads((run_root / h4_artifacts[0]["relative_path"]).read_text(encoding="utf-8"))
                            if h4_artifacts else None)
@@ -1164,6 +1233,12 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
             attempt["outcome"] = "session_terminal_before_transport"
             disposition = "J_B04_A5_SESSION_TERMINAL"
         else:
+            attempt["failure_stage"] = stage
+            if stage == "attempt_artifact_initialization":
+                # The adapter has not been invoked, so no logical source call occurred.
+                counts["logical_get_attempts"] = 0
+                attempt["logical_get_attempts"] = 0
+                attempt["transport_attempted"] = False
             transport_failure = _is_transient_transport_exception(exc)
             attempt["failure_class"] = "transport_failure" if transport_failure else "runner_or_source_failure"
             attempt["outcome"] = "failure_after_authority_reservation"
@@ -1172,6 +1247,7 @@ def run_live_acceptance(owner_authorization_path: Path, execution_environment: s
                 else "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED")
     finally:
         try:
+            stage = "evidence_finalization"
             if attempt_number == MAX_SESSION_GETS and disposition in {
                 "J_B04_A5_INCONCLUSIVE_TRANSIENT_SOURCE_FAILURE_NO_ACTIVATION",
                 "J_B04_A5_INCONCLUSIVE_LIVE_STAGE_SAMPLE_UNAVAILABLE"}:
@@ -1421,13 +1497,23 @@ def main(argv: list[str] | None = None) -> int:
             result = run_live_acceptance(args.owner_authorization_json, args.execution_environment,
                 args.execution_lease_file)
         except A5Error as exc:
-            disposition = str(exc) if str(exc).startswith("J_B04_A5_") else "J_B04_A5_LIVE_AUTHORIZATION_INVALID"
-            print(json.dumps({"disposition": disposition, "transport_attempted": False,
-                "market_GET": 0, "market_HEAD": 0, "market_POST": 0}, sort_keys=True))
+            disposition = str(exc) if str(exc).startswith("J_B04_A5_") else "J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED"
+            fallback_stage = ("lease_validation" if "EXECUTION_LEASE_" in disposition else
+                "authorization_validation" if "AUTHORIZATION" in disposition else "runtime_preflight")
+            failure = {"disposition": disposition, "transport_attempted": False,
+                "logical_get_attempts": 0, "http_dispatch_attempts": 0,
+                "failure_stage": exc.failure_stage or fallback_stage,
+                "market_GET": 0, "market_HEAD": 0, "market_POST": 0}
+            if failure["failure_stage"] == "transport_adapter_resolution":
+                failure["exception_module"] = exc.exception_module
+                failure["exception_type"] = exc.exception_type
+            print(json.dumps(failure, sort_keys=True))
             return 3
         except Exception:
             print(json.dumps({"disposition": "J_B04_A5_LIVE_PREFLIGHT_INVARIANT_FAILED",
-                "transport_attempted": False, "market_GET": 0, "market_HEAD": 0, "market_POST": 0}, sort_keys=True))
+                "transport_attempted": False, "logical_get_attempts": 0, "http_dispatch_attempts": 0,
+                "failure_stage": "runtime_preflight",
+                "market_GET": 0, "market_HEAD": 0, "market_POST": 0}, sort_keys=True))
             return 3
         print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
         return 0 if result["disposition"] == "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW" else 2

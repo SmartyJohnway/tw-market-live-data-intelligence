@@ -166,8 +166,21 @@ def validate_repository() -> dict[str, Any]:
         "docs/governance/phase_j/PHASE_J_J_B04_A5_BOUNDED_LIVE_PREFLIGHT_2026-10-09.md",
         "scripts/validate_phase_j_b04_a5_l1_p0_r1_execution_lease.py",
         "scripts/validate_phase_j_b04_a5_l1_p0_r2_bounded_session.py",
+        "scripts/validate_phase_j_b04_a5_l1_r3_pretransport_repair.py",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R2_BOUNDED_LIVE_SESSION_2026-10-09.json",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R2_BOUNDED_LIVE_SESSION_2026-10-09.md",
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_R3_PRETRANSPORT_INCIDENT_AND_REPAIR_2026-10-09.json",
+        "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_R3_PRETRANSPORT_INCIDENT_AND_REPAIR_2026-10-09.md",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/attempt-001/acceptance_summary.json",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/attempt-001/artifact_manifest.json",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/attempt-001/attempt_reserved.json",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/attempt-001/session_authorization.json",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/attempt-001/transport_attempt.json",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/session.execution.lock",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/session.lock",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/session_authorization.json",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/session_summary.json",
+        "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926/session_terminal.json",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R1_EXECUTION_INSTANCE_LEASE_HARDENING_2026-10-09.json",
         "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_P0_R1_EXECUTION_INSTANCE_LEASE_HARDENING_2026-10-09.md"}
     assert not (changed | modified | untracked) - allowed
@@ -177,7 +190,19 @@ def validate_repository() -> dict[str, Any]:
         assert _git("diff", "--quiet", STARTING_MAIN, "HEAD", "--", frozen) == ""
     runs = ROOT / "docs/governance/phase_j/acceptance_runs"
     if runs.exists():
-        assert not any(path.is_file() for path in runs.rglob("*")), "unexpected A5 run artifact in P0"
+        expected_session = runs / "j-b04-a5-session-78e1b2c1db127926"
+        assert {path.name for path in runs.iterdir()} == {expected_session.name}
+        expected_files = {
+            "session_authorization.json", "session_summary.json", "session_terminal.json",
+            "session.lock", "session.execution.lock",
+            "attempt-001/attempt_reserved.json", "attempt-001/session_authorization.json",
+            "attempt-001/transport_attempt.json", "attempt-001/acceptance_summary.json",
+            "attempt-001/artifact_manifest.json",
+        }
+        actual_files = {path.relative_to(expected_session).as_posix() for path in expected_session.rglob("*") if path.is_file()}
+        assert actual_files == expected_files
+        terminal = _strict_json(expected_session / "session_terminal.json")
+        assert terminal["terminal"] is True and terminal["terminal_reason"] == "HARD_BLOCK"
     for path in ROOT.rglob("*.pyc"):
         assert path.parent.name != "acceptance_runs", "raw payload cache not permitted in acceptance run"
     return status | {"canonical_h2_runtime": "INACTIVE", "selected_executor_id": None, "mcp_tool_count": 6,

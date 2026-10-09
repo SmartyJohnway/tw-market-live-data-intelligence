@@ -142,7 +142,12 @@ def validate_repository() -> dict[str, Any]:
     validate_l1()
     assert subprocess.check_output(["git", "rev-parse", "origin/main"], cwd=ROOT, text=True).strip() == record["main"]
     runs = ROOT / "docs/governance/phase_j/acceptance_runs"
-    assert not any(runs.rglob("attempt_reserved.json")) if runs.exists() else True
+    incident_record = strict_json(ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_R3_PRETRANSPORT_INCIDENT_AND_REPAIR_2026-10-09.json")
+    session = runs / incident_record["incident"]["session_directory"]
+    expected_hashes = incident_record["session_1_artifact_sha256"]
+    files = {path.relative_to(session).as_posix(): path for path in session.rglob("*") if path.is_file()}
+    assert set(files) == set(expected_hashes)
+    assert {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in files.items()} == expected_hashes
     return {"status": "PASS", "disposition": record["disposition"], "P0_validator": "PASS",
         "L1_P0_validator": "PASS", "market_GET_HEAD_POST": "0/0/0", "security_master_live_calls": 0,
         "MCP": 6}

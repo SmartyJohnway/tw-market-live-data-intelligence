@@ -3,7 +3,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import socket
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -205,6 +208,7 @@ def test_fake_transport_failure_keeps_same_session_eligible_for_next_invocation(
     root, _ = load_package(result, tmp_path)
     attempt = json.loads((root / "transport_attempt.json").read_text())
     assert attempt["failure_class"] == "transport_failure" and attempt["retry_count"] == 0
+    assert attempt["failure_stage"] == "transport"
     assert "private transport detail" not in (root / "transport_attempt.json").read_text()
     primary = json.loads((root / "primary_target_summary.json").read_text())
     assert primary["outcome"] == "not_observed_transport_failure" and primary["h2_evidence_status"] == "source_failed"
@@ -340,6 +344,44 @@ def test_session_authorization_cannot_be_rebound_to_different_tree(tmp_path):
     with pytest.raises(A5Error, match="J_B04_A5_SESSION_AUTHORIZATION_MISMATCH"):
         run_live_acceptance(**kwargs)
     assert len(calls) == 1
+
+
+def test_cold_start_subprocess_resolves_production_adapter_without_network():
+    code = r'''
+import socket
+def deny(*args, **kwargs):
+    raise AssertionError("network forbidden")
+socket.create_connection = deny
+socket.socket.connect = deny
+socket.socket.connect_ex = deny
+import scripts.phase_j_b04_a5_bounded_live_acceptance as runner
+adapter = runner.resolve_production_transport_adapter()
+print("COLD_RUNNER_IMPORT=PASS")
+print("ADAPTER_CALLABLE=", callable(adapter))
+'''
+    env = dict(os.environ)
+    env["PYTHONPATH"] = str(Path(__file__).resolve().parents[2])
+    completed = subprocess.run([sys.executable, "-c", code], cwd=Path(__file__).resolve().parents[2],
+        env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+    assert completed.stdout.splitlines() == ["COLD_RUNNER_IMPORT=PASS", "ADAPTER_CALLABLE= True"]
+    assert completed.stderr == ""
+
+
+def test_adapter_resolution_failure_precedes_attempt_reservation(tmp_path):
+    calls = []
+    kwargs = kwargs_for(tmp_path, response([row("2330")]), calls)
+    kwargs["get_once"] = None
+    def failed_adapter():
+        raise ImportError("cold adapter unavailable")
+    kwargs["adapter_resolver"] = failed_adapter
+    with pytest.raises(A5Error, match="J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE") as caught:
+        run_live_acceptance(**kwargs)
+    assert caught.value.failure_stage == "transport_adapter_resolution"
+    assert caught.value.exception_module == "builtins" and caught.value.exception_type == "ImportError"
+    session_root = tmp_path / "acceptance_runs" / f"j-b04-a5-session-{json.loads(kwargs['owner_authorization_path'].read_text())['statement_sha256'][:16]}"
+    assert not session_root.exists()
+    assert list(session_root.glob("attempt-*/attempt_reserved.json")) == []
+    assert calls == []
 
 
 def test_non_200_http_result_is_typed_failure_and_never_retried(tmp_path):
@@ -595,4 +637,22 @@ def test_live_cli_exit_codes_and_output_are_deterministic(monkeypatch, capsys, d
     assert result == expected
     output = capsys.readouterr().out
     assert disposition in output and "raw_bytes" not in output and "rows_in_memory" not in output
+
+
+def test_live_cli_reports_sanitized_pretransport_failure_stage(monkeypatch, capsys):
+    import scripts.phase_j_b04_a5_bounded_live_acceptance as runner
+    def fail(*args, **kwargs):
+        raise A5Error("J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE",
+            failure_stage="transport_adapter_resolution", exception_module="builtins",
+            exception_type="ImportError")
+    monkeypatch.setattr(runner, "run_live_acceptance", fail)
+    result = runner.main(["--live-acceptance", "--execution-environment", "cloud_clean_source_acceptance",
+        "--owner-authorization-json", "/tmp/external-owner-auth.json", "--execution-lease-file",
+        "/tmp/external-execution-lease"])
+    output = json.loads(capsys.readouterr().out)
+    assert result == 3
+    assert output == {"disposition": "J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE",
+        "transport_attempted": False, "logical_get_attempts": 0, "http_dispatch_attempts": 0,
+        "failure_stage": "transport_adapter_resolution", "exception_module": "builtins",
+        "exception_type": "ImportError", "market_GET": 0, "market_HEAD": 0, "market_POST": 0}
 

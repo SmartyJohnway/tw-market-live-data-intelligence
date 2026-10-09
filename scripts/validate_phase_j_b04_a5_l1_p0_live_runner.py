@@ -110,12 +110,16 @@ def validate_repository() -> dict[str, Any]:
     assert 'parser.add_argument("--owner-authorization-json"' in source
     assert 'parser.add_argument("--prepare-execution-lease"' in source
     assert 'parser.add_argument("--execution-lease-file"' in source
-    assert "official_get_once" in source
-    assert source.count("official_get_once") == 2
+    assert source.count("from server.services.phase_h_h2_twse_exright_executor import official_get_once") == 1
+    resolver = __import__("inspect").getsource(__import__(
+        "scripts.phase_j_b04_a5_bounded_live_acceptance", fromlist=["resolve_production_transport_adapter"]
+    ).resolve_production_transport_adapter)
+    assert 'import scripts.m8r_05b_03' in resolver and "callable(official_get_once)" in resolver
     assert live_source.count("response = transport(timeout_seconds=TIMEOUT)") == 1
     assert "derive_h4_for_completed_plan" in source
     assert "reserve_next_session_attempt" in live_source
     assert live_source.index("load_execution_lease(Path(") < live_source.index("reserve_next_session_attempt(session_root")
+    assert live_source.index("resolve_production_transport_adapter") < live_source.index("reserve_next_session_attempt(session_root")
     assert "attempt_reserved.json" in source
     assert live_source.index("reserve_next_session_attempt(session_root") < live_source.index("transport(timeout_seconds=TIMEOUT)")
     assert "retry_count\": 0" in live_source and "redirect_follow_count\": 0" in live_source
@@ -150,7 +154,13 @@ def validate_repository() -> dict[str, Any]:
         "test_stale_head_tree_or_main", "test_invalid_security_master", "test_cloud_not_initialized",
         "test_raw_key_persistence_mutation"):
         assert required in test_text
-    assert not any(path.is_file() for path in (ROOT / "docs/governance/phase_j/acceptance_runs").rglob("*"))
+    incident_record = _strict(ROOT / "docs/governance/phase_j/PHASE_J_J_B04_A5_L1_R3_PRETRANSPORT_INCIDENT_AND_REPAIR_2026-10-09.json")
+    runs = ROOT / "docs/governance/phase_j/acceptance_runs"
+    session = runs / incident_record["incident"]["session_directory"]
+    expected_hashes = incident_record["session_1_artifact_sha256"]
+    files = {path.relative_to(session).as_posix(): path for path in session.rglob("*") if path.is_file()}
+    assert set(files) == set(expected_hashes)
+    assert {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in files.items()} == expected_hashes
     return validate_contract(record) | {"p0_validator": "PASS", "market_GET_HEAD_POST": "0/0/0",
         "security_master_live_calls": 0, "mcp_tool_count": 6}
 
