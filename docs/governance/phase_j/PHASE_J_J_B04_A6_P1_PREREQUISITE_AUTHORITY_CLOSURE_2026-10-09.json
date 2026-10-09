@@ -106,7 +106,7 @@
       "candidate_release": "<root>/candidates/<release_id>/index.json, candidate.json, qualification.json",
       "qualified_release": "<root>/releases/<release_id>/{index.json,qualification.json,manifest.json,release.json}; hashes bind index, qualification, schemas and source provenance",
       "activation": "atomic active.json selector binds release_id, manifest SHA-256, index SHA-256, and manifest schema hash",
-      "lifecycle": "BUILDING input bundle -> candidate CANDIDATE -> qualification PASS -> release QUALIFIED -> active.json activation; failed qualification is REJECTED",
+      "lifecycle": "input-bundle materialization -> candidate CANDIDATE -> qualification PASS -> release QUALIFIED -> active.json activation; failed qualification is REJECTED",
       "restart": "required; production Mode A loader is process-lifetime immutable/cache-backed, so use a new process after activation and verify manager status plus production loader",
       "same_cloud_task": "Technically possible only if local state persists through activation and the A6 process is newly started afterward; no live A6 authorization is implied.",
       "cloud_task_loss": "Installation-local ignored data may be lost with the task; no repository-managed portable backup/restore contract was found.",
@@ -190,6 +190,7 @@
     "h2_retry": 0,
     "h2_redirect_follow": 0,
     "maximum_dispatches_per_complete_integrated_vertical": 4,
+    "maximum_complete_integrated_verticals_per_session_at_the_per_vertical_ceiling": 2,
     "session_hard_ceiling_official_get_dispatches": 10,
     "session_budget_rule": "Every dispatch reserves a session-global slot before transport; no integrated attempt may start unless its maximum remaining dispatch envelope fits the remaining session budget.",
     "limitation": "A6 remains unauthorized. Before Owner authorization, bind exact H3 date/month derivation and session slot-reservation semantics in the A6 live contract; bootstrap dispatch bound independently remains unproven."
