@@ -284,6 +284,8 @@
     "reason_code": "NOT_INITIALIZED",
     "result": "not_attempted"
   },
+  "implementation_commit_tested_by_default_ci": "01c224b61c7697699381b0f73238fc4d2ae94344",
+  "implementation_tree_tested_by_default_ci": "b2eaccbf840ad91a9711d0ff1029c23080cd5833",
   "integration_assessment": {
     "Audit_V3_readiness": "EXISTING_ARTIFACT_CITATION_AUTHORIZATION_LINEAGE_AND_H4_GOVERNANCE; supplemental dispatch ledger required",
     "H2_production_readiness": "IMPLEMENTED_CANDIDATE; registered but canonical runtime inactive and route plan_only",
@@ -463,7 +465,8 @@
         "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]"
       ],
       "base_revision": "0576c8304764e6b7ba9e90305b34b63c50fd3fc6",
-      "candidate_revision": "implementation commit to be recorded after commit",
+      "candidate_revision": "01c224b61c7697699381b0f73238fc4d2ae94344",
+      "candidate_tree": "b2eaccbf840ad91a9711d0ff1029c23080cd5833",
       "head_counts": {
         "collected": 1288,
         "collection_errors": 0,
@@ -506,6 +509,8 @@
       "network_may_have_occurred": false,
       "new_failure_delta": 0,
       "new_failure_nodes": [],
+      "profile_status_base": "fail (28 shared environment failures)",
+      "profile_status_head": "fail (28 shared environment failures)",
       "resolved_failure_nodes": [],
       "same_command": "python scripts/run_test_profile.py default-ci --json",
       "same_dependency_environment": "/tmp/a5test-venv; requirements-lock pins requests 2.34.2 / urllib3 2.7.0",

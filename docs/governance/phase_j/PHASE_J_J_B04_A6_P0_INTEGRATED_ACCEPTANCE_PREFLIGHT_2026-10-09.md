@@ -183,6 +183,9 @@ are empty, so the computed failure delta is zero. All 28 are in
 `test_phase_i_i2_a4_activation.py` and stop because this clean Cloud install has
 no ACTIVE Security Master; the underlying failure is `NOT_INITIALIZED`. The
 profile reported `network_may_have_occurred=false`.
+The exact candidate implementation commit was
+`01c224b61c7697699381b0f73238fc4d2ae94344` (tree
+`b2eaccbf840ad91a9711d0ff1029c23080cd5833`).
 
 The legacy A5 repository-scope validators were left unchanged. Their committed
 allowlist predates the independently verified Session #2 publication and A5
