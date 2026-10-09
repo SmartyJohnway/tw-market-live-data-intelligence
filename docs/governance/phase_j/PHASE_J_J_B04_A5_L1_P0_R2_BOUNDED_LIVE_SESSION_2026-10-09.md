@@ -64,9 +64,26 @@ created, and no live request was made for R2.
 
 ## Validation
 
-Machine-readable test and validator results, exact base/head default-CI
-comparison, JSON scan count, and final revision are recorded in the companion
-JSON ledger. All R2 checks are network-denied. Canonical state remains H2
+The A5 runner suites passed **70 tests**. Network-denied A3, Phase-H H2/H3/H4,
+Mode A, Security Master lifecycle, and identity regressions passed **225 tests**
+with **2 skipped**. P0-R2, L1-P0, R1, and R2 validators passed. A1/A2/A3,
+Phase-H V3, Phase-J GHI, portable catalog sync, runtime Skill/guide sync,
+compileall, and `git diff --check` passed. The strict duplicate-key scan passed
+for **1,012 JSON files**.
+
+The exact default-CI comparison used immutable Git archive checkouts of base
+`1e84554c250d92e05b44eb8a543cd76fc154e55b` and implementation candidate
+`89d78d8684a1f7699425b7249e5ff620d66aebb8` (tree
+`d4c826abee92660ba645bd26baca2477f199da30`), CPython 3.12.14, the same
+`/tmp/a5test-venv`, `TZ=Etc/UTC`, and `PYTHONHASHSEED=0`. Each collected 1,230
+nodes, selected 1,225, deselected 5, and stopped at collection on the same five
+`ModuleNotFoundError: requests` nodes. No test bodies ran. The shared nodes were
+`test_twse_mis_normalization_v2.py`, `test_twse_openapi_normalization_v1.py`,
+`test_tpex_openapi_normalization_v1.py`, `test_yahoo_normalized_chart_v1.py`,
+and `test_m8c_01_taifex_mis_runtime.py`; new failure delta was **0**. The
+default-ci profile reported `network_may_have_occurred=false`.
+
+All R2-specific tests and validators were network-denied. Canonical state remains H2
 `INACTIVE`, selected executor `null`, J-B04 `BLOCKING`, Phase J `NOT_STARTED`,
 MCP `6`; market GET/HEAD/POST and Security Master live acquisition remain
 `0/0/0` and `0` respectively.

@@ -74,6 +74,18 @@ def validate_contract(record: dict[str, Any]) -> dict[str, str]:
     assert record["raw_payload_persistence"] == "NONE"
     assert record["historical_policy"]["R1_single_use"] == "superseded in attempt-budget policy only"
     assert record["historical_policy"]["execution_lease"] == "preserved"
+    ci = record["validation"]["default_ci_comparison"]
+    assert ci["base"] == BASE and ci["candidate"] == "89d78d8684a1f7699425b7249e5ff620d66aebb8"
+    assert ci["candidate_tree"] == "d4c826abee92660ba645bd26baca2477f199da30"
+    assert ci["environment"] == {"TZ": "Etc/UTC", "PYTHONHASHSEED": "0"}
+    assert ci["base_counts"] == ci["candidate_counts"] == {"collected": 1230, "selected": 1225,
+        "deselected": 5, "collection_errors": 5, "executed_passes": None, "executed_failures": None}
+    assert ci["base_failed_nodes"] == ci["candidate_failed_nodes"] == [
+        "tests/unit/test_twse_mis_normalization_v2.py", "tests/unit/test_twse_openapi_normalization_v1.py",
+        "tests/unit/test_tpex_openapi_normalization_v1.py", "tests/unit/test_yahoo_normalized_chart_v1.py",
+        "tests/unit/test_m8c_01_taifex_mis_runtime.py"]
+    assert ci["new_failed_nodes"] == ci["resolved_failed_nodes"] == []
+    assert ci["new_failure_delta"] == 0 and ci["network_may_have_occurred"] is False
     return {"status": "PASS", "disposition": record["disposition"]}
 
 
