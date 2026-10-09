@@ -99,7 +99,8 @@ def _set_test_h2_overlay(validation: dict, authorities: dict) -> None:
     f3_cap["status"] = "runtime_executable"
 
 
-def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_handoff(tmp_path, monkeypatch):
+@pytest.mark.parametrize("h2_failure", [None, "source_failed", "binding_failed"])
+def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_handoff(tmp_path, monkeypatch, h2_failure):
     request = _request("TWSE", "1423") | {"execution_mode": "execute"}
     request["targets"].append({"input": "TWSE:2330", "market_hint": "TWSE"})
     request["data_needs"] = [
@@ -129,6 +130,57 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
     h2_plan = next(item for item in plan["operations"] if item["capability_id"] == "corporate_action_context")
     h3_plan = next(item for item in plan["operations"] if item["capability_id"] == "recent_performance")
     assert h2_plan["dependency_operation_ids"] == [h3_plan["operation_id"]]
+
+    # Exercise selected_operations through real authorization and governed preflight.
+    selected_h2_only = deepcopy(plan)
+    scope_h2 = next(item for item in selected_h2_only["operations"] if item["capability_id"] == "corporate_action_context")
+    scope_h3 = next(item for item in selected_h2_only["operations"] if item["capability_id"] == "recent_performance" and item["canonical_target_ids"] == scope_h2["canonical_target_ids"])
+
+    def selected_scope(selected_plan, operation_ids, name, *, expect_rejection=False):
+        selected_decision = _decision() | {
+            "approval_scope_mode": "selected_operations",
+            "approved_operation_ids": list(operation_ids),
+        }
+        selected_authorization = build_execution_authorization(selected_plan, selected_decision)
+        selected_binding = build_consumption_binding(selected_authorization)
+        selected_root = tmp_path / f"selected-{name}"
+        selected_root.mkdir()
+        (selected_root / "claims").mkdir()
+        selected_state = {
+            "authorization_id": selected_authorization["authorization_id"],
+            "authorization_hash": selected_authorization["authorization_hash"],
+            "consumption_binding_id": selected_binding["consumption_binding_id"],
+            "consumption_binding_hash": selected_binding["consumption_binding_hash"],
+            "registry_contract_version": "m8r_05b_03.v1", "state": "unused",
+        }
+        if expect_rejection:
+            with pytest.raises(OrchestrationError, match="dependency_operation_not_approved"):
+                build_orchestrator_preflight(
+                    selected_plan, selected_authorization, selected_binding,
+                    supplied_consumption_state=selected_state, evaluation_timestamp=STAMP,
+                    executor_registry_metadata=load_production_executor_metadata(), output_root=str(selected_root),
+                )
+            assert not list((selected_root / "claims").iterdir())
+            return None
+        result = build_orchestrator_preflight(
+            selected_plan, selected_authorization, selected_binding,
+            supplied_consumption_state=selected_state, evaluation_timestamp=STAMP,
+            executor_registry_metadata=load_production_executor_metadata(), output_root=str(selected_root),
+        )
+        return result
+
+    assert selected_scope(selected_h2_only, [scope_h2["operation_id"]], "h2-only", expect_rejection=True) is None
+    h3_only_preflight = selected_scope(selected_h2_only, [scope_h3["operation_id"]], "h3-only")
+    assert h3_only_preflight["approved_operation_order"] == [scope_h3["operation_id"]]
+    assert scope_h2["operation_id"] not in h3_only_preflight["approved_operation_order"]
+    unrelated_plan = deepcopy(plan)
+    x_operation = next(item for item in unrelated_plan["operations"]
+                       if item["capability_id"] == "recent_performance"
+                       and item["canonical_target_ids"] != scope_h2["canonical_target_ids"])
+    x_preflight = selected_scope(unrelated_plan, [x_operation["operation_id"]], "unrelated-x")
+    assert x_preflight["approved_operation_order"] == [x_operation["operation_id"]]
+    pair_preflight = selected_scope(selected_h2_only, [scope_h2["operation_id"], scope_h3["operation_id"]], "h2-h3")
+    assert set(pair_preflight["approved_operation_order"]) == {scope_h2["operation_id"], scope_h3["operation_id"]}
 
     invalid_plan = deepcopy(plan)
     invalid_h2 = next(item for item in invalid_plan["operations"] if item["capability_id"] == "corporate_action_context")
@@ -222,6 +274,11 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
             "StockDividendRatio": "0", "SubscriptionRatio": "0",
             "SubscriptionPricePerShare": "尚未公告", "CashDividend": "1",
         } for code in ("1423", "2330")]
+        if h2_failure == "source_failed":
+            return {"raw_bytes": b"{}", "status": 503, "content_type": "application/json",
+                    "effective_url": h2_executor.ENDPOINT, "retrieved_at": STAMP}
+        if h2_failure == "binding_failed":
+            rows = [rows[0], rows[0], rows[1], rows[1]]
         return {
             "raw_bytes": json.dumps(rows, ensure_ascii=False).encode("utf-8"),
             "status": 200, "content_type": "application/json", "effective_url": h2_executor.ENDPOINT,
@@ -251,7 +308,13 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
     assert len(h2_calls) == 2
     assert len(timestamps) == 2
     assert len(execution["dispatch_outcomes"]) == 4
-    assert all(item["status"] == "succeeded" for item in execution["dispatch_outcomes"])
+    h2_outcomes = [item for item in execution["dispatch_outcomes"] if item["capability_id"] == "corporate_action_context"]
+    h3_outcomes = [item for item in execution["dispatch_outcomes"] if item["capability_id"] == "recent_performance"]
+    assert all(item["status"] == "succeeded" for item in h3_outcomes)
+    if h2_failure is None:
+        assert all(item["status"] == "succeeded" for item in h2_outcomes)
+    else:
+        assert all(item["status"] == "failed" and item["error_code"] == h2_failure for item in h2_outcomes)
 
     control = output_root / "control"
     control.mkdir()
@@ -287,6 +350,8 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
         assert h2["coverage"]["declared_scope_complete"] is False
         assert h4["state"] == "coverage_incomplete"
         assert h4["ordinary_return_interpretation"] == "blocked"
+        if h2_failure:
+            assert h2["status"] == h2_failure
         h4_refs = h4["input_evidence_references"]
         assert len(h4_refs) == 2
         assert all(inputs.evidence_artifacts[ref.split("#", 1)[0]]["target"]["canonical_target_id"] == target_id for ref in h4_refs)
@@ -347,3 +412,5 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
     assert "coverage_incomplete" in markdown
     assert "blocked" in markdown
     assert "coverage" in markdown.lower() or "覆蓋" in markdown
+    if h2_failure:
+        assert "coverage_incomplete" in markdown and "blocked" in markdown.lower()

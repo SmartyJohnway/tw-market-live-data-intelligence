@@ -324,15 +324,33 @@ def derive_h4_for_completed_plan(plan: Mapping[str, Any], outcomes: list[dict[st
             raise OrchestrationError("h2_h3_dependency_binding_mismatch")
         h2_result = outcome_by_id.get(h2_op.get("operation_id"))
         h3_result = outcome_by_id.get(h3_id)
-        if (not isinstance(h2_result, dict) or h2_result.get("status") != "succeeded"
-                or h2_result.get("operation_id") != h2_op.get("operation_id")
-                or h2_result.get("capability_id") != "corporate_action_context"
-                or not isinstance(h3_result, dict) or h3_result.get("status") != "succeeded"
+        if (not isinstance(h3_result, dict) or h3_result.get("status") != "succeeded"
                 or h3_result.get("operation_id") != h3_id
                 or h3_result.get("capability_id") != "recent_performance"):
             return None
+        if not isinstance(h2_result, dict) or h2_result.get("operation_id") != h2_op.get("operation_id"):
+            return None
+        h2_status = h2_result.get("status")
+        error_code = h2_result.get("error_code")
+        if h2_status not in {"succeeded", "failed"}:
+            return None
+        if h2_result.get("capability_id") != "corporate_action_context":
+            raise OrchestrationError("h4_h2_result_capability_mismatch")
+        if h2_status == "failed" and error_code not in {"source_failed", "binding_failed"}:
+            # Unexpected adapter/runtime failures do not create synthetic H2 evidence.
+            if any(item.get("artifact_role") == "primary_evidence"
+                   for item in h2_result.get("evidence_artifacts", []) if isinstance(item, dict)):
+                raise OrchestrationError("h4_unexpected_failure_has_primary_artifact")
+            return None
+        if h2_status == "succeeded" and error_code is not None:
+            raise OrchestrationError("h4_success_result_has_error_code")
         h2, h2_ref = load_primary(h2_result, "corporate_action_context_evidence.v1")
         h3, h3_ref = load_primary(h3_result, "recent_performance_evidence.v1")
+        if h2_status == "failed":
+            if error_code not in {"source_failed", "binding_failed"} or h2.get("status") != error_code:
+                raise OrchestrationError("h4_failed_result_artifact_status_mismatch")
+        elif h2.get("status") in {"source_failed", "binding_failed"}:
+            raise OrchestrationError("h4_success_result_has_failed_h2_evidence")
         target = h2.get("target", {})
         if (h2_op.get("canonical_target_ids") != [target.get("canonical_target_id")]
                 or target != h3.get("target")):

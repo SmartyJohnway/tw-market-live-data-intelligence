@@ -11,6 +11,7 @@ from jsonschema import Draft7Validator, Draft202012Validator, FormatChecker
 
 from scripts.m8r_05b_03.canonical import canonical_json
 from scripts.m8r_05b_03.dispatch import DispatchRuntimeContext
+from scripts.m8r_05b_03.errors import OrchestrationError
 from scripts.m8r_filesystem_safety import atomic_write_bytes
 from scripts.validate_phase_h_v3_contracts import validate_corporate_action_context_semantics
 from scripts.validate_phase_h_v3_contracts import validate_discontinuity_safety_semantics, validate_h2_h3_h4_cross_evidence
@@ -253,6 +254,26 @@ def test_h3_dependency_unavailable_means_zero_h2_calls_and_no_artifact(tmp_path:
     assert "h4_not_derived_no_clearance_implied" in result["warnings"]
     assert calls == []
     assert not list(tmp_path.glob("evidence/phase_h/h2/*.json"))
+    h3_result = _h3_dependency(tmp_path, status="failed")["dependencies"][0]["result"]
+    plan = {"operations": [
+        {"operation_id": "a3-h3-operation", "capability_id": "recent_performance", "market": "TWSE", "operation_status": "executable_pending_approval", "executor_invocation_eligible": True, "canonical_target_ids": [TARGET["canonical_target_id"]]},
+        {"operation_id": "a3-h2-operation", "capability_id": "corporate_action_context", "market": "TWSE", "operation_status": "executable_pending_approval", "canonical_target_ids": [TARGET["canonical_target_id"]], "dependency_operation_ids": ["a3-h3-operation"]},
+    ]}
+    assert derive_h4_for_completed_plan(plan, [h3_result, result], output_root=str(tmp_path)) == []
+
+
+def test_unexpected_h2_failure_without_typed_primary_evidence_creates_no_h4(tmp_path: Path) -> None:
+    h3_context = _h3_dependency(tmp_path)
+    h3_result = h3_context["dependencies"][0]["result"]
+    h2_result = {
+        "operation_id": "a3-h2-operation", "capability_id": "corporate_action_context",
+        "status": "failed", "error_code": "adapter_exception", "evidence_artifacts": [],
+    }
+    plan = {"operations": [
+        {"operation_id": "a3-h3-operation", "capability_id": "recent_performance", "market": "TWSE", "operation_status": "executable_pending_approval", "executor_invocation_eligible": True, "canonical_target_ids": [TARGET["canonical_target_id"]]},
+        {"operation_id": "a3-h2-operation", "capability_id": "corporate_action_context", "market": "TWSE", "operation_status": "executable_pending_approval", "canonical_target_ids": [TARGET["canonical_target_id"]], "dependency_operation_ids": ["a3-h3-operation"]},
+    ]}
+    assert derive_h4_for_completed_plan(plan, [h3_result, h2_result], output_root=str(tmp_path)) == []
 
 
 def test_real_partial_h2_derives_verified_h4_coverage_incomplete(tmp_path: Path) -> None:
@@ -272,6 +293,22 @@ def test_real_partial_h2_derives_verified_h4_coverage_incomplete(tmp_path: Path)
     assert value["state"] == "coverage_incomplete"
     assert value["ordinary_return_interpretation"] == "blocked"
     assert value["interpretation_guard"] == "CORPORATE_ACTION_COVERAGE_INCOMPLETE"
+
+
+def test_failed_h2_result_must_match_typed_primary_evidence(tmp_path: Path) -> None:
+    h3_context = _h3_dependency(tmp_path)
+    h3_result = h3_context["dependencies"][0]["result"]
+    h2_result = execute_h2_twse_exright_pre(
+        _request(), _context(tmp_path, h3_context), fetch_response=lambda **kwargs: _response([_row()]),
+    )
+    h2_result.update(status="failed", error_code="source_failed")
+    plan = {"operations": [
+        {"operation_id": "a3-h3-operation", "capability_id": "recent_performance", "market": "TWSE", "operation_status": "executable_pending_approval", "executor_invocation_eligible": True, "canonical_target_ids": [TARGET["canonical_target_id"]]},
+        {"operation_id": "a3-h2-operation", "capability_id": "corporate_action_context", "market": "TWSE", "operation_status": "executable_pending_approval", "canonical_target_ids": [TARGET["canonical_target_id"]], "dependency_operation_ids": ["a3-h3-operation"]},
+    ]}
+    h2_result["operation_id"] = "a3-h2-operation"
+    with pytest.raises(OrchestrationError, match="h4_failed_result_artifact_status_mismatch"):
+        derive_h4_for_completed_plan(plan, [h3_result, h2_result], output_root=str(tmp_path))
 
 
 @pytest.mark.parametrize(

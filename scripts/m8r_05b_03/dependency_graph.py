@@ -34,8 +34,9 @@ def validate_dependency_graph(plan: dict[str, Any], approved_operation_ids: Iter
             if dependency is None:
                 raise OrchestrationError("dependency_operation_missing")
             if (dependency.get("operation_status") != "executable_pending_approval"
-                    or dependency.get("executor_invocation_eligible") is not True
-                    or dependency_id not in approved):
+                    or dependency.get("executor_invocation_eligible") is not True):
+                raise OrchestrationError("dependency_operation_not_executable")
+            if operation_id in approved and dependency_id not in approved:
                 raise OrchestrationError("dependency_operation_not_approved")
         if (operation.get("capability_id") == "corporate_action_context"
                 and operation.get("market") == "TWSE"

@@ -116,6 +116,9 @@ def test_shared_dependency_validator_rejects_invalid_graph_shapes():
     for plan, approved, error in cases:
         with pytest.raises(OrchestrationError, match=error):
             validate_dependency_graph(plan, approved)
+    # Approval closure is scoped to the approved child.  An unapproved H2
+    # may retain its semantic H3 dependency while H3 alone is approved.
+    validate_dependency_graph(_plan(["h3"]), {"h3"})
 
 
 import pytest
