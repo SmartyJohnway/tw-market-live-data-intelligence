@@ -56,6 +56,20 @@ def validate_contract(record: dict[str, Any]) -> dict[str, str]:
         "security_master_live_acquisition": 0}
     assert record["canonical_state"] == {"H2_runtime": "INACTIVE", "selected_executor_id": None,
         "J-B04": "BLOCKING", "Phase J": "NOT_STARTED", "MCP": 6}
+    validation = record["validation"]
+    assert validation["cold_start_subprocess"] == "PASS"
+    assert validation["adapter_failure_before_reservation"] == "PASS"
+    assert validation["A5_tests"] == {"passed": 73, "failed": 0}
+    ci = validation["default_ci_comparison"]
+    assert ci["base_revision"] == BASE and ci["candidate_revision"] == "681f9b94ad54ac66261baead7a1ec122e9187764"
+    assert ci["same_dependency_environment"] is True and ci["new_failure_delta"] == 0
+    assert ci["new_failure_nodes"] == []
+    assert ci["base_result"]["error_nodes"] == ci["head_result"]["error_nodes"]
+    assert ci["shared_failure_nodes"] == ci["base_result"]["error_nodes"]
+    assert ci["base_result"]["stable_failure_class"] == ci["head_result"]["stable_failure_class"] == \
+        "ModuleNotFoundError: requests unavailable during collection"
+    assert validation["strict_duplicate_key_json_scan"] == {"status": "PASS", "file_count": 1021}
+    assert all(value == "PASS" for value in validation["validators"].values())
     return {"status": "PASS", "root_cause": diagnostics["root_cause"]}
 
 

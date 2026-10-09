@@ -69,18 +69,85 @@
     "MCP": 6
   },
   "validation": {
-    "cold_start_subprocess": "pending validation",
-    "adapter_failure_before_reservation": "pending validation",
-    "A5_tests": "pending validation",
-    "focused_regressions": "pending validation",
-    "validators": "pending validation",
-    "compileall": "pending validation",
-    "git_diff_check": "pending validation",
-    "strict_duplicate_key_json_scan": "pending validation",
+    "cold_start_subprocess": "PASS",
+    "adapter_failure_before_reservation": "PASS",
+    "A5_tests": {
+      "passed": 73,
+      "failed": 0
+    },
+    "focused_regressions": {
+      "passed": 228,
+      "failed": 0,
+      "skipped": 2,
+      "warnings": 1
+    },
+    "validators": {
+      "A5_P0": "PASS",
+      "A5_L1": "PASS",
+      "A5_R1": "PASS",
+      "A5_R2": "PASS",
+      "A5_R3": "PASS",
+      "A1": "PASS",
+      "A2": "PASS",
+      "A3": "PASS",
+      "Phase_H_V3": "PASS",
+      "Phase_J_GHI": "PASS",
+      "portable_catalog_sync": "PASS",
+      "runtime_Skill_guide_sync": "PASS"
+    },
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "strict_duplicate_key_json_scan": {
+      "status": "PASS",
+      "file_count": 1021
+    },
     "default_ci_comparison": {
-      "base": "e70f866fb6192ca0f0386c18ee55d56284d2ced2",
-      "candidate": null,
-      "new_failure_delta": null
+      "candidate": "681f9b9",
+      "python": "3.12.14",
+      "timezone": "Etc/UTC",
+      "PYTHONHASHSEED": "0",
+      "command": "python scripts/run_test_profile.py default-ci --json",
+      "same_dependency_environment": true,
+      "shared_failure_nodes": [
+        "tests/unit/test_twse_mis_normalization_v2.py",
+        "tests/unit/test_twse_openapi_normalization_v1.py",
+        "tests/unit/test_tpex_openapi_normalization_v1.py",
+        "tests/unit/test_yahoo_normalized_chart_v1.py",
+        "tests/unit/test_m8c_01_taifex_mis_runtime.py"
+      ],
+      "new_failure_nodes": [],
+      "resolved_failure_nodes": [],
+      "new_failure_delta": 0,
+      "base_revision": "e70f866fb6192ca0f0386c18ee55d56284d2ced2",
+      "candidate_revision": "681f9b94ad54ac66261baead7a1ec122e9187764",
+      "base_result": {
+        "status": "collection_failed",
+        "selected_profile_nodes": 1230,
+        "deselected": 5,
+        "collection_error_count": 5,
+        "error_nodes": [
+          "tests/unit/test_twse_mis_normalization_v2.py",
+          "tests/unit/test_twse_openapi_normalization_v1.py",
+          "tests/unit/test_tpex_openapi_normalization_v1.py",
+          "tests/unit/test_yahoo_normalized_chart_v1.py",
+          "tests/unit/test_m8c_01_taifex_mis_runtime.py"
+        ],
+        "stable_failure_class": "ModuleNotFoundError: requests unavailable during collection"
+      },
+      "head_result": {
+        "status": "collection_failed",
+        "selected_profile_nodes": 1230,
+        "deselected": 5,
+        "collection_error_count": 5,
+        "error_nodes": [
+          "tests/unit/test_twse_mis_normalization_v2.py",
+          "tests/unit/test_twse_openapi_normalization_v1.py",
+          "tests/unit/test_tpex_openapi_normalization_v1.py",
+          "tests/unit/test_yahoo_normalized_chart_v1.py",
+          "tests/unit/test_m8c_01_taifex_mis_runtime.py"
+        ],
+        "stable_failure_class": "ModuleNotFoundError: requests unavailable during collection"
+      }
     }
   }
 }
