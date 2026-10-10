@@ -1,6 +1,6 @@
 {
   "schema_version": "phase_j_coverage_matrix.v1",
-  "authority_status": "J1_FROZEN_ACCEPTANCE_CANDIDATE",
+  "authority_status": "J1_R1_FROZEN_ACCEPTANCE_CANDIDATE",
   "scenario_registry": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
   "coverage_dimensions": [
     "contract_fixture",
@@ -31,24 +31,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-01: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-01: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-01: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-01: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -69,14 +81,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-01: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-01: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-01: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -93,12 +117,8 @@
           "evidence_refs": []
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -119,14 +139,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-02: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-02: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-02: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -145,8 +177,11 @@
         "integration": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+            {
+              "ref": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+              "kind": "integration_test",
+              "scenario_match": "test_s2_multi_target_controlled_e2e_preserves_target_scoped_mixed_outcomes proves exact per-target mixed outcomes and Result/Audit/handoff propagation."
+            }
           ]
         },
         "service_api": {
@@ -168,14 +203,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-03: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-03: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-03: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -192,11 +239,8 @@
           "evidence_refs": []
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -217,14 +261,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-04: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-04: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-04: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -241,11 +297,8 @@
           "evidence_refs": []
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -266,14 +319,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-05: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-05: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-05: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -290,12 +355,8 @@
           "evidence_refs": []
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_closure.json",
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -316,13 +377,21 @@
         "bounded_live": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+            {
+              "ref": "docs/acceptance_runs/phase_g_pr_d_controlled_live.json",
+              "kind": "historical_live_acceptance",
+              "scenario_match": "Historical Phase G controlled-live integrated run covered the latest completed official material-disclosure batch for an eligible TPEx target; it predates V3, so this is bounded-live history only, not current V3 integration coverage."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-06: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -333,23 +402,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-07: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-07: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-07: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-07: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_closure.json",
-            "tests/unit/test_phase_g_material_disclosures.py"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -370,13 +452,21 @@
         "bounded_live": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+            {
+              "ref": "docs/acceptance_runs/phase_g_pr_d_controlled_live.json",
+              "kind": "historical_live_acceptance",
+              "scenario_match": "Historical Phase G controlled-live run includes valid empty material-disclosure evidence for the covered scope; it does not establish a current V3 integration cell."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-07: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -387,23 +477,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-08: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-08: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-08: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-08: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "tests/unit/test_phase_g_material_disclosures.py"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -424,13 +527,21 @@
         "bounded_live": {
           "status": "NOT_APPLICABLE",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-08: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-08: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -447,12 +558,8 @@
           "evidence_refs": []
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_closure.json",
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -473,13 +580,21 @@
         "bounded_live": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+            {
+              "ref": "docs/acceptance_runs/phase_g_pr_d_controlled_live.json",
+              "kind": "historical_live_acceptance",
+              "scenario_match": "Historical Phase G controlled-live integrated run includes latest-period monthly-revenue evidence for an eligible TPEx target; it is retained only as bounded-live history."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-09: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -490,24 +605,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-10: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-10: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-10: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-10: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/acceptance_runs/phase_g_pr_d_p0_ledger.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -528,13 +655,21 @@
         "bounded_live": {
           "status": "NOT_APPLICABLE",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-10: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-10: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -545,23 +680,41 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-11: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-11: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-11: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-11: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_H1_TPEX_ATTENTION_ACCEPTANCE_LEDGER.json",
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_AND_ACTIVATION_DECISION_2026-10-07.json",
+              "kind": "e2e_acceptance",
+              "scenario_match": "J-B03 A2.6 C3 carried multiple disposition rows through Result V3, Audit V3, and handoff; bounded live acceptance exercised the same H1 composite route for a representative TPEX target. Full H1 coverage remains explicitly false, with changed-trading-method, suspension, and resumption uncovered."
+            }
           ]
         },
         "service_api": {
@@ -583,13 +736,21 @@
         "bounded_live": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_AND_ACTIVATION_DECISION_2026-10-07.json",
+              "kind": "historical_live_acceptance",
+              "scenario_match": "J-B03 A2.6 bounded live acceptance exercised the accepted H1 composite route (attention, disposition, unresolved native marker) for TPEX:6488; it did not establish full H1-family coverage."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-11: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -600,23 +761,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-12: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-12: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-12: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-12: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -637,14 +811,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-12: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-12: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-12: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -655,24 +841,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-13: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-13: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-13: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-13: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -693,14 +891,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-13: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-13: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-13: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -711,24 +921,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-14: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-14: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-14: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-14: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -749,14 +971,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-14: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-14: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-14: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -773,12 +1007,8 @@
           "evidence_refs": []
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -799,14 +1029,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-15: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-15: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-15: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -817,23 +1059,41 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-16: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-16: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-16: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-16: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json",
+              "kind": "e2e_acceptance",
+              "scenario_match": "Accepted integrated A6-R2 shows successful bounded retrieval with H4 coverage_incomplete and ordinary-return interpretation blocked; it does not claim complete corporate-action coverage."
+            }
           ]
         },
         "service_api": {
@@ -855,14 +1115,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-16: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-16: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-16: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -881,9 +1153,11 @@
         "integration": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json"
+            {
+              "ref": "docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json",
+              "kind": "e2e_acceptance",
+              "scenario_match": "Accepted H0H-LIVE-003 is a 20-trading-day TWSE H3 production execution with actual two-month GETs, 20 prior observations, Result V3, Audit V3, and bound lineage; it does not imply TPEx H3 or a distinct 5-day live run."
+            }
           ]
         },
         "service_api": {
@@ -905,13 +1179,21 @@
         "bounded_live": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json"
+            {
+              "ref": "docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json",
+              "kind": "historical_live_acceptance",
+              "scenario_match": "Accepted H3 TWSE recent-performance live acceptance supports only its governed lookback scope; it does not establish all 5D/20D combinations or TPEx H3."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-17: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -922,23 +1204,41 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-18: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-18: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-18: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-18: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json",
-            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
-            "docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json"
+            {
+              "ref": "tests/integration/test_phase_i_i2_a3_p0_governed_runner.py",
+              "kind": "integration_test",
+              "scenario_match": "test_fake_transport_completes_real_authorization_dispatch_and_v3_chain exercises explicitly requested TAIFEX context through the governed runner and V3 result/audit path using fake transport."
+            }
           ]
         },
         "service_api": {
@@ -960,13 +1260,21 @@
         "bounded_live": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json"
+            {
+              "ref": "docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json",
+              "kind": "historical_live_acceptance",
+              "scenario_match": "Accepted Phase I I2 A3 bounded-live run exercised the explicitly requested TAIFEX regular-session context for its governed TWSE cash-target scope."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-18: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -983,10 +1291,93 @@
           "evidence_refs": []
         },
         "integration": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-19: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-19: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-19: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-20",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-20: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-20: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-20: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-20: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
+          ]
+        },
+        "integration": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+            {
+              "ref": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+              "kind": "integration_test",
+              "scenario_match": "test_s2_multi_target_controlled_e2e_preserves_target_scoped_mixed_outcomes proves partial_success and per-operation outcomes through Result/Audit/handoff."
+            }
           ]
         },
         "service_api": {
@@ -1008,68 +1399,21 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "Prior H-ACC-7L is full_success with partial trading-status coverage, not a partial_success Result; it does not match this bounded-live scenario."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
-          ]
-        }
-      }
-    },
-    {
-      "scenario_id": "J1-20",
-      "layers": {
-        "contract_fixture": {
-          "status": "COVERED_J0_J1",
-          "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
-          ]
-        },
-        "deterministic_unit": {
-          "status": "COVERED_J0_J1",
-          "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
-          ]
-        },
-        "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
-          ]
-        },
-        "service_api": {
-          "status": "PLANNED",
-          "evidence_refs": []
-        },
-        "workbench": {
-          "status": "PLANNED",
-          "evidence_refs": []
-        },
-        "mcp": {
-          "status": "PLANNED",
-          "evidence_refs": []
-        },
-        "fresh_install": {
-          "status": "PLANNED",
-          "evidence_refs": []
-        },
-        "bounded_live": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json"
-          ]
-        },
-        "real_agent": {
-          "status": "REQUIRES_REAL_AGENT_AUTH",
-          "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-20: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -1086,11 +1430,8 @@
           "evidence_refs": []
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -1111,14 +1452,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-21: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-21: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-21: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -1129,23 +1482,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-22: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-22: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-22: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-22: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_closure.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -1166,13 +1532,21 @@
         "bounded_live": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+            {
+              "ref": "docs/acceptance_runs/phase_g_pr_d_controlled_live.json",
+              "kind": "historical_live_acceptance",
+              "scenario_match": "Historical Phase G controlled-live run included typed missing/not-yet-available behavior for its covered G scope; it is not a current V3 integration claim."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-22: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -1183,22 +1557,41 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-23: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-23: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-23: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-23: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_closure.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+            {
+              "ref": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+              "kind": "integration_test",
+              "scenario_match": "test_s3_fixture_source_failure_propagates_truthfully_to_result_audit_and_h5 proves source_failed remains distinct through the governed Result/Audit/handoff chain."
+            }
           ]
         },
         "service_api": {
@@ -1220,13 +1613,21 @@
         "bounded_live": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+            {
+              "ref": "docs/acceptance_runs/phase_g_pr_d_controlled_live.json",
+              "kind": "historical_live_acceptance",
+              "scenario_match": "Historical Phase G controlled-live run retained source-failure observation separately from valid evidence; it is not a current V3 integration claim."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-23: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -1237,23 +1638,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-24: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-24: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-24: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-24: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
-            "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -1274,14 +1688,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-24: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-24: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-24: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -1292,23 +1718,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-25: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-25: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-25: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-25: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -1325,20 +1764,36 @@
         "fresh_install": {
           "status": "COVERED_EXISTING",
           "evidence_refs": [
-            "tests/unit/test_m8r_08g_identity_service_and_releases.py",
-            "tests/unit/test_m8r_06_03_localhost_vertical.py"
+            {
+              "ref": "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+              "kind": "fresh_install_test",
+              "scenario_match": "J1-25: supporting reference for fresh_install; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_m8r_06_03_localhost_vertical.py",
+              "kind": "fresh_install_test",
+              "scenario_match": "J1-25: supporting reference for fresh_install; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "bounded_live": {
           "status": "NOT_APPLICABLE",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-25: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-25: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -1349,23 +1804,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-26: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-26: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-26: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-26: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
-            "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -1386,14 +1854,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-26: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-26: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-26: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -1404,23 +1884,36 @@
         "contract_fixture": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-27: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-27: supporting reference for contract_fixture; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "deterministic_unit": {
           "status": "COVERED_J0_J1",
           "evidence_refs": [
-            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
-            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+            {
+              "ref": "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+              "kind": "fixture",
+              "scenario_match": "J1-27: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "tests/unit/test_phase_j_j0_j1_scenario_registry.py",
+              "kind": "unit_test",
+              "scenario_match": "J1-27: supporting reference for deterministic_unit; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "integration": {
-          "status": "COVERED_EXISTING",
-          "evidence_refs": [
-            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
-            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
-          ]
+          "status": "PLANNED",
+          "evidence_refs": []
         },
         "service_api": {
           "status": "PLANNED",
@@ -1441,14 +1934,26 @@
         "bounded_live": {
           "status": "REQUIRES_LIVE_AUTH",
           "evidence_refs": [
-            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+              "kind": "governance_closure",
+              "scenario_match": "J1-27: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            },
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-27: supporting reference for bounded_live; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         },
         "real_agent": {
           "status": "REQUIRES_REAL_AGENT_AUTH",
           "evidence_refs": [
-            "GitHub PR #326 review 5479545125"
+            {
+              "ref": "GitHub PR #326 review 5479545125",
+              "kind": "governance_review",
+              "scenario_match": "J1-27: supporting reference for real_agent; scenario execution at this layer is asserted only by the typed coverage status."
+            }
           ]
         }
       }
@@ -1468,7 +1973,11 @@
         "handoff"
       ],
       "evidence_refs": [
-        "tests/integration/test_unified_workbench_api.py"
+        {
+          "ref": "tests/integration/test_unified_workbench_api.py",
+          "kind": "service_test",
+          "scope_note": "Global service_api infrastructure baseline only; does not imply scenario-specific coverage."
+        }
       ]
     },
     {
@@ -1480,8 +1989,16 @@
         "no duplicate execution"
       ],
       "evidence_refs": [
-        "tests/unit/test_m8r_10_workbench_ui_contract.py",
-        "tests/integration/test_unified_workbench_api.py"
+        {
+          "ref": "tests/unit/test_m8r_10_workbench_ui_contract.py",
+          "kind": "workbench_test",
+          "scope_note": "Global workbench infrastructure baseline only; does not imply scenario-specific coverage."
+        },
+        {
+          "ref": "tests/integration/test_unified_workbench_api.py",
+          "kind": "service_test",
+          "scope_note": "Global workbench infrastructure baseline only; does not imply scenario-specific coverage."
+        }
       ]
     },
     {
@@ -1493,9 +2010,21 @@
         "error mapping"
       ],
       "evidence_refs": [
-        "tests/unit/test_mcp_server.py",
-        "tests/unit/test_m8r_08b_mcp_tool_contracts.py",
-        "tests/integration/test_m8r_08b_mcp_stdio_local_service.py"
+        {
+          "ref": "tests/unit/test_mcp_server.py",
+          "kind": "mcp_test",
+          "scope_note": "Global mcp infrastructure baseline only; does not imply scenario-specific coverage."
+        },
+        {
+          "ref": "tests/unit/test_m8r_08b_mcp_tool_contracts.py",
+          "kind": "mcp_test",
+          "scope_note": "Global mcp infrastructure baseline only; does not imply scenario-specific coverage."
+        },
+        {
+          "ref": "tests/integration/test_m8r_08b_mcp_stdio_local_service.py",
+          "kind": "integration_test",
+          "scope_note": "Global mcp infrastructure baseline only; does not imply scenario-specific coverage."
+        }
       ]
     },
     {
@@ -1507,8 +2036,16 @@
         "no Candidate B fallback"
       ],
       "evidence_refs": [
-        "tests/unit/test_m8r_08g_identity_service_and_releases.py",
-        "tests/integration/test_unified_workbench_api.py"
+        {
+          "ref": "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+          "kind": "fresh_install_test",
+          "scope_note": "Global fresh_install infrastructure baseline only; does not imply scenario-specific coverage."
+        },
+        {
+          "ref": "tests/integration/test_unified_workbench_api.py",
+          "kind": "service_test",
+          "scope_note": "Global fresh_install infrastructure baseline only; does not imply scenario-specific coverage."
+        }
       ]
     },
     {
@@ -1518,9 +2055,84 @@
         "Result/Audit lineage and accepted bounded cross-family behavior"
       ],
       "evidence_refs": [
-        "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
-        "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json"
+        {
+          "ref": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+          "kind": "integration_test",
+          "scope_note": "Global integration infrastructure baseline only; does not imply scenario-specific coverage."
+        },
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json",
+          "kind": "e2e_acceptance",
+          "scope_note": "Global integration infrastructure baseline only; does not imply scenario-specific coverage."
+        }
       ]
     }
-  ]
+  ],
+  "evidence_kinds": [
+    "contract_authority",
+    "fixture",
+    "unit_test",
+    "integration_test",
+    "e2e_acceptance",
+    "historical_live_acceptance",
+    "service_test",
+    "workbench_test",
+    "mcp_test",
+    "fresh_install_test",
+    "real_agent_acceptance",
+    "routing_authority",
+    "governance_closure",
+    "governance_review"
+  ],
+  "coverage_summary": {
+    "scenario_count": 27,
+    "cell_status_counts": {
+      "COVERED_J0_J1": 34,
+      "PLANNED": 147,
+      "REQUIRES_LIVE_AUTH": 16,
+      "REQUIRES_REAL_AGENT_AUTH": 27,
+      "COVERED_EXISTING": 16,
+      "NOT_APPLICABLE": 3
+    },
+    "per_layer_status_counts": {
+      "contract_fixture": {
+        "COVERED_J0_J1": 17,
+        "PLANNED": 10
+      },
+      "deterministic_unit": {
+        "COVERED_J0_J1": 17,
+        "PLANNED": 10
+      },
+      "integration": {
+        "PLANNED": 20,
+        "COVERED_EXISTING": 7
+      },
+      "service_api": {
+        "PLANNED": 27
+      },
+      "workbench": {
+        "PLANNED": 27
+      },
+      "mcp": {
+        "PLANNED": 27
+      },
+      "fresh_install": {
+        "PLANNED": 26,
+        "COVERED_EXISTING": 1
+      },
+      "bounded_live": {
+        "REQUIRES_LIVE_AUTH": 16,
+        "COVERED_EXISTING": 8,
+        "NOT_APPLICABLE": 3
+      },
+      "real_agent": {
+        "REQUIRES_REAL_AGENT_AUTH": 27
+      }
+    },
+    "integration_status_counts": {
+      "PLANNED": 20,
+      "COVERED_EXISTING": 7
+    },
+    "scenario_level_integration_claims": 7
+  }
 }
