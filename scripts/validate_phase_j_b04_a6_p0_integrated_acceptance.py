@@ -82,11 +82,11 @@ def validate() -> dict:
 
     routing = _strict(ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json")
     h2_route = next(item for item in routing["routes"] if item.get("capability_id") == "corporate_action_context")
-    assert h2_route["selected_executor_id"] is None and h2_route["routing_status"] == "plan_only"
+    assert h2_route["selected_executor_id"] == "phase_h_h2_twse_exright_pre_executor" and h2_route["routing_status"] == "resolved"
     catalog = _strict(ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json")
     h2_capability = next(item for item in catalog["data_need_capabilities"] if item.get("capability_id") == "corporate_action_context")
-    assert h2_capability["runtime_executable"] is False
-    assert h2_capability["phase_h_activation_state"] == "inactive"
+    assert h2_capability["runtime_executable"] is True
+    assert h2_capability["phase_h_activation_state"] == "selected_route_active"
 
     from server.unified_mcp.tool_contracts import build_tool_specs
     assert len(build_tool_specs()) == 6
@@ -98,7 +98,7 @@ def validate() -> dict:
         "historical_a5_sessions_unchanged": True,
         "A5_closeout_sha256": hashlib.sha256(CLOSEOUT.read_bytes()).hexdigest(),
         "network_counts": record["network_counts"],
-        "H2_runtime": "INACTIVE", "selected_executor_id": None,
+        "H2_runtime": "ACTIVE_FOR_BOUNDED_TWSE_ROUTE", "selected_executor_id": "phase_h_h2_twse_exright_pre_executor",
         "J-B04": "BLOCKING", "Phase J": "NOT_STARTED", "MCP": 6,
         "origin_main": actual,
     }

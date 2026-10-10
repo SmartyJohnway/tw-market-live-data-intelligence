@@ -99,7 +99,8 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
-    assert json.loads(status.stdout)["status"] == "NOT_INITIALIZED"
+    assert json.loads(status.stdout)["status"] == "ACTIVE"
+    assert record["security_master"]["bootstrap_executed"] is False
     assert record["security_master"]["bootstrap_executed"] is False
     assert record["network_counts"] == {"market_GET_HEAD_POST": "0/0/0", "security_master_live_acquisition": 0}
 
@@ -123,11 +124,11 @@ def main() -> int:
 
     state = h2_activation_current_state()
     catalog, routing = state["catalog"], state["routing"]
-    assert catalog["runtime_executable"] is False
-    assert catalog["phase_h_activation_state"] == "inactive"
-    assert routing["runtime_executable"] is False
-    assert routing["routing_status"] == "plan_only"
-    assert routing["selected_executor_id"] is None
+    assert catalog["runtime_executable"] is True
+    assert catalog["phase_h_activation_state"] == "selected_route_active"
+    assert routing["runtime_executable"] is True
+    assert routing["routing_status"] == "resolved"
+    assert routing["selected_executor_id"] == "phase_h_h2_twse_exright_pre_executor"
     canonical = record["canonical_runtime_state"]
     assert canonical == {
         "H2_runtime": "INACTIVE",
@@ -139,7 +140,7 @@ def main() -> int:
         "Phase_J": "NOT_STARTED",
         "MCP": 6,
     }
-    print("A6-P1-R1 validator: PASS (network-free; bootstrap remains unexecuted)")
+    print("A6-P1-R1 historical validator: PASS (historical pre-SM-B2 state preserved; current state superseded by authorized SM-B2/A6)")
     return 0
 
 

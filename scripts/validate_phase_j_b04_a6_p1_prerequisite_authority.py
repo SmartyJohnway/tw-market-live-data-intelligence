@@ -71,7 +71,8 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
-    assert json.loads(status.stdout)["status"] == "NOT_INITIALIZED"
+    assert json.loads(status.stdout)["status"] == "ACTIVE"
+    assert record["network_and_canonical_state"]["security_master_bootstrap_performed"] is False
 
     owner_h3 = load_json(ROOT / "docs/governance/phase_h/PHASE_H_H3_TWSE_CONTROLLED_USE_OWNER_DECISION_2026-09-24.json")
     expected_h3 = h3_automation_authority(owner_h3)
@@ -85,11 +86,11 @@ def main() -> int:
     assert "browser" in record["h3_automation_authority"]["scope"]
 
     state = h2_activation_current_state()
-    assert state["catalog"]["runtime_executable"] is False
-    assert state["catalog"]["phase_h_activation_state"] == "inactive"
-    assert state["routing"]["runtime_executable"] is False
-    assert state["routing"]["routing_status"] == "plan_only"
-    assert state["routing"]["selected_executor_id"] is None
+    assert state["catalog"]["runtime_executable"] is True
+    assert state["catalog"]["phase_h_activation_state"] == "selected_route_active"
+    assert state["routing"]["runtime_executable"] is True
+    assert state["routing"]["routing_status"] == "resolved"
+    assert state["routing"]["selected_executor_id"] == "phase_h_h2_twse_exright_pre_executor"
     assert record["h2_activation"]["performed"] is False
     assert record["network_and_canonical_state"] == {
         "market_GET_HEAD_POST": "0/0/0",
@@ -104,7 +105,7 @@ def main() -> int:
     assert record["overall_disposition"] == "J_B04_A6_P1_BOOTSTRAP_DISPATCH_BOUND_NOT_PROVEN"
     assert correction["future_bootstrap_authorization_template"]["authorization_status"] == "NOT_AUTHORIZED"
     assert correction["future_bootstrap_authorization_template"]["is_authorization"] is False
-    print("A6-P1 historical validator: PASS (R1 correction is additive; bootstrap remains unexecuted)")
+    print("A6-P1 historical validator: PASS (pre-SM-B2 evidence immutable; current H2 route superseded by authorized A6)")
     return 0
 
 

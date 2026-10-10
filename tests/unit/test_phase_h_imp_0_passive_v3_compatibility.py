@@ -173,19 +173,30 @@ def test_v3_selected_tpex_h1_composite_route_is_executable_but_truthfully_partia
     assert result["network_executed"] is False
 
 
-def test_v3_h1_twse_stays_non_executable_and_h2_stays_plan_only():
+def test_v3_h1_twse_stays_non_executable_and_h2_requires_same_target_h3_dependency():
     h1_twse = preview(request(needs=[{"type": "trading_status_context", "priority": "required", "parameters": {}}]))
     assert h1_twse["validation"]["capability_results"][0]["status"] == "runtime_executable"
     assert h1_twse["preview"]["status"] == "unsupported_capability"
     assert h1_twse["orchestration_plan"]["blocked_operations"][0]["blocking_reason_codes"] == ["unsupported_market"]
 
-    h2 = preview(request(needs=[{"type": "corporate_action_context", "priority": "required", "parameters": {}}]))
-    assert h2["validation"]["capability_results"][0]["status"] == "contract_supported"
-    assert h2["preview"]["status"] == "unsupported_capability"
-    operation = h2["orchestration_plan"]["operations"][0]
-    assert operation["operation_status"] == "plan_only_not_executable"
-    assert operation["executor_id"] is None
-    assert operation["network_required"] is False
+    h2_without_dependency = preview(request(needs=[{"type": "corporate_action_context", "priority": "required", "parameters": {}}]))
+    assert h2_without_dependency["validation"]["capability_results"][0]["status"] == "runtime_executable"
+    assert h2_without_dependency["preview"]["status"] == "unsupported_capability"
+    blocked = h2_without_dependency["orchestration_plan"]["operations"][0]
+    assert blocked["operation_status"] == "plan_only_not_executable"
+    assert blocked["executor_id"] is None
+    assert blocked["network_required"] is False
+
+    h2 = preview(request(needs=[
+        {"type": "corporate_action_context", "priority": "required", "parameters": {}},
+        {"type": "recent_performance", "priority": "required", "parameters": {"lookback_trading_days": 20}},
+    ]))
+    assert h2["preview"]["status"] == "ready_for_confirmation"
+    operation = next(item for item in h2["orchestration_plan"]["operations"] if item["capability_id"] == "corporate_action_context")
+    assert operation["operation_status"] == "executable_pending_approval"
+    assert operation["executor_id"] == "phase_h_h2_twse_exright_pre_executor"
+    assert operation["network_required"] is True
+    assert len(operation["dependency_operation_ids"]) == 1
 
 
 @pytest.mark.parametrize("lookback", [1, 5, 20])

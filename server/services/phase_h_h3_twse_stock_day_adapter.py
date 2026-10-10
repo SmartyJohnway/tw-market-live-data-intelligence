@@ -93,15 +93,27 @@ def _default_http_get(
     *,
     ssl_context: ssl.SSLContext | None = None,
 ) -> _Response:
+    from scripts.a6_session_transport import complete_dispatch, reserve_dispatch
+
+    reservation = reserve_dispatch(method=request.get_method(), url=request.full_url)
     handlers = [_NoRedirectHandler()]
     if ssl_context is not None:
         handlers.append(HTTPSHandler(context=ssl_context))
     opener = build_opener(*handlers)
     try:
-        return opener.open(request, timeout=timeout_seconds)  # type: ignore[return-value]
+        response = opener.open(request, timeout=timeout_seconds)  # type: ignore[assignment]
+        if reservation is not None:
+            setattr(response, "_a6_reservation", reservation)
+        return response  # type: ignore[return-value]
     except HTTPError as response:
         # HTTPError carries the response, but the caller will reject its status.
+        if reservation is not None:
+            setattr(response, "_a6_reservation", reservation)
         return response  # type: ignore[return-value]
+    except Exception as exc:
+        complete_dispatch(reservation, status=None, final_url=None, content_type=None, body=None,
+                          error=type(exc).__name__)
+        raise
 
 
 def _fail(status: str, code: str, **metadata) -> TWSEStockDayResult:  # noqa: ANN003
@@ -522,7 +534,13 @@ def fetch_twse_stock_day_month(
         geturl = getattr(response, "geturl", None)
         effective_url = geturl() if callable(geturl) else requested_url
         body = response.read(max_response_bytes + 1)
+        from scripts.a6_session_transport import complete_dispatch
+        complete_dispatch(getattr(response, "_a6_reservation", None), status=status,
+                          final_url=effective_url, content_type=content_type, body=body)
     except Exception:
+        from scripts.a6_session_transport import complete_dispatch
+        complete_dispatch(getattr(response, "_a6_reservation", None), status=None,
+                          final_url=None, content_type=None, body=None, error="response_read_failure")
         return _fail(
             "source_failed", "source_failed:transport_failure", requested_month=month,
             requested_url=requested_url, retrieved_at=retrieved_at,

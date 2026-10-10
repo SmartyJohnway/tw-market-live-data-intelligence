@@ -88,7 +88,7 @@ def test_h_act_h1_exact_route_scope_is_preserved_after_v3_promotion() -> None:
     assert route["output_evidence_contract"] == "trading_status_context_composite.v1"
     assert route["network_required"] is True
     assert route["batching_scope"] == "none"
-    assert routing["phase_h_source_authority"]["active_source_count"] == 4
+    assert routing["phase_h_source_authority"]["active_source_count"] == 5
     assert {(item["source_id"], item["runtime_executable"]) for item in active_records} == {
         ("H1-TPEX-ATTENTION-OPENAPI", True),
         ("H1-TPEX-DISPOSITION-OPENAPI", True),

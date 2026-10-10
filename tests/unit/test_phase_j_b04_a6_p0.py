@@ -53,7 +53,7 @@ def test_clean_install_fails_closed_without_descriptor_or_execution():
 
 def test_active_qualified_exact_target_passes_identity_gate():
     result = run_preflight(lambda: _runtime())
-    assert result["disposition"] == "J_B04_A6_P0_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW"
+    assert result["disposition"] == "J_B04_A6_PRETRANSPORT_SECURITY_MASTER_OR_ROUTE_MISMATCH"
     assert result["identity_resolution"]["resolution_status"] == "resolved"
     assert result["identity_resolution"]["resolution_reason"] == "exact_listing_id"
     assert result["identity_resolution"]["target_binding"] == {
@@ -62,6 +62,8 @@ def test_active_qualified_exact_target_passes_identity_gate():
         "execution_eligibility": "allowed",
     }
     assert result["production_identity_verified"] is True
+    assert result["authorized_release_verified"] is False
+    assert result["h2_activation_verified"] is True
 
 
 def test_invalid_security_master_fails_closed():
@@ -107,10 +109,11 @@ def test_integrated_inventory_order_limits_and_safety_boundary():
     assert [item["stage"] for item in chain][0] == "canonical_identity"
     assert H3_EXECUTOR in repr(inventory)
     assert H2_EXECUTOR in repr(inventory)
-    assert inventory["activation_boundary"]["H2_runtime"] == "INACTIVE"
-    assert inventory["activation_boundary"]["selected_executor_id"] is None
+    assert inventory["activation_boundary"]["H2_runtime"] == "ACTIVE_FOR_BOUNDED_TWSE_ROUTE"
+    assert inventory["activation_boundary"]["selected_executor_id"] == H2_EXECUTOR
     assert inventory["future_bounded_live_contract"]["max_official_get_dispatches_per_session"] <= 10
-    assert inventory["future_bounded_live_contract"]["designed_not_authorized"] is True
+    assert inventory["future_bounded_live_contract"]["designed_not_authorized"] is False
+    assert inventory["future_bounded_live_contract"]["authorized_integrated_attempts"] == 2
     assert inventory["audit_v3"]["schema_change_required"] is False
     assert "actual HTTP dispatch counts" in inventory["audit_v3"]["gap"]
     assert len(inventory["handoff_coverage_matrix"]) == 9
@@ -138,7 +141,7 @@ def test_existing_integrated_h4_partial_guard_projects_through_result_audit_and_
     )
 
 
-def test_actual_cloud_preflight_cli_reports_not_initialized_and_zero_network():
+def test_actual_preflight_cli_verifies_active_release_and_zero_network():
     completed = subprocess.run(
         [sys.executable, "scripts/phase_j_b04_a6_integrated_acceptance.py", "--preflight"],
         cwd=ROOT, text=True, capture_output=True, check=True,
@@ -146,7 +149,10 @@ def test_actual_cloud_preflight_cli_reports_not_initialized_and_zero_network():
     import json
 
     result = json.loads(completed.stdout)
-    assert result["disposition"] == "J_B04_A6_P0_BLOCKED_SECURITY_MASTER_NOT_INITIALIZED"
+    assert result["disposition"] == "J_B04_A6_READY_FOR_BOUNDED_LIVE_ACCEPTANCE"
+    assert result["security_master_release_id"] == "security-master-20261010T112837Z"
+    assert result["production_identity_verified"] is True
+    assert result["h2_activation_verified"] is True
     assert result["network_counts"] == {
         "market_GET": 0, "market_HEAD": 0, "market_POST": 0, "Security_Master_live_acquisition": 0,
     }
