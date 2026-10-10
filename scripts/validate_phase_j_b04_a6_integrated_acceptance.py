@@ -4,18 +4,99 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-BASE = "67d1c703b20cd1e9925b7a9e794c96496c644fee"
+BASE = "8a56fcd3204fa852a7444363485bfc8af264e74c"
 MAIN = "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a"
 H2 = "phase_h_h2_twse_exright_pre_executor"
 H3 = "phase_h_h3_twse_recent_performance_executor"
+ALLOWED_SOURCES = {
+    "H3-TWSE-DEFAULT-BOUNDED": ("H3", "www.twse.com.tw", "/exchangeReport/STOCK_DAY"),
+    "H2-TWSE-EXRIGHT-PRE-OPENAPI": ("H2", "openapi.twse.com.tw", "/v1/exchangeReport/TWT48U_ALL"),
+}
+
+
+def validate_transport_events(events: list[dict], *, expected_dispatches: int | None = None) -> dict:
+    """Validate reservation/completion pairs, including frozen legacy completions.
+
+    Historical completions may omit ``method``; their paired reservation is the
+    only permitted source for that value. New completion events must preserve it.
+    """
+    reservations: dict[str, dict] = {}
+    completions: dict[str, dict] = {}
+    for event in events:
+        kind = event.get("event")
+        reservation_id = event.get("reservation_id")
+        if not isinstance(reservation_id, str) or not reservation_id:
+            raise AssertionError("transport_event_missing_reservation_id")
+        destination = reservations if kind == "reserved" else completions if kind == "completed" else None
+        if destination is None:
+            raise AssertionError("transport_event_kind_invalid")
+        if reservation_id in destination:
+            raise AssertionError("transport_event_duplicate")
+        destination[reservation_id] = event
+
+    if set(reservations) != set(completions):
+        raise AssertionError("transport_reservation_completion_pair_mismatch")
+    if expected_dispatches is not None and len(reservations) != expected_dispatches:
+        raise AssertionError("transport_dispatch_count_mismatch")
+
+    dispatch_numbers: set[int] = set()
+    for reservation_id, reserved in reservations.items():
+        completed = completions[reservation_id]
+        required = ("attempt", "operation", "source_id", "target", "operation_id",
+                    "dispatch_number", "url", "redirects", "retry_count", "timestamp")
+        if any(key not in reserved for key in required):
+            raise AssertionError("transport_reservation_schema_invalid")
+        if any(key not in completed for key in required if key != "timestamp"):
+            raise AssertionError("transport_completion_schema_invalid")
+        source_id = reserved["source_id"]
+        contract = ALLOWED_SOURCES.get(source_id)
+        if contract is None:
+            raise AssertionError("transport_source_not_allowed")
+        operation, host, path = contract
+        if reserved.get("method") != "GET" or completed.get("method", reserved["method"]) != reserved["method"]:
+            raise AssertionError("transport_method_pair_mismatch")
+        if (reserved["operation"] != operation or completed["operation"] != operation
+                or reserved["target"] != "TWSE:2330" or completed["target"] != "TWSE:2330"):
+            raise AssertionError("transport_operation_or_target_mismatch")
+        if reserved["attempt"] not in (1, 2) or completed["attempt"] != reserved["attempt"]:
+            raise AssertionError("transport_attempt_mismatch")
+        for key in ("source_id", "operation_id", "dispatch_number", "url"):
+            if completed.get(key) != reserved.get(key):
+                raise AssertionError(f"transport_pair_mismatch:{key}")
+        parsed = urlsplit(reserved["url"])
+        if parsed.scheme != "https" or parsed.hostname != host or parsed.path != path:
+            raise AssertionError("transport_url_not_allowed")
+        number = reserved["dispatch_number"]
+        if not isinstance(number, int) or number < 1 or number in dispatch_numbers:
+            raise AssertionError("transport_dispatch_number_invalid")
+        dispatch_numbers.add(number)
+        for event in (reserved, completed):
+            if (event.get("redirects") != 0 or event.get("retry_count") != 0
+                    or event.get("retries", 0) != 0):
+                raise AssertionError("transport_retry_or_redirect_forbidden")
+    if dispatch_numbers != set(range(1, len(dispatch_numbers) + 1)):
+        raise AssertionError("transport_dispatch_numbers_not_contiguous")
+    if len(reservations) > 8 or len(reservations) > 10:
+        raise AssertionError("transport_session_budget_exceeded")
+    per_attempt: dict[int, dict[str, int]] = {}
+    for item in reservations.values():
+        counts = per_attempt.setdefault(item["attempt"], {"total": 0, "H3": 0, "H2": 0})
+        counts["total"] += 1
+        counts[item["operation"]] += 1
+    if any(v["total"] > 4 or v["H3"] > 3 or v["H2"] > 1 for v in per_attempt.values()):
+        raise AssertionError("transport_attempt_budget_exceeded")
+    return {"reservations": len(reservations), "completions": len(completions),
+            "legacy_completions_without_method": sum("method" not in x for x in completions.values())}
 
 
 def strict(path: Path):
@@ -74,7 +155,7 @@ def validate() -> dict:
     assert preflight["network_counts"] == {"market_GET": 0, "market_HEAD": 0, "market_POST": 0, "Security_Master_live_acquisition": 0}
     assert subprocess.check_output(["git", "rev-parse", "origin/main"], cwd=ROOT, text=True).strip() == MAIN
 
-    session_root = Path("/tmp/j-b04-a6")
+    session_root = Path(os.environ.get("A6_SESSION_ROOT", "/tmp/j-b04-a6"))
     session_path = session_root / "session.json"
     if session_path.is_file():
         session = strict(session_path)
@@ -82,11 +163,8 @@ def validate() -> dict:
         assert session.get("network_enabled") is False
         ledger_path = session_root / "transport-ledger.jsonl"
         events = [json.loads(line) for line in ledger_path.read_text(encoding="utf-8").splitlines()] if ledger_path.exists() else []
-        reservations = [x for x in events if x.get("event") == "reserved"]
-        completions = [x for x in events if x.get("event") == "completed"]
-        assert len(reservations) == len(completions) == session["actual_dispatches"]
-        assert all(x["method"] == "GET" and x["redirects"] == x["retry_count"] == 0 for x in events)
-        assert all(x["source_id"] in {"H3-TWSE-DEFAULT-BOUNDED", "H2-TWSE-EXRIGHT-PRE-OPENAPI"} for x in reservations)
+        validate_transport_events(events, expected_dispatches=session["actual_dispatches"])
+        assert session.get("network_enabled") is False
         assert hashlib.sha256((session_root / "acceptance-result.json").read_bytes()).hexdigest() == session["terminal_output_sha256"]
     return {"status": "PASS", "H2_executor": H2, "H3_executor": H3,
             "authorized_release_verified": True, "production_identity_verified": True,

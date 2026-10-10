@@ -26,8 +26,9 @@ if str(ROOT) not in sys.path:
 
 TARGET = "TWSE:2330"
 STARTING_MAIN = "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a"
-AUTHORIZED_BASE = "67d1c703b20cd1e9925b7a9e794c96496c644fee"
-AUTHORIZED_TREE = "ecde5491e00c004f1316fd163fb6f5212f1c1803"
+AUTHORIZED_BASE = "8a56fcd3204fa852a7444363485bfc8af264e74c"
+AUTHORIZED_TREE = "c3e245b8a31a600e45c3552cd90a778baff6288e"
+OWNER_AUTHORIZATION_SHA256 = "a78b43ae8d251c96604820ac0e3f985eb5b92ea23d9020880ea0425cb8369252"
 H2_EXECUTOR = "phase_h_h2_twse_exright_pre_executor"
 H3_EXECUTOR = "phase_h_h3_twse_recent_performance_executor"
 IMPLEMENTATION_COMMIT_PREFIXES = ("feat(a6):", "fix(a6):", "test(a6):")
@@ -174,7 +175,7 @@ def architecture_inventory() -> dict[str, Any]:
         },
         "future_bounded_live_contract": {
             "designed_not_authorized": False,
-            "owner_authorization_sha256": "4e43340f45f2eec12f0eefd38b8b0a2f4cd2f074b8fcc06be2500648d77a3c74",
+            "owner_authorization_sha256": OWNER_AUTHORIZATION_SHA256,
             "authorized_integrated_attempts": 2,
             "target": TARGET,
             "sources": [
@@ -250,6 +251,18 @@ def _validate_implementation_history(git: Callable[..., str]) -> list[str]:
     if previous != git("rev-parse", "HEAD"):
         raise RuntimeError("A6_PRETRANSPORT_IMPLEMENTATION_HEAD_MISMATCH")
     return commits
+
+
+def _validate_fresh_session_repository(git: Callable[..., str], *, tracked_status: str) -> None:
+    """Reject stale A6 authority, tree drift, branch drift, and tracked edits."""
+    if git("branch", "--show-current") != "phase-j/j-b04-a5-bounded-live-source-acceptance":
+        raise RuntimeError("A6_PRETRANSPORT_REPOSITORY_AUTHORITY_DRIFT")
+    if git("rev-parse", "origin/main") != STARTING_MAIN:
+        raise RuntimeError("A6_PRETRANSPORT_REPOSITORY_AUTHORITY_DRIFT")
+    if git("rev-parse", f"{AUTHORIZED_BASE}^{{tree}}") != AUTHORIZED_TREE:
+        raise RuntimeError("A6_PRETRANSPORT_REPOSITORY_AUTHORITY_DRIFT")
+    if tracked_status:
+        raise RuntimeError("A6_PRETRANSPORT_REPOSITORY_AUTHORITY_DRIFT")
 
 
 def run_preflight(loader: Callable[[], Any] | None = None) -> dict[str, Any]:
@@ -405,7 +418,7 @@ def run_live_session() -> int:
         raise RuntimeError("A6_PRETRANSPORT_SESSION_ALREADY_EXISTS")
     authorization = json.loads(auth_path.read_text(encoding="utf-8"))
     auth_hash = hashlib.sha256(authorization["statement"].encode("utf-8")).hexdigest()
-    if (auth_hash != "4e43340f45f2eec12f0eefd38b8b0a2f4cd2f074b8fcc06be2500648d77a3c74"
+    if (auth_hash != OWNER_AUTHORIZATION_SHA256
             or authorization.get("authorized_head_sha") != AUTHORIZED_BASE
             or authorization.get("authorized_tree_sha") != AUTHORIZED_TREE
             or authorization.get("authorized_main_sha") != STARTING_MAIN
@@ -419,11 +432,8 @@ def run_live_session() -> int:
             or authorization.get("followed_redirects") != 0):
         raise RuntimeError("A6_PRETRANSPORT_AUTHORITY_MISMATCH")
     git = lambda *args: subprocess.run(["git", *args], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()
-    if (git("branch", "--show-current") != "phase-j/j-b04-a5-bounded-live-source-acceptance"
-            or git("rev-parse", "origin/main") != STARTING_MAIN
-            or git("rev-parse", f"{AUTHORIZED_BASE}^{{tree}}") != AUTHORIZED_TREE
-            or git("status", "--porcelain", "--untracked-files=no")):
-        raise RuntimeError("A6_PRETRANSPORT_REPOSITORY_AUTHORITY_DRIFT")
+    _validate_fresh_session_repository(
+        git, tracked_status=git("status", "--porcelain", "--untracked-files=no"))
     _validate_implementation_history(git)
     preflight = json.loads(subprocess.run(
         [sys.executable, str(Path(__file__).resolve()), "--preflight"], cwd=ROOT,

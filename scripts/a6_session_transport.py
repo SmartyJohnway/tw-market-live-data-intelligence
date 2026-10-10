@@ -98,7 +98,7 @@ def reserve_dispatch(*, method: str, url: str) -> dict | None:
                      "retry_count": 0, "timestamp": datetime.now(timezone.utc).isoformat()})
     return {"reservation_id": reservation_id, "attempt": attempt, "operation": operation,
             "source_id": source_id, "target": "TWSE:2330", "operation_id": operation_id,
-            "dispatch_number": number, "url": url}
+            "dispatch_number": number, "method": method, "url": url}
 
 
 def complete_dispatch(reservation: dict | None, *, status: int | None, final_url: str | None,
