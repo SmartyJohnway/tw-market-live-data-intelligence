@@ -65,7 +65,11 @@ def main() -> int:
     assert contract["request"]["paging_size"] == 1000
     assert contract["request"]["fixed_parameters"]["date"] == "ALL"
     assert contract["request"]["fixed_parameters"]["reason"] == "-1"
-    assert sha256(MANIFEST_PATH) == record["implementation"]["production_manifest_sha256"]
+    historical_manifest = subprocess.check_output(
+        ["git", "show", f"{record['implementation']['commit']}:{MANIFEST_PATH.relative_to(ROOT).as_posix()}"],
+        cwd=ROOT,
+    )
+    assert hashlib.sha256(historical_manifest).hexdigest() == record["implementation"]["production_manifest_sha256"]
 
     materializer = MATERIALIZER_PATH.read_text(encoding="utf-8")
     assert "BOOTSTRAP_TPEX_LIFECYCLE_DATA_CONTRACT_UNRESOLVED" in materializer

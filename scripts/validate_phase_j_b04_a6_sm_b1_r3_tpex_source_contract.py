@@ -31,7 +31,8 @@ def main():
     assert capture['sha256'] == CAPTURE_SHA256 and capture['byte_size'] == CAPTURE_SIZE
     if (ROOT/capture['path']).exists():
         verified_capture(ROOT/capture['path'])
-    manifest = json.loads((ROOT/'skills/tw-security-master-classifier/references/source-manifest.json').read_text())
+    manifest_path = 'skills/tw-security-master-classifier/references/source-manifest.json'
+    manifest = json.loads((ROOT/manifest_path).read_text())
     historical_source = record['manifest_correction']['after']
     assert historical_source['url'] == 'https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html'
     assert historical_source['format'] == 'client_rendered_shell'
@@ -46,8 +47,13 @@ def main():
     assert source['production_automatic_acquisition'] is True
     assert source['contract_state'] == 'qualified_data_contract'
     assert source['lifecycle_data_contract']['state'] == 'qualified'
-    other = dict(manifest)
-    other['lifecycle_sources'] = [s for s in manifest['lifecycle_sources'] if s['id'] != 'tpex_company_delisted']
+    # Verify R3's contemporaneous manifest snapshot from its implementation
+    # commit. Later R5 gates legitimately superseded the TWSE ETN contract too.
+    historical_manifest = json.loads(subprocess.check_output(
+        ['git', 'show', 'be90796a935fe786ee31f40084083adbb11d69a7:' + manifest_path], cwd=ROOT
+    ))
+    other = dict(historical_manifest)
+    other['lifecycle_sources'] = [s for s in historical_manifest['lifecycle_sources'] if s['id'] != 'tpex_company_delisted']
     assert hashlib.sha256(json.dumps(other,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest() == record['manifest_correction']['other_manifest_content_sha256']
     inv = record['structural_inventory']
     assert (inv['table_element_count'], inv['form_count'], inv['script_element_count'], inv['inline_script_count']) == (0, 3, 14, 2)

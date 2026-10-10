@@ -34,6 +34,9 @@ def test_bootstrap_inventory_is_the_five_materializer_probes_and_manifest_hosts(
         "twse_etn_expired": "GET",
     }
     assert next(item for item in inventory if item["source_id"] == "tpex_delisted")["initial_url"] == "https://www.tpex.org.tw/www/zh-tw/company/deListed"
+    etn = next(item for item in inventory if item["source_id"] == "twse_etn_expired")
+    assert etn["initial_url"] == "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json"
+    assert etn["parser"] == "parse_twse_etn_expired_json"
     assert all(item["timeout_seconds"] == 20 for item in inventory)
     assert all(item["response_size_bound_bytes"] == 20 * 1024 * 1024 for item in inventory)
     assert all(item["source_contract_identifier"] is None for item in inventory)

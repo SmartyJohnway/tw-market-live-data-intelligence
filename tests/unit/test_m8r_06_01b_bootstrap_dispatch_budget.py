@@ -370,7 +370,9 @@ def test_non_redirect_http_errors_keep_ordinary_classification(monkeypatch, stat
 
 
 def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None,
-                           tpex_drift=False, identity_transport_failure=False):
+                           tpex_drift=False, identity_transport_failure=False,
+                           etn_transport_failure=None, etn_drift=False,
+                           etn_content_type="application/json"):
     spec = importlib.util.spec_from_file_location(
         "a6_sm_b1_r2_materializer",
         ROOT / "scripts/m8r_06_01b_materialize_production_inputs.py",
@@ -387,9 +389,11 @@ def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None
     qualification_calls = []
     export_calls = []
     parser_calls = []
+    probe_call_details = []
 
     def fake_probe(url, _allowed_hosts, *, save_raw=None, dispatch_budget=None, method="GET", body=None, content_type=None, **_kwargs):
         dispatch_budget.reserve_before_dispatch()
+        probe_call_details.append({"url": url, "method": method, "body": body, "save_raw": save_raw})
         save_raw.parent.mkdir(parents=True, exist_ok=True)
         save_raw.write_bytes(b"sanitized test capture")
         if "strMode=2" in url:
@@ -421,6 +425,14 @@ def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None
                 "request_body": body,
                 "request_content_type": content_type,
             }
+        if source_id == "twse_etn_expired" and etn_transport_failure:
+            return {
+                "acquisition_status": etn_transport_failure,
+                "transport_success": False,
+                "transport_error_code": "TEST_ETN_TRANSPORT_FAILURE",
+                "dispatch_reservations": 1,
+                "request_method": method,
+            }
         if source_id == "tpex_delisted":
             save_raw.parent.mkdir(parents=True, exist_ok=True)
             save_raw.write_bytes(b"sanitized test capture")
@@ -429,7 +441,7 @@ def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None
             "transport_success": True,
             "http_status": 200,
             "byte_count": 24,
-            "content_type": "application/json" if method == "POST" else "text/html",
+            "content_type": (etn_content_type if source_id == "twse_etn_expired" else "application/json") if method == "POST" or source_id == "twse_etn_expired" else "text/html",
             "dispatch_reservations": 1,
             "source_id": source_id,
         }
@@ -464,6 +476,13 @@ def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None
 
     monkeypatch.setattr(module, "parse_tpex_delisted", parse_tpex)
     monkeypatch.setattr(module, "parse_etn", lambda *_args: parser_calls.append("twse_etn_expired") or [])
+    def parse_etn_json(*_args):
+        parser_calls.append("twse_etn_expired_json")
+        if etn_drift:
+            raise module.LifecycleSchemaDrift("twse_etn_json_fields_drift", {"observed": ["unexpected"]})
+        return []
+
+    monkeypatch.setattr(module, "parse_twse_expired_json", parse_etn_json)
     monkeypatch.setattr(
         module,
         "_write_failure_report",
@@ -482,6 +501,7 @@ def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None
         lambda **_kwargs: export_calls.append(True),
     )
 
+    module._test_probe_call_details = probe_call_details
     return module, calls, report, qualification_calls, export_calls, parser_calls
 
 
@@ -555,6 +575,76 @@ def test_identity_source_transport_failure_remains_source_generic(monkeypatch, t
         source.get("bootstrap_failure_code") != "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
         for source in report["sources"]
     )
+
+
+def test_twse_etn_transport_failure_stops_before_phase_e_and_export(monkeypatch, tmp_path, capsys):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, etn_transport_failure="http_error"
+    )
+    assert module.main() == 1
+    assert calls == [
+        "twse_isin_mode2_zh", "twse_isin_mode4_zh", "twse_delisted",
+        "tpex_delisted", "twse_etn_expired",
+    ]
+    result = report["sources"][-1]
+    assert result["source_id"] == "twse_etn_expired"
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE"
+    assert report["decision"] == "BLOCKED_BY_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE"
+    assert report["reason"] == "BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE"
+    assert parser_calls == ["twse_delisted", "tpex_delisted"]
+    assert qualification_calls == []
+    assert export_calls == []
+    etn_request = module._test_probe_call_details[-1]
+    assert etn_request["url"] == "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json"
+    assert etn_request["method"] == "GET"
+    assert etn_request["body"] is None
+    assert etn_request["save_raw"].suffix == ".json"
+    assert "HARD STOP: BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE" in capsys.readouterr().out
+
+
+def test_twse_etn_production_route_uses_one_direct_get_and_json_adapter(monkeypatch, tmp_path):
+    module, calls, report, _qualification_calls, _export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path
+    )
+    assert module.main() == 1  # deterministic fixture has no production-qualified identity
+    assert calls[-1] == "twse_etn_expired"
+    etn_request = module._test_probe_call_details[-1]
+    assert etn_request["url"] == "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json"
+    assert etn_request["method"] == "GET"
+    assert etn_request["body"] is None
+    assert etn_request["save_raw"].suffix == ".json"
+    assert "twse_etn_expired_json" in parser_calls
+
+
+def test_twse_etn_schema_drift_is_distinct_and_blocks_phase_e_export(monkeypatch, tmp_path):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, etn_drift=True
+    )
+    assert module.main() == 1
+    assert calls[-1] == "twse_etn_expired"
+    result = report["sources"][-1]
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert result["lifecycle_schema_drift"]["issue_code"] == "twse_etn_json_fields_drift"
+    assert result["lifecycle_schema_drift"]["source_id"] == "twse_etn_expired"
+    assert report["decision"] == "BLOCKED_BY_LIFECYCLE_SCHEMA_DRIFT"
+    assert report["reason"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert parser_calls[-1] == "twse_etn_expired_json"
+    assert qualification_calls == []
+    assert export_calls == []
+
+
+def test_twse_etn_wrong_content_type_is_schema_drift_before_parser(monkeypatch, tmp_path):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, etn_content_type="text/html"
+    )
+    assert module.main() == 1
+    result = report["sources"][-1]
+    assert calls[-1] == "twse_etn_expired"
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert result["lifecycle_schema_drift"]["issue_code"] == "twse_etn_api_content_type_drift"
+    assert "twse_etn_expired_json" not in parser_calls
+    assert qualification_calls == []
+    assert export_calls == []
 
 
 def test_lifecycle_drift_detail_retains_shape_without_source_header_text():

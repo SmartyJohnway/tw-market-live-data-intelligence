@@ -53,11 +53,11 @@ EXPECTED_LOGICAL_PROBES = [
     },
     {
         "source_id": "twse_etn_expired",
-        "initial_url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+        "initial_url": "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json",
         "allowed_host": "www.twse.com.tw",
         "source_contract_identifier": None,
-        "parser": "parse_etn_twse",
-        "qualification_role": "TWSE ETN maturity/lifecycle evidence",
+        "parser": "parse_twse_etn_expired_json",
+        "qualification_role": "TWSE expired ETN lifecycle evidence",
     },
 ]
 

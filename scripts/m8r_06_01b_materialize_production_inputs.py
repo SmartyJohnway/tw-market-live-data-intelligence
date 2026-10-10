@@ -37,7 +37,7 @@ from common import canonical_hash, file_sha256, normalize_text  # noqa: E402
 from isin_parser import parse_html  # noqa: E402
 from lifecycle_common import LifecycleSchemaDrift  # noqa: E402
 from merge_lifecycle_events import merge as merge_lifecycle  # noqa: E402
-from parse_etn_termination import parse as parse_etn  # noqa: E402
+from parse_etn_termination import parse as parse_etn, parse_twse_expired_json  # noqa: E402
 from parse_tpex_delisted import parse as parse_tpex_delisted  # noqa: E402
 from parse_twse_delisted import parse as parse_twse_delisted  # noqa: E402
 from probe_sources import (  # noqa: E402
@@ -79,7 +79,7 @@ BUNDLE_BASE = ROOT / "data" / "security_master" / "input_bundles"
 TWSE_ISIN_ZH = "https://isin.twse.com.tw/isin/C_public.jsp?strMode={mode}"
 TWSE_DELISTED_URL = "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html"
 TPEX_DELISTED_URL = "https://www.tpex.org.tw/www/zh-tw/company/deListed"
-TWSE_ETN_EXPIRED_URL = "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html"
+TWSE_ETN_EXPIRED_URL = "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json"
 
 # Bounded scope: modes 2 (TWSE listed) and 4 (TPEX listed)
 IDENTITY_MODES = [2, 4]
@@ -94,6 +94,8 @@ BOOTSTRAP_TERMINAL_TRANSPORT_CODES = {
 }
 BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT = "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
 BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE = "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE = "BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE"
+BOOTSTRAP_TWSE_ETN_LIFECYCLE_PARSER_FAILURE = "BOOTSTRAP_TWSE_ETN_LIFECYCLE_PARSER_FAILURE"
 
 # Qualification taxonomy
 QUAL_PRODUCTION = "QUALIFIED_PRODUCTION_INPUT"
@@ -244,7 +246,7 @@ def main() -> int:
     lifecycle_sources = [
         ("twse_delisted", TWSE_DELISTED_URL, "parse_twse_delisted"),
         ("tpex_delisted", TPEX_DELISTED_URL, "parse_tpex_delisted"),
-        ("twse_etn_expired", TWSE_ETN_EXPIRED_URL, "parse_etn_twse"),
+        ("twse_etn_expired", TWSE_ETN_EXPIRED_URL, "parse_twse_etn_expired_json"),
     ]
     expected_probe_ids = [
         "twse_isin_mode2_zh",
@@ -384,7 +386,9 @@ def main() -> int:
             except ValueError:
                 raise ValueError(f"SOURCE_CONTRACT_UNRESOLVED for {source_id or url}")
         is_tpex_api = source_id == "tpex_delisted"
-        raw_path = bundle_dir / "raw_payloads" / f"{source_id}.{'json' if is_tpex_api else 'html'}"
+        is_twse_etn_api = source_id == "twse_etn_expired"
+        is_json_api = is_tpex_api or is_twse_etn_api
+        raw_path = bundle_dir / "raw_payloads" / f"{source_id}.{'json' if is_json_api else 'html'}"
         request_options: dict[str, Any] = {}
         if is_tpex_api:
             url, request_body, request_content_type = _tpex_delisted_request(manifest)
@@ -425,6 +429,16 @@ def main() -> int:
                 )
                 log(f"    ✗ HARD STOP: {BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE}")
                 return 1
+            if is_twse_etn_api:
+                probe_result["bootstrap_failure_code"] = BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE
+                probe_result["failure_reason"] = "qualified TWSE expired-ETN JSON request did not produce a valid response"
+                _write_failure_report(
+                    bundle_dir, generated_at, effective_date, bundle_id, source_probes,
+                    "BLOCKED_BY_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE",
+                    BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE,
+                )
+                log(f"    ✗ HARD STOP: {BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE}")
+                return 1
             continue
 
         log(f"    HTTP {probe_result.get('http_status')}, {probe_result.get('byte_count', 0)} bytes")
@@ -457,6 +471,24 @@ def main() -> int:
             )
             return 1
 
+        if is_twse_etn_api and probe_result.get("content_type") != "application/json":
+            exc = LifecycleSchemaDrift("twse_etn_api_content_type_drift")
+            probe_result["probe_status"] = "schema_drift"
+            probe_result["acquisition_status"] = "schema_drift"
+            probe_result["bootstrap_failure_code"] = BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT
+            probe_result["failure_reason"] = "qualification-invalidating lifecycle parser contract drift"
+            probe_result["lifecycle_schema_drift"] = {
+                "source_id": source_id, "parser": parser_name, "issue_code": exc.issue_code,
+                "sanitized_detail": {}, "dispatch_reservations_used": dispatch_budget.used_dispatches,
+                "probe_dispatch_reservations": probe_result.get("dispatch_reservations", 0),
+            }
+            probe_failures.append(probe_result)
+            _write_failure_report(
+                bundle_dir, generated_at, effective_date, bundle_id, source_probes,
+                "BLOCKED_BY_LIFECYCLE_SCHEMA_DRIFT", BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT,
+            )
+            return 1
+
         try:
             if parser_name == "parse_twse_delisted":
                 events = parse_twse_delisted(data, url)
@@ -464,6 +496,8 @@ def main() -> int:
                 events = parse_tpex_delisted(data, url)
             elif parser_name == "parse_etn_twse":
                 events = parse_etn(data, url, "twse")
+            elif parser_name == "parse_twse_etn_expired_json":
+                events = parse_twse_expired_json(data, url)
             else:
                 events = []
 
@@ -512,6 +546,14 @@ def main() -> int:
                     source_probes,
                     "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE",
                     BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE,
+                )
+                return 1
+            if is_twse_etn_api:
+                probe_result["bootstrap_failure_code"] = BOOTSTRAP_TWSE_ETN_LIFECYCLE_PARSER_FAILURE
+                _write_failure_report(
+                    bundle_dir, generated_at, effective_date, bundle_id, source_probes,
+                    "BLOCKED_BY_TWSE_ETN_LIFECYCLE_PARSER_FAILURE",
+                    BOOTSTRAP_TWSE_ETN_LIFECYCLE_PARSER_FAILURE,
                 )
                 return 1
 

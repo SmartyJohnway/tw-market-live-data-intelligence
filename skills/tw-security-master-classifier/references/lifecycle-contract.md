@@ -82,7 +82,7 @@ Use three-state values:
 | TWSE company delisting | TWSE terminated-listing table |
 | TPEx company delisting | Official TPEx structured `company/deListed` JSON endpoint; POST `date=ALL`, single-response count reconciliation, ROC date parser |
 | Emerging termination/transfer | TPEx market announcement |
-| ETN expiry/termination | TWSE or TPEx ETN termination table |
+| ETN expiry/termination | TWSE qualified single-response expired-ETN JSON; TPEx governed ETN lifecycle source |
 | ETF termination | Exchange announcement and ETF information center |
 | Warrant scheduled maturity | Warrant basic-data endpoint |
 | Warrant early termination | Exchange/MOPS announcement and attachment |
@@ -152,6 +152,8 @@ parse_etn_termination.py
 ```
 
 `parse_tpex_announcement.py` requires an explicit controlled event type; it does not guess an event solely from prose. `parse_etn_termination.py` emits separate delisting, maturity, and last-trading events when those dates are present. Use `merge_lifecycle_events.py` for append-only deduplication.
+
+TWSE expired-ETN production acquisition uses the page-configured `GET /rwd/zh/ETN/expireEnd?response=json` contract, not the client-loaded landing shell. The landing has no filters, on-load arguments, or paging attributes; one successful response supplies the complete data array offered by that page at acquisition time. `parse_twse_expired_json` validates the exact JSON root and field order, five-string rows, Gregorian termination date, required identity, and duplicate lifecycle identity. It emits only the termination/delisting event represented by the source's explicit `終止上市日期`; it does not infer separate maturity or last-trading dates from free-text reasons.
 
 Active retrieval and interpretation of linked PDFs or announcement attachments remain adapter/manual-review work. Until a capture is successfully parsed, describe the capability as validating or modeling supplied lifecycle evidence, not guaranteed automatic enrichment.
 

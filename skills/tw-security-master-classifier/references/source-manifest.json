@@ -274,10 +274,50 @@
     },
     {
       "id": "twse_etn_expired",
-      "url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
-      "format": "html_table",
-      "events": ["etn_matured", "last_trading", "twse_delisted"],
-      "verification": "payload_verified"
+      "url": "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json",
+      "format": "json",
+      "events": ["twse_delisted"],
+      "verification": "live_page_config_and_single_response_coverage_qualified_2026-10-10",
+      "contract_state": "qualified_data_contract",
+      "production_automatic_acquisition": true,
+      "landing_page_contract": {
+        "url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+        "role": "discovery_and_provenance_surface",
+        "form_id": "form",
+        "data_api": "/ETN/expireEnd",
+        "form_controls": [],
+        "onload_arguments": {},
+        "filters": [],
+        "paging": "unpaged; no data-paging or data-server-side attributes",
+        "capture_sha256": "265d3eeb30e292795ad9a089f6e34f10c6c5b781b756c9766f796717b97cb8d9",
+        "capture_byte_size": 11284
+      },
+      "lifecycle_data_contract": {
+        "endpoint": "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json",
+        "method": "GET",
+        "request_parameters": {"response": "json"},
+        "response_representation": "application/json",
+        "root_keys": ["stat", "title", "data", "fields"],
+        "success_stat": "ok",
+        "title": "到期或終止上市資訊",
+        "fields": ["終止上市日期", "證券代號", "證券簡稱", "發行證券商", "終止上市理由"],
+        "row_representation": "five-string array aligned exactly to fields order",
+        "date_semantics": "strict Gregorian YYYY/MM/DD; normalize to YYYY-MM-DD",
+        "event_semantics": "emit the official termination/delisting date as twse_delisted; no separate maturity_date or last_trading_date field is provided, and no such dates are inferred from reason text",
+        "coverage": "one unfiltered, unpaged response; all data rows in that response are the complete dataset offered by this page at acquisition time",
+        "coverage_evidence": "fresh landing has no report filters, hidden defaults, onload arguments, data-paging, or data-server-side attributes; first-party page runtime issues one JSON GET and renders the response data array",
+        "pagination": "none; client renders the complete returned data array without subsequent page or offset requests",
+        "empty_result": "accepted only when stat/title/root/fields contract is exact and data is an empty array",
+        "failure_semantics": "non-ok stat, malformed JSON, wrong root/fields/order/title, row-width/type/date/identity drift raises LifecycleSchemaDrift; transport failure hard-stops bootstrap before Phase E or export",
+        "production_dispatches": 1,
+        "total_count_field": "not provided; completeness is based on the one unfiltered unpaged response array"
+      },
+      "payload_contract": {
+        "expected_json_type": "object",
+        "required_fields_any": ["stat", "fields", "data"],
+        "minimum_record_count": 0,
+        "error_signatures": []
+      }
     },
     {
       "id": "tpex_etn_expired",
