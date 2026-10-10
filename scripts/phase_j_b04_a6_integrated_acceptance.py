@@ -30,6 +30,7 @@ AUTHORIZED_BASE = "67d1c703b20cd1e9925b7a9e794c96496c644fee"
 AUTHORIZED_TREE = "ecde5491e00c004f1316fd163fb6f5212f1c1803"
 H2_EXECUTOR = "phase_h_h2_twse_exright_pre_executor"
 H3_EXECUTOR = "phase_h_h3_twse_recent_performance_executor"
+IMPLEMENTATION_COMMIT_PREFIXES = ("feat(a6):", "fix(a6):", "test(a6):")
 EXPECTED_RELEASE_ID = "security-master-20261010T112837Z"
 EXPECTED_MANIFEST_SHA256 = "e23d5a60053aec9733764adc49908b3a238d2108cd70ac6e3965d99a1e2a26bc"
 EXPECTED_INDEX_SHA256 = "3ac2b751ef96b7b488bbcba9c0e67980fdf13c7f22b33c41fb346fd6a6ceaae7"
@@ -232,6 +233,25 @@ def _identity_from_runtime(runtime: Any) -> dict[str, Any]:
     }
 
 
+def _validate_implementation_history(git: Callable[..., str]) -> list[str]:
+    """Accept only a linear A6 implementation chain rooted at authorized HEAD."""
+    commits = git("rev-list", "--first-parent", "--reverse", f"{AUTHORIZED_BASE}..HEAD").splitlines()
+    if not commits:
+        raise RuntimeError("A6_PRETRANSPORT_IMPLEMENTATION_COMMIT_MISSING")
+    previous = AUTHORIZED_BASE
+    for commit in commits:
+        parents = git("rev-list", "--parents", "-n", "1", commit).split()
+        subject = git("show", "-s", "--format=%s", commit)
+        if len(parents) != 2 or parents[0] != commit or parents[1] != previous:
+            raise RuntimeError("A6_PRETRANSPORT_IMPLEMENTATION_HISTORY_NOT_LINEAR")
+        if not subject.startswith(IMPLEMENTATION_COMMIT_PREFIXES):
+            raise RuntimeError("A6_PRETRANSPORT_UNRELATED_COMMIT_AFTER_BASELINE")
+        previous = commit
+    if previous != git("rev-parse", "HEAD"):
+        raise RuntimeError("A6_PRETRANSPORT_IMPLEMENTATION_HEAD_MISMATCH")
+    return commits
+
+
 def run_preflight(loader: Callable[[], Any] | None = None) -> dict[str, Any]:
     """Check actual production identity authority; injectable only for tests."""
     if loader is None:
@@ -402,9 +422,9 @@ def run_live_session() -> int:
     if (git("branch", "--show-current") != "phase-j/j-b04-a5-bounded-live-source-acceptance"
             or git("rev-parse", "origin/main") != STARTING_MAIN
             or git("rev-parse", f"{AUTHORIZED_BASE}^{{tree}}") != AUTHORIZED_TREE
-            or git("rev-parse", "HEAD^") != AUTHORIZED_BASE
             or git("status", "--porcelain", "--untracked-files=no")):
         raise RuntimeError("A6_PRETRANSPORT_REPOSITORY_AUTHORITY_DRIFT")
+    _validate_implementation_history(git)
     preflight = json.loads(subprocess.run(
         [sys.executable, str(Path(__file__).resolve()), "--preflight"], cwd=ROOT,
         check=True, capture_output=True, text=True,

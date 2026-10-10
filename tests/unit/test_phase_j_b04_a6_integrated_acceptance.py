@@ -6,7 +6,14 @@ from pathlib import Path
 import pytest
 
 from scripts.a6_session_transport import attempt_2_eligible, complete_dispatch, operation_context, reserve_dispatch
-from scripts.phase_j_b04_a6_integrated_acceptance import H2_EXECUTOR, H3_EXECUTOR, ROOT, architecture_inventory
+from scripts.phase_j_b04_a6_integrated_acceptance import (
+    AUTHORIZED_BASE,
+    H2_EXECUTOR,
+    H3_EXECUTOR,
+    ROOT,
+    _validate_implementation_history,
+    architecture_inventory,
+)
 
 
 def _session(root: Path, *, count: int = 0) -> None:
@@ -31,6 +38,23 @@ def test_canonical_activation_is_only_bounded_twse_h2_and_h3_route_remains_selec
     assert [x["source_id"] for x in active_h2] == ["H2-TWSE-EXRIGHT-PRE-OPENAPI"]
     assert all(not x["runtime_executable"] for x in routing["phase_h_source_authority"]["records"] if x["source_id"].startswith("H2-") and x["source_id"] != "H2-TWSE-EXRIGHT-PRE-OPENAPI")
     assert len(__import__("server.unified_mcp.tool_contracts", fromlist=["build_tool_specs"]).build_tool_specs()) == 6
+
+
+def test_implementation_history_accepts_only_linear_a6_commits_from_authorized_base():
+    head = "a6-implementation-2"
+    responses = {
+        ("rev-list", "--first-parent", "--reverse", f"{AUTHORIZED_BASE}..HEAD"): "a6-implementation-1\na6-implementation-2",
+        ("rev-list", "--parents", "-n", "1", "a6-implementation-1"): f"a6-implementation-1 {AUTHORIZED_BASE}",
+        ("show", "-s", "--format=%s", "a6-implementation-1"): "feat(a6): activate bounded H2",
+        ("rev-list", "--parents", "-n", "1", "a6-implementation-2"): "a6-implementation-2 a6-implementation-1",
+        ("show", "-s", "--format=%s", "a6-implementation-2"): "fix(a6): preserve historical checks",
+        ("rev-parse", "HEAD"): head,
+    }
+    assert _validate_implementation_history(lambda *args: responses[args]) == ["a6-implementation-1", "a6-implementation-2"]
+
+    responses[("show", "-s", "--format=%s", "a6-implementation-2")] = "docs: unrelated change"
+    with pytest.raises(RuntimeError, match="UNRELATED_COMMIT"):
+        _validate_implementation_history(lambda *args: responses[args])
 
 
 def test_a6_dispatch_reserves_before_transport_and_caps_each_operation(tmp_path: Path, monkeypatch):
