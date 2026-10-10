@@ -19,3 +19,5 @@ The five logical probes and shared limits remain unchanged: at most one followed
 ## State
 
 Security Master remains `NOT_INITIALIZED`; `active.json` is absent and production identity remains unverified. Bootstrap retry is not authorized. H2 remains inactive and unselected with `plan_only` routing; J-B04 remains blocking, Phase J not started, and MCP count remains six. Market GET/HEAD/POST and Security Master live acquisition during R2 are `0/0/0` and `0`.
+
+Default-CI was compared from clean archives of base `039b421e4d53be770f2a37124d01d4a16d31f452` and implementation commit `26f0079b79e098a783cadffed39b388ac49fb757`, using the same CPython 3.12.14 environment, command, UTC timezone, and `PYTHONHASHSEED=0`. Both runs collected 1,288, selected 1,283, passed 1,234, failed 45, skipped 4, and deselected 5. The 45 failed node IDs match exactly; new failure delta is zero. The profile reported `network_may_have_occurred=false`.

@@ -99,6 +99,15 @@ def main() -> int:
     assert not (ROOT / "data/security_master/active.json").exists()
     assert record["bootstrap_retry"] == "NOT_AUTHORIZED"
     assert record["bootstrap_executed_in_r2"] is False
+    ci = record["validation"]["default_ci_comparison"]
+    assert ci["base"] == "039b421e4d53be770f2a37124d01d4a16d31f452"
+    assert ci["candidate_implementation_commit"] == record["implementation_head"]
+    assert ci["new_failure_delta"] == 0
+    assert ci["new_failure_node_ids"] == []
+    assert ci["resolved_failure_node_ids"] == []
+    assert ci["shared_failure_count"] == 45
+    assert ci["base_counts"] == ci["candidate_counts"]
+    assert ci["network_may_have_occurred"] is False
     assert record["canonical_runtime_state"] == {
         "H2": "INACTIVE",
         "selected_executor": None,
