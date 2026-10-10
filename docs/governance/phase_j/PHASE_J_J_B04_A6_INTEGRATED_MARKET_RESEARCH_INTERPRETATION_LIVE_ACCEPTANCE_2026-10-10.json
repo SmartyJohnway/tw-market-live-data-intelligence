@@ -1,0 +1,243 @@
+{
+  "audit_v3": {
+    "audit_package_id": "umeap-v3-32e566b1c5e2334cc279",
+    "execution_receipt_id": "umerec-v1-175a3c6fbbb742382d4d",
+    "file_sha256": "b4378b09b1967a8d2f74f19e85b8232c6dd8f0ccebfecf14341f2030b20db5c7",
+    "result_hash": "19f106a6d5bfba8b47d88de5f2e6b5e8fc6e50fe1b5eae5c805286f46de83d76",
+    "result_id": "umeresult-v3-619638664cd71a4056e6",
+    "schema_valid": true
+  },
+  "authority": {
+    "authorized_origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "authorized_start_head": "67d1c703b20cd1e9925b7a9e794c96496c644fee",
+    "authorized_start_tree": "ecde5491e00c004f1316fd163fb6f5212f1c1803",
+    "historical_baseline_ancestry_validated": true,
+    "implementation_commits": [
+      "79dcb1a7b7ad667663bb1dd10112822217337a04",
+      "c51fe1c7f700f47d3f05c58fdc5be6c1dfb56a1b",
+      "5991f7ed68a3bd18e63f9a61e0a665e5a00804b8"
+    ],
+    "implementation_head": "5991f7ed68a3bd18e63f9a61e0a665e5a00804b8",
+    "implementation_tree": "d333c75898c86586535ff209a47fd3d60a589507",
+    "owner_authorization_sha256": "4e43340f45f2eec12f0eefd38b8b0a2f4cd2f074b8fcc06be2500648d77a3c74",
+    "tracked_worktree_clean_before_live": true
+  },
+  "final_state": {
+    "a6_integrated_execution": 1,
+    "a6_pass": false,
+    "bootstrap_or_security_master_acquisition": 0,
+    "h2": "ACTIVE_FOR_BOUNDED_TWSE_ROUTE",
+    "h2_live_calls": 0,
+    "h3_live_calls": 1,
+    "j_b04": "BLOCKING_PENDING_EXACT_HEAD_CLOSURE_REVIEW",
+    "mcp": 6,
+    "merge_authorized": false,
+    "phase_j": "NOT_STARTED",
+    "pr_base_state": "open_draft_unmerged",
+    "production_identity": "VERIFIED",
+    "security_master": "ACTIVE",
+    "selected_executor": "phase_h_h2_twse_exright_pre_executor",
+    "trading_order_broker_behavior": 0
+  },
+  "gate": "J-B04-A6",
+  "h2": {
+    "dependency_status": "blocked_h3_dependency_unusable",
+    "evidence_artifact_hash": null,
+    "executor": "phase_h_h2_twse_exright_pre_executor",
+    "get_dispatches": 0,
+    "operation_id": "umeop-op-v1-45c3540d62483fa75833",
+    "source_id": "H2-TWSE-EXRIGHT-PRE-OPENAPI",
+    "source_request_attempted": false
+  },
+  "h3": {
+    "artifact_path": "artifacts/m8r_06_03_workbench/umea-v1-bb05e56d22c264938616/evidence/phase_h/h3/umeop-op-v1-287f8a8b66d14d4ba53e.json",
+    "artifact_sha256": "b956a316ef85b89be2e7c3d8b67e2c6a24fcfc5bfabaa5c3423eba77b3183508",
+    "baseline_window": null,
+    "comparison_window": null,
+    "content_type": "text/html;charset=utf-8",
+    "coverage_status": "source_failed",
+    "executor": "phase_h_h3_twse_recent_performance_executor",
+    "failure_code": "invalid_close",
+    "governance_artifact_sha256": "a2da078a9b46300a5d45d0ced58135e2d90e749646074f561de6d9e354f23096",
+    "http_status": 200,
+    "lookback_trading_days": 20,
+    "method": "GET",
+    "numeric_close_observation_count": 0,
+    "operation_id": "umeop-op-v1-287f8a8b66d14d4ba53e",
+    "request_count": 1,
+    "requested_months": [
+      "2026-10"
+    ],
+    "requested_url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20261001&stockNo=2330",
+    "response_byte_count": 7529,
+    "response_sha256": "9bf1dc0caf51a596f422e4194058616a744db5dbe85c0475d1085ec19cb63f60",
+    "source_contract_id": "TWSE_STOCK_DAY_HTML_MONTHLY_V1",
+    "source_id": "H3-TWSE-DEFAULT-BOUNDED",
+    "target": "TWSE:2330",
+    "transport_summary_path": "artifacts/m8r_06_03_workbench/umea-v1-bb05e56d22c264938616/h3-live-transport-summary.json",
+    "transport_summary_sha256": "5d8a15497b84e9fad4f6b8160b34da507edecee82e5bb5212ed47925da4de446",
+    "valid_observation_count": 0
+  },
+  "h4": {
+    "artifact_hash": null,
+    "derived": false,
+    "ordinary_return_interpretation": "BLOCKED",
+    "reason": "H3 dependency was unusable; H2 source request was not attempted and no H4 clearance was derived."
+  },
+  "handoff": {
+    "additional_market_execution_from_read_export_workbench": 0,
+    "handoff_markdown_sha256": "392830a66b926d4dff2209170fd9c0d7234f9d9d8e7a6920eda626291eccb818",
+    "local_service": "FAILED_RESULT_SURFACE_VALID",
+    "market_export_ai_handoff": "REUSED_STORED_RESULT",
+    "market_fetch_evidence_calls": 1,
+    "market_read_result": "REUSED_STORED_RESULT",
+    "mcp_tool_count": 6,
+    "ordinary_return_guard_visible": true,
+    "recommendation_language": "NOT_PRESENT",
+    "workbench": "FAILED_RESULT_SURFACE_VALID"
+  },
+  "live_session": {
+    "attempt_2_eligibility": "NOT_ELIGIBLE_SOURCE_DATA_SCHEMA_FAILURE_IS_TERMINAL",
+    "attempt_2_used": false,
+    "attempt_count": 1,
+    "attempt_started_at": "2026-10-10T12:41:28.260195+00:00",
+    "authorization_hash": "bb05e56d22c26493861662c63698006306c6522a40adb260aee050b6a5fb203b",
+    "authorization_id": "umea-v1-bb05e56d22c264938616",
+    "claim_id": "umecl-v1-46dcfda4f6621f806f3d",
+    "control_package_id": "umea-v1-bb05e56d22c264938616",
+    "network_enabled_after_run": false,
+    "network_frozen_at": "2026-10-10T12:41:41.815851+00:00",
+    "receipt_hash": "175a3c6fbbb742382d4dccf30a0cd38650923532e43bf200ffd672059776ac29",
+    "receipt_id": "umerec-v1-175a3c6fbbb742382d4d",
+    "session_root": "/tmp/j-b04-a6",
+    "terminal_output_sha256": "783d37d660e3b89b1f43ab3393fc43cbb9095c9ecb0269d00a62916f97077b4c"
+  },
+  "pretransport": {
+    "disposition": "J_B04_A6_READY_FOR_BOUNDED_LIVE_ACCEPTANCE",
+    "market_get_head_post": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "preflight_sha256": "2f853865cf20ea24eed8fbfda5ed69ced8f174ebbe97b871c23eb84e81d5f9de",
+    "production_identity_verified": true,
+    "security_master_acquisition": 0,
+    "security_master_release_verified": true
+  },
+  "raw_payload_policy": {
+    "raw_source_response_body_committed": false,
+    "raw_source_response_body_path": null,
+    "transport_summary_and_normalized_evidence_installation_local": true
+  },
+  "result_v3": {
+    "file_sha256": "c55abbedb326ad8f87580ff450d671cab3215eac50982e79a111b560d3098fdb",
+    "result_hash": "19f106a6d5bfba8b47d88de5f2e6b5e8fc6e50fe1b5eae5c805286f46de83d76",
+    "result_id": "umeresult-v3-619638664cd71a4056e6",
+    "schema_valid": true,
+    "status": "failed",
+    "target": "TWSE:2330"
+  },
+  "schema_version": "j_b04_a6_integrated_live_acceptance.v1",
+  "security_master": {
+    "active_selector_sha256": "25b24e55b188fc2fa08efbe227d98c5890b31f179168665bab8f1f413a55f0fc",
+    "bootstrap_or_acquisition_during_a6": false,
+    "fresh_process_preflight": "PASS",
+    "manifest_sha256": "e23d5a60053aec9733764adc49908b3a238d2108cd70ac6e3965d99a1e2a26bc",
+    "production_identity": {
+      "canonical_identity": "TWSE:2330",
+      "execution_eligibility": "allowed",
+      "instrument_family": "company_share",
+      "instrument_type": "common_share",
+      "isin": "TW0002330008",
+      "market": "TWSE",
+      "resolution_reason": "exact_listing_id",
+      "resolution_status": "resolved",
+      "security_code": "2330"
+    },
+    "qualification_sha256": "ecea8b143ecb2bd335ede982a29ce2e576162f8a1d0319c3d15bedd8b3be3238",
+    "release_id": "security-master-20261010T112837Z",
+    "release_index_sha256": "3ac2b751ef96b7b488bbcba9c0e67980fdf13c7f22b33c41fb346fd6a6ceaae7",
+    "state": "ACTIVE"
+  },
+  "stage_1": {
+    "compileall": "PASS",
+    "default_ci": {
+      "adjudication": "PASS_NO_NEW_FAILURES",
+      "base": "67d1c703b20cd1e9925b7a9e794c96496c644fee",
+      "base_counts": {
+        "collected": 1288,
+        "deselected": 5,
+        "failed": 30,
+        "passed": 1249,
+        "skipped": 4
+      },
+      "candidate": "5991f7ed68a3bd18e63f9a61e0a665e5a00804b8",
+      "candidate_counts": {
+        "collected": 1288,
+        "deselected": 5,
+        "failed": 30,
+        "passed": 1249,
+        "skipped": 4
+      },
+      "environment": {
+        "PYTHONHASHSEED": "0",
+        "TZ": "Etc/UTC",
+        "network": "denied",
+        "security_master_root": "isolated empty temporary path"
+      },
+      "failed_node_sets_equal": true,
+      "new_failure_delta": 0,
+      "python": "/tmp/a5test-venv/bin/python (CPython 3.12.14)",
+      "raw_profile_status": "FAIL_ON_BOTH_BASE_AND_CANDIDATE_WITH_SAME_30_PRE_EXISTING_FAILURES"
+    },
+    "focused_tests": {
+      "a6_runner_tests": {
+        "failed": 0,
+        "passed": 6
+      },
+      "historical_overlay_regressions": {
+        "failed": 0,
+        "passed": 14
+      },
+      "primary_stage1_suite": {
+        "failed": 0,
+        "passed": 138
+      }
+    },
+    "git_diff_check": "PASS",
+    "h2_activation": "PASS_BOUNDED_ROUTE_ONLY",
+    "h2_endpoint_contract": "TWT48U_ALL",
+    "h3_route": "UNCHANGED_ACTIVE_TWSE",
+    "mcp_tool_count": 6,
+    "other_h2_sources": "INACTIVE_OR_BLOCKED",
+    "selected_h2_executor": "phase_h_h2_twse_exright_pre_executor",
+    "selected_h2_source": "H2-TWSE-EXRIGHT-PRE-OPENAPI",
+    "validators": "PASS (A6, A3, Phase-H V3, Phase-I I1 and A6 P0/P1/R1 historical validators)"
+  },
+  "terminal_disposition": "J_B04_A6_INTEGRATED_LIVE_ACCEPTANCE_HARD_BLOCK",
+  "transport": {
+    "actual_dispatches_total": 1,
+    "actual_get_dispatches": 1,
+    "actual_head_dispatches": 0,
+    "actual_post_dispatches": 0,
+    "budget_respected": true,
+    "completion_telemetry_limitation": "None for the recorded H3 request: the sanitized completion event includes HTTP status, response hash, outcome/error, final URL, bytes, Content-Type, redirects, and retries.",
+    "hard_ceiling": 10,
+    "logical_operations": {
+      "H2": 0,
+      "H3": 1
+    },
+    "redirects_followed": 0,
+    "reservation_id": "a6-01-adefd180cf854187857c5e792b93ff72",
+    "retries": 0,
+    "security_master_acquisition": 0,
+    "session_designed_ceiling": 8,
+    "transport_ledger_path": "/tmp/j-b04-a6/transport-ledger.jsonl",
+    "transport_ledger_sha256": "65c1b1d8eb04d222dcf5e0ef8782850cdfa7df6a6d23096b6c0283324f7a5a2c"
+  },
+  "unresolved_concerns": [
+    "H3 returned HTTP 200 and HTML, but the response contained no numeric close observations and production parsing failed closed as invalid_close.",
+    "No H3 baseline/comparison window, H2 source evidence, or H4 artifact exists; ordinary-return interpretation remains blocked.",
+    "No eligible attempt-2 continuation is established; do not retry under this consumed session authorization."
+  ]
+}
