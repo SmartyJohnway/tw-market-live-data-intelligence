@@ -1,0 +1,130 @@
+{
+  "schema_version": "phase_j_j_b04_a6_sm_b1_r2_fail_closed_repair.v1",
+  "gate": "J-B04-A6-SM-B1-R2",
+  "starting_head": "039b421e4d53be770f2a37124d01d4a16d31f452",
+  "starting_tree": "d2fa9ddf83f793bc6eabea57d91a395d8e6d6154",
+  "starting_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "sm_b1_evidence_commit": "039b421e4d53be770f2a37124d01d4a16d31f452",
+  "independent_review_id": "5476829857",
+  "sm_b1_disposition": "J_B04_A6_SM_B1_BOOTSTRAP_HARD_BLOCK_AWAITING_INDEPENDENT_REVIEW",
+  "retry_authorized": false,
+  "historical_hard_block_preserved": true,
+  "historical_evidence_sha256": {
+    "json": "2922ec11b6ef167d775e629885d032ee8b1dc07bfea284b4323c16e82e318226",
+    "markdown": "385f5bca6b262ae993e5fa1e0ff2542c421a36333cbf3492fcbe3ddc8b1a7e7d"
+  },
+  "captured_tpex_payload_diagnosis": {
+    "disposition": "CAPTURE_HAS_ALTERNATE_STRUCTURED_DATA_REQUIRING_NEW_CONTRACT",
+    "path": "data/security_master/input_bundles/m8r06-01b-20261009T180413Z/raw_payloads/tpex_delisted.html",
+    "sha256": "f6eaa4a4969219dc5a633f43e056d8fa2d31fa944c1e23125f24836733f86853",
+    "byte_size": 11521,
+    "basis": [
+      "Captured body is an HTML document with a doctype and html element.",
+      "No table elements occur in the captured body; the current production parser requires HTML tables.",
+      "The page contains lifecycle search controls and a client-side table initializer with action company/deListed, but no lifecycle result rows or embedded JSON data are present in this response body.",
+      "The referenced API_PATTERN value and any resulting data response are not established by this captured body; no current web state was consulted."
+    ],
+    "parser_or_source_contract_changed": false,
+    "separate_contract_review_required": true,
+    "challenge_or_error_surface_evidence": false,
+    "separate_review_disposition": "SM_B1_R2_SOURCE_CONTRACT_REPAIR_REQUIRED"
+  },
+  "stop_condition_root_cause": {
+    "prior_behavior": "LifecycleSchemaDrift was appended as a failed probe and the lifecycle source loop continued.",
+    "observed_issue_code": "no_html_tables",
+    "qualification_invalidating_drift_scope": "all governed LifecycleSchemaDrift issue codes; not literal-code special-cased",
+    "prior_effect": "the fifth probe and aggregate Phase E preparation were reachable before operator SIGTERM",
+    "sm_b1_hard_block_preserved": true
+  },
+  "production_repair": {
+    "stable_failure_code": "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT",
+    "failure_evidence_fields": [
+      "source_id",
+      "parser",
+      "issue_code",
+      "sanitized_detail",
+      "dispatch_reservations_used",
+      "probe_dispatch_reservations"
+    ],
+    "ordering": "probe -> transport validation -> parser -> parser contract decision -> record sanitized failure -> immediate return",
+    "next_logical_probe_after_drift": false,
+    "phase_e_qualification_after_drift": false,
+    "snapshot_or_export_after_drift": false,
+    "candidate_or_activation_after_drift": false,
+    "sanitized_detail_policy": "For header drift, record candidate count and row widths only; never persist observed header text."
+  },
+  "http_3xx_diagnostic_improvement": {
+    "classification": "BOOTSTRAP_HTTP_REDIRECT_NOT_FOLLOWED",
+    "fields": [
+      "http_status",
+      "redirect_location_present",
+      "redirect_location_scheme",
+      "redirect_location_host",
+      "redirect_location_path_or_sanitized_url",
+      "redirect_location_allowed",
+      "redirect_followed",
+      "transport_error_code"
+    ],
+    "query_fragment_userinfo_persisted": false,
+    "http_error_body_persisted": false,
+    "cause_inferred": false,
+    "ordinary_404_500_semantics_preserved": true
+  },
+  "dispatch_limits": {
+    "logical_probes": 5,
+    "max_followed_redirects_per_probe": 1,
+    "max_dispatches_per_probe": 2,
+    "max_dispatches_total": 10,
+    "automatic_retry": 0,
+    "shared_budget_across_all_probes": true,
+    "reservation_before_dispatch": true
+  },
+  "bootstrap_executed_in_r2": false,
+  "bootstrap_retry": "NOT_AUTHORIZED",
+  "security_master_state": "NOT_INITIALIZED",
+  "active_json": "ABSENT",
+  "production_identity_verified": false,
+  "local_incident_evidence_mutated": false,
+  "raw_payloads_committed": false,
+  "network_counts": {
+    "market_GET_HEAD_POST": "0/0/0",
+    "security_master_live_acquisition": 0
+  },
+  "validation": {
+    "new_fake_tests": "PASS: 15 passed including four-probe immediate stop, persisted failure report without retry authority, sanitized header drift detail, 3xx/no-Location, allowlisted/disallowed Location, and 404/500 behavior",
+    "P1_R1_test_suite": "PASS within focused regression selection",
+    "focused_regressions": "PASS: 319 passed, 2 skipped",
+    "validators": "PASS: R2, P1-R1, P1 historical, A6-P0, A1/A2/A3, Phase-H V3, Phase-J GHI, portable catalog, runtime guide",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "duplicate_key_json_scan_count": null,
+    "default_ci_comparison": "PENDING",
+    "strict_duplicate_key_JSON_scan_count": 1045
+  },
+  "canonical_runtime_state": {
+    "H2": "INACTIVE",
+    "selected_executor": null,
+    "routing": "plan_only",
+    "J-B04": "BLOCKING",
+    "Phase_J": "NOT_STARTED",
+    "MCP": 6
+  },
+  "disposition": "J_B04_A6_SM_B1_R2_READY_FOR_EXACT_HEAD_INDEPENDENT_REVIEW",
+  "fail_closed_regression": {
+    "test": "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py::test_lifecycle_schema_drift_stops_materializer_before_next_probe_and_phase_e",
+    "asserted": [
+      "probes started = 4",
+      "probe #5 called = false",
+      "probe #5 dispatch reservation = 0",
+      "Phase E qualification started = false",
+      "snapshot/export called = false",
+      "candidate/release activation called = false",
+      "stable bootstrap schema-drift code emitted"
+    ]
+  },
+  "local_incident_files_sha256": {
+    "/tmp/j-b04-a6-sm-b1-telemetry.jsonl": "d3172ec437d40a43defdfec48c3171bb1bb2d25462bcd5387be98fc903414610",
+    "/tmp/j-b04-a6-sm-b1-invocation.json": "737875ab7208b1c6b1e73528071871a59b4f4ec4abb8864928941dfa1edccb78",
+    "/tmp/j-b04-a6-sm-b1-command-output.log": "c68053dd73d256632e219a04c9ea8cf7bf16fc79789259cb964fde31199c01c0"
+  }
+}

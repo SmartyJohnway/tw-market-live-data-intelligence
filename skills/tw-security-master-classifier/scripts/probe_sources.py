@@ -221,7 +221,7 @@ def probe(
         }
     except urllib.error.HTTPError as exc:
         data = exc.read(256 * 1024)
-        return {
+        result = {
             **base,
             "final_url": exc.geturl(),
             "redirect_count": handler.redirect_count,
@@ -230,6 +230,31 @@ def probe(
             "acquisition_status": "http_error",
             "raw_payload_sha256": file_sha256(data),
         }
+        if 300 <= exc.code < 400:
+            location = exc.headers.get("Location") if exc.headers is not None else None
+            sanitized = {
+                "redirect_location_present": bool(location),
+                "redirect_location_scheme": None,
+                "redirect_location_host": None,
+                "redirect_location_path_or_sanitized_url": None,
+                "redirect_location_allowed": False,
+                "redirect_followed": False,
+                "transport_error_code": "BOOTSTRAP_HTTP_REDIRECT_NOT_FOLLOWED",
+            }
+            if location:
+                target = urljoin(exc.geturl(), location)
+                parsed_target = urlparse(target)
+                sanitized["redirect_location_scheme"] = parsed_target.scheme.lower() or None
+                sanitized["redirect_location_host"] = parsed_target.hostname.lower() if parsed_target.hostname else None
+                # Exclude query, fragment, username, and password from durable telemetry.
+                sanitized["redirect_location_path_or_sanitized_url"] = parsed_target.path or "/"
+                try:
+                    validate_url(target, allowed_hosts)
+                    sanitized["redirect_location_allowed"] = True
+                except (TypeError, ValueError):
+                    sanitized["redirect_location_allowed"] = False
+            result.update(sanitized)
+        return result
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
         return {**base, "redirect_count": handler.redirect_count, "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before), "acquisition_status": "network_error", "error_type": type(exc).__name__}
 

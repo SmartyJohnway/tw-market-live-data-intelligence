@@ -91,6 +91,7 @@ BOOTSTRAP_TERMINAL_TRANSPORT_CODES = {
     "BOOTSTRAP_DISPATCH_BUDGET_EXHAUSTED",
     "BOOTSTRAP_REDIRECT_REJECTED",
 }
+BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT = "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
 
 # Qualification taxonomy
 QUAL_PRODUCTION = "QUALIFIED_PRODUCTION_INPUT"
@@ -150,6 +151,23 @@ def _stop_on_bootstrap_transport_limit(probe_result: dict[str, Any]) -> None:
     code = probe_result.get("transport_error_code")
     if code in BOOTSTRAP_TERMINAL_TRANSPORT_CODES:
         raise RuntimeError(code)
+
+
+def _sanitize_lifecycle_drift_detail(exc: LifecycleSchemaDrift) -> dict[str, Any]:
+    """Retain bounded schema-shape facts without copying source header text."""
+    candidates = exc.detail.get("observed_header_candidates")
+    if not isinstance(candidates, list):
+        return {}
+    widths = [
+        len(candidate)
+        for candidate in candidates[:20]
+        if isinstance(candidate, list)
+    ]
+    return {
+        "observed_header_candidate_count": min(len(candidates), 20),
+        "observed_header_widths": widths,
+        "truncated": len(candidates) > 20,
+    }
 
 
 def main() -> int:
@@ -352,8 +370,29 @@ def main() -> int:
         except LifecycleSchemaDrift as exc:
             log(f"    ⚠ Schema drift: {exc.issue_code}")
             probe_result["probe_status"] = "schema_drift"
-            probe_result["failure_reason"] = f"LifecycleSchemaDrift: {exc.issue_code}"
+            probe_result["acquisition_status"] = "schema_drift"
+            probe_result["bootstrap_failure_code"] = BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT
+            probe_result["failure_reason"] = "qualification-invalidating lifecycle parser contract drift"
+            probe_result["lifecycle_schema_drift"] = {
+                "source_id": source_id,
+                "parser": parser_name,
+                "issue_code": exc.issue_code,
+                "sanitized_detail": _sanitize_lifecycle_drift_detail(exc),
+                "dispatch_reservations_used": dispatch_budget.used_dispatches,
+                "probe_dispatch_reservations": probe_result.get("dispatch_reservations", 0),
+            }
             probe_failures.append(probe_result)
+            log(f"    ✗ HARD STOP: {BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT}")
+            _write_failure_report(
+                bundle_dir,
+                generated_at,
+                effective_date,
+                bundle_id,
+                source_probes,
+                "BLOCKED_BY_LIFECYCLE_SCHEMA_DRIFT",
+                BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT,
+            )
+            return 1
         except Exception as exc:
             log(f"    ⚠ Parse error: {exc}")
             probe_result["probe_status"] = "parse_error"
@@ -714,9 +753,14 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
         "exporter_dry_run_attempted": False,
         "exporter_dry_run_status": "not_attempted",
         "principal_decision": decision,
+        "bootstrap_failure_code": reason if reason.startswith("BOOTSTRAP_") else None,
         "blocking_findings": [reason],
         "source_probes": source_probes,
-        "authorized_next_task": "retry_M8R-06-01B",
+        "authorized_next_task": (
+            "independent_review_required_no_bootstrap_retry"
+            if reason.startswith("BOOTSTRAP_")
+            else "retry_M8R-06-01B"
+        ),
         "unauthorized_tasks": ["M8R-06-01C", "M8R-06-02"],
     }
     _write_candidate_materialization_report(bundle_id, report, repo_root=root)
