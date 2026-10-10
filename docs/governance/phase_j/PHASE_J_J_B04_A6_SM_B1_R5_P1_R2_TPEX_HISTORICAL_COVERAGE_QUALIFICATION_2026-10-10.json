@@ -1,0 +1,354 @@
+{
+  "gate": "J-B04-A6-SM-B1-R5-P1-R2",
+  "date": "2026-10-10",
+  "disposition": "SM_B1_R5_P1_R2_TPEX_HISTORICAL_COVERAGE_QUALIFIED_BOOTSTRAP_FIT",
+  "starting_authority": {
+    "head": "05583ea56b5bfe79d81a6f1b2686c63ce3fa06ef",
+    "tree": "b4c6a94ceb68ec1e5228e730eda16bbca35acd10",
+    "main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "tracked_worktree_clean": true,
+    "R5_P1_R1_independent_review_id": "5478113925",
+    "R5_P1_R1_disposition": "PASS_AS_PARTIAL",
+    "endpoint_discovery": "COMPLETE_ENOUGH",
+    "coverage_qualification": "INCOMPLETE"
+  },
+  "owner_authorization": {
+    "statement_sha256": "e7b57d5550a897417d79b5cc78d7e4c530ccc834dc65a552c457b33225d4a5e0",
+    "external_record_path": "/tmp/j-b04-a6-sm-b1-r5-p1-r2-owner-authorization.json",
+    "authorization_record_committed": false,
+    "automatic_retries": 0,
+    "endpoint_rediscovery": false
+  },
+  "probe_accounting": {
+    "maximum_logical_probes": 8,
+    "maximum_explicit_http_dispatches": 8,
+    "maximum_endpoint_post_requests": 6,
+    "logical_probes_used": 4,
+    "explicit_http_dispatches_used": 4,
+    "endpoint_post_requests_used": 4,
+    "GET": 0,
+    "HEAD": 0,
+    "POST": 4,
+    "redirects_followed": 0,
+    "automatic_retries": 0,
+    "browser_incidental_requests": 0,
+    "data_endpoint_only": true
+  },
+  "frozen_endpoint_contract": {
+    "landing_page": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+    "api_pattern": "/www/{LANG}/{ACTION}",
+    "language_mapping": "zh-Hant-tw -> zh -> zh-tw",
+    "action": "company/deListed",
+    "endpoint": "https://www.tpex.org.tw/www/zh-tw/company/deListed",
+    "method": "POST",
+    "request_content_type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "response_content_type": "application/json;charset=UTF-8",
+    "credentials_required": false
+  },
+  "probe_chronology": [
+    {
+      "logical_probe_number": 1,
+      "target_id": "all_size_1000",
+      "purpose": "test_single_response_complete_ALL",
+      "parameters": {
+        "code": "",
+        "date": "ALL",
+        "reason": "-1",
+        "response": "json",
+        "paging-offset": "0",
+        "paging-size": "1000"
+      },
+      "http_status": 200,
+      "stat": "ok",
+      "total_count": 582,
+      "rows_returned": 582,
+      "response_bytes": 71065,
+      "response_sha256": "d70bcef49999ffb4c6642ae1e55910e26636d02fd4eb90f8eab84094b98de4a5",
+      "redirect_count": 0
+    },
+    {
+      "logical_probe_number": 2,
+      "target_id": "empty_code_0000",
+      "purpose": "qualify_valid_empty_filter_semantics",
+      "parameters": {
+        "code": "0000",
+        "date": "ALL",
+        "reason": "-1",
+        "response": "json",
+        "paging-offset": "0",
+        "paging-size": "1000"
+      },
+      "http_status": 200,
+      "stat": "ok",
+      "total_count": 0,
+      "rows_returned": 0,
+      "response_bytes": 190,
+      "response_sha256": "790cca17695523462f489e7d8934500e4379946270694ab258a5cb24bfba3d75",
+      "redirect_count": 0
+    },
+    {
+      "logical_probe_number": 3,
+      "target_id": "malformed_reason",
+      "purpose": "qualify_application_filter_error_semantics",
+      "parameters": {
+        "code": "",
+        "date": "ALL",
+        "reason": "not-a-reason",
+        "response": "json",
+        "paging-offset": "0",
+        "paging-size": "1000"
+      },
+      "http_status": 200,
+      "stat": "ok",
+      "total_count": 582,
+      "rows_returned": 582,
+      "response_bytes": 71065,
+      "response_sha256": "d70bcef49999ffb4c6642ae1e55910e26636d02fd4eb90f8eab84094b98de4a5",
+      "redirect_count": 0,
+      "observation": "invalid reason filter was ignored; production request builder freezes reason=-1"
+    },
+    {
+      "logical_probe_number": 4,
+      "target_id": "malformed_date",
+      "purpose": "qualify_invalid_date_filter_semantics",
+      "parameters": {
+        "code": "",
+        "date": "not-a-date",
+        "reason": "-1",
+        "response": "json",
+        "paging-offset": "0",
+        "paging-size": "1000"
+      },
+      "http_status": 200,
+      "stat": "non_ok_application_error",
+      "total_count": null,
+      "rows_returned": null,
+      "response_bytes": 29,
+      "response_sha256": "1e8b8f9407c7e6ee97fe994fb9be3f2389383678c42cd455435706d373476954",
+      "redirect_count": 0,
+      "observation": "JSON application error is distinct from valid empty data"
+    }
+  ],
+  "paging_qualification": {
+    "current_tranche_requested_size": 1000,
+    "current_tranche_effective_rows": 582,
+    "all_history_single_response": true,
+    "server_upper_page_size_cap": "NOT_DETERMINED; 1000 is a sufficient governed request size for the observed ALL result",
+    "frozen_prior_observations": {
+      "size_10": {
+        "date": "ALL",
+        "rows": 10,
+        "totalCount": 582
+      },
+      "size_0": {
+        "date": "ALL",
+        "rows": 1,
+        "totalCount": 582,
+        "meaning": "does not return all rows"
+      }
+    },
+    "page_2_verified": false,
+    "final_page_verified": false,
+    "page_2_or_final_page_required_for_qualified_request": false,
+    "offset_rule": "not used by production contract; one response reconciles all rows to totalCount",
+    "cross_page_snapshot_risk": "avoided because the qualified acquisition uses one response",
+    "response_snapshot_marker": "absent"
+  },
+  "coverage": {
+    "date_filter_all": true,
+    "complete_all_result_obtained": true,
+    "returned_row_count": 582,
+    "totalCount": 582,
+    "row_count_reconciled": true,
+    "field_schema": [
+      "股票代號",
+      "公司名稱",
+      "終止上櫃日期",
+      "終止上櫃原因",
+      "公司資料網址"
+    ],
+    "all_rows_width_5": true,
+    "required_code_name_date_present": true,
+    "duplicate_full_rows": 0,
+    "duplicate_security_code_effective_date_identities": 0,
+    "invalid_dates": 0,
+    "blank_reason_rows": 293,
+    "earliest_effective_date": "1992-10-27",
+    "latest_effective_date": "2026-10-01",
+    "years_spanned": 33,
+    "coverage_scope": "complete for the official date=ALL response returned by this endpoint; no claim is made for lifecycle events outside the endpoint's available history"
+  },
+  "response_and_semantics": {
+    "root_keys": [
+      "tables",
+      "date",
+      "stat"
+    ],
+    "success_stat": "ok",
+    "table_keys": [
+      "fields",
+      "data",
+      "totalCount",
+      "title",
+      "notes"
+    ],
+    "table_count": 1,
+    "row_shape": "five-string positional arrays aligned to fields",
+    "field_mapping": {
+      "security_code": 0,
+      "company_name": 1,
+      "termination_date_raw": 2,
+      "termination_reason_raw": 3,
+      "company_data_url": 4
+    },
+    "date_calendar": "ROC",
+    "date_conversion": "existing normalize_date; Gregorian year = ROC year + 1911",
+    "date_preserved_raw": true,
+    "empty_result": {
+      "stat": "ok",
+      "data": [],
+      "totalCount": 0
+    },
+    "application_error": "non-ok stat; parser emits tpex_api_application_error",
+    "malformed_reason_semantics": "ignored by provider; fixed production reason=-1 is enforced",
+    "malformed_date_semantics": "HTTP 200 with non-ok stat; fail closed, never empty",
+    "blank_reason_semantics": "preserved as reason_raw empty and reason_code absent"
+  },
+  "bootstrap_fit": {
+    "classification": "COMPATIBLE_WITH_EXISTING_BOOTSTRAP_ENVELOPE",
+    "reason": "one deliberate TPEx source POST returns all 582 rows; no pagination dispatch is required; one dispatch is within two per-probe and ten total limits",
+    "production_dispatches_for_tpex": 1,
+    "existing_total_bootstrap_dispatch_ceiling": 10,
+    "existing_per_probe_dispatch_ceiling": 2,
+    "existing_automatic_retry": 0,
+    "bootstrap_executed": false,
+    "bootstrap_attempt_2_authorized": false
+  },
+  "implementation": {
+    "commit": "47e9c1ab997ce6bc2bfff37bc84344957da7daa7",
+    "tree": "9f80b61d1b53d4c812fd81ce996823ed9314f78b",
+    "files_changed_in_implementation_commit": 14,
+    "production_paths": [
+      "scripts/m8r_06_01b_materialize_production_inputs.py",
+      "skills/tw-security-master-classifier/references/source-manifest.json",
+      "skills/tw-security-master-classifier/references/lifecycle-contract.md",
+      "skills/tw-security-master-classifier/scripts/parse_tpex_delisted.py",
+      "skills/tw-security-master-classifier/scripts/probe_sources.py"
+    ],
+    "behavior": [
+      "fixed POST request is validated from the qualified manifest contract",
+      "single-response ALL parser requires exact schema and len(data)==totalCount<=1000",
+      "valid empty response remains an empty result",
+      "non-ok status, malformed JSON, invalid ROC dates, missing fields, duplicate identities and count/schema drift fail closed",
+      "TPEX acquisition/parser failures stop before the next logical probe and before Phase E/export/candidate/activation",
+      "raw response remains installation-local in the immutable input bundle"
+    ],
+    "production_manifest_sha256": "bfc96b82ee492974a9ac892e779d7ce0c34e753e40a16a04fa34833a5d17fec7"
+  },
+  "validation": {
+    "compileall": "PASS",
+    "manual_parser_contract_tests": "PASS; synthetic valid/empty/error/schema/date/duplicate cases; preserved 582-row response replayed through production parser",
+    "manual_post_transport_self_test": "PASS; POST body and Content-Type preserved; invalid method tokens rejected before budget reservation",
+    "source_manifest_json_schema": "PASS",
+    "strict_duplicate_key_json_scan": {
+      "status": "PASS",
+      "files": 1050
+    },
+    "git_diff_check": "PASS",
+    "validators": {
+      "A6_P1": "PASS",
+      "A6_P1_R1": "PASS",
+      "A6_SM_B1_R2": "PASS",
+      "A6_SM_B1_R3": "PASS",
+      "A6_P0": "PASS_AS_BLOCKED_SECURITY_MASTER_NOT_INITIALIZED"
+    },
+    "focused_pytest": {
+      "status": "NOT_RUN",
+      "reason": "pytest is absent from the active Python; offline install confirmed no cached wheel, and no additional network was used"
+    },
+    "default_ci_clean_archive_comparison": {
+      "base": "05583ea56b5bfe79d81a6f1b2686c63ce3fa06ef",
+      "candidate": "47e9c1ab997ce6bc2bfff37bc84344957da7daa7",
+      "base_status": "FAILED_BEFORE_COLLECTION_NO_MODULE_NAMED_PYTEST",
+      "candidate_status": "FAILED_BEFORE_COLLECTION_NO_MODULE_NAMED_PYTEST",
+      "collected": null,
+      "selected": null,
+      "deselected": null,
+      "collection_failures": null,
+      "new_failure_delta": 0,
+      "suite_acceptance": "BLOCKED; no tests collected"
+    }
+  },
+  "local_evidence": {
+    "root": "/tmp/j-b04-a6-sm-b1-r5-p1-r2",
+    "runner_sha256": "1b836a325bcdf0b6bf7a33d0822c59c416c57455ceaf498bd017be93f32ad574",
+    "transport_ledger_path": "/tmp/j-b04-a6-sm-b1-r5-p1-r2/state.json",
+    "transport_ledger_sha256": "5f3c8e1a38a65a61aade7680115de9df0e1f74e8d5cc149c88cbd78346bf69b0",
+    "raw_responses": [
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r2/raw/01-all_size_1000.body",
+        "bytes": 71065,
+        "sha256": "d70bcef49999ffb4c6642ae1e55910e26636d02fd4eb90f8eab84094b98de4a5"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r2/raw/02-empty_code_0000.body",
+        "bytes": 190,
+        "sha256": "790cca17695523462f489e7d8934500e4379946270694ab258a5cb24bfba3d75"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r2/raw/03-malformed_reason.body",
+        "bytes": 71065,
+        "sha256": "d70bcef49999ffb4c6642ae1e55910e26636d02fd4eb90f8eab84094b98de4a5"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r2/raw/04-malformed_date.body",
+        "bytes": 29,
+        "sha256": "1e8b8f9407c7e6ee97fe994fb9be3f2389383678c42cd455435706d373476954"
+      }
+    ],
+    "full_responses_committed": false,
+    "first_and_last_bounded": [
+      {
+        "security_code": "8183",
+        "termination_date_raw": "115-10-01"
+      },
+      {
+        "security_code": "2108",
+        "termination_date_raw": "81-10-27"
+      }
+    ]
+  },
+  "remaining_bootstrap_blockers": [
+    "historical TWSE twse_delisted HTTP 307 remains unresolved",
+    "historical TWSE twse_etn_expired HTTP 307 remains unresolved",
+    "No Security Master bootstrap attempt #2 authorization exists"
+  ],
+  "canonical_state": {
+    "security_master": "NOT_INITIALIZED",
+    "active_json": "ABSENT",
+    "release": "NONE",
+    "production_identity_verified": false,
+    "bootstrap_attempt_2": "NOT_AUTHORIZED",
+    "H2": "INACTIVE",
+    "routing": "plan_only",
+    "selected_executor": null,
+    "J-B04": "BLOCKING",
+    "Phase_J": "NOT_STARTED",
+    "MCP": 6,
+    "H3_live_calls": 0,
+    "H2_live_calls": 0,
+    "A6_integrated_live_execution": false,
+    "PR_326": "OPEN_DRAFT_UNMERGED"
+  },
+  "network_counts": {
+    "R5_P1_R2_explicit_endpoint_requests": "4 POST",
+    "market_GET_HEAD_POST": "0/0/4",
+    "security_master_bootstrap_live_acquisition": 0,
+    "H3_H2_A6_live_calls": 0
+  },
+  "historical_evidence": {
+    "R5_P1_R1_json_sha256": "d876e56171a40c8e5962a2563a58e9eb689c268db11bc813f4161edf48d8f3ec",
+    "R5_P1_R1_markdown_sha256": "6dac661f531f5b41df2f3103197b5fb6c956012930bdf398bb813f76ac995387",
+    "R5_P1_R1_history_modified": false
+  }
+}
