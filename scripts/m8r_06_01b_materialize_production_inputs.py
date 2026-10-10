@@ -22,6 +22,7 @@ import urllib.request
 from datetime import datetime, timezone, date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlencode
 
 # ── Repository root ──────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
@@ -77,7 +78,7 @@ BUNDLE_BASE = ROOT / "data" / "security_master" / "input_bundles"
 
 TWSE_ISIN_ZH = "https://isin.twse.com.tw/isin/C_public.jsp?strMode={mode}"
 TWSE_DELISTED_URL = "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html"
-TPEX_DELISTED_URL = "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html"
+TPEX_DELISTED_URL = "https://www.tpex.org.tw/www/zh-tw/company/deListed"
 TWSE_ETN_EXPIRED_URL = "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html"
 
 # Bounded scope: modes 2 (TWSE listed) and 4 (TPEX listed)
@@ -180,8 +181,44 @@ def _require_tpex_lifecycle_data_contract(manifest: dict[str, Any]) -> None:
         len(sources) != 1
         or sources[0].get("production_automatic_acquisition") is not True
         or sources[0].get("contract_state") != "qualified_data_contract"
+        or sources[0].get("url") != TPEX_DELISTED_URL
+        or sources[0].get("lifecycle_data_contract", {}).get("endpoint") != TPEX_DELISTED_URL
+        or sources[0].get("lifecycle_data_contract", {}).get("state") != "qualified"
+        or sources[0].get("format") != "json"
+        or sources[0].get("verification") != "live_all_history_single_response_qualified_2026-10-10"
     ):
         raise RuntimeError("BOOTSTRAP_TPEX_LIFECYCLE_DATA_CONTRACT_UNRESOLVED")
+    _tpex_delisted_request(manifest)
+
+
+def _tpex_delisted_request(manifest: dict[str, Any]) -> tuple[str, bytes, str]:
+    """Build the frozen single-response ALL request; never accept caller filters."""
+    sources = [
+        source for source in manifest.get("lifecycle_sources", [])
+        if source.get("id") == "tpex_company_delisted"
+    ]
+    if len(sources) != 1:
+        raise RuntimeError("BOOTSTRAP_TPEX_LIFECYCLE_DATA_CONTRACT_UNRESOLVED")
+    request = sources[0].get("lifecycle_data_contract", {}).get("request", {})
+    parameters = request.get("fixed_parameters")
+    if (
+        request.get("method") != "POST"
+        or request.get("body_encoding") != "application/x-www-form-urlencoded UTF-8"
+        or request.get("paging_size") != 1000
+        or request.get("logical_requests_per_bootstrap") != 1
+        or request.get("content_type") != "application/x-www-form-urlencoded; charset=UTF-8"
+        or not isinstance(parameters, dict)
+        or parameters != {
+            "code": "",
+            "date": "ALL",
+            "reason": "-1",
+            "response": "json",
+            "paging-offset": "0",
+            "paging-size": "1000",
+        }
+    ):
+        raise RuntimeError("BOOTSTRAP_TPEX_LIFECYCLE_DATA_CONTRACT_UNRESOLVED")
+    return TPEX_DELISTED_URL, urlencode(parameters).encode("ascii"), request["content_type"]
 
 
 def main() -> int:
@@ -262,6 +299,19 @@ def main() -> int:
         if probe_result["acquisition_status"] not in {"data", "schema_drift", "semantic_error"}:
             log(f"    FAILED: {probe_result.get('error', probe_result.get('error_type', 'unknown'))}")
             probe_failures.append(probe_result)
+            if is_tpex_api:
+                probe_result["bootstrap_failure_code"] = "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+                probe_result["failure_reason"] = "qualified TPEx all-history request did not produce a valid JSON response"
+                _write_failure_report(
+                    bundle_dir,
+                    generated_at,
+                    effective_date,
+                    bundle_id,
+                    source_probes,
+                    "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE",
+                    "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE",
+                )
+                return 1
             continue
 
         log(f"    HTTP {probe_result.get('http_status')}, {probe_result.get('byte_count', 0)} bytes")
@@ -345,7 +395,16 @@ def main() -> int:
                 contract = find_source_contract(manifest, None, url)
             except ValueError:
                 raise ValueError(f"SOURCE_CONTRACT_UNRESOLVED for {source_id or url}")
-        raw_path = bundle_dir / "raw_payloads" / f"{source_id}.html"
+        is_tpex_api = source_id == "tpex_delisted"
+        raw_path = bundle_dir / "raw_payloads" / f"{source_id}.{'json' if is_tpex_api else 'html'}"
+        request_options: dict[str, Any] = {}
+        if is_tpex_api:
+            url, request_body, request_content_type = _tpex_delisted_request(manifest)
+            request_options = {
+                "method": "POST",
+                "body": request_body,
+                "content_type": request_content_type,
+            }
         probe_result = probe(
             url,
             allowed_hosts,
@@ -353,6 +412,7 @@ def main() -> int:
             save_raw=raw_path,
             dispatch_budget=dispatch_budget,
             max_followed_redirects=BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+            **request_options,
         )
         probe_result["source_id"] = source_id
         probe_result["bootstrap_dispatch_reservations"] = probe_result.get("dispatch_reservations")
@@ -367,6 +427,33 @@ def main() -> int:
 
         log(f"    HTTP {probe_result.get('http_status')}, {probe_result.get('byte_count', 0)} bytes")
         data = raw_path.read_bytes()
+
+        if is_tpex_api and probe_result.get("content_type") != "application/json":
+            exc = LifecycleSchemaDrift("tpex_api_content_type_drift")
+            probe_result["probe_status"] = "schema_drift"
+            probe_result["acquisition_status"] = "schema_drift"
+            probe_result["bootstrap_failure_code"] = BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT
+            probe_result["failure_reason"] = "qualification-invalidating lifecycle parser contract drift"
+            probe_result["lifecycle_schema_drift"] = {
+                "source_id": source_id,
+                "parser": parser_name,
+                "issue_code": exc.issue_code,
+                "sanitized_detail": {},
+                "dispatch_reservations_used": dispatch_budget.used_dispatches,
+                "probe_dispatch_reservations": probe_result.get("dispatch_reservations", 0),
+            }
+            probe_failures.append(probe_result)
+            log(f"    ✗ HARD STOP: {BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT}")
+            _write_failure_report(
+                bundle_dir,
+                generated_at,
+                effective_date,
+                bundle_id,
+                source_probes,
+                "BLOCKED_BY_LIFECYCLE_SCHEMA_DRIFT",
+                BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT,
+            )
+            return 1
 
         try:
             if parser_name == "parse_twse_delisted":
@@ -409,10 +496,22 @@ def main() -> int:
             )
             return 1
         except Exception as exc:
-            log(f"    ⚠ Parse error: {exc}")
+            log("    ⚠ Parse error: unexpected lifecycle parser failure")
             probe_result["probe_status"] = "parse_error"
-            probe_result["failure_reason"] = f"{type(exc).__name__}: {exc}"
+            probe_result["failure_reason"] = "unexpected lifecycle parser failure"
             probe_failures.append(probe_result)
+            if is_tpex_api:
+                probe_result["bootstrap_failure_code"] = "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+                _write_failure_report(
+                    bundle_dir,
+                    generated_at,
+                    effective_date,
+                    bundle_id,
+                    source_probes,
+                    "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE",
+                    "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE",
+                )
+                return 1
 
     # Merge lifecycle events
     merged_lifecycle = merge_lifecycle(lifecycle_groups) if lifecycle_groups else {"operation": "merge_lifecycle_events", "event_count": 0, "events": [], "conflicts": [], "completeness": "partial"}

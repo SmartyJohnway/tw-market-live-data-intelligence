@@ -72,7 +72,9 @@ def main() -> int:
     materializer = (ROOT / "scripts/m8r_06_01b_materialize_production_inputs.py").read_text(encoding="utf-8")
     assert "class BootstrapDispatchBudget:" in probe_source
     assert probe_source.index("dispatch_budget.reserve_before_dispatch()") < probe_source.index("with opener.open(request")
-    assert probe_source.index("self.dispatch_budget.reserve_before_dispatch()") < probe_source.index("return super().redirect_request")
+    redirect_creation = probe_source.index("redirected = super().redirect_request")
+    redirect_reservation = probe_source.index("self.dispatch_budget.reserve_before_dispatch()")
+    assert redirect_creation < redirect_reservation < probe_source.index("return redirected", redirect_reservation)
     assert materializer.count("dispatch_budget=dispatch_budget") == 2
     assert "BootstrapDispatchBudget(BOOTSTRAP_MAX_TOTAL_DISPATCHES)" in materializer
     assert "BOOTSTRAP_MAX_TOTAL_DISPATCHES = 10" in materializer

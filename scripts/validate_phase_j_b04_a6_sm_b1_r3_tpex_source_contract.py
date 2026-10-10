@@ -20,21 +20,29 @@ def main():
     assert record['R2_independent_review_id'] == '5476929940'
     for path, digest in record['historical_evidence_sha256'].items():
         assert sha(ROOT/path) == digest, path
-    for path, digest in record['unchanged_parser_sha256'].items():
-        assert sha(ROOT/path) == digest, path
+    # R3's parser hash is historical state. R5-P1-R2 may supersede the TPEx
+    # adapter after exact-head review; R3 remains immutable as the record of its
+    # then-current unresolved contract.
+    assert all(len(digest) == 64 for digest in record['unchanged_parser_sha256'].values())
     capture = record['capture']
     assert capture['sha256'] == CAPTURE_SHA256 and capture['byte_size'] == CAPTURE_SIZE
     if (ROOT/capture['path']).exists():
         verified_capture(ROOT/capture['path'])
     manifest = json.loads((ROOT/'skills/tw-security-master-classifier/references/source-manifest.json').read_text())
+    historical_source = record['manifest_correction']['after']
+    assert historical_source['url'] == 'https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html'
+    assert historical_source['format'] == 'client_rendered_shell'
+    assert historical_source['verification'] == 'landing_capture_verified_data_contract_unresolved'
+    assert historical_source['production_automatic_acquisition'] is False
+    assert historical_source['contract_state'] == 'blocked_pending_data_endpoint_qualification'
+    assert historical_source['lifecycle_data_contract']['endpoint'] is None
     source = next(s for s in manifest['lifecycle_sources'] if s['id'] == 'tpex_company_delisted')
-    assert source == record['manifest_correction']['after']
-    assert source['url'] == 'https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html'
-    assert source['format'] == 'client_rendered_shell'
-    assert source['verification'] == 'landing_capture_verified_data_contract_unresolved'
-    assert source['production_automatic_acquisition'] is False
-    assert source['contract_state'] == 'blocked_pending_data_endpoint_qualification'
-    assert source['lifecycle_data_contract']['endpoint'] is None
+    assert source['url'] == 'https://www.tpex.org.tw/www/zh-tw/company/deListed'
+    assert source['format'] == 'json'
+    assert source['verification'] == 'live_all_history_single_response_qualified_2026-10-10'
+    assert source['production_automatic_acquisition'] is True
+    assert source['contract_state'] == 'qualified_data_contract'
+    assert source['lifecycle_data_contract']['state'] == 'qualified'
     other = dict(manifest)
     other['lifecycle_sources'] = [s for s in manifest['lifecycle_sources'] if s['id'] != 'tpex_company_delisted']
     assert hashlib.sha256(json.dumps(other,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest() == record['manifest_correction']['other_manifest_content_sha256']

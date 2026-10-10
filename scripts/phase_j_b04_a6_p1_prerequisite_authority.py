@@ -45,7 +45,7 @@ EXPECTED_LOGICAL_PROBES = [
     },
     {
         "source_id": "tpex_delisted",
-        "initial_url": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+        "initial_url": "https://www.tpex.org.tw/www/zh-tw/company/deListed",
         "allowed_host": "www.tpex.org.tw",
         "source_contract_identifier": None,
         "parser": "parse_tpex_delisted",
@@ -269,7 +269,7 @@ def source_inventory() -> list[dict[str, Any]]:
         {
             **probe,
             "allowed_host_present": probe["allowed_host"] in allowed,
-            "http_method": "GET",
+            "http_method": "POST" if probe["source_id"] == "tpex_delisted" else "GET",
             "redirect_policy": "production bootstrap follows at most one redirect; HTTPS and allowlisted host only; credentials prohibited",
             "maximum_redirects_followed_per_probe": 1,
             "maximum_http_dispatches_per_probe": 2,
@@ -278,7 +278,11 @@ def source_inventory() -> list[dict[str, Any]]:
             "timeout_seconds": 20,
             "response_size_bound_bytes": 20 * 1024 * 1024,
             "raw_acquisition_retention": "successful response bytes saved to ignored input-bundle raw_payloads; HTTP error stores only hash of up to 256 KiB read",
-            "source_contract_note": "No stable source_contract_id is declared for these materializer probes; parser/manifest adapter metadata is the effective contract.",
+            "source_contract_note": (
+                "Qualified single-response TPEx date=ALL form POST; parser/manifest contract requires row count == totalCount."
+                if probe["source_id"] == "tpex_delisted"
+                else "No stable source_contract_id is declared for these materializer probes; parser/manifest adapter metadata is the effective contract."
+            ),
         }
         for probe in EXPECTED_LOGICAL_PROBES
     ]

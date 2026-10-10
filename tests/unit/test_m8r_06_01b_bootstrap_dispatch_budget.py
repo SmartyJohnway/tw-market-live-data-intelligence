@@ -46,10 +46,12 @@ class FakeOpener:
         self.budget = budget
         self.starting_dispatches = budget.used_dispatches
         self.dispatched_urls: list[str] = []
+        self.requests = []
 
     def open(self, request, timeout):
         assert self.budget.used_dispatches == self.starting_dispatches + len(self.dispatched_urls) + 1
         self.dispatched_urls.append(request.full_url)
+        self.requests.append(request)
         kind, value = self.steps.pop(0)
         if kind == "redirect":
             headers = {"Location": value}
@@ -57,7 +59,11 @@ class FakeOpener:
                 request, None, 302, "Found", headers, value
             )
             if redirected is None:
-                raise AssertionError("fake redirect unexpectedly declined")
+                error_headers = Message()
+                error_headers["Location"] = value
+                raise urllib.error.HTTPError(
+                    request.full_url, 302, "Found", error_headers, io.BytesIO(b"")
+                )
             return self.open(redirected, timeout=0)
         return FakeResponse(request.full_url, value)
 
@@ -96,6 +102,50 @@ def test_no_redirect_uses_one_reserved_and_dispatched_request(monkeypatch):
     assert result["redirect_count"] == 0
     assert result["dispatch_reservations"] == 1
     assert len(openers[0].dispatched_urls) == 1
+
+
+def test_post_probe_preserves_method_body_and_content_type(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    openers = install_fake_opener(monkeypatch, [("response", b'{"stat":"ok"}')], budget)
+    result = probe_sources.probe(
+        "https://example.test/data",
+        ["example.test"],
+        dispatch_budget=budget,
+        method="POST",
+        body=b"date=ALL",
+        content_type="application/x-www-form-urlencoded; charset=UTF-8",
+    )
+    request = openers[0].requests[0]
+    assert request.get_method() == "POST"
+    assert request.data == b"date=ALL"
+    assert request.get_header("Content-type") == "application/x-www-form-urlencoded; charset=UTF-8"
+    assert result["request_method"] == "POST"
+    assert result["request_content_type"] == "application/x-www-form-urlencoded; charset=UTF-8"
+    assert result["dispatch_reservations"] == 1
+
+
+def test_post_302_is_not_followed_or_redispatched(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    openers = install_fake_opener(
+        monkeypatch,
+        [("redirect", "https://example.test/data-again")],
+        budget,
+    )
+    result = probe_sources.probe(
+        "https://example.test/data",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+        method="POST",
+        body=b"date=ALL",
+        content_type="application/x-www-form-urlencoded",
+    )
+    assert result["acquisition_status"] == "http_error"
+    assert result["http_status"] == 302
+    assert result["transport_error_code"] == "BOOTSTRAP_HTTP_REDIRECT_NOT_FOLLOWED"
+    assert result["redirect_followed"] is False
+    assert result["dispatch_reservations"] == 1
+    assert openers[0].dispatched_urls == ["https://example.test/data"]
 
 
 def test_one_allowed_redirect_dispatches_twice_and_passes_bound(monkeypatch):
@@ -321,8 +371,9 @@ def test_non_redirect_http_errors_keep_ordinary_classification(monkeypatch, stat
     assert "redirect_followed" not in result
 
 
-def test_lifecycle_schema_drift_stops_materializer_before_next_probe_and_phase_e(
-    monkeypatch, tmp_path, capsys
+@pytest.mark.parametrize("tpex_transport_failure", [None, "network_error"])
+def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_phase_e(
+    monkeypatch, tmp_path, capsys, tpex_transport_failure
 ):
     spec = importlib.util.spec_from_file_location(
         "a6_sm_b1_r2_materializer",
@@ -340,7 +391,7 @@ def test_lifecycle_schema_drift_stops_materializer_before_next_probe_and_phase_e
     qualification_calls = []
     export_calls = []
 
-    def fake_probe(url, _allowed_hosts, *, save_raw=None, dispatch_budget=None, **_kwargs):
+    def fake_probe(url, _allowed_hosts, *, save_raw=None, dispatch_budget=None, method="GET", body=None, content_type=None, **_kwargs):
         dispatch_budget.reserve_before_dispatch()
         save_raw.parent.mkdir(parents=True, exist_ok=True)
         save_raw.write_bytes(b"sanitized test capture")
@@ -355,11 +406,22 @@ def test_lifecycle_schema_drift_stops_materializer_before_next_probe_and_phase_e
         else:
             source_id = "twse_etn_expired"
         calls.append(source_id)
+        if source_id == "tpex_delisted" and tpex_transport_failure:
+            return {
+                "acquisition_status": tpex_transport_failure,
+                "transport_success": False,
+                "transport_error_code": "TEST_TRANSPORT_FAILURE",
+                "dispatch_reservations": 1,
+                "request_method": method,
+                "request_body": body,
+                "request_content_type": content_type,
+            }
         return {
             "acquisition_status": "data",
             "transport_success": True,
             "http_status": 200,
             "byte_count": 24,
+            "content_type": "application/json" if method == "POST" else "text/html",
                 "dispatch_reservations": 1,
             "source_id": source_id,
         }
@@ -415,9 +477,15 @@ def test_lifecycle_schema_drift_stops_materializer_before_next_probe_and_phase_e
     ]
     assert "twse_etn_expired" not in calls
     assert len(report["sources"]) == 4
-    drift = report["sources"][-1]
-    assert drift["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
-    assert "transport_error_code" not in drift
+    result = report["sources"][-1]
+    if tpex_transport_failure:
+        assert result["bootstrap_failure_code"] == "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+        assert report["decision"] == "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE"
+        assert result["request_method"] == "POST"
+        assert result["request_body"] == b"code=&date=ALL&reason=-1&response=json&paging-offset=0&paging-size=1000"
+    else:
+        assert result["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+        assert "transport_error_code" not in result
     assert drift["lifecycle_schema_drift"] == {
         "source_id": "tpex_delisted",
         "parser": "parse_tpex_delisted",

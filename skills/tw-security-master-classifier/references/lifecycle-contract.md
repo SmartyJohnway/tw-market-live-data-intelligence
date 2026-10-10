@@ -80,7 +80,7 @@ Use three-state values:
 | Event | Preferred source |
 |---|---|
 | TWSE company delisting | TWSE terminated-listing table |
-| TPEx company delisting | Official TPEx landing interface; lifecycle data contract unresolved, automatic acquisition blocked |
+| TPEx company delisting | Official TPEx structured `company/deListed` JSON endpoint; POST `date=ALL`, single-response count reconciliation, ROC date parser |
 | Emerging termination/transfer | TPEx market announcement |
 | ETN expiry/termination | TWSE or TPEx ETN termination table |
 | ETF termination | Exchange announcement and ETF information center |
@@ -161,24 +161,40 @@ Active retrieval and interpretation of linked PDFs or announcement attachments r
 - Recognizable HTML with no governed lifecycle header is `schema_drift`, not a valid empty result. CLI adapters must return a nonzero exit code and structured issue details.
 - Detect ROC forms including `114年07月24日`, `114/07/24`, `114-07-24`, and seven-digit compact dates. Preserve `date_raw` and never infer `Gregorian` merely because a ROC separator was not `/`.
 
-### TPEx company-delisting landing versus data contract (2026-10-10)
+### TPEx company-delisting landing and qualified data contract (2026-10-10)
 
 The preserved SM-B1 capture of the official company-delisting landing URL is an
 HTML client-loaded interface, not a lifecycle HTML table. Its SHA-256 is
 `f6eaa4a4969219dc5a633f43e056d8fa2d31fa944c1e23125f24836733f86853`
-(11,521 bytes). The capture references `API_PATTERN` symbolically and supplies
-`company/deListed` as a client initializer action. It establishes neither the
-complete data endpoint nor its representation, required fields, or date/error/empty
-semantics. The current source manifest therefore blocks automatic acquisition
-until a separately governed data contract is qualified.
+(11,521 bytes). R3 correctly treated this capture alone as insufficient to
+establish the data contract. Later bounded R4/R5-P1 evidence established the
+official endpoint and its request composition; R5-P1-R2 qualified historical
+coverage from one `date=ALL` response.
 
-`parse_tpex_delisted.py` continues to parse supplied legacy HTML tables and
-preserves `tpex_delisted`, security code, effective date, raw date, calendar,
-source URL, and evidence status. A shell without a table raises
-`LifecycleSchemaDrift`; it does not produce a valid empty lifecycle dataset.
+The governed production request is one POST to
+`https://www.tpex.org.tw/www/zh-tw/company/deListed` using
+`application/x-www-form-urlencoded; charset=UTF-8` and fixed parameters
+`code=&date=ALL&reason=-1&response=json&paging-offset=0&paging-size=1000`.
+The JSON response must have `stat == "ok"`, the expected `tables/date/stat`
+root and five-field table schema, and `len(data) == totalCount <= 1000`.
+Qualification observed 582 rows in one response across 33 years, from
+1992-10-27 through 2026-10-01. Dates must be valid ROC dates and are normalized
+using the existing date utilities. Empty `data=[]` with `totalCount=0` and
+`stat=ok` is a valid empty result; a non-ok application status is a source
+failure, not an empty result. Blank reasons are retained as blank/unknown.
+
+This is technical source-contract qualification only. It does not assert provider
+automation or redistribution permission. The Security Master bootstrap remains
+separately authorized and has not been run by this qualification tranche.
+
+`parse_tpex_delisted.py` parses the qualified JSON endpoint and retains supplied
+legacy HTML-table compatibility for historical captures. A client shell without
+a table raises `LifecycleSchemaDrift`; it does not produce a valid empty lifecycle
+dataset.
 No valid source evidence is not proof that no lifecycle event occurred.
 
 The offline R3 landing analyzer emits structural/discovery metadata only and
 creates no lifecycle events. Any proposed inspection of captured script references
-requires separate bounded authorization. Historical manifests and supplied
-fixtures do not establish current retrieval authority.
+required separate bounded authorization. Historical manifests and supplied
+fixtures did not establish retrieval authority; the later R5-P1-R2 qualification
+evidence now governs the current endpoint contract.

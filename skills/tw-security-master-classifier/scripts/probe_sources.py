@@ -81,6 +81,8 @@ class SafeRedirectHandler(urllib.request.HTTPRedirectHandler):
         self.max_followed_redirects = max_followed_redirects
 
     def redirect_request(self, req: urllib.request.Request, fp: Any, code: int, msg: str, headers: Any, newurl: str) -> urllib.request.Request | None:
+        original_method = req.get_method().upper()
+        original_data = req.data
         absolute = urljoin(req.full_url, newurl)
         try:
             validate_url(absolute, self.allowed_hosts)
@@ -95,9 +97,23 @@ class SafeRedirectHandler(urllib.request.HTTPRedirectHandler):
             )
         if self.dispatch_budget is not None:
             # urllib dispatches the returned request only after this reservation.
+            # Reserve only after checking that urllib will preserve the source
+            # request method/body. A 301/302/303 must not turn governed POST into GET.
+            redirected = super().redirect_request(req, fp, code, msg, headers, absolute)
+            if redirected is None:
+                return None
+            if redirected.get_method().upper() != original_method or redirected.data != original_data:
+                raise RedirectRejected("BOOTSTRAP_REDIRECT_METHOD_CHANGED")
             self.dispatch_budget.reserve_before_dispatch()
+            self.redirect_count += 1
+            return redirected
+        redirected = super().redirect_request(req, fp, code, msg, headers, absolute)
+        if redirected is None:
+            return None
+        if redirected.get_method().upper() != original_method or redirected.data != original_data:
+            raise RedirectRejected("BOOTSTRAP_REDIRECT_METHOD_CHANGED")
         self.redirect_count += 1
-        return super().redirect_request(req, fp, code, msg, headers, absolute)
+        return redirected
 
 
 def find_source_contract(manifest: dict[str, Any], source_id: str | None, url: str) -> dict[str, Any]:
@@ -151,6 +167,8 @@ def assess_json(data: bytes, contract: dict[str, Any]) -> dict[str, Any]:
 def _base(url: str, observed_at: str) -> dict[str, Any]:
     return {
         "requested_url": url,
+        "request_method": "GET",
+        "request_content_type": None,
         "final_url": None,
         "redirect_count": 0,
         "observed_at": observed_at,
@@ -170,17 +188,34 @@ def probe(
     save_raw: Path | None = None,
     dispatch_budget: BootstrapDispatchBudget | None = None,
     max_followed_redirects: int | None = None,
+    method: str = "GET",
+    body: bytes | None = None,
+    content_type: str | None = None,
 ) -> dict[str, Any]:
     validate_url(url, allowed_hosts)
+    if (
+        not isinstance(method, str)
+        or not method.isascii()
+        or method != method.upper()
+        or method not in {"GET", "POST"}
+    ):
+        raise ValueError("BOOTSTRAP_METHOD_REJECTED")
+    if (method == "GET" and body is not None) or (method == "POST" and not isinstance(body, bytes)):
+        raise ValueError("BOOTSTRAP_REQUEST_BODY_INVALID")
     observed_at = datetime.now(timezone.utc).isoformat()
     base = _base(url, observed_at)
+    base["request_method"] = method
+    base["request_content_type"] = content_type
     handler = SafeRedirectHandler(
         allowed_hosts,
         dispatch_budget=dispatch_budget,
         max_followed_redirects=max_followed_redirects,
     )
     opener = urllib.request.build_opener(handler, urllib.request.HTTPSHandler(context=ssl.create_default_context()))
-    request = urllib.request.Request(url, headers={"User-Agent": "tw-security-master-classifier/1.1 (+official-source-validation)"})
+    request_headers = {"User-Agent": "tw-security-master-classifier/1.1 (+official-source-validation)"}
+    if content_type is not None:
+        request_headers["Content-Type"] = content_type
+    request = urllib.request.Request(url, data=body, headers=request_headers, method=method)
     dispatches_before = dispatch_budget.used_dispatches if dispatch_budget else None
     try:
         if dispatch_budget is not None:
@@ -227,6 +262,7 @@ def probe(
             "redirect_count": handler.redirect_count,
             "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before),
             "http_status": exc.code,
+            "content_type": exc.headers.get_content_type() if exc.headers else None,
             "acquisition_status": "http_error",
             "raw_payload_sha256": file_sha256(data),
         }

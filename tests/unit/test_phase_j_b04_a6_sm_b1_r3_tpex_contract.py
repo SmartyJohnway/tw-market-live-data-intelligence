@@ -146,25 +146,34 @@ def test_legacy_supplied_html_table_preserves_lifecycle_semantics():
     assert event["evidence_status"] == "official_table"
 
 
-def test_manifest_is_truthful_and_schema_valid_without_guessed_endpoint():
+def test_current_manifest_is_truthful_and_schema_valid_for_qualified_json_endpoint():
     manifest, source = source_manifest()
     jsonschema.validate(manifest, json.loads((SKILL / "references/schemas/source-manifest.schema.json").read_text()))
     assert source["id"] == "tpex_company_delisted"
-    assert source["url"] == LANDING_URL
-    assert source["format"] == "client_rendered_shell"
-    assert source["verification"] == "landing_capture_verified_data_contract_unresolved"
-    assert source["contract_state"] == "blocked_pending_data_endpoint_qualification"
-    assert source["production_automatic_acquisition"] is False
+    assert source["url"] == "https://www.tpex.org.tw/www/zh-tw/company/deListed"
+    assert source["format"] == "json"
+    assert source["verification"] == "live_all_history_single_response_qualified_2026-10-10"
+    assert source["contract_state"] == "qualified_data_contract"
+    assert source["production_automatic_acquisition"] is True
     assert source["landing_page_contract"]["capture_sha256"] == CAPTURE_SHA256
-    assert source["lifecycle_data_contract"]["endpoint"] is None
-    assert source["lifecycle_data_contract"]["state"] == "unresolved"
+    assert source["landing_page_contract"]["url"] == LANDING_URL
+    assert source["lifecycle_data_contract"]["endpoint"] == source["url"]
+    assert source["lifecycle_data_contract"]["state"] == "qualified"
+    assert source["lifecycle_data_contract"]["request"]["fixed_parameters"]["date"] == "ALL"
+    assert source["lifecycle_data_contract"]["request"]["fixed_parameters"]["paging-size"] == "1000"
+    assert source["lifecycle_data_contract"]["coverage_qualification"]["qualified_row_count"] == 582
     assert source["events"] == ["tpex_delisted"]
 
 
 def test_unresolved_contract_blocks_real_materializer_before_any_probe(monkeypatch, tmp_path):
     module = materializer()
+    manifest, _ = source_manifest()
+    manifest["lifecycle_sources"] = copy.deepcopy(manifest["lifecycle_sources"])
+    next(s for s in manifest["lifecycle_sources"] if s["id"] == "tpex_company_delisted")["contract_state"] = "blocked_pending_data_endpoint_qualification"
     calls = []
     monkeypatch.setattr(module, "BUNDLE_BASE", tmp_path / "bundles")
+    monkeypatch.setattr(module, "MANIFEST_PATH", tmp_path / "source-manifest.json")
+    module.MANIFEST_PATH.write_text(json.dumps(manifest), encoding="utf-8")
     monkeypatch.setattr(module, "probe", lambda *_args, **_kwargs: calls.append("probe"))
     monkeypatch.setattr(module, "export_verified_security_master_snapshot", lambda *_args, **_kwargs: calls.append("export"))
     with pytest.raises(RuntimeError, match="BOOTSTRAP_TPEX_LIFECYCLE_DATA_CONTRACT_UNRESOLVED"):
@@ -174,16 +183,27 @@ def test_unresolved_contract_blocks_real_materializer_before_any_probe(monkeypat
 
 
 @pytest.mark.parametrize("change", [
-    {"production_automatic_acquisition": True},
-    {"contract_state": "qualified_data_contract"},
+    {"production_automatic_acquisition": False},
+    {"contract_state": "blocked_pending_data_endpoint_qualification"},
     {"verification": "payload_verified"},
+    {"url": LANDING_URL},
 ])
-def test_partial_manifest_promotion_cannot_unlock_acquisition(change):
+def test_incomplete_or_stale_manifest_cannot_unlock_acquisition(change):
     manifest, _ = source_manifest()
     manifest = copy.deepcopy(manifest)
     next(s for s in manifest["lifecycle_sources"] if s["id"] == "tpex_company_delisted").update(change)
     with pytest.raises(RuntimeError, match="BOOTSTRAP_TPEX_LIFECYCLE_DATA_CONTRACT_UNRESOLVED"):
         materializer()._require_tpex_lifecycle_data_contract(manifest)
+
+
+def test_governed_tpex_request_is_fixed_and_single_response():
+    manifest, _ = source_manifest()
+    module = materializer()
+    module._require_tpex_lifecycle_data_contract(manifest)
+    endpoint, body, content_type = module._tpex_delisted_request(manifest)
+    assert endpoint == "https://www.tpex.org.tw/www/zh-tw/company/deListed"
+    assert body == b"code=&date=ALL&reason=-1&response=json&paging-offset=0&paging-size=1000"
+    assert content_type == "application/x-www-form-urlencoded; charset=UTF-8"
 
 
 def test_capture_unavailable_or_wrong_hash_is_not_reacquired(tmp_path):

@@ -26,7 +26,14 @@ def test_bootstrap_inventory_is_the_five_materializer_probes_and_manifest_hosts(
         "twse_etn_expired",
     ]
     assert all(item["allowed_host_present"] for item in inventory)
-    assert all(item["http_method"] == "GET" for item in inventory)
+    assert {item["source_id"]: item["http_method"] for item in inventory} == {
+        "twse_isin_mode2_zh": "GET",
+        "twse_isin_mode4_zh": "GET",
+        "twse_delisted": "GET",
+        "tpex_delisted": "POST",
+        "twse_etn_expired": "GET",
+    }
+    assert next(item for item in inventory if item["source_id"] == "tpex_delisted")["initial_url"] == "https://www.tpex.org.tw/www/zh-tw/company/deListed"
     assert all(item["timeout_seconds"] == 20 for item in inventory)
     assert all(item["response_size_bound_bytes"] == 20 * 1024 * 1024 for item in inventory)
     assert all(item["source_contract_identifier"] is None for item in inventory)

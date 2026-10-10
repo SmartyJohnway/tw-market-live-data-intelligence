@@ -39,7 +39,13 @@ def main() -> int:
     assert len(inventory) == 5 == record["security_master"]["logical_official_source_probes"]
     declared = record["security_master"]["probes"]
     assert [p["source_id"] for p in declared] == [p["source_id"] for p in EXPECTED_LOGICAL_PROBES]
-    assert [p["initial_url"] for p in declared] == [p["initial_url"] for p in inventory]
+    # P1 is an immutable historical snapshot. R5-P1-R2 later promoted the
+    # same TPEx logical source from its landing URL to the qualified JSON API.
+    assert next(p for p in declared if p["source_id"] == "tpex_delisted")["initial_url"] == "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html"
+    assert [p["initial_url"] for p in declared if p["source_id"] != "tpex_delisted"] == [
+        p["initial_url"] for p in inventory if p["source_id"] != "tpex_delisted"
+    ]
+    assert next(p for p in inventory if p["source_id"] == "tpex_delisted")["http_method"] == "POST"
     assert all(p["method"] == "GET" for p in declared)
     assert all(p["source_contract_identifier"] is None for p in declared)
     # Keep P1's original disposition as history; R1 supersedes only the
