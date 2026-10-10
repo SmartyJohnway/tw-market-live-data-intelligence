@@ -25,6 +25,7 @@ from scripts.phase_i_i3_a4_compat import (
     project_current_a3_h2_addition,
     strip_a26_production_adapter_addition,
     strip_a3_h2_production_adapter_addition,
+    strip_a6_transport_instrumentation,
 )
 from scripts.m8r_08g_security_master_releases import SECURITY_MASTER_ROOT, load_active_identity_service
 from scripts.m8r_filesystem_safety import atomic_write_bytes
@@ -190,6 +191,7 @@ def production_containment() -> None:
                 "def build_production_runtime_adapter_registry() -> RuntimeAdapterRegistry:", 1)
             current_text = strip_a26_production_adapter_addition(current_text)
             current_text = strip_a3_h2_production_adapter_addition(current_text)
+            current_text = strip_a6_transport_instrumentation(current_text)
             require(current_text == baseline_text, f"non_i3_production_authority_drift:{rel}")
         else:
             require((ROOT / rel).read_bytes() == subprocess.check_output(
