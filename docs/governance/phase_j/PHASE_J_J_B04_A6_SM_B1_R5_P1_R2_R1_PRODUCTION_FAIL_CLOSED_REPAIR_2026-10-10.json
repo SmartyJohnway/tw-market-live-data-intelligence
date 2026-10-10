@@ -1,0 +1,188 @@
+{
+  "gate": "J-B04-A6-SM-B1-R5-P1-R2-R1",
+  "starting_authority": {
+    "head": "6bc39b5a86a6af3ac3bc726117ef62a9bed2e35f",
+    "tree": "0fd18c1c6f83f5919bcc87a3083d9cd64cb5534e",
+    "main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "tracked_worktree_clean": true
+  },
+  "prior_R5_P1_R2_implementation_commit": "47e9c1ab997ce6bc2bfff37bc84344957da7daa7",
+  "prior_R5_P1_R2_evidence_commit": "6bc39b5a86a6af3ac3bc726117ef62a9bed2e35f",
+  "review_id": "5478330630",
+  "source_qualification_retained": true,
+  "source_qualification": {
+    "endpoint": "https://www.tpex.org.tw/www/zh-tw/company/deListed",
+    "request": "POST date=ALL paging-size=1000",
+    "returned_rows": 582,
+    "totalCount": 582,
+    "earliest_date": "1992-10-27",
+    "latest_date": "2026-10-01",
+    "duplicate_lifecycle_identities": 0,
+    "bootstrap_fit": "one deliberate TPEx dispatch"
+  },
+  "production_repairs": {
+    "defect_A": {
+      "root_cause": "TPEx lifecycle transport failure handling was misplaced in Phase B identity-source loop and referenced is_tpex_api before its lifecycle-loop definition.",
+      "repair": "Removed TPEx-specific classification from Phase B; identity failures remain generic and continue under existing semantics.",
+      "regression": "test_identity_source_transport_failure_remains_source_generic"
+    },
+    "defect_B": {
+      "root_cause": "Phase D appended non-data TPEx acquisition failure and continued to the next lifecycle source.",
+      "repair": "After the TPEx source is identified in Phase D, acquisition failure records BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE / BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE, writes the sanitized failure report, and returns immediately.",
+      "next_probe": "blocked",
+      "Phase_E": "blocked",
+      "snapshot_export": "blocked",
+      "candidate_activation": "blocked"
+    },
+    "schema_drift_separate": true,
+    "fixed_TPEx_request_unchanged": "code=&date=ALL&reason=-1&response=json&paging-offset=0&paging-size=1000",
+    "parser_and_manifest_changed": false
+  },
+  "unit_test_repair": {
+    "prior_test": "test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_phase_e",
+    "defect": "Transport case fell through to schema-drift assertions and reused drift as callable and result.",
+    "replacement_tests": [
+      "test_tpex_transport_failure_stops_before_next_probe_and_phase_e",
+      "test_tpex_schema_drift_stops_before_next_probe_and_phase_e",
+      "test_identity_source_transport_failure_remains_source_generic"
+    ],
+    "post_redirect_assertion_correction": "The existing probe guard rejects method-changing POST redirects as BOOTSTRAP_REDIRECT_REJECTED; test expectation now matches this unchanged transport behavior."
+  },
+  "implementation": {
+    "commit": "76e60b50ca835f56f52d7e6efec77191057cfde0",
+    "tree": "8c58f20c90b4adb7f8e69dfdf87bcfb28cd41332",
+    "files": [
+      "scripts/m8r_06_01b_materialize_production_inputs.py",
+      "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py",
+      "scripts/validate_phase_j_b04_a6_sm_b1_r2_fail_closed_repair.py",
+      "scripts/validate_phase_j_b04_a6_sm_b1_r3_tpex_source_contract.py"
+    ]
+  },
+  "validation": {
+    "pytest_environment": {
+      "interpreter": "/tmp/a5test-venv/bin/python",
+      "real_interpreter": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "python": "3.12.14",
+      "pytest": "9.1.1",
+      "recovered_offline": true,
+      "network_used_for_setup": false
+    },
+    "focused_tests": [
+      {
+        "command": "pytest -q tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py tests/unit/test_parse_tpex_delisted_json.py tests/unit/test_phase_j_b04_a6_p1_prerequisite_authority.py tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "passed": 57,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "command": "pytest -q tests/unit/test_m8r_06_01b_production_input_materialization.py tests/unit/test_m8r_08g_identity_service_and_releases.py",
+        "passed": 17,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "default_ci_comparison": {
+      "base": "6bc39b5a86a6af3ac3bc726117ef62a9bed2e35f",
+      "candidate": "76e60b50ca835f56f52d7e6efec77191057cfde0",
+      "base_tree": "0fd18c1c6f83f5919bcc87a3083d9cd64cb5534e",
+      "candidate_tree": "8c58f20c90b4adb7f8e69dfdf87bcfb28cd41332",
+      "base_counts": {
+        "collected": 1288,
+        "selected": 1283,
+        "passed": 1234,
+        "failed": 45,
+        "skipped": 4,
+        "deselected": 5
+      },
+      "candidate_counts": {
+        "collected": 1288,
+        "selected": 1283,
+        "passed": 1234,
+        "failed": 45,
+        "skipped": 4,
+        "deselected": 5
+      },
+      "new_failure_delta": 0,
+      "candidate_failure_node_ids_subset_of_base": true,
+      "base_failure_node_ids_sha256": "d56529deec0621464b37be842c944966a20d9adeda0005df616752b5b77a5cfc",
+      "candidate_failure_node_ids_sha256": "d56529deec0621464b37be842c944966a20d9adeda0005df616752b5b77a5cfc",
+      "base_profile_json_sha256": "011d8f2a6747c2404b2de9bc5fa66ed8b62e8ae889f758523f2741a7cca62866",
+      "candidate_profile_json_sha256": "a179fac4a1bc7be39b828a26157f240a0b50a7301b5963f02587bc31dbc44d1a",
+      "base_full_output_sha256": "2de051e3f168a18d61fc3edff4344fad81fa11e9f12ffdf1e47cad3c76f52fb6",
+      "candidate_full_output_sha256": "cf9dc57d055634e359a44aa08270023b5972a95f5a86badce71b07fd43ffd7fa",
+      "environment": "clean git archives; CPython 3.12.14 / pytest 9.1.1; TZ=Etc/UTC; PYTHONHASHSEED=0",
+      "network_denied": true,
+      "commands_exit_code": {
+        "base": 1,
+        "candidate": 1
+      }
+    },
+    "additional_baseline_fixture_suite": {
+      "test_file": "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py",
+      "base": {
+        "failed": 8,
+        "passed": 10,
+        "failure_node_count": 8,
+        "failure_node_ids_sha256": "8b8fa46856e861247dd50ecdc484f1313ae4c0f19022336e38d47694f82c361f"
+      },
+      "candidate": {
+        "failed": 8,
+        "passed": 10,
+        "failure_node_count": 8,
+        "failure_node_ids_sha256": "8b8fa46856e861247dd50ecdc484f1313ae4c0f19022336e38d47694f82c361f"
+      },
+      "assessment": "8 current-skill-contract-hash failures are identical on base and candidate; 10 passed on each."
+    },
+    "local_582_row_replay": {
+      "available": true,
+      "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r2/raw/01-all_size_1000.body",
+      "sha256": "d70bcef49999ffb4c6642ae1e55910e26636d02fd4eb90f8eab84094b98de4a5",
+      "bytes": 71065,
+      "events_parsed": 582,
+      "all_LifecycleEvent_schema_valid": true,
+      "duplicate_identity_count": 0
+    },
+    "governance_validators": {
+      "passed": [
+        "validate_phase_j_b04_a6_p0_integrated_acceptance.py",
+        "validate_phase_j_b04_a6_p1_prerequisite_authority.py",
+        "validate_phase_j_b04_a6_p1_r1_bootstrap_transport_bound.py",
+        "validate_phase_j_b04_a6_sm_b1_r2_fail_closed_repair.py",
+        "validate_phase_j_b04_a6_sm_b1_r3_tpex_source_contract.py",
+        "validate_phase_j_b04_a6_sm_b1_r5_p1_r2_tpex_history.py"
+      ],
+      "R1_validator": "validate_phase_j_b04_a6_sm_b1_r5_p1_r2_r1.py: PASS"
+    },
+    "compileall": "PASS for scripts, tests, and skills",
+    "ast_phase_boundary_assertions": "PASS",
+    "git_diff_check": "PASS",
+    "historical_evidence_sha256": {
+      "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_SECURITY_MASTER_BOOTSTRAP_2026-10-10.json": "2922ec11b6ef167d775e629885d032ee8b1dc07bfea284b4323c16e82e318226",
+      "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_SECURITY_MASTER_BOOTSTRAP_2026-10-10.md": "385f5bca6b262ae993e5fa1e0ff2542c421a36333cbf3492fcbe3ddc8b1a7e7d",
+      "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R2_FAIL_CLOSED_REPAIR_2026-10-10.json": "0d58bb58a85ace538020df33537a4e9aaf7be3e0683985aeab24845dc1ac1c2c",
+      "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R2_FAIL_CLOSED_REPAIR_2026-10-10.md": "6e4a1e5b4aa1652d190a1b03ecaa6ca4fc280d23334cfb4c14188057c9ca3a7a",
+      "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R5_P1_R1_TPEX_LIFECYCLE_CONTRACT_QUALIFICATION_2026-10-10.json": "d876e56171a40c8e5962a2563a58e9eb689c268db11bc813f4161edf48d8f3ec",
+      "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R5_P1_R1_TPEX_LIFECYCLE_CONTRACT_QUALIFICATION_2026-10-10.md": "6dac661f531f5b41df2f3103197b5fb6c956012930bdf398bb813f76ac995387",
+      "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R5_P1_R2_TPEX_HISTORICAL_COVERAGE_QUALIFICATION_2026-10-10.json": "9ddfc816741383b80aadc4f1744a931661652dc25e357eef242b58b8a33d9694",
+      "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R5_P1_R2_TPEX_HISTORICAL_COVERAGE_QUALIFICATION_2026-10-10.md": "22b8d1a6a857cad4ba84adbc3ab6890c7920b4eadb7ccb47610d9f03c124ea75"
+    },
+    "snapshot_suite_base_candidate_failures_equal": true,
+    "R1_validator": "PASS"
+  },
+  "network_counts": {
+    "market_GET_HEAD_POST": "0/0/0",
+    "security_master_live_acquisition": 0
+  },
+  "canonical_state": {
+    "production_identity_verified": false,
+    "bootstrap_attempt_2": "NOT_AUTHORIZED",
+    "H2": "INACTIVE",
+    "routing": "plan_only",
+    "selected_executor": null,
+    "J-B04": "BLOCKING",
+    "Phase_J": "NOT_STARTED",
+    "MCP": 6
+  },
+  "TWSE_307_blockers_remain": true,
+  "final_disposition": "SM_B1_R5_P1_R2_R1_PRODUCTION_FAIL_CLOSED_REPAIR_PASS"
+}
