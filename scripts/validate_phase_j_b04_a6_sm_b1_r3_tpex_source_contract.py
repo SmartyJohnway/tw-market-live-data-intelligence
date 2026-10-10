@@ -39,6 +39,11 @@ def main():
     other['lifecycle_sources'] = [s for s in manifest['lifecycle_sources'] if s['id'] != 'tpex_company_delisted']
     assert hashlib.sha256(json.dumps(other,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest() == record['manifest_correction']['other_manifest_content_sha256']
     inv = record['structural_inventory']
+    assert (inv['table_element_count'], inv['form_count'], inv['script_element_count'], inv['inline_script_count']) == (0, 3, 14, 2)
+    assert inv['embedded_json_script_blocks']['count'] == 0
+    assert inv['API_PATTERN']['symbolic_reference_only'] is True
+    assert inv['API_PATTERN']['declaration_present'] is False
+    assert inv['API_PATTERN']['literal_value_present'] is False
     assert inv['company/deListed']['classification'] == 'SYMBOLIC_ACTION_TOKEN'
     assert inv['company/deListed']['exact_literal_occurrence_count'] == 1
     assert inv['executable_lifecycle_data_endpoint'] is None

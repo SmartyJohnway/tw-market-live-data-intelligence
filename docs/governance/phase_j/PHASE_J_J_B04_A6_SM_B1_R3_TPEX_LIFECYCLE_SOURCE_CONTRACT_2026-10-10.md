@@ -13,3 +13,5 @@ SM-B1 and R2 evidence remain byte-identical. Historical manifests explain earlie
 Market GET/HEAD/POST: 0/0/0. Security Master acquisition: 0. H2 INACTIVE, route plan_only, selected executor null; J-B04 BLOCKING; Phase J NOT_STARTED; MCP 6. PR #326 remains Draft and unmerged.
 
 The companion JSON contains the sanitized structural inventory, exact source metadata, historical hashes and validation results. No raw capture or script body is published.
+
+Validation: 333 focused tests passed, two skipped; 201 standalone Skill checks passed; all twelve governance validators passed. Compileall and diff checks passed. Strict duplicate-key scan: 1,046 JSON files. Clean-archive default-CI compared the exact baseline against implementation `be90796a935fe786ee31f40084083adbb11d69a7` under identical CPython 3.12.14/dependencies, TZ=UTC, PYTHONHASHSEED=0, and denied sockets. Both retain the same 46 pre-existing failures (including the network-denied localhost vertical); new failure delta is zero. The companion JSON records exact counts and failure IDs. No source calls occurred.
