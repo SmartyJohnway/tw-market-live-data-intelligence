@@ -321,8 +321,8 @@
     "PR_326": "Draft/open/unmerged"
   },
   "network_policy": {
-    "security_master_live_acquisition": 0,
-    "market_data_calls": {
+    "security_master_bootstrap_acquisition": 0,
+    "A6_integrated_market_execution_calls": {
       "GET": 0,
       "HEAD": 0,
       "POST": 0
