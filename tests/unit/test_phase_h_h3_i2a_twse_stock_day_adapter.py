@@ -161,6 +161,64 @@ def test_observation_normalization_roc_dates_volume_close_order_and_citation() -
 
 
 @pytest.mark.parametrize(
+    ("token", "expected"),
+    [
+        ("0", 0.0),
+        ("15", 15.0),
+        ("15.80", 15.8),
+        ("999.99", 999.99),
+        ("1000", 1000.0),
+        ("1000.00", 1000.0),
+        ("1,000", 1000.0),
+        ("1,000.00", 1000.0),
+        ("12,345", 12345.0),
+        ("12,345.67", 12345.67),
+        ("999,999.99", 999999.99),
+        ("1,234,567.89", 1234567.89),
+    ],
+)
+def test_plain_and_well_grouped_close_values_are_normalized(token: str, expected: float) -> None:
+    result = _fetch(FakeHTTPGet(FakeResponse(_html(_row("110/02/01", close=token)))))
+    assert result.status == "available"
+    assert result.observations[0]["close"] == expected
+    assert result.error_code is None
+
+
+def test_2330_style_high_price_is_a_synthetic_network_free_regression() -> None:
+    result = _fetch(
+        FakeHTTPGet(FakeResponse(_html(
+            _row("115/10/01", close="1,440.00"),
+            title="115年10月 2330 台積電 各日成交資訊",
+        ))),
+        target={"canonical_target_id": "TWSE:2330", "market": "TWSE", "security_code": "2330"},
+        requested_month="2026-10",
+    )
+    assert result.status == "available"
+    assert result.observations[0]["canonical_target_id"] == "TWSE:2330"
+    assert result.observations[0]["trade_date"] == "2026-10-01"
+    assert result.observations[0]["close"] == 1440.0
+    assert result.observations[0]["citation_ids"]
+
+
+@pytest.mark.parametrize(
+    "token",
+    ["1,00", "12,34.56", "1,,000", "1,234,56", "1 000.00", "+1,000.00", "-1,000.00",
+     ",1000", "1000,", "1,000,", "1，000.00", "1,000.", "ABC", "NaN", "Infinity"],
+)
+def test_malformed_close_grouping_and_non_numeric_tokens_fail_closed(token: str) -> None:
+    result = _fetch(FakeHTTPGet(FakeResponse(_html(_row("110/02/01", close=token)))))
+    assert result.status == "source_failed"
+    assert result.error_code == "source_failed:invalid_close:invalid_numeric_token"
+
+
+def test_close_lexical_classification_is_bounded_and_does_not_echo_tokens() -> None:
+    assert adapter._close_lexical_class("15.80") == "plain_numeric"
+    assert adapter._close_lexical_class("1,000.00") == "grouped_numeric"
+    assert adapter._close_lexical_class("--") == "unavailable_marker"
+    assert adapter._close_lexical_class("12,34.56") == "invalid_numeric_token"
+
+
+@pytest.mark.parametrize(
     ("target", "family", "kind"),
     [
         ({"canonical_target_id": "TPEX:1423", "market": "TPEX", "security_code": "1423"}, "company_share", "common_share"),
@@ -237,7 +295,8 @@ def test_two_complete_report_tables_are_rejected_as_ambiguous() -> None:
         (_row("110/03/01"), "source_failed:row_outside_requested_month"),
         (_row("110/02/xx"), "source_failed:invalid_row_date"),
         (_row("110/02/01", "24x,011"), "source_failed:invalid_volume"),
-        (_row("110/02/01", "240,011", "ABC"), "source_failed:invalid_close"),
+        (_row("110/02/01", "240,011", "ABC"), "source_failed:invalid_close:invalid_numeric_token"),
+        # Syntactically numeric but outside the finite supported output range.
         (_row("110/02/01", "240,011", "9" * 400), "source_failed:invalid_close"),
         ("<tr><td>110/02/01</td><td>1</td></tr>", "source_failed:invalid_data_row_width"),
     ],
@@ -257,6 +316,15 @@ def test_identical_duplicate_row_is_deduplicated_but_conflict_fails_closed() -> 
     conflicting = _fetch(FakeHTTPGet(FakeResponse(_html(row, _row("110/02/01", close="15.81")))))
     assert conflicting.status == "source_failed"
     assert conflicting.error_code == "source_failed:conflicting_duplicate_trade_date"
+
+    # Duplicate conflict identity remains based on the raw source row, so
+    # lexical equivalents are not silently collapsed by numeric normalization.
+    lexical_equivalent = _fetch(FakeHTTPGet(FakeResponse(_html(
+        _row("110/02/01", close="1,000.00"),
+        _row("110/02/01", close="1000.00"),
+    ))))
+    assert lexical_equivalent.status == "source_failed"
+    assert lexical_equivalent.error_code == "source_failed:conflicting_duplicate_trade_date"
 
 
 def test_verified_unavailable_close_is_excluded_with_source_provenance_in_mixed_month() -> None:

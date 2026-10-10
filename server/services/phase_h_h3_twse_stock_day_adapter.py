@@ -44,7 +44,8 @@ _REPORT_TITLE = re.compile(
 )
 _ROC_ROW_DATE = re.compile(r"(?P<year>\d{3})/(?P<month>\d{2})/(?P<day>\d{2})")
 _VOLUME = re.compile(r"(?:[0-9]+|[0-9]{1,3}(?:,[0-9]{3})+)")
-_CLOSE = re.compile(r"[0-9]+(?:\.[0-9]+)?")
+_PLAIN_CLOSE = re.compile(r"[0-9]+(?:\.[0-9]+)?")
+_GROUPED_CLOSE = re.compile(r"[0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]+)?")
 
 
 class TWSEStockDayFormatError(ValueError):
@@ -290,11 +291,26 @@ def _parse_volume(value: str) -> int:
     return int(value.replace(",", ""))
 
 
+def _close_lexical_class(value: str) -> str:
+    """Classify close syntax without retaining or echoing the source token."""
+    if value == "--":
+        return "unavailable_marker"
+    if _PLAIN_CLOSE.fullmatch(value):
+        return "plain_numeric"
+    if _GROUPED_CLOSE.fullmatch(value):
+        return "grouped_numeric"
+    return "invalid_numeric_token"
+
+
 def _parse_close(value: str) -> float:
-    if not _CLOSE.fullmatch(value):
-        raise TWSEStockDayFormatError("source_failed:invalid_close")
+    lexical_class = _close_lexical_class(value)
+    if lexical_class not in {"plain_numeric", "grouped_numeric"}:
+        # The class is bounded diagnostic metadata; never include the raw cell.
+        raise TWSEStockDayFormatError(
+            f"source_failed:invalid_close:{lexical_class}"
+        )
     try:
-        amount = Decimal(value)
+        amount = Decimal(value.replace(",", ""))
     except InvalidOperation as exc:
         raise TWSEStockDayFormatError("source_failed:invalid_close") from exc
     if not amount.is_finite() or amount < 0:
