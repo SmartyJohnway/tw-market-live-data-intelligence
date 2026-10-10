@@ -1,0 +1,247 @@
+{
+  "authority": {
+    "a6_independent_review_id": "5479029771",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "owner_authorization_sha256": "155c031e8065d115c5ccfde684316c69b178cc82885e06f39257a83ebbf1dfc7",
+    "starting_head": "70b7c376b42185620a5d7f07c62e088f902c76a1",
+    "starting_tree": "0d5b058a90e2f4bbe7d7b03d993d97a3dd02e4cf"
+  },
+  "evidence_publication": "Separate evidence-only commit follows the tested implementation commit; publication commit hash and final HEAD/TREE are reported at terminal return.",
+  "final_state": {
+    "a6_rerun_authorized": false,
+    "h2": "ACTIVE_FOR_BOUNDED_TWSE_ROUTE",
+    "h3_repair": "NETWORK_FREE_VERIFIED",
+    "historical_a6": "HARD_BLOCK",
+    "j_b04": "BLOCKING",
+    "mcp": 6,
+    "phase_j": "NOT_STARTED",
+    "production_identity": "VERIFIED",
+    "security_master": "ACTIVE",
+    "selected_h2_executor": "phase_h_h2_twse_exright_pre_executor"
+  },
+  "gate": "J-B04-A6-R1",
+  "historical_a6": {
+    "a6_governance_immutable": true,
+    "a6_json_sha256": "1e3382bedc876fa0578ff0716c1e42a0d2a11209d2eef26e5f5d13e513571aba",
+    "a6_markdown_sha256": "f9b0ded99236246fc00ab45183a7c2d71a3d08f576a97aac4fad5bc29b571d5f",
+    "content_type": "text/html;charset=utf-8",
+    "disposition": "J_B04_A6_INTEGRATED_LIVE_ACCEPTANCE_HARD_BLOCK",
+    "historical_cause_claim": "The prior parser accepted ungrouped decimal close values but not properly grouped thousands, while grouped thousands were already supported for volume. A6 exposed this H3 close numeric lexical compatibility gap. Since the offending raw close cell was not preserved, R1 does not claim comma grouping definitively caused the historical failure.",
+    "http_status": 200,
+    "numeric_close_observations": 0,
+    "parser_failure": "invalid_close",
+    "raw_offending_close_token_available": false,
+    "response_bytes": 7529,
+    "response_sha256": "9bf1dc0caf51a596f422e4194058616a744db5dbe85c0475d1085ec19cb63f60",
+    "source": "H3-TWSE-DEFAULT-BOUNDED",
+    "target": "TWSE:2330"
+  },
+  "implementation": {
+    "commit": "065460132ea9d5b81b241e252c7e2bcc627bccf6",
+    "tree": "fa3e72c02bf009c49ffcda6e94e9a78807a8427d"
+  },
+  "network": {
+    "TPEx": 0,
+    "TWSE_GET_HEAD_POST": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "a6_live_executions": 0,
+    "external_network_denied_during_validation": true,
+    "other_market_or_source": 0,
+    "security_master_acquisition": 0
+  },
+  "repair": {
+    "accepted_close_values": [
+      "0",
+      "15",
+      "15.80",
+      "999.99",
+      "1000",
+      "1000.00",
+      "1,000",
+      "1,000.00",
+      "12,345",
+      "12,345.67",
+      "999,999.99",
+      "1,234,567.89"
+    ],
+    "duplicate_semantics": "Unchanged raw source-row signature comparison: identical rows deduplicate; conflicting same-date rows fail closed. Lexically equivalent 1,000.00 and 1000.00 remain conflicting raw rows.",
+    "endpoint": "https://www.twse.com.tw/exchangeReport/STOCK_DAY",
+    "files": [
+      "server/services/phase_h_h3_twse_stock_day_adapter.py",
+      "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py"
+    ],
+    "invalid_error_code": "source_failed:invalid_close:invalid_numeric_token",
+    "lexical_diagnostics": [
+      "plain_numeric",
+      "grouped_numeric",
+      "unavailable_marker",
+      "invalid_numeric_token"
+    ],
+    "new_close_grammar": "(?:[0-9]+|[0-9]{1,3}(?:,[0-9]{3})+)(?:\\.[0-9]+)?; implemented as distinct plain and grouped full-match patterns",
+    "normalization": "Full-match plain/grouped lexical validation precedes ASCII comma removal; Decimal conversion, finite/non-negative checks, then existing float output.",
+    "old_close_grammar": "[0-9]+(?:\\.[0-9]+)?",
+    "raw_close_value_persisted": false,
+    "recent_performance_evidence_schema_changed": false,
+    "rejected_values": [
+      "1,00",
+      "12,34.56",
+      "1,234,56",
+      "1,,000",
+      ",1000",
+      "1000,",
+      "1,000,",
+      "1 000.00",
+      "1，000.00",
+      "+1,000.00",
+      "-1,000.00",
+      "1,000.",
+      "ABC",
+      "NaN",
+      "Infinity"
+    ],
+    "source_contract_id": "TWSE_STOCK_DAY_HTML_MONTHLY_V1",
+    "source_family": "TWSE_STOCK_DAY_OFFICIAL_WEB",
+    "synthetic_2330_fixture": {
+      "classification": "synthetic_network_free_regression_only",
+      "close": "1,440.00",
+      "normalized_close": 1440.0
+    },
+    "transport_changed": false,
+    "unavailable_marker": "--",
+    "unavailable_semantics": "unusable observation with close_unavailable; never valid zero/null and existing mixed-month behavior preserved"
+  },
+  "schema_version": "j_b04_a6_r1_h3_close_numeric_repair.v1",
+  "terminal_disposition": "J_B04_A6_R1_H3_CLOSE_NUMERIC_CONTRACT_REPAIR_PASS",
+  "validation": {
+    "compileall": "PASS",
+    "default_ci": {
+      "PYTHONHASHSEED": "0",
+      "TZ": "Etc/UTC",
+      "base": {
+        "collected": 1288,
+        "deselected": 5,
+        "failed": 46,
+        "passed": 1233,
+        "skipped": 4
+      },
+      "base_status": "fail",
+      "candidate": {
+        "collected": 1288,
+        "deselected": 5,
+        "failed": 46,
+        "passed": 1233,
+        "skipped": 4
+      },
+      "candidate_only_failed_nodes": [],
+      "candidate_status": "fail",
+      "environment_same": true,
+      "existing_failed_node_ids": [
+        "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation",
+        "tests/unit/test_phase_g_pr_d_closure.py::test_phase_g_v1_frozen_schemas_and_historical_golden_remain_intact",
+        "tests/unit/test_phase_g_pr_d_public_surfaces.py::test_current_portable_catalog_is_exact_generated_v3_projection",
+        "tests/unit/test_phase_g_runtime_activation.py::test_frozen_v1_request_result_and_audit_schema_bytes_are_unchanged",
+        "tests/unit/test_phase_i_i1_market_state.py::test_i1_schema_catalog_routing_and_request_are_active_only_in_v3",
+        "tests/unit/test_phase_i_i1_production_activation.py::test_activation_validator_and_normal_registry_are_exactly_two_bounded_routes",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_current_catalog_source_and_unique_passive_registry",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]",
+        "tests/unit/test_phase_i_i3_a0_p1_adjudication.py::test_p1_governance_validator_passes_under_network_denial",
+        "tests/unit/test_phase_i_i3_a0_p1_adjudication.py::test_p1_governance_validator_rejects_attempt_two_authority_drift",
+        "tests/unit/test_phase_i_i3_a0_p3.py::test_p3_validator_production_containment_and_readiness",
+        "tests/unit/test_phase_i_i3_a0_p3_r1.py::test_r1_validator - subprocess...",
+        "tests/unit/test_phase_i_i3_a0_preflight.py::test_current_hold_record_and_runtime_containment",
+        "tests/unit/test_phase_i_i3_a0_preflight.py::test_p0_validator_cannot_claim_pass_or_rearm",
+        "tests/unit/test_phase_i_i3_a1.py::test_a1_validator_and_immutable_a0_anchors",
+        "tests/unit/test_phase_i_i3_a3_attempt_2_bounded_live.py::test_exact_mapping_and_frozen_candidate_and_production_containment",
+        "tests/unit/test_phase_i_i3_a3_r3_http520_lifecycle.py::test_committed_attempt4_pass_lineage_and_containment",
+        "tests/unit/test_phase_i_i3_a4_candidate.py::test_i3_roll_001_restores_baseline_without_disturbing_i1_i2_or_mcp",
+        "tests/unit/test_phase_i_i3_a4_preflight.py::test_preflight_validator_preserves_historical_snapshot_and_checks_active_state"
+      ],
+      "failed_node_sets_equal": true,
+      "network_denied": true,
+      "network_may_have_occurred": {
+        "base": false,
+        "candidate": false
+      },
+      "new_failure_delta": 0,
+      "profile_output_sha256": {
+        "base": "808b971e1a02de911c996df9f8fa2f33fa883572a9889d0826f930d2ac83ece6",
+        "candidate": "c0aa20bbd696b0eb5c2d629655e7978eab66fa5a702f81c99aed7d0672609b0a"
+      },
+      "python": "/tmp/a5test-venv/bin/python (CPython 3.12.14)",
+      "security_master_root": "/tmp/j-b04-a6-r1-default-ci-run2/sm-empty (same empty root for both)"
+    },
+    "focused_groups": [
+      "H3 STOCK_DAY adapter and walker",
+      "H3 recent-performance evidence",
+      "H3 production adapter",
+      "H3 live acceptance runner",
+      "H2/H3/H4 safety and derivation",
+      "A6 integrated acceptance unit tests",
+      "Result V3 and Audit V3 projection/lineage",
+      "Mode C handoff",
+      "Local Service",
+      "Workbench",
+      "MCP tools and error mapping"
+    ],
+    "focused_pytest": {
+      "integration_failed": 0,
+      "integration_passed": 34,
+      "integration_skipped": 1,
+      "total_failed": 0,
+      "total_passed": 315,
+      "total_skipped": 1,
+      "unit_failed": 0,
+      "unit_passed": 281
+    },
+    "git_diff_check": "PASS",
+    "historical_validators": {
+      "A6_P0": "PASS",
+      "A6_P1": "PASS",
+      "A6_P1_R1": "PASS",
+      "A6_live_terminal_evidence": "PASS",
+      "Phase_H_V3_contracts": "PASS"
+    },
+    "known_validator_observation": "The pre-existing scripts/validate_phase_j_b04_a6_integrated_acceptance.py was invoked while checking its CLI and raised KeyError because it assumes every transport-ledger event has method; method is on the reservation event, while the completion event records outcome/status/hash. The dedicated A6 terminal evidence validator passes. This unrelated validator is not modified in the H3-only repair.",
+    "pytest_environment": {
+      "PYTHONHASHSEED": "0",
+      "TZ": "Etc/UTC",
+      "network_guard": "/tmp/j-b04-a6-r1-no-network/sitecustomize.py; loopback permitted only",
+      "python": "/tmp/a5test-venv/bin/python",
+      "version": "CPython 3.12.14"
+    },
+    "strict_duplicate_key_json_scan": {
+      "status": "PASS",
+      "tracked_json_files": 1057
+    }
+  }
+}
