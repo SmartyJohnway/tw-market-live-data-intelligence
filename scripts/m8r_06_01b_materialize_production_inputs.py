@@ -170,6 +170,20 @@ def _sanitize_lifecycle_drift_detail(exc: LifecycleSchemaDrift) -> dict[str, Any
     }
 
 
+def _require_tpex_lifecycle_data_contract(manifest: dict[str, Any]) -> None:
+    """Block acquisition before any probe while TPEx data authority is unresolved."""
+    sources = [
+        source for source in manifest.get("lifecycle_sources", [])
+        if source.get("id") == "tpex_company_delisted"
+    ]
+    if (
+        len(sources) != 1
+        or sources[0].get("production_automatic_acquisition") is not True
+        or sources[0].get("contract_state") != "qualified_data_contract"
+    ):
+        raise RuntimeError("BOOTSTRAP_TPEX_LIFECYCLE_DATA_CONTRACT_UNRESOLVED")
+
+
 def main() -> int:
     now_utc = datetime.now(timezone.utc)
     generated_at = now_utc.isoformat()
@@ -185,6 +199,7 @@ def main() -> int:
 
     # Load manifest for allowed hosts
     manifest = load_manifest(MANIFEST_PATH)
+    _require_tpex_lifecycle_data_contract(manifest)
     allowed_hosts = manifest["allowed_hosts"]
     # One shared budget spans both identity probes and all three lifecycle probes.
     dispatch_budget = BootstrapDispatchBudget(BOOTSTRAP_MAX_TOTAL_DISPATCHES)

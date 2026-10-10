@@ -1,0 +1,1383 @@
+{
+  "gate": "J-B04-A6-SM-B1-R3",
+  "disposition": "SM_B1_R3_BOUNDED_DISCOVERY_REQUIRED",
+  "starting_head": "1b44851e64edff534846880c94844e0f2e1ae37a",
+  "starting_tree": "4d65363795cafb907f88795464954a68fcfaf97b",
+  "starting_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "R2_independent_review_id": "5476929940",
+  "historical_evidence_sha256": {
+    "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_SECURITY_MASTER_BOOTSTRAP_2026-10-10.json": "2922ec11b6ef167d775e629885d032ee8b1dc07bfea284b4323c16e82e318226",
+    "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_SECURITY_MASTER_BOOTSTRAP_2026-10-10.md": "385f5bca6b262ae993e5fa1e0ff2542c421a36333cbf3492fcbe3ddc8b1a7e7d",
+    "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R2_FAIL_CLOSED_REPAIR_2026-10-10.json": "0d58bb58a85ace538020df33537a4e9aaf7be3e0683985aeab24845dc1ac1c2c",
+    "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R2_FAIL_CLOSED_REPAIR_2026-10-10.md": "6e4a1e5b4aa1652d190a1b03ecaa6ca4fc280d23334cfb4c14188057c9ca3a7a"
+  },
+  "capture": {
+    "path": "data/security_master/input_bundles/m8r06-01b-20261009T180413Z/raw_payloads/tpex_delisted.html",
+    "sha256": "f6eaa4a4969219dc5a633f43e056d8fa2d31fa944c1e23125f24836733f86853",
+    "byte_size": 11521,
+    "exact_hash_verified": true
+  },
+  "structural_inventory": {
+    "doctype_present": true,
+    "html_element_present": true,
+    "table_element_count": 0,
+    "form_count": 3,
+    "script_element_count": 14,
+    "inline_script_count": 2,
+    "external_script_src_values": [
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery-3.7.1.min.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery.mousewheel.min.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery.cookie.min.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/gsap.min.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery.session.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery.simplePagination.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/js/ie.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/js/main.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/global.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": "https",
+          "host": "www.googletagmanager.com",
+          "path": "/gtag/js",
+          "query_omitted": true,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": null
+      },
+      {
+        "src": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/js/tables.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": "text/javascript"
+      },
+      {
+        "src": {
+          "scheme": "https",
+          "host": "static.cloudflareinsights.com",
+          "path": "/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "script_type": "module"
+      }
+    ],
+    "embedded_json_script_blocks": {
+      "count": 0,
+      "types": {}
+    },
+    "literal_url_candidates": [
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": "fonts.googleapis.com",
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": "fonts.gstatic.com",
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": "fonts.googleapis.com",
+          "path": "/css2",
+          "query_omitted": true,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": "https",
+          "host": "www.googletagmanager.com",
+          "path": "/gtag/js",
+          "query_omitted": true,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.twse.com.tw",
+          "path": "/zh/trading/margin/twt96u.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.twse.com.tw",
+          "path": "/zh/products/sbl/disclosures/twt60u.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "mis.twse.com.tw",
+          "path": "/stock/detail-sblInquiry",
+          "query_omitted": true,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.facebook.com",
+          "path": "/TaipeiExchange/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.instagram.com",
+          "path": "/taipeiexchange/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.youtube.com",
+          "path": "/@taipeiexchange",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.linkedin.com",
+          "path": "/company/taipei-exchange-tpex/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "accessibility.moda.gov.tw",
+          "path": "/Applications/DetectLog/172983",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": "https",
+          "host": "static.cloudflareinsights.com",
+          "path": "/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      }
+    ],
+    "literal_path_action_candidates": [
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/images/favicon.png",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": "fonts.googleapis.com",
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": "fonts.gstatic.com",
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": "fonts.googleapis.com",
+          "path": "/css2",
+          "query_omitted": true,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/css/main.css",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/css/simplePagination.css",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/css/main.css",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery-3.7.1.min.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery.mousewheel.min.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery.cookie.min.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/gsap.min.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery.session.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/jquery.simplePagination.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/js/ie.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/js/main.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/asset/js/global.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "link.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/css/tables.css",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": "https",
+          "host": "www.googletagmanager.com",
+          "path": "/gtag/js",
+          "query_omitted": true,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": true,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": true,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/ja-jp/about/publication/overview.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/sitemap.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "form.action",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/search.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/ja-jp/about/publication/overview.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/sitemap.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "form.action",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/search.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "",
+          "query_omitted": false,
+          "fragment_omitted": true,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/indices/stock-index/industrial/inxh.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/info/stock-pricing.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/esb/trading/info/stock-pricing.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/margin-trading/transactions.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/margin-trading/sbl.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/margin-trading/exempted.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/major-institutional/summary/day.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/major-institutional/domestic-inst/day.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/major-institutional/foreign/day.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.twse.com.tw",
+          "path": "/zh/trading/margin/twt96u.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.twse.com.tw",
+          "path": "/zh/products/sbl/disclosures/twt60u.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "mis.twse.com.tw",
+          "path": "/stock/detail-sblInquiry",
+          "query_omitted": true,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/statistics/month/listed.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/statistics/month/value.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/info/daily-pe.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/listed/month/fundamentals.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/trading/statistics/highlight.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/service/data/overview.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/announce/market/holiday.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/service/investor/info/personal.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/mainboard/applying/status/company.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/index.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/about/company/faq.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/about/company/contact/contact.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/related_links.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/gtsm_disclaimer.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/zh-tw/privacy.html",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/storage/publish/others/04000001個人資料管理政策聲明.pdf",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/storage/publish/others/資通安全政策及內涵.pdf",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/storage/publish/others/營運持續政策.pdf",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.facebook.com",
+          "path": "/TaipeiExchange/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.instagram.com",
+          "path": "/taipeiexchange/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.youtube.com",
+          "path": "/@taipeiexchange",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "www.linkedin.com",
+          "path": "/company/taipei-exchange-tpex/",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "a.href",
+        "literal": {
+          "scheme": "https",
+          "host": "accessibility.moda.gov.tw",
+          "path": "/Applications/DetectLog/172983",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": null,
+          "host": null,
+          "path": "/rsrc/js/tables.js",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "script.src",
+        "literal": {
+          "scheme": "https",
+          "host": "static.cloudflareinsights.com",
+          "path": "/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920",
+          "query_omitted": false,
+          "fragment_omitted": false,
+          "userinfo_omitted": false
+        },
+        "classification": "EXTERNAL_SCRIPT_DEPENDENCY"
+      },
+      {
+        "origin": "inline_script.action_property",
+        "literal": "company/deListed",
+        "classification": "SYMBOLIC_ACTION_TOKEN",
+        "syntactic_context": "action property in client initializer",
+        "executable_endpoint": false
+      },
+      {
+        "origin": "inline_script.pattern_property",
+        "literal": "API_PATTERN",
+        "classification": "CLIENT_RUNTIME_COMPOSITION_REQUIRED"
+      }
+    ],
+    "acquisition_data_attributes": [
+      {
+        "tag": "input",
+        "attribute": "data-autocomplete",
+        "value": "stk_reg",
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "tag": "input",
+        "attribute": "data-format",
+        "value": "YA",
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "tag": "input",
+        "attribute": "data-initial",
+        "value": "",
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      },
+      {
+        "tag": "input",
+        "attribute": "data-start",
+        "value": "20210101",
+        "classification": "NOT_A_SOURCE_ENDPOINT"
+      }
+    ],
+    "client_runtime_references": {
+      "client_table_initializer_count": 1,
+      "fetch_call_count": 0,
+      "xhr_constructor_count": 0,
+      "ajax_call_count": 0,
+      "data_shape_symbolic_references": [
+        "e.data",
+        "e.tables"
+      ]
+    },
+    "API_PATTERN": {
+      "declaration_present": false,
+      "declaration_absent": true,
+      "literal_value_present": false,
+      "literal_value": null,
+      "symbolic_reference_only": true,
+      "reference_count": 1
+    },
+    "company/deListed": {
+      "exact_literal_occurrence_count": 1,
+      "syntactic_context": "tables.init action property",
+      "classification": "SYMBOLIC_ACTION_TOKEN",
+      "executable_endpoint": false
+    },
+    "executable_lifecycle_data_endpoint": null,
+    "lifecycle_events_generated": 0,
+    "lifecycle_dataset_validated": false,
+    "source_contract_disposition": "SM_B1_R3_BOUNDED_DISCOVERY_REQUIRED"
+  },
+  "landing_page_contract": "Official TPEx client-loaded lifecycle interface; not a directly parseable governed lifecycle HTML table.",
+  "lifecycle_data_contract": {
+    "state": "unresolved",
+    "endpoint": null,
+    "response_fields_date_code_event_error_empty_semantics": "NOT_ESTABLISHED"
+  },
+  "manifest_correction": {
+    "before": {
+      "format": "html_table",
+      "verification": "payload_verified"
+    },
+    "after": {
+      "id": "tpex_company_delisted",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+      "format": "client_rendered_shell",
+      "events": [
+        "tpex_delisted"
+      ],
+      "verification": "landing_capture_verified_data_contract_unresolved",
+      "contract_state": "blocked_pending_data_endpoint_qualification",
+      "production_automatic_acquisition": false,
+      "landing_page_contract": {
+        "representation": "html_client_loaded_lifecycle_interface",
+        "direct_lifecycle_html_table": false,
+        "capture_sha256": "f6eaa4a4969219dc5a633f43e056d8fa2d31fa944c1e23125f24836733f86853",
+        "capture_byte_size": 11521,
+        "capture_path": "data/security_master/input_bundles/m8r06-01b-20261009T180413Z/raw_payloads/tpex_delisted.html"
+      },
+      "lifecycle_data_contract": {
+        "state": "unresolved",
+        "endpoint": null,
+        "response_representation": "unknown",
+        "required_fields": "unknown",
+        "date_security_code_event_error_empty_semantics": "unqualified",
+        "observed_action_token": "company/deListed",
+        "action_token_is_executable_endpoint": false
+      },
+      "adapter_contract": {
+        "supplied_legacy_html_table_parser": "parse_tpex_delisted.py",
+        "landing_shell_behavior": "schema_drift_nonzero_exit",
+        "missing_evidence_is_event_absence": false
+      }
+    },
+    "other_manifest_content_sha256": "07536b6afb10fc7611800c5b1333fd14bcc47a0da1d32c31dd856741c83fa358"
+  },
+  "parser_changes": "NONE; legacy table parser and event semantics preserved",
+  "unchanged_parser_sha256": {
+    "skills/tw-security-master-classifier/scripts/parse_tpex_delisted.py": "72da9d18328d83e4f066612c1180b7f1aaef6a7d4d7c13b5f3b324334e897402",
+    "skills/tw-security-master-classifier/scripts/lifecycle_common.py": "bbb49a73b581df529eda598f1bf66a3b622a659a11375880ae081e2db656775d"
+  },
+  "production_guard": "BOOTSTRAP_TPEX_LIFECYCLE_DATA_CONTRACT_UNRESOLVED before budget creation or any source probe",
+  "future_discovery": {
+    "authorization_readiness": "EXACT_TARGETS_FROZEN_FOR_OWNER_REVIEW",
+    "authorization_status": "NOT_AUTHORIZED",
+    "targets": [
+      {
+        "evidence_origin": "preserved landing capture script.src",
+        "literal_value": "/rsrc/asset/js/global.js",
+        "candidate_type": "EXTERNAL_SCRIPT_DEPENDENCY",
+        "url": "https://www.tpex.org.tw/rsrc/asset/js/global.js",
+        "official_host": "www.tpex.org.tw",
+        "reason_needed": "Inspect a directly included page configuration dependency for API_PATTERN; its defining asset is not established by the capture.",
+        "maximum_requests": 1,
+        "maximum_followed_redirects": 1,
+        "maximum_dispatches": 2,
+        "redirect_policy": "HTTPS and same host only; no credentials; no follow-up imports",
+        "expected_artifact": "installation-local script capture/hash and sanitized declaration/composition analysis; no raw script published"
+      },
+      {
+        "evidence_origin": "preserved landing capture script.src",
+        "literal_value": "/rsrc/js/tables.js",
+        "candidate_type": "EXTERNAL_SCRIPT_DEPENDENCY",
+        "url": "https://www.tpex.org.tw/rsrc/js/tables.js",
+        "official_host": "www.tpex.org.tw",
+        "reason_needed": "Inspect the directly included client table implementation for pattern/action composition used by tables.init.",
+        "maximum_requests": 1,
+        "maximum_followed_redirects": 1,
+        "maximum_dispatches": 2,
+        "redirect_policy": "HTTPS and same host only; no credentials; no follow-up imports",
+        "expected_artifact": "installation-local script capture/hash and sanitized declaration/composition analysis; no raw script published"
+      }
+    ],
+    "max_logical_requests": 2,
+    "max_dispatches_total": 4,
+    "retry": 0,
+    "timeout_seconds_maximum": 15,
+    "response_bytes_maximum_per_target": 1048576,
+    "data_endpoint_requests": 0,
+    "execute_imported_assets_or_javascript": false,
+    "stop_conditions": [
+      "unexpected redirect",
+      "response ceiling breach",
+      "dispatch ceiling breach",
+      "source failure",
+      "missing resolution rule after these two assets"
+    ],
+    "additional_discovery_requires_new_authorization": true,
+    "is_owner_authorization": false
+  },
+  "historical_repository_evidence_consulted": [
+    "docs/reviews/M8R_06_01B_PRODUCTION_INPUT_MATERIALIZATION.md",
+    "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/source_immutable_manifest.json",
+    "docs/reviews/security_master_candidates/m8r06-01b-20260903T093604Z/M8R_08F_R0_02_CANDIDATE_MATERIALIZATION_REVIEW.json",
+    "skills/tw-security-master-classifier/references/source-manifest.json",
+    "skills/tw-security-master-classifier/references/fixtures/tpex_delisted_excerpt.html"
+  ],
+  "historical_endpoint_promoted": false,
+  "bootstrap_retry": "NOT_AUTHORIZED",
+  "network_counts": {
+    "market_GET_HEAD_POST": "0/0/0",
+    "security_master_live_acquisition": 0
+  },
+  "security_master_state": "NOT_INITIALIZED",
+  "production_identity_verified": false,
+  "canonical_state": {
+    "H2": "INACTIVE",
+    "selected_executor": null,
+    "routing": "plan_only",
+    "J-B04": "BLOCKING",
+    "Phase_J": "NOT_STARTED",
+    "MCP": 6
+  },
+  "unresolved_concerns": [
+    "API_PATTERN definition and client composition are not established by the captured HTML.",
+    "Lifecycle data response and qualification semantics remain unknown.",
+    "Historical TWSE 307 incidents remain unresolved and outside R3 scope."
+  ],
+  "validation": {
+    "new_and_dispatch_tests": "29 passed; network denied",
+    "focused_regressions": "333 passed, 2 skipped; network denied",
+    "validators": "All 12 governance validators PASS; standalone Skill validation PASS",
+    "default_ci": "PENDING",
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "strict_duplicate_key_json_scan": {
+      "result": "PASS",
+      "file_count": 1046
+    }
+  }
+}

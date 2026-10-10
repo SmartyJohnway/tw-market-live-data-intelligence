@@ -80,7 +80,7 @@ Use three-state values:
 | Event | Preferred source |
 |---|---|
 | TWSE company delisting | TWSE terminated-listing table |
-| TPEx company delisting | TPEx terminated-OTC table |
+| TPEx company delisting | Official TPEx landing interface; lifecycle data contract unresolved, automatic acquisition blocked |
 | Emerging termination/transfer | TPEx market announcement |
 | ETN expiry/termination | TWSE or TPEx ETN termination table |
 | ETF termination | Exchange announcement and ETF information center |
@@ -160,3 +160,25 @@ Active retrieval and interpretation of linked PDFs or announcement attachments r
 - TWSE's official terminated-listing table uses `終止上市日期`, `公司名稱`, and `上市編號`; `上市編號` is a governed security-code alias.
 - Recognizable HTML with no governed lifecycle header is `schema_drift`, not a valid empty result. CLI adapters must return a nonzero exit code and structured issue details.
 - Detect ROC forms including `114年07月24日`, `114/07/24`, `114-07-24`, and seven-digit compact dates. Preserve `date_raw` and never infer `Gregorian` merely because a ROC separator was not `/`.
+
+### TPEx company-delisting landing versus data contract (2026-10-10)
+
+The preserved SM-B1 capture of the official company-delisting landing URL is an
+HTML client-loaded interface, not a lifecycle HTML table. Its SHA-256 is
+`f6eaa4a4969219dc5a633f43e056d8fa2d31fa944c1e23125f24836733f86853`
+(11,521 bytes). The capture references `API_PATTERN` symbolically and supplies
+`company/deListed` as a client initializer action. It establishes neither the
+complete data endpoint nor its representation, required fields, or date/error/empty
+semantics. The current source manifest therefore blocks automatic acquisition
+until a separately governed data contract is qualified.
+
+`parse_tpex_delisted.py` continues to parse supplied legacy HTML tables and
+preserves `tpex_delisted`, security code, effective date, raw date, calendar,
+source URL, and evidence status. A shell without a table raises
+`LifecycleSchemaDrift`; it does not produce a valid empty lifecycle dataset.
+No valid source evidence is not proof that no lifecycle event occurred.
+
+The offline R3 landing analyzer emits structural/discovery metadata only and
+creates no lifecycle events. Any proposed inspection of captured script references
+requires separate bounded authorization. Historical manifests and supplied
+fixtures do not establish current retrieval authority.

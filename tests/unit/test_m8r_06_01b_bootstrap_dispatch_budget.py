@@ -332,6 +332,9 @@ def test_lifecycle_schema_drift_stops_materializer_before_next_probe_and_phase_e
     assert spec.loader is not None
     spec.loader.exec_module(module)
     monkeypatch.setattr(module, "BUNDLE_BASE", tmp_path / "bundles")
+    # This downstream fake drift test starts after the separately tested R3
+    # source-contract guard; the real current manifest cannot authorize probes.
+    monkeypatch.setattr(module, "_require_tpex_lifecycle_data_contract", lambda _manifest: None)
     calls = []
     report = {}
     qualification_calls = []
