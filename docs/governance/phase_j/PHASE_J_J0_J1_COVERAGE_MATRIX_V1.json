@@ -1,0 +1,1526 @@
+{
+  "schema_version": "phase_j_coverage_matrix.v1",
+  "authority_status": "J1_FROZEN_ACCEPTANCE_CANDIDATE",
+  "scenario_registry": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+  "coverage_dimensions": [
+    "contract_fixture",
+    "deterministic_unit",
+    "integration",
+    "service_api",
+    "workbench",
+    "mcp",
+    "fresh_install",
+    "bounded_live",
+    "real_agent"
+  ],
+  "coverage_statuses": [
+    "COVERED_EXISTING",
+    "COVERED_J0_J1",
+    "PLANNED",
+    "REQUIRES_LIVE_AUTH",
+    "REQUIRES_REAL_AGENT_AUTH",
+    "EXPECTED_FAIL_CLOSED",
+    "NOT_APPLICABLE",
+    "BLOCKED"
+  ],
+  "network_free_j0_j1_scope": "Fixtures/harness only; no market/source acquisition, no product execution, no real-agent host.",
+  "scenarios": [
+    {
+      "scenario_id": "J1-01",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-02",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-03",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-04",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-05",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-06",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_closure.json",
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-07",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_closure.json",
+            "tests/unit/test_phase_g_material_disclosures.py"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-08",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "tests/unit/test_phase_g_material_disclosures.py"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "NOT_APPLICABLE",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-09",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_closure.json",
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-10",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/acceptance_runs/phase_g_pr_d_p0_ledger.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "NOT_APPLICABLE",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-11",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_H1_TPEX_ATTENTION_ACCEPTANCE_LEDGER.json",
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-12",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-13",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-14",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-15",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-16",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/governance/phase_h/Phase_H_H4_Discontinuity_Safety_Contract_FROZEN.md"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-17",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-18",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json",
+            "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+            "docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-19",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-20",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-21",
+      "layers": {
+        "contract_fixture": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "deterministic_unit": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-22",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_closure.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-23",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_closure.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/acceptance_runs/phase_g_pr_d_controlled_live.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-24",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
+            "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-25",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+            "tests/unit/test_m8r_06_03_localhost_vertical.py"
+          ]
+        },
+        "bounded_live": {
+          "status": "NOT_APPLICABLE",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-26",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
+            "docs/governance/phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    },
+    {
+      "scenario_id": "J1-27",
+      "layers": {
+        "contract_fixture": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "deterministic_unit": {
+          "status": "COVERED_J0_J1",
+          "evidence_refs": [
+            "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json",
+            "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+          ]
+        },
+        "integration": {
+          "status": "COVERED_EXISTING",
+          "evidence_refs": [
+            "docs/governance/phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json",
+            "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+          ]
+        },
+        "service_api": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "workbench": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "mcp": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "fresh_install": {
+          "status": "PLANNED",
+          "evidence_refs": []
+        },
+        "bounded_live": {
+          "status": "REQUIRES_LIVE_AUTH",
+          "evidence_refs": [
+            "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+            "GitHub PR #326 review 5479545125"
+          ]
+        },
+        "real_agent": {
+          "status": "REQUIRES_REAL_AGENT_AUTH",
+          "evidence_refs": [
+            "GitHub PR #326 review 5479545125"
+          ]
+        }
+      }
+    }
+  ],
+  "layer_baselines": [
+    {
+      "layer": "service_api",
+      "status": "COVERED_EXISTING",
+      "semantics": [
+        "validate",
+        "preview",
+        "authorization",
+        "execute_once",
+        "result",
+        "audit",
+        "handoff"
+      ],
+      "evidence_refs": [
+        "tests/integration/test_unified_workbench_api.py"
+      ]
+    },
+    {
+      "layer": "workbench",
+      "status": "COVERED_EXISTING",
+      "semantics": [
+        "same canonical request/result flow",
+        "stored result projection",
+        "no duplicate execution"
+      ],
+      "evidence_refs": [
+        "tests/unit/test_m8r_10_workbench_ui_contract.py",
+        "tests/integration/test_unified_workbench_api.py"
+      ]
+    },
+    {
+      "layer": "mcp",
+      "status": "COVERED_EXISTING",
+      "semantics": [
+        "exact six read/execute tools",
+        "request/result contract reuse",
+        "error mapping"
+      ],
+      "evidence_refs": [
+        "tests/unit/test_mcp_server.py",
+        "tests/unit/test_m8r_08b_mcp_tool_contracts.py",
+        "tests/integration/test_m8r_08b_mcp_stdio_local_service.py"
+      ]
+    },
+    {
+      "layer": "fresh_install",
+      "status": "COVERED_EXISTING",
+      "semantics": [
+        "NOT_INITIALIZED is a valid fresh state",
+        "identity-dependent execution fails closed",
+        "no Candidate B fallback"
+      ],
+      "evidence_refs": [
+        "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+        "tests/integration/test_unified_workbench_api.py"
+      ]
+    },
+    {
+      "layer": "integration",
+      "status": "COVERED_EXISTING",
+      "semantics": [
+        "Result/Audit lineage and accepted bounded cross-family behavior"
+      ],
+      "evidence_refs": [
+        "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+        "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json"
+      ]
+    }
+  ]
+}
