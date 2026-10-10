@@ -1,0 +1,588 @@
+{
+  "gate": "J-B04-A6-SM-B1-R5-P0",
+  "disposition": "SM_B1_R5_P0_NO_JUSTIFIED_NEXT_TARGET",
+  "starting_head": "01e0a462a872635b9557ddf6ac6af19e26eb687f",
+  "starting_tree": "d23a0232a9a05344ee87302126f82cc6ad5d4498",
+  "starting_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "R4_independent_review_id": "5477399237",
+  "R4_evidence_commit": "01e0a462a872635b9557ddf6ac6af19e26eb687f",
+  "R3_evidence_sha256": "ebcb99cfb5ed61d4413033348b21320b35b1904a72de83d68dd463174db98482",
+  "R4_evidence_sha256": "1c9c429344c3a56af7cbd276b5392b9050b924938e504df0e64e178963d0b6bc",
+  "landing_capture": {
+    "path": "data/security_master/input_bundles/m8r06-01b-20261009T180413Z/raw_payloads/tpex_delisted.html",
+    "sha256": "f6eaa4a4969219dc5a633f43e056d8fa2d31fa944c1e23125f24836733f86853",
+    "byte_size": 11521,
+    "verified": true
+  },
+  "R4_assets": {
+    "global.js": {
+      "path": "/tmp/j-b04-a6-sm-b1-r4/raw/global.js",
+      "sha256": "58c3d641bde9aa9c6698ba6145df2a85257ee51f56dc263408a0518e1603e167",
+      "byte_size": 103202
+    },
+    "tables.js": {
+      "path": "/tmp/j-b04-a6-sm-b1-r4/raw/tables.js",
+      "sha256": "085fd65b4e15e2af4f3adb3f256f0058d0176dd2d98ce53217ede16667a04a90",
+      "byte_size": 168139
+    }
+  },
+  "ordered_script_inventory": [
+    {
+      "load_order": 1,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/asset/js/jquery-3.7.1.min.js",
+        "query_omitted": false
+      },
+      "classification": "THIRD_PARTY_LIBRARY",
+      "evidence": "The path identifies the jQuery library; captured tables.js uses jQuery APIs, but no API_PATTERN binding is shown.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 2,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/asset/js/jquery.mousewheel.min.js",
+        "query_omitted": false
+      },
+      "classification": "THIRD_PARTY_LIBRARY",
+      "evidence": "Explicit jQuery mousewheel library asset; no API_PATTERN relationship in captured code.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 3,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/asset/js/jquery.cookie.min.js",
+        "query_omitted": false
+      },
+      "classification": "THIRD_PARTY_LIBRARY",
+      "evidence": "Explicit jQuery cookie library asset; no API_PATTERN relationship in captured code.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 4,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/asset/js/gsap.min.js",
+        "query_omitted": false
+      },
+      "classification": "THIRD_PARTY_LIBRARY",
+      "evidence": "Recognizable GSAP library path; no API_PATTERN relationship in captured code.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 5,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/asset/js/jquery.session.js",
+        "query_omitted": false
+      },
+      "classification": "THIRD_PARTY_LIBRARY",
+      "evidence": "Explicit jQuery session library asset; no API_PATTERN relationship in captured code.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 6,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/asset/js/jquery.simplePagination.js",
+        "query_omitted": false
+      },
+      "classification": "THIRD_PARTY_LIBRARY",
+      "evidence": "Explicit jQuery pagination library asset; no API_PATTERN relationship in captured code.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 7,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/js/ie.js",
+        "query_omitted": false
+      },
+      "classification": "UNKNOWN",
+      "evidence": "First-party script loads before the initializer, but its role and API_PATTERN relationship are not established by available evidence.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 8,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/js/main.js",
+        "query_omitted": false
+      },
+      "classification": "UNKNOWN",
+      "evidence": "First-party script loads before the initializer; filename/order alone does not establish ownership of API_PATTERN.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 9,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/asset/js/global.js",
+        "query_omitted": false
+      },
+      "classification": "ALREADY_DISCOVERED_R4",
+      "evidence": "Already fetched in R4; static scan found no API_PATTERN definition.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 10,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.googletagmanager.com",
+        "path": "/gtag/js",
+        "query_omitted": true
+      },
+      "classification": "THIRD_PARTY_LIBRARY",
+      "evidence": "Third-party Google analytics script; no API_PATTERN relationship.",
+      "relative_to_tables_js": "before",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 12,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "www.tpex.org.tw",
+        "path": "/rsrc/js/tables.js",
+        "query_omitted": false
+      },
+      "classification": "ALREADY_DISCOVERED_R4",
+      "evidence": "Already fetched in R4; consumes opt.pattern but does not define the landing override.",
+      "relative_to_tables_js": "at_or_after",
+      "relative_to_inline_API_PATTERN_consumer": "before"
+    },
+    {
+      "load_order": 14,
+      "literal_src_sanitized": {
+        "scheme": "https",
+        "host": "static.cloudflareinsights.com",
+        "path": "/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920",
+        "query_omitted": false
+      },
+      "classification": "THIRD_PARTY_LIBRARY",
+      "evidence": "Third-party Cloudflare telemetry asset; no API_PATTERN relationship.",
+      "relative_to_tables_js": "at_or_after",
+      "relative_to_inline_API_PATTERN_consumer": "after_or_consumer"
+    }
+  ],
+  "inline_scripts": [
+    {
+      "load_order": 11,
+      "role": "analytics_or_other_inline_script",
+      "pattern_consumed": false
+    },
+    {
+      "load_order": 13,
+      "role": "tables.init API_PATTERN consumer",
+      "pattern_consumed": true
+    }
+  ],
+  "API_PATTERN_occurrence_search": {
+    "variants": [
+      "API_PATTERN",
+      "window.API_PATTERN",
+      "globalThis.API_PATTERN",
+      "API_PATTERN =",
+      "API_PATTERN:",
+      "pattern: API_PATTERN"
+    ],
+    "tracked_repository_and_available_capture_asset_occurrence_count": 39,
+    "occurrences": [
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R2_FAIL_CLOSED_REPAIR_2026-10-10.json",
+        "line": 25,
+        "character_offset": 1531,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "nt in this response body.\", \"The referenced API_PATTERN value and any resulting data response are not established by this cap"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R2_FAIL_CLOSED_REPAIR_2026-10-10.md",
+        "line": 9,
+        "character_offset": 866,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "rows or embedded JSON data. The body references `API_PATTERN`, whose resolved endpoint and response are not established here. This"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R3_TPEX_LIFECYCLE_SOURCE_CONTRACT_2026-10-10.json",
+        "line": 1185,
+        "character_offset": 34134,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "ine_script.pattern_property\", \"literal\": \"API_PATTERN\", \"classification\": \"CLIENT_RUNTIME_COMPOSITION_REQUIRED\""
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R3_TPEX_LIFECYCLE_SOURCE_CONTRACT_2026-10-10.json",
+        "line": 1225,
+        "character_offset": 35153,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "\"e.data\", \"e.tables\" ] }, \"API_PATTERN\": { \"declaration_present\": false, \"declaration_absent\": t"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R3_TPEX_LIFECYCLE_SOURCE_CONTRACT_2026-10-10.json",
+        "line": 1305,
+        "character_offset": 38801,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "rectly included page configuration dependency for API_PATTERN; its defining asset is not established by the capture.\", \"max"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R3_TPEX_LIFECYCLE_SOURCE_CONTRACT_2026-10-10.json",
+        "line": 1367,
+        "character_offset": 41549,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "\"MCP\": 6 }, \"unresolved_concerns\": [ \"API_PATTERN definition and client composition are not established by the captured"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R3_TPEX_LIFECYCLE_SOURCE_CONTRACT_2026-10-10.md",
+        "line": 5,
+        "character_offset": 419,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "occurs once as a symbolic `tables.init` action; `API_PATTERN` is referenced but neither declared nor assigned a literal value. No"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.json",
+        "line": 78,
+        "character_offset": 3031,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "\"analysis.json\" }, \"static_analysis\": { \"API_PATTERN\": { \"declaration_found\": false, \"searched_asset\": \"global"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.json",
+        "line": 83,
+        "character_offset": 3204,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "\"statically_resolvable\": false, \"finding\": \"API_PATTERN is not declared in captured global.js; landing capture uses the unres"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.json",
+        "line": 86,
+        "character_offset": 3533,
+        "matched_variant": "pattern: API_PATTERN",
+        "classification": "governance_reference",
+        "context": "n to en-us, jp to ja-jp. Landing capture supplies pattern: API_PATTERN and action: company/deListed. Because API_PATTERN is unresolved, the"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.json",
+        "line": 86,
+        "character_offset": 3592,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "API_PATTERN and action: company/deListed. Because API_PATTERN is unresolved, the resulting URL cannot be determined.\", \"metho"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.json",
+        "line": 98,
+        "character_offset": 4469,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "ion\": false, \"required_unresolved_symbol\": \"API_PATTERN\" }, \"company_deListed_role\": \"symbolic action token, not endp"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.json",
+        "line": 107,
+        "character_offset": 4843,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "_composition\": { \"landing_pattern_symbol\": \"API_PATTERN\", \"global_asset_definition\": \"absent\", \"tables_asset_defa"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.json",
+        "line": 113,
+        "character_offset": 5223,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "\"reason\": \"The landing page explicitly supplies API_PATTERN, while captured global.js does not define it. The generic tables.js d"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.json",
+        "line": 182,
+        "character_offset": 7473,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "uisition\": 0 }, \"unresolved_concerns\": [ \"API_PATTERN was not declared in captured global.js or landing capture; the landin"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.md",
+        "line": 16,
+        "character_offset": 1138,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "oint was called. Static text inspection found no API_PATTERN declaration in global.js. tables.js contains a generic /{LANG}/{ACTIO"
+      },
+      {
+        "artifact": "docs/governance/phase_j/PHASE_J_J_B04_A6_SM_B1_R4_TPEX_BOUNDED_DISCOVERY_2026-10-10.md",
+        "line": 16,
+        "character_offset": 1338,
+        "matched_variant": "API_PATTERN",
+        "classification": "governance_reference",
+        "context": "t.pattern; the landing page passes the unresolved API_PATTERN symbol and action token company/deListed. The generic report path use"
+      },
+      {
+        "artifact": "scripts/phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 122,
+        "character_offset": 5123,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "declaration = re.search(r\"\\b(?:var|let|const)\\s+API_PATTERN\\s*=|\\b(?:window\\.)?API_PATTERN\\s*=\", inline) literal = re.search("
+      },
+      {
+        "artifact": "scripts/phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 122,
+        "character_offset": 5154,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "?:var|let|const)\\s+API_PATTERN\\s*=|\\b(?:window\\.)?API_PATTERN\\s*=\", inline) literal = re.search(r\"\\bAPI_PATTERN\\s*=\\s*(['\\\"])(["
+      },
+      {
+        "artifact": "scripts/phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 123,
+        "character_offset": 5208,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "PATTERN\\s*=\", inline) literal = re.search(r\"\\bAPI_PATTERN\\s*=\\s*(['\\\"])([^'\\\"]*)\\1\", inline) api_reference_count = len(re.f"
+      },
+      {
+        "artifact": "scripts/phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 124,
+        "character_offset": 5300,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "ine) api_reference_count = len(re.findall(r\"\\bAPI_PATTERN\\b\", inline)) action_matches = list(re.finditer(r\"\\baction\\s*:\\s*("
+      },
+      {
+        "artifact": "scripts/phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 137,
+        "character_offset": 5964,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "n\": \"inline_script.pattern_property\", \"literal\": \"API_PATTERN\", \"classification\": \"CLIENT_RUNTIME_COMPOSITION_REQUIRED\""
+      },
+      {
+        "artifact": "scripts/phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 163,
+        "character_offset": 7346,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "\"client_runtime_references\": references, \"API_PATTERN\": { \"declaration_present\": bool(declaration),"
+      },
+      {
+        "artifact": "scripts/phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 196,
+        "character_offset": 9078,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "rectly included page configuration dependency for API_PATTERN; its defining asset is not established by the capture.\", \"/rs"
+      },
+      {
+        "artifact": "scripts/validate_phase_j_b04_a6_sm_b1_r3_tpex_source_contract.py",
+        "line": 44,
+        "character_offset": 2652,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "son_script_blocks']['count'] == 0 assert inv['API_PATTERN']['symbolic_reference_only'] is True assert inv['API_PATTERN']['d"
+      },
+      {
+        "artifact": "scripts/validate_phase_j_b04_a6_sm_b1_r3_tpex_source_contract.py",
+        "line": 45,
+        "character_offset": 2717,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "symbolic_reference_only'] is True assert inv['API_PATTERN']['declaration_present'] is False assert inv['API_PATTERN']['lite"
+      },
+      {
+        "artifact": "scripts/validate_phase_j_b04_a6_sm_b1_r3_tpex_source_contract.py",
+        "line": 46,
+        "character_offset": 2779,
+        "matched_variant": "API_PATTERN",
+        "classification": "analyzer_or_validator_reference",
+        "context": "]['declaration_present'] is False assert inv['API_PATTERN']['literal_value_present'] is False assert inv['company/deListed'"
+      },
+      {
+        "artifact": "skills/tw-security-master-classifier/references/lifecycle-contract.md",
+        "line": 169,
+        "character_offset": 5209,
+        "matched_variant": "API_PATTERN",
+        "classification": "repository_reference",
+        "context": "33f86853` (11,521 bytes). The capture references `API_PATTERN` symbolically and supplies `company/deListed` as a client initializer"
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 28,
+        "character_offset": 847,
+        "matched_variant": "pattern:API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "rsrc/js/tables.js\"></script> <script>tables.init({pattern:API_PATTERN,action:\"company/deListed\"});</script> </body></html>''' @pytest.fix"
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 78,
+        "character_offset": 2915,
+        "matched_variant": "API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "cle_data_endpoint\"] is None assert inventory[\"API_PATTERN\"][\"symbolic_reference_only\"] is True assert inventory[\"API_PATTER"
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 79,
+        "character_offset": 2986,
+        "matched_variant": "API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "ic_reference_only\"] is True assert inventory[\"API_PATTERN\"][\"declaration_absent\"] is True assert inventory[\"API_PATTERN\"][\""
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 80,
+        "character_offset": 3052,
+        "matched_variant": "API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "eclaration_absent\"] is True assert inventory[\"API_PATTERN\"][\"literal_value_present\"] is False assert all(c[\"classification\""
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 104,
+        "character_offset": 4380,
+        "matched_variant": "pattern:API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "ry = analyze_landing(b'<html><script>tables.init({pattern:API_PATTERN,action:\"company/deListed\"})</script></html>') assert discovery_pr"
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 129,
+        "character_offset": 5794,
+        "matched_variant": "API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "inventory = analyze_landing(b'<html><script>const API_PATTERN=\"https://www.tpex.org.tw/example\"; tables.init({pattern:API_PATTERN,a"
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 129,
+        "character_offset": 5854,
+        "matched_variant": "pattern:API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "N=\"https://www.tpex.org.tw/example\"; tables.init({pattern:API_PATTERN,action:\"company/deListed\"});</script></html>') assert inventory[\""
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 130,
+        "character_offset": 5943,
+        "matched_variant": "API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "isted\"});</script></html>') assert inventory[\"API_PATTERN\"][\"declaration_present\"] assert inventory[\"API_PATTERN\"][\"literal"
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 131,
+        "character_offset": 6002,
+        "matched_variant": "API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "RN\"][\"declaration_present\"] assert inventory[\"API_PATTERN\"][\"literal_value_present\"] assert not inventory[\"API_PATTERN\"][\"s"
+      },
+      {
+        "artifact": "tests/unit/test_phase_j_b04_a6_sm_b1_r3_tpex_contract.py",
+        "line": 132,
+        "character_offset": 6067,
+        "matched_variant": "API_PATTERN",
+        "classification": "test_fixture_or_assertion",
+        "context": "literal_value_present\"] assert not inventory[\"API_PATTERN\"][\"symbolic_reference_only\"] assert inventory[\"executable_lifecyc"
+      },
+      {
+        "artifact": "R3 preserved TPEx landing capture",
+        "line": 1,
+        "character_offset": 9193,
+        "matched_variant": "pattern:API_PATTERN",
+        "classification": "symbolic_reference",
+        "context": "1);t&&e.tables[0].fields.splice(4,1)}tables.init({pattern:API_PATTERN,action:\"company/deListed\",autoLoad:!0,autoChange:!1,serverPaging:!0,b"
+      }
+    ],
+    "R4_global_js_definition": "absent",
+    "R4_tables_js_definition": "absent",
+    "landing_capture_occurrence": "one symbolic reference in inline tables.init configuration",
+    "assignment_or_literal_in_available_source_evidence": "none"
+  },
+  "candidate_elimination_matrix": [
+    {
+      "asset": "/rsrc/js/main.js",
+      "evidence_strength": "ORDER_ONLY_PLUS_UNVERIFIED_FILENAME_ROLE",
+      "accepted": false,
+      "reason": "No captured direct symbol/dependency reference or runtime namespace/config binding; main.js is not available locally. Filename intuition is insufficient."
+    },
+    {
+      "asset": "/rsrc/js/ie.js",
+      "evidence_strength": "ORDER_ONLY_PLUS_UNVERIFIED_FILENAME_ROLE",
+      "accepted": false,
+      "reason": "No captured direct symbol/dependency reference or runtime namespace/config binding; ie.js is not available locally. Filename intuition is insufficient."
+    },
+    {
+      "asset": "/rsrc/asset/js/jquery-3.7.1.min.js and related vendor libraries",
+      "evidence_strength": "NO_API_PATTERN_LINK",
+      "accepted": false,
+      "reason": "Library identity/utilization does not show ownership/configuration of the unresolved symbol."
+    },
+    {
+      "asset": "Google and Cloudflare third-party scripts",
+      "evidence_strength": "THIRD_PARTY_NO_API_PATTERN_LINK",
+      "accepted": false,
+      "reason": "Third-party analytics/telemetry; no direct API_PATTERN relationship."
+    },
+    {
+      "asset": "/rsrc/asset/js/global.js",
+      "evidence_strength": "DIRECTLY_EXAMINED_R4",
+      "accepted": false,
+      "reason": "Already fetched; contains no API_PATTERN definition."
+    },
+    {
+      "asset": "/rsrc/js/tables.js",
+      "evidence_strength": "DIRECTLY_EXAMINED_R4",
+      "accepted": false,
+      "reason": "Already fetched; consumes pattern but does not define the landing override."
+    }
+  ],
+  "terminal_disposition": "SM_B1_R5_P0_NO_JUSTIFIED_NEXT_TARGET",
+  "unique_next_target": false,
+  "frozen_target": null,
+  "future_authorization_template": "NOT_CREATED",
+  "network_counts": {
+    "GET": 0,
+    "HEAD": 0,
+    "POST": 0,
+    "Security_Master_acquisition": 0
+  },
+  "security_master": "NOT_INITIALIZED",
+  "bootstrap_retry": "NOT_AUTHORIZED",
+  "canonical_state": {
+    "H2": "INACTIVE",
+    "routing": "plan_only",
+    "selected_executor": null,
+    "J-B04": "BLOCKING",
+    "Phase_J": "NOT_STARTED",
+    "MCP": 6
+  },
+  "PR_state": "Draft/open/unmerged (starting state; no PR mutation in R5-P0)",
+  "conclusion": "No remaining asset meets the evidence threshold. main.js and ie.js load before the inline API_PATTERN consumer, but the available evidence does not establish either as owner/configuration dependency. No target is frozen."
+}
