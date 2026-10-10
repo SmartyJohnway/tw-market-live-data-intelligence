@@ -76,7 +76,7 @@ def verify_candidate_authority():
     assert current_json("docs/data_capabilities/phase_i_i1_source_authority.v1.json")["active_source_count"] == 3
     assert len(build_tool_contract_snapshot().tools) == 6
     h2_route = next(x for x in r["routes"] if x.get("capability_id") == H2_CAPABILITY)
-    assert (h2_route["runtime_executable"], h2_route["routing_status"], h2_route["selected_executor_id"], h2_route["candidate_executor_ids"], h2_route["network_required"]) == (False, "plan_only", None, [H2_CANDIDATE_EXECUTOR], True)
+    assert (h2_route["runtime_executable"], h2_route["routing_status"], h2_route["selected_executor_id"], h2_route["candidate_executor_ids"], h2_route["network_required"], h2_route["supported_markets"]) == (True, "resolved", H2_CANDIDATE_EXECUTOR, [H2_CANDIDATE_EXECUTOR], True, ["TWSE"])
     h2_metadata = [x for x in m["executors"] if x.get("executor_id") == H2_CANDIDATE_EXECUTOR]
     assert len(h2_metadata) == 1 and h2_metadata[0]["capability_id"] == H2_CAPABILITY
     # All non-I2 authority records must equal the accepted dormant baseline,
@@ -89,10 +89,10 @@ def verify_candidate_authority():
     h1_legacy_executor = "phase_h_h1_tpex_attention_executor"
     h1_composite_executor = "phase_h_h1_tpex_composite_executor"
     for path, field, id_key, excluded_ids in (
-        (CATALOG, "data_need_capabilities", "capability_id", {CAPABILITY, i3_capability, h1_capability}),
+        (CATALOG, "data_need_capabilities", "capability_id", {CAPABILITY, i3_capability, h1_capability, H2_CAPABILITY}),
         (ROUTING, "routes", "capability_id", {CAPABILITY, i3_capability, h1_capability, H2_CAPABILITY}),
         (METADATA, "executors", "executor_id", {EXECUTOR, i3_executor, h1_composite_executor, H2_CANDIDATE_EXECUTOR}),
-        (DISPOSITION, "surfaces", "surface_id", {EXECUTOR, i3_executor, h1_legacy_executor, h1_composite_executor}),
+        (DISPOSITION, "surfaces", "surface_id", {EXECUTOR, i3_executor, h1_legacy_executor, h1_composite_executor, H2_CANDIDATE_EXECUTOR}),
     ):
         now, before = current_json(path), baseline_json(path)
         assert [x for x in now[field] if x.get(id_key) not in excluded_ids] == [x for x in before[field] if x.get(id_key) not in excluded_ids], path
@@ -101,12 +101,12 @@ def verify_candidate_authority():
     # historical I2 baseline, including the existing attention source.
     old_h1_authority = baseline_json(ROUTING)["phase_h_source_authority"]
     now_h1_authority = r["phase_h_source_authority"]
-    a26_sources = {"H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}
+    a26_sources = {"H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H2-TWSE-EXRIGHT-PRE-OPENAPI"}
     assert [x for x in now_h1_authority["records"] if x["source_id"] not in a26_sources] == [x for x in old_h1_authority["records"] if x["source_id"] not in a26_sources]
-    assert now_h1_authority["active_source_count"] == 4
+    assert now_h1_authority["active_source_count"] == 5
     assert {x["source_id"] for x in now_h1_authority["records"] if x["activation_state"] == "active" and x["runtime_executable"]} == {
         "H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI",
-        "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED",
+        "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED", "H2-TWSE-EXRIGHT-PRE-OPENAPI",
     }
     for source_id, family, contract in (
         ("H1-TPEX-DISPOSITION-OPENAPI", "TPEX_DISPOSITION_OPEN_DATA", "tpex_disposal_information"),

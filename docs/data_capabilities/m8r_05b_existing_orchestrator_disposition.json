@@ -522,6 +522,39 @@
       ]
     },
     {
+      "surface_id": "phase_h_h2_twse_exright_pre_executor",
+      "path": "server/services/phase_h_h2_twse_exright_executor.py",
+      "surface_type": "controlled_phase_h_h2_executor",
+      "current_status": "J-B04-A6 selects only the existing TWSE TWT48U_ALL pre-announcement route; bounded request authorization remains required",
+      "network_behavior": "one official TWSE TWT48U_ALL GET maximum per exact target operation; no retry, redirect, fallback, polling, scheduler, or persistent source cache",
+      "input_contract": "execution-request v2 bound to corporate_action_context / TWSE / exact company common-share target and one successful same-target H3 comparison-window dependency",
+      "output_contract": "corporate_action_context_evidence.v1 plus phase_h_source_attempt_governance.v1",
+      "approval_boundary": "05B plan, explicit authorization, single-use claim and network confirmation",
+      "authorization_binding": "operation, route, market, exact target, H3 dependency/window, executor and evidence contract",
+      "single_use_enforced": true,
+      "supported_markets": [
+        "TWSE"
+      ],
+      "supported_security_types": [
+        "equity"
+      ],
+      "supported_capabilities": [
+        "corporate_action_context"
+      ],
+      "batching_supported": false,
+      "deterministic": false,
+      "reusable_for_05b": true,
+      "reuse_mode": "adapter_required",
+      "disposition": "adapter_required",
+      "blocking_gaps": [
+        "H2 coverage is subtype-limited; unsupported or insufficient coverage must remain coverage_incomplete and block ordinary-return interpretation"
+      ],
+      "evidence_paths": [
+        "server/services/phase_h_h2_twse_exright_executor.py",
+        "docs/governance/phase_h/Phase_H_H2_Price_Basis_Corporate_Action_Contract_FROZEN.md"
+      ]
+    },
+    {
       "surface_id": "phase_i_i1_market_state_executor",
       "path": "server/services/phase_i_i1_production_candidate.py",
       "surface_type": "controlled_phase_i_i1_market_state_executor",

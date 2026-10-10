@@ -1,0 +1,187 @@
+{
+  "gate": "J-B04-A6-SM-B1-R4",
+  "terminal_disposition": "SM_B1_R4_DISCOVERY_INCONCLUSIVE",
+  "authorized_execution_head": "feb1df2a86460c5837e8d00f90f48a756b0c0a0d",
+  "authorized_execution_tree": "3fe87726788bf6b17fd87f5394b077ffbe63feb3",
+  "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "R3_independent_review_id": "5477064243",
+  "Owner_statement_sha256": "3a130da11c04c832823c8e4e1dd2e18e7f7cdb50cae7792eee1e4ef27c7a3709",
+  "authorization_record_external": true,
+  "target_inventory": [
+    {
+      "target_id": "global_js",
+      "url": "https://www.tpex.org.tw/rsrc/asset/js/global.js",
+      "provenance": "exact script.src in R3 preserved capture",
+      "logical_GET_attempts": 1
+    },
+    {
+      "target_id": "tables_js",
+      "url": "https://www.tpex.org.tw/rsrc/js/tables.js",
+      "provenance": "exact script.src in R3 preserved capture",
+      "logical_GET_attempts": 1
+    }
+  ],
+  "transport": {
+    "primary_disposition": "SM_B1_R4_DISCOVERY_INCONCLUSIVE",
+    "failure_code": null,
+    "logical_get_targets_attempted": 2,
+    "total_get_attempts": 2,
+    "telemetry": [
+      {
+        "target_id": "global_js",
+        "initial_url": "https://www.tpex.org.tw/rsrc/asset/js/global.js",
+        "requested_method": "GET",
+        "started_at": "2026-10-10T02:49:07.987663+00:00",
+        "completed_at": "2026-10-10T02:49:08.390637+00:00",
+        "http_status": 200,
+        "transport_success": true,
+        "content_type": "application/javascript",
+        "response_byte_count": 103202,
+        "response_sha256": "58c3d641bde9aa9c6698ba6145df2a85257ee51f56dc263408a0518e1603e167",
+        "final_url": "https://www.tpex.org.tw/rsrc/asset/js/global.js",
+        "redirect_count": 0,
+        "dispatch_reservations": 1,
+        "actual_http_dispatch_attempts": 1,
+        "transport_error_code": null,
+        "raw_local_path": "/tmp/j-b04-a6-sm-b1-r4/raw/global.js"
+      },
+      {
+        "target_id": "tables_js",
+        "initial_url": "https://www.tpex.org.tw/rsrc/js/tables.js",
+        "requested_method": "GET",
+        "started_at": "2026-10-10T02:49:08.390759+00:00",
+        "completed_at": "2026-10-10T02:49:09.421610+00:00",
+        "http_status": 200,
+        "transport_success": true,
+        "content_type": "application/javascript",
+        "response_byte_count": 168139,
+        "response_sha256": "085fd65b4e15e2af4f3adb3f256f0058d0176dd2d98ce53217ede16667a04a90",
+        "final_url": "https://www.tpex.org.tw/rsrc/js/tables.js",
+        "redirect_count": 0,
+        "dispatch_reservations": 1,
+        "actual_http_dispatch_attempts": 1,
+        "transport_error_code": null,
+        "raw_local_path": "/tmp/j-b04-a6-sm-b1-r4/raw/tables.js"
+      }
+    ],
+    "total_dispatch_reservations": 2,
+    "maximum_dispatches": 4,
+    "HEAD": 0,
+    "POST": 0,
+    "retry_count": 0,
+    "data_endpoint_contacted": false,
+    "javascript_executed": false,
+    "additional_assets_fetched": false,
+    "static_analysis_file": "analysis.json"
+  },
+  "static_analysis": {
+    "API_PATTERN": {
+      "declaration_found": false,
+      "searched_asset": "global.js",
+      "literal_found": false,
+      "statically_resolvable": false,
+      "finding": "API_PATTERN is not declared in captured global.js; landing capture uses the unresolved symbol as tables.init pattern."
+    },
+    "tables_init": {
+      "composition_mechanism": "tables.js substitutes the first {LANG} and {ACTION} placeholders in opt.pattern; zh maps to zh-tw, en to en-us, jp to ja-jp. Landing capture supplies pattern: API_PATTERN and action: company/deListed. Because API_PATTERN is unresolved, the resulting URL cannot be determined.",
+      "method": "POST for report action via jQuery $.post(apiAction, oData, callback, json);",
+      "method_statically_established": true,
+      "slash_normalization": "No normalization in the observed replacement expression.",
+      "runtime_parameters": "Form-derived oData; observed response=json and, when serverPaging is enabled, paging-offset and paging-size. Paging paths also add paging-order and paging-dir.",
+      "response_representation": "JSON requested by jQuery dataType argument; exact response contract not qualified.",
+      "response_field_names": [
+        "stat (checked)",
+        "data (consumed in paging renderer)",
+        "totalCount (consumed in paging renderer)"
+      ],
+      "complete_request_url_determinable_without_execution": false,
+      "required_unresolved_symbol": "API_PATTERN"
+    },
+    "company_deListed_role": "symbolic action token, not endpoint",
+    "candidate_endpoint_classification": "SM_B1_R4_DISCOVERY_INCONCLUSIVE",
+    "candidate_endpoint": null,
+    "data_endpoint_contacted": false,
+    "javascript_executed": false,
+    "additional_assets_fetched": false,
+    "cross_asset_composition": {
+      "landing_pattern_symbol": "API_PATTERN",
+      "global_asset_definition": "absent",
+      "tables_asset_default_pattern": "/{LANG}/{ACTION} (generic default; not established as landing override)",
+      "landing_action": "company/deListed",
+      "tables_asset_transform": "first {LANG} and {ACTION} replacements",
+      "resolved_candidate_url": null,
+      "reason": "The landing page explicitly supplies API_PATTERN, while captured global.js does not define it. The generic tables.js default does not prove the page-specific value."
+    }
+  },
+  "installation_local_evidence": [
+    {
+      "artifact": "runner",
+      "path": "/tmp/j-b04-a6-sm-b1-r4/runner.py",
+      "sha256": "767b453d8596e68e36fba520200552783d55ac4b4fde319a465124534b49be7b",
+      "byte_size": 5088,
+      "published_to_git": false
+    },
+    {
+      "artifact": "global.js",
+      "path": "/tmp/j-b04-a6-sm-b1-r4/raw/global.js",
+      "sha256": "58c3d641bde9aa9c6698ba6145df2a85257ee51f56dc263408a0518e1603e167",
+      "byte_size": 103202,
+      "published_to_git": false
+    },
+    {
+      "artifact": "tables.js",
+      "path": "/tmp/j-b04-a6-sm-b1-r4/raw/tables.js",
+      "sha256": "085fd65b4e15e2af4f3adb3f256f0058d0176dd2d98ce53217ede16667a04a90",
+      "byte_size": 168139,
+      "published_to_git": false
+    },
+    {
+      "artifact": "transport.json",
+      "path": "/tmp/j-b04-a6-sm-b1-r4/transport.json",
+      "sha256": "cb238b175013f44c1f7ce1a47111376bc97ab0b1b08fb78d4b68faff42f14963",
+      "byte_size": 1965,
+      "published_to_git": false
+    },
+    {
+      "artifact": "analysis.json",
+      "path": "/tmp/j-b04-a6-sm-b1-r4/analysis.json",
+      "sha256": "c443daf477e0ee7fa2e7975e9632f3766048335153ad6f1b7105436143a37887",
+      "byte_size": 2262,
+      "published_to_git": false
+    }
+  ],
+  "additional_assets_fetched": false,
+  "raw_JS_committed": false,
+  "data_endpoint_contacted": false,
+  "javascript_executed": false,
+  "R3_landing_capture_sha256": "f6eaa4a4969219dc5a633f43e056d8fa2d31fa944c1e23125f24836733f86853",
+  "security_master_state": "NOT_INITIALIZED",
+  "active_json_absent": true,
+  "release": "none",
+  "production_identity": "NOT_VERIFIED",
+  "bootstrap_retry": "NOT_AUTHORIZED",
+  "H3_live_calls": 0,
+  "H2_live_calls": 0,
+  "A6_integrated_execution": false,
+  "H2": "INACTIVE",
+  "routing": "plan_only",
+  "selected_executor": null,
+  "J-B04": "BLOCKING",
+  "Phase_J": "NOT_STARTED",
+  "MCP": 6,
+  "network_counts": {
+    "logical_GET": 2,
+    "actual_HTTP_dispatches": 2,
+    "HEAD": 0,
+    "POST": 0,
+    "automatic_retry": 0,
+    "data_endpoint_GET": 0,
+    "Security_Master_live_acquisition": 0
+  },
+  "unresolved_concerns": [
+    "API_PATTERN was not declared in captured global.js or landing capture; the landing page supplied only an unresolved symbol.",
+    "The tables.js default pattern is generic and cannot establish the page-specific override.",
+    "Report method and JSON expectation are visible in generic tables.js composition, but the endpoint path and qualified response schema remain unproven.",
+    "No follow-up asset, imported dependency, or data endpoint was authorized or fetched."
+  ]
+}

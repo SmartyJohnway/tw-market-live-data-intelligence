@@ -244,7 +244,7 @@ def test_fresh_install_without_twt49u() -> None:
     assert assembled["events"]
 
 
-def test_static_dormant_registry_and_plan_only_boundary() -> None:
+def test_static_registry_and_only_bounded_twse_route_is_active() -> None:
     registry = json.loads((ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8"))
     candidate = [item for item in registry["executors"] if item.get("executor_id") == "phase_h_h2_twse_exright_pre_executor"]
     assert len(candidate) == 1
@@ -252,10 +252,14 @@ def test_static_dormant_registry_and_plan_only_boundary() -> None:
     assert candidate[0]["network_required"] is True
     catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
     capability = next(item for item in catalog["data_need_capabilities"] if item["capability_id"] == "corporate_action_context")
-    assert capability["runtime_executable"] is False
-    assert capability["support_status"] == "contract_supported"
+    assert capability["runtime_executable"] is True
+    assert capability["support_status"] == "runtime_executable"
+    assert capability["supported_markets"] == ["TWSE"]
     route = next(item for item in json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))["routes"] if item["capability_id"] == "corporate_action_context")
-    assert route["runtime_executable"] is False
-    assert route["selected_executor_id"] is None
-    assert route["routing_status"] == "plan_only"
+    assert route["runtime_executable"] is True
+    assert route["selected_executor_id"] == "phase_h_h2_twse_exright_pre_executor"
+    assert route["routing_status"] == "resolved"
+    assert route["supported_markets"] == ["TWSE"]
     assert route["network_required"] is True
+    active_h2 = [item for item in json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))["phase_h_source_authority"]["records"] if item["source_id"].startswith("H2-") and item["activation_state"] == "active" and item["runtime_executable"]]
+    assert [(item["source_id"], item["source_contract"]) for item in active_h2] == [("H2-TWSE-EXRIGHT-PRE-OPENAPI", "TWT48U_ALL")]

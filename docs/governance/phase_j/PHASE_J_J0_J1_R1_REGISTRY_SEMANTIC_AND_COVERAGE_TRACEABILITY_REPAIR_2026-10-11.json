@@ -1,0 +1,342 @@
+{
+  "schema_version": "phase_j_j0_j1_r1_traceability_repair.v1",
+  "authority": {
+    "starting_head": "26cbe87dc73aab1fdff15bdad9efb828e0b9ca57",
+    "starting_tree": "0f08c5cc7478b904fa3084c17373a2c5224c0a24",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "pr_326": "OPEN_DRAFT_UNMERGED",
+    "independent_review_id": "5480046031",
+    "independent_review_disposition": "HOLD_NETWORK_FREE_R1_REQUIRED",
+    "owner_authorization_sha256": "fc89876349d947e51747a5369e06fa5c074e527f3a6a8e3a1d698b9ae3f72045"
+  },
+  "phase_j_state": {
+    "before": "STARTED",
+    "after": "STARTED",
+    "j0": "COMPLETE",
+    "j1_registry": "R1_FROZEN_ACCEPTANCE_CANDIDATE",
+    "j1_matrix": "R1_FROZEN_ACCEPTANCE_CANDIDATE",
+    "phase_k": "NOT_STARTED",
+    "j_b01": "NON_BLOCKING",
+    "j_b02": "NON_BLOCKING",
+    "j_b03": "CLOSED",
+    "j_b04": "CLOSED_CLEARED"
+  },
+  "public_boundary": {
+    "request": "unified_market_evidence_request.v3",
+    "result": "unified_market_evidence_result.v3",
+    "audit": "unified_market_evidence_audit_package.v3",
+    "mcp_tools": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "mcp_tool_count": 6,
+    "production_runtime_changes": 0,
+    "public_schema_changes": 0,
+    "new_product_capability": false
+  },
+  "finding_a_current_historical_semantics": {
+    "repaired_scenarios": [
+      "J1-11",
+      "J1-12",
+      "J1-13",
+      "J1-14",
+      "J1-15",
+      "J1-16",
+      "J1-18"
+    ],
+    "model": [
+      "purpose/current_purpose are current",
+      "historical_readiness_summary retains preflight reason and prior candidate purpose",
+      "current_semantic_state is structured and status-checked"
+    ],
+    "historical_source": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+    "j1_11_current": "representative TPEx attention/disposition via phase_h_h1_tpex_composite_executor; partial scope; changed-trading-method, suspension, resumption remain uncovered",
+    "j1_12_current": "suspension/resumption unsupported; unresolved does not imply normal/tradeable",
+    "j1_14_current": "bounded TWSE ex-right-pre route via phase_h_h2_twse_exright_pre_executor / TWT48U_ALL only; no full H2/history claim",
+    "validator_consistency": "readiness status, capability state, accepted routes, family completeness and interpretation guard are cross-checked without literal sentence matching"
+  },
+  "finding_b_authority_binding": {
+    "incorrect_prior_binding": "J1-11/J1-12 used J-B04 review 5479527453 as the J-B03 review ID",
+    "j_b03_canonical_authority": {
+      "ref": "docs/governance/phase_j/PHASE_J_J_B03_C0_CLOSURE_AND_READINESS_RECONCILIATION_2026-10-07.json",
+      "authority_kind": "governance_record",
+      "github_review_id": null,
+      "decision": "J_B03_CLOSED_BOUNDED_CONVERSATIONAL_CORRECTNESS_SATISFIED"
+    },
+    "distinct_j_b03_github_review_found": false,
+    "j_b04_authority_preserved_for": [
+      "J1-13",
+      "J1-14",
+      "J1-15",
+      "J1-16"
+    ],
+    "j_b04_review_id": "5479527453",
+    "validator_checks_gate_role_and_record_content": true
+  },
+  "finding_c_integration_coverage": {
+    "integration_covered_existing_before": 27,
+    "integration_covered_existing_after": 7,
+    "downgraded_to_planned_count": 20,
+    "retained_scenario_ids": [
+      "J1-03",
+      "J1-11",
+      "J1-16",
+      "J1-17",
+      "J1-18",
+      "J1-20",
+      "J1-23"
+    ],
+    "downgraded_scenario_ids": [
+      "J1-01",
+      "J1-02",
+      "J1-04",
+      "J1-05",
+      "J1-06",
+      "J1-07",
+      "J1-08",
+      "J1-09",
+      "J1-10",
+      "J1-12",
+      "J1-13",
+      "J1-14",
+      "J1-15",
+      "J1-19",
+      "J1-21",
+      "J1-22",
+      "J1-24",
+      "J1-25",
+      "J1-26",
+      "J1-27"
+    ],
+    "qualifying_kinds": [
+      "integration_test",
+      "e2e_acceptance",
+      "historical_live_acceptance"
+    ],
+    "non_qualifying_alone": [
+      "contract_authority",
+      "routing_authority",
+      "unit_test",
+      "governance_closure"
+    ],
+    "scenario_match_required": true,
+    "layer_baselines_are_global_only": true,
+    "bounded_live_coverage_requires_accepted_exact_semantic_historical_evidence": true
+  },
+  "registry": {
+    "path": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+    "sha256": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864",
+    "scenario_count": 27,
+    "scenario_ids": [
+      "J1-01",
+      "J1-02",
+      "J1-03",
+      "J1-04",
+      "J1-05",
+      "J1-06",
+      "J1-07",
+      "J1-08",
+      "J1-09",
+      "J1-10",
+      "J1-11",
+      "J1-12",
+      "J1-13",
+      "J1-14",
+      "J1-15",
+      "J1-16",
+      "J1-17",
+      "J1-18",
+      "J1-19",
+      "J1-20",
+      "J1-21",
+      "J1-22",
+      "J1-23",
+      "J1-24",
+      "J1-25",
+      "J1-26",
+      "J1-27"
+    ],
+    "stable_ids_preserved_exactly_J1_01_to_J1_27": true,
+    "relevance_class_counts": {
+      "MUST_HAVE_FOR_CONVERSATIONAL_J": 16,
+      "ACCEPTANCE_HARNESS_ONLY": 1,
+      "OPTIONAL_EVIDENCE_NOT_J_BLOCKING": 5,
+      "SAFE_FAIL_CLOSED_IS_SUFFICIENT": 5
+    },
+    "current_historical_semantics_consistent": true,
+    "authority_status": "J1_R1_FROZEN_ACCEPTANCE_CANDIDATE"
+  },
+  "coverage_matrix": {
+    "path": "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json",
+    "sha256": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45",
+    "dimensions": [
+      "contract_fixture",
+      "deterministic_unit",
+      "integration",
+      "service_api",
+      "workbench",
+      "mcp",
+      "fresh_install",
+      "bounded_live",
+      "real_agent"
+    ],
+    "status_counts": {
+      "COVERED_J0_J1": 34,
+      "PLANNED": 147,
+      "REQUIRES_LIVE_AUTH": 16,
+      "REQUIRES_REAL_AGENT_AUTH": 27,
+      "COVERED_EXISTING": 16,
+      "NOT_APPLICABLE": 3
+    },
+    "per_layer_status_counts": {
+      "contract_fixture": {
+        "COVERED_J0_J1": 17,
+        "PLANNED": 10
+      },
+      "deterministic_unit": {
+        "COVERED_J0_J1": 17,
+        "PLANNED": 10
+      },
+      "integration": {
+        "PLANNED": 20,
+        "COVERED_EXISTING": 7
+      },
+      "service_api": {
+        "PLANNED": 27
+      },
+      "workbench": {
+        "PLANNED": 27
+      },
+      "mcp": {
+        "PLANNED": 27
+      },
+      "fresh_install": {
+        "PLANNED": 26,
+        "COVERED_EXISTING": 1
+      },
+      "bounded_live": {
+        "REQUIRES_LIVE_AUTH": 16,
+        "COVERED_EXISTING": 8,
+        "NOT_APPLICABLE": 3
+      },
+      "real_agent": {
+        "REQUIRES_REAL_AGENT_AUTH": 27
+      }
+    },
+    "integration_status_counts": {
+      "PLANNED": 20,
+      "COVERED_EXISTING": 7
+    },
+    "scenario_level_integration_claims": 7,
+    "coverage_gaps": 20,
+    "authority_status": "J1_R1_FROZEN_ACCEPTANCE_CANDIDATE"
+  },
+  "authorization_state": {
+    "bounded_live": "NOT_GRANTED",
+    "real_agent": "NOT_GRANTED"
+  },
+  "activity": {
+    "market_source_get_head_post": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "security_master_acquisition": 0,
+    "security_master_mutation": 0,
+    "browser": 0,
+    "firecrawl": 0,
+    "real_agent_execution": 0,
+    "live_market_execution": 0,
+    "provider_or_product_runtime_mutation": 0
+  },
+  "validation": {
+    "focused_pytest": {
+      "suite": "J0/J1 semantic + registry, readiness, B03, B04/A6, Phase H/I, Result/Audit, service, Workbench, MCP, Security Master isolation",
+      "passed": 262,
+      "failed": 0,
+      "skipped": 1,
+      "deselected": 2,
+      "deselected_nodes": [
+        "tests/unit/test_phase_j_b04_a6_p1_prerequisite_authority.py::test_h2_remains_plan_only_inactive_and_unselected",
+        "tests/unit/test_phase_j_b04_a6_p1_prerequisite_authority.py::test_inventory_and_authority_helpers_are_network_free"
+      ],
+      "deselection_reason": "Frozen historical A6-P1 assertions require pre-activation H2; later reviewed A6 authority supersedes those current-state expectations."
+    },
+    "registry_test_file": {
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical_validators": {
+      "registry": "PASS",
+      "readiness_preflight": "PASS_HISTORICAL_HOLD_RETAINED",
+      "j_b03_closure": "PASS_CLOSED_REMAINING_B04_IS_HISTORICAL_OUTPUT",
+      "j_b04_a6_r2": "PASS_AT_EXACT_HISTORICAL_EVIDENCE_COMMIT_2455fd0875bc09d6bc5926a6267351aadb38beb1",
+      "a6_terminal_evidence": "PASS",
+      "a6_r1": "PASS",
+      "phase_i_final_exit": "PASS",
+      "phase_h_v3_contracts": "PASS"
+    },
+    "compileall": "PASS",
+    "strict_duplicate_key_json": {
+      "status": "PASS",
+      "file_count": 1063,
+      "scope": "all tracked repository JSON plus the new R1 governance JSON"
+    },
+    "git_diff_check": "PASS"
+  },
+  "default_ci": {
+    "command": "python scripts/run_test_profile.py default-ci --json",
+    "base_commit": "26cbe87dc73aab1fdff15bdad9efb828e0b9ca57",
+    "candidate_commit": "e0c47d441cf5bb2cd0eb2dbf20fd12c6ba6df70e",
+    "python": "CPython 3.12.14 at /tmp/a5test-venv/bin/python",
+    "environment": {
+      "TZ": "Etc/UTC",
+      "PYTHONHASHSEED": "0",
+      "network": "denied",
+      "security_master_root": "isolated temporary root, reset identically before each run"
+    },
+    "base_counts": {
+      "collected": 1288,
+      "passed": 1249,
+      "failed": 30,
+      "skipped": 4,
+      "deselected": 5
+    },
+    "candidate_counts": {
+      "collected": 1288,
+      "passed": 1249,
+      "failed": 30,
+      "skipped": 4,
+      "deselected": 5
+    },
+    "base_failed_node_count": 30,
+    "candidate_failed_node_count": 30,
+    "failed_node_sets_equal": true,
+    "candidate_only_failure_nodes": [],
+    "candidate_only_failure_count": 0,
+    "network_may_have_occurred": false,
+    "local_report_paths": [
+      "/tmp/phase-j-j0j1-r1-base-default-ci.json",
+      "/tmp/phase-j-j0j1-r1-candidate-default-ci.json"
+    ]
+  },
+  "implementation": {
+    "commit": "e0c47d441cf5bb2cd0eb2dbf20fd12c6ba6df70e",
+    "tree": "8c4314fb460ad628828b32d96b592335981fee85",
+    "subject": "fix(phase-j): repair scenario semantics and coverage traceability",
+    "files": [
+      "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+      "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json",
+      "scripts/validate_phase_j_j0_j1_scenario_registry.py",
+      "tests/unit/test_phase_j_j0_j1_scenario_registry.py"
+    ],
+    "production_files_changed": 0
+  },
+  "terminal_disposition": "PHASE_J_J0_J1_R1_REGISTRY_SEMANTIC_AND_COVERAGE_TRACEABILITY_REPAIR_PASS"
+}

@@ -387,17 +387,18 @@ def main() -> None:
         _fail("phase_h_contract_runtime_authority_invalid")
     if catalog["phase_h_contract"].get("preferred_runtime_request_schema_version") != "unified_market_evidence_request.v3":
         _fail("phase_h_contract_preferred_request_invalid")
-    if catalog["phase_h_contract"].get("active_phase_h_source_count") != 4:
+    if catalog["phase_h_contract"].get("active_phase_h_source_count") != 5:
         _fail("phase_h_active_source_count_invalid")
     active = [item for item in routing["phase_h_source_authority"]["records"] if item.get("activation_state") == "active"]
-    if routing["phase_h_source_authority"].get("active_source_count") != 4:
+    if routing["phase_h_source_authority"].get("active_source_count") != 5:
         _fail("phase_h_routing_active_source_count_invalid")
     if {(item.get("source_id"), item.get("runtime_executable")) for item in active} != {
         ("H1-TPEX-ATTENTION-OPENAPI", True),
         ("H1-TPEX-DISPOSITION-OPENAPI", True),
         ("H1-TPEX-CHANGED-TRADING-OPENAPI", True),
         ("H3-TWSE-DEFAULT-BOUNDED", True),
-    } or len(active) != 4:
+        ("H2-TWSE-EXRIGHT-PRE-OPENAPI", True),
+    } or len(active) != 5:
         _fail("phase_h_active_source_set_invalid")
     if routing.get("activation_status") != "selected_phase_h_routes_active":
         _fail("phase_h_routing_activation_status_invalid")
@@ -458,8 +459,10 @@ def main() -> None:
     if source_states.get("TWSE", {}).get("activation_state") != "active" or source_states.get("TPEX", {}).get("activation_state") != "blocked" or source_states.get("TPEX", {}).get("governance_issue_ids") != ["H0-SRC-10", "H0-SRC-12"]:
         _fail("h3_market_source_authority_invalid")
     h2_sources = [item for item in routing["phase_h_source_authority"]["records"] if str(item.get("source_id", "")).startswith("H2-")]
-    if any(item.get("activation_state") == "active" or item.get("runtime_executable") is True for item in h2_sources):
-        _fail("h2_must_remain_inactive")
+    active_h2 = [item for item in h2_sources if item.get("activation_state") == "active" and item.get("runtime_executable") is True]
+    if ([(item.get("source_id"), item.get("source_contract")) for item in active_h2] != [("H2-TWSE-EXRIGHT-PRE-OPENAPI", "TWT48U_ALL")]
+            or any(item.get("activation_state") == "active" or item.get("runtime_executable") is True for item in h2_sources if item not in active_h2)):
+        _fail("a6_h2_activation_scope_invalid")
     validate_trading_status_context_semantics(examples["h1_attention_available"])
     validate_trading_status_context_semantics(examples["h1_no_evidence_complete"])
     validate_corporate_action_context_semantics(examples["h2_preannouncement_and_final"])

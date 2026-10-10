@@ -44,7 +44,11 @@ def test_capability_contract_is_deterministic_and_preserves_dispositions():
     assert h1["routing_disposition"] == "resolved"
     assert _market(h1, "TPEX")["disposition"] == "executable"
     assert _market(h1, "TWSE")["disposition"] == "blocked"
-    assert _capability(payload, "corporate_action_context")["routing_disposition"] == "plan_only"
+    h2 = _capability(payload, "corporate_action_context")
+    assert h2["routing_disposition"] == "resolved"
+    assert h2["selected_executor_id"] == "phase_h_h2_twse_exright_pre_executor"
+    assert _market(h2, "TWSE")["disposition"] == "executable"
+    assert all(item["market"] != "TPEX" for item in h2["markets"])
     session = _capability(payload, "session_status")
     assert session["routing_disposition"] == "blocked"
     assert all(item["disposition"] != "executable" for item in session["markets"])

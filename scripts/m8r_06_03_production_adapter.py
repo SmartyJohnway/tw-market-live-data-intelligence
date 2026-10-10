@@ -667,16 +667,18 @@ def _phase_h_h3_twse_recent_performance(
             )
         # Caller-supplied timeout is retained; TLS policy and response cap are
         # fixed by the selected route. No retry or redirect behavior is added.
-        result = fetch_twse_stock_day_month(
-            target=target,
-            instrument_family="company_share",
-            instrument_type="common_share",
-            requested_month=month,
-            retrieved_at=kwargs["retrieved_at"],
-            timeout_seconds=request["timeout_seconds"],
-            max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,
-            ssl_policy="compatibility",
-        )
+        from scripts.a6_session_transport import operation_context
+        with operation_context(int(os.environ.get("A6_ATTEMPT", "1")), "H3", request["operation_id"]):
+            result = fetch_twse_stock_day_month(
+                target=target,
+                instrument_family="company_share",
+                instrument_type="common_share",
+                requested_month=month,
+                retrieved_at=kwargs["retrieved_at"],
+                timeout_seconds=request["timeout_seconds"],
+                max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,
+                ssl_policy="compatibility",
+            )
         result = _validate_h3_month_result(
             result,
             target=target,

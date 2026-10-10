@@ -96,7 +96,7 @@ def _without_i3(value):
 
 
 def validate_current_a26_h1_authority() -> None:
-    """Require the exact bounded Stage-B H1 state before historical projection."""
+    """Require current bounded H1/H3 plus the separately authorized A6 H2 route."""
     catalog_path = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
     routing_path = ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
     catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
@@ -110,24 +110,35 @@ def validate_current_a26_h1_authority() -> None:
     authority = routing["phase_h_source_authority"]
     active = {x["source_id"] for x in authority["records"]
               if x.get("activation_state") == "active" and x.get("runtime_executable") is True}
-    assert authority["active_source_count"] == 4
-    assert active == {
+    h1_h3 = {
         "H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI",
         "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED",
     }
+    # J-B04-A6 adds one separately governed TWSE-only H2 route. Validate its
+    # exact scope before older Phase-I comparisons project it away.
+    validate_current_a3_h2_candidate()
+    assert authority["active_source_count"] == 5
+    assert active == h1_h3 | {"H2-TWSE-EXRIGHT-PRE-OPENAPI"}
 
 
 def validate_current_a3_h2_candidate() -> None:
-    """Require the exact A3 plan-only candidate before historical projection."""
+    """Require the exact bounded A6 H2 activation before historical projection."""
+    catalog = json.loads((ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json").read_text(encoding="utf-8"))
     routing = json.loads((ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json").read_text(encoding="utf-8"))
     registry = json.loads((ROOT / "config/m8r_06_03_executor_registry_metadata.json").read_text(encoding="utf-8"))
+    capability = next(x for x in catalog["data_need_capabilities"] if x.get("capability_id") == A3_H2_CAPABILITY)
     route = next(x for x in routing["routes"] if x.get("capability_id") == A3_H2_CAPABILITY)
-    assert route["runtime_executable"] is False
-    assert route["routing_status"] == "plan_only"
-    assert route["selected_executor_id"] is None
+    assert (capability["support_status"], capability["runtime_executable"], capability["phase_h_activation_state"], capability["supported_markets"]) == ("runtime_executable", True, "selected_route_active", ["TWSE"])
+    assert (route["runtime_executable"], route["routing_status"], route["selected_executor_id"], route["supported_markets"]) == (True, "resolved", A3_H2_EXECUTOR, ["TWSE"])
     assert route["candidate_executor_ids"] == [A3_H2_EXECUTOR]
     assert route["network_required"] is True
-    assert route["estimated_operation_rule"] == "A3 implementation candidate only; one explicit TWSE TWT48U_ALL GET, retry zero; remains plan-only and inactive until separately accepted"
+    assert route["output_evidence_contract"] == "corporate_action_context_evidence.v1"
+    assert "one TWT48U_ALL GET maximum" in route["estimated_operation_rule"]
+    assert "consumes only the successful same-target H3-derived comparison window" in route["estimated_operation_rule"]
+    source_authority = routing["phase_h_source_authority"]
+    active_h2 = [x for x in source_authority["records"] if x.get("source_id", "").startswith("H2-") and x.get("activation_state") == "active" and x.get("runtime_executable") is True]
+    assert [(x["source_id"], x["source_contract"]) for x in active_h2] == [("H2-TWSE-EXRIGHT-PRE-OPENAPI", "TWT48U_ALL")]
+    assert source_authority["active_source_count"] == 5
     candidate = [x for x in registry["executors"] if x.get("executor_id") == A3_H2_EXECUTOR]
     assert len(candidate) == 1
     assert candidate[0]["capability_id"] == A3_H2_CAPABILITY
@@ -136,22 +147,39 @@ def validate_current_a3_h2_candidate() -> None:
 
 
 def project_current_a3_h2_addition(relative: str, current, historical):
-    """Project only the accepted inactive H2 candidate from old Phase-I comparisons."""
+    """Project the exact bounded A6 H2 overlay out of older Phase-I comparisons."""
     if relative not in {
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
         "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
         "config/m8r_06_03_executor_registry_metadata.json",
+        "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
     }:
         return current
     validate_current_a3_h2_candidate()
     result = json.loads(json.dumps(current))
-    if relative.endswith("m8r_05b_capability_to_executor_routing_matrix.v3.json"):
+    if relative.endswith("unified_market_evidence_capability_catalog.v3.json"):
+        old_capability = next(x for x in historical["data_need_capabilities"] if x.get("capability_id") == A3_H2_CAPABILITY)
+        result["data_need_capabilities"] = [json.loads(json.dumps(old_capability)) if row.get("capability_id") == A3_H2_CAPABILITY else row for row in result["data_need_capabilities"]]
+        result["phase_h_contract"]["active_phase_h_source_count"] = historical["phase_h_contract"]["active_phase_h_source_count"]
+    elif relative.endswith("m8r_05b_capability_to_executor_routing_matrix.v3.json"):
         old_route = next(x for x in historical["routes"] if x.get("capability_id") == A3_H2_CAPABILITY)
         result["routes"] = [
             json.loads(json.dumps(old_route)) if row.get("capability_id") == A3_H2_CAPABILITY else row
             for row in result["routes"]
         ]
+        old_authority = historical.get("phase_h_source_authority", {})
+        old_records = {x.get("source_id"): x for x in old_authority.get("records", [])}
+        authority = result.get("phase_h_source_authority", {})
+        authority["records"] = [json.loads(json.dumps(old_records[x["source_id"]])) if x.get("source_id") == "H2-TWSE-EXRIGHT-PRE-OPENAPI" and x["source_id"] in old_records else x for x in authority.get("records", [])]
+        authority["active_source_count"] = old_authority.get("active_source_count")
+        result["routing_scope"] = historical.get("routing_scope", result.get("routing_scope"))
     else:
-        result["executors"] = [x for x in result["executors"] if x.get("executor_id") != A3_H2_EXECUTOR]
+        if relative.endswith("executor_registry_metadata.json"):
+            result["executors"] = [x for x in result["executors"] if x.get("executor_id") != A3_H2_EXECUTOR]
+        else:
+            old_surfaces = {x.get("surface_id"): x for x in historical.get("surfaces", [])}
+            result["surfaces"] = [json.loads(json.dumps(old_surfaces[x["surface_id"]])) if x.get("surface_id") == A3_H2_EXECUTOR and x["surface_id"] in old_surfaces else x for x in result.get("surfaces", [])]
+            result["surfaces"] = [x for x in result["surfaces"] if x.get("surface_id") != A3_H2_EXECUTOR or x.get("surface_id") in old_surfaces]
     return result
 
 
@@ -225,6 +253,39 @@ def strip_a26_production_adapter_addition(text: str) -> str:
     return text
 
 
+def strip_a6_transport_instrumentation(text: str) -> str:
+    """Project only the A6 operation-context wrapper from the shared adapter."""
+    wrapper = (
+        '        from scripts.a6_session_transport import operation_context\n'
+        '        with operation_context(int(os.environ.get("A6_ATTEMPT", "1")), "H3", request["operation_id"]):\n'
+        '            result = fetch_twse_stock_day_month(\n'
+        '                target=target,\n'
+        '                instrument_family="company_share",\n'
+        '                instrument_type="common_share",\n'
+        '                requested_month=month,\n'
+        '                retrieved_at=kwargs["retrieved_at"],\n'
+        '                timeout_seconds=request["timeout_seconds"],\n'
+        '                max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,\n'
+        '                ssl_policy="compatibility",\n'
+        '            )\n'
+    )
+    baseline = (
+        '        result = fetch_twse_stock_day_month(\n'
+        '            target=target,\n'
+        '            instrument_family="company_share",\n'
+        '            instrument_type="common_share",\n'
+        '            requested_month=month,\n'
+        '            retrieved_at=kwargs["retrieved_at"],\n'
+        '            timeout_seconds=request["timeout_seconds"],\n'
+        '            max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,\n'
+        '            ssl_policy="compatibility",\n'
+        '        )\n'
+    )
+    if wrapper not in text:
+        raise AssertionError("a6_h3_transport_instrumentation_shape_changed")
+    return text.replace(wrapper, baseline, 1)
+
+
 def strip_a3_h2_production_adapter_addition(text: str) -> str:
     """Project the A3 inactive H2 adapter registration from old code baselines."""
     text = text.replace(
@@ -276,6 +337,7 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
         )
         current_text = strip_a26_production_adapter_addition(current_text)
         current_text = strip_a3_h2_production_adapter_addition(current_text)
+        current_text = strip_a6_transport_instrumentation(current_text)
         if current_text != baseline_text:
             raise AssertionError(f"non_i3_production_adapter_drift:{relative}")
         return

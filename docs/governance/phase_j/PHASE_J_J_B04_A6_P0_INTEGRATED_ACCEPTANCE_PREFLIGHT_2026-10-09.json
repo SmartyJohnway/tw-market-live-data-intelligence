@@ -1,0 +1,530 @@
+{
+  "A5": "COMPLETE_PASS",
+  "H2_activation": "NOT PERFORMED",
+  "J_B04_closure": false,
+  "MCP": 6,
+  "Phase_J_start": false,
+  "a5_closeout": "docs/governance/phase_j/PHASE_J_J_B04_A5_FINAL_CLOSEOUT_2026-10-09.json",
+  "a5_closeout_sha256": "c034ea14b0d0b3ee3c810e1b301f42e8735b41b1c474a7643b0cecedd1a5d003",
+  "a5_sessions_mutated": false,
+  "a6_requires_canonical_security_master": true,
+  "acceptance_only_identity_fallback": false,
+  "active_selector": "absent",
+  "architecture": {
+    "activation_boundary": {
+      "H2_runtime": "INACTIVE",
+      "current_route": "plan_only",
+      "future_activation_mechanism": "separately reviewed canonical capability-catalog activation plus routing-matrix selection of the already registered H2 candidate and any governed Phase-H activation authority; not performed by A6-P0",
+      "selected_executor_id": null
+    },
+    "audit_v3": {
+      "gap": "Audit V3 does not record actual HTTP dispatch counts or an end-to-end network-call counter. Keep the frozen schema unchanged; A6 acceptance must retain a separate sanitized session-level transport ledger bound to the execution receipt/artifact hashes. Audit source_attempts alone cannot reconstruct redirects or actual dispatch count.",
+      "projector": "scripts/m8r_05c/audit_package_builder.py:build_audit_package",
+      "schema": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+      "schema_change_required": false,
+      "supports": [
+        "F3 identity validation hash",
+        "Security Master artifact hashes/release ID/manifest hash when bound",
+        "plan and authorization identity",
+        "claim/receipt/bundle identity",
+        "operation lineage and outcomes",
+        "artifact/citation references and hashes",
+        "Phase-H source family/contract/role/activation/provider/target/window/coverage/outcome/failure",
+        "H4 derivation inputs/state/guard"
+      ]
+    },
+    "execution_order": [
+      "identity",
+      "H3",
+      "H2",
+      "H4",
+      "Result V3",
+      "Audit V3",
+      "handoff"
+    ],
+    "future_bounded_live_contract": {
+      "contract_hard_ceiling_per_session": 10,
+      "designed_not_authorized": true,
+      "eligible_continuation": [
+        "transient source failure",
+        "stage witness unavailable"
+      ],
+      "max_integrated_attempts": 2,
+      "max_official_get_dispatches_per_session": 8,
+      "note": "One integrated attempt may span up to three distinct H3 monthly requests plus one H2 TWT48U request. Two integrated attempts consume at most eight HTTP dispatches, below the ten-dispatch ceiling. No transport is run in P0.",
+      "per_attempt_dispatch_maximum": 4,
+      "prohibited": [
+        "H3 TPEX",
+        "TWT49U",
+        "TPEx fallback",
+        "TAIFEX",
+        "browser",
+        "unofficial APIs",
+        "Security Master bootstrap during A6"
+      ],
+      "sources": [
+        {
+          "endpoint": "https://www.twse.com.tw/exchangeReport/STOCK_DAY",
+          "executor": "phase_h_h3_twse_recent_performance_executor",
+          "max_dispatches_per_integrated_attempt": 3,
+          "method": "GET",
+          "redirect_follow": 0,
+          "response_ceiling_bytes_each": 2097152,
+          "retry": 0,
+          "source": "H3-TWSE-DEFAULT-BOUNDED"
+        },
+        {
+          "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",
+          "executor": "phase_h_h2_twse_exright_pre_executor",
+          "max_dispatches_per_integrated_attempt": 1,
+          "method": "GET",
+          "redirect_follow": 0,
+          "response_ceiling_bytes_each": 4194304,
+          "retry": 0,
+          "source": "H2-TWSE-EXRIGHT-PRE-OPENAPI"
+        }
+      ],
+      "stop_on": [
+        "PASS",
+        "hard block"
+      ],
+      "target": "TWSE:2330"
+    },
+    "handoff_coverage_matrix": [
+      {
+        "basis": "A3 frozen contracts and A6 target/inventory record",
+        "layer": "contract fixture",
+        "status": "COVERED"
+      },
+      {
+        "basis": "A3 H2/H3/H4 and V3 regression suites; A6 identity-gate tests",
+        "layer": "deterministic unit",
+        "status": "COVERED"
+      },
+      {
+        "basis": "A3 network-free production-chain E2E exists; A6 requires canonical identity and full governed rerun",
+        "layer": "integration",
+        "status": "READY_FOR_A6"
+      },
+      {
+        "basis": "existing /api/unified/fetch-evidence and result-package routes",
+        "layer": "service API",
+        "status": "READY_FOR_A6"
+      },
+      {
+        "basis": "existing Unified Workbench router consumes Local Service path",
+        "layer": "Workbench",
+        "status": "READY_FOR_A6"
+      },
+      {
+        "basis": "existing six-tool Local Service adapter; no seventh tool",
+        "layer": "MCP",
+        "status": "READY_FOR_A6"
+      },
+      {
+        "basis": "canonical Security Master is NOT_INITIALIZED; A6 must fail before H3/H2",
+        "layer": "fresh-install",
+        "status": "BLOCKED_WITH_REASON"
+      },
+      {
+        "basis": "identity not initialized and no A6 live authorization; P0 makes zero calls",
+        "layer": "real bounded network",
+        "status": "BLOCKED_WITH_REASON"
+      },
+      {
+        "basis": "A6 scope is the bounded J-B04 product vertical, not full Phase J scenario closure",
+        "layer": "real AI / agent",
+        "status": "DEFERRED_TO_LATER_PHASE_J"
+      }
+    ],
+    "integrated_chain": [
+      {
+        "contract": "ACTIVE, hash-verified qualified installation-local release; resolve exact listing ID TWSE:2330",
+        "entrypoint": "get_production_mode_a_security_master",
+        "failure_semantics": "NOT_INITIALIZED, invalid release, unresolved, ambiguous, or out-of-scope identity blocks before plan execution",
+        "input": "canonical listing ID and TWSE market hint; no company-name or frozen descriptor fallback",
+        "module": "scripts.m8r_06_01c2_mode_a_security_master_loader",
+        "network": false,
+        "output": "resolved listing identity, durable ISIN, instrument classification, execution eligibility, release_id and manifest hash",
+        "stage": "canonical_identity"
+      },
+      {
+        "contract": "existing Unified Request -> F3 identity validation -> 05B plan -> explicit authorization/claim/preflight",
+        "entrypoint": "build_local_operator_execution_ticket",
+        "failure_semantics": "identity/authorization/preflight errors stop before any executor call",
+        "input": "Unified Market Evidence request for one exact target and recent_performance + corporate_action_context",
+        "module": "server.services.unified_mode_b2",
+        "network": false,
+        "output": "F3 resolution, ordered operation graph, approval decision, claim authorization, preflight result",
+        "stage": "unified_request_plan_authorization_preflight"
+      },
+      {
+        "audit_propagation": "operation result, artifact/citation lineage and coverage outcome enter bundle and Audit V3",
+        "authorization_boundary": "approved operation and network authorization checked by production adapter/dispatcher",
+        "contract": "recent_performance_evidence.v1; lookback 1..20; H3 owns actual comparison window; max 3 unique TWSE STOCK_DAY months per operation",
+        "endpoint": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=<YYYYMMDD>&stockNo=2330",
+        "entrypoint": "_phase_h_h3_twse_recent_performance",
+        "executor": "phase_h_h3_twse_recent_performance_executor",
+        "input": "approved executable TWSE operation, exact target identity, lookback 1..20 and bounded timeout",
+        "limitations": [
+          "TPEx H3 remains blocked",
+          "provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED",
+          "partial/unavailable/source_failed remain distinct"
+        ],
+        "module": "scripts.m8r_06_03_production_adapter",
+        "network_policy": "GET only; no retry; no redirect; 2 MiB response ceiling per month; verified TLS compatibility mode",
+        "output": "normalized daily observations, source citation, actual baseline/comparison window, artifact hash and source-attempt outcome",
+        "stage": "H3"
+      },
+      {
+        "activation": "candidate is registered, canonical H2 route is plan_only with selected_executor_id=null; A6-P0 does not activate it",
+        "audit_propagation": "H2 artifact and source governance metadata are projected to Audit V3; exact HTTP dispatch count is not in Audit V3",
+        "authorization_boundary": "canonical route is currently plan_only; H2 requires separately reviewed activation and existing execution authorization",
+        "contract": "corporate_action_context_evidence.v1; consumes exact same-target H3 artifact/window; TWT48U preannouncement evidence only",
+        "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",
+        "entrypoint": "execute_h2_twse_exright_pre",
+        "executor": "phase_h_h2_twse_exright_pre_executor",
+        "input": "approved H2 operation plus exactly one same-target successful H3 dependency artifact and its derived window",
+        "module": "server.services.phase_h_h2_twse_exright_executor",
+        "network_policy": "one official GET per target operation; retry 0; no fallback; partial scope remains explicit",
+        "output": "typed H2 evidence, exact requested-window binding, source citation, primary artifact and governed source-attempt sidecar",
+        "stage": "H2",
+        "status_semantics": "partial/no-evidence/succeeded remain distinct from typed source_failed or binding_failed; unexpected failures do not fabricate evidence"
+      },
+      {
+        "audit_propagation": "H4 derivation inputs, target, state and guard are included in Audit V3",
+        "contract": "target-local exact H2/H3 artifacts; frozen discontinuity-safety derivation; partial coverage may produce coverage_incomplete / ordinary-return blocked",
+        "entrypoint": "derive_h4_for_completed_plan -> server.services.phase_h_discontinuity_safety.derive_discontinuity_safety",
+        "input": "hash-verified exact-target H2 and its dependent H3 primary artifacts/window",
+        "module": "server.services.phase_h_h2_twse_exright_executor",
+        "network": false,
+        "output": "one target-scoped H4 safety artifact, input references, state and interpretation guard",
+        "stage": "H4",
+        "status_semantics": "partial coverage remains coverage_incomplete and blocks ordinary-return interpretation"
+      },
+      {
+        "contract": "existing Unified Result V3 and Audit V3; citations, target projection, partial/failure semantics, artifact hashes, operation lineage and H4 derivations",
+        "entrypoints": [
+          "result_builder.build_result",
+          "audit_package_builder.build_audit_package"
+        ],
+        "input": "validated F3, request, plan, authorization, claim, receipt, bundle, evidence artifacts and citation index",
+        "module": "scripts.m8r_05c",
+        "network": false,
+        "output": "schema-validated Result V3 plus Audit V3 with canonical identity and operation/artifact lineage",
+        "stage": "Result V3 and Audit V3"
+      },
+      {
+        "contract": "verified Result/Audit package and guarded AI-ready Markdown handoff",
+        "entrypoints": [
+          "build_mode_c_result_package",
+          "build_mode_c_ai_handoff"
+        ],
+        "input": "verified stored Result V3 and Audit V3 package",
+        "module": "server.services.unified_mode_c",
+        "network": false,
+        "output": "target-specific guarded Markdown and structured package references",
+        "stage": "governed handoff",
+        "status_semantics": "coverage_incomplete/blocked guard must remain visible through export"
+      },
+      {
+        "contract": "same local-service governed execution and read/export boundaries; exactly six static MCP tools",
+        "entrypoints": [
+          "fetch_market_evidence",
+          "POST /api/unified/fetch-evidence",
+          "market_fetch_evidence / market_read_result / market_export_ai_handoff"
+        ],
+        "input": "request envelope through Local Service fetch; control package ID for result/audit/handoff read routes",
+        "module": "server.services.unified_local_operator_action / server.unified_workbench_router / server.unified_mcp",
+        "network": "only the explicitly authorized bounded execution route can reach H3/H2 transport",
+        "output": "execution outcome plus verified Result/Audit and AI-ready handoff",
+        "stage": "service, Workbench, MCP",
+        "status_semantics": "service errors are mapped to bounded conflict/validation responses; MCP has no generic executor selector"
+      }
+    ],
+    "no_trading_boundary": [
+      "no orders",
+      "no broker credentials",
+      "no position mutation",
+      "no trading action",
+      "no recommendation engine",
+      "no hidden scheduler"
+    ],
+    "result_v3": {
+      "authorization_and_bounded_execution_metadata": "authorization identity and bounded operation counts are carried by Audit V3 receipt/authorization identity, not by Result V3 evidence projection",
+      "projector": "scripts/m8r_05c/result_builder.py:build_result",
+      "schema": "schemas/unified_market_evidence_result.v3.schema.json",
+      "schema_change_required": false,
+      "supports": [
+        "canonical target identity",
+        "recent_performance_v3 (H3)",
+        "corporate_action_context (H2)",
+        "discontinuity_safety (H4)",
+        "source observation dates and currentness",
+        "citations and lineage",
+        "partial and failure states",
+        "target coverage",
+        "guarded Markdown via m8r_05c markdown renderer"
+      ]
+    }
+  },
+  "architecture_inventory_complete": true,
+  "canonical_runtime_state": {
+    "H2_runtime": "INACTIVE",
+    "J-B04": "BLOCKING",
+    "MCP": 6,
+    "Phase J": "NOT_STARTED",
+    "selected_executor_id": null
+  },
+  "disposition": "J_B04_A6_P0_BLOCKED_SECURITY_MASTER_NOT_INITIALIZED",
+  "execution_attempted": false,
+  "future_live_authorization": "NOT PRESENT",
+  "gate": "J-B04-A6-P0",
+  "identity_resolution": {
+    "reason_code": "NOT_INITIALIZED",
+    "result": "not_attempted"
+  },
+  "implementation_commit_tested_by_default_ci": "01c224b61c7697699381b0f73238fc4d2ae94344",
+  "implementation_tree_tested_by_default_ci": "b2eaccbf840ad91a9711d0ff1029c23080cd5833",
+  "integration_assessment": {
+    "Audit_V3_readiness": "EXISTING_ARTIFACT_CITATION_AUTHORIZATION_LINEAGE_AND_H4_GOVERNANCE; supplemental dispatch ledger required",
+    "H2_production_readiness": "IMPLEMENTED_CANDIDATE; registered but canonical runtime inactive and route plan_only",
+    "H3_production_readiness": "IMPLEMENTED_TWSE_ONLY; max 3 unique monthly GETs per operation; no retry/redirect; licensing/automation caveat remains",
+    "H4_readiness": "EXISTING_FROZEN_DETERMINISTIC_ZERO_NETWORK_PATH",
+    "Result_V3_readiness": "EXISTING_SCHEMA_AND_PROJECTOR_SUPPORT_H2_H3_H4_PARTIAL_STATES_AND_GUARDS",
+    "handoff_readiness": "EXISTING_SERVICE_API_WORKBENCH_AND_SIX_TOOL_MCP_HANDOFF; integrated A6 acceptance remains pending",
+    "production_contract_gaps": [
+      "Audit V3 does not contain exact HTTP dispatch counts; A6 acceptance must bind a separate sanitized transport ledger. No schema change in P0."
+    ],
+    "schema_change_required": false
+  },
+  "live_execution_lease": "NOT PREPARED",
+  "network_counts": {
+    "Security_Master_live_acquisition": 0,
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0
+  },
+  "production_identity_required": true,
+  "production_identity_verified": false,
+  "production_loader_result": "NOT_INITIALIZED",
+  "schema_version": "phase_j_j_b04_a6_p0_preflight.v1",
+  "security_master_bootstrap_contract": {
+    "automatic_bootstrap_from_a6": false,
+    "command_shape": "python scripts/manage_security_master.py update --root <canonical-root> --live",
+    "controlled_restart_required": true,
+    "dispatch_estimate": "five initial GET dispatches plus any same-host/allowlisted redirects; source probe uses urllib redirect handling (up to its framework limit of 10 redirects per logical probe), and project code adds no retry loop",
+    "executed": false,
+    "lifecycle": [
+      "source materialization and classifier export into a temporary input bundle (BUILDING is not a persisted Security Master release state)",
+      "CANDIDATE release",
+      "schema and structural identity/lifecycle qualification",
+      "QUALIFIED release with index/qualification/manifest hashes",
+      "ACTIVE via atomic active.json pointer"
+    ],
+    "logical_gets": 5,
+    "official_sources": [
+      {
+        "source": "TWSE ISIN listed",
+        "url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2"
+      },
+      {
+        "source": "TPEx ISIN listed",
+        "url": "https://isin.twse.com.tw/isin/C_public.jsp?strMode=4"
+      },
+      {
+        "source": "TWSE delisted lifecycle",
+        "url": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html"
+      },
+      {
+        "source": "TPEx delisted lifecycle",
+        "url": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html"
+      },
+      {
+        "source": "TWSE ETN expiry lifecycle",
+        "url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html"
+      }
+    ],
+    "per_probe_timeout_seconds": 20,
+    "qualification_checks": [
+      "release schemas and content hashes",
+      "structural identity uniqueness",
+      "listing/canonical/instrument identity consistency",
+      "lifecycle consistency",
+      "qualification report PASS",
+      "active pointer binds release and manifest/index hashes"
+    ],
+    "raw_data_behavior": "materializer writes raw HTML to ignored data/security_master/input_bundles; do not publish those raw payloads",
+    "release_evidence_to_preserve": [
+      "release_id",
+      "active.json",
+      "release.json",
+      "index.json SHA-256",
+      "manifest.json SHA-256",
+      "qualification.json and PASS",
+      "source provenance hashes",
+      "schema-version hashes",
+      "target resolution result"
+    ],
+    "required_as_separate_owner_governed_gate": true,
+    "required_surviving_artifacts": [
+      "qualified release directory under installation-local data/security_master/releases/<release_id>",
+      "active.json",
+      "release manifest/index/qualification bytes and hashes",
+      "bootstrap acquisition/provenance/qualification report needed for review"
+    ],
+    "response_ceiling_bytes_per_probe": 20971520,
+    "restart_reason": "Mode A production selection is process-lifetime immutable; pointer/release activation is observed only in a newly started process",
+    "same_cloud_task_bootstrap_then_a6": "technically possible only after successful activation and process restart, but not authorized by A6-P0; safer gate separation preserves bootstrap artifacts and independent review before any A6 live authorization",
+    "task_loss_behavior": "installation-local data may not survive task replacement. No approved portable restore contract is identified; do not copy gitignored Candidate B or fixture data. Preserve the qualified release through an explicitly reviewed installation-local backup/restore contract, otherwise a separate bootstrap gate must re-establish the authority before A6.",
+    "twse_2330_check_after_activation": "in a fresh process, production loader ACTIVE/QUALIFIED then identity_service.resolve('TWSE:2330', market_hint='TWSE'); require resolved/exact_listing_id, exact canonical target, TWSE/code 2330, company_share/common_share and execution_eligibility allowed"
+  },
+  "security_master_bootstrap_performed": false,
+  "security_master_index_hash": null,
+  "security_master_manifest_hash": null,
+  "security_master_qualification": null,
+  "security_master_release_id": null,
+  "security_master_release_state": null,
+  "security_master_root_selection": "canonical_installation_local_default",
+  "security_master_state": "NOT_INITIALIZED",
+  "security_master_status": "NOT_INITIALIZED",
+  "selected_executor_change": false,
+  "starting_head": "0576c8304764e6b7ba9e90305b34b63c50fd3fc6",
+  "starting_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "starting_tree": "b8eafbef94ee1fc688f04fa633721d98b1d6f5d6",
+  "target": "TWSE:2330",
+  "validation": {
+    "A1_A2_A3_validators": "PASS",
+    "A5_A3_A6_focused_tests": {
+      "failed": 0,
+      "passed": 137,
+      "status": "PASS"
+    },
+    "A5_P0_contract_assertions": "PASS",
+    "A5_closeout_and_sessions_integrity_equivalent": "PASS (A6 validator)",
+    "A5_legacy_repository_scope_validators": "BASELINE_LIMITATION: expected-file allowlist rejects the already-published Session #2 and final closeout artifacts; validator unchanged; A5 contract assertions and byte-integrity checks pass",
+    "A6_tests": {
+      "failed": 0,
+      "passed": 9,
+      "skipped": 0,
+      "status": "PASS"
+    },
+    "Phase_H_H2_H3_H4_tests": {
+      "failed": 0,
+      "passed": 115,
+      "status": "PASS"
+    },
+    "Phase_H_V3_validator": "PASS",
+    "Phase_J_GHI_validator": "PASS",
+    "Result_Audit_service_ModeA_identity_lifecycle_tests": {
+      "failed": 0,
+      "passed": 76,
+      "skipped": 1,
+      "status": "PASS"
+    },
+    "Security_Master_live_acquisition": 0,
+    "compileall": "PASS",
+    "default_ci_exact_base_head": {
+      "base_counts": {
+        "collected": 1288,
+        "collection_errors": 0,
+        "deselected": 5,
+        "failed": 28,
+        "passed": 1251,
+        "selected": 1283,
+        "skipped": 4
+      },
+      "base_failed_nodes": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]"
+      ],
+      "base_revision": "0576c8304764e6b7ba9e90305b34b63c50fd3fc6",
+      "candidate_revision": "01c224b61c7697699381b0f73238fc4d2ae94344",
+      "candidate_tree": "b2eaccbf840ad91a9711d0ff1029c23080cd5833",
+      "head_counts": {
+        "collected": 1288,
+        "collection_errors": 0,
+        "deselected": 5,
+        "failed": 28,
+        "passed": 1251,
+        "selected": 1283,
+        "skipped": 4
+      },
+      "head_failed_nodes": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]"
+      ],
+      "network_may_have_occurred": false,
+      "new_failure_delta": 0,
+      "new_failure_nodes": [],
+      "profile_status_base": "fail (28 shared environment failures)",
+      "profile_status_head": "fail (28 shared environment failures)",
+      "resolved_failure_nodes": [],
+      "same_command": "python scripts/run_test_profile.py default-ci --json",
+      "same_dependency_environment": "/tmp/a5test-venv; requirements-lock pins requests 2.34.2 / urllib3 2.7.0",
+      "same_python": "3.12.14",
+      "stable_failure_classification": "all 28 identical nodes in tests/unit/test_phase_i_i2_a4_activation.py fail while the canonical installation-local Security Master is NOT_INITIALIZED; observed ModeASecurityMasterUnavailable / LocalSecurityMasterError NOT_INITIALIZED",
+      "status": "SAME_ENVIRONMENT_DEPENDENT_FAILURE_SET"
+    },
+    "git_diff_check": "PASS",
+    "market_GET_HEAD_POST": "0/0/0",
+    "portable_catalog_sync": "PASS",
+    "runtime_Skill_guide_sync": "PASS_MCP_6",
+    "strict_duplicate_key_JSON_scan": {
+      "file_count": 1041,
+      "status": "PASS"
+    }
+  }
+}

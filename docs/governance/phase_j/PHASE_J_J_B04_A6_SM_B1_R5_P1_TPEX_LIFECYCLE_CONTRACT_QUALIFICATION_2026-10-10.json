@@ -1,0 +1,106 @@
+{
+  "gate": "J-B04-A6-SM-B1-R5-P1",
+  "disposition": "SM_B1_R5_P1_HARD_BLOCK",
+  "starting_head": "aee4adf8e3a188e4e088b3823d513731afecf845",
+  "starting_tree": "a24256ba3f7a488b06a9356edf81e607fec81c21",
+  "starting_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "R5_P0_independent_review_id": "5477501542",
+  "authority_records_sha256": {
+    "R3": "ebcb99cfb5ed61d4413033348b21320b35b1904a72de83d68dd463174db98482",
+    "R4": "1c9c429344c3a56af7cbd276b5392b9050b924938e504df0e64e178963d0b6bc",
+    "R5_P0": "8821465c1db81bc04dfe08a22caae360ef9a0f01651e6ecc3831195451a3f052"
+  },
+  "research_lead": "Firecrawl observations supplied in Owner instruction; not independently reproduced.",
+  "methods_selected": [
+    "Python urllib with a temporary same-host HTTPS redirect handler; no browser/runtime tool was available."
+  ],
+  "probe_incident": {
+    "requested_url": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+    "logical_probe_attempts": 1,
+    "request_method_argument": "landing",
+    "method_was_within_authorized_GET_POST_set": false,
+    "dispatch_attempts_initiated": 1,
+    "dispatch_count_source": "urllib opener invoked once; remote disconnected without HTTP response",
+    "http_status": null,
+    "response_received": false,
+    "transport_error_type": "RemoteDisconnected",
+    "retry": 0,
+    "target": "landing page only",
+    "endpoint_qualification_requests": 0,
+    "additional_targets_attempted": 0,
+    "incident_file": "/tmp/j-b04-a6-sm-b1-r5-p1/ledger.json",
+    "incident_file_sha256": "ab2aec705a81bc3b642e36f2955854b0da119e653a17ce4d5f77e28d74433b3f",
+    "temporary_runner_path": "/tmp/tpex_r5p1_research.py",
+    "temporary_runner_sha256": "989f503c064fcfbba839ba6f7b974427819b4366d2bdfd2f5b1afd5cee221938"
+  },
+  "probe_budget": {
+    "maximum_logical_probes": 10,
+    "maximum_explicit_dispatches": 12,
+    "maximum_endpoint_requests": 3,
+    "logical_probes_initiated": 1,
+    "dispatches_initiated": 1,
+    "endpoint_requests": 0,
+    "no_retry_or_further_request": true
+  },
+  "browser_incidental_requests": 0,
+  "API_PATTERN": {
+    "independent_reproduction": "NOT_PERFORMED",
+    "value": null,
+    "source": null
+  },
+  "language_mapping": null,
+  "action": "company/deListed from R3 preserved capture; live chain not reproduced",
+  "resulting_endpoint": null,
+  "request_contract": {
+    "url": null,
+    "method": null,
+    "content_type": null,
+    "body_parameters": null,
+    "pagination": null
+  },
+  "response_contract": {
+    "content_type": null,
+    "root": null,
+    "fields": null,
+    "row_representation": null,
+    "total_or_page_metadata": null
+  },
+  "coverage": {
+    "ALL_semantics": null,
+    "history_availability": null,
+    "pagination_completeness": null,
+    "deterministic_enumeration": null
+  },
+  "date_semantics": {
+    "calendar": null,
+    "conversion": null
+  },
+  "production_suitable": false,
+  "production_changes": [],
+  "raw_evidence": {
+    "local_paths": [
+      "/tmp/j-b04-a6-sm-b1-r5-p1/ledger.json",
+      "/tmp/tpex_r5p1_research.py"
+    ],
+    "raw_source_body_captured": false,
+    "raw_source_body_committed": false
+  },
+  "validation": {
+    "scope": "governance-only hard-block record",
+    "no_retry_or_further_network": true
+  },
+  "security_master": "NOT_INITIALIZED",
+  "production_identity": "NOT_VERIFIED",
+  "bootstrap_attempt_2_authorized": false,
+  "remaining_bootstrap_blockers": [
+    "TPEx lifecycle contract remains unresolved; this tranche hard-blocked before source response.",
+    "Historical TWSE twse_delisted and twse_etn_expired HTTP 307 issues remain unresolved."
+  ],
+  "H2": "INACTIVE",
+  "routing": "plan_only",
+  "selected_executor": null,
+  "J-B04": "BLOCKING",
+  "Phase_J": "NOT_STARTED",
+  "MCP": 6,
+  "terminal_explanation": "A temporary CLI runner argument-order error supplied method token landing to urllib Request instead of GET. The opener initiated one outbound request attempt; the remote closed the connection before an HTTP response. This violated the authorized method set. No retry or further source request was made."
+}
