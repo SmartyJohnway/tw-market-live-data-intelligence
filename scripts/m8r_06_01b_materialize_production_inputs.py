@@ -93,6 +93,7 @@ BOOTSTRAP_TERMINAL_TRANSPORT_CODES = {
     "BOOTSTRAP_REDIRECT_REJECTED",
 }
 BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT = "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE = "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
 
 # Qualification taxonomy
 QUAL_PRODUCTION = "QUALIFIED_PRODUCTION_INPUT"
@@ -299,19 +300,6 @@ def main() -> int:
         if probe_result["acquisition_status"] not in {"data", "schema_drift", "semantic_error"}:
             log(f"    FAILED: {probe_result.get('error', probe_result.get('error_type', 'unknown'))}")
             probe_failures.append(probe_result)
-            if is_tpex_api:
-                probe_result["bootstrap_failure_code"] = "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
-                probe_result["failure_reason"] = "qualified TPEx all-history request did not produce a valid JSON response"
-                _write_failure_report(
-                    bundle_dir,
-                    generated_at,
-                    effective_date,
-                    bundle_id,
-                    source_probes,
-                    "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE",
-                    "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE",
-                )
-                return 1
             continue
 
         log(f"    HTTP {probe_result.get('http_status')}, {probe_result.get('byte_count', 0)} bytes")
@@ -423,6 +411,20 @@ def main() -> int:
         if probe_result["acquisition_status"] not in {"data", "schema_drift", "semantic_error"}:
             log(f"    FAILED: {probe_result.get('error', probe_result.get('error_type', 'unknown'))}")
             probe_failures.append(probe_result)
+            if is_tpex_api:
+                probe_result["bootstrap_failure_code"] = BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE
+                probe_result["failure_reason"] = "qualified TPEx all-history request did not produce a valid JSON response"
+                _write_failure_report(
+                    bundle_dir,
+                    generated_at,
+                    effective_date,
+                    bundle_id,
+                    source_probes,
+                    "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE",
+                    BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE,
+                )
+                log(f"    ✗ HARD STOP: {BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE}")
+                return 1
             continue
 
         log(f"    HTTP {probe_result.get('http_status')}, {probe_result.get('byte_count', 0)} bytes")
@@ -501,7 +503,7 @@ def main() -> int:
             probe_result["failure_reason"] = "unexpected lifecycle parser failure"
             probe_failures.append(probe_result)
             if is_tpex_api:
-                probe_result["bootstrap_failure_code"] = "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+                probe_result["bootstrap_failure_code"] = BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE
                 _write_failure_report(
                     bundle_dir,
                     generated_at,
@@ -509,7 +511,7 @@ def main() -> int:
                     bundle_id,
                     source_probes,
                     "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE",
-                    "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE",
+                    BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE,
                 )
                 return 1
 

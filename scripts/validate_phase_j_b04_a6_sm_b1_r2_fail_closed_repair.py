@@ -68,7 +68,9 @@ def main() -> int:
         assert f'"{field}"' in probe
     assert "Exclude query, fragment, username, and password" in probe
     for test_name in (
-        "test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_phase_e",
+        "test_tpex_transport_failure_stops_before_next_probe_and_phase_e",
+        "test_tpex_schema_drift_stops_before_next_probe_and_phase_e",
+        "test_identity_source_transport_failure_remains_source_generic",
         "test_lifecycle_drift_detail_retains_shape_without_source_header_text",
         "test_http_307_is_sanitized_and_never_followed",
         "test_307_disallowed_location_is_reported_not_dispatched",

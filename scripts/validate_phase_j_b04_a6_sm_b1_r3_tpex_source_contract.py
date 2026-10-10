@@ -20,10 +20,13 @@ def main():
     assert record['R2_independent_review_id'] == '5476929940'
     for path, digest in record['historical_evidence_sha256'].items():
         assert sha(ROOT/path) == digest, path
-    # R3's parser hash is historical state. R5-P1-R2 may supersede the TPEx
-    # adapter after exact-head review; R3 remains immutable as the record of its
-    # then-current unresolved contract.
-    assert all(len(digest) == 64 for digest in record['unchanged_parser_sha256'].values())
+    # Compare R3's parser snapshot with its exact starting revision instead of
+    # incorrectly requiring today's qualified R5 parser to remain unchanged.
+    for path, digest in record['unchanged_parser_sha256'].items():
+        historical_bytes = subprocess.check_output(
+            ["git", "show", f"{record['starting_head']}:{path}"], cwd=ROOT
+        )
+        assert hashlib.sha256(historical_bytes).hexdigest() == digest, path
     capture = record['capture']
     assert capture['sha256'] == CAPTURE_SHA256 and capture['byte_size'] == CAPTURE_SIZE
     if (ROOT/capture['path']).exists():

@@ -140,10 +140,8 @@ def test_post_302_is_not_followed_or_redispatched(monkeypatch):
         body=b"date=ALL",
         content_type="application/x-www-form-urlencoded",
     )
-    assert result["acquisition_status"] == "http_error"
-    assert result["http_status"] == 302
-    assert result["transport_error_code"] == "BOOTSTRAP_HTTP_REDIRECT_NOT_FOLLOWED"
-    assert result["redirect_followed"] is False
+    assert result["acquisition_status"] == "redirect_rejected"
+    assert result["transport_error_code"] == "BOOTSTRAP_REDIRECT_REJECTED"
     assert result["dispatch_reservations"] == 1
     assert openers[0].dispatched_urls == ["https://example.test/data"]
 
@@ -371,10 +369,8 @@ def test_non_redirect_http_errors_keep_ordinary_classification(monkeypatch, stat
     assert "redirect_followed" not in result
 
 
-@pytest.mark.parametrize("tpex_transport_failure", [None, "network_error"])
-def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_phase_e(
-    monkeypatch, tmp_path, capsys, tpex_transport_failure
-):
+def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None,
+                           tpex_drift=False, identity_transport_failure=False):
     spec = importlib.util.spec_from_file_location(
         "a6_sm_b1_r2_materializer",
         ROOT / "scripts/m8r_06_01b_materialize_production_inputs.py",
@@ -390,6 +386,7 @@ def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_p
     report = {}
     qualification_calls = []
     export_calls = []
+    parser_calls = []
 
     def fake_probe(url, _allowed_hosts, *, save_raw=None, dispatch_budget=None, method="GET", body=None, content_type=None, **_kwargs):
         dispatch_budget.reserve_before_dispatch()
@@ -406,6 +403,14 @@ def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_p
         else:
             source_id = "twse_etn_expired"
         calls.append(source_id)
+        if identity_transport_failure and source_id.startswith("twse_isin_mode"):
+            return {
+                "acquisition_status": "network_error",
+                "transport_success": False,
+                "transport_error_code": "TEST_IDENTITY_TRANSPORT_FAILURE",
+                "dispatch_reservations": 1,
+                "request_method": method,
+            }
         if source_id == "tpex_delisted" and tpex_transport_failure:
             return {
                 "acquisition_status": tpex_transport_failure,
@@ -416,13 +421,16 @@ def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_p
                 "request_body": body,
                 "request_content_type": content_type,
             }
+        if source_id == "tpex_delisted":
+            save_raw.parent.mkdir(parents=True, exist_ok=True)
+            save_raw.write_bytes(b"sanitized test capture")
         return {
             "acquisition_status": "data",
             "transport_success": True,
             "http_status": 200,
             "byte_count": 24,
             "content_type": "application/json" if method == "POST" else "text/html",
-                "dispatch_reservations": 1,
+            "dispatch_reservations": 1,
             "source_id": source_id,
         }
 
@@ -444,12 +452,18 @@ def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_p
             "records": [{"identity": {}, "classification": {}, "observation": {}}],
         },
     )
-    monkeypatch.setattr(module, "parse_twse_delisted", lambda *_args: [])
+    monkeypatch.setattr(
+        module, "parse_twse_delisted", lambda *_args: parser_calls.append("twse_delisted") or []
+    )
 
-    def drift(*_args):
-        raise module.LifecycleSchemaDrift("no_html_tables")
+    def parse_tpex(*_args):
+        parser_calls.append("tpex_delisted")
+        if tpex_drift:
+            raise module.LifecycleSchemaDrift("no_html_tables")
+        return []
 
-    monkeypatch.setattr(module, "parse_tpex_delisted", drift)
+    monkeypatch.setattr(module, "parse_tpex_delisted", parse_tpex)
+    monkeypatch.setattr(module, "parse_etn", lambda *_args: parser_calls.append("twse_etn_expired") or [])
     monkeypatch.setattr(
         module,
         "_write_failure_report",
@@ -468,6 +482,13 @@ def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_p
         lambda **_kwargs: export_calls.append(True),
     )
 
+    return module, calls, report, qualification_calls, export_calls, parser_calls
+
+
+def test_tpex_transport_failure_stops_before_next_probe_and_phase_e(monkeypatch, tmp_path, capsys):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, tpex_transport_failure="network_error"
+    )
     assert module.main() == 1
     assert calls == [
         "twse_isin_mode2_zh",
@@ -478,15 +499,33 @@ def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_p
     assert "twse_etn_expired" not in calls
     assert len(report["sources"]) == 4
     result = report["sources"][-1]
-    if tpex_transport_failure:
-        assert result["bootstrap_failure_code"] == "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
-        assert report["decision"] == "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE"
-        assert result["request_method"] == "POST"
-        assert result["request_body"] == b"code=&date=ALL&reason=-1&response=json&paging-offset=0&paging-size=1000"
-    else:
-        assert result["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
-        assert "transport_error_code" not in result
-    assert drift["lifecycle_schema_drift"] == {
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+    assert report["decision"] == "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE"
+    assert report["reason"] == "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+    assert result["request_method"] == "POST"
+    assert result["request_body"] == b"code=&date=ALL&reason=-1&response=json&paging-offset=0&paging-size=1000"
+    assert parser_calls == ["twse_delisted"]
+    assert qualification_calls == []
+    assert export_calls == []
+    assert "HARD STOP: BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE" in capsys.readouterr().out
+
+
+def test_tpex_schema_drift_stops_before_next_probe_and_phase_e(monkeypatch, tmp_path, capsys):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, tpex_drift=True
+    )
+    assert module.main() == 1
+    assert calls == [
+        "twse_isin_mode2_zh",
+        "twse_isin_mode4_zh",
+        "twse_delisted",
+        "tpex_delisted",
+    ]
+    assert "twse_etn_expired" not in calls
+    assert len(report["sources"]) == 4
+    result = report["sources"][-1]
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert result["lifecycle_schema_drift"] == {
         "source_id": "tpex_delisted",
         "parser": "parse_tpex_delisted",
         "issue_code": "no_html_tables",
@@ -494,12 +533,28 @@ def test_tpex_lifecycle_drift_or_transport_failure_stops_before_next_probe_and_p
         "dispatch_reservations_used": 4,
         "probe_dispatch_reservations": 1,
     }
-    assert drift["acquisition_status"] == "schema_drift"
+    assert result["acquisition_status"] == "schema_drift"
     assert report["decision"] == "BLOCKED_BY_LIFECYCLE_SCHEMA_DRIFT"
     assert report["reason"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert parser_calls == ["twse_delisted", "tpex_delisted"]
     assert qualification_calls == []
     assert export_calls == []
     assert "HARD STOP: BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT" in capsys.readouterr().out
+
+
+def test_identity_source_transport_failure_remains_source_generic(monkeypatch, tmp_path):
+    module, calls, report, _qualification_calls, _export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, identity_transport_failure=True
+    )
+    assert module.main() == 1
+    assert calls == ["twse_isin_mode2_zh", "twse_isin_mode4_zh"]
+    assert parser_calls == []
+    assert report["decision"] == "BLOCKED_BY_OFFICIAL_SOURCE_PROBE_FAILURE"
+    assert report["reason"] == "All identity source probes failed"
+    assert all(
+        source.get("bootstrap_failure_code") != "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+        for source in report["sources"]
+    )
 
 
 def test_lifecycle_drift_detail_retains_shape_without_source_header_text():
