@@ -1,0 +1,338 @@
+{
+  "schema_version": "phase_j_j_b04_a6_sm_b1_r5_p1_r1.v1",
+  "gate": "J-B04-A6-SM-B1-R5-P1-R1",
+  "disposition": "SM_B1_R5_P1_R1_TPEX_LIFECYCLE_CONTRACT_PARTIAL",
+  "authorized_head": "c09f6fda9fbebd39df982970342aeee70bd4873c",
+  "authorized_tree": "38f637981e6a5facd2720103874d306163fd97ff",
+  "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "prior_incident": {
+    "gate": "J-B04-A6-SM-B1-R5-P1",
+    "review_id": "5477763503",
+    "disposition": "PASS_AS_HARD_BLOCK",
+    "classification": "RUNNER_GOVERNANCE_INCIDENT",
+    "root_cause": "temporary research-runner argument-order defect supplied HTTP method token \"landing\"; one invalid outbound method was attempted, no HTTP response was received, and no valid TPEx endpoint request occurred",
+    "valid_tpex_request_count": 0,
+    "lifecycle_endpoint_request_count": 0,
+    "historical_evidence_modified": false
+  },
+  "owner_authorization": {
+    "statement": "AUTHORIZE J-B04-A6-SM-B1-R5-P1-R1 AUTONOMOUS TPEx LIFECYCLE CONTRACT QUALIFICATION RESTART ON HEAD c09f6fda9fbebd39df982970342aeee70bd4873c TREE 38f637981e6a5facd2720103874d306163fd97ff: repair the temporary research runner pre-dispatch guard, then autonomously perform bounded read-only TPEx lifecycle contract qualification using only GET/POST outbound methods, maximum 10 top-level logical probes, maximum 12 Codex-explicit HTTP dispatches, maximum 3 explicit lifecycle endpoint qualification requests, zero automatic retries, no Security Master bootstrap, no H3/H2/A6 live execution, no H2 activation, no J-B04 closure, no Phase J start, and no merge of PR #326; stop on any authority drift, pre-dispatch guard failure, unauthorized method, budget breach, credential requirement, or state-changing operation.",
+    "statement_sha256": "08aadd17d403b461a955fa29fae3109da23e61e939a1edbd0aba51c243d80871",
+    "record_path_external": "/tmp/j-b04-a6-sm-b1-r5-p1-r1-owner-authorization.json",
+    "authorization_consumed_for_other_operations": false
+  },
+  "runner_repair": {
+    "location": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/runner.py",
+    "sha256": "de85cbd1bb4b8fb7d68fb09c6ac08ec023acb8446443d30debe6b6a1bceadaab",
+    "interface": "keyword arguments with target_id, purpose, url, method separated; outbound method is keyword-only in fetch()",
+    "pre_dispatch_checks": [
+      "uppercase ASCII method is exactly GET or POST",
+      "HTTPS scheme and exact recorded host www.tpex.org.tw",
+      "target_id and purpose are separate fields",
+      "logical probe and dispatch slots reserved before dispatch",
+      "budget available before dispatch",
+      "same-host redirect only and at most one followed redirect"
+    ],
+    "network_free_self_test": {
+      "rejected_methods": [
+        "landing",
+        "probe",
+        "FETCH",
+        "get",
+        "",
+        null
+      ],
+      "accepted_methods": [
+        "GET",
+        "POST"
+      ],
+      "labels_tested": [
+        "landing",
+        "lifecycle_endpoint",
+        "page_runtime"
+      ],
+      "outbound_dispatches": 0,
+      "result": "PASS"
+    },
+    "tracked_repository_changes_for_runner": 0
+  },
+  "probe_accounting": {
+    "top_level_logical_probes": 6,
+    "explicit_http_dispatches": 6,
+    "explicit_lifecycle_endpoint_qualification_requests": 3,
+    "browser_runtime_incidental_requests": 0,
+    "automatic_retries": 0,
+    "redirects_followed": 0,
+    "methods": {
+      "GET": 3,
+      "HEAD": 0,
+      "POST": 3
+    },
+    "budget_limits": {
+      "logical_probes_max": 10,
+      "explicit_dispatches_max": 12,
+      "endpoint_requests_max": 3
+    },
+    "budget_breached": false
+  },
+  "probe_ledger": [
+    {
+      "logical_probe": 1,
+      "target": "official_landing",
+      "purpose": "current_official_landing",
+      "url": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+      "method": "GET",
+      "http_status": 200,
+      "content_type": "text/html",
+      "response_bytes": 11160,
+      "response_sha256": "1b2d900b7727597d0e65c472546b2b896670622dd18cd1314c1e1da8638809a1",
+      "redirects": 0,
+      "raw_local_path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/01-official_landing.body"
+    },
+    {
+      "logical_probe": 2,
+      "target": "main_js",
+      "purpose": "inspect_first_party_page_runtime_for_API_PATTERN",
+      "url": "https://www.tpex.org.tw/rsrc/js/main.js",
+      "method": "GET",
+      "http_status": 200,
+      "content_type": "application/javascript",
+      "response_bytes": 45227,
+      "response_sha256": "cfbd8c64c748149f039f1d4f1c5b3ba4511039b9c9e60d8ed53fd9624edc587a",
+      "redirects": 0,
+      "raw_local_path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/02-main_js.body"
+    },
+    {
+      "logical_probe": 3,
+      "target": "tables_js_current",
+      "purpose": "verify_current_page_request_composition",
+      "url": "https://www.tpex.org.tw/rsrc/js/tables.js",
+      "method": "GET",
+      "http_status": 200,
+      "content_type": "application/javascript",
+      "response_bytes": 168139,
+      "response_sha256": "085fd65b4e15e2af4f3adb3f256f0058d0176dd2d98ce53217ede16667a04a90",
+      "redirects": 0,
+      "raw_local_path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/03-tables_js_current.body"
+    },
+    {
+      "logical_probe": 4,
+      "target": "lifecycle_default",
+      "purpose": "official_page_xhr_reproduction",
+      "url": "https://www.tpex.org.tw/www/zh-tw/company/deListed",
+      "method": "POST",
+      "http_status": 200,
+      "content_type": "application/json;charset=UTF-8",
+      "response_bytes": 1332,
+      "response_sha256": "86b5cf847348056b6220d293b6a569e897939b57b6c3fc9ea5b5d1b6293036a2",
+      "redirects": 0,
+      "raw_local_path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/04-lifecycle_default.body"
+    },
+    {
+      "logical_probe": 5,
+      "target": "lifecycle_all",
+      "purpose": "verify_ALL_history_and_first_page",
+      "url": "https://www.tpex.org.tw/www/zh-tw/company/deListed",
+      "method": "POST",
+      "http_status": 200,
+      "content_type": "application/json;charset=UTF-8",
+      "response_bytes": 2065,
+      "response_sha256": "80c6dc6d5c037f6db046ba36dee1754530edf2f5ba97ac3b5887d28817d25eb9",
+      "redirects": 0,
+      "raw_local_path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/05-lifecycle_all.body"
+    },
+    {
+      "logical_probe": 6,
+      "target": "lifecycle_all_unpaged",
+      "purpose": "verify_unpaged_all_history_response",
+      "url": "https://www.tpex.org.tw/www/zh-tw/company/deListed",
+      "method": "POST",
+      "http_status": 200,
+      "content_type": "application/json;charset=UTF-8",
+      "response_bytes": 404,
+      "response_sha256": "cacad15d3279efcd281031c2c71c931c0d89c2bf96335541fb94ad4fae1dc2e6",
+      "redirects": 0,
+      "raw_local_path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/06-lifecycle_all_unpaged.body"
+    }
+  ],
+  "api_contract": {
+    "official_landing": "https://www.tpex.org.tw/zh-tw/mainboard/listed/delisted.html",
+    "api_pattern": "/www/{LANG}/{ACTION}",
+    "api_pattern_binding": "top-level lexical let declaration in main.js: let isDev=...,API_PATTERN=\"/www/{LANG}/{ACTION}\"; it need not be window.API_PATTERN",
+    "main_js_sha256": "cfbd8c64c748149f039f1d4f1c5b3ba4511039b9c9e60d8ed53fd9624edc587a",
+    "language_source": "document.documentElement.lang=\"zh-Hant-tw\"; tables.js maps /^zh/i to zh and zh to zh-tw",
+    "action": "company/deListed",
+    "composition": "pattern.replace first {LANG} with zh-tw, then first {ACTION} with company/deListed",
+    "qualified_endpoint": "https://www.tpex.org.tw/www/zh-tw/company/deListed",
+    "endpoint_source": "direct static composition of captured current landing inline consumer, current main.js, and current tables.js; independently exercised through three POST requests",
+    "candidate_or_production": "official production endpoint candidate; request method and JSON response observed; overall production contract remains PARTIAL"
+  },
+  "request_contract": {
+    "method": "POST",
+    "content_type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "response_content_type": "application/json;charset=UTF-8",
+    "default_fields": {
+      "code": "empty string, all codes as exercised",
+      "date": "empty string on auto-load; response date was 2026",
+      "reason": "-1, UI option labeled 全部/all reasons"
+    },
+    "response_parameter": "response=json",
+    "initial_pagination": {
+      "paging-offset": 0,
+      "paging-size": 10
+    },
+    "page_pagination": {
+      "paging-table": 0,
+      "paging-size": "selected size (10 in current page configuration)",
+      "paging-offset": "(page number - 1) * page size",
+      "paging-order": 0,
+      "paging-dir": "asc"
+    },
+    "code_filter_semantics": "field exists and blank request returned unfiltered-looking current-year records; specific code-filter behavior not probed",
+    "date_filter_semantics": "empty date returned response date 2026; date=ALL returned date ALL and totalCount 582",
+    "reason_filter_semantics": "UI exposes -1 as all and 0..6 as reason categories; only -1 was exercised",
+    "omitted_vs_blank": "not compared",
+    "required_headers": "form content-type is implied by jQuery $.post object serialization; direct requests with that content type succeeded; no auth/cookies required in the tested direct requests",
+    "state_changing": false
+  },
+  "response_contract": {
+    "root_keys": [
+      "tables",
+      "date",
+      "stat"
+    ],
+    "success_stat": "ok",
+    "table_keys_observed": [
+      "fields",
+      "data",
+      "totalCount",
+      "title",
+      "notes"
+    ],
+    "fields": [
+      "股票代號",
+      "公司名稱",
+      "終止上櫃日期",
+      "終止上櫃原因",
+      "公司資料網址"
+    ],
+    "row_shape": "array aligned positionally to fields; 5 cells in observed row",
+    "mapping": {
+      "security_code": 0,
+      "company_name": 1,
+      "termination_date_raw": 2,
+      "termination_reason": 3,
+      "company_data_url": 4
+    },
+    "total_count_metadata": "tables[0].totalCount; 6 for default date=2026; 582 for date=ALL",
+    "default_response_rows": 6,
+    "all_years_page_rows": 10,
+    "zero_size_page_rows": 1,
+    "empty_result_semantics": "not tested",
+    "error_semantics": "application-level stat other than ok and HTTP error behavior not tested",
+    "schema_stability": "only one successful response family and one filter variation observed; not enough for production qualification"
+  },
+  "lifecycle_semantics": {
+    "event": "tpex_delisted",
+    "security_code_example": "8183",
+    "company_name_example": "台灣精星科技股份有限公司",
+    "termination_date_example_raw": "115-10-01",
+    "termination_reason_example": "non-empty reason text supplied in row",
+    "date_calendar": "ROC/Minguo-shaped year is emitted (115); repository lifecycle contract classifies the field as ROC and existing common normalizer adds 1911 while retaining raw input",
+    "example_normalized_date": "2026-10-01",
+    "conversion": "Gregorian year = ROC year + 1911; month/day parsed and validated by existing repository lifecycle date contract",
+    "date_error_cases": "not exercised against source response"
+  },
+  "coverage": {
+    "default_page": "blank date yielded current year 2026, 6 rows, totalCount 6",
+    "all_years": "date=ALL yielded totalCount 582, only first 10 rows with paging-size=10",
+    "all_years_encoding": "date=ALL is directly supported by the page date selector logic (YA format creates ALL option)",
+    "pagination": "serverPaging true; page offsets and totalCount-driven page navigation are defined in captured tables.js; current page config fixes pagin=10",
+    "zero_size_test": "date=ALL with paging-size=0 and offset=0 returned one row while retaining totalCount=582; it did not return all rows",
+    "complete_enumeration": "not proven; first additional page not requested; duplicate/missing-page reconciliation was not tested",
+    "history_earliest_date": "unknown from bounded sample",
+    "reason_and_code_filter_coverage": "not qualified for completeness",
+    "governed_bootstrap_fit": "not demonstrated; page configuration requires 10-row pages and 582 rows implies about 59 page requests, beyond the existing five-probe/ten-dispatch bootstrap envelope; alternate larger page-size support was not tested",
+    "production_suitable": false
+  },
+  "production_changes": [],
+  "production_manifest_parser_materializer_modified": false,
+  "source_contract_disposition_reason": "Endpoint, method, request and response shape are substantially reproduced, but complete historical enumeration, arbitrary page-size limits, empty/error semantics, and complete filter semantics remain unresolved. No production promotion is safe.",
+  "raw_evidence": [
+    {
+      "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/01-official_landing.body",
+      "sha256": "1b2d900b7727597d0e65c472546b2b896670622dd18cd1314c1e1da8638809a1",
+      "bytes": 11160
+    },
+    {
+      "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/02-main_js.body",
+      "sha256": "cfbd8c64c748149f039f1d4f1c5b3ba4511039b9c9e60d8ed53fd9624edc587a",
+      "bytes": 45227
+    },
+    {
+      "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/03-tables_js_current.body",
+      "sha256": "085fd65b4e15e2af4f3adb3f256f0058d0176dd2d98ce53217ede16667a04a90",
+      "bytes": 168139
+    },
+    {
+      "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/04-lifecycle_default.body",
+      "sha256": "86b5cf847348056b6220d293b6a569e897939b57b6c3fc9ea5b5d1b6293036a2",
+      "bytes": 1332
+    },
+    {
+      "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/05-lifecycle_all.body",
+      "sha256": "80c6dc6d5c037f6db046ba36dee1754530edf2f5ba97ac3b5887d28817d25eb9",
+      "bytes": 2065
+    },
+    {
+      "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/raw/06-lifecycle_all_unpaged.body",
+      "sha256": "cacad15d3279efcd281031c2c71c931c0d89c2bf96335541fb94ad4fae1dc2e6",
+      "bytes": 404
+    },
+    {
+      "path": "/tmp/j-b04-a6-sm-b1-r5-p1-r1/state.json",
+      "sha256": "fa4f2ee6276de913d6f588c03b1d95c2274fadd427b44b0ae45325e683f545ae",
+      "bytes": 9315
+    }
+  ],
+  "historical_evidence": {
+    "R5_P1_JSON_sha256": "fc9bc0cb910496b6cd49ee94a67dea738bcf009f90b3e4b9004a6687f275d3ee",
+    "R5_P1_MD_sha256": "54bc4f66f97c4105389c877860f571646a59a5aeac44a5ba8c3d2a0e9717940b",
+    "modified": false
+  },
+  "other_bootstrap_blockers": {
+    "twse_delisted_historical": "HTTP 307, zero redirects followed; remains unresolved and will continue to be an acquisition failure if reproduced under the current materializer; not retested in R1",
+    "twse_etn_expired_historical": "HTTP 307, zero redirects followed; remains unresolved and will continue to be an acquisition failure if reproduced under the current materializer; not retested in R1",
+    "answer_whether_TWSE_307_still_blocks_attempt_2": "yes, unresolved historical 307 outcomes remain a separate known blocker pending a separately governed correction or successful authorized re-verification; R1 does not show whether the endpoint behavior has since changed"
+  },
+  "canonical_state": {
+    "security_master": "NOT_INITIALIZED",
+    "production_identity_verified": false,
+    "bootstrap_attempt_2": "NOT_AUTHORIZED",
+    "H2": "INACTIVE",
+    "routing": "plan_only",
+    "selected_executor_id": null,
+    "H3_live_calls": 0,
+    "H2_live_calls": 0,
+    "A6_integrated_live_execution": false,
+    "J-B04": "BLOCKING",
+    "Phase_J": "NOT_STARTED",
+    "MCP": 6,
+    "PR_326": "Draft/open/unmerged"
+  },
+  "network_policy": {
+    "security_master_live_acquisition": 0,
+    "market_data_calls": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "research_TPEx_counts": {
+      "GET": 3,
+      "HEAD": 0,
+      "POST": 3
+    },
+    "no_bootstrap_or_integrated_market_execution": true
+  },
+  "terminal_result": "J-B04-A6-SM-B1-R5-P1-R1=TERMINAL_RESULT_READY_FOR_EXACT-HEAD_INDEPENDENT_REVIEW"
+}
