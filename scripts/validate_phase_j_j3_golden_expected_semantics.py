@@ -131,6 +131,9 @@ def validate_contract() -> dict:
     walk(golden)
     require(golden["contracts"] == registry["public_contracts"], "public V3 contract drift")
     require(golden["contracts"]["mcp_tool_count"] == 6, "MCP count drift")
+    require(golden["phase_state"] == {"Phase_J": "STARTED", "J0": "COMPLETE", "J1": "INDEPENDENTLY_ACCEPTED", "J2": "CLOSED_INDEPENDENTLY_ACCEPTED", "J3": "AUTHORIZED_TO_START", "J4": "NOT_STARTED", "Phase_K": "NOT_STARTED"}, "Phase J state drift")
+    require(golden["authorization_state"] == {"bounded_live": "NOT_GRANTED", "real_agent": "NOT_GRANTED"}, "future execution authority drift")
+    require(golden["network_policy"] == "NETWORK_FREE", "J3 network policy drift")
     require(registry["live_authorization"] == registry["real_agent_authorization"] == "NOT_GRANTED", "J1 authorization drift")
     require(trace["accepted_j2_r1"]["review"] == "5481723267", "accepted J2-R1 review mismatch")
     from server.unified_mcp.tool_contracts import build_tool_contract_snapshot

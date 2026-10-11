@@ -9291,5 +9291,19 @@
       ]
     }
   ],
-  "prose_matching": "FORBIDDEN; evaluate typed facts only"
+  "prose_matching": "FORBIDDEN; evaluate typed facts only",
+  "phase_state": {
+    "Phase_J": "STARTED",
+    "J0": "COMPLETE",
+    "J1": "INDEPENDENTLY_ACCEPTED",
+    "J2": "CLOSED_INDEPENDENTLY_ACCEPTED",
+    "J3": "AUTHORIZED_TO_START",
+    "J4": "NOT_STARTED",
+    "Phase_K": "NOT_STARTED"
+  },
+  "authorization_state": {
+    "bounded_live": "NOT_GRANTED",
+    "real_agent": "NOT_GRANTED"
+  },
+  "network_policy": "NETWORK_FREE"
 }
