@@ -1,0 +1,356 @@
+{
+  "schema_version": "phase_j_j4_regression_authority.v1",
+  "authority_status": "FROZEN_ACCEPTANCE_CANDIDATE_PENDING_EXACT_HEAD_REVIEW",
+  "starting_authority": {
+    "head": "90dc62ea9e6ed3255c065a93910e661f525d483f",
+    "tree": "5d19b92a21ced372686b49ff0a1f3871d1c52293",
+    "main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance"
+  },
+  "owner_authorization_statement": "AUTHORIZE PHASE J J4 REGRESSION AUTHORITY ON HEAD 90dc62ea9e6ed3255c065a93910e661f525d483f TREE 5d19b92a21ced372686b49ff0a1f3871d1c52293 AFTER J3-R1 EXACT-HEAD INDEPENDENT REVIEW 5482393445: perform a strictly network-free Phase J J4 tranche that preserves the independently accepted J1 registry and matrix, accepted J2 deterministic cross-layer evidence, and accepted J3-R1 Golden Expected Semantics and lossless traceability as immutable regression authority inputs, and formalizes a machine-verifiable Regression Authority that makes the 27 governed golden scenarios and typed semantic dimensions the baseline for future new source, new evidence family, new MCP version, new agent host, and new release changes; define deterministic change classes, impact-selection rules, mandatory safety-core regressions, required acceptance layers, evidence and authorization prerequisites, baseline hashes, gate dispositions, and regression receipts without adding product capability or changing Unified Request/Result/Audit V3, production routes, source adapters, Security Master, Workbench, Local Service, or the six-tool MCP surface; do not perform market/source network requests, bounded-live execution, real-agent execution, new-source acquisition, agent-host compatibility execution, Phase K work, release publication, PR merge, or Ready-for-Review transition; future change classes that require live or real-agent evidence must remain explicitly gated by separate Owner authorization; require focused network-free regression-authority tests, mutation tests proving impacted changes cannot bypass required golden scenarios or semantic dimensions, strict duplicate-key JSON validation, compileall, git diff --check, and clean-archive default-CI with zero candidate-only failures; publish a final validated implementation commit followed only by additive sanitized governance evidence and stop for exact-head independent review.",
+  "owner_authorization_sha256": "5080d30af2efb5c6586ba43d73463ce3d708b5ea8cf3cf0cbd59bc432dd0db5f",
+  "baseline_hashes": {
+    "PHASE_J_J2_R1_COVERAGE_DELTA_V1.json": "321e9008ebca8d8a42e77993ae9329b274dd3e05ad5553554890f97e65618539",
+    "PHASE_J_J2_R1_EFFECTIVE_COVERAGE_MATRIX_V1.json": "8fe53871a764d66dcca6d3a5531d4801008c58f77e74ace7eede637f15436c3a",
+    "PHASE_J_J2_R1_WORKBENCH_HEADLESS_EXECUTION_LEDGER_V1.json": "2c30451e2dc6071191d7d5107149770c4d34767cc45c26b5fa819b68249239fa",
+    "PHASE_J_J2_R1_WORKBENCH_HEADLESS_CROSS_LAYER_COMPLETION_2026-10-11.json": "74e27776bf9768613cbc25f1f6cf3c81687f29be2551f4f9e31141772ac29487",
+    "PHASE_J_J2_R1_WORKBENCH_HEADLESS_CROSS_LAYER_COMPLETION_2026-10-11.md": "eb324584ef03103137eec03a5190ba5bb6c2bd7d6b1d66c16693cae3920975f0",
+    "PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864",
+    "PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45",
+    "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json": "b4059b4c1a439e091393daed1887f08c1f6a83e59dfc4095e82e22130e6422fa",
+    "PHASE_J_J3_SEMANTIC_TRACEABILITY_V1.json": "8dfd4f256334959142bf81d163546ed0fe485e3d92393fd570fb97ac22d0e247",
+    "PHASE_J_J3_R1_GOLDEN_SEMANTIC_FIDELITY_AND_LOSSLESS_PROJECTION_HARDENING_2026-10-11.json": "00ccc7bba67f656fbc3046465a4923c2abf7cc9deeea03411a06cb8df8a402f2",
+    "PHASE_J_J3_R1_GOLDEN_SEMANTIC_FIDELITY_AND_LOSSLESS_PROJECTION_HARDENING_2026-10-11.md": "8fda262e5d30f6734cea4679af0ffca7c2284134b2e8d1e2371dddea8ed7e13a"
+  },
+  "reviews": {
+    "J1": "5481271339",
+    "J2_R1": "5481723267",
+    "J3_R1": "5482393445",
+    "J4_authorization": "5482593485"
+  },
+  "scenario_ids": [
+    "J1-01",
+    "J1-02",
+    "J1-03",
+    "J1-04",
+    "J1-05",
+    "J1-06",
+    "J1-07",
+    "J1-08",
+    "J1-09",
+    "J1-10",
+    "J1-11",
+    "J1-12",
+    "J1-13",
+    "J1-14",
+    "J1-15",
+    "J1-16",
+    "J1-17",
+    "J1-18",
+    "J1-19",
+    "J1-20",
+    "J1-21",
+    "J1-22",
+    "J1-23",
+    "J1-24",
+    "J1-25",
+    "J1-26",
+    "J1-27"
+  ],
+  "semantic_dimensions": [
+    "identity",
+    "source",
+    "period",
+    "currentness",
+    "missing",
+    "partial",
+    "corporate_action",
+    "authorization",
+    "bounded_execution",
+    "citations_lineage",
+    "no_trading"
+  ],
+  "layers": [
+    "contract_fixture",
+    "deterministic_unit",
+    "integration",
+    "service_api",
+    "workbench",
+    "mcp",
+    "fresh_install",
+    "bounded_live",
+    "real_agent"
+  ],
+  "change_classes": [
+    "NEW_SOURCE",
+    "NEW_EVIDENCE_FAMILY",
+    "NEW_MCP_VERSION",
+    "NEW_AGENT_HOST",
+    "NEW_RELEASE"
+  ],
+  "mandatory_safety_core": [
+    {
+      "scenario_id": "J1-01",
+      "accepted_title": "normal TWSE",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-01"
+    },
+    {
+      "scenario_id": "J1-08",
+      "accepted_title": "corrected disclosure",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-08"
+    },
+    {
+      "scenario_id": "J1-10",
+      "accepted_title": "financial statements",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-10"
+    },
+    {
+      "scenario_id": "J1-11",
+      "accepted_title": "attention / disposition",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-11"
+    },
+    {
+      "scenario_id": "J1-12",
+      "accepted_title": "suspend / resume",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-12"
+    },
+    {
+      "scenario_id": "J1-13",
+      "accepted_title": "ex-dividend",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-13"
+    },
+    {
+      "scenario_id": "J1-14",
+      "accepted_title": "ex-right",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-14"
+    },
+    {
+      "scenario_id": "J1-16",
+      "accepted_title": "reference-price discontinuity",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-16"
+    },
+    {
+      "scenario_id": "J1-20",
+      "accepted_title": "partial success",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-20"
+    },
+    {
+      "scenario_id": "J1-22",
+      "accepted_title": "missing",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-22"
+    },
+    {
+      "scenario_id": "J1-23",
+      "accepted_title": "source failure",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-23"
+    },
+    {
+      "scenario_id": "J1-24",
+      "accepted_title": "identity ambiguity",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-24"
+    },
+    {
+      "scenario_id": "J1-25",
+      "accepted_title": "unsupported identity",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-25"
+    },
+    {
+      "scenario_id": "J1-26",
+      "accepted_title": "authorization refusal",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-26"
+    },
+    {
+      "scenario_id": "J1-27",
+      "accepted_title": "resource bound",
+      "semantic_authority": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-27"
+    }
+  ],
+  "safety_core_rationale": "IDs freeze accepted semantic identities rather than matching mutable English prose; validator checks their J1 titles and J3 presence. All five classes retain this core without exceptions.",
+  "class_rules": {
+    "NEW_SOURCE": {
+      "scenario_scope": "explicit_or_exact_accepted_domain_match_plus_safety_core",
+      "requires_impact_declaration": true,
+      "live_gate": "when_requested"
+    },
+    "NEW_EVIDENCE_FAMILY": {
+      "scenario_scope": "explicit_scenarios_plus_safety_core",
+      "requires_impact_declaration": true,
+      "required_semantic_impact_fields": [
+        "intended_source_authority",
+        "timing",
+        "missing",
+        "partial",
+        "citations"
+      ],
+      "live_gate": "when_requested"
+    },
+    "NEW_MCP_VERSION": {
+      "scenario_scope": "safety_core_plus_declared_impact",
+      "mandatory_checks": [
+        "tool_discovery",
+        "tool_names",
+        "tool_schemas",
+        "validate",
+        "preview",
+        "authorization",
+        "execute_once",
+        "result",
+        "ai_handoff",
+        "large_partial_failure",
+        "no_trading"
+      ]
+    },
+    "NEW_AGENT_HOST": {
+      "scenario_scope": "all_27",
+      "real_agent_gate": "always",
+      "mandatory_checks": [
+        "mcp_protocol",
+        "authorization_sequencing",
+        "partial_missing_currentness",
+        "citations",
+        "no_trading"
+      ]
+    },
+    "NEW_RELEASE": {
+      "scenario_scope": "all_27",
+      "mandatory_checks": [
+        "all_11_dimensions",
+        "applicable_deterministic_layers",
+        "fresh_install",
+        "six_tool_contract",
+        "J1_J2_J3_validators"
+      ]
+    }
+  },
+  "selection_policy": {
+    "multiple_classes": "union",
+    "dimensions": "all_applicable_J3_dimensions_per_selected_scenario",
+    "deterministic_layers": "first_six_except_documented_preexecution_integration; fresh_install_J1_25",
+    "preexecution_integration_exemptions": [
+      "J1-10",
+      "J1-12",
+      "J1-24",
+      "J1-25",
+      "J1-26",
+      "J1-27"
+    ],
+    "preexecution_basis": "Accepted J2-R1 execution ledger: rejection/refusal before legitimate Result/Audit construction; no fabricated integration package. Baseline PLANNED cells remain unchanged.",
+    "fresh_install_scenario_ids": [
+      "J1-25"
+    ],
+    "changed_paths": "supporting_only_never_sole_impact_authority",
+    "unknown_class": "CHANGE_CLASS_UNRESOLVED",
+    "unknown_impact": "REGRESSION_IMPACT_UNRESOLVED",
+    "no_empty_plan": true
+  },
+  "disposition_precedence": [
+    "REGRESSION_SEMANTIC_FAILURE",
+    "IMPACT_DECLARATION_REQUIRED",
+    "REGRESSION_COVERAGE_GAP",
+    "REQUIRES_LIVE_AND_REAL_AGENT_AUTHORIZATION",
+    "REQUIRES_SEPARATE_LIVE_AUTHORIZATION",
+    "REQUIRES_SEPARATE_REAL_AGENT_AUTHORIZATION",
+    "REGRESSION_READY_NETWORK_FREE"
+  ],
+  "global_invariants": {
+    "J3_GLOBAL_NO_TRADING": {
+      "no_trading": true,
+      "order_routing": false,
+      "broker_credentials": false,
+      "investment_recommendation_engine": false
+    },
+    "execution_success_implies_interpretation_permission": false,
+    "source_failed_equals_valid_empty": false,
+    "missing_equals_zero": false,
+    "partial_equals_full_success": false,
+    "authorization_refusal_allows_execution": false
+  },
+  "mcp_tools": [
+    "market_describe_capabilities",
+    "market_validate_request",
+    "market_preview_request",
+    "market_read_result",
+    "market_export_ai_handoff",
+    "market_fetch_evidence"
+  ],
+  "public_contracts": [
+    "unified_market_evidence_request.v3",
+    "unified_market_evidence_result.v3",
+    "unified_market_evidence_audit_package.v3"
+  ],
+  "required_validators": [
+    "scripts/validate_phase_j_j0_j1_scenario_registry.py",
+    "scripts/validate_phase_j_j2_r1_workbench_headless_completion.py",
+    "scripts/validate_phase_j_j3_golden_expected_semantics.py",
+    "scripts/validate_phase_j_j4_regression_authority.py"
+  ],
+  "required_test_profiles": [
+    "default-ci",
+    "phase-j-regression-authority"
+  ],
+  "authorization_policy": {
+    "bounded_live": "NOT_GRANTED",
+    "real_agent": "NOT_GRANTED",
+    "manifest_or_receipt_can_self_authorize": false,
+    "accepted_future_authorizations": [],
+    "grant_acceptance": "Requires separately independently accepted hash-bound authority entry; current v1 pins an empty grant registry."
+  },
+  "phase_state": {
+    "Phase_J": "STARTED",
+    "J0": "COMPLETE",
+    "J1": "INDEPENDENTLY_ACCEPTED",
+    "J2": "CLOSED_INDEPENDENTLY_ACCEPTED",
+    "J3": "INDEPENDENTLY_ACCEPTED",
+    "J4": "FROZEN_ACCEPTANCE_CANDIDATE_PENDING_REVIEW",
+    "Phase_K": "NOT_STARTED"
+  },
+  "network_policy": {
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0,
+    "live_executions": 0,
+    "real_agent_executions": 0
+  },
+  "regression_invariants": [
+    {
+      "invariant_id": "missing_not_zero",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-22/dimensions/missing"
+    },
+    {
+      "invariant_id": "source_failed_not_valid_empty",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-23/dimensions/source"
+    },
+    {
+      "invariant_id": "partial_not_full_success",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-20/dimensions/partial"
+    },
+    {
+      "invariant_id": "authorization_refused_no_execution",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-26/dimensions/authorization"
+    },
+    {
+      "invariant_id": "ambiguous_identity_not_executable",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-24/dimensions/identity"
+    },
+    {
+      "invariant_id": "bounded_H2_not_complete_family",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-14/dimensions/source"
+    },
+    {
+      "invariant_id": "H4_incomplete_blocks_ordinary_return",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-16/dimensions/corporate_action"
+    },
+    {
+      "invariant_id": "result_audit_handoff_lineage",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-01/dimensions/citations_lineage"
+    },
+    {
+      "invariant_id": "no_recommendation_or_trade_order",
+      "authority_ref": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-01/dimensions/no_trading"
+    }
+  ],
+  "acceptance_contract_hashes": {
+    "docs/governance/phase_j/PHASE_J_J4_REGRESSION_CHANGE_MANIFEST_SCHEMA_V1.json": "ff0b5d8e0cf22673e234a9241532757f9b37ca5c0bc7d85aeb76c3e4e1e7d7fc",
+    "docs/governance/phase_j/PHASE_J_J4_REGRESSION_RECEIPT_SCHEMA_V1.json": "c8ac4949aba86a1323ff2305d9835584f664b11b1aa5f911eef1101911dd2ac8"
+  }
+}

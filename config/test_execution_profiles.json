@@ -835,6 +835,19 @@
       "browser_policy": "does not install or require Playwright/Chromium",
       "live_policy": "never executes bounded live checks",
       "automatic_ci_allowed": false
+    },
+    "phase-j-regression-authority": {
+      "purpose": "Network-free J4 selection, gating, receipt integrity, and accepted J3 semantic regression authority; no browser/live/agent subjects.",
+      "execution_type": "pytest",
+      "pytest_expression": "not network and not browser and not live",
+      "pytest_paths": [
+        "tests/acceptance/test_phase_j_j4_regression_authority.py",
+        "tests/acceptance/test_phase_j_j3_golden_expected_semantics.py"
+      ],
+      "network_policy": "external network denied by caller and J4 test socket guard",
+      "browser_policy": "not required",
+      "live_policy": "never executes live or real-agent checks",
+      "automatic_ci_allowed": true
     }
   }
 }

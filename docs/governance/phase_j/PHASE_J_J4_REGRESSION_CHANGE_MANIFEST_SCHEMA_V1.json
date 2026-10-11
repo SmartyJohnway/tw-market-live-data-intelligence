@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase J4 acceptance-only change manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "changed_paths",
+    "affected_sources",
+    "affected_data_needs",
+    "affected_evidence_families",
+    "affected_public_contracts",
+    "affected_scenario_ids",
+    "touches_mcp",
+    "touches_agent_host",
+    "touches_security_master",
+    "release_candidate",
+    "requested_live_revalidation",
+    "requested_real_agent_revalidation",
+    "change_id",
+    "candidate_commit",
+    "candidate_tree",
+    "change_classes"
+  ],
+  "properties": {
+    "changed_paths": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "affected_sources": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "affected_data_needs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "affected_evidence_families": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "affected_public_contracts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "affected_scenario_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "touches_mcp": {
+      "type": "boolean"
+    },
+    "touches_agent_host": {
+      "type": "boolean"
+    },
+    "touches_security_master": {
+      "type": "boolean"
+    },
+    "release_candidate": {
+      "type": "boolean"
+    },
+    "requested_live_revalidation": {
+      "type": "boolean"
+    },
+    "requested_real_agent_revalidation": {
+      "type": "boolean"
+    },
+    "change_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "candidate_tree": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "change_classes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "NEW_SOURCE",
+          "NEW_EVIDENCE_FAMILY",
+          "NEW_MCP_VERSION",
+          "NEW_AGENT_HOST",
+          "NEW_RELEASE"
+        ]
+      }
+    },
+    "semantic_impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "intended_source_authority": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timing": {
+          "type": "string",
+          "minLength": 1
+        },
+        "missing": {
+          "type": "string",
+          "minLength": 1
+        },
+        "partial": {
+          "type": "string",
+          "minLength": 1
+        },
+        "citations": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "fixture_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "synthetic",
+        "network_free",
+        "acceptance_only"
+      ],
+      "properties": {
+        "synthetic": {
+          "const": true
+        },
+        "network_free": {
+          "const": true
+        },
+        "acceptance_only": {
+          "const": true
+        }
+      }
+    }
+  }
+}

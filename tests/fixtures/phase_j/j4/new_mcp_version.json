@@ -1,0 +1,25 @@
+{
+  "changed_paths": [],
+  "affected_sources": [],
+  "affected_data_needs": [],
+  "affected_evidence_families": [],
+  "affected_public_contracts": [],
+  "affected_scenario_ids": [],
+  "touches_mcp": true,
+  "touches_agent_host": false,
+  "touches_security_master": false,
+  "release_candidate": false,
+  "requested_live_revalidation": false,
+  "requested_real_agent_revalidation": false,
+  "change_id": "synthetic_new_mcp_version",
+  "candidate_commit": "1111111111111111111111111111111111111111",
+  "candidate_tree": "2222222222222222222222222222222222222222",
+  "change_classes": [
+    "NEW_MCP_VERSION"
+  ],
+  "fixture_metadata": {
+    "synthetic": true,
+    "network_free": true,
+    "acceptance_only": true
+  }
+}
