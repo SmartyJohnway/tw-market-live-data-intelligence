@@ -1,0 +1,180 @@
+{
+  "schema_version": "phase_j_final_closure_r1_witness_delta.v1",
+  "baseline": {
+    "path": "docs/governance/phase_j/PHASE_J_J2_R1_EFFECTIVE_COVERAGE_MATRIX_V1.json",
+    "sha256": "8fe53871a764d66dcca6d3a5531d4801008c58f77e74ace7eede637f15436c3a",
+    "review_id": "5481723267"
+  },
+  "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+  "implementation_commit": "06dda316baf698cc8c70679f7c7caa41a2f62118",
+  "promotions": [
+    {
+      "scenario_id": "J1-02",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "integration_test",
+      "evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_WITNESS_LEDGER_V1.json#J1-02",
+          "kind": "integration_test"
+        },
+        {
+          "ref": "tests/acceptance/test_phase_j_final_closure_r1.py::test_production_scenario[J1-02]",
+          "kind": "integration_test"
+        }
+      ],
+      "scenario_match": "exact J3 typed assertions over actual execute-once package",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+      "result_id": "umeresult-v3-61a833a28875d05660c1",
+      "audit_package_id": "umeap-v3-83dd0d4c80aa047a68b2"
+    },
+    {
+      "scenario_id": "J1-02",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "service_test",
+      "evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_WITNESS_LEDGER_V1.json#J1-02",
+          "kind": "service_test"
+        },
+        {
+          "ref": "tests/acceptance/test_phase_j_final_closure_r1.py::test_production_scenario[J1-02]",
+          "kind": "service_test"
+        }
+      ],
+      "scenario_match": "exact J3 typed assertions over actual execute-once package",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+      "result_id": "umeresult-v3-61a833a28875d05660c1",
+      "audit_package_id": "umeap-v3-83dd0d4c80aa047a68b2"
+    },
+    {
+      "scenario_id": "J1-04",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "integration_test",
+      "evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_WITNESS_LEDGER_V1.json#J1-04",
+          "kind": "integration_test"
+        },
+        {
+          "ref": "tests/acceptance/test_phase_j_final_closure_r1.py::test_production_scenario[J1-04]",
+          "kind": "integration_test"
+        }
+      ],
+      "scenario_match": "exact J3 typed assertions over actual execute-once package",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+      "result_id": "umeresult-v3-c4bb3f94fd1b7ed81a64",
+      "audit_package_id": "umeap-v3-f9efb19cd195cae194eb"
+    },
+    {
+      "scenario_id": "J1-04",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "service_test",
+      "evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_WITNESS_LEDGER_V1.json#J1-04",
+          "kind": "service_test"
+        },
+        {
+          "ref": "tests/acceptance/test_phase_j_final_closure_r1.py::test_production_scenario[J1-04]",
+          "kind": "service_test"
+        }
+      ],
+      "scenario_match": "exact J3 typed assertions over actual execute-once package",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+      "result_id": "umeresult-v3-c4bb3f94fd1b7ed81a64",
+      "audit_package_id": "umeap-v3-f9efb19cd195cae194eb"
+    },
+    {
+      "scenario_id": "J1-05",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "integration_test",
+      "evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_WITNESS_LEDGER_V1.json#J1-05",
+          "kind": "integration_test"
+        },
+        {
+          "ref": "tests/acceptance/test_phase_j_final_closure_r1.py::test_production_scenario[J1-05]",
+          "kind": "integration_test"
+        }
+      ],
+      "scenario_match": "exact J3 typed assertions over actual execute-once package",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+      "result_id": "umeresult-v3-6e1826e3886bac263c1a",
+      "audit_package_id": "umeap-v3-1f72cef728e4840839b0"
+    },
+    {
+      "scenario_id": "J1-05",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "service_test",
+      "evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_WITNESS_LEDGER_V1.json#J1-05",
+          "kind": "service_test"
+        },
+        {
+          "ref": "tests/acceptance/test_phase_j_final_closure_r1.py::test_production_scenario[J1-05]",
+          "kind": "service_test"
+        }
+      ],
+      "scenario_match": "exact J3 typed assertions over actual execute-once package",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+      "result_id": "umeresult-v3-6e1826e3886bac263c1a",
+      "audit_package_id": "umeap-v3-1f72cef728e4840839b0"
+    },
+    {
+      "scenario_id": "J1-19",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "integration_test",
+      "evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_WITNESS_LEDGER_V1.json#J1-19",
+          "kind": "integration_test"
+        },
+        {
+          "ref": "tests/acceptance/test_phase_j_final_closure_r1.py::test_production_scenario[J1-19]",
+          "kind": "integration_test"
+        }
+      ],
+      "scenario_match": "exact J3 typed assertions over actual execute-once package",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+      "result_id": "umeresult-v3-3b49a00f5efc6d099085",
+      "audit_package_id": "umeap-v3-2564583673e5aaae972d"
+    },
+    {
+      "scenario_id": "J1-19",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "service_test",
+      "evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_WITNESS_LEDGER_V1.json#J1-19",
+          "kind": "service_test"
+        },
+        {
+          "ref": "tests/acceptance/test_phase_j_final_closure_r1.py::test_production_scenario[J1-19]",
+          "kind": "service_test"
+        }
+      ],
+      "scenario_match": "exact J3 typed assertions over actual execute-once package",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R1",
+      "result_id": "umeresult-v3-3b49a00f5efc6d099085",
+      "audit_package_id": "umeap-v3-2564583673e5aaae972d"
+    }
+  ]
+}
