@@ -13,11 +13,11 @@ def request_for(sid):
     return {'schema_version':'unified_market_evidence_request.v3','request_id':'closure-r1-'+sid.lower(),'targets':[{'input':'TPEX:6488' if sid=='J1-02' else 'TWSE:2330','resolution_requirement':'exact'}],'data_needs':[{'type':n,'priority':'required','parameters':{}} for n in needs],'execution_mode':'execute'}
 
 @contextmanager
-def service(sid,root):
+def service(sid,root,*,launcher=None):
     root=Path(root);root.mkdir(parents=True,exist_ok=True)
     bootstrap_deterministic_fixture_release(root/'security',eligible_targets=('TWSE:2330','TPEX:6488'))
     env=os.environ.copy();env.update(TW_MARKET_SECURITY_MASTER_ROOT=str(root/'security'),TW_MARKET_WATCHLIST_ROOT=str(root/'watchlists'),M8R_06_03_CONTROL_ROOT=str(root/'control'),M8R_06_03_EXECUTION_ENVIRONMENT='test',M8R_06_03_TEST_SOURCE_TRANSPORT='deterministic',M8R_06_03_TEST_INVOCATION_COUNTER=str(root/'invocations'),PHASE_J_CLOSURE_R1_SCENARIO=sid,PHASE_J_CLOSURE_R1_SERVER_LOG=str(root/'server.jsonl'))
-    p,port=start_workbench(env,launcher=ROOT/'tests/helpers/phase_j_closure_r1_server.py')
+    p,port=start_workbench(env,launcher=launcher or ROOT/'tests/helpers/phase_j_closure_r1_server.py')
     try:yield 'http://127.0.0.1:'+str(port)
     finally:stop(p)
 

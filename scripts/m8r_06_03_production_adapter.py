@@ -347,11 +347,13 @@ def _research_batch_operation_adapter(
     return outcomes
 
 
-def _assess_current_observation(item: dict[str, Any], source_policy: dict[str, Any]) -> dict[str, Any]:
+def _assess_current_observation(item: dict[str, Any], source_policy: dict[str, Any], *, now_utc: str | None = None) -> dict[str, Any]:
     """Delegate timing decisions; acquisition time is the replayable reference clock.
 
     M8 supplies source-family semantics. The accepted 03D evaluator supplies
     source-age semantics when an authoritative intraday source time exists.
+    Retrieved-only observations retain M8 semantics when source policy allows.
+    An explicit replay clock may be supplied; production defaults to acquisition.
     Neither clock is rewritten and no threshold is duplicated here.
     """
     observation = {
@@ -365,22 +367,45 @@ def _assess_current_observation(item: dict[str, Any], source_policy: dict[str, A
         "trading_date": item.get("trading_date"),
         "session_state": item.get("session_state"),
     }
-    assessment = build_source_freshness_assessment(
-        observation, source_policy, now_utc=observation["retrieved_at_utc"]
-    )
+    reference_clock = now_utc if now_utc is not None else observation["retrieved_at_utc"]
     policy = source_policy.get("freshness_evaluator_policy", {})
+    policy_valid = (isinstance(policy, dict)
+                    and isinstance(policy.get("max_intraday_age_seconds"), int)
+                    and not isinstance(policy.get("max_intraday_age_seconds"), bool)
+                    and policy["max_intraday_age_seconds"] >= 0)
+    # M8 owns retrieval-age classification. Invalid policy cannot invoke its
+    # compatibility default as current production authority.
+    assessment_policy = source_policy if (isinstance(policy, dict) and (policy_valid or source_policy.get("timing_class") != "liveish_intraday_snapshot")) else {**source_policy, "freshness_evaluator_policy": {}}
+    assessment = build_source_freshness_assessment(
+        observation, assessment_policy, now_utc=reference_clock or "invalid"
+    )
     if (source_policy.get("source_id") == observation["source_id"]
             and source_policy.get("timing_class") == "liveish_intraday_snapshot"
             and assessment["freshness_assessment"] != "source_unavailable"):
         # Missing policy/timing is unresolved, never an implicit default policy
         # or a retrieval timestamp masquerading as exchange time.
-        currentness = evaluate_evidence_currentness(
-            reference_clock_str=observation["retrieved_at_utc"] if "max_intraday_age_seconds" in policy else None,
-            source_timestamp_str=observation["source_timestamp"],
-            retrieved_at_str=observation["retrieved_at_utc"] if observation["source_timestamp"] else None,
-            timing_class=source_policy["timing_class"],
-            max_age_seconds=policy.get("max_intraday_age_seconds"),
-        )
+        retrieved_only_allowed = (policy_valid
+                                  and policy.get("allow_retrieved_at_only_intraday_freshness") is True
+                                  and policy.get("requires_exchange_timestamp_for_fresh") is False)
+        if not policy_valid or assessment["freshness_assessment"] == "unknown":
+            currentness = {"status": "unresolved", "reason": "insufficient_policy_or_timing_authority"}
+        elif not observation["source_timestamp"]:
+            if retrieved_only_allowed:
+                currentness = {
+                    "status": {"fresh_intraday_snapshot": "fresh", "stale_intraday_snapshot": "stale"}[assessment["freshness_assessment"]],
+                    "reason": assessment["freshness_reason"],
+                    "age_seconds": assessment["age_seconds"],
+                }
+            else:
+                currentness = {"status": "unresolved", "reason": "exchange_timestamp_required_by_source_policy"}
+        else:
+            currentness = evaluate_evidence_currentness(
+                reference_clock_str=reference_clock,
+                source_timestamp_str=observation["source_timestamp"],
+                retrieved_at_str=observation["retrieved_at_utc"],
+                timing_class=source_policy["timing_class"],
+                max_age_seconds=policy["max_intraday_age_seconds"],
+            )
         assessment.update(
             status=currentness["status"],
             freshness_assessment={"fresh": "fresh_intraday_snapshot", "stale": "stale_intraday_snapshot", "unresolved": "unknown"}[currentness["status"]],
@@ -400,7 +425,7 @@ def _assess_current_observation(item: dict[str, Any], source_policy: dict[str, A
     canonical = lambda value: hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     assessment.update(
         currentness_policy="family_specific",
-        evaluation_timestamp=observation["retrieved_at_utc"],
+        evaluation_timestamp=reference_clock,
         evaluator_id="m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
         evaluator_input_sha256=canonical(observation),
         source_policy_sha256=canonical(source_policy),

@@ -21,7 +21,7 @@ def observation(timestamp='2026-10-08T05:59:00Z'):
 @pytest.mark.parametrize('timestamp,status,assessment', [
     ('2026-09-01T05:30:00Z', 'stale', 'stale_intraday_snapshot'),
     ('2026-10-08T05:59:00Z', 'fresh', 'fresh_intraday_snapshot'),
-    (None, 'unresolved', 'unknown'),
+    (None, 'fresh', 'fresh_intraday_snapshot'),
     ('invalid', 'unresolved', 'unknown'),
     ('2026-10-08T06:01:00Z', 'unresolved', 'unknown'),
 ])
