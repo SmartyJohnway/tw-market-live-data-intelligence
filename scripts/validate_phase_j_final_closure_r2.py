@@ -28,7 +28,10 @@ def baseline(check_git=True):
         require(file_sha(ROOT / path) == expected, 'IMMUTABLE_AUTHORITY_DRIFT:' + path)
         original = subprocess.check_output(['git', 'show', BASE + ':' + path], cwd=ROOT)
         require(hashlib.sha256(original).hexdigest() == expected, 'BASELINE_BINDING_LAUNDERING:' + path)
+    expected_paths = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', BASE, 'docs/governance/phase_j', 'ROADMAP.md', 'docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json'], cwd=ROOT, text=True).splitlines()
+    require(set(binding['immutable_hashes']) == set(expected_paths), 'IMMUTABLE_BINDING_INCOMPLETE')
     require(file_sha(ROOT / 'docs/data_capabilities/m8_source_capability_registry.json') == binding['source_policy_registry_sha256'], 'SOURCE_POLICY_DRIFT')
+    require(hashlib.sha256(subprocess.check_output(['git', 'show', BASE + ':docs/data_capabilities/m8_source_capability_registry.json'], cwd=ROOT)).hexdigest() == binding['source_policy_registry_sha256'], 'SOURCE_POLICY_BINDING_LAUNDERING')
     require(r1.validate(check_git=False, terminal=True)['remaining_obligations'] == 2, 'HISTORICAL_CLOSURE_R1_REWRITTEN')
     require([tool.name for tool in build_tool_specs()] == r1.MCP_NAMES, 'MCP_COUNT_OR_NAME_DRIFT')
     if check_git:
@@ -51,6 +54,8 @@ def validate_witness(record):
     require(record['executed_layers'] == ['integration', 'service_api'], 'UNEXECUTED_LAYER_PROMOTION')
     r1.validate_scenario(record)
     require(record.get('real_agent_sessions') == 0 and record.get('real_agent_tool_calls') == 0 and record.get('agent_provider_transport') == 0, 'REAL_AGENT_NOT_AUTHORIZED')
+    calls = record.get('source_invocations', [])
+    require(len(calls) == record['initial_execution_count'] == 1 and all(c['source_boundary'] == 'raw_http_fixture' and c['external_dispatch'] is False and c['method'] == 'GET' and c['url'].startswith('https://mis.twse.com.tw/stock/api/getStockInfo.jsp?') for c in calls), 'SOURCE_TRANSPORT_RECEIPT_INVALID')
     native = record['normalized_observation']
     require(native['source'] == 'TWSE_MIS' and native['source_timestamp'] == '2026-09-01T05:30:00Z', 'SOURCE_TIMESTAMP_REWRITTEN')
     require((native.get('retrieved_at_utc') or native.get('retrieved_at')) == '2026-10-08T06:00:00Z', 'RETRIEVAL_TIMESTAMP_REWRITTEN')
