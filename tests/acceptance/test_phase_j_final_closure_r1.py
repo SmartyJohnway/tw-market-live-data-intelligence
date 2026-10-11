@@ -122,3 +122,13 @@ def test_eod_and_currentness_citation_lineage_remains_bound(records):
         assert r['additional_execution_count']==0
         assert r['execution']['test_transport_active'] is True
         assert r['execution']['external_market_network_attempted'] is False
+
+
+def test_effective_summary_recomputed_from_actual_cells(records):
+    from collections import Counter
+    d=v.derive_overlay(records);m=d['effective_matrix']
+    counts=Counter(c['status'] for r in m['scenarios'] for c in r['layers'].values())
+    assert m['coverage_summary']['status_counts']==dict(counts)
+    assert counts['COVERED_EXISTING']==81 and counts['PLANNED']==82
+    assert m['coverage_summary']['promoted_cell_count']==8
+    assert m['baseline_binding']['sha256']=='8fe53871a764d66dcca6d3a5531d4801008c58f77e74ace7eede637f15436c3a'

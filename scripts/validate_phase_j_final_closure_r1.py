@@ -2,6 +2,7 @@
 """Acceptance-only Closure-R1 evidence verifier; never executes an agent/source."""
 from __future__ import annotations
 import argparse,copy,hashlib,json,subprocess,sys
+from collections import Counter
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
@@ -127,6 +128,7 @@ def derive_overlay(records,agent_receipt=None,server_calls=()):
             for layer in ['mcp','real_agent']:
                 cell=rows[sid]['layers'][layer];old=cell['status'];require(old in ('PLANNED','REQUIRES_REAL_AGENT_AUTH'),'AGENT_BASELINE_STATUS')
                 promotions.append({'scenario_id':sid,'layer':layer,'baseline_status':old,'new_overlay_status':'COVERED_EXISTING','witness_kind':'mcp_test' if layer=='mcp' else 'e2e_acceptance','evidence_refs':[{'ref':'docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_REAL_AGENT_RECEIPT_V1.json','kind':'mcp_test' if layer=='mcp' else 'e2e_acceptance'}],'scenario_match':'actual bounded real-agent MCP read/export','introduced_by_tranche':'PHASE_J_FINAL_CLOSURE_R1'});cell['status']='COVERED_EXISTING'
+    effective.update(schema_version='phase_j_final_closure_r1_effective_coverage.v1',authority_status='CLOSURE_R1_PARTIAL_WITNESS_CANDIDATE_PENDING_REVIEW',baseline_binding={'path':historic.MATRIX,'sha256':historic.EXPECTED_HASHES[historic.MATRIX],'review_id':'5481723267'},coverage_summary={'status_counts':dict(sorted(Counter(cell['status'] for row in effective['scenarios'] for cell in row['layers'].values()).items())),'promoted_cell_count':len(promotions),'introduced_by_tranche':'PHASE_J_FINAL_CLOSURE_R1'})
     obligations=[{'obligation':'real_agent_layer','satisfied':agent_ok}]+[{'obligation':r['scenario_id'],'satisfied':r['execution_witness_satisfied']} for r in outcomes]
     remaining=sum(not o['satisfied'] for o in obligations)
     return {'promotions':promotions,'effective_matrix':effective,'scenario_outcomes':outcomes,'obligations':obligations,'remaining_obligations':remaining,'disposition':'PHASE_J_FINAL_CLOSURE_R1_PASS_CANDIDATE' if not remaining else 'PHASE_J_FINAL_CLOSURE_R1_HARD_BLOCK_EXISTING_PRODUCTION_SEAM_GAP' if any(not o['execution_witness_satisfied'] for o in outcomes) else 'PHASE_J_FINAL_CLOSURE_R1_HARD_BLOCK_REAL_AGENT_HOST_UNAVAILABLE'}
