@@ -11,9 +11,12 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 from collections import Counter
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 START = '74772af61780f637f859eaad453c6e147fc83fc6'
 START_TREE = '2bfe71203ccdf6663fc6368183847ac8f50d4157'
 MAIN = '6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a'
