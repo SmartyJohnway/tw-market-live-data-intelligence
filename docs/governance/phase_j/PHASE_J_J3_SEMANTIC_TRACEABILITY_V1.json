@@ -1,0 +1,2525 @@
+{
+  "schema_version": "phase_j_j3_semantic_traceability.v1",
+  "j1_registry_sha256": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864",
+  "j1_matrix_sha256": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45",
+  "accepted_j2_r1": {
+    "review": "5481723267",
+    "coverage_delta_sha256": "321e9008ebca8d8a42e77993ae9329b274dd3e05ad5553554890f97e65618539",
+    "effective_matrix_sha256": "8fe53871a764d66dcca6d3a5531d4801008c58f77e74ace7eede637f15436c3a",
+    "ledger_sha256": "2c30451e2dc6071191d7d5107149770c4d34767cc45c26b5fa819b68249239fa",
+    "governance_json_sha256": "74e27776bf9768613cbc25f1f6cf3c81687f29be2551f4f9e31141772ac29487",
+    "governance_markdown_sha256": "eb324584ef03103137eec03a5190ba5bb6c2bd7d6b1d66c16693cae3920975f0"
+  },
+  "forward_assertion_mappings": [
+    {
+      "scenario_id": "J1-01",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-01",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-01",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-01",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-01",
+      "source_assertion_id": "j1-01_identity",
+      "golden_assertion_id": "j1-01_identity",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-01",
+      "source_assertion_id": "j1-01_source",
+      "golden_assertion_id": "j1-01_source",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-01",
+      "source_assertion_id": "j1-01_currentness",
+      "golden_assertion_id": "j1-01_currentness",
+      "dimension": "currentness"
+    },
+    {
+      "scenario_id": "J1-01",
+      "source_assertion_id": "j1-01_coverage",
+      "golden_assertion_id": "j1-01_coverage",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-02",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-02",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-02",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-02",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-02",
+      "source_assertion_id": "j1-02_identity",
+      "golden_assertion_id": "j1-02_identity",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-02",
+      "source_assertion_id": "j1-02_source",
+      "golden_assertion_id": "j1-02_source",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-02",
+      "source_assertion_id": "j1-02_currentness",
+      "golden_assertion_id": "j1-02_currentness",
+      "dimension": "currentness"
+    },
+    {
+      "scenario_id": "J1-02",
+      "source_assertion_id": "j1-02_coverage",
+      "golden_assertion_id": "j1-02_coverage",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-03",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-03",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-03",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-03",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-03",
+      "source_assertion_id": "j1-03_identity",
+      "golden_assertion_id": "j1-03_identity",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-03",
+      "source_assertion_id": "j1-03_source",
+      "golden_assertion_id": "j1-03_source",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-03",
+      "source_assertion_id": "j1-03_partial",
+      "golden_assertion_id": "j1-03_partial",
+      "dimension": "partial"
+    },
+    {
+      "scenario_id": "J1-04",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-04",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-04",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-04",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-04",
+      "source_assertion_id": "j1-04_identity",
+      "golden_assertion_id": "j1-04_identity",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-04",
+      "source_assertion_id": "j1-04_currentness",
+      "golden_assertion_id": "j1-04_currentness",
+      "dimension": "currentness"
+    },
+    {
+      "scenario_id": "J1-05",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-05",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-05",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-05",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-05",
+      "source_assertion_id": "j1-05_identity",
+      "golden_assertion_id": "j1-05_identity",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-05",
+      "source_assertion_id": "j1-05_source",
+      "golden_assertion_id": "j1-05_source",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-05",
+      "source_assertion_id": "j1-05_period",
+      "golden_assertion_id": "j1-05_period",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-06",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-06",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-06",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-06",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-06",
+      "source_assertion_id": "j1-06_identity",
+      "golden_assertion_id": "j1-06_identity",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-06",
+      "source_assertion_id": "j1-06_source",
+      "golden_assertion_id": "j1-06_source",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-06",
+      "source_assertion_id": "j1-06_period",
+      "golden_assertion_id": "j1-06_period",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-07",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-07",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-07",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-07",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-07",
+      "source_assertion_id": "j1-07_evidence_state",
+      "golden_assertion_id": "j1-07_evidence_state",
+      "dimension": "missing"
+    },
+    {
+      "scenario_id": "J1-07",
+      "source_assertion_id": "j1-07_source_failure",
+      "golden_assertion_id": "j1-07_source_failure",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-08",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-08",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-08",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-08",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-08",
+      "source_assertion_id": "j1-08_revision_relation",
+      "golden_assertion_id": "j1-08_revision_relation",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-08",
+      "source_assertion_id": "j1-08_correction_linkage_proven",
+      "golden_assertion_id": "j1-08_correction_linkage_proven",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-09",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-09",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-09",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-09",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-09",
+      "source_assertion_id": "j1-09_period",
+      "golden_assertion_id": "j1-09_period",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-10",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-10",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-10",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-10",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-10",
+      "source_assertion_id": "j1-10_capability",
+      "golden_assertion_id": "j1-10_capability",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-10",
+      "source_assertion_id": "j1-10_execution_started",
+      "golden_assertion_id": "j1-10_execution_started",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-10",
+      "source_assertion_id": "j1-10_fabricated_values",
+      "golden_assertion_id": "j1-10_fabricated_values",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-10",
+      "source_assertion_id": "j1-10_revenue_substitution",
+      "golden_assertion_id": "j1-10_revenue_substitution",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-11",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-11",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-11",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-11",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-11",
+      "source_assertion_id": "j1-11_coverage",
+      "golden_assertion_id": "j1-11_coverage",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-11",
+      "source_assertion_id": "j1-11_uncovered_status_families",
+      "golden_assertion_id": "j1-11_uncovered_status_families",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-11",
+      "source_assertion_id": "j1-11_normal_inferred_from_no_match",
+      "golden_assertion_id": "j1-11_normal_inferred_from_no_match",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-12",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-12",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-12",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-12",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-12",
+      "source_assertion_id": "j1-12_coverage",
+      "golden_assertion_id": "j1-12_coverage",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-12",
+      "source_assertion_id": "j1-12_status_conclusion",
+      "golden_assertion_id": "j1-12_status_conclusion",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-12",
+      "source_assertion_id": "j1-12_normal_inferred_from_no_match",
+      "golden_assertion_id": "j1-12_normal_inferred_from_no_match",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-13",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-13",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-13",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-13",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-13",
+      "source_assertion_id": "j1-13_corporate_action_subtype",
+      "golden_assertion_id": "j1-13_corporate_action_subtype",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-13",
+      "source_assertion_id": "j1-13_coverage",
+      "golden_assertion_id": "j1-13_coverage",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-13",
+      "source_assertion_id": "j1-13_ordinary_return_interpretation",
+      "golden_assertion_id": "j1-13_ordinary_return_interpretation",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-14",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-14",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-14",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-14",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-14",
+      "source_assertion_id": "j1-14_corporate_action_subtype",
+      "golden_assertion_id": "j1-14_corporate_action_subtype",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-14",
+      "source_assertion_id": "j1-14_coverage",
+      "golden_assertion_id": "j1-14_coverage",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-15",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-15",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-15",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-15",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-15",
+      "source_assertion_id": "j1-15_corporate_action_subtype",
+      "golden_assertion_id": "j1-15_corporate_action_subtype",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-15",
+      "source_assertion_id": "j1-15_coverage",
+      "golden_assertion_id": "j1-15_coverage",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-15",
+      "source_assertion_id": "j1-15_ordinary_return_interpretation",
+      "golden_assertion_id": "j1-15_ordinary_return_interpretation",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-16",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-16",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-16",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-16",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-16",
+      "source_assertion_id": "j1-16_h4_state",
+      "golden_assertion_id": "j1-16_h4_state",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-16",
+      "source_assertion_id": "j1-16_ordinary_return_interpretation",
+      "golden_assertion_id": "j1-16_ordinary_return_interpretation",
+      "dimension": "corporate_action"
+    },
+    {
+      "scenario_id": "J1-17",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-17",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-17",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-17",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-17",
+      "source_assertion_id": "j1-17_window_owner",
+      "golden_assertion_id": "j1-17_window_owner",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-17",
+      "source_assertion_id": "j1-17_lookback_trading_days",
+      "golden_assertion_id": "j1-17_lookback_trading_days",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-17",
+      "source_assertion_id": "j1-17_actual_window_from_h3",
+      "golden_assertion_id": "j1-17_actual_window_from_h3",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-18",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-18",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-18",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-18",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-18",
+      "source_assertion_id": "j1-18_context_family",
+      "golden_assertion_id": "j1-18_context_family",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-18",
+      "source_assertion_id": "j1-18_requested_explicitly",
+      "golden_assertion_id": "j1-18_requested_explicitly",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-18",
+      "source_assertion_id": "j1-18_loaded_by_default",
+      "golden_assertion_id": "j1-18_loaded_by_default",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-18",
+      "source_assertion_id": "j1-18_inference",
+      "golden_assertion_id": "j1-18_inference",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "j1-19_observation_time_distinct",
+      "golden_assertion_id": "j1-19_observation_time_distinct",
+      "dimension": "currentness"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "j1-19_official_source_date_distinct",
+      "golden_assertion_id": "j1-19_official_source_date_distinct",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "j1-19_effective_date_distinct",
+      "golden_assertion_id": "j1-19_effective_date_distinct",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "j1-19_publication_date_distinct",
+      "golden_assertion_id": "j1-19_publication_date_distinct",
+      "dimension": "period"
+    },
+    {
+      "scenario_id": "J1-19",
+      "source_assertion_id": "j1-19_retrieved_at_distinct",
+      "golden_assertion_id": "j1-19_retrieved_at_distinct",
+      "dimension": "currentness"
+    },
+    {
+      "scenario_id": "J1-20",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-20",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-20",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-20",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-20",
+      "source_assertion_id": "j1-20_result_status",
+      "golden_assertion_id": "j1-20_result_status",
+      "dimension": "partial"
+    },
+    {
+      "scenario_id": "J1-20",
+      "source_assertion_id": "j1-20_operation_outcomes_preserved",
+      "golden_assertion_id": "j1-20_operation_outcomes_preserved",
+      "dimension": "partial"
+    },
+    {
+      "scenario_id": "J1-21",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-21",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-21",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-21",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-21",
+      "source_assertion_id": "j1-21_evidence_state",
+      "golden_assertion_id": "j1-21_evidence_state",
+      "dimension": "missing"
+    },
+    {
+      "scenario_id": "J1-21",
+      "source_assertion_id": "j1-21_currentness_policy",
+      "golden_assertion_id": "j1-21_currentness_policy",
+      "dimension": "currentness"
+    },
+    {
+      "scenario_id": "J1-22",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-22",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-22",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-22",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-22",
+      "source_assertion_id": "j1-22_evidence_state",
+      "golden_assertion_id": "j1-22_evidence_state",
+      "dimension": "missing"
+    },
+    {
+      "scenario_id": "J1-22",
+      "source_assertion_id": "j1-22_source_failure",
+      "golden_assertion_id": "j1-22_source_failure",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-23",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-23",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-23",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-23",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-23",
+      "source_assertion_id": "j1-23_evidence_state",
+      "golden_assertion_id": "j1-23_evidence_state",
+      "dimension": "missing"
+    },
+    {
+      "scenario_id": "J1-23",
+      "source_assertion_id": "j1-23_valid_empty",
+      "golden_assertion_id": "j1-23_valid_empty",
+      "dimension": "source"
+    },
+    {
+      "scenario_id": "J1-24",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-24",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-24",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-24",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-24",
+      "source_assertion_id": "j1-24_identity_resolution",
+      "golden_assertion_id": "j1-24_identity_resolution",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-24",
+      "source_assertion_id": "j1-24_execution_started",
+      "golden_assertion_id": "j1-24_execution_started",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-24",
+      "source_assertion_id": "j1-24_name_fallback",
+      "golden_assertion_id": "j1-24_name_fallback",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-25",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-25",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-25",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-25",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-25",
+      "source_assertion_id": "j1-25_capability",
+      "golden_assertion_id": "j1-25_capability",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-25",
+      "source_assertion_id": "j1-25_execution_started",
+      "golden_assertion_id": "j1-25_execution_started",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-25",
+      "source_assertion_id": "j1-25_identity_known",
+      "golden_assertion_id": "j1-25_identity_known",
+      "dimension": "identity"
+    },
+    {
+      "scenario_id": "J1-26",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-26",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-26",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-26",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-26",
+      "source_assertion_id": "j1-26_authorization",
+      "golden_assertion_id": "j1-26_authorization",
+      "dimension": "authorization"
+    },
+    {
+      "scenario_id": "J1-26",
+      "source_assertion_id": "j1-26_execution_started",
+      "golden_assertion_id": "j1-26_execution_started",
+      "dimension": "authorization"
+    },
+    {
+      "scenario_id": "J1-27",
+      "source_assertion_id": "result_v3_contract",
+      "golden_assertion_id": "result_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-27",
+      "source_assertion_id": "audit_v3_contract",
+      "golden_assertion_id": "audit_v3_contract",
+      "dimension": "citations_lineage"
+    },
+    {
+      "scenario_id": "J1-27",
+      "source_assertion_id": "no_recommendation",
+      "golden_assertion_id": "no_recommendation",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-27",
+      "source_assertion_id": "no_trading_action",
+      "golden_assertion_id": "no_trading_action",
+      "dimension": "no_trading"
+    },
+    {
+      "scenario_id": "J1-27",
+      "source_assertion_id": "j1-27_resource_bound",
+      "golden_assertion_id": "j1-27_resource_bound",
+      "dimension": "bounded_execution"
+    },
+    {
+      "scenario_id": "J1-27",
+      "source_assertion_id": "j1-27_unbounded_execution",
+      "golden_assertion_id": "j1-27_unbounded_execution",
+      "dimension": "bounded_execution"
+    }
+  ],
+  "forbidden_claim_mappings": [
+    {
+      "scenario_id": "J1-01",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-01",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-01",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-01",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-01",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-01",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-02",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-02",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-02",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-02",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-02",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-02",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-03",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-03",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-03",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-03",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-03",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-03",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-04",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-04",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-04",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-04",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-04",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-04",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-05",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-05",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-05",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-05",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-05",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-05",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-06",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-06",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-06",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-06",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-06",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-06",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "claim_id": "historical_absence",
+      "dimensions": [
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "claim_id": "correction_relation_asserted",
+      "dimensions": [
+        "source",
+        "partial"
+      ]
+    },
+    {
+      "scenario_id": "J1-09",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-09",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-09",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-09",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-09",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-09",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "claim_id": "financial_values_fabricated",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "claim_id": "tradeability_from_uncovered_status",
+      "dimensions": [
+        "identity",
+        "source"
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "claim_id": "suspension_absence_inferred",
+      "dimensions": [
+        "identity",
+        "source"
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "claim_id": "ordinary_return_across_gap",
+      "dimensions": [
+        "corporate_action"
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-15",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-15",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-15",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-15",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-15",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-15",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-15",
+      "claim_id": "capital_reduction_absence_inferred",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "claim_id": "discontinuity_interpreted_as_ordinary",
+      "dimensions": [
+        "corporate_action"
+      ]
+    },
+    {
+      "scenario_id": "J1-17",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-17",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-17",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-17",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-17",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-17",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "claim_id": "phase_i_market_conclusion",
+      "dimensions": [
+        "source",
+        "currentness"
+      ]
+    },
+    {
+      "scenario_id": "J1-19",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-19",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-19",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-19",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-19",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-19",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-19",
+      "claim_id": "calendar_date_equated_with_simultaneity",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-21",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-21",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-21",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-21",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-21",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-21",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "claim_id": "missing_converted_to_zero",
+      "dimensions": [
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "claim_id": "failure_converted_to_empty",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "claim_id": "identity_name_fallback",
+      "dimensions": [
+        "identity"
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "claim_id": "identity_implies_capability",
+      "dimensions": [
+        "identity"
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "claim_id": "refusal_bypassed",
+      "dimensions": [
+        "authorization"
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "claim_id": "directional_market_label",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "claim_id": "price_target",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "claim_id": "broker_action",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "claim_id": "unsupported_source_substitution",
+      "dimensions": [
+        "source",
+        "missing"
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "claim_id": "investment_recommendation",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "claim_id": "buy_or_sell_instruction",
+      "dimensions": [
+        "no_trading"
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "claim_id": "bound_bypassed",
+      "dimensions": [
+        "bounded_execution"
+      ]
+    }
+  ],
+  "global_boundary_mappings": [
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-01",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-02",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-03",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-04",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-05",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-06",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-07",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-08",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-09",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-10",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-11",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-12",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-13",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-14",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-15",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-16",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-17",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-18",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-19",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-20",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-21",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-22",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-23",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-24",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-25",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-26",
+      "dimension": "no_trading"
+    },
+    {
+      "boundary": "J3_GLOBAL_NO_TRADING",
+      "scenario_id": "J1-27",
+      "dimension": "no_trading"
+    }
+  ]
+}
