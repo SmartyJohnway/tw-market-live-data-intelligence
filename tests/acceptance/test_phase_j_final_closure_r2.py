@@ -82,7 +82,7 @@ def rebind_package(record):
         if call['path'] == '/api/unified/result-package':
             call['response_canonical_sha256'] = v.sha(record['package'])
 
-@pytest.mark.parametrize('kind', ['source_timestamp', 'retrieved_at', 'result_candidate', 'fresh', 'unknown', 'source_failed', 'missing', 'unsupported', 'partial', 'official_eod', 'renderer_only', 'realtime_handoff', 'source_hash', 'audit_lineage', 'control_lineage', 'unexecuted_layer', 'real_agent', 'network', 'scenario_id', 'no_policy', 'no_source_time', 'no_execution', 'fixture_only', 'external_source_dispatch', 'missing_source_receipt'])
+@pytest.mark.parametrize('kind', ['source_timestamp', 'retrieved_at', 'result_candidate', 'fresh', 'unknown', 'source_failed', 'missing', 'unsupported', 'partial', 'official_eod', 'renderer_only', 'realtime_handoff', 'source_hash', 'audit_lineage', 'control_lineage', 'unexecuted_layer', 'real_agent', 'network', 'scenario_id', 'no_policy', 'no_source_time', 'no_execution', 'fixture_only', 'external_source_dispatch', 'missing_source_receipt', 'handoff_typed_divergence'])
 def test_witness_mutations_rejected(kind, witness):
     record = copy.deepcopy(witness)
     envelope = record['result']['targets'][0]['evidence']['current_observation']
@@ -125,6 +125,8 @@ def test_witness_mutations_rejected(kind, witness):
         record['source_invocations'][0]['external_dispatch'] = True
     elif kind == 'missing_source_receipt':
         record['source_invocations'] = []
+    elif kind == 'handoff_typed_divergence':
+        record['handoff']['canonical_result']['targets'][0]['evidence']['current_observation']['currentness']['status'] = 'fresh'
     rebind_package(record)
     with pytest.raises(ValueError):
         v.validate_witness(record)

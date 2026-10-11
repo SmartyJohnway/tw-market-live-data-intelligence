@@ -53,6 +53,7 @@ def validate_witness(record):
     require(record['scenario_id'] == 'J1-21', 'SCENARIO_OUT_OF_SCOPE')
     require(record['executed_layers'] == ['integration', 'service_api'], 'UNEXECUTED_LAYER_PROMOTION')
     r1.validate_scenario(record)
+    require(record['handoff']['canonical_result'] == record['result'], 'HANDOFF_CANONICAL_RESULT_DIVERGENCE')
     require(record.get('real_agent_sessions') == 0 and record.get('real_agent_tool_calls') == 0 and record.get('agent_provider_transport') == 0, 'REAL_AGENT_NOT_AUTHORIZED')
     calls = record.get('source_invocations', [])
     require(len(calls) == record['initial_execution_count'] == 1 and all(c['source_boundary'] == 'raw_http_fixture' and c['external_dispatch'] is False and c['method'] == 'GET' and c['url'].startswith('https://mis.twse.com.tw/stock/api/getStockInfo.jsp?') for c in calls), 'SOURCE_TRANSPORT_RECEIPT_INVALID')
