@@ -23,6 +23,7 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -64,12 +65,12 @@ def playwright_available() -> tuple[bool, str | None]:
     return True, None
 
 
-def start_workbench(env: dict[str, str]) -> tuple[subprocess.Popen[str], int]:
+def start_workbench(env: dict[str, str], *, launcher: Path | None = None) -> tuple[subprocess.Popen[str], int]:
     port = available_port()
     process = subprocess.Popen(
         [
             sys.executable,
-            "scripts/run_unified_workbench.py",
+            str(launcher) if launcher else "scripts/run_unified_workbench.py",
             "--host",
             "127.0.0.1",
             "--port",
@@ -98,7 +99,7 @@ def stop(process: subprocess.Popen[str] | None) -> None:
         process.wait(timeout=8)
 
 
-def bootstrap_deterministic_fixture_release(security_root: Path) -> dict[str, Any]:
+def bootstrap_deterministic_fixture_release(security_root: Path, *, eligible_targets: tuple[str, ...] = ("TWSE:2330",)) -> dict[str, Any]:
     """Build and qualify an external release from a tracked deterministic fixture.
 
     A clean clone correctly has no Candidate B local authority.  This runner
@@ -129,7 +130,7 @@ def bootstrap_deterministic_fixture_release(security_root: Path) -> dict[str, An
     # the external test release and never writes the tracked fixture or a
     # production authority.
     for record in records:
-        if record.get("canonical_target_id") == "TWSE:2330":
+        if record.get("canonical_target_id") in eligible_targets:
             record["execution_eligibility"] = {"status": "allowed", "reason_codes": []}
     build_candidate_release(
         root=security_root,
@@ -183,6 +184,28 @@ def get_json(url: str) -> tuple[int, dict[str, Any]]:
         return response.status, json.loads(response.read().decode("utf-8"))
 
 
+def guard_local_browser_context(context, base_url: str) -> dict[str, Any]:
+    """Fail acceptance on any non-application HTTP request, before dispatch."""
+    authority = urlsplit(base_url)
+    ledger: dict[str, Any] = {"local_requests": [], "external_requests": []}
+
+    def route_request(route):
+        request = route.request
+        parsed = urlsplit(request.url)
+        record = {"method": request.method, "path": parsed.path}
+        if parsed.scheme in {"http", "https"} and (
+            parsed.scheme, parsed.hostname, parsed.port
+        ) == (authority.scheme, authority.hostname, authority.port):
+            ledger["local_requests"].append(record)
+            route.continue_()
+        else:
+            ledger["external_requests"].append({"scheme": parsed.scheme, "host": parsed.hostname})
+            route.abort("blockedbyclient")
+
+    context.route("**/*", route_request)
+    return ledger
+
+
 def run_browser_flow(base_url: str, counter_root: Path, screenshot_path: Path | None = None) -> dict[str, Any]:
     from playwright.sync_api import sync_playwright
 
@@ -192,7 +215,9 @@ def run_browser_flow(base_url: str, counter_root: Path, screenshot_path: Path | 
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
-        page = browser.new_page()
+        context = browser.new_context()
+        transport = guard_local_browser_context(context, base_url)
+        page = context.new_page()
         page.on(
             "dialog",
             lambda dialog: dialog.accept(
@@ -299,6 +324,10 @@ def run_browser_flow(base_url: str, counter_root: Path, screenshot_path: Path | 
         result["result_status"] = page.locator("#mode-c-summary").inner_text()
         result["audit_id"] = result_package["audit"].get("audit_id")
         result["result_id"] = result_package["handoff"].get("result_id")
+        result["browser_local_request_count"] = len(transport["local_requests"])
+        result["browser_external_request_count"] = len(transport["external_requests"])
+        if transport["external_requests"]:
+            raise RuntimeError("unexpected_external_browser_request")
         browser.close()
     return result
 
@@ -348,7 +377,9 @@ def execute(report_dir: Path, screenshot_path: Path | None = None) -> dict[str, 
 
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
-            page = browser.new_page()
+            context = browser.new_context()
+            transport = guard_local_browser_context(context, f"http://127.0.0.1:{port}")
+            page = context.new_page()
             page.goto(f"http://127.0.0.1:{port}/workbench/", wait_until="networkidle")
             # Listing an empty installation is intentionally allowed; an
             # identity-dependent validation must expose the governed public
@@ -368,6 +399,9 @@ def execute(report_dir: Path, screenshot_path: Path | None = None) -> dict[str, 
             page.click("#btn-validate")
             wait_until(lambda: "SECURITY_MASTER_NOT_INITIALIZED" in page.locator("#validation-summary").inner_text(), label="not_initialized")
             report["checks"]["security_master_not_initialized"] = True
+            report["fresh_install_browser_transport"] = transport
+            if transport["external_requests"]:
+                raise RuntimeError("unexpected_external_browser_request")
             browser.close()
         stop(process)
         process = None
