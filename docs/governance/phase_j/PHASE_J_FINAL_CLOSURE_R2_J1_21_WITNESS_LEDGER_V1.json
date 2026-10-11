@@ -1,0 +1,2832 @@
+{
+  "schema_version": "phase_j_final_closure_r2_j1_21_witness_ledger.v1",
+  "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R2",
+  "authority_status": "FROZEN_ACCEPTANCE_CANDIDATE_PENDING_EXACT_HEAD_REVIEW",
+  "scenario_record": {
+    "scenario_id": "J1-21",
+    "synthetic": true,
+    "network_free": true,
+    "acceptance_only": true,
+    "package": {
+      "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+      "result_hash": "8191d90df66a9636778214b7ca1748c576e4725acadfeb8e8b719bcae97d7f0a",
+      "result_status": "full_success",
+      "request_summary": {
+        "target_count": 1,
+        "requested_data_needs": [
+          "current_observation"
+        ],
+        "required_data_needs": [
+          "current_observation"
+        ],
+        "optional_data_needs": [],
+        "execution_mode": "execute",
+        "request_schema_version": "unified_market_evidence_request.v3"
+      },
+      "targets": [
+        {
+          "resolution": {
+            "status": "resolved",
+            "canonical_target_id": "TWSE:2330",
+            "security_code": "2330",
+            "security_name": "重名測試",
+            "market": "TWSE"
+          },
+          "evidence": {
+            "current_observation": {
+              "status": "available",
+              "caveats": [
+                "fragile_frontend_contract",
+                "freshness_must_be_displayed",
+                "live_observation_not_canonical",
+                "no_trading_signal",
+                "not_official_realtime_api",
+                "not_realtime_guaranteed",
+                "source_may_be_delayed_or_unavailable",
+                "unofficial_source_risk"
+              ],
+              "observed_fields": {
+                "instrument_context": {
+                  "instrument_kind": "security",
+                  "price_domain": "equity_price",
+                  "market_mode": "regular_board",
+                  "source_symbol": "2330",
+                  "display_name": "合成公司",
+                  "semantic_status": "runtime_projected_candidate"
+                },
+                "source_context": {
+                  "source": "TWSE_MIS",
+                  "source_type": "official_browser_json_endpoint_candidate",
+                  "adapter_id": "twse_mis_equity_etf_quote"
+                },
+                "price_snapshot": {
+                  "last_value_available": true,
+                  "last_value": 100.0,
+                  "previous_close": 99.0,
+                  "open": 99.0,
+                  "high": 101.0,
+                  "low": 98.0,
+                  "direction_vs_previous_close": "up",
+                  "descriptive_only": true,
+                  "not_recommendation": true,
+                  "semantic_status": "runtime_projected_candidate"
+                },
+                "reference_price_context": {
+                  "limit_up": 108.9,
+                  "limit_down": 89.1
+                },
+                "displayed_quote_snapshot": {
+                  "best_bid": 99.5,
+                  "best_ask": 100.5,
+                  "semantic_label": "displayed_quote_snapshot"
+                },
+                "freshness_context": {
+                  "source_timestamp": "2026-09-01T05:30:00Z",
+                  "retrieved_at_utc": "2026-10-08T06:00:00Z",
+                  "delay_seconds": 3198600.0,
+                  "freshness_assessment": "stale_intraday_snapshot",
+                  "not_realtime_guaranteed": true,
+                  "semantic_status": "runtime_projected_candidate",
+                  "age_seconds": 3198600.0,
+                  "ai_exposure_level": "caveated_context_allowed",
+                  "allowed_interpretation": [
+                    "not realtime guaranteed"
+                  ],
+                  "authority_level": "official_undocumented",
+                  "blocked_interpretation": [
+                    "no TPEX_MIS",
+                    "no rotc_",
+                    "no streaming guarantee",
+                    "no trading advice",
+                    "no trading signal",
+                    "not current market evidence"
+                  ],
+                  "caveats": [
+                    "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+                    "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+                  ],
+                  "credential_gated": false,
+                  "currentness_policy": "family_specific",
+                  "eod_only": false,
+                  "evaluation_timestamp": "2026-10-08T06:00:00Z",
+                  "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+                  "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+                  "exchange_timestamp_absent": false,
+                  "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+                  "intraday_snapshot": true,
+                  "latency_class": "intraday_snapshot",
+                  "manual_snapshot": false,
+                  "market_date": null,
+                  "not_recommendation": true,
+                  "not_trading_signal": true,
+                  "recommendation_allowed": false,
+                  "requires_caveats": true,
+                  "retrieved_time_only": false,
+                  "safe_for_ai_context": false,
+                  "schema_version": "m8_source_freshness_assessment.v1",
+                  "session_state": null,
+                  "source_family": "TWSE_MIS",
+                  "source_id": "TWSE_MIS",
+                  "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+                  "source_unavailable_reason": null,
+                  "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+                  "status": "stale",
+                  "timing_class": "liveish_intraday_snapshot",
+                  "trading_advice_allowed": false,
+                  "trading_date": null,
+                  "trading_signal_allowed": false,
+                  "validation_only": false
+                },
+                "market_session_context": {
+                  "session_state_candidate": null,
+                  "session_state_confidence": "candidate_only",
+                  "closing_auction_candidate": false,
+                  "post_close_candidate": false,
+                  "odd_lot_mode_supported": false,
+                  "semantic_status": "runtime_projected_candidate"
+                },
+                "data_quality_context": {
+                  "placeholder_fields": [],
+                  "malformed_fields": [],
+                  "ladder_mismatch_flags": [],
+                  "quality_warnings": [
+                    "fragile_frontend_contract",
+                    "not_official_realtime_api",
+                    "unofficial_source_risk"
+                  ],
+                  "semantic_status": "runtime_projected_candidate"
+                },
+                "extended_displayed_depth_snapshot": {
+                  "bid_prices": [
+                    99.5,
+                    99.0
+                  ],
+                  "ask_prices": [
+                    100.5,
+                    101.0
+                  ],
+                  "bid_displayed_quantities_raw": [
+                    "2",
+                    "3"
+                  ],
+                  "ask_displayed_quantities_raw": [
+                    "1",
+                    "2"
+                  ],
+                  "caveats": [
+                    "displayed_snapshot_only",
+                    "not_full_order_book",
+                    "not_true_liquidity",
+                    "not_support_resistance",
+                    "not_trading_signal",
+                    "quantity_unit_unverified"
+                  ]
+                }
+              },
+              "currentness": {
+                "source_timestamp": "2026-09-01T05:30:00Z",
+                "retrieved_at_utc": "2026-10-08T06:00:00Z",
+                "delay_seconds": 3198600.0,
+                "freshness_assessment": "stale_intraday_snapshot",
+                "not_realtime_guaranteed": true,
+                "semantic_status": "runtime_projected_candidate",
+                "age_seconds": 3198600.0,
+                "ai_exposure_level": "caveated_context_allowed",
+                "allowed_interpretation": [
+                  "not realtime guaranteed"
+                ],
+                "authority_level": "official_undocumented",
+                "blocked_interpretation": [
+                  "no TPEX_MIS",
+                  "no rotc_",
+                  "no streaming guarantee",
+                  "no trading advice",
+                  "no trading signal",
+                  "not current market evidence"
+                ],
+                "caveats": [
+                  "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+                  "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+                ],
+                "credential_gated": false,
+                "currentness_policy": "family_specific",
+                "eod_only": false,
+                "evaluation_timestamp": "2026-10-08T06:00:00Z",
+                "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+                "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+                "exchange_timestamp_absent": false,
+                "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+                "intraday_snapshot": true,
+                "latency_class": "intraday_snapshot",
+                "manual_snapshot": false,
+                "market_date": null,
+                "not_recommendation": true,
+                "not_trading_signal": true,
+                "recommendation_allowed": false,
+                "requires_caveats": true,
+                "retrieved_time_only": false,
+                "safe_for_ai_context": false,
+                "schema_version": "m8_source_freshness_assessment.v1",
+                "session_state": null,
+                "source_family": "TWSE_MIS",
+                "source_id": "TWSE_MIS",
+                "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+                "source_unavailable_reason": null,
+                "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+                "status": "stale",
+                "timing_class": "liveish_intraday_snapshot",
+                "trading_advice_allowed": false,
+                "trading_date": null,
+                "trading_signal_allowed": false,
+                "validation_only": false
+              },
+              "citation_ids": [
+                "cite-ae0f24b4b35c5702"
+              ]
+            }
+          },
+          "canonical_identity": {
+            "canonical_target_id": "TWSE:2330",
+            "isin": "TW0002330008",
+            "market": "TWSE",
+            "security_code": "2330",
+            "security_name_zh": "重名測試",
+            "security_name_en": "TSMC",
+            "instrument_family": "company_share",
+            "instrument_type": "common_share"
+          },
+          "coverage": {
+            "provided_needs": [
+              "current_observation"
+            ],
+            "missing_needs": []
+          },
+          "citations": [
+            {
+              "citation_id": "cite-ae0f24b4b35c5702",
+              "source_family": "TWSE_MIS",
+              "retrieved_at": "2026-10-11T13:28:26Z",
+              "artifact_reference": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+              "source_contract_id": "bounded normalized source observation with source health/currentness",
+              "normalized_evidence_hash": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240"
+            }
+          ]
+        }
+      ],
+      "request_caveats": [],
+      "citation_references": [
+        {
+          "citation_id": "cite-ae0f24b4b35c5702",
+          "source_family": "TWSE_MIS",
+          "retrieved_at": "2026-10-11T13:28:26Z",
+          "artifact_reference": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+          "source_contract_id": "bounded normalized source observation with source health/currentness",
+          "normalized_evidence_hash": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240"
+        }
+      ],
+      "ai_ready_markdown": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `umeresult-v3-73dfa71dc4126a54f2e7`\n**請求 ID**: `closure-r1-j1-21`\n**生成時間**: 2026-10-11T13:28:26Z\n\n## 請求摘要\n- **執行模式**: execute\n- **目標數量**: 1\n- **請求的資料需求**: current_observation\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 重名測試\n- **市場**: TWSE\n- **已提供資料需求**: current_observation\n\n### 證據\n\n#### 即時觀測 (Current Observation)\n- **狀態**: 可用\n- **時效類別**: 未知\n\n**Instrument Context**:\n- `instrument_kind`: security\n- `price_domain`: equity_price\n- `market_mode`: regular_board\n- `source_symbol`: 2330\n- `display_name`: 合成公司\n- `semantic_status`: runtime_projected_candidate\n\n**Source**:\n- `source`: TWSE_MIS\n- `source_type`: official_browser_json_endpoint_candidate\n- `adapter_id`: twse_mis_equity_etf_quote\n\n**Stale Source Snapshot**:\n- `last_value_available`: True\n- `last_value`: 100.0\n- `previous_close`: 99.0\n- `open`: 99.0\n- `high`: 101.0\n- `low`: 98.0\n- `direction_vs_previous_close`: up\n- `descriptive_only`: True\n- `not_recommendation`: True\n- `semantic_status`: runtime_projected_candidate\n\n**Reference Prices**:\n- `limit_up`: 108.9\n- `limit_down`: 89.1\n\n**Displayed Quote Snapshot**:\n- `best_bid`: 99.5\n- `best_ask`: 100.5\n- `semantic_label`: displayed_quote_snapshot\n\n**Freshness / Source**:\n- `source_timestamp`: 2026-09-01T05:30:00Z\n- `retrieved_at_utc`: 2026-10-08T06:00:00Z\n- `delay_seconds`: 3198600.0\n- `freshness_assessment`: stale_intraday_snapshot\n- `not_realtime_guaranteed`: True\n- `semantic_status`: runtime_projected_candidate\n- `age_seconds`: 3198600.0\n- `ai_exposure_level`: caveated_context_allowed\n- `allowed_interpretation`: ['not realtime guaranteed']\n- `authority_level`: official_undocumented\n- `blocked_interpretation`: ['no TPEX_MIS', 'no rotc_', 'no streaming guarantee', 'no trading advice', 'no trading signal', 'not current market evidence']\n- `caveats`: ['Official exchange browser source, but hidden/undocumented endpoint contract in project governance.', 'retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time']\n- `credential_gated`: False\n- `currentness_policy`: family_specific\n- `eod_only`: False\n- `evaluation_timestamp`: 2026-10-08T06:00:00Z\n- `evaluator_id`: m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration\n- `evaluator_input_sha256`: d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38\n- `exchange_timestamp_absent`: False\n- `freshness_reason`: evidence_age_exceeds_max_limit:3198600s\n- `intraday_snapshot`: True\n- `latency_class`: intraday_snapshot\n- `manual_snapshot`: False\n- `market_date`: None\n- `not_recommendation`: True\n- `not_trading_signal`: True\n- `recommendation_allowed`: False\n- `requires_caveats`: True\n- `retrieved_time_only`: False\n- `safe_for_ai_context`: False\n- `schema_version`: m8_source_freshness_assessment.v1\n- `session_state`: None\n- `source_family`: TWSE_MIS\n- `source_id`: TWSE_MIS\n- `source_policy_sha256`: 4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f\n- `source_unavailable_reason`: None\n- `stale_reason`: evidence_age_exceeds_max_limit:3198600s\n- `status`: stale\n- `timing_class`: liveish_intraday_snapshot\n- `trading_advice_allowed`: False\n- `trading_date`: None\n- `trading_signal_allowed`: False\n- `validation_only`: False\n\n**Market / Session**:\n- `session_state_candidate`: None\n- `session_state_confidence`: candidate_only\n- `closing_auction_candidate`: False\n- `post_close_candidate`: False\n- `odd_lot_mode_supported`: False\n- `semantic_status`: runtime_projected_candidate\n\n**Data Quality**:\n- `placeholder_fields`: []\n- `malformed_fields`: []\n- `ladder_mismatch_flags`: []\n- `quality_warnings`: ['fragile_frontend_contract', 'not_official_realtime_api', 'unofficial_source_risk']\n- `semantic_status`: runtime_projected_candidate\n\n**Extended Displayed Depth**:\n- `bid_prices`: [99.5, 99.0]\n- `ask_prices`: [100.5, 101.0]\n- `bid_displayed_quantities_raw`: ['2', '3']\n- `ask_displayed_quantities_raw`: ['1', '2']\n- `caveats`: ['displayed_snapshot_only', 'not_full_order_book', 'not_true_liquidity', 'not_support_resistance', 'not_trading_signal', 'quantity_unit_unverified']\n\n**時效資訊**:\n  - `age_seconds`: 3198600.0\n  - `ai_exposure_level`: caveated_context_allowed\n  - `allowed_interpretation`: ['not realtime guaranteed']\n  - `authority_level`: official_undocumented\n  - `blocked_interpretation`: ['no TPEX_MIS', 'no rotc_', 'no streaming guarantee', 'no trading advice', 'no trading signal', 'not current market evidence']\n  - `caveats`: ['Official exchange browser source, but hidden/undocumented endpoint contract in project governance.', 'retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time']\n  - `credential_gated`: False\n  - `currentness_policy`: family_specific\n  - `delay_seconds`: 3198600.0\n  - `eod_only`: False\n  - `evaluation_timestamp`: 2026-10-08T06:00:00Z\n  - `evaluator_id`: m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration\n  - `evaluator_input_sha256`: d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38\n  - `exchange_timestamp_absent`: False\n  - `freshness_assessment`: stale_intraday_snapshot\n  - `freshness_reason`: evidence_age_exceeds_max_limit:3198600s\n  - `intraday_snapshot`: True\n  - `latency_class`: intraday_snapshot\n  - `manual_snapshot`: False\n  - `market_date`: None\n  - `not_realtime_guaranteed`: True\n  - `not_recommendation`: True\n  - `not_trading_signal`: True\n  - `recommendation_allowed`: False\n  - `requires_caveats`: True\n  - `retrieved_at_utc`: 2026-10-08T06:00:00Z\n  - `retrieved_time_only`: False\n  - `safe_for_ai_context`: False\n  - `schema_version`: m8_source_freshness_assessment.v1\n  - `semantic_status`: runtime_projected_candidate\n  - `session_state`: None\n  - `source_family`: TWSE_MIS\n  - `source_id`: TWSE_MIS\n  - `source_policy_sha256`: 4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f\n  - `source_timestamp`: 2026-09-01T05:30:00Z\n  - `source_unavailable_reason`: None\n  - `stale_reason`: evidence_age_exceeds_max_limit:3198600s\n  - `status`: stale\n  - `timing_class`: liveish_intraday_snapshot\n  - `trading_advice_allowed`: False\n  - `trading_date`: None\n  - `trading_signal_allowed`: False\n  - `validation_only`: False\n\n> **注意**:\n> - fragile_frontend_contract\n> - freshness_must_be_displayed\n> - live_observation_not_canonical\n> - no_trading_signal\n> - not_official_realtime_api\n> - not_realtime_guaranteed\n> - source_may_be_delayed_or_unavailable\n> - unofficial_source_risk\n\n### 引用來源\n- `cite-ae0f24b4b35c5702` — 來源: TWSE_MIS | 擷取時間: 2026-10-11T13:28:26Z | 參考: `evidence/umeop-op-v1-37e7ffc42102745298c7.json`\n\n## 審計包參考\n- **審計包 ID**: `umeap-v3-a72554a8b0fe19353c6a`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+      "canonical_result": {
+        "schema_version": "unified_market_evidence_result.v3",
+        "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+        "request_id": "closure-r1-j1-21",
+        "generated_at": "2026-10-11T13:28:26Z",
+        "request_summary": {
+          "target_count": 1,
+          "requested_data_needs": [
+            "current_observation"
+          ],
+          "required_data_needs": [
+            "current_observation"
+          ],
+          "optional_data_needs": [],
+          "execution_mode": "execute",
+          "request_schema_version": "unified_market_evidence_request.v3"
+        },
+        "status": "full_success",
+        "targets": [
+          {
+            "resolution": {
+              "status": "resolved",
+              "canonical_target_id": "TWSE:2330",
+              "security_code": "2330",
+              "security_name": "重名測試",
+              "market": "TWSE"
+            },
+            "evidence": {
+              "current_observation": {
+                "status": "available",
+                "caveats": [
+                  "fragile_frontend_contract",
+                  "freshness_must_be_displayed",
+                  "live_observation_not_canonical",
+                  "no_trading_signal",
+                  "not_official_realtime_api",
+                  "not_realtime_guaranteed",
+                  "source_may_be_delayed_or_unavailable",
+                  "unofficial_source_risk"
+                ],
+                "observed_fields": {
+                  "instrument_context": {
+                    "instrument_kind": "security",
+                    "price_domain": "equity_price",
+                    "market_mode": "regular_board",
+                    "source_symbol": "2330",
+                    "display_name": "合成公司",
+                    "semantic_status": "runtime_projected_candidate"
+                  },
+                  "source_context": {
+                    "source": "TWSE_MIS",
+                    "source_type": "official_browser_json_endpoint_candidate",
+                    "adapter_id": "twse_mis_equity_etf_quote"
+                  },
+                  "price_snapshot": {
+                    "last_value_available": true,
+                    "last_value": 100.0,
+                    "previous_close": 99.0,
+                    "open": 99.0,
+                    "high": 101.0,
+                    "low": 98.0,
+                    "direction_vs_previous_close": "up",
+                    "descriptive_only": true,
+                    "not_recommendation": true,
+                    "semantic_status": "runtime_projected_candidate"
+                  },
+                  "reference_price_context": {
+                    "limit_up": 108.9,
+                    "limit_down": 89.1
+                  },
+                  "displayed_quote_snapshot": {
+                    "best_bid": 99.5,
+                    "best_ask": 100.5,
+                    "semantic_label": "displayed_quote_snapshot"
+                  },
+                  "freshness_context": {
+                    "source_timestamp": "2026-09-01T05:30:00Z",
+                    "retrieved_at_utc": "2026-10-08T06:00:00Z",
+                    "delay_seconds": 3198600.0,
+                    "freshness_assessment": "stale_intraday_snapshot",
+                    "not_realtime_guaranteed": true,
+                    "semantic_status": "runtime_projected_candidate",
+                    "age_seconds": 3198600.0,
+                    "ai_exposure_level": "caveated_context_allowed",
+                    "allowed_interpretation": [
+                      "not realtime guaranteed"
+                    ],
+                    "authority_level": "official_undocumented",
+                    "blocked_interpretation": [
+                      "no TPEX_MIS",
+                      "no rotc_",
+                      "no streaming guarantee",
+                      "no trading advice",
+                      "no trading signal",
+                      "not current market evidence"
+                    ],
+                    "caveats": [
+                      "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+                      "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+                    ],
+                    "credential_gated": false,
+                    "currentness_policy": "family_specific",
+                    "eod_only": false,
+                    "evaluation_timestamp": "2026-10-08T06:00:00Z",
+                    "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+                    "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+                    "exchange_timestamp_absent": false,
+                    "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+                    "intraday_snapshot": true,
+                    "latency_class": "intraday_snapshot",
+                    "manual_snapshot": false,
+                    "market_date": null,
+                    "not_recommendation": true,
+                    "not_trading_signal": true,
+                    "recommendation_allowed": false,
+                    "requires_caveats": true,
+                    "retrieved_time_only": false,
+                    "safe_for_ai_context": false,
+                    "schema_version": "m8_source_freshness_assessment.v1",
+                    "session_state": null,
+                    "source_family": "TWSE_MIS",
+                    "source_id": "TWSE_MIS",
+                    "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+                    "source_unavailable_reason": null,
+                    "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+                    "status": "stale",
+                    "timing_class": "liveish_intraday_snapshot",
+                    "trading_advice_allowed": false,
+                    "trading_date": null,
+                    "trading_signal_allowed": false,
+                    "validation_only": false
+                  },
+                  "market_session_context": {
+                    "session_state_candidate": null,
+                    "session_state_confidence": "candidate_only",
+                    "closing_auction_candidate": false,
+                    "post_close_candidate": false,
+                    "odd_lot_mode_supported": false,
+                    "semantic_status": "runtime_projected_candidate"
+                  },
+                  "data_quality_context": {
+                    "placeholder_fields": [],
+                    "malformed_fields": [],
+                    "ladder_mismatch_flags": [],
+                    "quality_warnings": [
+                      "fragile_frontend_contract",
+                      "not_official_realtime_api",
+                      "unofficial_source_risk"
+                    ],
+                    "semantic_status": "runtime_projected_candidate"
+                  },
+                  "extended_displayed_depth_snapshot": {
+                    "bid_prices": [
+                      99.5,
+                      99.0
+                    ],
+                    "ask_prices": [
+                      100.5,
+                      101.0
+                    ],
+                    "bid_displayed_quantities_raw": [
+                      "2",
+                      "3"
+                    ],
+                    "ask_displayed_quantities_raw": [
+                      "1",
+                      "2"
+                    ],
+                    "caveats": [
+                      "displayed_snapshot_only",
+                      "not_full_order_book",
+                      "not_true_liquidity",
+                      "not_support_resistance",
+                      "not_trading_signal",
+                      "quantity_unit_unverified"
+                    ]
+                  }
+                },
+                "currentness": {
+                  "source_timestamp": "2026-09-01T05:30:00Z",
+                  "retrieved_at_utc": "2026-10-08T06:00:00Z",
+                  "delay_seconds": 3198600.0,
+                  "freshness_assessment": "stale_intraday_snapshot",
+                  "not_realtime_guaranteed": true,
+                  "semantic_status": "runtime_projected_candidate",
+                  "age_seconds": 3198600.0,
+                  "ai_exposure_level": "caveated_context_allowed",
+                  "allowed_interpretation": [
+                    "not realtime guaranteed"
+                  ],
+                  "authority_level": "official_undocumented",
+                  "blocked_interpretation": [
+                    "no TPEX_MIS",
+                    "no rotc_",
+                    "no streaming guarantee",
+                    "no trading advice",
+                    "no trading signal",
+                    "not current market evidence"
+                  ],
+                  "caveats": [
+                    "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+                    "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+                  ],
+                  "credential_gated": false,
+                  "currentness_policy": "family_specific",
+                  "eod_only": false,
+                  "evaluation_timestamp": "2026-10-08T06:00:00Z",
+                  "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+                  "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+                  "exchange_timestamp_absent": false,
+                  "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+                  "intraday_snapshot": true,
+                  "latency_class": "intraday_snapshot",
+                  "manual_snapshot": false,
+                  "market_date": null,
+                  "not_recommendation": true,
+                  "not_trading_signal": true,
+                  "recommendation_allowed": false,
+                  "requires_caveats": true,
+                  "retrieved_time_only": false,
+                  "safe_for_ai_context": false,
+                  "schema_version": "m8_source_freshness_assessment.v1",
+                  "session_state": null,
+                  "source_family": "TWSE_MIS",
+                  "source_id": "TWSE_MIS",
+                  "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+                  "source_unavailable_reason": null,
+                  "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+                  "status": "stale",
+                  "timing_class": "liveish_intraday_snapshot",
+                  "trading_advice_allowed": false,
+                  "trading_date": null,
+                  "trading_signal_allowed": false,
+                  "validation_only": false
+                },
+                "citation_ids": [
+                  "cite-ae0f24b4b35c5702"
+                ]
+              }
+            },
+            "canonical_identity": {
+              "canonical_target_id": "TWSE:2330",
+              "isin": "TW0002330008",
+              "market": "TWSE",
+              "security_code": "2330",
+              "security_name_zh": "重名測試",
+              "security_name_en": "TSMC",
+              "instrument_family": "company_share",
+              "instrument_type": "common_share"
+            },
+            "coverage": {
+              "provided_needs": [
+                "current_observation"
+              ],
+              "missing_needs": []
+            },
+            "citations": [
+              {
+                "citation_id": "cite-ae0f24b4b35c5702",
+                "source_family": "TWSE_MIS",
+                "retrieved_at": "2026-10-11T13:28:26Z",
+                "artifact_reference": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+                "source_contract_id": "bounded normalized source observation with source health/currentness",
+                "normalized_evidence_hash": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240"
+              }
+            ]
+          }
+        ],
+        "audit_reference": {
+          "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+          "schema_version": "unified_market_evidence_audit_package.v3",
+          "relative_path": "audit/unified_market_evidence_audit_package.v3.json"
+        },
+        "request_caveats": [],
+        "result_hash": "8191d90df66a9636778214b7ca1748c576e4725acadfeb8e8b719bcae97d7f0a"
+      },
+      "canonical_result_reference": "ai_context/unified_market_evidence_result.v3.json",
+      "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+      "audit_reference": "audit/unified_market_evidence_audit_package.v3.json",
+      "selection_provenance_identity": null,
+      "materialization": "newly_materialized",
+      "external_market_network_executed": false,
+      "output_schema_version": "unified_market_evidence_result.v3"
+    },
+    "server_calls": [
+      {
+        "audit_package_id": null,
+        "control_package_id": null,
+        "http_status": 200,
+        "method": "POST",
+        "path": "/api/unified/validate-request",
+        "response_canonical_sha256": "15c4b6f007fda651f3653373988bca72b5b436e752423602cb4ea791a8061d9e",
+        "response_sha256": "056f2c55ef2fc9b1aad5f75e1a66252162208928038006fb21693d3ed86f210a",
+        "result_id": null,
+        "timestamp_ns": 1791725306454057069
+      },
+      {
+        "audit_package_id": null,
+        "control_package_id": null,
+        "http_status": 200,
+        "method": "POST",
+        "path": "/api/unified/preview-request",
+        "response_canonical_sha256": "63868a6f189afa85ae7c9445902be743505b585797375fb0773f9165a8a271e2",
+        "response_sha256": "21935d4dd761ce6b939b1af09644c720738b1dc76e6424ab8332a3354f4a40f9",
+        "result_id": null,
+        "timestamp_ns": 1791725306466067912
+      },
+      {
+        "audit_package_id": null,
+        "control_package_id": "umea-v1-075c3a4b032bcc2cea79",
+        "http_status": 200,
+        "method": "POST",
+        "path": "/api/unified/authorizations",
+        "response_canonical_sha256": "bf6c303e4946e1c2506bc7ddce8303f1fba0a5280b02cfe472aee15d4ac93599",
+        "response_sha256": "5c963392ebf9f80744764e004eb8a057713f15ef6c43a3551edaabb8397e7f5e",
+        "result_id": null,
+        "timestamp_ns": 1791725306489194877
+      },
+      {
+        "audit_package_id": null,
+        "control_package_id": null,
+        "http_status": 200,
+        "method": "POST",
+        "path": "/api/unified/executions",
+        "response_canonical_sha256": "1fa6a997a7583a383ab90b4f42a249ee4119a6db5cc856fb2e52082bc08878dc",
+        "response_sha256": "e8dba0df3c272be9212707b4471f30f7ca12980bff97ff0618f7026decd59b11",
+        "result_id": null,
+        "timestamp_ns": 1791725306758654963
+      },
+      {
+        "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+        "control_package_id": null,
+        "http_status": 200,
+        "method": "POST",
+        "path": "/api/unified/result-package",
+        "response_canonical_sha256": "a23c31977165ed9294d50b864e97a0c020a43e6fe0a8cc992e956a765a5b91c2",
+        "response_sha256": "ccc82187452e57682e0cc5af9bcaa442e03dafb22498150a080b5a3394e16f88",
+        "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+        "timestamp_ns": 1791725306779931286
+      },
+      {
+        "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+        "control_package_id": null,
+        "http_status": 200,
+        "method": "GET",
+        "path": "/api/unified/result-package/umea-v1-075c3a4b032bcc2cea79/audit.json",
+        "response_canonical_sha256": "a3cb744c4c02bf6622b77dd4857c3c601b3c9def17ebed943699d250c8fe0f84",
+        "response_sha256": "a3cb744c4c02bf6622b77dd4857c3c601b3c9def17ebed943699d250c8fe0f84",
+        "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+        "timestamp_ns": 1791725306795133319
+      },
+      {
+        "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+        "control_package_id": "umea-v1-075c3a4b032bcc2cea79",
+        "http_status": 200,
+        "method": "GET",
+        "path": "/api/unified/result-package/umea-v1-075c3a4b032bcc2cea79/handoff",
+        "response_canonical_sha256": "90e1a2bb360eab0816dbae9f542abbe9a8639a906053d04b978838da7d12f6fc",
+        "response_sha256": "d359534e6b8f0e666b664d452e98d5758794fa49b291024170712c83d6e25cfe",
+        "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+        "timestamp_ns": 1791725306821592317
+      }
+    ],
+    "request": {
+      "schema_version": "unified_market_evidence_request.v3",
+      "request_id": "closure-r1-j1-21",
+      "targets": [
+        {
+          "input": "TWSE:2330",
+          "resolution_requirement": "exact"
+        }
+      ],
+      "data_needs": [
+        {
+          "type": "current_observation",
+          "priority": "required",
+          "parameters": {}
+        }
+      ],
+      "execution_mode": "execute"
+    },
+    "validation": {
+      "schema_version": "unified_market_evidence_request_validation.v1",
+      "request_id": "closure-r1-j1-21",
+      "validation_status": "valid",
+      "request_schema_status": "valid",
+      "target_validation_status": "valid",
+      "capability_validation_status": "valid",
+      "normalized_request": {
+        "schema_version": "unified_market_evidence_request.v3",
+        "request_id": "closure-r1-j1-21",
+        "targets": [
+          {
+            "input": "TWSE:2330",
+            "resolution_requirement": "exact"
+          }
+        ],
+        "data_needs": [
+          {
+            "type": "current_observation",
+            "priority": "required",
+            "parameters": {}
+          }
+        ],
+        "execution_mode": "execute"
+      },
+      "target_results": [
+        {
+          "target_index": 0,
+          "original_input": "TWSE:2330",
+          "resolution_requirement": "exact",
+          "resolution_status": "resolved",
+          "candidate_matches": [
+            {
+              "canonical_target_id": "TWSE:2330",
+              "listing_id": "TWSE:2330",
+              "instrument_id": "TW0002330008",
+              "market": "TWSE",
+              "security_code": "2330",
+              "isin": "TW0002330008",
+              "security_name_zh": "重名測試",
+              "security_name_en": "TSMC",
+              "instrument_type": "common_share",
+              "instrument_family": "company_share",
+              "execution_eligibility": {
+                "status": "allowed",
+                "reason_codes": []
+              },
+              "release_id": "security-master-20261011T132825Z",
+              "release_manifest_hash": "69cdc8ff9260c07ce2cd057398af918661ee5e8677ae30b70e7430f620152398"
+            }
+          ],
+          "canonical_identity": {
+            "canonical_target_id": "TWSE:2330",
+            "listing_id": "TWSE:2330",
+            "instrument_id": "TW0002330008",
+            "market": "TWSE",
+            "security_code": "2330",
+            "isin": "TW0002330008",
+            "security_name_zh": "重名測試",
+            "security_name_en": "TSMC",
+            "instrument_type": "common_share",
+            "instrument_family": "company_share",
+            "execution_eligibility": {
+              "status": "allowed",
+              "reason_codes": []
+            },
+            "release_id": "security-master-20261011T132825Z",
+            "release_manifest_hash": "69cdc8ff9260c07ce2cd057398af918661ee5e8677ae30b70e7430f620152398"
+          },
+          "reason_codes": [
+            "exact_listing_id"
+          ]
+        }
+      ],
+      "capability_results": [
+        {
+          "data_need_index": 0,
+          "capability_id": "current_observation",
+          "priority": "required",
+          "status": "runtime_executable",
+          "reason_codes": [],
+          "known_limitations": [
+            "not guaranteed realtime",
+            "source availability may produce partial results",
+            "TAIFEX current observation is not yet implemented"
+          ]
+        }
+      ],
+      "blocking_issues": [],
+      "warnings": [],
+      "limits": {
+        "target_count": 1,
+        "hard_target_limit": 50,
+        "operation_count_computed": false,
+        "operation_count": 0,
+        "orchestrator_projection_required": true
+      },
+      "validation_metadata": {
+        "offline": true,
+        "deterministic": true,
+        "allow_fixture_snapshot": false
+      }
+    },
+    "preview": {
+      "validation": {
+        "schema_version": "unified_market_evidence_request_validation.v1",
+        "request_id": "closure-r1-j1-21",
+        "validation_status": "valid",
+        "request_schema_status": "valid",
+        "target_validation_status": "valid",
+        "capability_validation_status": "valid",
+        "normalized_request": {
+          "schema_version": "unified_market_evidence_request.v3",
+          "request_id": "closure-r1-j1-21",
+          "targets": [
+            {
+              "input": "TWSE:2330",
+              "resolution_requirement": "exact"
+            }
+          ],
+          "data_needs": [
+            {
+              "type": "current_observation",
+              "priority": "required",
+              "parameters": {}
+            }
+          ],
+          "execution_mode": "execute"
+        },
+        "target_results": [
+          {
+            "target_index": 0,
+            "original_input": "TWSE:2330",
+            "resolution_requirement": "exact",
+            "resolution_status": "resolved",
+            "candidate_matches": [
+              {
+                "canonical_target_id": "TWSE:2330",
+                "listing_id": "TWSE:2330",
+                "instrument_id": "TW0002330008",
+                "market": "TWSE",
+                "security_code": "2330",
+                "isin": "TW0002330008",
+                "security_name_zh": "重名測試",
+                "security_name_en": "TSMC",
+                "instrument_type": "common_share",
+                "instrument_family": "company_share",
+                "execution_eligibility": {
+                  "status": "allowed",
+                  "reason_codes": []
+                },
+                "release_id": "security-master-20261011T132825Z",
+                "release_manifest_hash": "69cdc8ff9260c07ce2cd057398af918661ee5e8677ae30b70e7430f620152398"
+              }
+            ],
+            "canonical_identity": {
+              "canonical_target_id": "TWSE:2330",
+              "listing_id": "TWSE:2330",
+              "instrument_id": "TW0002330008",
+              "market": "TWSE",
+              "security_code": "2330",
+              "isin": "TW0002330008",
+              "security_name_zh": "重名測試",
+              "security_name_en": "TSMC",
+              "instrument_type": "common_share",
+              "instrument_family": "company_share",
+              "execution_eligibility": {
+                "status": "allowed",
+                "reason_codes": []
+              },
+              "release_id": "security-master-20261011T132825Z",
+              "release_manifest_hash": "69cdc8ff9260c07ce2cd057398af918661ee5e8677ae30b70e7430f620152398"
+            },
+            "reason_codes": [
+              "exact_listing_id"
+            ]
+          }
+        ],
+        "capability_results": [
+          {
+            "data_need_index": 0,
+            "capability_id": "current_observation",
+            "priority": "required",
+            "status": "runtime_executable",
+            "reason_codes": [],
+            "known_limitations": [
+              "not guaranteed realtime",
+              "source availability may produce partial results",
+              "TAIFEX current observation is not yet implemented"
+            ]
+          }
+        ],
+        "blocking_issues": [],
+        "warnings": [],
+        "limits": {
+          "target_count": 1,
+          "hard_target_limit": 50,
+          "operation_count_computed": false,
+          "operation_count": 0,
+          "orchestrator_projection_required": true
+        },
+        "validation_metadata": {
+          "offline": true,
+          "deterministic": true,
+          "allow_fixture_snapshot": false
+        }
+      },
+      "preview": {
+        "schema_version": "unified_market_evidence_preview_response.v1",
+        "request_id": "closure-r1-j1-21",
+        "status": "ready_for_confirmation",
+        "target_resolution_summary": {
+          "resolved": [
+            "TWSE:2330"
+          ],
+          "ambiguous": [],
+          "not_found": [],
+          "market_hint_conflict": [],
+          "unsupported_market": [],
+          "invalid_market_hint": [],
+          "unsupported_security_type": [],
+          "invalid_input": [],
+          "duplicate": [],
+          "quarantined": []
+        },
+        "requested_data_needs": [
+          "current_observation"
+        ],
+        "planned_evidence": [
+          "current_observation"
+        ],
+        "coverage_expectation": {
+          "status": "full_possible",
+          "known_gaps": []
+        },
+        "bounds": {
+          "target_count": 1,
+          "operation_count": 1,
+          "estimated_network_calls": 1,
+          "expanded_scope": false
+        },
+        "fallbacks": [],
+        "approval": {
+          "required": true,
+          "confirmation_text": "Owner confirmation is required before any future authorization."
+        },
+        "internal_execution_reference": {
+          "preview_id": "umepreview-v1-02cb027b386978372fab"
+        },
+        "caveats": [
+          "PREVIEW_ONLY",
+          "NO_NETWORK_EXECUTED",
+          "EXECUTION_NOT_AUTHORIZED"
+        ]
+      },
+      "orchestration_plan": {
+        "schema_version": "unified_market_evidence_orchestration_plan.v1",
+        "execution_authorized": false,
+        "input_bindings": {
+          "original_request_hash": "5a0845f0c00aec094c98a212349c8440a3440ce2a6b77d40a5c396220757b7e7",
+          "normalized_request_hash": "5a0845f0c00aec094c98a212349c8440a3440ce2a6b77d40a5c396220757b7e7",
+          "f3_validation_output_hash": "15c4b6f007fda651f3653373988bca72b5b436e752423602cb4ea791a8061d9e",
+          "security_master_evidence_references": [
+            "local_security_master_release:security-master-20261011T132825Z:index",
+            "local_security_master_release:security-master-20261011T132825Z:manifest"
+          ],
+          "security_master_artifact_hashes": [
+            "9558a59ec5167a3020af323780f83cdf715d6d8b149cf01fd8cffd56500aeac5",
+            "69cdc8ff9260c07ce2cd057398af918661ee5e8677ae30b70e7430f620152398"
+          ],
+          "capability_catalog_hash": "28586079ddd89720ee60ae885343bcbe07ea5a0fc3e75fd76b4de18bbb6a1c23",
+          "planner_version": "m8r_05b_01.v1",
+          "routing_matrix_version": "m8r_05b_capability_to_executor_routing_matrix.v3",
+          "routing_matrix_hash": "9c44394a57473d564296e7069ea28f1742927f3a54db61aa1adac981dcf5c00d",
+          "handoff_contract_version": "m8r_05b_orchestration_handoff_contract.v1.draft",
+          "handoff_contract_hash": "d9a6ae1ff39f6596cdc7408cafd297d3a2cd6b6b4d43249e3eec7ca3e72a6022"
+        },
+        "planner_metadata": {
+          "planning_timestamp": "2026-10-11T13:28:26Z",
+          "offline": true,
+          "deterministic": true,
+          "limit_source": "catalog.hard_operation_limit"
+        },
+        "plan_status": "plan_ready",
+        "operations": [
+          {
+            "operation_id": "umeop-op-v1-37e7ffc42102745298c7",
+            "capability_id": "current_observation",
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "market": "TWSE",
+            "security_types": [
+              "equity"
+            ],
+            "parameters": {},
+            "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+            "batch_group_id": "umeop-batch-v1-e2e0b2ff88ba782d586b",
+            "operation_status": "executable_pending_approval",
+            "network_required": true,
+            "capability_requires_execution_approval": true,
+            "expected_evidence_contract": "bounded normalized source observation with source health/currentness",
+            "blocking_reason_codes": [],
+            "warnings": [],
+            "executor_invocation_eligible": true,
+            "dependency_operation_ids": []
+          }
+        ],
+        "batch_groups": [
+          {
+            "batch_group_id": "umeop-batch-v1-e2e0b2ff88ba782d586b",
+            "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+            "capability_id": "current_observation",
+            "market": "TWSE",
+            "operation_ids": [
+              "umeop-op-v1-37e7ffc42102745298c7"
+            ],
+            "network_required": true,
+            "capability_requires_execution_approval": true
+          }
+        ],
+        "accounting": {
+          "logical_operation_count": 1,
+          "batch_group_count": 1,
+          "executor_invocation_count": 1,
+          "network_request_estimate": 1,
+          "planned_evidence_bundle_count": 1
+        },
+        "warnings": [],
+        "blocked_operations": [],
+        "omitted_optional_capabilities": [],
+        "evidence_references": [
+          "local_security_master_release:security-master-20261011T132825Z:index",
+          "local_security_master_release:security-master-20261011T132825Z:manifest"
+        ],
+        "package_approval_requirements": {
+          "package_requires_owner_approval": true,
+          "authorization_eligible": true,
+          "approval_policy": "strictest_operation_controls_package",
+          "approval_reason_codes": [
+            "execution_approval_required"
+          ]
+        },
+        "plan_hash": "132c74c9c976cdc7bd3b4aec0164bbd9f2ca41a3862ec6c88a179aeef6bf8719",
+        "plan_id": "umeop-v1-132c74c9c976cdc7bd3b"
+      },
+      "network_executed": false,
+      "authorization_created": false,
+      "authorization_consumed": false,
+      "execution_performed": false
+    },
+    "execution": {
+      "schema_version": "m8r_06_03_execute_once_result.v1",
+      "authorization_id": "umea-v1-075c3a4b032bcc2cea79",
+      "consumption_state": "consumed_success",
+      "operation_statuses": [
+        "succeeded"
+      ],
+      "aggregation_status": "succeeded",
+      "execution_receipt_id": "umerec-v1-6b54716cf92e1e16c959",
+      "evidence_bundle_id": "umeb-v1-c17ca4d355c2a3997299",
+      "transport_mode": "deterministic_test_transport",
+      "test_transport_active": true,
+      "external_market_network_attempted": false,
+      "external_market_network_executed": false
+    },
+    "control_package_id": "umea-v1-075c3a4b032bcc2cea79",
+    "result": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+      "request_id": "closure-r1-j1-21",
+      "generated_at": "2026-10-11T13:28:26Z",
+      "request_summary": {
+        "target_count": 1,
+        "requested_data_needs": [
+          "current_observation"
+        ],
+        "required_data_needs": [
+          "current_observation"
+        ],
+        "optional_data_needs": [],
+        "execution_mode": "execute",
+        "request_schema_version": "unified_market_evidence_request.v3"
+      },
+      "status": "full_success",
+      "targets": [
+        {
+          "resolution": {
+            "status": "resolved",
+            "canonical_target_id": "TWSE:2330",
+            "security_code": "2330",
+            "security_name": "重名測試",
+            "market": "TWSE"
+          },
+          "evidence": {
+            "current_observation": {
+              "status": "available",
+              "caveats": [
+                "fragile_frontend_contract",
+                "freshness_must_be_displayed",
+                "live_observation_not_canonical",
+                "no_trading_signal",
+                "not_official_realtime_api",
+                "not_realtime_guaranteed",
+                "source_may_be_delayed_or_unavailable",
+                "unofficial_source_risk"
+              ],
+              "observed_fields": {
+                "instrument_context": {
+                  "instrument_kind": "security",
+                  "price_domain": "equity_price",
+                  "market_mode": "regular_board",
+                  "source_symbol": "2330",
+                  "display_name": "合成公司",
+                  "semantic_status": "runtime_projected_candidate"
+                },
+                "source_context": {
+                  "source": "TWSE_MIS",
+                  "source_type": "official_browser_json_endpoint_candidate",
+                  "adapter_id": "twse_mis_equity_etf_quote"
+                },
+                "price_snapshot": {
+                  "last_value_available": true,
+                  "last_value": 100.0,
+                  "previous_close": 99.0,
+                  "open": 99.0,
+                  "high": 101.0,
+                  "low": 98.0,
+                  "direction_vs_previous_close": "up",
+                  "descriptive_only": true,
+                  "not_recommendation": true,
+                  "semantic_status": "runtime_projected_candidate"
+                },
+                "reference_price_context": {
+                  "limit_up": 108.9,
+                  "limit_down": 89.1
+                },
+                "displayed_quote_snapshot": {
+                  "best_bid": 99.5,
+                  "best_ask": 100.5,
+                  "semantic_label": "displayed_quote_snapshot"
+                },
+                "freshness_context": {
+                  "source_timestamp": "2026-09-01T05:30:00Z",
+                  "retrieved_at_utc": "2026-10-08T06:00:00Z",
+                  "delay_seconds": 3198600.0,
+                  "freshness_assessment": "stale_intraday_snapshot",
+                  "not_realtime_guaranteed": true,
+                  "semantic_status": "runtime_projected_candidate",
+                  "age_seconds": 3198600.0,
+                  "ai_exposure_level": "caveated_context_allowed",
+                  "allowed_interpretation": [
+                    "not realtime guaranteed"
+                  ],
+                  "authority_level": "official_undocumented",
+                  "blocked_interpretation": [
+                    "no TPEX_MIS",
+                    "no rotc_",
+                    "no streaming guarantee",
+                    "no trading advice",
+                    "no trading signal",
+                    "not current market evidence"
+                  ],
+                  "caveats": [
+                    "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+                    "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+                  ],
+                  "credential_gated": false,
+                  "currentness_policy": "family_specific",
+                  "eod_only": false,
+                  "evaluation_timestamp": "2026-10-08T06:00:00Z",
+                  "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+                  "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+                  "exchange_timestamp_absent": false,
+                  "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+                  "intraday_snapshot": true,
+                  "latency_class": "intraday_snapshot",
+                  "manual_snapshot": false,
+                  "market_date": null,
+                  "not_recommendation": true,
+                  "not_trading_signal": true,
+                  "recommendation_allowed": false,
+                  "requires_caveats": true,
+                  "retrieved_time_only": false,
+                  "safe_for_ai_context": false,
+                  "schema_version": "m8_source_freshness_assessment.v1",
+                  "session_state": null,
+                  "source_family": "TWSE_MIS",
+                  "source_id": "TWSE_MIS",
+                  "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+                  "source_unavailable_reason": null,
+                  "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+                  "status": "stale",
+                  "timing_class": "liveish_intraday_snapshot",
+                  "trading_advice_allowed": false,
+                  "trading_date": null,
+                  "trading_signal_allowed": false,
+                  "validation_only": false
+                },
+                "market_session_context": {
+                  "session_state_candidate": null,
+                  "session_state_confidence": "candidate_only",
+                  "closing_auction_candidate": false,
+                  "post_close_candidate": false,
+                  "odd_lot_mode_supported": false,
+                  "semantic_status": "runtime_projected_candidate"
+                },
+                "data_quality_context": {
+                  "placeholder_fields": [],
+                  "malformed_fields": [],
+                  "ladder_mismatch_flags": [],
+                  "quality_warnings": [
+                    "fragile_frontend_contract",
+                    "not_official_realtime_api",
+                    "unofficial_source_risk"
+                  ],
+                  "semantic_status": "runtime_projected_candidate"
+                },
+                "extended_displayed_depth_snapshot": {
+                  "bid_prices": [
+                    99.5,
+                    99.0
+                  ],
+                  "ask_prices": [
+                    100.5,
+                    101.0
+                  ],
+                  "bid_displayed_quantities_raw": [
+                    "2",
+                    "3"
+                  ],
+                  "ask_displayed_quantities_raw": [
+                    "1",
+                    "2"
+                  ],
+                  "caveats": [
+                    "displayed_snapshot_only",
+                    "not_full_order_book",
+                    "not_true_liquidity",
+                    "not_support_resistance",
+                    "not_trading_signal",
+                    "quantity_unit_unverified"
+                  ]
+                }
+              },
+              "currentness": {
+                "source_timestamp": "2026-09-01T05:30:00Z",
+                "retrieved_at_utc": "2026-10-08T06:00:00Z",
+                "delay_seconds": 3198600.0,
+                "freshness_assessment": "stale_intraday_snapshot",
+                "not_realtime_guaranteed": true,
+                "semantic_status": "runtime_projected_candidate",
+                "age_seconds": 3198600.0,
+                "ai_exposure_level": "caveated_context_allowed",
+                "allowed_interpretation": [
+                  "not realtime guaranteed"
+                ],
+                "authority_level": "official_undocumented",
+                "blocked_interpretation": [
+                  "no TPEX_MIS",
+                  "no rotc_",
+                  "no streaming guarantee",
+                  "no trading advice",
+                  "no trading signal",
+                  "not current market evidence"
+                ],
+                "caveats": [
+                  "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+                  "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+                ],
+                "credential_gated": false,
+                "currentness_policy": "family_specific",
+                "eod_only": false,
+                "evaluation_timestamp": "2026-10-08T06:00:00Z",
+                "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+                "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+                "exchange_timestamp_absent": false,
+                "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+                "intraday_snapshot": true,
+                "latency_class": "intraday_snapshot",
+                "manual_snapshot": false,
+                "market_date": null,
+                "not_recommendation": true,
+                "not_trading_signal": true,
+                "recommendation_allowed": false,
+                "requires_caveats": true,
+                "retrieved_time_only": false,
+                "safe_for_ai_context": false,
+                "schema_version": "m8_source_freshness_assessment.v1",
+                "session_state": null,
+                "source_family": "TWSE_MIS",
+                "source_id": "TWSE_MIS",
+                "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+                "source_unavailable_reason": null,
+                "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+                "status": "stale",
+                "timing_class": "liveish_intraday_snapshot",
+                "trading_advice_allowed": false,
+                "trading_date": null,
+                "trading_signal_allowed": false,
+                "validation_only": false
+              },
+              "citation_ids": [
+                "cite-ae0f24b4b35c5702"
+              ]
+            }
+          },
+          "canonical_identity": {
+            "canonical_target_id": "TWSE:2330",
+            "isin": "TW0002330008",
+            "market": "TWSE",
+            "security_code": "2330",
+            "security_name_zh": "重名測試",
+            "security_name_en": "TSMC",
+            "instrument_family": "company_share",
+            "instrument_type": "common_share"
+          },
+          "coverage": {
+            "provided_needs": [
+              "current_observation"
+            ],
+            "missing_needs": []
+          },
+          "citations": [
+            {
+              "citation_id": "cite-ae0f24b4b35c5702",
+              "source_family": "TWSE_MIS",
+              "retrieved_at": "2026-10-11T13:28:26Z",
+              "artifact_reference": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+              "source_contract_id": "bounded normalized source observation with source health/currentness",
+              "normalized_evidence_hash": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240"
+            }
+          ]
+        }
+      ],
+      "audit_reference": {
+        "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+        "schema_version": "unified_market_evidence_audit_package.v3",
+        "relative_path": "audit/unified_market_evidence_audit_package.v3.json"
+      },
+      "request_caveats": [],
+      "result_hash": "8191d90df66a9636778214b7ca1748c576e4725acadfeb8e8b719bcae97d7f0a"
+    },
+    "audit": {
+      "artifact_inventory": [
+        {
+          "byte_size": 9248,
+          "evidence_contract": "bounded normalized source observation with source health/currentness",
+          "item_count": 1,
+          "relative_path": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+          "schema_version": "m8r_06_03_operation_evidence.v1",
+          "sha256": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240"
+        }
+      ],
+      "audit_package_hash": "7b0f1c91e8a40a53fff2d8df917c44e2cc97d04ffc5cc76232f2d63c78facb70",
+      "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+      "authorization_identity": {
+        "authorization_hash": "075c3a4b032bcc2cea79c77917a7b7d726c8c500c744dae3304e23b1bc4ab404",
+        "authorization_id": "umea-v1-075c3a4b032bcc2cea79",
+        "schema_version": "unified_market_evidence_execution_authorization.v1",
+        "scope_hash": "f44cfb544099f2ba5ef4af8ab6e7cef68f40c0840e0fa8e384e8e0fe623d7865"
+      },
+      "bundle_identity": {
+        "bundle_hash": "c17ca4d355c2a3997299013e3d2791ceb1d455733820e612d6371e7e00fc4631",
+        "bundle_id": "umeb-v1-c17ca4d355c2a3997299",
+        "finalized_at": "2026-10-11T13:28:26Z",
+        "overall_status": "succeeded",
+        "schema_version": "unified_market_evidence_bundle.v1",
+        "total_item_count": 1
+      },
+      "caveats": [],
+      "citation_to_operation_map": [
+        {
+          "artifact_hash": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240",
+          "artifact_relative_path": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+          "canonical_target_id": "TWSE:2330",
+          "capability_id": "current_observation",
+          "citation_id": "cite-ae0f24b4b35c5702",
+          "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+          "operation_id": "umeop-op-v1-37e7ffc42102745298c7",
+          "requested_data_need": "current_observation"
+        }
+      ],
+      "claim_identity": {
+        "atomic_claim_hash": "077fb29bb293d8dc12403a1496bd395a355e2126b89a72bf9cc588a0aff9191c",
+        "claim_id": "umecl-v1-26ef73264349ef076d5c",
+        "finalized_record_hash": "036648da21d14a556fd764bd490d423c292376326f5284eb46a7a29011ced923",
+        "schema_version": "unified_market_evidence_consumption_record.v1"
+      },
+      "integrity_verification": {
+        "all_artifact_hashes_verified": true,
+        "bundle_hash_verified": true,
+        "receipt_hash_verified": true,
+        "result_hash_verified": true
+      },
+      "operation_lineage": [
+        {
+          "artifact_references": [
+            {
+              "byte_size": 9248,
+              "item_count": 1,
+              "relative_path": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+              "schema_version": "m8r_06_03_operation_evidence.v1",
+              "sha256": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240"
+            }
+          ],
+          "canonical_target_ids": [
+            "TWSE:2330"
+          ],
+          "capability_id": "current_observation",
+          "error_code": null,
+          "evidence_contract": "bounded normalized source observation with source health/currentness",
+          "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+          "market": "TWSE",
+          "operation_id": "umeop-op-v1-37e7ffc42102745298c7",
+          "result_item_count": 1,
+          "status": "succeeded",
+          "warnings": [
+            "stale_intraday_snapshot"
+          ]
+        }
+      ],
+      "phase_h_governance": {
+        "evidence_artifact_references": [],
+        "h4_derivations": [],
+        "source_attempts": []
+      },
+      "phase_i_evidence": {
+        "evidence_artifact_references": []
+      },
+      "plan_identity": {
+        "plan_hash": "132c74c9c976cdc7bd3b4aec0164bbd9f2ca41a3862ec6c88a179aeef6bf8719",
+        "plan_id": "umeop-v1-132c74c9c976cdc7bd3b",
+        "plan_status": "plan_ready",
+        "schema_version": "unified_market_evidence_orchestration_plan.v1"
+      },
+      "projector_metadata": {
+        "calculated_at_source": "cli_calculated_at",
+        "canonicalization_version": "m8r_05b_03_canonical_v1",
+        "projected_at": "2026-10-11T13:28:26Z",
+        "projector_version": "m8r_05c_v1_3",
+        "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at"
+      },
+      "receipt_identity": {
+        "execution_receipt_hash": "6b54716cf92e1e16c9590b26c0d1cd13f048ef50745f5b7e103abd62c73e70fa",
+        "execution_receipt_id": "umerec-v1-6b54716cf92e1e16c959",
+        "failed_operations": 0,
+        "finalized_at": "2026-10-11T13:28:26Z",
+        "overall_status": "succeeded",
+        "schema_version": "unified_market_evidence_execution_receipt.v1",
+        "succeeded_operations": 1,
+        "total_operations": 1
+      },
+      "replay_manifest": {
+        "atomic_claim_hash": "077fb29bb293d8dc12403a1496bd395a355e2126b89a72bf9cc588a0aff9191c",
+        "authorization_hash": "075c3a4b032bcc2cea79c77917a7b7d726c8c500c744dae3304e23b1bc4ab404",
+        "authorization_id": "umea-v1-075c3a4b032bcc2cea79",
+        "bundle_hash": "c17ca4d355c2a3997299013e3d2791ceb1d455733820e612d6371e7e00fc4631",
+        "bundle_id": "umeb-v1-c17ca4d355c2a3997299",
+        "claim_id": "umecl-v1-26ef73264349ef076d5c",
+        "consumption_binding_hash": "e299f1a4546d4f6a2225b27a3b858121592dd8c50c45e559aebb15fcb091e834",
+        "consumption_binding_id": "umeacb-v1-e299f1a4546d4f6a2225",
+        "execution_receipt_hash": "6b54716cf92e1e16c9590b26c0d1cd13f048ef50745f5b7e103abd62c73e70fa",
+        "execution_receipt_id": "umerec-v1-6b54716cf92e1e16c959",
+        "finalized_record_hash": "036648da21d14a556fd764bd490d423c292376326f5284eb46a7a29011ced923",
+        "plan_hash": "132c74c9c976cdc7bd3b4aec0164bbd9f2ca41a3862ec6c88a179aeef6bf8719",
+        "plan_id": "umeop-v1-132c74c9c976cdc7bd3b",
+        "request_hash": "5a0845f0c00aec094c98a212349c8440a3440ce2a6b77d40a5c396220757b7e7",
+        "request_id": "closure-r1-j1-21"
+      },
+      "request_identity": {
+        "request_hash": "5a0845f0c00aec094c98a212349c8440a3440ce2a6b77d40a5c396220757b7e7",
+        "request_id": "closure-r1-j1-21",
+        "schema_version": "unified_market_evidence_request.v3"
+      },
+      "result_hash": "8191d90df66a9636778214b7ca1748c576e4725acadfeb8e8b719bcae97d7f0a",
+      "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+      "result_relative_path": "ai_context/unified_market_evidence_result.v3.json",
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "target_validation_identity": {
+        "f3_validation_output_hash": "15c4b6f007fda651f3653373988bca72b5b436e752423602cb4ea791a8061d9e",
+        "security_master_artifact_hashes": [
+          "9558a59ec5167a3020af323780f83cdf715d6d8b149cf01fd8cffd56500aeac5",
+          "69cdc8ff9260c07ce2cd057398af918661ee5e8677ae30b70e7430f620152398"
+        ],
+        "security_master_release_id": "security-master-20261011T132825Z",
+        "security_master_release_manifest_hash": "69cdc8ff9260c07ce2cd057398af918661ee5e8677ae30b70e7430f620152398"
+      },
+      "warnings": []
+    },
+    "handoff": {
+      "service_contract_version": "unified_market_evidence_local_service.v2",
+      "control_package_id": "umea-v1-075c3a4b032bcc2cea79",
+      "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+      "result_hash": "8191d90df66a9636778214b7ca1748c576e4725acadfeb8e8b719bcae97d7f0a",
+      "result_status": "full_success",
+      "request_id": "closure-r1-j1-21",
+      "request_mode": "execute",
+      "execution_outcome": "succeeded",
+      "canonical_result": {
+        "audit_reference": {
+          "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+          "relative_path": "audit/unified_market_evidence_audit_package.v3.json",
+          "schema_version": "unified_market_evidence_audit_package.v3"
+        },
+        "generated_at": "2026-10-11T13:28:26Z",
+        "request_caveats": [],
+        "request_id": "closure-r1-j1-21",
+        "request_summary": {
+          "execution_mode": "execute",
+          "optional_data_needs": [],
+          "request_schema_version": "unified_market_evidence_request.v3",
+          "requested_data_needs": [
+            "current_observation"
+          ],
+          "required_data_needs": [
+            "current_observation"
+          ],
+          "target_count": 1
+        },
+        "result_hash": "8191d90df66a9636778214b7ca1748c576e4725acadfeb8e8b719bcae97d7f0a",
+        "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+        "schema_version": "unified_market_evidence_result.v3",
+        "status": "full_success",
+        "targets": [
+          {
+            "canonical_identity": {
+              "canonical_target_id": "TWSE:2330",
+              "instrument_family": "company_share",
+              "instrument_type": "common_share",
+              "isin": "TW0002330008",
+              "market": "TWSE",
+              "security_code": "2330",
+              "security_name_en": "TSMC",
+              "security_name_zh": "重名測試"
+            },
+            "citations": [
+              {
+                "artifact_reference": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+                "citation_id": "cite-ae0f24b4b35c5702",
+                "normalized_evidence_hash": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240",
+                "retrieved_at": "2026-10-11T13:28:26Z",
+                "source_contract_id": "bounded normalized source observation with source health/currentness",
+                "source_family": "TWSE_MIS"
+              }
+            ],
+            "coverage": {
+              "missing_needs": [],
+              "provided_needs": [
+                "current_observation"
+              ]
+            },
+            "evidence": {
+              "current_observation": {
+                "caveats": [
+                  "fragile_frontend_contract",
+                  "freshness_must_be_displayed",
+                  "live_observation_not_canonical",
+                  "no_trading_signal",
+                  "not_official_realtime_api",
+                  "not_realtime_guaranteed",
+                  "source_may_be_delayed_or_unavailable",
+                  "unofficial_source_risk"
+                ],
+                "citation_ids": [
+                  "cite-ae0f24b4b35c5702"
+                ],
+                "currentness": {
+                  "age_seconds": 3198600.0,
+                  "ai_exposure_level": "caveated_context_allowed",
+                  "allowed_interpretation": [
+                    "not realtime guaranteed"
+                  ],
+                  "authority_level": "official_undocumented",
+                  "blocked_interpretation": [
+                    "no TPEX_MIS",
+                    "no rotc_",
+                    "no streaming guarantee",
+                    "no trading advice",
+                    "no trading signal",
+                    "not current market evidence"
+                  ],
+                  "caveats": [
+                    "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+                    "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+                  ],
+                  "credential_gated": false,
+                  "currentness_policy": "family_specific",
+                  "delay_seconds": 3198600.0,
+                  "eod_only": false,
+                  "evaluation_timestamp": "2026-10-08T06:00:00Z",
+                  "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+                  "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+                  "exchange_timestamp_absent": false,
+                  "freshness_assessment": "stale_intraday_snapshot",
+                  "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+                  "intraday_snapshot": true,
+                  "latency_class": "intraday_snapshot",
+                  "manual_snapshot": false,
+                  "market_date": null,
+                  "not_realtime_guaranteed": true,
+                  "not_recommendation": true,
+                  "not_trading_signal": true,
+                  "recommendation_allowed": false,
+                  "requires_caveats": true,
+                  "retrieved_at_utc": "2026-10-08T06:00:00Z",
+                  "retrieved_time_only": false,
+                  "safe_for_ai_context": false,
+                  "schema_version": "m8_source_freshness_assessment.v1",
+                  "semantic_status": "runtime_projected_candidate",
+                  "session_state": null,
+                  "source_family": "TWSE_MIS",
+                  "source_id": "TWSE_MIS",
+                  "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+                  "source_timestamp": "2026-09-01T05:30:00Z",
+                  "source_unavailable_reason": null,
+                  "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+                  "status": "stale",
+                  "timing_class": "liveish_intraday_snapshot",
+                  "trading_advice_allowed": false,
+                  "trading_date": null,
+                  "trading_signal_allowed": false,
+                  "validation_only": false
+                },
+                "observed_fields": {
+                  "data_quality_context": {
+                    "ladder_mismatch_flags": [],
+                    "malformed_fields": [],
+                    "placeholder_fields": [],
+                    "quality_warnings": [
+                      "fragile_frontend_contract",
+                      "not_official_realtime_api",
+                      "unofficial_source_risk"
+                    ],
+                    "semantic_status": "runtime_projected_candidate"
+                  },
+                  "displayed_quote_snapshot": {
+                    "best_ask": 100.5,
+                    "best_bid": 99.5,
+                    "semantic_label": "displayed_quote_snapshot"
+                  },
+                  "extended_displayed_depth_snapshot": {
+                    "ask_displayed_quantities_raw": [
+                      "1",
+                      "2"
+                    ],
+                    "ask_prices": [
+                      100.5,
+                      101.0
+                    ],
+                    "bid_displayed_quantities_raw": [
+                      "2",
+                      "3"
+                    ],
+                    "bid_prices": [
+                      99.5,
+                      99.0
+                    ],
+                    "caveats": [
+                      "displayed_snapshot_only",
+                      "not_full_order_book",
+                      "not_true_liquidity",
+                      "not_support_resistance",
+                      "not_trading_signal",
+                      "quantity_unit_unverified"
+                    ]
+                  },
+                  "freshness_context": {
+                    "age_seconds": 3198600.0,
+                    "ai_exposure_level": "caveated_context_allowed",
+                    "allowed_interpretation": [
+                      "not realtime guaranteed"
+                    ],
+                    "authority_level": "official_undocumented",
+                    "blocked_interpretation": [
+                      "no TPEX_MIS",
+                      "no rotc_",
+                      "no streaming guarantee",
+                      "no trading advice",
+                      "no trading signal",
+                      "not current market evidence"
+                    ],
+                    "caveats": [
+                      "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+                      "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+                    ],
+                    "credential_gated": false,
+                    "currentness_policy": "family_specific",
+                    "delay_seconds": 3198600.0,
+                    "eod_only": false,
+                    "evaluation_timestamp": "2026-10-08T06:00:00Z",
+                    "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+                    "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+                    "exchange_timestamp_absent": false,
+                    "freshness_assessment": "stale_intraday_snapshot",
+                    "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+                    "intraday_snapshot": true,
+                    "latency_class": "intraday_snapshot",
+                    "manual_snapshot": false,
+                    "market_date": null,
+                    "not_realtime_guaranteed": true,
+                    "not_recommendation": true,
+                    "not_trading_signal": true,
+                    "recommendation_allowed": false,
+                    "requires_caveats": true,
+                    "retrieved_at_utc": "2026-10-08T06:00:00Z",
+                    "retrieved_time_only": false,
+                    "safe_for_ai_context": false,
+                    "schema_version": "m8_source_freshness_assessment.v1",
+                    "semantic_status": "runtime_projected_candidate",
+                    "session_state": null,
+                    "source_family": "TWSE_MIS",
+                    "source_id": "TWSE_MIS",
+                    "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+                    "source_timestamp": "2026-09-01T05:30:00Z",
+                    "source_unavailable_reason": null,
+                    "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+                    "status": "stale",
+                    "timing_class": "liveish_intraday_snapshot",
+                    "trading_advice_allowed": false,
+                    "trading_date": null,
+                    "trading_signal_allowed": false,
+                    "validation_only": false
+                  },
+                  "instrument_context": {
+                    "display_name": "合成公司",
+                    "instrument_kind": "security",
+                    "market_mode": "regular_board",
+                    "price_domain": "equity_price",
+                    "semantic_status": "runtime_projected_candidate",
+                    "source_symbol": "2330"
+                  },
+                  "market_session_context": {
+                    "closing_auction_candidate": false,
+                    "odd_lot_mode_supported": false,
+                    "post_close_candidate": false,
+                    "semantic_status": "runtime_projected_candidate",
+                    "session_state_candidate": null,
+                    "session_state_confidence": "candidate_only"
+                  },
+                  "price_snapshot": {
+                    "descriptive_only": true,
+                    "direction_vs_previous_close": "up",
+                    "high": 101.0,
+                    "last_value": 100.0,
+                    "last_value_available": true,
+                    "low": 98.0,
+                    "not_recommendation": true,
+                    "open": 99.0,
+                    "previous_close": 99.0,
+                    "semantic_status": "runtime_projected_candidate"
+                  },
+                  "reference_price_context": {
+                    "limit_down": 89.1,
+                    "limit_up": 108.9
+                  },
+                  "source_context": {
+                    "adapter_id": "twse_mis_equity_etf_quote",
+                    "source": "TWSE_MIS",
+                    "source_type": "official_browser_json_endpoint_candidate"
+                  }
+                },
+                "status": "available"
+              }
+            },
+            "resolution": {
+              "canonical_target_id": "TWSE:2330",
+              "market": "TWSE",
+              "security_code": "2330",
+              "security_name": "重名測試",
+              "status": "resolved"
+            }
+          }
+        ]
+      },
+      "ai_ready_markdown": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `umeresult-v3-73dfa71dc4126a54f2e7`\n**請求 ID**: `closure-r1-j1-21`\n**生成時間**: 2026-10-11T13:28:26Z\n\n## 請求摘要\n- **執行模式**: execute\n- **目標數量**: 1\n- **請求的資料需求**: current_observation\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 重名測試\n- **市場**: TWSE\n- **已提供資料需求**: current_observation\n\n### 證據\n\n#### 即時觀測 (Current Observation)\n- **狀態**: 可用\n- **時效類別**: 未知\n\n**Instrument Context**:\n- `instrument_kind`: security\n- `price_domain`: equity_price\n- `market_mode`: regular_board\n- `source_symbol`: 2330\n- `display_name`: 合成公司\n- `semantic_status`: runtime_projected_candidate\n\n**Source**:\n- `source`: TWSE_MIS\n- `source_type`: official_browser_json_endpoint_candidate\n- `adapter_id`: twse_mis_equity_etf_quote\n\n**Stale Source Snapshot**:\n- `last_value_available`: True\n- `last_value`: 100.0\n- `previous_close`: 99.0\n- `open`: 99.0\n- `high`: 101.0\n- `low`: 98.0\n- `direction_vs_previous_close`: up\n- `descriptive_only`: True\n- `not_recommendation`: True\n- `semantic_status`: runtime_projected_candidate\n\n**Reference Prices**:\n- `limit_up`: 108.9\n- `limit_down`: 89.1\n\n**Displayed Quote Snapshot**:\n- `best_bid`: 99.5\n- `best_ask`: 100.5\n- `semantic_label`: displayed_quote_snapshot\n\n**Freshness / Source**:\n- `source_timestamp`: 2026-09-01T05:30:00Z\n- `retrieved_at_utc`: 2026-10-08T06:00:00Z\n- `delay_seconds`: 3198600.0\n- `freshness_assessment`: stale_intraday_snapshot\n- `not_realtime_guaranteed`: True\n- `semantic_status`: runtime_projected_candidate\n- `age_seconds`: 3198600.0\n- `ai_exposure_level`: caveated_context_allowed\n- `allowed_interpretation`: ['not realtime guaranteed']\n- `authority_level`: official_undocumented\n- `blocked_interpretation`: ['no TPEX_MIS', 'no rotc_', 'no streaming guarantee', 'no trading advice', 'no trading signal', 'not current market evidence']\n- `caveats`: ['Official exchange browser source, but hidden/undocumented endpoint contract in project governance.', 'retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time']\n- `credential_gated`: False\n- `currentness_policy`: family_specific\n- `eod_only`: False\n- `evaluation_timestamp`: 2026-10-08T06:00:00Z\n- `evaluator_id`: m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration\n- `evaluator_input_sha256`: d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38\n- `exchange_timestamp_absent`: False\n- `freshness_reason`: evidence_age_exceeds_max_limit:3198600s\n- `intraday_snapshot`: True\n- `latency_class`: intraday_snapshot\n- `manual_snapshot`: False\n- `market_date`: None\n- `not_recommendation`: True\n- `not_trading_signal`: True\n- `recommendation_allowed`: False\n- `requires_caveats`: True\n- `retrieved_time_only`: False\n- `safe_for_ai_context`: False\n- `schema_version`: m8_source_freshness_assessment.v1\n- `session_state`: None\n- `source_family`: TWSE_MIS\n- `source_id`: TWSE_MIS\n- `source_policy_sha256`: 4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f\n- `source_unavailable_reason`: None\n- `stale_reason`: evidence_age_exceeds_max_limit:3198600s\n- `status`: stale\n- `timing_class`: liveish_intraday_snapshot\n- `trading_advice_allowed`: False\n- `trading_date`: None\n- `trading_signal_allowed`: False\n- `validation_only`: False\n\n**Market / Session**:\n- `session_state_candidate`: None\n- `session_state_confidence`: candidate_only\n- `closing_auction_candidate`: False\n- `post_close_candidate`: False\n- `odd_lot_mode_supported`: False\n- `semantic_status`: runtime_projected_candidate\n\n**Data Quality**:\n- `placeholder_fields`: []\n- `malformed_fields`: []\n- `ladder_mismatch_flags`: []\n- `quality_warnings`: ['fragile_frontend_contract', 'not_official_realtime_api', 'unofficial_source_risk']\n- `semantic_status`: runtime_projected_candidate\n\n**Extended Displayed Depth**:\n- `bid_prices`: [99.5, 99.0]\n- `ask_prices`: [100.5, 101.0]\n- `bid_displayed_quantities_raw`: ['2', '3']\n- `ask_displayed_quantities_raw`: ['1', '2']\n- `caveats`: ['displayed_snapshot_only', 'not_full_order_book', 'not_true_liquidity', 'not_support_resistance', 'not_trading_signal', 'quantity_unit_unverified']\n\n**時效資訊**:\n  - `age_seconds`: 3198600.0\n  - `ai_exposure_level`: caveated_context_allowed\n  - `allowed_interpretation`: ['not realtime guaranteed']\n  - `authority_level`: official_undocumented\n  - `blocked_interpretation`: ['no TPEX_MIS', 'no rotc_', 'no streaming guarantee', 'no trading advice', 'no trading signal', 'not current market evidence']\n  - `caveats`: ['Official exchange browser source, but hidden/undocumented endpoint contract in project governance.', 'retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time']\n  - `credential_gated`: False\n  - `currentness_policy`: family_specific\n  - `delay_seconds`: 3198600.0\n  - `eod_only`: False\n  - `evaluation_timestamp`: 2026-10-08T06:00:00Z\n  - `evaluator_id`: m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration\n  - `evaluator_input_sha256`: d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38\n  - `exchange_timestamp_absent`: False\n  - `freshness_assessment`: stale_intraday_snapshot\n  - `freshness_reason`: evidence_age_exceeds_max_limit:3198600s\n  - `intraday_snapshot`: True\n  - `latency_class`: intraday_snapshot\n  - `manual_snapshot`: False\n  - `market_date`: None\n  - `not_realtime_guaranteed`: True\n  - `not_recommendation`: True\n  - `not_trading_signal`: True\n  - `recommendation_allowed`: False\n  - `requires_caveats`: True\n  - `retrieved_at_utc`: 2026-10-08T06:00:00Z\n  - `retrieved_time_only`: False\n  - `safe_for_ai_context`: False\n  - `schema_version`: m8_source_freshness_assessment.v1\n  - `semantic_status`: runtime_projected_candidate\n  - `session_state`: None\n  - `source_family`: TWSE_MIS\n  - `source_id`: TWSE_MIS\n  - `source_policy_sha256`: 4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f\n  - `source_timestamp`: 2026-09-01T05:30:00Z\n  - `source_unavailable_reason`: None\n  - `stale_reason`: evidence_age_exceeds_max_limit:3198600s\n  - `status`: stale\n  - `timing_class`: liveish_intraday_snapshot\n  - `trading_advice_allowed`: False\n  - `trading_date`: None\n  - `trading_signal_allowed`: False\n  - `validation_only`: False\n\n> **注意**:\n> - fragile_frontend_contract\n> - freshness_must_be_displayed\n> - live_observation_not_canonical\n> - no_trading_signal\n> - not_official_realtime_api\n> - not_realtime_guaranteed\n> - source_may_be_delayed_or_unavailable\n> - unofficial_source_risk\n\n### 引用來源\n- `cite-ae0f24b4b35c5702` — 來源: TWSE_MIS | 擷取時間: 2026-10-11T13:28:26Z | 參考: `evidence/umeop-op-v1-37e7ffc42102745298c7.json`\n\n## 審計包參考\n- **審計包 ID**: `umeap-v3-a72554a8b0fe19353c6a`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+      "citation_references": [
+        {
+          "citation_id": "cite-ae0f24b4b35c5702",
+          "canonical_target_id": "TWSE:2330",
+          "capability_id": "current_observation",
+          "executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+          "artifact_relative_path": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+          "artifact_hash": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240"
+        }
+      ],
+      "canonical_result_reference": "ai_context/unified_market_evidence_result.v3.json",
+      "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a",
+      "audit_reference": "audit/unified_market_evidence_audit_package.v3.json",
+      "selection_provenance_identity": null,
+      "materialization": "existing_verified",
+      "additional_market_network_executed": false
+    },
+    "initial_execution_count": 1,
+    "additional_execution_count": 0,
+    "executed_layers": [
+      "integration",
+      "service_api"
+    ],
+    "production_path": [
+      "Local Service validate",
+      "Mode B1 planner",
+      "Mode B2 authorize",
+      "execute_once child",
+      "genuine official source adapter with raw fixture HTTP",
+      "Result V3 builder",
+      "Audit V3 builder",
+      "Mode C stored handoff"
+    ],
+    "fixture_ref": "tests/fixtures/phase_j/closure_r1/source_rows.json",
+    "market_network": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "normalized_observation": {
+      "adapter_id": "twse_mis_equity_etf_quote",
+      "category_id": "m8r_06_03",
+      "caveats": [
+        "fragile_frontend_contract",
+        "freshness_must_be_displayed",
+        "live_observation_not_canonical",
+        "no_trading_signal",
+        "not_official_realtime_api",
+        "not_realtime_guaranteed",
+        "source_may_be_delayed_or_unavailable",
+        "unofficial_source_risk"
+      ],
+      "contract": null,
+      "contract_month": null,
+      "contract_selector": null,
+      "data_quality_flags": [],
+      "delay_seconds": 3198600,
+      "delay_status": "not_realtime_guaranteed",
+      "display_symbol": "2330",
+      "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+      "governed_currentness": {
+        "age_seconds": 3198600.0,
+        "ai_exposure_level": "caveated_context_allowed",
+        "allowed_interpretation": [
+          "not realtime guaranteed"
+        ],
+        "authority_level": "official_undocumented",
+        "blocked_interpretation": [
+          "no TPEX_MIS",
+          "no rotc_",
+          "no streaming guarantee",
+          "no trading advice",
+          "no trading signal",
+          "not current market evidence"
+        ],
+        "caveats": [
+          "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+          "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+        ],
+        "credential_gated": false,
+        "currentness_policy": "family_specific",
+        "delay_seconds": 3198600.0,
+        "eod_only": false,
+        "evaluation_timestamp": "2026-10-08T06:00:00Z",
+        "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+        "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+        "exchange_timestamp_absent": false,
+        "freshness_assessment": "stale_intraday_snapshot",
+        "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+        "intraday_snapshot": true,
+        "latency_class": "intraday_snapshot",
+        "manual_snapshot": false,
+        "market_date": null,
+        "not_realtime_guaranteed": true,
+        "not_recommendation": true,
+        "not_trading_signal": true,
+        "recommendation_allowed": false,
+        "requires_caveats": true,
+        "retrieved_at_utc": "2026-10-08T06:00:00Z",
+        "retrieved_time_only": false,
+        "safe_for_ai_context": false,
+        "schema_version": "m8_source_freshness_assessment.v1",
+        "session_state": null,
+        "source_family": "TWSE_MIS",
+        "source_id": "TWSE_MIS",
+        "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+        "source_timestamp": "2026-09-01T05:30:00Z",
+        "source_unavailable_reason": null,
+        "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+        "status": "stale",
+        "timing_class": "liveish_intraday_snapshot",
+        "trading_advice_allowed": false,
+        "trading_date": null,
+        "trading_signal_allowed": false,
+        "validation_only": false
+      },
+      "instrument_type": "equity",
+      "market": "twse",
+      "price_like_value": 100.0,
+      "price_semantics": "last_or_current_quote_as_reported_by_source",
+      "price_source_field": "z",
+      "reference_only": false,
+      "retrieved_at_utc": "2026-10-08T06:00:00Z",
+      "schema_version": "m5_live_observation.normalized.v1",
+      "source": "TWSE_MIS",
+      "source_risk_flags": [
+        "fragile_frontend_contract",
+        "not_official_realtime_api",
+        "unofficial_source_risk"
+      ],
+      "source_timestamp": "2026-09-01T05:30:00Z",
+      "source_type": "official_browser_json_endpoint_candidate",
+      "staleness_seconds": 3198600,
+      "status": "ok",
+      "symbol": "2330",
+      "twse_mis_rich_facts": {
+        "ai_exposure_policy": {
+          "forbidden_interpretations": [
+            "buy_signal",
+            "sell_signal",
+            "hold",
+            "target_price",
+            "support_resistance",
+            "main_force",
+            "true_liquidity",
+            "order_book_truth",
+            "realtime_guarantee",
+            "execution_feed"
+          ],
+          "reason": "runtime_parsed_candidate_not_exposed_pending_m7a_05",
+          "safe_for_ai_context": false
+        },
+        "auction_or_reference_facts": {
+          "observed_in_closing_auction_window": false,
+          "observed_in_post_close_snapshot": false,
+          "ps_candidate_semantic": "state_dependent_reference_or_match_volume_candidate",
+          "pz_candidate_semantic": "state_dependent_reference_or_match_price_candidate",
+          "raw_bp": null,
+          "raw_ps": null,
+          "raw_pz": null,
+          "raw_s": null,
+          "raw_ts": null,
+          "s_candidate_semantic": "match_volume_shadow_candidate",
+          "semantic_status": "operator_evidence_supported_not_official_dictionary",
+          "ts_candidate_semantic": "session_or_trial_state_flag_candidate",
+          "unit_policy": {
+            "api_field_dictionary_available": false,
+            "market_mode_required": true,
+            "official_mis_ui_unit_label": "交易單位",
+            "unit_verified_for_runtime_normalization": false
+          }
+        },
+        "displayed_depth_facts": {
+          "applicability_reason": null,
+          "applicable": true,
+          "ask_prices": [
+            100.5,
+            101.0
+          ],
+          "ask_quantities_raw": [
+            "1",
+            "2"
+          ],
+          "best_ask": 100.5,
+          "best_bid": 99.5,
+          "bid_prices": [
+            99.5,
+            99.0
+          ],
+          "bid_quantities_raw": [
+            "2",
+            "3"
+          ],
+          "forbidden_interpretations": [
+            "support_resistance",
+            "true_liquidity",
+            "order_book_truth",
+            "main_force",
+            "trading_signal"
+          ],
+          "ladder_source_fields": [
+            "b",
+            "g",
+            "a",
+            "f"
+          ],
+          "quantity_unit_policy": {
+            "api_field_dictionary_available": false,
+            "market_mode_required": true,
+            "official_mis_ui_unit_label": "交易單位",
+            "unit_verified_for_runtime_normalization": false
+          },
+          "quantity_unit_status": "market_context_required",
+          "quantity_unit_verified": false,
+          "semantic_status": "runtime_parsed_candidate_displayed_depth_snapshot_only"
+        },
+        "index_market_facts": {
+          "applicability_reason": "non_index_security_row",
+          "applicable": false,
+          "evidence_level": "official_mis_ui_cross_checked_not_field_dictionary",
+          "m_candidate_semantic": "index_market_traded_quantity_candidate",
+          "quantity_unit_policy": {
+            "api_field_dictionary_available": false,
+            "market_mode_required": true,
+            "official_mis_ui_unit_label": "交易單位",
+            "unit_verified_for_runtime_normalization": false
+          },
+          "r_candidate_semantic": "index_market_trade_count_candidate",
+          "raw_m": null,
+          "raw_r": null,
+          "semantic_status": "schema_defined_index_candidate_fields",
+          "source_fields": [
+            "m",
+            "r"
+          ],
+          "unit_status": "market_context_required_not_field_dictionary_validated"
+        },
+        "instrument_facts": {
+          "evidence_policy": {
+            "official_documented": false,
+            "requires_row_context": true
+          },
+          "instrument_kind_candidate": "security",
+          "price_domain": "equity_price",
+          "raw_at": null,
+          "raw_c": "2330",
+          "raw_ch": "2330.tw",
+          "raw_ex": "tse",
+          "raw_full_name": "合成公司",
+          "raw_key": "tse_2330.tw_20261008",
+          "raw_name": "合成公司",
+          "semantic_status": "runtime_parsed_candidate"
+        },
+        "limit_or_reference_facts": {
+          "applicability_reason": null,
+          "applicable": true,
+          "limit_down": 89.1,
+          "limit_up": 108.9,
+          "raw_bp": null,
+          "raw_ps": null,
+          "raw_pz": null,
+          "semantic_status": "runtime_parsed_candidate",
+          "source_fields": [
+            "u",
+            "w",
+            "pz",
+            "bp",
+            "ps"
+          ]
+        },
+        "market_mode_facts": {
+          "known_modes": [
+            "regular_board",
+            "intraday_odd_lot",
+            "index",
+            "unknown"
+          ],
+          "market_mode_candidate": "regular_board",
+          "semantic_status": "runtime_parsed_candidate",
+          "source_context": "runtime_parsed_candidate"
+        },
+        "price_facts": {
+          "evidence_level": "runtime_parsed_candidate",
+          "fallback_reference_field": null,
+          "high": 101.0,
+          "last_value": 100.0,
+          "last_value_placeholder": false,
+          "last_value_source_field": "z",
+          "low": 98.0,
+          "open": 99.0,
+          "previous_close": 99.0,
+          "price_domain": "equity_price",
+          "semantic_status": "runtime_parsed_candidate",
+          "source_fields": [
+            "z",
+            "y",
+            "o",
+            "h",
+            "l"
+          ]
+        },
+        "quality_facts": {
+          "field_presence": {
+            "a": true,
+            "b": true,
+            "c": true,
+            "ch": true,
+            "d": true,
+            "ex": true,
+            "f": true,
+            "g": true,
+            "h": true,
+            "key": true,
+            "l": true,
+            "n": true,
+            "nf": true,
+            "o": true,
+            "t": true,
+            "tv": true,
+            "u": true,
+            "v": true,
+            "w": true,
+            "y": true,
+            "z": true
+          },
+          "ladder_mismatch_flags": [],
+          "malformed_fields": [],
+          "not_observed_in_m7a_01d_fields": [
+            "q",
+            "oa",
+            "ob",
+            "ot"
+          ],
+          "placeholder_fields": [],
+          "semantic_status": "runtime_parsed_candidate",
+          "unit_unverified_fields": [
+            "v",
+            "tv",
+            "ps",
+            "s",
+            "g",
+            "f",
+            "m",
+            "r"
+          ],
+          "unknown_or_raw_only_fields": [
+            "pid",
+            "#",
+            "m%",
+            "mt",
+            "ip",
+            "i",
+            "it",
+            "p",
+            "q",
+            "oa",
+            "ob",
+            "ot",
+            "nu"
+          ]
+        },
+        "quantity_unit_policy": {
+          "api_field_dictionary_available": false,
+          "market_mode_required": true,
+          "official_mis_ui_unit_label": "交易單位",
+          "unit_verified_for_runtime_normalization": false
+        },
+        "raw_unknown_facts": {
+          "raw_hash": null,
+          "raw_i": null,
+          "raw_ip": null,
+          "raw_it": null,
+          "raw_m_percent": null,
+          "raw_mt": null,
+          "raw_nu": null,
+          "raw_oa": null,
+          "raw_ob": null,
+          "raw_ot": null,
+          "raw_p": null,
+          "raw_pid": null,
+          "raw_q": null,
+          "semantic_status": "unknown_preserve_raw_only"
+        },
+        "schema_status": "runtime_parsed_candidate",
+        "schema_version": "m7a_twse_mis_rich_facts.v1",
+        "semantic_confidence": {
+          "community_supported": false,
+          "evidence_level": "runtime_parsed_candidate",
+          "official_documented": false,
+          "probe_observed": false,
+          "runtime_validated": true,
+          "ui_cross_checked": false,
+          "unit_verified": false
+        },
+        "session_state_candidate_facts": {
+          "known_operator_evidence": "ts=1 observed during closing-auction trial window; ts=0 observed after final match",
+          "raw_ip": null,
+          "raw_p": null,
+          "raw_s": null,
+          "raw_ts": null,
+          "semantic_status": "candidate_only_not_official_dictionary",
+          "session_state_candidate": null,
+          "ts_candidate_semantic": "session_or_trial_state_flag_candidate"
+        },
+        "source_id": "TWSE_MIS",
+        "timestamp_facts": {
+          "raw_caret": null,
+          "raw_d": "20260901",
+          "raw_ot": null,
+          "raw_percent": null,
+          "raw_t": "13:30:00",
+          "raw_tlong": null,
+          "semantic_status": "runtime_parsed_candidate",
+          "source_fields": [
+            "d",
+            "t",
+            "tlong",
+            "%",
+            "^",
+            "ot"
+          ]
+        },
+        "volume_facts": {
+          "community_default_unit_candidate": "non_authoritative_regular_board_quantity_candidate",
+          "quantity_unit_policy": {
+            "api_field_dictionary_available": false,
+            "market_mode_required": true,
+            "official_mis_ui_unit_label": "交易單位",
+            "unit_verified_for_runtime_normalization": false
+          },
+          "raw_ps": null,
+          "raw_tv": "10",
+          "raw_v": "1000",
+          "semantic_status": "runtime_parsed_candidate",
+          "source_fields": [
+            "v",
+            "tv",
+            "ps"
+          ],
+          "unit_status": "market_context_required",
+          "unit_verified": false
+        }
+      },
+      "value": 100.0
+    },
+    "source_artifact": {
+      "capability_id": "current_observation",
+      "execution_request_id": "umereq-v1-b8cf08f213076cdffc6c",
+      "market": "TWSE",
+      "operation_id": "umeop-op-v1-37e7ffc42102745298c7",
+      "records": [
+        {
+          "adapter_id": "twse_mis_equity_etf_quote",
+          "category_id": "m8r_06_03",
+          "caveats": [
+            "fragile_frontend_contract",
+            "freshness_must_be_displayed",
+            "live_observation_not_canonical",
+            "no_trading_signal",
+            "not_official_realtime_api",
+            "not_realtime_guaranteed",
+            "source_may_be_delayed_or_unavailable",
+            "unofficial_source_risk"
+          ],
+          "contract": null,
+          "contract_month": null,
+          "contract_selector": null,
+          "data_quality_flags": [],
+          "delay_seconds": 3198600,
+          "delay_status": "not_realtime_guaranteed",
+          "display_symbol": "2330",
+          "freshness_assessment": "current observation candidate; realtime status not guaranteed by M5K",
+          "governed_currentness": {
+            "age_seconds": 3198600.0,
+            "ai_exposure_level": "caveated_context_allowed",
+            "allowed_interpretation": [
+              "not realtime guaranteed"
+            ],
+            "authority_level": "official_undocumented",
+            "blocked_interpretation": [
+              "no TPEX_MIS",
+              "no rotc_",
+              "no streaming guarantee",
+              "no trading advice",
+              "no trading signal",
+              "not current market evidence"
+            ],
+            "caveats": [
+              "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+              "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+            ],
+            "credential_gated": false,
+            "currentness_policy": "family_specific",
+            "delay_seconds": 3198600.0,
+            "eod_only": false,
+            "evaluation_timestamp": "2026-10-08T06:00:00Z",
+            "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+            "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+            "exchange_timestamp_absent": false,
+            "freshness_assessment": "stale_intraday_snapshot",
+            "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+            "intraday_snapshot": true,
+            "latency_class": "intraday_snapshot",
+            "manual_snapshot": false,
+            "market_date": null,
+            "not_realtime_guaranteed": true,
+            "not_recommendation": true,
+            "not_trading_signal": true,
+            "recommendation_allowed": false,
+            "requires_caveats": true,
+            "retrieved_at_utc": "2026-10-08T06:00:00Z",
+            "retrieved_time_only": false,
+            "safe_for_ai_context": false,
+            "schema_version": "m8_source_freshness_assessment.v1",
+            "session_state": null,
+            "source_family": "TWSE_MIS",
+            "source_id": "TWSE_MIS",
+            "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+            "source_timestamp": "2026-09-01T05:30:00Z",
+            "source_unavailable_reason": null,
+            "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+            "status": "stale",
+            "timing_class": "liveish_intraday_snapshot",
+            "trading_advice_allowed": false,
+            "trading_date": null,
+            "trading_signal_allowed": false,
+            "validation_only": false
+          },
+          "instrument_type": "equity",
+          "market": "twse",
+          "price_like_value": 100.0,
+          "price_semantics": "last_or_current_quote_as_reported_by_source",
+          "price_source_field": "z",
+          "reference_only": false,
+          "retrieved_at_utc": "2026-10-08T06:00:00Z",
+          "schema_version": "m5_live_observation.normalized.v1",
+          "source": "TWSE_MIS",
+          "source_risk_flags": [
+            "fragile_frontend_contract",
+            "not_official_realtime_api",
+            "unofficial_source_risk"
+          ],
+          "source_timestamp": "2026-09-01T05:30:00Z",
+          "source_type": "official_browser_json_endpoint_candidate",
+          "staleness_seconds": 3198600,
+          "status": "ok",
+          "symbol": "2330",
+          "twse_mis_rich_facts": {
+            "ai_exposure_policy": {
+              "forbidden_interpretations": [
+                "buy_signal",
+                "sell_signal",
+                "hold",
+                "target_price",
+                "support_resistance",
+                "main_force",
+                "true_liquidity",
+                "order_book_truth",
+                "realtime_guarantee",
+                "execution_feed"
+              ],
+              "reason": "runtime_parsed_candidate_not_exposed_pending_m7a_05",
+              "safe_for_ai_context": false
+            },
+            "auction_or_reference_facts": {
+              "observed_in_closing_auction_window": false,
+              "observed_in_post_close_snapshot": false,
+              "ps_candidate_semantic": "state_dependent_reference_or_match_volume_candidate",
+              "pz_candidate_semantic": "state_dependent_reference_or_match_price_candidate",
+              "raw_bp": null,
+              "raw_ps": null,
+              "raw_pz": null,
+              "raw_s": null,
+              "raw_ts": null,
+              "s_candidate_semantic": "match_volume_shadow_candidate",
+              "semantic_status": "operator_evidence_supported_not_official_dictionary",
+              "ts_candidate_semantic": "session_or_trial_state_flag_candidate",
+              "unit_policy": {
+                "api_field_dictionary_available": false,
+                "market_mode_required": true,
+                "official_mis_ui_unit_label": "交易單位",
+                "unit_verified_for_runtime_normalization": false
+              }
+            },
+            "displayed_depth_facts": {
+              "applicability_reason": null,
+              "applicable": true,
+              "ask_prices": [
+                100.5,
+                101.0
+              ],
+              "ask_quantities_raw": [
+                "1",
+                "2"
+              ],
+              "best_ask": 100.5,
+              "best_bid": 99.5,
+              "bid_prices": [
+                99.5,
+                99.0
+              ],
+              "bid_quantities_raw": [
+                "2",
+                "3"
+              ],
+              "forbidden_interpretations": [
+                "support_resistance",
+                "true_liquidity",
+                "order_book_truth",
+                "main_force",
+                "trading_signal"
+              ],
+              "ladder_source_fields": [
+                "b",
+                "g",
+                "a",
+                "f"
+              ],
+              "quantity_unit_policy": {
+                "api_field_dictionary_available": false,
+                "market_mode_required": true,
+                "official_mis_ui_unit_label": "交易單位",
+                "unit_verified_for_runtime_normalization": false
+              },
+              "quantity_unit_status": "market_context_required",
+              "quantity_unit_verified": false,
+              "semantic_status": "runtime_parsed_candidate_displayed_depth_snapshot_only"
+            },
+            "index_market_facts": {
+              "applicability_reason": "non_index_security_row",
+              "applicable": false,
+              "evidence_level": "official_mis_ui_cross_checked_not_field_dictionary",
+              "m_candidate_semantic": "index_market_traded_quantity_candidate",
+              "quantity_unit_policy": {
+                "api_field_dictionary_available": false,
+                "market_mode_required": true,
+                "official_mis_ui_unit_label": "交易單位",
+                "unit_verified_for_runtime_normalization": false
+              },
+              "r_candidate_semantic": "index_market_trade_count_candidate",
+              "raw_m": null,
+              "raw_r": null,
+              "semantic_status": "schema_defined_index_candidate_fields",
+              "source_fields": [
+                "m",
+                "r"
+              ],
+              "unit_status": "market_context_required_not_field_dictionary_validated"
+            },
+            "instrument_facts": {
+              "evidence_policy": {
+                "official_documented": false,
+                "requires_row_context": true
+              },
+              "instrument_kind_candidate": "security",
+              "price_domain": "equity_price",
+              "raw_at": null,
+              "raw_c": "2330",
+              "raw_ch": "2330.tw",
+              "raw_ex": "tse",
+              "raw_full_name": "合成公司",
+              "raw_key": "tse_2330.tw_20261008",
+              "raw_name": "合成公司",
+              "semantic_status": "runtime_parsed_candidate"
+            },
+            "limit_or_reference_facts": {
+              "applicability_reason": null,
+              "applicable": true,
+              "limit_down": 89.1,
+              "limit_up": 108.9,
+              "raw_bp": null,
+              "raw_ps": null,
+              "raw_pz": null,
+              "semantic_status": "runtime_parsed_candidate",
+              "source_fields": [
+                "u",
+                "w",
+                "pz",
+                "bp",
+                "ps"
+              ]
+            },
+            "market_mode_facts": {
+              "known_modes": [
+                "regular_board",
+                "intraday_odd_lot",
+                "index",
+                "unknown"
+              ],
+              "market_mode_candidate": "regular_board",
+              "semantic_status": "runtime_parsed_candidate",
+              "source_context": "runtime_parsed_candidate"
+            },
+            "price_facts": {
+              "evidence_level": "runtime_parsed_candidate",
+              "fallback_reference_field": null,
+              "high": 101.0,
+              "last_value": 100.0,
+              "last_value_placeholder": false,
+              "last_value_source_field": "z",
+              "low": 98.0,
+              "open": 99.0,
+              "previous_close": 99.0,
+              "price_domain": "equity_price",
+              "semantic_status": "runtime_parsed_candidate",
+              "source_fields": [
+                "z",
+                "y",
+                "o",
+                "h",
+                "l"
+              ]
+            },
+            "quality_facts": {
+              "field_presence": {
+                "a": true,
+                "b": true,
+                "c": true,
+                "ch": true,
+                "d": true,
+                "ex": true,
+                "f": true,
+                "g": true,
+                "h": true,
+                "key": true,
+                "l": true,
+                "n": true,
+                "nf": true,
+                "o": true,
+                "t": true,
+                "tv": true,
+                "u": true,
+                "v": true,
+                "w": true,
+                "y": true,
+                "z": true
+              },
+              "ladder_mismatch_flags": [],
+              "malformed_fields": [],
+              "not_observed_in_m7a_01d_fields": [
+                "q",
+                "oa",
+                "ob",
+                "ot"
+              ],
+              "placeholder_fields": [],
+              "semantic_status": "runtime_parsed_candidate",
+              "unit_unverified_fields": [
+                "v",
+                "tv",
+                "ps",
+                "s",
+                "g",
+                "f",
+                "m",
+                "r"
+              ],
+              "unknown_or_raw_only_fields": [
+                "pid",
+                "#",
+                "m%",
+                "mt",
+                "ip",
+                "i",
+                "it",
+                "p",
+                "q",
+                "oa",
+                "ob",
+                "ot",
+                "nu"
+              ]
+            },
+            "quantity_unit_policy": {
+              "api_field_dictionary_available": false,
+              "market_mode_required": true,
+              "official_mis_ui_unit_label": "交易單位",
+              "unit_verified_for_runtime_normalization": false
+            },
+            "raw_unknown_facts": {
+              "raw_hash": null,
+              "raw_i": null,
+              "raw_ip": null,
+              "raw_it": null,
+              "raw_m_percent": null,
+              "raw_mt": null,
+              "raw_nu": null,
+              "raw_oa": null,
+              "raw_ob": null,
+              "raw_ot": null,
+              "raw_p": null,
+              "raw_pid": null,
+              "raw_q": null,
+              "semantic_status": "unknown_preserve_raw_only"
+            },
+            "schema_status": "runtime_parsed_candidate",
+            "schema_version": "m7a_twse_mis_rich_facts.v1",
+            "semantic_confidence": {
+              "community_supported": false,
+              "evidence_level": "runtime_parsed_candidate",
+              "official_documented": false,
+              "probe_observed": false,
+              "runtime_validated": true,
+              "ui_cross_checked": false,
+              "unit_verified": false
+            },
+            "session_state_candidate_facts": {
+              "known_operator_evidence": "ts=1 observed during closing-auction trial window; ts=0 observed after final match",
+              "raw_ip": null,
+              "raw_p": null,
+              "raw_s": null,
+              "raw_ts": null,
+              "semantic_status": "candidate_only_not_official_dictionary",
+              "session_state_candidate": null,
+              "ts_candidate_semantic": "session_or_trial_state_flag_candidate"
+            },
+            "source_id": "TWSE_MIS",
+            "timestamp_facts": {
+              "raw_caret": null,
+              "raw_d": "20260901",
+              "raw_ot": null,
+              "raw_percent": null,
+              "raw_t": "13:30:00",
+              "raw_tlong": null,
+              "semantic_status": "runtime_parsed_candidate",
+              "source_fields": [
+                "d",
+                "t",
+                "tlong",
+                "%",
+                "^",
+                "ot"
+              ]
+            },
+            "volume_facts": {
+              "community_default_unit_candidate": "non_authoritative_regular_board_quantity_candidate",
+              "quantity_unit_policy": {
+                "api_field_dictionary_available": false,
+                "market_mode_required": true,
+                "official_mis_ui_unit_label": "交易單位",
+                "unit_verified_for_runtime_normalization": false
+              },
+              "raw_ps": null,
+              "raw_tv": "10",
+              "raw_v": "1000",
+              "semantic_status": "runtime_parsed_candidate",
+              "source_fields": [
+                "v",
+                "tv",
+                "ps"
+              ],
+              "unit_status": "market_context_required",
+              "unit_verified": false
+            }
+          },
+          "value": 100.0
+        }
+      ],
+      "schema_version": "m8r_06_03_operation_evidence.v1",
+      "source_family": "TWSE_MIS",
+      "transport_mode": "deterministic_test_transport"
+    },
+    "source_artifact_sha256": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240",
+    "source_invocations": [
+      {
+        "source_boundary": "raw_http_fixture",
+        "url": "https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw&json=1&delay=0",
+        "method": "GET",
+        "external_dispatch": false
+      }
+    ],
+    "real_agent_sessions": 0,
+    "real_agent_tool_calls": 0,
+    "agent_provider_transport": 0
+  },
+  "freshness_lineage": {
+    "source_artifact_sha256": "944bd86f037134205fe7a79dfb24c400644aa2a816c9e30983e2478590b50240",
+    "normalized_observation_sha256": "a41968790c0d83ebf148d38838126fc88454206b7481a6523c04a76be9413f86",
+    "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+    "source_policy_path": "docs/data_capabilities/m8_source_capability_registry.json",
+    "source_policy_registry_sha256": "88688d58171edbe11d93f73d9928b3c3a6c50709348cbda82afad31912e9ffd1",
+    "source_policy_canonical_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+    "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+    "evaluation_timestamp": "2026-10-08T06:00:00Z",
+    "evaluation_clock_authority": "preserved acquisition retrieved_at_utc; accepted 03D source-age evaluator reference clock",
+    "evaluator_output": {
+      "age_seconds": 3198600.0,
+      "ai_exposure_level": "caveated_context_allowed",
+      "allowed_interpretation": [
+        "not realtime guaranteed"
+      ],
+      "authority_level": "official_undocumented",
+      "blocked_interpretation": [
+        "no TPEX_MIS",
+        "no rotc_",
+        "no streaming guarantee",
+        "no trading advice",
+        "no trading signal",
+        "not current market evidence"
+      ],
+      "caveats": [
+        "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+        "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+      ],
+      "credential_gated": false,
+      "currentness_policy": "family_specific",
+      "delay_seconds": 3198600.0,
+      "eod_only": false,
+      "evaluation_timestamp": "2026-10-08T06:00:00Z",
+      "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+      "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+      "exchange_timestamp_absent": false,
+      "freshness_assessment": "stale_intraday_snapshot",
+      "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+      "intraday_snapshot": true,
+      "latency_class": "intraday_snapshot",
+      "manual_snapshot": false,
+      "market_date": null,
+      "not_realtime_guaranteed": true,
+      "not_recommendation": true,
+      "not_trading_signal": true,
+      "recommendation_allowed": false,
+      "requires_caveats": true,
+      "retrieved_at_utc": "2026-10-08T06:00:00Z",
+      "retrieved_time_only": false,
+      "safe_for_ai_context": false,
+      "schema_version": "m8_source_freshness_assessment.v1",
+      "session_state": null,
+      "source_family": "TWSE_MIS",
+      "source_id": "TWSE_MIS",
+      "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+      "source_timestamp": "2026-09-01T05:30:00Z",
+      "source_unavailable_reason": null,
+      "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+      "status": "stale",
+      "timing_class": "liveish_intraday_snapshot",
+      "trading_advice_allowed": false,
+      "trading_date": null,
+      "trading_signal_allowed": false,
+      "validation_only": false
+    },
+    "canonical_Result_V3_currentness": {
+      "source_timestamp": "2026-09-01T05:30:00Z",
+      "retrieved_at_utc": "2026-10-08T06:00:00Z",
+      "delay_seconds": 3198600.0,
+      "freshness_assessment": "stale_intraday_snapshot",
+      "not_realtime_guaranteed": true,
+      "semantic_status": "runtime_projected_candidate",
+      "age_seconds": 3198600.0,
+      "ai_exposure_level": "caveated_context_allowed",
+      "allowed_interpretation": [
+        "not realtime guaranteed"
+      ],
+      "authority_level": "official_undocumented",
+      "blocked_interpretation": [
+        "no TPEX_MIS",
+        "no rotc_",
+        "no streaming guarantee",
+        "no trading advice",
+        "no trading signal",
+        "not current market evidence"
+      ],
+      "caveats": [
+        "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+        "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+      ],
+      "credential_gated": false,
+      "currentness_policy": "family_specific",
+      "eod_only": false,
+      "evaluation_timestamp": "2026-10-08T06:00:00Z",
+      "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+      "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+      "exchange_timestamp_absent": false,
+      "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+      "intraday_snapshot": true,
+      "latency_class": "intraday_snapshot",
+      "manual_snapshot": false,
+      "market_date": null,
+      "not_recommendation": true,
+      "not_trading_signal": true,
+      "recommendation_allowed": false,
+      "requires_caveats": true,
+      "retrieved_time_only": false,
+      "safe_for_ai_context": false,
+      "schema_version": "m8_source_freshness_assessment.v1",
+      "session_state": null,
+      "source_family": "TWSE_MIS",
+      "source_id": "TWSE_MIS",
+      "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+      "source_unavailable_reason": null,
+      "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+      "status": "stale",
+      "timing_class": "liveish_intraday_snapshot",
+      "trading_advice_allowed": false,
+      "trading_date": null,
+      "trading_signal_allowed": false,
+      "validation_only": false
+    },
+    "Audit_V3_typed_warning": "stale_intraday_snapshot",
+    "Audit_source_artifact_hash_matches": true,
+    "stored_handoff_currentness": {
+      "age_seconds": 3198600.0,
+      "ai_exposure_level": "caveated_context_allowed",
+      "allowed_interpretation": [
+        "not realtime guaranteed"
+      ],
+      "authority_level": "official_undocumented",
+      "blocked_interpretation": [
+        "no TPEX_MIS",
+        "no rotc_",
+        "no streaming guarantee",
+        "no trading advice",
+        "no trading signal",
+        "not current market evidence"
+      ],
+      "caveats": [
+        "Official exchange browser source, but hidden/undocumented endpoint contract in project governance.",
+        "retrieved_at_utc is local retrieval/load time unless source_timestamp proves exchange time"
+      ],
+      "credential_gated": false,
+      "currentness_policy": "family_specific",
+      "delay_seconds": 3198600.0,
+      "eod_only": false,
+      "evaluation_timestamp": "2026-10-08T06:00:00Z",
+      "evaluator_id": "m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+      "evaluator_input_sha256": "d7dfb1c816c8113f183e5e6553ce47b75f2110b2c5758d61afb44aef1f2f4e38",
+      "exchange_timestamp_absent": false,
+      "freshness_assessment": "stale_intraday_snapshot",
+      "freshness_reason": "evidence_age_exceeds_max_limit:3198600s",
+      "intraday_snapshot": true,
+      "latency_class": "intraday_snapshot",
+      "manual_snapshot": false,
+      "market_date": null,
+      "not_realtime_guaranteed": true,
+      "not_recommendation": true,
+      "not_trading_signal": true,
+      "recommendation_allowed": false,
+      "requires_caveats": true,
+      "retrieved_at_utc": "2026-10-08T06:00:00Z",
+      "retrieved_time_only": false,
+      "safe_for_ai_context": false,
+      "schema_version": "m8_source_freshness_assessment.v1",
+      "semantic_status": "runtime_projected_candidate",
+      "session_state": null,
+      "source_family": "TWSE_MIS",
+      "source_id": "TWSE_MIS",
+      "source_policy_sha256": "4d34c453302eddda354e367daf0d6a5e2ca334be39c15d26ad3c3b823ac9c68f",
+      "source_timestamp": "2026-09-01T05:30:00Z",
+      "source_unavailable_reason": null,
+      "stale_reason": "evidence_age_exceeds_max_limit:3198600s",
+      "status": "stale",
+      "timing_class": "liveish_intraday_snapshot",
+      "trading_advice_allowed": false,
+      "trading_date": null,
+      "trading_signal_allowed": false,
+      "validation_only": false
+    }
+  },
+  "J3_semantic_evaluation": {
+    "scenario_id": "J1-21",
+    "golden_sha256": "b4059b4c1a439e091393daed1887f08c1f6a83e59dfc4095e82e22130e6422fa",
+    "typed_facts": {
+      "no_recommendation": true,
+      "no_trade_action": true,
+      "identity": "exact",
+      "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+      "audit_result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+      "evidence_state": "stale",
+      "currentness_policy": "family_specific"
+    },
+    "errors": [],
+    "status": "PASS"
+  },
+  "forbidden_claim_evaluation": {
+    "status": "PASS",
+    "violated_claims": [],
+    "bounded_safety_marker_check": true,
+    "exact_prose_comparison": false
+  },
+  "source_invocations": 1,
+  "additional_execution_count": 0,
+  "local_service_request_count": 7,
+  "external_market_network": {
+    "GET": 0,
+    "HEAD": 0,
+    "POST": 0
+  }
+}
