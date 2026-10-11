@@ -1,0 +1,351 @@
+{
+  "schema_version": "phase_j_final_closure_exit_criteria.v1",
+  "contract_kind": "acceptance_only_exit_adjudication_not_product_configuration",
+  "starting_authority": {
+    "head": "2d217936464659073c1aa75ad2383b5ecebc47da",
+    "tree": "40e266e77bb141d0adad3f8c22b64f80b840f036",
+    "main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance"
+  },
+  "owner_authorization_statement": "AUTHORIZE PHASE J FINAL CLOSURE / EXIT REVIEW ON HEAD 2d217936464659073c1aa75ad2383b5ecebc47da TREE 40e266e77bb141d0adad3f8c22b64f80b840f036 AFTER J4 EXACT-HEAD INDEPENDENT REVIEW 5482700449: perform a strictly network-free terminal Phase J closure adjudication that treats independently accepted J1, J2, J3, and J4 authorities and their exact review IDs/hashes as immutable inputs, reconciles the complete 27-scenario governed registry, accepted J2 cross-layer coverage, J3 Golden Expected Semantics, J4 Regression Authority, J-B01/J-B02 non-blocking status, J-B03/J-B04 closure, Phase I closure, and all remaining coverage gaps into a machine-verifiable exit decision; classify every remaining gap without laundering it as CURRENT_PHASE_J_BLOCKER, ACCEPTED_FAIL_CLOSED_OR_UNSUPPORTED, AUTHORIZATION_GATED_FUTURE_LAYER, FUTURE_REGRESSION_COVERAGE_GAP, or NOT_APPLICABLE, and permit a Phase J PASS candidate only if no CURRENT_PHASE_J_BLOCKER remains and the Roadmap V3.2 Phase J goal and J1-J4 requirements are demonstrably satisfied; add only closure governance, validator, tests, and sanitized evidence, make no production/runtime/public-schema/route/capability/Security-Master/MCP changes, make zero market/source requests, zero bounded-live executions and zero real-agent executions, do not alter accepted J0-J4 artifacts, do not start Phase K, do not merge or mark PR #326 ready, and do not yet change the Roadmap Phase J checkbox; require focused closure validation, immutable-authority/hash checks, strict duplicate-key JSON validation, compileall, git diff --check, and clean-archive default-CI with zero candidate-only failures, publish a validated closure implementation commit followed only by additive closure evidence, then stop for exact-head independent review; only after that independent closure review passes may a separate minimal Roadmap state-reconciliation step mark Phase J complete, and Phase K still requires separate Owner authorization.",
+  "owner_authorization_sha256": "e24a723cf464c29a765fa42d69bf16e518bd5a471f35c7f7b790d7485fd61377",
+  "immutable_artifact_hashes": {
+    "docs/governance/phase_j/PHASE_J_J0_START_AND_J1_ACCEPTANCE_ARCHITECTURE_2026-10-11.json": "ddc259dff051d012a9186e8b127c3ce9940ed6f31099b4da9d64f371e28ead61",
+    "docs/governance/phase_j/PHASE_J_J_B03_C0_CLOSURE_AND_READINESS_RECONCILIATION_2026-10-07.json": "68d3bc28f03683e015349fc5b0fa9d352660e648cd803846e39a83aea9c7d65e",
+    "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json": "050a94438a6ca907fb02bfafcc0ba17e3019d994a5bb5be63fb79b9c65975e86",
+    "docs/governance/phase_j/PHASE_J_J4_REGRESSION_AUTHORITY_V1.json": "848a28faa4b130260339cf86fba90d3304bd6a83d48107caac6007a36299360a",
+    "docs/governance/phase_j/PHASE_J_J4_REGRESSION_CHANGE_MANIFEST_SCHEMA_V1.json": "ff0b5d8e0cf22673e234a9241532757f9b37ca5c0bc7d85aeb76c3e4e1e7d7fc",
+    "docs/governance/phase_j/PHASE_J_J4_REGRESSION_RECEIPT_SCHEMA_V1.json": "c8ac4949aba86a1323ff2305d9835584f664b11b1aa5f911eef1101911dd2ac8",
+    "docs/governance/phase_j/PHASE_J_J4_REGRESSION_AUTHORITY_2026-10-11.json": "148cf87b485d4aaab27ad11532067962ad937daa0c6afa81081921fc6af245f6",
+    "docs/governance/phase_j/PHASE_J_J4_REGRESSION_AUTHORITY_2026-10-11.md": "ba92947b6af5bc66f340d10ee99a462610e7c31f177cdcd19d682aa14dc91218",
+    "docs/governance/phase_j/PHASE_J_J2_R1_COVERAGE_DELTA_V1.json": "321e9008ebca8d8a42e77993ae9329b274dd3e05ad5553554890f97e65618539",
+    "docs/governance/phase_j/PHASE_J_J2_R1_EFFECTIVE_COVERAGE_MATRIX_V1.json": "8fe53871a764d66dcca6d3a5531d4801008c58f77e74ace7eede637f15436c3a",
+    "docs/governance/phase_j/PHASE_J_J2_R1_WORKBENCH_HEADLESS_EXECUTION_LEDGER_V1.json": "2c30451e2dc6071191d7d5107149770c4d34767cc45c26b5fa819b68249239fa",
+    "docs/governance/phase_j/PHASE_J_J2_R1_WORKBENCH_HEADLESS_CROSS_LAYER_COMPLETION_2026-10-11.json": "74e27776bf9768613cbc25f1f6cf3c81687f29be2551f4f9e31141772ac29487",
+    "docs/governance/phase_j/PHASE_J_J2_R1_WORKBENCH_HEADLESS_CROSS_LAYER_COMPLETION_2026-10-11.md": "eb324584ef03103137eec03a5190ba5bb6c2bd7d6b1d66c16693cae3920975f0",
+    "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864",
+    "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45",
+    "docs/governance/phase_j/PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json": "b4059b4c1a439e091393daed1887f08c1f6a83e59dfc4095e82e22130e6422fa",
+    "docs/governance/phase_j/PHASE_J_J3_SEMANTIC_TRACEABILITY_V1.json": "8dfd4f256334959142bf81d163546ed0fe485e3d92393fd570fb97ac22d0e247",
+    "docs/governance/phase_j/PHASE_J_J3_R1_GOLDEN_SEMANTIC_FIDELITY_AND_LOSSLESS_PROJECTION_HARDENING_2026-10-11.json": "00ccc7bba67f656fbc3046465a4923c2abf7cc9deeea03411a06cb8df8a402f2",
+    "docs/governance/phase_j/PHASE_J_J3_R1_GOLDEN_SEMANTIC_FIDELITY_AND_LOSSLESS_PROJECTION_HARDENING_2026-10-11.md": "8fda262e5d30f6734cea4679af0ffca7c2284134b2e8d1e2371dddea8ed7e13a",
+    "ROADMAP.md": "8b258d327b16e96a4904cf55f12f76129faff703569fb7f6169767585eb4e789",
+    "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json": "f0379356dc5a5e51f6889266de8571b70fb286afbab05aa1408e13fde897d98b"
+  },
+  "accepted_reviews": {
+    "entry": {
+      "review_id": "5479545125",
+      "reviewed_commit": "2455fd0875bc09d6bc5926a6267351aadb38beb1",
+      "GitHub_review_state": "COMMENTED",
+      "review_body_sha256": "a2a080f7aec8f195a725caeeb6055b8bf006fb806ae4749d862c869fd150448a",
+      "authority_kind": "GitHub_owner_authorization_review"
+    },
+    "J1": {
+      "review_id": "5481271339",
+      "reviewed_commit": "230606eb0b51b2004dbeac72f8c2908abe0372d3",
+      "GitHub_review_state": "COMMENTED",
+      "review_body_sha256": "1671a6efd3970750c2c74f76ae1dc22719da6cb26c5effd8675112eb79dcfcb6",
+      "authority_kind": "GitHub_independent_review"
+    },
+    "J2": {
+      "review_id": "5481723267",
+      "reviewed_commit": "7454c4613e50759265ebf4c96ec6571117b2c1a4",
+      "GitHub_review_state": "COMMENTED",
+      "review_body_sha256": "08ce121ed794c439b6c5cdbbc6f23d4964e231d1ad51ea21182e8cd57407665b",
+      "authority_kind": "GitHub_independent_review"
+    },
+    "J3": {
+      "review_id": "5482393445",
+      "reviewed_commit": "90dc62ea9e6ed3255c065a93910e661f525d483f",
+      "GitHub_review_state": "COMMENTED",
+      "review_body_sha256": "7b5f5cc0a4629ac6016bf79a101d84345f83ae0ce7d27705a58c83ad68c94ead",
+      "authority_kind": "GitHub_independent_review"
+    },
+    "J4": {
+      "review_id": "5482700449",
+      "reviewed_commit": "2d217936464659073c1aa75ad2383b5ecebc47da",
+      "GitHub_review_state": "COMMENTED",
+      "review_body_sha256": "628cc1ceeec3eb93b956c691c2e68f3ba50b2ef64d28bd71ca4c718bae624e16",
+      "authority_kind": "GitHub_independent_review"
+    },
+    "J_B04": {
+      "review_id": "5479527453",
+      "reviewed_commit": "2455fd0875bc09d6bc5926a6267351aadb38beb1",
+      "GitHub_review_state": "COMMENTED",
+      "review_body_sha256": "8985a86d1525a5c6fb9e0d4e216c3da2c7376ca148f2090930a029287ffb1743",
+      "authority_kind": "GitHub_independent_review"
+    },
+    "closure_authorization": {
+      "review_id": "5482764686",
+      "reviewed_commit": "2d217936464659073c1aa75ad2383b5ecebc47da",
+      "GitHub_review_state": "COMMENTED",
+      "review_body_sha256": "4922343252252a4bfaaf12ac74bac4ad27c07f6d6c8a5a61493ac5964f104fe5",
+      "authority_kind": "GitHub_owner_authorization_review"
+    }
+  },
+  "J_B03_authority": {
+    "ref": "docs/governance/phase_j/PHASE_J_J_B03_C0_CLOSURE_AND_READINESS_RECONCILIATION_2026-10-07.json",
+    "authority_kind": "governance_record",
+    "review_id": null
+  },
+  "scenario_ids": [
+    "J1-01",
+    "J1-02",
+    "J1-03",
+    "J1-04",
+    "J1-05",
+    "J1-06",
+    "J1-07",
+    "J1-08",
+    "J1-09",
+    "J1-10",
+    "J1-11",
+    "J1-12",
+    "J1-13",
+    "J1-14",
+    "J1-15",
+    "J1-16",
+    "J1-17",
+    "J1-18",
+    "J1-19",
+    "J1-20",
+    "J1-21",
+    "J1-22",
+    "J1-23",
+    "J1-24",
+    "J1-25",
+    "J1-26",
+    "J1-27"
+  ],
+  "layers": [
+    "contract_fixture",
+    "deterministic_unit",
+    "integration",
+    "service_api",
+    "workbench",
+    "mcp",
+    "fresh_install",
+    "bounded_live",
+    "real_agent"
+  ],
+  "semantic_dimensions": [
+    "identity",
+    "source",
+    "period",
+    "currentness",
+    "missing",
+    "partial",
+    "corporate_action",
+    "authorization",
+    "bounded_execution",
+    "citations_lineage",
+    "no_trading"
+  ],
+  "MCP_tools": [
+    "market_describe_capabilities",
+    "market_validate_request",
+    "market_preview_request",
+    "market_read_result",
+    "market_export_ai_handoff",
+    "market_fetch_evidence"
+  ],
+  "exit_criteria": [
+    {
+      "criterion_id": "E1",
+      "requirement": "phase entry authority valid",
+      "review_role": "entry",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E2",
+      "requirement": "J0 complete",
+      "review_role": "entry",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E3",
+      "requirement": "27-scenario registry accepted",
+      "review_role": "J1",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E4",
+      "requirement": "traceable coverage matrix accepted",
+      "review_role": "J1",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E5",
+      "requirement": "deterministic cross-layer acceptance accepted",
+      "review_role": "J2",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E6",
+      "requirement": "Golden Expected Semantics accepted",
+      "review_role": "J3",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E7",
+      "requirement": "Regression Authority accepted",
+      "review_role": "J4",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E8",
+      "requirement": "J-B01/J-B02 correctly non-blocking",
+      "review_role": "J1",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E9",
+      "requirement": "J-B03 canonical closure valid",
+      "review_role": null,
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E10",
+      "requirement": "J-B04 closed",
+      "review_role": "J_B04",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E11",
+      "requirement": "Phase-I prerequisite closure valid",
+      "review_role": null,
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E12",
+      "requirement": "Unified Request/Result/Audit remain V3",
+      "review_role": "J3",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E13",
+      "requirement": "MCP exactly six",
+      "review_role": "J4",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E14",
+      "requirement": "no trading/recommendation capability introduced",
+      "review_role": "J3",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E15",
+      "requirement": "all remaining coverage gaps adjudicated",
+      "review_role": "J4",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E16",
+      "requirement": "no current Phase-J blocker remains",
+      "review_role": null,
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E17",
+      "requirement": "all nine Roadmap J.2 layer obligations satisfied",
+      "review_role": null,
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    },
+    {
+      "criterion_id": "E18",
+      "requirement": "Phase K NOT_STARTED",
+      "review_role": "J4",
+      "roadmap_refs": [
+        "ROADMAP.md#J.0-J.4"
+      ]
+    }
+  ],
+  "gap_classifications": [
+    "CURRENT_PHASE_J_BLOCKER",
+    "ACCEPTED_FAIL_CLOSED_OR_UNSUPPORTED",
+    "AUTHORIZATION_GATED_FUTURE_LAYER",
+    "FUTURE_REGRESSION_COVERAGE_GAP",
+    "NOT_APPLICABLE"
+  ],
+  "reason_codes": [
+    "GOLDEN_OUTCOME_IS_FAIL_CLOSED",
+    "SCENARIO_UNSUPPORTED_BY_ACCEPTED_CONTRACT",
+    "PREEXECUTION_REFUSAL_NO_INTEGRATION_RESULT",
+    "FUTURE_CHANGED_CANDIDATE_REGRESSION_SCOPE",
+    "SEPARATE_LIVE_AUTHORIZATION_REQUIRED",
+    "SEPARATE_REAL_AGENT_AUTHORIZATION_REQUIRED",
+    "ROADMAP_LAYER_WITNESS_MISSING",
+    "LAYER_NOT_APPLICABLE_BY_ACCEPTED_AUTHORITY",
+    "SUPPORTED_SCENARIO_WITNESS_MISSING"
+  ],
+  "layer_exit_policy": {
+    "roadmap_requires_all_nine_layers": true,
+    "every_scenario_every_layer_required": false,
+    "required_phase_level_minimum": "at_least_one_accepted_semantically_relevant_witness_per_layer_or_explicit_reviewed_Roadmap_compatible_deferral",
+    "real_agent_accepted_witnesses": [],
+    "real_agent_accepted_deferrals": [],
+    "Phase_K_substitutes_for_Phase_J_real_agent": false,
+    "authorization_not_granted_is_deferral": false,
+    "bounded_live_witness": "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json"
+  },
+  "gap_rule_policy": {
+    "fresh_install_missing_cells": "accepted_empty_installation_identity_fail_closed_boundary; positive initialized-identity scenario execution is not claimed on fresh empty roots",
+    "fresh_install_basis": "docs/governance/phase_j/PHASE_J_J2_R1_WORKBENCH_HEADLESS_EXECUTION_LEDGER_V1.json#fresh_install",
+    "preexecution_integration": "only_exact_accepted_J2_not_applicable_rows",
+    "supported_deterministic_missing": "future_scope_only_when_J4_selects_cell_and_accepted_phase_level_layer_witness_exists; never_classify_supported_path_as_unsupported",
+    "unsupported_deterministic_missing": "J1_readiness_and_J3_lossless_fail_closed_semantics_only",
+    "real_agent_missing": "current_blocker_until_phase_level_witness_or_accepted_deferral",
+    "bounded_live_missing": "future_scenario_specific_authorization_gate_only_when_phase_level_live_witness_sufficient",
+    "supported_MUST_HAVE_scenario_without_any_accepted_execution_witness": "CURRENT_PHASE_J_BLOCKER: at least one exact-semantic witness required, not every scenario/layer; global layer infrastructure is insufficient"
+  },
+  "PASS_rule": {
+    "all_exit_criteria_PASS": true,
+    "current_blocker_count": 0,
+    "unsatisfied_layer_count": 0,
+    "accepted_authorities_immutable": true
+  },
+  "closure_dispositions": [
+    "PHASE_J_FINAL_CLOSURE_PASS_CANDIDATE",
+    "PHASE_J_FINAL_CLOSURE_HARD_BLOCK",
+    "PHASE_J_FINAL_CLOSURE_INCONCLUSIVE"
+  ],
+  "roadmap_checkbox_must_remain_unchecked": true,
+  "Phase_K": "NOT_STARTED",
+  "bounded_live_authorization": "NOT_GRANTED",
+  "real_agent_authorization": "NOT_GRANTED"
+}
