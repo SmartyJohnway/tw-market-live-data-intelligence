@@ -279,6 +279,10 @@ def _project_current_observation(binding: OperationBinding, citation_ids: list[s
             citation_ids=citation_ids,
         )
     rich = item.get("twse_mis_rich_facts", {}) if isinstance(item.get("twse_mis_rich_facts"), dict) else {}
+    # New acquisitions carry the governed runtime assessment. Older immutable
+    # artifacts retain their original projection without retroactive relabeling.
+    if isinstance(item.get("governed_currentness"), dict):
+        projection["freshness_context"] = {**projection.get("freshness_context", {}), **item["governed_currentness"]}
     depth = rich.get("displayed_depth_facts", {}) if isinstance(rich.get("displayed_depth_facts"), dict) else {}
     limits = rich.get("limit_or_reference_facts", {}) if isinstance(rich.get("limit_or_reference_facts"), dict) else {}
     observed = {

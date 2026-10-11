@@ -155,7 +155,11 @@ def test_current_observation_adapter_uses_normalized_stub_and_writes_contained_a
     artifact = result["evidence_artifacts"][0]
     stored = json.loads((tmp_path / artifact["relative_path"]).read_text(encoding="utf-8"))
     assert stored["source_family"] == "TWSE_MIS"
-    assert stored["records"] == [{"schema_version": "m5k", "symbol": "2330"}]
+    record = stored["records"][0]
+    currentness = record.pop("governed_currentness")
+    assert record == {"schema_version": "m5k", "symbol": "2330"}
+    assert currentness["freshness_assessment"] == "unknown"
+    assert currentness["safe_for_ai_context"] is False
 
 
 def test_official_eod_adapter_uses_exact_market_stub(tmp_path, monkeypatch):

@@ -17,6 +17,9 @@ from urllib.request import Request, urlopen
 from jsonschema import Draft7Validator, Draft202012Validator, FormatChecker
 
 from scripts.m5k_common import execute_live_observation
+from scripts.m8_source_freshness_evaluator import build_source_freshness_assessment
+from scripts.m8r_03d_watchlist_source_integration import evaluate_evidence_currentness
+from scripts.m8r_bounded_market_context_request import load_source_registry
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
 from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adapter
 from scripts.m8r_05b_03.dispatch import (
@@ -344,6 +347,67 @@ def _research_batch_operation_adapter(
     return outcomes
 
 
+def _assess_current_observation(item: dict[str, Any], source_policy: dict[str, Any]) -> dict[str, Any]:
+    """Delegate timing decisions; acquisition time is the replayable reference clock.
+
+    M8 supplies source-family semantics. The accepted 03D evaluator supplies
+    source-age semantics when an authoritative intraday source time exists.
+    Neither clock is rewritten and no threshold is duplicated here.
+    """
+    observation = {
+        "source_id": item.get("source"),
+        "source_timestamp": item.get("source_timestamp"),
+        "retrieved_at_utc": item.get("retrieved_at_utc") or item.get("retrieved_at"),
+        "source_unavailable": item.get("source_unavailable", False),
+        "source_unavailable_reason": item.get("source_unavailable_reason"),
+        "value_status": item.get("value_status"),
+        "market_date": item.get("market_date"),
+        "trading_date": item.get("trading_date"),
+        "session_state": item.get("session_state"),
+    }
+    assessment = build_source_freshness_assessment(
+        observation, source_policy, now_utc=observation["retrieved_at_utc"]
+    )
+    policy = source_policy.get("freshness_evaluator_policy", {})
+    if (source_policy.get("source_id") == observation["source_id"]
+            and source_policy.get("timing_class") == "liveish_intraday_snapshot"
+            and assessment["freshness_assessment"] != "source_unavailable"):
+        # Missing policy/timing is unresolved, never an implicit default policy
+        # or a retrieval timestamp masquerading as exchange time.
+        currentness = evaluate_evidence_currentness(
+            reference_clock_str=observation["retrieved_at_utc"] if "max_intraday_age_seconds" in policy else None,
+            source_timestamp_str=observation["source_timestamp"],
+            retrieved_at_str=observation["retrieved_at_utc"] if observation["source_timestamp"] else None,
+            timing_class=source_policy["timing_class"],
+            max_age_seconds=policy.get("max_intraday_age_seconds"),
+        )
+        assessment.update(
+            status=currentness["status"],
+            freshness_assessment={"fresh": "fresh_intraday_snapshot", "stale": "stale_intraday_snapshot", "unresolved": "unknown"}[currentness["status"]],
+            freshness_reason=currentness["reason"],
+            age_seconds=currentness.get("age_seconds"),
+            delay_seconds=currentness.get("transport_latency_seconds"),
+            safe_for_ai_context=currentness["status"] == "fresh",
+        )
+        if currentness["status"] != "fresh":
+            assessment["requires_caveats"] = True
+            assessment["blocked_interpretation"] = sorted(set(assessment["blocked_interpretation"] + ["not current market evidence"]))
+            assessment["allowed_interpretation"] = [value for value in assessment["allowed_interpretation"] if value != "bounded live-ish observation"]
+        if currentness["status"] == "stale":
+            assessment["stale_reason"] = currentness["reason"]
+    elif source_policy.get("source_id") != observation["source_id"]:
+        assessment.update(status="unresolved", freshness_assessment="unknown", safe_for_ai_context=False)
+    canonical = lambda value: hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    assessment.update(
+        currentness_policy="family_specific",
+        evaluation_timestamp=observation["retrieved_at_utc"],
+        evaluator_id="m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+        evaluator_input_sha256=canonical(observation),
+        source_policy_sha256=canonical(source_policy),
+    )
+    return assessment
+
+
 def _current_observation(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
     _require_approved_execution((request,), context)
     identifiers = request["approved_security_identifiers"]
@@ -387,9 +451,16 @@ def _current_observation(request: dict[str, Any], context: DispatchRuntimeContex
     records = [item for item in observation.get("observations", []) if isinstance(item, dict)]
     if not records:
         return _result_base(request, status="failed", error_code="current_observation_unavailable")
+    registry = load_source_registry(str(ROOT / "docs/data_capabilities/m8_source_capability_registry.json"))
+    policy = next((source for source in registry["sources"] if source.get("source_id") == "TWSE_MIS"), {})
+    records = [{**item, "governed_currentness": _assess_current_observation(item, policy)} for item in records]
     artifact = _write_safe_evidence(request, context, records, source_family="TWSE_MIS")
     result = _result_base(request, status="succeeded", error_code=None)
     result.update(result_item_count=len(records), evidence_artifacts=[artifact])
+    if any(item["governed_currentness"].get("status") == "stale" for item in records):
+        # Existing receipt/Audit warning vocabulary carries the same typed
+        # assessment without changing transport success or the public schema.
+        result["warnings"].append("stale_intraday_snapshot")
     return result
 
 
