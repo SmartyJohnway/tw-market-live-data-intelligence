@@ -207,6 +207,17 @@ REGRESSION_INVARIANTS = [{'invariant_id': 'missing_not_zero',
 ACCEPTANCE_CONTRACT_HASHES = {'docs/governance/phase_j/PHASE_J_J4_REGRESSION_CHANGE_MANIFEST_SCHEMA_V1.json': 'ff0b5d8e0cf22673e234a9241532757f9b37ca5c0bc7d85aeb76c3e4e1e7d7fc',
  'docs/governance/phase_j/PHASE_J_J4_REGRESSION_RECEIPT_SCHEMA_V1.json': 'c8ac4949aba86a1323ff2305d9835584f664b11b1aa5f911eef1101911dd2ac8'}
 
+EVIDENCE_KINDS = {'bounded_live': ['historical_live_acceptance'],
+ 'contract_fixture': ['fixture', 'unit_test'],
+ 'deterministic_unit': ['unit_test'],
+ 'fresh_install': ['fresh_install_test'],
+ 'integration': ['integration_test', 'e2e_acceptance'],
+ 'mcp': ['mcp_test'],
+ 'real_agent': ['real_agent_acceptance'],
+ 'service_api': ['service_test'],
+ 'workbench': ['workbench_test']}
+FUTURE_PROFILE_POLICY = {'workbench_required': 'browser-e2e', 'J4_execution': 'browser-e2e is a future local regression prerequisite only; not executed by J4'}
+
 def require(condition, code):
     if not condition:
         raise ValueError(code)
@@ -256,7 +267,9 @@ def validate_authority(authority=None):
     require(len(ids) == 27 and len(set(ids)) == 27 and a['scenario_ids'] == ids, 'SCENARIO_AUTHORITY_DRIFT')
     require(a['semantic_dimensions'] == DIMENSIONS == golden['dimensions'], 'SEMANTIC_DIMENSION_DRIFT')
     require(a['layers'] == LAYERS == matrix['coverage_dimensions'], 'LAYER_VOCABULARY_DRIFT')
+    require(a['layer_evidence_kinds'] == EVIDENCE_KINDS and a['future_profile_policy'] == FUTURE_PROFILE_POLICY, 'LAYER_EVIDENCE_POLICY_DRIFT')
     require(a['change_classes'] == CLASSES, 'CHANGE_CLASS_AUTHORITY_DRIFT')
+    require({kind for kinds in EVIDENCE_KINDS.values() for kind in kinds} <= set(matrix['evidence_kinds']), 'UNKNOWN_LAYER_EVIDENCE_KIND')
     require(a['mandatory_safety_core'] == EXPECTED_CORE, 'SAFETY_CORE_DRIFT')
     require(a['class_rules'] == CLASS_RULES, 'CLASS_SELECTION_RULE_DRIFT')
     require(a['selection_policy'] == SELECTION_POLICY, 'SELECTION_POLICY_DRIFT')
@@ -362,7 +375,7 @@ def select_plan(manifest, authority=None):
     if 'NEW_AGENT_HOST' in classes or manifest['requested_real_agent_revalidation']:
         gates.append({'layer': 'real_agent', 'authorization': 'NOT_GRANTED', 'disposition': 'REQUIRES_SEPARATE_REAL_AGENT_AUTHORIZATION', 'scenario_ids': ids})
     checks = sorted({check for c in classes for check in CLASS_RULES[c].get('mandatory_checks', [])})
-    plan = {'authority_version': a['schema_version'], 'regression_authority_hash': file_hash(AUTHORITY), 'baseline_hashes': a['baseline_hashes'], 'baseline_review_ids': a['reviews'], 'change_id': manifest['change_id'], 'change_manifest_sha256': digest(manifest), 'candidate_commit': manifest['candidate_commit'], 'candidate_tree': manifest['candidate_tree'], 'change_classes': classes, 'selected_scenario_ids': ids, 'mandatory_safety_core_ids': SAFETY, 'selected_semantic_dimensions': dimensions, 'required_layers': cells, 'currently_covered_layers': covered, 'planned_or_missing_layers': gaps, 'not_applicable_layers': exemptions, 'authorization_gated_layers': gates, 'historical_live_evidence': {sid: copy.deepcopy(cov[sid]['bounded_live']) for sid in ids if cov[sid]['bounded_live']['status'] == 'COVERED_EXISTING'}, 'required_validators': a['required_validators'], 'required_test_profiles': a['required_test_profiles'], 'required_contract_checks': checks, 'mcp_tool_baseline': TOOLS, 'evidence_requirements': {'per_cell': 'exact_scenario_layer_test_node_and_passing_execution_evidence', 'oracle': 'accepted_J3_typed_semantics_not_prose', 'authorization': 'separate_hash_bound_independently_accepted_authority'}, 'blocking_conditions': sorted(set(impact_codes)), 'gate_disposition': gate_disposition([], impact_codes, gaps, gates)}
+    plan = {'authority_version': a['schema_version'], 'regression_authority_hash': file_hash(AUTHORITY), 'baseline_hashes': a['baseline_hashes'], 'baseline_review_ids': a['reviews'], 'change_id': manifest['change_id'], 'change_manifest_sha256': digest(manifest), 'candidate_commit': manifest['candidate_commit'], 'candidate_tree': manifest['candidate_tree'], 'change_classes': classes, 'selected_scenario_ids': ids, 'mandatory_safety_core_ids': SAFETY, 'selected_semantic_dimensions': dimensions, 'required_layers': cells, 'currently_covered_layers': covered, 'planned_or_missing_layers': gaps, 'not_applicable_layers': exemptions, 'authorization_gated_layers': gates, 'historical_live_evidence': {sid: copy.deepcopy(cov[sid]['bounded_live']) for sid in ids if cov[sid]['bounded_live']['status'] == 'COVERED_EXISTING'}, 'required_validators': a['required_validators'], 'required_test_profiles': a['required_test_profiles'] + (['browser-e2e'] if any(c['layer'] == 'workbench' for c in cells) else []), 'required_contract_checks': checks, 'mcp_tool_baseline': TOOLS, 'evidence_requirements': {'per_cell': 'exact_scenario_layer_test_node_and_passing_execution_evidence', 'oracle': 'accepted_J3_typed_semantics_not_prose', 'authorization': 'separate_hash_bound_independently_accepted_authority'}, 'blocking_conditions': sorted(set(impact_codes)), 'gate_disposition': gate_disposition([], impact_codes, gaps, gates)}
     plan['regression_plan_hash'] = digest(plan)
     return copy.deepcopy(plan)
 
@@ -394,7 +407,7 @@ def make_receipt(manifest, plan, evidence=(), semantic_failures=(), synthetic=Tr
     passed = {(e.get('scenario_id'), e.get('layer')) for e in evidence if e.get('passed') is True}
     gaps = [c for c in plan['required_layers'] if (c['scenario_id'], c['layer']) not in passed]
     gaps += [{'scenario_id': sid, 'layer': 'typed_semantic_evidence', 'reason': 'missing_J3_observation'} for sid in plan['selected_scenario_ids'] if sid not in observations]
-    checks = plan['required_validators'] + ['six_tool_contract'] + plan['required_contract_checks']
+    checks = plan['required_validators'] + plan['required_test_profiles'] + ['six_tool_contract'] + plan['required_contract_checks']
     completed = {e['check'] for e in check_evidence if e.get('passed') is True}
     gaps += [{'check': c, 'reason': 'missing_passing_check_evidence'} for c in checks if c not in completed]
     r = {'schema_version': 'phase_j_j4_regression_receipt.v1', 'regression_authority_hash': file_hash(AUTHORITY), 'change_manifest_hash': digest(manifest), 'regression_plan_hash': plan['regression_plan_hash'], 'candidate_commit': manifest['candidate_commit'], 'candidate_tree': manifest['candidate_tree'], 'selected_scenarios': plan['selected_scenario_ids'], 'selected_dimensions': plan['selected_semantic_dimensions'], 'executed_layers': sorted({e['layer'] for e in evidence}), 'test_validator_evidence': evidence, 'authorization_gates': plan['authorization_gated_layers'], 'bounded_live_authorized': False, 'real_agent_authorized': False, 'authorization_refs': [], 'semantic_observations': observations, 'check_evidence': check_evidence, 'semantic_failures': failures, 'coverage_gaps': gaps, 'synthetic': synthetic, 'disposition': gate_disposition(failures, plan['blocking_conditions'], gaps, plan['authorization_gated_layers'])}
@@ -428,10 +441,11 @@ def validate_receipt(manifest, plan, receipt):
     required = {(c['scenario_id'], c['layer']) for c in plan['required_layers']}
     seen = set()
     for e in evidence:
-        require(set(e) == {'scenario_id', 'layer', 'test_node_id', 'passed', 'candidate_commit', 'candidate_tree', 'synthetic'}, 'EXECUTION_EVIDENCE_FIELDS_INVALID')
+        require(set(e) == {'scenario_id', 'layer', 'evidence_kind', 'test_node_id', 'passed', 'candidate_commit', 'candidate_tree', 'synthetic'}, 'EXECUTION_EVIDENCE_FIELDS_INVALID')
         pair = (e['scenario_id'], e['layer'])
         require(pair in required and pair not in seen, 'EXECUTION_EVIDENCE_SCOPE_OR_DUPLICATE')
         seen.add(pair)
+        require(e['evidence_kind'] in EVIDENCE_KINDS[e['layer']], 'EXECUTION_EVIDENCE_LAYER_LAUNDERING')
         require(type(e['passed']) is bool and type(e['synthetic']) is bool, 'EXECUTION_EVIDENCE_TYPE_INVALID')
         require(e['candidate_commit'] == manifest['candidate_commit'] and e['candidate_tree'] == manifest['candidate_tree'], 'EXECUTION_EVIDENCE_CANDIDATE_MISMATCH')
         require(explicit_test_node(e['test_node_id']), 'EXPLICIT_TEST_NODE_REQUIRED')
@@ -440,7 +454,7 @@ def validate_receipt(manifest, plan, receipt):
     for e in evidence:
         if e['passed'] is False:
             require(e['test_node_id'] in failures, 'FAILED_EXECUTION_HIDDEN_FROM_SEMANTIC_FAILURES')
-    known_checks = set(plan['required_validators'] + ['six_tool_contract'] + plan['required_contract_checks'])
+    known_checks = set(plan['required_validators'] + plan['required_test_profiles'] + ['six_tool_contract'] + plan['required_contract_checks'])
     check_names = [e.get('check') for e in receipt['check_evidence']]
     require(len(set(check_names)) == len(check_names) and set(check_names) <= known_checks, 'CHECK_EVIDENCE_SCOPE_OR_DUPLICATE')
     for e in receipt['check_evidence']:

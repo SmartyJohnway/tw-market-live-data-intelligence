@@ -352,5 +352,40 @@
   "acceptance_contract_hashes": {
     "docs/governance/phase_j/PHASE_J_J4_REGRESSION_CHANGE_MANIFEST_SCHEMA_V1.json": "ff0b5d8e0cf22673e234a9241532757f9b37ca5c0bc7d85aeb76c3e4e1e7d7fc",
     "docs/governance/phase_j/PHASE_J_J4_REGRESSION_RECEIPT_SCHEMA_V1.json": "c8ac4949aba86a1323ff2305d9835584f664b11b1aa5f911eef1101911dd2ac8"
+  },
+  "layer_evidence_kinds": {
+    "contract_fixture": [
+      "fixture",
+      "unit_test"
+    ],
+    "deterministic_unit": [
+      "unit_test"
+    ],
+    "integration": [
+      "integration_test",
+      "e2e_acceptance"
+    ],
+    "service_api": [
+      "service_test"
+    ],
+    "workbench": [
+      "workbench_test"
+    ],
+    "mcp": [
+      "mcp_test"
+    ],
+    "fresh_install": [
+      "fresh_install_test"
+    ],
+    "bounded_live": [
+      "historical_live_acceptance"
+    ],
+    "real_agent": [
+      "real_agent_acceptance"
+    ]
+  },
+  "future_profile_policy": {
+    "workbench_required": "browser-e2e",
+    "J4_execution": "browser-e2e is a future local regression prerequisite only; not executed by J4"
   }
 }

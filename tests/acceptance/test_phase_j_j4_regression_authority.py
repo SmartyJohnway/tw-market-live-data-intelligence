@@ -245,7 +245,7 @@ def test_missing_execution_is_not_pass_and_synthetic_prose_not_agent_evidence():
     p = j4.select_plan(m)
     r = j4.make_receipt(m, p)
     assert r['disposition'] == 'REGRESSION_COVERAGE_GAP'
-    r['test_validator_evidence'] = [{'scenario_id': 'J1-01', 'layer': 'real_agent', 'test_node_id': __file__ + '::test_positive_class_plan', 'passed': True, 'candidate_commit': m['candidate_commit'], 'candidate_tree': m['candidate_tree'], 'synthetic': True}]
+    r['test_validator_evidence'] = [{'scenario_id': 'J1-01', 'layer': 'real_agent', 'evidence_kind': 'real_agent_acceptance', 'test_node_id': __file__ + '::test_positive_class_plan', 'passed': True, 'candidate_commit': m['candidate_commit'], 'candidate_tree': m['candidate_tree'], 'synthetic': True}]
     rejection(lambda: j4.validate_receipt(m, p, r), 'EVIDENCE_SCOPE_OR_DUPLICATE')
 
 
@@ -279,7 +279,7 @@ def test_receipt_failed_execution_cannot_hide_as_pending_authorization():
     m = manifest('NEW_AGENT_HOST')
     p = j4.select_plan(m)
     node = 'tests/acceptance/test_phase_j_j4_regression_authority.py::test_positive_class_plan'
-    e = {'scenario_id': 'J1-01', 'layer': 'mcp', 'test_node_id': node, 'passed': False, 'candidate_commit': m['candidate_commit'], 'candidate_tree': m['candidate_tree'], 'synthetic': True}
+    e = {'scenario_id': 'J1-01', 'layer': 'mcp', 'evidence_kind': 'mcp_test', 'test_node_id': node, 'passed': False, 'candidate_commit': m['candidate_commit'], 'candidate_tree': m['candidate_tree'], 'synthetic': True}
     r = j4.make_receipt(m, p, [e])
     rejection(lambda: j4.validate_receipt(m, p, r), 'FAILED_EXECUTION_HIDDEN')
     r = j4.make_receipt(m, p, [e], [node])
@@ -304,7 +304,7 @@ def test_mcp_plan_tool_drift_is_rejected():
 def test_receipt_execution_evidence_binds_candidate_and_explicit_node():
     m = manifest()
     p = j4.select_plan(m)
-    e = {'scenario_id': 'J1-01', 'layer': 'mcp', 'test_node_id': 'tests/acceptance/test_phase_j_j4_regression_authority.py::test_positive_class_plan', 'passed': True, 'candidate_commit': '0' * 40, 'candidate_tree': m['candidate_tree'], 'synthetic': True}
+    e = {'scenario_id': 'J1-01', 'layer': 'mcp', 'evidence_kind': 'mcp_test', 'test_node_id': 'tests/acceptance/test_phase_j_j4_regression_authority.py::test_positive_class_plan', 'passed': True, 'candidate_commit': '0' * 40, 'candidate_tree': m['candidate_tree'], 'synthetic': True}
     r = j4.make_receipt(m, p, [e])
     rejection(lambda: j4.validate_receipt(m, p, r), 'EVIDENCE_CANDIDATE_MISMATCH')
     e['candidate_commit'] = m['candidate_commit']
@@ -326,8 +326,8 @@ def complete_synthetic_inputs(plan, manifest):
             target[parts[-1]] = assertion['expected']
         observations[sid] = observed
     node = 'tests/acceptance/test_phase_j_j4_regression_authority.py::test_complete_synthetic_receipt_retains_live_gate'
-    evidence = [{'scenario_id': c['scenario_id'], 'layer': c['layer'], 'test_node_id': node, 'passed': True, 'candidate_commit': manifest['candidate_commit'], 'candidate_tree': manifest['candidate_tree'], 'synthetic': True} for c in plan['required_layers']]
-    checks = [{'check': c, 'passed': True, 'evidence_ref': node, 'candidate_commit': manifest['candidate_commit'], 'candidate_tree': manifest['candidate_tree']} for c in sorted(set(plan['required_validators'] + ['six_tool_contract'] + plan['required_contract_checks']))]
+    evidence = [{'scenario_id': c['scenario_id'], 'layer': c['layer'], 'evidence_kind': j4.EVIDENCE_KINDS[c['layer']][0], 'test_node_id': node, 'passed': True, 'candidate_commit': manifest['candidate_commit'], 'candidate_tree': manifest['candidate_tree'], 'synthetic': True} for c in plan['required_layers']]
+    checks = [{'check': c, 'passed': True, 'evidence_ref': node, 'candidate_commit': manifest['candidate_commit'], 'candidate_tree': manifest['candidate_tree']} for c in sorted(set(plan['required_validators'] + plan['required_test_profiles'] + ['six_tool_contract'] + plan['required_contract_checks']))]
     return evidence, observations, checks
 
 
@@ -364,5 +364,20 @@ def test_missing_required_check_keeps_receipt_coverage_gap():
 def test_nonexistent_test_node_cannot_qualify_receipt_evidence():
     m = manifest()
     p = j4.select_plan(m)
-    e = {'scenario_id': 'J1-01', 'layer': 'mcp', 'test_node_id': 'tests/acceptance/test_phase_j_j4_regression_authority.py::test_does_not_exist', 'passed': True, 'candidate_commit': m['candidate_commit'], 'candidate_tree': m['candidate_tree'], 'synthetic': True}
+    e = {'scenario_id': 'J1-01', 'layer': 'mcp', 'evidence_kind': 'mcp_test', 'test_node_id': 'tests/acceptance/test_phase_j_j4_regression_authority.py::test_does_not_exist', 'passed': True, 'candidate_commit': m['candidate_commit'], 'candidate_tree': m['candidate_tree'], 'synthetic': True}
     rejection(lambda: j4.validate_receipt(m, p, j4.make_receipt(m, p, [e])), 'EXPLICIT_TEST_NODE_REQUIRED')
+
+
+def test_receipt_unit_evidence_cannot_launder_workbench_layer():
+    m = manifest()
+    p = j4.select_plan(m)
+    e = {'scenario_id': 'J1-01', 'layer': 'workbench', 'evidence_kind': 'unit_test', 'test_node_id': 'tests/acceptance/test_phase_j_j4_regression_authority.py::test_positive_class_plan', 'passed': True, 'candidate_commit': m['candidate_commit'], 'candidate_tree': m['candidate_tree'], 'synthetic': True}
+    rejection(lambda: j4.validate_receipt(m, p, j4.make_receipt(m, p, [e])), 'EVIDENCE_LAYER_LAUNDERING')
+
+
+def test_future_workbench_profile_is_required_but_not_executed_by_j4():
+    m = manifest()
+    p = j4.select_plan(m)
+    assert 'browser-e2e' in p['required_test_profiles']
+    p['required_test_profiles'].remove('browser-e2e')
+    rejection(lambda: j4.validate_plan(m, p), 'BINDING_OR_POLICY_MISMATCH')
