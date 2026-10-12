@@ -58,6 +58,29 @@ def test_exact_bundle_inventory_and_runtime_version_pass(tmp_path, monkeypatch):
     assert result["executable_observed_version"] == "codex-cli 0.160.1"
 
 
+def test_file_sha256_accepts_string_path_used_by_slot_receipt(tmp_path):
+    # The formal launcher derives evidence destinations as strings, then hashes
+    # those exact values while persisting its slot receipt.
+    evidence_path = tmp_path / "attempt6-slot-01" / "witness-events.jsonl"
+    evidence_path.parent.mkdir(parents=True)
+    evidence_path.write_bytes(b'{"event":"tools_list"}\n')
+
+    assert bundle.file_sha256(str(evidence_path)) == hashlib.sha256(evidence_path.read_bytes()).hexdigest()
+
+
+def test_attempt6_prompt_binds_only_the_package_identity_without_answer_leakage():
+    prompt_path = bundle.ROOT / "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_6_NEUTRAL_PROMPT_2026-10-12.txt"
+    prompt = prompt_path.read_text(encoding="utf-8")
+
+    assert "control package umea-v1-64317f4f3435611c2bb5" in prompt
+    assert "stale" not in prompt.casefold()
+    assert "stale_intraday_snapshot" not in prompt.casefold()
+    assert "expected age" not in prompt.casefold()
+    assert "current price" not in prompt.casefold()
+    assert "J3" not in prompt
+    assert hashlib.sha256(prompt_path.read_bytes()).hexdigest() == "7ca1e6fffaccc42c674ab9a5609dcb998c1e667107c9971f1b3d1bd97d6fb7ca"
+
+
 def test_codex_executable_alone_is_not_a_runtime_bundle(tmp_path, monkeypatch):
     root, _, entries = _fixture(tmp_path, monkeypatch)
     (root / "bin/codex-code-mode-host.exe").unlink()

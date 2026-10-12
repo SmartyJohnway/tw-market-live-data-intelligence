@@ -52,7 +52,8 @@ def canonical_sha256(value: Any) -> str:
     return hashlib.sha256(canonical_bytes(value)).hexdigest()
 
 
-def file_sha256(path: Path) -> str:
+def file_sha256(path: Path | str) -> str:
+    path = Path(path)
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
