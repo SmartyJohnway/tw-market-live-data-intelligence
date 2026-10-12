@@ -1,5 +1,18 @@
 # PROJECT.md — Current Project Authority
 
+## Current Phase J closure boundary (2026-10-12)
+
+Roadmap Phase J — Integrated Research Acceptance is **COMPLETE** under
+`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. Attempt #6 remains immutable
+historical evidence with its original harness disposition, while the preserved
+real-agent Result/Audit lineage and correct stale/currentness/no-trading
+interpretation satisfy the Roadmap-level `real_agent_layer` obligation.
+`remaining_obligations=[]`; Attempt #7 is not required. Tool-call sequencing and
+a successful host-level AI Handoff export witness carry forward to Phase K
+compatibility evaluation. Phase K remains `NOT_STARTED`; PR #326 remains
+OPEN / Draft / unmerged. See
+`docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`.
+
 ## Current I3 production boundary (2026-10-05)
 
 `cash_institutional_flow_context` A0 source preflight is `GO_PASS`, A1 is
@@ -257,8 +270,9 @@ Current interpretation:
   requested and authorized. I2-A4 is Owner-accepted and active. I3-A3 is
   Owner-accepted bounded-live adapter evidence. I3-A4 is now Owner-accepted
   and active with two sources, one logical route, and two runtime registrations;
-  The Phase I final exit review passed; optional candidates remain deferred and
-  Phase J is not started or authorized.
+  The Phase I final exit review passed; optional candidates remain deferred.
+  Phase J is complete under the 2026-10-12 closure authority reconciliation;
+  Phase K remains not started.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is

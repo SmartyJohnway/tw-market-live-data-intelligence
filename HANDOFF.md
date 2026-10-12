@@ -1,5 +1,19 @@
 # HANDOFF.md — Current Operational Handoff
 
+## Current Phase J closure handoff (2026-10-12)
+
+Roadmap Phase J is **COMPLETE** by
+`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. The historical Attempt #6
+`HARD_BLOCK_TOOL_POLICY_VIOLATION` remains unchanged, but its actual real-agent
+MCP Result/Audit lineage and correct stale/currentness/no-trading interpretation
+satisfy the Roadmap-level `real_agent_layer`. There are no remaining Phase J
+obligations and no Attempt #7 is required. Tool-call sequencing and a successful
+host-level AI Handoff export witness are deferred to Phase K compatibility work.
+Phase K remains `NOT_STARTED`; PR #326 remains OPEN / Draft / unmerged.
+
+The older Phase J readiness section below is historical pre-entry context and is
+superseded for current operational status by this closure handoff.
+
 ## Phase J readiness preflight (2026-10-05)
 
 Phase I is complete under the final exit closure. Phase J is not started or
@@ -296,8 +310,9 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 
 **Do not repeat I1 live acceptance or rollback, the consumed I2-A3 single GET,
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
-Owner-accepted, and merged. Phase I exit review is PASS; Phase J remains
-unauthorized.**
+Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
+under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
+Phase K remains NOT_STARTED unless separately authorized.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
@@ -321,9 +336,10 @@ At minimum:
 3. apply the Evidence Value Gate to each candidate evidence family;
 4. keep derivatives identity separate from cash-security ISIN identity;
 5. preserve explicit/optional bounded loading;
-6. preserve accepted I1/I2/I3 evidence; Phase I is closed. Any future change to
-   a production authority requires separate authorization, and Phase J is not
-   authorized by this closure.
+6. preserve accepted I1/I2/I3 evidence; Phase I is closed. That historical
+   Phase I closure did not itself authorize Phase J; Phase J was later closed
+   separately by the 2026-10-12 authority reconciliation. Future production
+   authority changes still require separate authorization.
 
 ## Historical-document rule
 

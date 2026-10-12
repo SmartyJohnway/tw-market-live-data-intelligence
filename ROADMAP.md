@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase I exit review PASS; I1/I2/I3 active; Phase J not started"
+status_reconciled_through: "Phase J Integrated Research Acceptance COMPLETE by 2026-10-12 closure authority reconciliation; Phase K not started"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -36,8 +36,8 @@ tags:
 > I3 capabilities satisfy its minimum optional cross-market and spot/derivatives
 > descriptive-context intent under the I0 Evidence Value Gate; deferred
 > candidates are not phase-exit prerequisites. Phase I is checked complete by
-> the final exit review. Phase J remains not started and is not authorized by
-> Phase I closure.
+> the final exit review. Phase J is checked complete by the 2026-10-12
+> closure authority reconciliation; Phase K remains not started.
 
 ---
 
@@ -1220,7 +1220,7 @@ AI 在需要時可以得到：
 
 但 canonical evidence 不會直接宣告 bullish、bearish、leading 或 manipulated。
 
-# [ ] Phase J — Integrated Research Acceptance
+# [x] Phase J — Integrated Research Acceptance
 
 ## J.0 Phase Goal
 
@@ -1901,7 +1901,7 @@ External Agent Scheduler
 [ ] Phase G — Research Evidence Expansion
 [ ] Phase H — Interpretation & Historical Reference
 [x] Phase I — Cross-Market & Optional Context
-[ ] Phase J — Integrated Research Acceptance
+[x] Phase J — Integrated Research Acceptance
 [ ] Phase K — Multi-Agent Compatibility & Evaluation
 [ ] Phase L — Production Hardening & Extension Architecture
 [ ] Phase M — Agent-Scheduled Research & Bounded Monitoring

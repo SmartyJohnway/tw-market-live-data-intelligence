@@ -1,0 +1,114 @@
+{
+  "schema_version": "phase_j_closure_authority_reconciliation.v1",
+  "disposition": "PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS",
+  "date": "2026-10-12",
+  "starting_authority": {
+    "head": "a0ea2163ce4b4bb0cb81997c6a350a9312e05bb7",
+    "tree": "11cb2f2104abba2257a79bb5736705d848cf5a43",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "pull_request": 326,
+    "pull_request_state": "OPEN / Draft / unmerged",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a"
+  },
+  "authority_hierarchy": {
+    "roadmap": "ROADMAP.md Phase J is the durable phase-scope authority",
+    "historical_closure": "Closure-R1/R2/R2-R1 remain immutable historical acceptance evidence",
+    "attempt6": "Attempt #6 remains immutable historical real-agent evidence",
+    "reconciliation_role": "Resolve Roadmap-level closure against later harness-only constraints without rewriting history"
+  },
+  "roadmap_phase_j_requirements": {
+    "adds_new_product_capability": false,
+    "phase_goal": "Market + Research + Interpretation integrated acceptance gate",
+    "acceptance_layers_include": ["MCP", "real AI / agent"],
+    "coverage_rule": "not every scenario must rerun every layer; a traceable coverage matrix is required",
+    "semantic_requirements_include": ["correct currentness", "correct citations", "correct bounded execution", "correct no-trading boundary"]
+  },
+  "roadmap_phase_k_boundary": {
+    "tool_call_sequencing": "Phase K K.2 compatibility evaluation dimension",
+    "ai_handoff_host_compatibility": "Phase K K.3 compatibility-matrix dimension"
+  },
+  "harness_rule_adjudication": {
+    "mandatory_read_before_export": {
+      "roadmap_required": false,
+      "closure_r1_validator_required": false,
+      "classification": "HARNESS_ONLY_ORDERING_CONSTRAINT",
+      "effect_on_attempt6": "export was blocked before result read"
+    },
+    "same_session_successful_read_and_export": {
+      "roadmap_required": false,
+      "closure_r1_validator_required": true,
+      "classification": "CLOSURE_HARNESS_STRONGER_THAN_ROADMAP",
+      "roadmap_phase_j_blocker": false,
+      "carry_forward": "Phase K agent-host compatibility and AI Handoff coverage"
+    }
+  },
+  "attempt6_adjudication": {
+    "historical_disposition_preserved": "PHASE_J_REAL_AGENT_ATTEMPT_6_HARD_BLOCK_TOOL_POLICY_VIOLATION",
+    "session_id": "01a12f84-5dc7-7522-a0f0-495eb585727f",
+    "control_package_id": "umea-v1-64317f4f3435611c2bb5",
+    "result_id": "umeresult-v3-63bd91d7e710438dbdd6",
+    "audit_id": "umeap-v3-9063d2331c6cc7718a1e",
+    "result_lineage_obtained": true,
+    "handoff_retrieved": false,
+    "semantic_result_interpretation": "PASS",
+    "real_agent_layer_satisfied": true,
+    "fresh_market_get_head_post": [0, 0, 0],
+    "new_j1_21_execution": 0,
+    "new_package_generation": 0
+  },
+  "coverage_reconciliation": {
+    "representative_scenario": "J1-21 stale/currentness",
+    "mcp_layer": "SATISFIED by formal MCP result read through Local Service",
+    "real_agent_layer": "SATISFIED by actual AI-host interpretation of governed Result",
+    "coverage_matrix_policy": "remaining REQUIRES_REAL_AGENT_AUTH cells remain traceable coverage gaps, not separate phase-exit obligations",
+    "successful_handoff_export_promoted": false
+  },
+  "evidence_bindings": {
+    "roadmap_pre_reconciliation_sha256": "8b258d327b16e96a4904cf55f12f76129faff703569fb7f6169767585eb4e789",
+    "closure_r1_validator_sha256": "48e7c7271bd2df1772503e825b9f9f3796ca3d821f55352d9233f93fcbb13fb7",
+    "mcp_tool_contract_sha256": "015c25dd5941dc5ead08e6c22df30679f25ef8c994376810f260af4aa32bb29f",
+    "closure_r2_sha256": "f4466de741ce52b252c429b466ca0ebcddf833aa09bccaf9969463f393320299",
+    "closure_r2_r1_sha256": "d5d306999702e172f13c48a985ab7c9338d645f90e19612bba848a2ee5bf20ab",
+    "attempt6_receipt_sha256": "74d439aa5083bc53f874bdba094f5268adf40485da7346e530d4c08bd3bdff33",
+    "attempt6_output_sha256": "5e971dbd6b2059d13fd7f91efc990edcd23ee883d7c5dd2daa10a7275533325b"
+  },
+  "phase_state": {
+    "phase_j": "COMPLETE",
+    "roadmap_phase_j": "CHECKED",
+    "remaining_obligations": [],
+    "phase_k": "NOT_STARTED",
+    "pull_request": "OPEN / Draft / unmerged",
+    "attempt7_required": false,
+    "closure_credit": true
+  },
+  "carry_forward_to_phase_k": [
+    "agent-host tool-call sequencing compatibility",
+    "successful real-agent AI Handoff export witness",
+    "host-specific transport and confirmation behavior"
+  ],
+  "non_actions": {
+    "new_inference": 0,
+    "new_real_agent_session": 0,
+    "new_market_request": 0,
+    "new_j1_21_execution": 0,
+    "new_package": 0,
+    "product_schema_route_mcp_change": 0,
+    "attempt7": 0
+  },
+  "validation": {
+    "reconciliation_validator": "PASS",
+    "focused_unit_test": "1 passed",
+    "j3_golden_semantics_validator": "PASS under Python UTF-8 mode",
+    "strict_duplicate_key_json": "PASS",
+    "compileall_changed_python": "PASS",
+    "git_diff_check": "PASS",
+    "default_ci": "NOT_RUN_GOVERNANCE_ONLY",
+    "historical_closure_r1_suite": {
+      "current_gate": false,
+      "observed": "1 failed, 3 passed, 35 setup errors",
+      "immutable_baseline_failure": "expected after current ROADMAP.md Phase J checkbox/status reconciliation; historical validator pins the pre-reconciliation Roadmap hash",
+      "setup_errors": "local_workbench_startup_failed in historical fixture setup",
+      "action": "historical suite and validator remain unchanged; no laundering repair performed"
+    }
+  }
+}

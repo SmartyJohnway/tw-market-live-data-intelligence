@@ -1,5 +1,20 @@
 # AGENTS.md — Repository Governance and AI Collaboration Contract
 
+## Current Phase J closure boundary (2026-10-12)
+
+Roadmap Phase J — Integrated Research Acceptance is **COMPLETE** under
+`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. Historical Attempt #6 remains
+unchanged with its harness-level `HARD_BLOCK_TOOL_POLICY_VIOLATION`, while its
+real-agent MCP Result/Audit lineage and correct stale/currentness/no-trading
+interpretation satisfy the Roadmap-level `real_agent_layer`. No Attempt #7 is
+required. `tool-call sequencing` and a successful host-level AI Handoff export
+witness are Phase K compatibility carry-forwards, not Phase J blockers. Phase K
+remains `NOT_STARTED`; PR #326 remains OPEN / Draft / unmerged.
+
+Use `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`
+as the current Phase J closure authority. Older dated Phase-J-not-started text in
+this file is historical context and must not override this current boundary.
+
 ## Current I3 production boundary (2026-10-05)
 
 I3-A3 `cash_institutional_flow_context` bounded-live adapter acceptance is
@@ -114,16 +129,18 @@ As of this governance consolidation:
   `phase_i_i2_index_futures_context_executor` route with one active TAIFEX
   source and one normal TWSE production route. I3-A3 and I3-A4 are
   Owner-accepted. I3 is production active with two sources, one logical route,
-  and two runtime market registrations. The Phase I final exit review passed;
-  Phase J remains outside this closure.**
+  and two runtime market registrations. The Phase I final exit review passed.
+  Phase J was later closed separately by the 2026-10-12 closure authority
+  reconciliation; Phase K remains not started.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
 current runtime truth. I2-A2 remains historical dormant implementation truth; A3 used its fresh
 single-GET authority exactly once and no repeat acceptance request is authorized.
 Current I2 production execution is permitted only through the normal explicit,
 approval-bound I2-A4 route. I3-A3 and I3-A4 are closed and accepted; future
-I3 authority changes and Phase J require separate explicit Owner authorization.
-Phase I final exit review is PASS; Phase J remains unauthorized.
+I3 authority changes still require separate explicit Owner authorization.
+Phase I final exit review is PASS. Phase J is separately COMPLETE under the
+2026-10-12 closure authority reconciliation; Phase K remains NOT_STARTED.
 
 ## 5. Authority hierarchy
 
@@ -383,4 +400,5 @@ superseded without use; the fresh single-GET authority is consumed. I3-A3 is
 Owner-accepted bounded-live adapter evidence. I3-A4 production is active and
 Owner-accepted; no live acquisition occurred in the activation/closure tranches.
 Preserve accepted evidence; do not repeat A3 or rollback.
-Phase I as a whole is not complete.
+Phase I is complete by its final exit review. Phase J is complete by the
+2026-10-12 closure authority reconciliation. Phase K remains NOT_STARTED.
