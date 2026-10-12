@@ -1,0 +1,4 @@
+{"event": "initialize_request", "protocolVersion": "2025-11-25"}
+{"event": "initialize_result", "protocolVersion": "2025-11-25", "server_name": "unified_market_evidence_mcp_adapter.v2", "server_version": "unified_market_evidence_mcp_adapter.v2"}
+{"count": 6, "event": "tools_list", "exact_six": true, "names": ["market_describe_capabilities", "market_export_ai_handoff", "market_fetch_evidence", "market_preview_request", "market_read_result", "market_validate_request"]}
+{"adapter_exit_code": 0, "blocked_calls": 0, "event": "proxy_exit", "tool_call_sequence": []}
