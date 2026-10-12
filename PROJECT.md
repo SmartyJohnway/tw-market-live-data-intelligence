@@ -9,9 +9,12 @@ real-agent Result/Audit lineage and correct stale/currentness/no-trading
 interpretation satisfy the Roadmap-level `real_agent_layer` obligation.
 `remaining_obligations=[]`; Attempt #7 is not required. Tool-call sequencing and
 a successful host-level AI Handoff export witness carry forward to Phase K
-compatibility evaluation. Phase K remains `NOT_STARTED`; PR #326 remains
-OPEN / Draft / unmerged. See
-`docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`.
+compatibility evaluation. PR #326 and post-Phase-J portability PR #327 are
+merged, and canonical main includes both. Phase K has STARTED at the K0
+governance-entry stage; no host evaluation has been executed. The current
+Phase K authority is
+`docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`.
+See `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`.
 
 ## Current I3 production boundary (2026-10-05)
 
@@ -272,7 +275,7 @@ Current interpretation:
   and active with two sources, one logical route, and two runtime registrations;
   The Phase I final exit review passed; optional candidates remain deferred.
   Phase J is complete under the 2026-10-12 closure authority reconciliation;
-  Phase K remains not started.
+  Phase K K0 governance entry is STARTED; host evaluation has not been executed.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is
