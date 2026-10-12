@@ -1,0 +1,112 @@
+{
+  "schema_version": "phase_j_real_agent_r4_preparation_receipt.v1",
+  "tranche": "R4_PERSISTED_DETERMINISTIC_PACKAGE_PREPARATION",
+  "authorization": {
+    "provider_inference_authorized": false,
+    "real_agent_attempt_authorized": false,
+    "fresh_deterministic_j1_21_preparation_executions_authorized": 1,
+    "historical_package_rehydration_authorized": false,
+    "market_network_authorized": false
+  },
+  "canonical_start": {
+    "repository": "SmartyJohnway/tw-market-live-data-intelligence",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "head": "8f1e5d3c98a01b3a51f48d516c084052c366c81b",
+    "tree": "6501752b49ed27689564e59b5293f4b80b5b249b",
+    "remote_pr_head_cached": "f2958a9a42dd3b100d1734400c13898afb7ddfb6",
+    "base_main_cached": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "local_ahead_behind_at_start": [3, 0]
+  },
+  "r3_decision": "PHASE_J_REAL_AGENT_R3_USE_FRESH_DETERMINISTIC_PACKAGE_RECOMMENDED",
+  "proxy_parameterization": {
+    "harness_commit": "5a99dc56a18933b98f611356dd8c18e36d1deba4",
+    "explicit_control_package_id_required": true,
+    "package_id_pattern": "^umea-v1-[0-9a-f]{20}$",
+    "historical_id_fallback": false,
+    "allowed_semantic_call_sequence": ["market_read_result", "market_export_ai_handoff"],
+    "maximum_semantic_calls": 2,
+    "exact_six_tool_discovery_gate_retained": true,
+    "offline_tests": "3 passed"
+  },
+  "preparation_attempt": {
+    "scenario_id": "J1-21",
+    "fresh_deterministic_execution_started": true,
+    "fresh_deterministic_execution_completed": false,
+    "attempt_count": 1,
+    "retry_performed": false,
+    "first_runner_bootstrap": {
+      "scenario_started": false,
+      "error": "No module named 'tests'",
+      "preserved_runtime_path": "D:/Codex-Workspace/runtime/tw-market-live-data-intelligence/phase-j-real-agent-r4/j1-21-preparation-2026-10-12"
+    },
+    "scenario_attempt": {
+      "runtime_path": "D:/Codex-Workspace/runtime/tw-market-live-data-intelligence/phase-j-real-agent-r4/j1-21-preparation-2026-10-12-corrected-runner",
+      "request_id": "closure-r1-j1-21",
+      "plan_id": "umeop-v1-d2075c2be2af2304096a",
+      "authorization_control_package_id": "umea-v1-499a376bb1e4af1e790c",
+      "loopback_api_call_sequence": [
+        {"method": "POST", "path": "/api/unified/validate-request", "status": 200},
+        {"method": "POST", "path": "/api/unified/preview-request", "status": 200},
+        {"method": "POST", "path": "/api/unified/authorizations", "status": 200},
+        {"method": "POST", "path": "/api/unified/executions", "status": 409, "error": "mode_b2_execution_unavailable", "trace_id": "222cd522-d02f-43d0-99d0-b6d08ab36dc4"}
+      ],
+      "source_fixture_invocation_count": 0,
+      "execution_receipt_id": null,
+      "bundle_id": null,
+      "result_id": null,
+      "audit_package_id": null,
+      "handoff_created": false,
+      "finalized_control_package": false,
+      "terminal_failure_evidence": "runtime preparation_record.json and server.jsonl outside Git"
+    }
+  },
+  "partial_runtime_state": {
+    "retained_outside_git": true,
+    "file_count": 18,
+    "inventory_sha256": "6ffa585a45e54ad3aaa4cb9397ae985d0fb8ec9a7474eff4900df559d8e08e82",
+    "control_package_directory": "control/umea-v1-499a376bb1e4af1e790c",
+    "control_artifacts_present": ["authorization", "consumption_binding", "manifest", "plan", "preflight", "request", "unused_consumption_state"],
+    "execution_claim_receipt_bundle_result_audit_handoff_present": false,
+    "partial_state_deleted_or_repaired": false
+  },
+  "verification": {
+    "producer_service_stopped_after_failure": true,
+    "new_consumer_service_started": false,
+    "mcp_initialize": "NOT_RUN",
+    "mcp_tools_list": "NOT_RUN",
+    "offline_mcp_read_export_calls": 0,
+    "real_agent_tool_calls": 0,
+    "j3_fresh_execution_validation": "NOT_RUN_NO_RESULT",
+    "restart_persistence_proved": false
+  },
+  "boundary_counters": {
+    "codex_provider_inference": 0,
+    "real_agent_sessions": 0,
+    "real_agent_tool_calls": 0,
+    "market_get": 0,
+    "market_head": 0,
+    "market_post": 0,
+    "external_source_fixture_dispatch": 0,
+    "browser_use": 0,
+    "firecrawl": 0,
+    "host_security_master_acquisition": 0,
+    "host_security_master_mutation": 0,
+    "isolated_acceptance_security_master_fixture": "created inside dedicated R4 runtime root",
+    "production_code_changes": 0,
+    "production_route_changes": 0,
+    "public_schema_changes": 0,
+    "mcp_tool_count_change": 0,
+    "repository_pushes": 0
+  },
+  "derived_state": {
+    "remaining_obligations": ["real_agent_layer"],
+    "phase_j": "STARTED",
+    "roadmap_phase_j": "UNCHECKED",
+    "phase_k": "NOT_STARTED",
+    "pr_326": "OPEN_DRAFT_UNMERGED"
+  },
+  "terminal_disposition": "PHASE_J_REAL_AGENT_R4_HARD_BLOCK_PREPARATION_EXECUTION_FAILED",
+  "authorization_status": "ONE_SCENARIO_ATTEMPT_CONSUMED_NO_RETRY",
+  "real_agent_closure_credit": false,
+  "data_directory_modified": false
+}
