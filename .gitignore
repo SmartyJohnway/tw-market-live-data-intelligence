@@ -17,18 +17,10 @@ artifacts/zero_code_test/
 artifacts/latest_operator_acceptance_report.json
 artifacts/latest_operator_acceptance_report.md
 
-# Governed Security Master acquisition and compact runtime payloads are local.
-# Candidate review authority remains tracked under docs/reviews/security_master_candidates/.
-data/security_master/input_bundles/
-data/security_master/runtime_identity_indexes/
-# Installation-local Security Master releases and active selector.
-data/security_master/active.json
-data/security_master/releases/
-data/security_master/rejected/
-data/security_master/retired/
-
-# Installation-local persistent watchlist state and ephemeral confirmation data.
-data/watchlists/
+# All data/ content is installation-local runtime/user/acceptance state.
+# Canonical review and acceptance authority belongs under tracked docs/ paths.
+# A fresh clone may legitimately have no data/ directory (NOT_INITIALIZED).
+data/
 
 # Authorization consumption receipts are single-use and must not be versioned.
 # They are managed by the runtime retention policy (30-day default).

@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "35134ae437fccdaa2a95e261b2a7f81210c7175fbf9f1c05e251907c7f11ddf1",
+    "canonical_sha256": "00e6dad9fff81be1151e2ba1001396b0ef01f1fa2d48a7f17fadf235ba7fb2c5",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "d01a1cd2737df58e6e3962a976c1785933b3efbd",
-    "canonical_git_blob_sha": "85b106d762c45991764b9f82d38a0104599f0c9b"
+    "generated_from_commit": "79dcb1a7b7ad667663bb1dd10112822217337a04",
+    "canonical_git_blob_sha": "b39a8912c70d1fd69760bd94f2e5b2143ed0d5f4"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -439,12 +439,11 @@
     {
       "capability_id": "corporate_action_context",
       "description": "Quote-relevant price-basis corporate-action evidence with explicit subtype coverage and lifecycle stage.",
-      "support_status": "contract_supported",
-      "runtime_executable": false,
-      "phase_h_activation_state": "inactive",
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_h_activation_state": "selected_route_active",
       "supported_markets": [
-        "TWSE",
-        "TPEX"
+        "TWSE"
       ],
       "provisional_markets": [],
       "allowed_parameters": {},
@@ -455,8 +454,11 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "V3 contract is current, but no H2 corporate-action route has been activated",
-        "coverage and provider asymmetry remain explicit"
+        "Only the TWSE TWT48U_ALL pre-announcement route is selected; no TPEx H2 route is activated.",
+        "TWT48U_ALL provides pre-announcement context only; final TWT49U evidence remains inactive.",
+        "Capital-reduction events require manual verification; par-value changes, splits, and consolidations remain source gaps.",
+        "Coverage remains subtype-limited; insufficient subtype coverage must remain coverage_incomplete and block ordinary-return interpretation.",
+        "Owner-controlled bounded A6 use is authorized; provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED and no provider approval is claimed."
       ],
       "instrument_scope": {
         "instrument_families": [
