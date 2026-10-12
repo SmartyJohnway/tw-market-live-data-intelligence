@@ -1,0 +1,357 @@
+{
+  "schema_version": "phase_j_real_agent_attempt_3_r1_mcp_attachment_contract.v1",
+  "tranche": "PHASE_J_REAL_AGENT_ATTEMPT_3_R1",
+  "starting_authority": {
+    "repository": "SmartyJohnway/tw-market-live-data-intelligence",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "head": "2de3db62d6c63eea26e41f7b0d3b6c4958d41bc6",
+    "tree": "5996666cf9c47f63020ff908f79c3729072f0f89",
+    "cached_remote_pr_head": "2de3db62d6c63eea26e41f7b0d3b6c4958d41bc6",
+    "pr_number": 326,
+    "pr_state": "OPEN",
+    "pr_draft": true,
+    "merged": false,
+    "independent_review_id": "5486947847"
+  },
+  "attempt_3_history": {
+    "disposition": "PHASE_J_REAL_AGENT_ATTEMPT_3_HARD_BLOCK_MCP_WITNESS_PROXY_NOT_ATTACHED",
+    "authorization_consumed": true,
+    "immutable": true,
+    "inference_launched_once": true,
+    "semantic_mcp_calls": 0,
+    "result_audit_handoff_lineage_obtained": false,
+    "closure_credit": false
+  },
+  "independent_root_cause": {
+    "classification": "FORMAL_CODEX_SESSION_EFFECTIVE_MCP_ATTACHMENT_NOT_ESTABLISHED",
+    "proxy_defect_proven": false,
+    "r4_r2_package_defect_proven": false,
+    "direct_stdio_initialize_tools_list_passed_before_attempt": true,
+    "codex_mcp_list_phase_j_witness_present_before_attempt": false,
+    "formal_proxy_log_created_in_attempt_3": false,
+    "historical_omitted_cli_argument": "NOT_PROVEN"
+  },
+  "codex_runtime": {
+    "executable": "C:\\Users\\weitang\\AppData\\Local\\OpenAI\\Codex\\bin\\9691020b546a15b2\\codex.exe",
+    "version": "codex-cli 0.160.1",
+    "authentication_state": "NOT_CHECKED_IN_R3_R1",
+    "provider_inference_this_tranche": 0,
+    "ignore_user_config_auth_behavior": "CLI help states authentication continues to use CODEX_HOME"
+  },
+  "launch_contract": {
+    "schema_version": "phase_j_real_agent_attempt_3_r1_launch_contract.v1",
+    "codex": {
+      "executable": "C:\\Users\\weitang\\AppData\\Local\\OpenAI\\Codex\\bin\\9691020b546a15b2\\codex.exe",
+      "version": "codex-cli 0.160.1",
+      "formal_command": [
+        "C:\\Users\\weitang\\AppData\\Local\\OpenAI\\Codex\\bin\\9691020b546a15b2\\codex.exe",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--json",
+        "--output-last-message",
+        "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\agent-final.txt",
+        "--cd",
+        "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence",
+        "-c",
+        "mcp_servers.phase_j_witness={args=[\"D:\\\\Codex-Workspace\\\\projects\\\\tw-market-live-data-intelligence\\\\scripts\\\\phase_j_real_agent_attempt2_proxy.py\",\"--log\",\"D:\\\\Codex-Workspace\\\\runtime\\\\tw-market-live-data-intelligence\\\\phase-j-real-agent-r4-r2\\\\j1-21-preparation-2026-10-12\\\\attempt4-launch-contract-2026-10-12\\\\witness-events.jsonl\",\"--control-package-id\",\"umea-v1-64317f4f3435611c2bb5\"],command=\"C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\",cwd=\"D:\\\\Codex-Workspace\\\\projects\\\\tw-market-live-data-intelligence\",enabled=true,env={PHASEJ_WITNESS_PROXY_LOG=\"D:\\\\Codex-Workspace\\\\runtime\\\\tw-market-live-data-intelligence\\\\phase-j-real-agent-r4-r2\\\\j1-21-preparation-2026-10-12\\\\attempt4-launch-contract-2026-10-12\\\\witness-events.jsonl\",UNIFIED_MARKET_EVIDENCE_SERVICE_URL=\"http://127.0.0.1:18264\"},required=true,startup_timeout_sec=30}",
+        "-"
+      ],
+      "ignore_user_config": true,
+      "configuration_overrides": [
+        "mcp_servers.phase_j_witness={args=[\"D:\\\\Codex-Workspace\\\\projects\\\\tw-market-live-data-intelligence\\\\scripts\\\\phase_j_real_agent_attempt2_proxy.py\",\"--log\",\"D:\\\\Codex-Workspace\\\\runtime\\\\tw-market-live-data-intelligence\\\\phase-j-real-agent-r4-r2\\\\j1-21-preparation-2026-10-12\\\\attempt4-launch-contract-2026-10-12\\\\witness-events.jsonl\",\"--control-package-id\",\"umea-v1-64317f4f3435611c2bb5\"],command=\"C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\",cwd=\"D:\\\\Codex-Workspace\\\\projects\\\\tw-market-live-data-intelligence\",enabled=true,env={PHASEJ_WITNESS_PROXY_LOG=\"D:\\\\Codex-Workspace\\\\runtime\\\\tw-market-live-data-intelligence\\\\phase-j-real-agent-r4-r2\\\\j1-21-preparation-2026-10-12\\\\attempt4-launch-contract-2026-10-12\\\\witness-events.jsonl\",UNIFIED_MARKET_EVIDENCE_SERVICE_URL=\"http://127.0.0.1:18264\"},required=true,startup_timeout_sec=30}"
+      ],
+      "profile_identity": "EXPLICIT_COMMAND_LINE_MCP_OVERRIDE_NO_PROFILE",
+      "json_event_output_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\codex-events.jsonl",
+      "stderr_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\codex-stderr.txt",
+      "final_output_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\agent-final.txt",
+      "stdin_prompt_path": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\docs\\governance\\phase_j\\PHASE_J_REAL_AGENT_ATTEMPT_3_R1_NEUTRAL_PROMPT_2026-10-12.txt"
+    },
+    "repository_cwd": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence",
+    "mcp_server": {
+      "name": "phase_j_witness",
+      "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "args": [
+        "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\scripts\\phase_j_real_agent_attempt2_proxy.py",
+        "--log",
+        "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\witness-events.jsonl",
+        "--control-package-id",
+        "umea-v1-64317f4f3435611c2bb5"
+      ],
+      "cwd": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence",
+      "env": {
+        "UNIFIED_MARKET_EVIDENCE_SERVICE_URL": "http://127.0.0.1:18264",
+        "PHASEJ_WITNESS_PROXY_LOG": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\witness-events.jsonl"
+      },
+      "enabled": true,
+      "required": true,
+      "startup_timeout_sec": 30
+    },
+    "proxy": {
+      "python_executable": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "script_absolute_path": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\scripts\\phase_j_real_agent_attempt2_proxy.py",
+      "argv": [
+        "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\scripts\\phase_j_real_agent_attempt2_proxy.py",
+        "--log",
+        "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\witness-events.jsonl",
+        "--control-package-id",
+        "umea-v1-64317f4f3435611c2bb5"
+      ],
+      "cwd": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence"
+    },
+    "control_package_id": "umea-v1-64317f4f3435611c2bb5",
+    "local_service_url": "http://127.0.0.1:18264",
+    "runtime_root": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12",
+    "prompt_artifact_path": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\docs\\governance\\phase_j\\PHASE_J_REAL_AGENT_ATTEMPT_3_R1_NEUTRAL_PROMPT_2026-10-12.txt",
+    "prompt_sha256": "8ee5459c7217ff34d091385f588d8b53794a1053ace2a44e5b262e4f6757621c",
+    "semantic_call_policy": {
+      "maximum_calls": 2,
+      "ordered_tools": [
+        "market_read_result",
+        "market_export_ai_handoff"
+      ],
+      "exact_arguments": {
+        "control_package_id": "umea-v1-64317f4f3435611c2bb5"
+      }
+    },
+    "expected_tools": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "provider_launch_authorized_in_this_tranche": false,
+    "prelaunch_gates": {
+      "formal_session_mcp_configuration_verified": true,
+      "required_mcp_server": "phase_j_witness",
+      "local_service_health_required": true,
+      "exact_six_tool_probe_required": true,
+      "witness_log_path_must_not_exist": true,
+      "provider_session_launched_in_this_tranche": false
+    }
+  },
+  "launch_contract_sha256": "343f15876d6a0eb34a283719c8e85a824270285faaa3f187392c8a10589cded0",
+  "prompt": {
+    "repository_path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_3_R1_NEUTRAL_PROMPT_2026-10-12.txt",
+    "sha256": "8ee5459c7217ff34d091385f588d8b53794a1053ace2a44e5b262e4f6757621c",
+    "neutral": true,
+    "expected_stale_wording_injected": false,
+    "executed": false
+  },
+  "dry_preflight": {
+    "local_service": {
+      "health": "PASS",
+      "service_contract": "unified_market_evidence_local_service.v2",
+      "capability_count": 14,
+      "control_root": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\control",
+      "semantic_result_read": false,
+      "stopped_after_preflight": true
+    },
+    "codex_config_inspection": {
+      "isolated_codex_home": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\codex-home",
+      "provider_session_started": false,
+      "mcp_list_exit": 0,
+      "mcp_get_exit": 0,
+      "effective_server_count": 1,
+      "server_name": "phase_j_witness",
+      "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "args": [
+        "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\scripts\\phase_j_real_agent_attempt2_proxy.py",
+        "--log",
+        "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\witness-events.jsonl",
+        "--control-package-id",
+        "umea-v1-64317f4f3435611c2bb5"
+      ],
+      "cwd": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence",
+      "enabled": true,
+      "required": true,
+      "required_boolean_type_negative_control": "string rejected; expected boolean",
+      "startup_timeout_sec": 30,
+      "env_names": [
+        "UNIFIED_MARKET_EVIDENCE_SERVICE_URL",
+        "PHASEJ_WITNESS_PROXY_LOG"
+      ],
+      "unrelated_servers_loaded": false
+    },
+    "proxy_stdio_probe": {
+      "execution": "exact contract command/args/cwd/env",
+      "initialize": "PASS",
+      "tools_list": "PASS",
+      "protocol_version": "2025-11-25",
+      "server_name": "unified_market_evidence_mcp_adapter.v2",
+      "server_version": "unified_market_evidence_mcp_adapter.v2",
+      "tool_count": 6,
+      "tool_names": [
+        "market_describe_capabilities",
+        "market_export_ai_handoff",
+        "market_fetch_evidence",
+        "market_preview_request",
+        "market_read_result",
+        "market_validate_request"
+      ],
+      "semantic_calls": 0,
+      "proxy_exit_code": 0,
+      "blocked_calls": 0,
+      "probe_log_absolute_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\initialize-tools-probe-events.jsonl",
+      "proxy_probe_log_sha256": "60b855dff7a3366ad410a6df3cddd16559b70fed5195c3f667d65b6374f32753",
+      "future_formal_log_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12\\attempt4-launch-contract-2026-10-12\\witness-events.jsonl",
+      "future_formal_log_path_absent_after_probe": true
+    },
+    "config_parser_negative_control": {
+      "mutated_required_value": "\"yes\"",
+      "exit_code": 1,
+      "rejected_as": "expected a boolean",
+      "provider_inference": 0
+    }
+  },
+  "immutable_authorities": {
+    "files": [
+      {
+        "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_3_RECEIPT_2026-10-12.json",
+        "sha256": "5fe1fce46efd86a8d6a963420b9875beda5b29a509589ad11e8026d58dcfe6d8"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_3_RECEIPT_2026-10-12.md",
+        "sha256": "f4af9c4f5c895c1d12caae675b5ef795cdb6de61c94ecc8cc496ac69298b1794"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_3_OUTPUT_2026-10-12.txt",
+        "sha256": "a8a6d0ec917934c34c4b36c76b0e33aae0dcf91bfc658a299b9d2e07aaff6352"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_R4_R2_PERSISTED_DETERMINISTIC_PACKAGE_PREPARATION_2026-10-12.json",
+        "sha256": "c55e3821ad666bf79c6712c496fea6629ce58912967ed472fe904e2e2177c7a4"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_R4_R2_PERSISTED_DETERMINISTIC_PACKAGE_PREPARATION_2026-10-12.md",
+        "sha256": "80ccfb8cd3ad4890d929d62cfb14bb5b9037451ccd28e8636a2c81fca83f8363"
+      }
+    ],
+    "runtime_package": {
+      "runtime_root": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\j1-21-preparation-2026-10-12",
+      "control_package_id": "umea-v1-64317f4f3435611c2bb5",
+      "result_id": "umeresult-v3-63bd91d7e710438dbdd6",
+      "audit_package_id": "umeap-v3-9063d2331c6cc7718a1e",
+      "file_count": 16,
+      "files": [
+        {
+          "byte_size": 11279,
+          "relative_path": "ai_context/unified_market_evidence_result.v3.json",
+          "sha256": "819599784cd1fc827711229ad7f743db9996fcc3c5e23d3fbd453b6ea05e2a11"
+        },
+        {
+          "byte_size": 7504,
+          "relative_path": "ai_context/unified_market_evidence_result.v3.md",
+          "sha256": "b1fa8e28ef25f4f369904f6d8bf17047e3adff46d1c497a8f323396384bd8e57"
+        },
+        {
+          "byte_size": 6667,
+          "relative_path": "audit/unified_market_evidence_audit_package.v3.json",
+          "sha256": "d779139398f594ab0ceae6bcd6d9c2ec9e35f4f24e4f23907f9caade897c6deb"
+        },
+        {
+          "byte_size": 1768,
+          "relative_path": "bundles/umea-v1-64317f4f3435611c2bb5.evidence-bundle.json",
+          "sha256": "e8336fb01b6fae25656f4b3cc6fd5da8c420fbaf5f5e2435418816f8eab7ed79"
+        },
+        {
+          "byte_size": 1392,
+          "relative_path": "claims/umea-v1-64317f4f3435611c2bb5.consumption-record.json",
+          "sha256": "36485443be1a36d3ec0e6063cba78776047ed95c3374a7fee02672a9da0a1b2b"
+        },
+        {
+          "byte_size": 5460,
+          "relative_path": "control/authorization.json",
+          "sha256": "09fedd2655f642847ea3f5a5a4f708671b062c11431ead398e6dfe9c309df82e"
+        },
+        {
+          "byte_size": 2664,
+          "relative_path": "control/consumption_binding.json",
+          "sha256": "2b696e4d6c8833864eb2dc5fbf132c02d7160d3009350ff464ba762b4272d2a4"
+        },
+        {
+          "byte_size": 957,
+          "relative_path": "control/manifest.json",
+          "sha256": "74bdb384409f21d4d34482a0a8be6ebd630b28be271c69f301476798654874e4"
+        },
+        {
+          "byte_size": 3078,
+          "relative_path": "control/plan.json",
+          "sha256": "cc4778079a599473617bf50d44d5283be434fdc8e378f02e8a261f8bc90645b4"
+        },
+        {
+          "byte_size": 7793,
+          "relative_path": "control/preflight.json",
+          "sha256": "66ce261b88533a4accc962b29b8ecc02b5b44143126fa0cffec25a902c8ceb34"
+        },
+        {
+          "byte_size": 266,
+          "relative_path": "control/request.json",
+          "sha256": "e61e588912340f8aafa63e387b6dc563aa01b0d90e186e3a89ee1b1426788fc9"
+        },
+        {
+          "byte_size": 353,
+          "relative_path": "control/unused_consumption_state.json",
+          "sha256": "2973286e02eaffb4a6edd1ac3f55355a61d77b2697d1746af95062d40b6d3ec0"
+        },
+        {
+          "byte_size": 9248,
+          "relative_path": "evidence/umeop-op-v1-37e7ffc42102745298c7.json",
+          "sha256": "5d5c49a403d0d5de3df37fb51cf3c7f6920d1f78a50e4e2e85e2c1cf7aba50f8"
+        },
+        {
+          "byte_size": 1036,
+          "relative_path": "finalization/umea-v1-64317f4f3435611c2bb5.finalization-journal.json",
+          "sha256": "5d79221985810e8a31392bdcb6ec13768c53fc8f09a9d3ba0b7b375265eb6604"
+        },
+        {
+          "byte_size": 3170,
+          "relative_path": "mode_c/f3_validation.json",
+          "sha256": "755b03daf6a7a081777ea10ba03b6ac75b86e8a97c3af67f804ece526c50cbf9"
+        },
+        {
+          "byte_size": 1472,
+          "relative_path": "receipts/umea-v1-64317f4f3435611c2bb5.execution-receipt.json",
+          "sha256": "980b080ec13ffc01399804a7953d63bae841694c81d5a13c3aeeebc2cd91f39b"
+        }
+      ],
+      "inventory_sha256": "caa4b43c67b235ce104c0277b1493031466d39159591e87f56c8765ed0c09096",
+      "recomputed_inventory_sha256": "caa4b43c67b235ce104c0277b1493031466d39159591e87f56c8765ed0c09096",
+      "result_canonical_sha256": "d6737011bdf12e3893bbc0d6c54d98a4a472c7ebd34692276e84b250b87b0db9",
+      "audit_canonical_sha256": "490145920801afd443ff8f41bd9dcea97985bc362c726c89f1037fc1f047427d",
+      "handoff_file_sha256": "b1fa8e28ef25f4f369904f6d8bf17047e3adff46d1c497a8f323396384bd8e57",
+      "recomputed_from_physical_files": true
+    }
+  },
+  "boundaries": {
+    "provider_inference": 0,
+    "provider_sessions_launched": 0,
+    "real_agent_sessions": 0,
+    "semantic_mcp_calls": 0,
+    "j1_21_executions": 0,
+    "source_fixture_invocation_delta": 0,
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0,
+    "browser_use": 0,
+    "firecrawl": 0,
+    "security_master_acquisition": 0,
+    "security_master_mutation": 0,
+    "production_code_changes": 0,
+    "public_schema_changes": 0,
+    "mcp_tool_count_change": 0
+  },
+  "derived_state": {
+    "remaining_obligations": [
+      "real_agent_layer"
+    ],
+    "phase_j": "STARTED",
+    "roadmap_phase_j": "UNCHECKED",
+    "phase_k": "NOT_STARTED",
+    "pr_state": "OPEN_DRAFT_UNMERGED",
+    "closure_credit": false
+  },
+  "disposition": "PHASE_J_REAL_AGENT_ATTEMPT_3_R1_FORMAL_MCP_ATTACHMENT_CONTRACT_READY_FOR_INDEPENDENT_REVIEW"
+}
