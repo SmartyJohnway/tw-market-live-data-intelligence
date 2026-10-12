@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K K0 governance entry STARTED on 2026-10-12; no host evaluation executed"
+status_reconciled_through: "Phase J COMPLETE; Phase K K1 minimal common conformance scenario set defined on 2026-10-12; host evaluation count 0"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -38,8 +38,8 @@ tags:
 > candidates are not phase-exit prerequisites. Phase I is checked complete by
 > the final exit review. Phase J is checked complete by the 2026-10-12
 > closure authority reconciliation. Post-Phase-J portability/runtime hygiene
-(PR #327) is merged. Phase K has STARTED at the K0 governance-entry stage;
-no host evaluation has run.
+> (PR #327) and K0 Charter PR #328 are merged. Phase K K1 has defined the minimal
+> common conformance scenario set; host evaluation count remains zero.
 
 ---
 
@@ -1316,13 +1316,14 @@ Golden scenarios 應成為 new source、new evidence family、new MCP version、
 
 # [ ] Phase K — Multi-Agent Compatibility & Evaluation
 
-### Current entry — K0 (2026-10-12)
+### Current entry — K1 minimal common conformance set (2026-10-12)
 
-Phase K has started with the governance-only K0 tranche. The canonical charter
-is `docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`
-and establishes: **Validate interoperability, not behavioral conformity.** No
-host evaluation has been executed. The Phase K checklist remains unchecked
-until the full phase is complete.
+K0 established the canonical Lean Compatibility Charter: **Validate interoperability,
+not behavioral conformity.** K1 now defines eight common, market/source-network-free
+compatibility scenarios in
+`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`.
+No host evaluation has been executed. The Phase K checklist remains unchecked until
+the full phase is complete.
 
 ## K.0 Phase Goal
 
