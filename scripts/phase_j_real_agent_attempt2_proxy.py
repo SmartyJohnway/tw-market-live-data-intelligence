@@ -63,7 +63,11 @@ async def transport_probe() -> int:
     from mcp import ClientSession, StdioServerParameters
     from mcp.client.stdio import stdio_client
 
-    params = StdioServerParameters(command=sys.executable, args=[str(Path(__file__).resolve())])
+    probe_log = Path(tempfile.gettempdir()) / f"phasej_proxy_probe_{os.getpid()}.jsonl"
+    params = StdioServerParameters(
+        command=sys.executable,
+        args=[str(Path(__file__).resolve()), "--log", str(probe_log)],
+    )
     async with stdio_client(params) as (read_stream, write_stream):
         async with ClientSession(read_stream, write_stream) as session:
             initialized = await session.initialize()
@@ -94,7 +98,8 @@ def main() -> int:
     pending: dict[object, str] = {}
     calls: list[str] = []
     blocked = 0
-    end = threading.Event()
+    tools_ready = threading.Event()
+    tools_valid = False
 
     def client_to_server() -> None:
         nonlocal blocked
@@ -115,7 +120,7 @@ def main() -> int:
                 params = message.get("params") or {}
                 name = params.get("name")
                 args = params.get("arguments") or {}
-                valid = tool_call_is_authorized(name, args, calls)
+                valid = tools_ready.is_set() and tools_valid and tool_call_is_authorized(name, args, calls)
                 if not valid:
                     blocked += 1
                     append_event({"event": "blocked_tool_call", "name": name, "reason": "tool_order_or_arguments_or_call_limit"}, lock)
@@ -132,9 +137,9 @@ def main() -> int:
             child.stdin.close()
         except OSError:
             pass
-        end.set()
 
     def server_to_client() -> None:
+        nonlocal tools_valid
         for raw in child.stdout:
             try:
                 message = json.loads(raw)
@@ -148,7 +153,9 @@ def main() -> int:
             if kind == "tools/list":
                 tools = (message.get("result") or {}).get("tools", [])
                 names = sorted(tool.get("name", "") for tool in tools)
-                append_event({"event": "tools_list", "count": len(names), "names": names, "exact_six": set(names) == EXPECTED_TOOLS and len(names) == 6}, lock)
+                tools_valid = set(names) == EXPECTED_TOOLS and len(names) == 6
+                tools_ready.set()
+                append_event({"event": "tools_list", "count": len(names), "names": names, "exact_six": tools_valid}, lock)
             elif kind == "initialize":
                 server_info = (message.get("result") or {}).get("serverInfo") or {}
                 append_event({"event": "initialize_result", "protocolVersion": (message.get("result") or {}).get("protocolVersion"), "server_name": server_info.get("name"), "server_version": server_info.get("version")}, lock)
@@ -163,7 +170,6 @@ def main() -> int:
                 }, lock)
             sys.stdout.buffer.write(raw)
             sys.stdout.buffer.flush()
-        end.set()
 
     left = threading.Thread(target=client_to_server, daemon=True)
     right = threading.Thread(target=server_to_client, daemon=True)
@@ -183,5 +189,11 @@ def main() -> int:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--probe", action="store_true")
+    parser.add_argument("--log")
     options = parser.parse_args()
+    if options.log:
+        LOG_PATH = Path(options.log)
+    if not options.probe and LOG_PATH.exists():
+        print("witness proxy log path already exists", file=sys.stderr)
+        raise SystemExit(2)
     raise SystemExit(asyncio.run(transport_probe()) if options.probe else main())
