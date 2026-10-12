@@ -1,7 +1,7 @@
 # Phase K K0 — Lean Compatibility Charter
 
-**Date:** 2026-10-12  
-**Status:** Canonical K0 governance charter  
+**Date:** 2026-10-12
+**Status:** Canonical K0 governance charter
 **Product philosophy:** `PORTABILITY_FIRST`; `CORE_INVARIANTS_MINIMAL`; `HOST_BEHAVIOR_FLEXIBLE`; `ACCEPTANCE_MACHINERY_DISPOSABLE`; `USER_EXPERIENCE_SIMPLE`; `VALIDATE_INTEROPERABILITY_NOT_BEHAVIORAL_CONFORMITY`.
 
 > **Validate interoperability, not behavioral conformity.**
