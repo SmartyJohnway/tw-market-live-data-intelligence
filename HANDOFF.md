@@ -3,13 +3,15 @@
 ## Current Phase J closure handoff (2026-10-12)
 
 Roadmap Phase J is **COMPLETE** by
-`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. The historical Attempt #6
-`HARD_BLOCK_TOOL_POLICY_VIOLATION` remains unchanged, but its actual real-agent
-MCP Result/Audit lineage and correct stale/currentness/no-trading interpretation
-satisfy the Roadmap-level `real_agent_layer`. There are no remaining Phase J
-obligations and no Attempt #7 is required. Tool-call sequencing and a successful
-host-level AI Handoff export witness are deferred to Phase K compatibility work.
-Phase K remains `NOT_STARTED`; PR #326 remains OPEN / Draft / unmerged.
+`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. Historical Attempt #6 and its
+interpretation remain unchanged; no Attempt #7 is required. Post-Phase-J
+portability/runtime hygiene is complete: PR #326 and PR #327 are merged, and
+canonical main includes both. Phase K has STARTED at K0 governance entry. The
+Lean Compatibility Charter is
+`docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`.
+No multi-agent execution or host evaluation has been performed. The next allowed
+step after K0 review is K1 — Minimal Common Conformance Scenario Set. Do not
+start broad multi-agent matrix execution before that scenario set is reviewed.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
@@ -312,7 +314,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K remains NOT_STARTED unless separately authorized.**
+Phase K K0 governance entry is STARTED; no host evaluation has run.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The

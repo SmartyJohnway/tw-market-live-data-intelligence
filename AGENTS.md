@@ -8,8 +8,10 @@ unchanged with its harness-level `HARD_BLOCK_TOOL_POLICY_VIOLATION`, while its
 real-agent MCP Result/Audit lineage and correct stale/currentness/no-trading
 interpretation satisfy the Roadmap-level `real_agent_layer`. No Attempt #7 is
 required. `tool-call sequencing` and a successful host-level AI Handoff export
-witness are Phase K compatibility carry-forwards, not Phase J blockers. Phase K
-remains `NOT_STARTED`; PR #326 remains OPEN / Draft / unmerged.
+witness are Phase K compatibility carry-forwards, not Phase J blockers. PR #326
+and post-Phase-J portability PR #327 are merged; canonical main includes both.
+Phase K K0 governance entry is STARTED; no host evaluation has run. The current
+charter is `docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`.
 
 Use `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`
 as the current Phase J closure authority. Older dated Phase-J-not-started text in
@@ -131,7 +133,7 @@ As of this governance consolidation:
   Owner-accepted. I3 is production active with two sources, one logical route,
   and two runtime market registrations. The Phase I final exit review passed.
   Phase J was later closed separately by the 2026-10-12 closure authority
-  reconciliation; Phase K remains not started.**
+  reconciliation; Phase K K0 governance entry is STARTED.**
 
 Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
 current runtime truth. I2-A2 remains historical dormant implementation truth; A3 used its fresh
@@ -140,7 +142,7 @@ Current I2 production execution is permitted only through the normal explicit,
 approval-bound I2-A4 route. I3-A3 and I3-A4 are closed and accepted; future
 I3 authority changes still require separate explicit Owner authorization.
 Phase I final exit review is PASS. Phase J is separately COMPLETE under the
-2026-10-12 closure authority reconciliation; Phase K remains NOT_STARTED.
+2026-10-12 closure authority reconciliation. Phase K K0 governance entry is STARTED; no host evaluation has run.
 
 ## 5. Authority hierarchy
 
@@ -401,4 +403,14 @@ Owner-accepted bounded-live adapter evidence. I3-A4 production is active and
 Owner-accepted; no live acquisition occurred in the activation/closure tranches.
 Preserve accepted evidence; do not repeat A3 or rollback.
 Phase I is complete by its final exit review. Phase J is complete by the
-2026-10-12 closure authority reconciliation. Phase K remains NOT_STARTED.
+2026-10-12 closure authority reconciliation. Phase K K0 governance entry is STARTED; no host evaluation has run.
+
+## Current Phase K K0 working rules (2026-10-12)
+
+- The canonical product contract outranks harness convenience rules.
+- Label stricter harness restrictions `HARNESS_ONLY`; they do not by themselves establish a product compatibility failure.
+- Host behavior may vary unless the canonical contract defines a real precondition.
+- Prefer documentation and adapters over host-specific core forks.
+- Acceptance runtimes must not become product dependencies.
+- Evaluate portability from clean environments.
+- User-facing setup must not expose internal governance ceremony.
