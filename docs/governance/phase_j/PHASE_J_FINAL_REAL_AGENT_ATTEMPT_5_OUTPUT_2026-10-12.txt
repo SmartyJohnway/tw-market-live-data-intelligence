@@ -1,0 +1,3 @@
+目前訊息中未包含控制套件的 `control_package_id`，因此尚未讀取結果或 AI handoff，也無法判定觀測的時效性。
+
+請提供該 ID。我會僅使用 `market_read_result` 與 `market_export_ai_handoff` 讀取既有證據，說明時間欄位、currentness 與安全解讀限制；不取得新市場資料，也不提供交易建議或訊號。
