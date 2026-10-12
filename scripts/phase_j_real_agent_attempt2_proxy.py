@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -13,7 +14,7 @@ import threading
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTROL_PACKAGE_ID = "umea-v1-559d58856cff60f2f2e0"
+CONTROL_PACKAGE_ID_PATTERN = re.compile(r"^umea-v1-[0-9a-f]{20}$")
 EXPECTED_TOOLS = {
     "market_describe_capabilities", "market_validate_request",
     "market_preview_request", "market_read_result",
@@ -49,12 +50,18 @@ def collect_ids(value: object) -> dict[str, str]:
     return found
 
 
-def tool_call_is_authorized(name: object, arguments: object, calls: list[str]) -> bool:
+def tool_call_is_authorized(
+    name: object,
+    arguments: object,
+    calls: list[str],
+    control_package_id: str,
+) -> bool:
     expected = ALLOWED_SEQUENCE[len(calls)] if len(calls) < len(ALLOWED_SEQUENCE) else None
     return (
-        name == expected
+        CONTROL_PACKAGE_ID_PATTERN.fullmatch(control_package_id) is not None
+        and name == expected
         and isinstance(arguments, dict)
-        and arguments == {"control_package_id": CONTROL_PACKAGE_ID}
+        and arguments == {"control_package_id": control_package_id}
     )
 
 
@@ -86,7 +93,7 @@ async def transport_probe() -> int:
     return 0 if exact else 1
 
 
-def main() -> int:
+def main(control_package_id: str) -> int:
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     child = subprocess.Popen(
         [sys.executable, str(ROOT / "scripts" / "run_unified_market_evidence_mcp.py")],
@@ -120,7 +127,9 @@ def main() -> int:
                 params = message.get("params") or {}
                 name = params.get("name")
                 args = params.get("arguments") or {}
-                valid = tools_ready.is_set() and tools_valid and tool_call_is_authorized(name, args, calls)
+                valid = tools_ready.is_set() and tools_valid and tool_call_is_authorized(
+                    name, args, calls, control_package_id
+                )
                 if not valid:
                     blocked += 1
                     append_event({"event": "blocked_tool_call", "name": name, "reason": "tool_order_or_arguments_or_call_limit"}, lock)
@@ -130,7 +139,7 @@ def main() -> int:
                     continue
                 calls.append(name)
                 pending[request_id] = name
-                append_event({"event": "tool_call", "ordinal": len(calls), "name": name, "arguments": {"control_package_id": CONTROL_PACKAGE_ID}}, lock)
+                append_event({"event": "tool_call", "ordinal": len(calls), "name": name, "arguments": {"control_package_id": control_package_id}}, lock)
             child.stdin.write(raw)
             child.stdin.flush()
         try:
@@ -190,10 +199,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--probe", action="store_true")
     parser.add_argument("--log")
+    parser.add_argument("--control-package-id")
     options = parser.parse_args()
     if options.log:
         LOG_PATH = Path(options.log)
     if not options.probe and LOG_PATH.exists():
         print("witness proxy log path already exists", file=sys.stderr)
         raise SystemExit(2)
-    raise SystemExit(asyncio.run(transport_probe()) if options.probe else main())
+    if options.probe:
+        raise SystemExit(asyncio.run(transport_probe()))
+    if not options.control_package_id or not CONTROL_PACKAGE_ID_PATTERN.fullmatch(options.control_package_id):
+        parser.error("--control-package-id must be an explicit umea-v1-* package identity")
+    raise SystemExit(main(options.control_package_id))
