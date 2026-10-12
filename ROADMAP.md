@@ -1316,7 +1316,7 @@ Golden scenarios 應成為 new source、new evidence family、new MCP version、
 
 # [ ] Phase K — Multi-Agent Compatibility & Evaluation
 
-### Current entry ? K1 minimal common conformance set (2026-10-12)
+### Current entry — K1 minimal common conformance set (2026-10-12)
 
 K0 established the canonical Lean Compatibility Charter: **Validate interoperability,
 not behavioral conformity.** K1 now defines eight common, market/source-network-free

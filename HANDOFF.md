@@ -10,7 +10,7 @@ Charter PR #328 is merged. Phase K is STARTED. K1 defines the eight-scenario
 Minimal Common Conformance Scenario Set at
 `docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`,
 under the K0 Lean Compatibility Charter. No multi-agent execution or host evaluation
-has been performed. After K1 review/merge, the next allowed step is K2 ? Small
+has been performed. After K1 review/merge, the next allowed step is K2 — Small
 Multi-Host Pilot & Compatibility Matrix. Do not start a broad matrix or fresh
 market/source acquisition as part of the initial K2 pilot.
 
