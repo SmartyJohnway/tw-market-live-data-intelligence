@@ -1,6 +1,6 @@
 # PROJECT.md — Current Project Authority
 
-## Current Phase J closure boundary (2026-10-12)
+## Current Phase K boundary (2026-10-12)
 
 Roadmap Phase J — Integrated Research Acceptance is **COMPLETE** under
 `PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. Attempt #6 remains immutable
@@ -9,11 +9,12 @@ real-agent Result/Audit lineage and correct stale/currentness/no-trading
 interpretation satisfy the Roadmap-level `real_agent_layer` obligation.
 `remaining_obligations=[]`; Attempt #7 is not required. Tool-call sequencing and
 a successful host-level AI Handoff export witness carry forward to Phase K
-compatibility evaluation. PR #326 and post-Phase-J portability PR #327 are
-merged, and canonical main includes both. Phase K has STARTED at the K0
-governance-entry stage; no host evaluation has been executed. The current
-Phase K authority is
-`docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`.
+compatibility evaluation. PR #326, post-Phase-J portability PR #327, and K0
+Charter PR #328 are merged. Phase K is STARTED. K1 defines the eight-scenario
+Minimal Common Conformance Scenario Set; host evaluation count remains zero.
+Current Phase K authorities are
+`docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md` and
+`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`.
 See `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`.
 
 ## Current I3 production boundary (2026-10-05)
@@ -275,7 +276,7 @@ Current interpretation:
   and active with two sources, one logical route, and two runtime registrations;
   The Phase I final exit review passed; optional candidates remain deferred.
   Phase J is complete under the 2026-10-12 closure authority reconciliation;
-  Phase K K0 governance entry is STARTED; host evaluation has not been executed.
+  Phase K K1 scenario definition is current; host evaluation count remains zero.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is
