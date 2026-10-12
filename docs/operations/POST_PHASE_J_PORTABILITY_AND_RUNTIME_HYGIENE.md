@@ -51,3 +51,9 @@ Two Git-external/local cleanup actions were completed after Phase J merged:
 Before candidate removal, its `index.json` SHA-256 exactly matched the active qualified release index (`665d69e53588fa6cd723e434902946a43ac4f712920b0c4ec2adf91b556f4c10`) and its qualification hash also matched. `load_active_identity_service()` resolved `TWSE:2330` successfully both before and after deletion.
 
 Total directly reclaimed in this pass: approximately **827.5 MiB**. No qualified rollback release, active pointer/release, watchlist, retained Phase-J package, or Attempt 4–6 evidence was deleted.
+
+## Portable Skill synchronization finding
+
+The first clean-room clone exposed a pre-existing sync defect already present on merged `main`: the canonical V3 capability catalog SHA-256 was `00e6dad9fff81be1151e2ba1001396b0ef01f1fa2d48a7f17fadf235ba7fb2c5`, while the checked-in portable Skill projection still recorded `35134ae437fccdaa2a95e261b2a7f81210c7175fbf9f1c05e251907c7f11ddf1`.
+
+Regeneration with the existing `scripts/generate_portable_catalog.py` corrected only generated portable artifacts. The meaningful product truth synchronized into the portable projection is the already-canonical `corporate_action_context` state: TWSE selected-route runtime executable, no TPEx H2 activation, with the existing bounded coverage/provider caveats. No new capability or route was introduced by this maintenance work.
