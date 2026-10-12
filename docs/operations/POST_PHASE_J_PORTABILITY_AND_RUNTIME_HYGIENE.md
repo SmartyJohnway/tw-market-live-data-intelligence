@@ -57,3 +57,31 @@ Total directly reclaimed in this pass: approximately **827.5 MiB**. No qualified
 The first clean-room clone exposed a pre-existing sync defect already present on merged `main`: the canonical V3 capability catalog SHA-256 was `00e6dad9fff81be1151e2ba1001396b0ef01f1fa2d48a7f17fadf235ba7fb2c5`, while the checked-in portable Skill projection still recorded `35134ae437fccdaa2a95e261b2a7f81210c7175fbf9f1c05e251907c7f11ddf1`.
 
 Regeneration with the existing `scripts/generate_portable_catalog.py` corrected only generated portable artifacts. The meaningful product truth synchronized into the portable projection is the already-canonical `corporate_action_context` state: TWSE selected-route runtime executable, no TPEx H2 activation, with the existing bounded coverage/provider caveats. No new capability or route was introduced by this maintenance work.
+
+## Additional local-state cleanup
+
+After confirming the default production loader uses the installation-local active release and does not fall back to the legacy compact pointer, two superseded local build/runtime classes were removed:
+
+- old Security Master input bundles: **414.14 MiB**;
+- legacy compact `runtime_identity_indexes`: **70.10 MiB**.
+
+The active release source snapshot (`dryrun-m8r06-01b-20260926T151849Z`) was not one of the removed old input bundles. Future explicit live updates recreate their own input bundle directory. The legacy compact pointer remains a migration/test adapter in source control but is not the default production authority.
+
+After cleanup, the installation-local `data/` tree is approximately **563.41 MiB (0.55 GiB)** and still contains all six qualified releases, including the active release. Default production identity loading and `TWSE:2330` resolution were verified after deletion.
+
+Combined direct reclamation from the pre-cleanup machine state is approximately **1,311.7 MiB (1.28 GiB)**: 741.45 MiB Phase-J Codex distribution + 86.05 MiB duplicate candidate + 484.24 MiB old input/legacy-index material.
+
+## Clean-room portability proof
+
+A `git clone --no-local` of the maintenance branch was created in a fresh directory with no inherited `data/` tree. The clone reported no tracked data files and entered the expected fresh-install boundary.
+
+Validation in that clean clone:
+
+- fresh-install / portability focused tests: **8 passed**;
+- portable capability catalog deep-sync validator: **PASS**;
+- runtime Skill/guide six-tool sync validator: **PASS**;
+- `python -m compileall -q scripts server tests`: **PASS**;
+- Git worktree after validation: clean;
+- dependency manifests contained no developer-specific `file:`/`C:\`/`D:\`/home path references.
+
+This proves the repository can be cloned and validated without the original machine's Phase-J runtime bundle or installation-local `data/`. It does not imply that a fresh user already has an initialized Security Master; `NOT_INITIALIZED` remains the intended fresh-install state until the user explicitly builds/activates local identity authority.
