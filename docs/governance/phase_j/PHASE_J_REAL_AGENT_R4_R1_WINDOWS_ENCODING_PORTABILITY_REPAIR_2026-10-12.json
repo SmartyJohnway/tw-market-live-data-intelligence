@@ -1,0 +1,99 @@
+{
+  "schema_version": "phase_j_real_agent_r4_r1_repair.v1",
+  "tranche": "R4_R1_WINDOWS_DETERMINISTIC_ACCEPTANCE_TRANSPORT_PORTABILITY_REPAIR",
+  "starting_authority": {
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "head": "56b68f81d40ba27f2a4646ee278c9bb47c7c4354",
+    "tree": "98531389ff428404e93e3126b1c22936260c1c36",
+    "cached_pr_326_head": "f2958a9a42dd3b100d1734400c13898afb7ddfb6",
+    "cached_base_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "fetch_or_push_performed": false
+  },
+  "r4_historical_state": {
+    "terminal_disposition": "PHASE_J_REAL_AGENT_R4_HARD_BLOCK_PREPARATION_EXECUTION_FAILED",
+    "authorization_consumed": true,
+    "partial_control_package_id": "umea-v1-499a376bb1e4af1e790c",
+    "partial_runtime_state_modified_or_consumed": false,
+    "r4_record_rewritten": false,
+    "retry_or_resume_performed": false
+  },
+  "root_cause": {
+    "classification": "TEST_ACCEPTANCE_TRANSPORT_WINDOWS_ENCODING_PORTABILITY_DEFECT",
+    "python_version": "3.13.7",
+    "preferred_encoding_with_pythonutf8_disabled": "cp950",
+    "fixture_path": "tests/fixtures/phase_j/closure_r1/source_rows.json",
+    "fixture_valid_utf8": true,
+    "fixture_contains_non_ascii": true,
+    "fixture_sha256": "3eafcfd3b70c213cdebc67500093a1880ba9914f07d84fa41163d40c04819cb6",
+    "reproduced_exception": "UnicodeDecodeError: 'cp950' codec can't decode byte 0xe5 in position 150",
+    "offending_helper": "tests/helpers/phase_j_closure_r1_transport.py",
+    "offending_operation_before_repair": "Path.read_text() without encoding on source_rows.json",
+    "public_error": "mode_b2_execution_unavailable",
+    "public_error_mapping": "scripts/m8r_06_03_execute_once.py catches UnicodeDecodeError through its ValueError boundary and emits the fixed public child error; the parent maps child exit code 2 to mode_b2_execution_unavailable"
+  },
+  "partial_package_read_only_diagnostic": {
+    "load_control_package": "PASS",
+    "authorization_binding_integrity": "PASS",
+    "preflight_hash_validation": "PASS",
+    "preflight_rebuild_identical": true,
+    "claim_exists": false,
+    "source_invocation_count": 0,
+    "execute_once_called": false,
+    "authorization_claimed_or_finalized": false
+  },
+  "repair": {
+    "production_code_change_required": false,
+    "production_files_changed": 0,
+    "changed_implementation": "tests/helpers/phase_j_closure_r1_transport.py reads the committed fixture with explicit UTF-8",
+    "fixture_bytes_changed": false,
+    "fixture_sha256_after": "3eafcfd3b70c213cdebc67500093a1880ba9914f07d84fa41163d40c04819cb6",
+    "deterministic_transport_semantics_changed": false,
+    "source_invocation_on_install": 0,
+    "changed_files": [
+      "tests/helpers/phase_j_closure_r1_transport.py",
+      "tests/unit/test_phase_j_closure_r1_transport_encoding.py",
+      "docs/governance/phase_j/PHASE_J_REAL_AGENT_R4_R1_WINDOWS_ENCODING_PORTABILITY_REPAIR_2026-10-12.json",
+      "docs/governance/phase_j/PHASE_J_REAL_AGENT_R4_R1_WINDOWS_ENCODING_PORTABILITY_REPAIR_2026-10-12.md"
+    ]
+  },
+  "validation": {
+    "encoding_portability_and_proxy_tests": "5 passed",
+    "subprocess_non_utf8_preferred_encoding": "PASS; Windows subprocess with PYTHONUTF8=0 and utf8=0 reported CP950, reproduced implicit read failure, loaded fixture via explicit UTF-8, installed deterministic transport without source invocation",
+    "partial_package_non_consuming_diagnostic": "PASS",
+    "fixture_hash_unchanged": true,
+    "r4_receipt_immutable": true,
+    "closure_r2_r1_immutable_authority": "PASS",
+    "strict_duplicate_key_json": "PASS",
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "default_ci": "NOT_RUN; the available profile would rerun the prohibited J1-21 acceptance execution"
+  },
+  "boundary_counters": {
+    "fresh_j1_21_scenario_attempts": 0,
+    "formal_preparation_execution_api_calls": 0,
+    "source_fixture_invocations": 0,
+    "market_get": 0,
+    "market_head": 0,
+    "market_post": 0,
+    "mcp_semantic_calls": 0,
+    "provider_inference": 0,
+    "real_agent_sessions": 0,
+    "browser_use": 0,
+    "firecrawl": 0,
+    "host_security_master_acquisition": 0,
+    "host_security_master_mutation": 0,
+    "production_schema_changes": 0,
+    "production_route_changes": 0,
+    "mcp_tool_count_change": 0,
+    "pushes": 0
+  },
+  "derived_state": {
+    "remaining_obligations": ["real_agent_layer"],
+    "phase_j": "STARTED",
+    "roadmap_phase_j": "UNCHECKED",
+    "phase_k": "NOT_STARTED",
+    "pr_326": "OPEN_DRAFT_UNMERGED",
+    "real_agent_closure_credit": false
+  },
+  "terminal_disposition": "PHASE_J_REAL_AGENT_R4_R1_WINDOWS_ENCODING_PORTABILITY_REPAIR_READY_FOR_INDEPENDENT_REVIEW"
+}

@@ -4,6 +4,9 @@ import io,json,os,sys,time
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 
+def load_source_rows_fixture():
+    return json.loads((ROOT/'tests/fixtures/phase_j/closure_r1/source_rows.json').read_text(encoding='utf-8'))
+
 def install():
     assert os.environ['M8R_06_03_EXECUTION_ENVIRONMENT']=='test'
     assert os.environ['M8R_06_03_TEST_SOURCE_TRANSPORT']=='deterministic'
@@ -15,7 +18,7 @@ def install():
     a.execute_twse_official_eod_adapter=twse.execute_twse_official_eod_adapter
     a.execute_tpex_official_eod_adapter=tpex.execute_tpex_official_eod_adapter
     scenario=os.environ['PHASE_J_CLOSURE_R1_SCENARIO']
-    fixture=json.loads((ROOT/'tests/fixtures/phase_j/closure_r1/source_rows.json').read_text())
+    fixture=load_source_rows_fixture()
     mis.utc_now=lambda:'2026-10-08T06:00:00Z'
     twse.utc_now=lambda:'2026-10-08T06:00:05Z'
     tpex.utc_now=lambda:'2026-10-08T06:00:05Z'
