@@ -1,18 +1,19 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current Phase K handoff (2026-10-12)
+## Current Phase K handoff (2026-10-13)
 
 Roadmap Phase J is **COMPLETE** by
-`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. Historical Attempt #6 and its
-interpretation remain unchanged; no Attempt #7 is required. Post-Phase-J
-portability/runtime hygiene is complete: PR #326 and PR #327 are merged, and K0
-Charter PR #328 is merged. Phase K is STARTED. K1 defines the eight-scenario
-Minimal Common Conformance Scenario Set at
-`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`,
-under the K0 Lean Compatibility Charter. No multi-agent execution or host evaluation
-has been performed. After K1 review/merge, the next allowed step is K2 — Small
-Multi-Host Pilot & Compatibility Matrix. Do not start a broad matrix or fresh
-market/source acquisition as part of the initial K2 pilot.
+`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`; Attempt #7 is not required.
+PR #326, PR #327, K0 Charter PR #328, and K1 Scenario Set PR #329 are merged.
+Phase K is STARTED. K2-A deterministic preparation is ready for review; no
+ChatGPT, Codex, Hermes, or other host evaluation has run. The K2-A preparation
+authority is
+`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`.
+It records the eight K1 asset mappings and the K1-05 gap: a reusable finalized
+Unified V3 stale Result/Audit/Handoff fixture is not available. K2-B is NOT
+STARTED. After K2-A review, the next phase step is K2-B — Small Multi-Host Pilot
+& Compatibility Matrix; carry the K1-05 gap explicitly into its readiness review.
+Do not run a broad matrix or make market/source requests.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
@@ -315,7 +316,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K K1 scenario definition is current; host evaluation count remains zero.**
+Phase K K2-A deterministic preparation is ready for review; K1-05 fixture gap is explicit, K2-B is NOT_STARTED, and host evaluation count remains zero.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
