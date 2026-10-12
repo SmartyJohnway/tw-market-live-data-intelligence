@@ -667,9 +667,9 @@ def test_h0h_roll_004_simulates_h3_deactivation_without_mutating_authority_or_ev
     assert route_before["selected_executor_id"] == EXECUTOR
     assert route_before["network_required"] is True
     assert route_before["batching_scope"] == "none"
-    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
-    assert routing["phase_h_source_authority"]["active_source_count"] == 4
-    assert active_before == {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 5
+    assert routing["phase_h_source_authority"]["active_source_count"] == 5
+    assert active_before == {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED", "H2-TWSE-EXRIGHT-PRE-OPENAPI"}
     assert len(build_tool_specs()) == 6
     live_candidate_preview = _production_preview(_v3_request("TWSE", "1423"), "TWSE", "1423")
     candidate_operation = live_candidate_preview["orchestration_plan"]["operations"][0]
@@ -686,7 +686,9 @@ def test_h0h_roll_004_simulates_h3_deactivation_without_mutating_authority_or_ev
     h2_records_before = copy.deepcopy([item for item in records_before if item["source_id"].startswith("H2-")])
     h2_caps_before = copy.deepcopy([item for item in catalog["data_need_capabilities"] if item["capability_id"] == "corporate_action_context"])
     tpex_h3_before = copy.deepcopy(next(item for item in route_before["source_authority_states"] if item["market"] == "TPEX"))
-    assert h2_records_before and not any(item["activation_state"] == "active" or item["runtime_executable"] for item in h2_records_before)
+    assert sum(item["activation_state"] == "active" and item["runtime_executable"] is True for item in h2_records_before) == 1
+    assert next(item for item in h2_records_before if item["source_id"] == "H2-TWSE-EXRIGHT-PRE-OPENAPI")["activation_state"] == "active"
+    assert all(item["activation_state"] != "active" and item["runtime_executable"] is False for item in h2_records_before if item["source_id"] != "H2-TWSE-EXRIGHT-PRE-OPENAPI")
     assert tpex_h3_before["activation_state"] == "blocked"
 
     # Simulate rollback exclusively on independent in-memory copies.
@@ -698,7 +700,7 @@ def test_h0h_roll_004_simulates_h3_deactivation_without_mutating_authority_or_ev
         runtime_executable=False,
         phase_h_activation_state="inactive",
     )
-    rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] = 3
+    rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] = 4
     rollback_route = next(item for item in rollback_routing["routes"] if item["capability_id"] == "recent_performance")
     rollback_route.update(
         runtime_executable=False,
@@ -706,7 +708,7 @@ def test_h0h_roll_004_simulates_h3_deactivation_without_mutating_authority_or_ev
         routing_status="plan_only",
         network_required=False,
     )
-    rollback_routing["phase_h_source_authority"]["active_source_count"] = 3
+    rollback_routing["phase_h_source_authority"]["active_source_count"] = 4
     h3_source = next(item for item in rollback_routing["phase_h_source_authority"]["records"] if item["source_id"] == "H3-TWSE-DEFAULT-BOUNDED")
     h3_source.update(activation_state="eligible", runtime_executable=False)
     # Candidate executor inventory and source metadata remain available.
@@ -725,9 +727,9 @@ def test_h0h_roll_004_simulates_h3_deactivation_without_mutating_authority_or_ev
     assert rollback_route["runtime_executable"] is False
     assert rollback_route["selected_executor_id"] is None
     assert rollback_route["routing_status"] == "plan_only"
-    assert rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] == 3
-    assert rollback_routing["phase_h_source_authority"]["active_source_count"] == 3
-    assert active_after == {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}
+    assert rollback_catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
+    assert rollback_routing["phase_h_source_authority"]["active_source_count"] == 4
+    assert active_after == {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H2-TWSE-EXRIGHT-PRE-OPENAPI"}
     assert h1_route_before == next(item for item in rollback_routing["routes"] if item["capability_id"] == "trading_status_context")
     assert h1_source_before == next(item for item in rollback_routing["phase_h_source_authority"]["records"] if item["source_id"] == "H1-TPEX-ATTENTION-OPENAPI")
     assert h2_routes_before == [item for item in rollback_routing["routes"] if item["capability_id"] == "corporate_action_context"]

@@ -1,0 +1,117 @@
+{
+  "artifacts": {
+    "agent_output": {
+      "byte_count": 347,
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_OUTPUT_2026-10-12.txt",
+      "sha256": "09cafa4f5883e8c82f354db3a2edc0f0038af2ebb6549566ccfe4a6121eb0c49"
+    },
+    "codex_events": {
+      "byte_count": 1342,
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_CODEX_EVENTS_2026-10-12.jsonl",
+      "sha256": "867586b509ac3d298525bd2e0517d22689938d706eca897897827e02f36f0244"
+    },
+    "codex_stderr": {
+      "byte_count": 578,
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_CODEX_STDERR_2026-10-12.txt",
+      "sha256": "e0e961f7b2b899435666d1e16e07accb8c681924fc9976fef57ad1af17bf4751"
+    },
+    "witness_events": {
+      "byte_count": 472,
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_WITNESS_EVENTS_2026-10-12.jsonl",
+      "sha256": "b0ca604dfd6ab70a55eb4e67ef3dfe7dd526bb85a172e5777dbc0300cd842853"
+    }
+  },
+  "authority": {
+    "base_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "head": "6c3c44a999f6f923feb0592418abfcbbb134ddee",
+    "launch_contract_sha256": "52a97e0362237cb93eca3733b7fdb1f8a11cdcf66a757b0fdd736623e1a78152",
+    "review_id": "5488012979",
+    "tree": "cb3ddbdf3c3713b580fcd959d2fae16377859600"
+  },
+  "authorization_consumed": true,
+  "authorization_sha256": "058b26dae8798a4ffd1d6fef9ac75ad83cc4c5db5fcf27dee4567f310b29af47",
+  "authorization_statement": "AUTHORIZE PHASE J REAL-AGENT ATTEMPT #4 BOUNDED THREE-SLOT SESSION ON EXACT REVIEWED HEAD 6c3c44a999f6f923feb0592418abfcbbb134ddee TREE cb3ddbdf3c3713b580fcd959d2fae16377859600 AFTER R0 EXACT-HEAD INDEPENDENT REVIEW 5488012979 AND LAUNCH-CONTRACT SHA-256 52a97e0362237cb93eca3733b7fdb1f8a11cdcf66a757b0fdd736623e1a78152: use only pinned Codex executable D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1\\codex.exe with observed version codex-cli 0.160.1 SHA-256 9e7c59c05cc1ce5677b1f94e835b2ac038ca3be14504e78d558eacdb0ea3f55d and byte size 326875440; authorize at most three formal launch slots solely for infrastructure-only failures, with retry eligibility only while semantic MCP calls remain zero, governed Result/Audit/handoff lineage has not been obtained, and no substantive model task output has been produced; any substantive witness, semantic tool invocation, J3 failure, tool-policy violation, or product retrieval failure is terminal and forbids another slot; each slot must use the exact retained control package umea-v1-64317f4f3435611c2bb5, exact reviewed neutral prompt, exact session-scoped required phase_j_witness MCP contract, and separately captured slot evidence; no fresh market data, J1-21 execution, Browser Use, Firecrawl, Security Master acquisition/mutation, production/public-contract change, trading recommendation, Phase K start, merge, or PR Ready transition is authorized.",
+  "boundaries": {
+    "browser_use": 0,
+    "firecrawl": 0,
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0,
+    "mcp_tool_count_change": 0,
+    "new_j1_21_execution": 0,
+    "new_package_generation": 0,
+    "production_changes": 0,
+    "public_schema_changes": 0,
+    "real_agent_semantic_calls": 0,
+    "security_master_acquisition": 0,
+    "security_master_mutation": 0,
+    "source_fixture_invocation_delta": 0
+  },
+  "disposition": "PHASE_J_REAL_AGENT_ATTEMPT_4_HARD_BLOCK_CODE_MODE_HOST_UNAVAILABLE",
+  "execution_environment": "LOCAL_WINDOWS",
+  "failure": {
+    "classification": "CODE_MODE_HOST_EXECUTABLE_MISSING",
+    "diagnostic": "Codex reported that codex-code-mode-host.exe was not found; the agent did not retrieve the governed Result or handoff.",
+    "netlify_auxiliary_diagnostic": "stderr contains AuthRequired for netlify-mcp.netlify.app; no corresponding Netlify tool call appears in the Codex event stream; external request count is not observable.",
+    "retry_eligible": false,
+    "retry_reason": "Conservative terminal stop: formal session emitted a task-scoped failure response; required runtime host is absent and needs environment/runtime repair, which is prohibited between slots. No further slot launched."
+  },
+  "mcp": {
+    "exact_six_tools": true,
+    "formal_initialize": "PASS",
+    "formal_tools_list": "PASS",
+    "proxy_event_count": 3,
+    "proxy_event_sequence": [
+      "initialize_request",
+      "initialize_result",
+      "tools_list"
+    ],
+    "result_lineage_obtained": false,
+    "semantic_call_count": 0,
+    "semantic_call_sequence": []
+  },
+  "output": {
+    "artifact": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_OUTPUT_2026-10-12.txt",
+    "j3_evaluation": "NOT_RUN_NO_RESULT_LINEAGE",
+    "sha256": "09cafa4f5883e8c82f354db3a2edc0f0038af2ebb6549566ccfe4a6121eb0c49",
+    "substantive_evidence_interpretation": false,
+    "task_scoped_failure_notice_observed": true,
+    "verbatim_preserved": true
+  },
+  "product_input": {
+    "audit_id": "umeap-v3-9063d2331c6cc7718a1e",
+    "audit_sha256": "490145920801afd443ff8f41bd9dcea97985bc362c726c89f1037fc1f047427d",
+    "control_package_id": "umea-v1-64317f4f3435611c2bb5",
+    "handoff_sha256": "b1fa8e28ef25f4f369904f6d8bf17047e3adff46d1c497a8f323396384bd8e57",
+    "inventory_sha256": "caa4b43c67b235ce104c0277b1493031466d39159591e87f56c8765ed0c09096",
+    "result_id": "umeresult-v3-63bd91d7e710438dbdd6",
+    "result_sha256": "d6737011bdf12e3893bbc0d6c54d98a4a472c7ebd34692276e84b250b87b0db9"
+  },
+  "runtime": {
+    "actual_model_provider": "not exposed",
+    "auth_class": "Logged in using ChatGPT",
+    "byte_size": 326875440,
+    "codex_executable": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1\\codex.exe",
+    "requested_model": null,
+    "sha256": "9e7c59c05cc1ce5677b1f94e835b2ac038ca3be14504e78d558eacdb0ea3f55d",
+    "version": "codex-cli 0.160.1"
+  },
+  "schema_version": "phase_j_real_agent_attempt_4_slot_receipt.v1",
+  "session": {
+    "completed_at_recorded_utc": "2026-10-12T08:27:47.077566+00:00",
+    "inference_transport": "session returned output; Codex event stream reports Code Mode host spawn failure",
+    "process_exit_code": 0,
+    "reservation_timestamp": "2026-10-12T08:24:22.469510+00:00",
+    "session_id": "01a12f36-8aec-7ce0-b140-fa92187b9437"
+  },
+  "slot": "slot_01",
+  "slot_ledger": {
+    "next_slot_launched": false,
+    "slots_launched": 1,
+    "slots_reserved": 1,
+    "slots_unused": [
+      2,
+      3
+    ]
+  }
+}

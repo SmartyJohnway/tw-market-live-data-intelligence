@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase J4 acceptance-only regression receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "regression_authority_hash",
+    "change_manifest_hash",
+    "regression_plan_hash",
+    "receipt_hash",
+    "candidate_commit",
+    "candidate_tree",
+    "selected_scenarios",
+    "executed_layers",
+    "test_validator_evidence",
+    "authorization_gates",
+    "semantic_failures",
+    "coverage_gaps",
+    "selected_dimensions",
+    "disposition",
+    "bounded_live_authorized",
+    "real_agent_authorized",
+    "authorization_refs",
+    "synthetic",
+    "schema_version",
+    "semantic_observations",
+    "check_evidence"
+  ],
+  "properties": {
+    "regression_authority_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "change_manifest_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "regression_plan_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "receipt_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "candidate_tree": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "selected_scenarios": {
+      "type": "array"
+    },
+    "executed_layers": {
+      "type": "array"
+    },
+    "test_validator_evidence": {
+      "type": "array"
+    },
+    "authorization_gates": {
+      "type": "array"
+    },
+    "semantic_failures": {
+      "type": "array"
+    },
+    "coverage_gaps": {
+      "type": "array"
+    },
+    "selected_dimensions": {
+      "type": "object"
+    },
+    "disposition": {
+      "enum": [
+        "REGRESSION_SEMANTIC_FAILURE",
+        "IMPACT_DECLARATION_REQUIRED",
+        "REGRESSION_COVERAGE_GAP",
+        "REQUIRES_LIVE_AND_REAL_AGENT_AUTHORIZATION",
+        "REQUIRES_SEPARATE_LIVE_AUTHORIZATION",
+        "REQUIRES_SEPARATE_REAL_AGENT_AUTHORIZATION",
+        "REGRESSION_READY_NETWORK_FREE"
+      ]
+    },
+    "bounded_live_authorized": {
+      "type": "boolean"
+    },
+    "real_agent_authorized": {
+      "type": "boolean"
+    },
+    "authorization_refs": {
+      "type": "array"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "phase_j_j4_regression_receipt.v1"
+    },
+    "semantic_observations": {
+      "type": "object"
+    },
+    "check_evidence": {
+      "type": "array"
+    }
+  }
+}

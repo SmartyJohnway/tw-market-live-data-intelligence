@@ -100,7 +100,7 @@ def validate() -> None:
 
     phase_h = routing.get("phase_h_source_authority", {})
     phase_h_active = {item.get("source_id") for item in phase_h.get("records", []) if item.get("activation_state") == "active" and item.get("runtime_executable") is True}
-    if phase_h.get("active_source_count") != 4 or phase_h_active != {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}:
+    if phase_h.get("active_source_count") != 5 or phase_h_active != {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED", "H2-TWSE-EXRIGHT-PRE-OPENAPI"}:
         raise ValueError("phase_h_active_routes_changed")
     if len(build_tool_contract_snapshot().tools) != 6:
         raise ValueError("mcp_surface_changed")
@@ -127,7 +127,7 @@ def validate() -> None:
         result = subprocess.run(["git", "diff", "--quiet", baseline, "--", path], cwd=ROOT, check=False)
         if result.returncode != 0:
             raise ValueError(f"live_tested_implementation_delta:{path}")
-    print("Phase I I1 production activation: PASS (Owner accepted, two bounded routes, 3 active sources, no live-tested semantic delta)")
+    print("Phase I I1 production activation: PASS (Owner accepted, two bounded routes, current Phase-H source authority preserved, no live-tested semantic delta)")
 
 
 if __name__ == "__main__":

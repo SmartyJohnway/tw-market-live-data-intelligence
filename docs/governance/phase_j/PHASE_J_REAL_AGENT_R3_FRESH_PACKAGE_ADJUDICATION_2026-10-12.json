@@ -1,0 +1,69 @@
+{
+  "schema_version": "phase_j_real_agent_r3_adjudication.v1",
+  "tranche": "R3_RUNTIME_PACKAGE_PERSISTENCE_ADJUDICATION",
+  "canonical_authority": {
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "base_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "accepted_review_id": "5485596229",
+    "remote_pr_head_at_adjudication": "f2958a9a42dd3b100d1734400c13898afb7ddfb6",
+    "pr": 326,
+    "pr_state": "OPEN_DRAFT_UNMERGED"
+  },
+  "attempt_2": {
+    "receipt": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_2_RECEIPT_2026-10-12.json",
+    "terminal_disposition": "PHASE_J_REAL_AGENT_ATTEMPT_2_HARD_BLOCK_STORED_RESULT_MCP_RETRIEVAL_FAILED",
+    "authorization_consumed": true,
+    "historical_package_id": "umea-v1-559d58856cff60f2f2e0",
+    "finding": "runtime persistence availability failure: the Mode C CONTROL_ROOT did not contain the historical package directory required by the current read path",
+    "receipt_edit_authorized": false
+  },
+  "contract_analysis": {
+    "historical_exact_control_package_identity_required_for_real_agent": false,
+    "required_witness": "real agent reads a legitimate production-reachable Result/Audit/handoff for an accepted Phase-J semantic scenario through actual MCP and Local Service",
+    "semantic_authority_identity": "Closure-R2-R1 accepted J1-21 stale/currentness semantics",
+    "execution_identity": "an individual deterministic execution instance; may differ without changing accepted semantic authority",
+    "runtime_package_identity": "the finalized package addressable in the configured Mode C CONTROL_ROOT",
+    "acceptance_witness_identity": "the later separately authorized real-agent session and its receipt",
+    "fresh_deterministic_j1_21_effect": "supplies an execution instance to the still-open real_agent_layer; does not reopen J1-21, replace Closure-R2-R1 evidence, or create coverage promotion"
+  },
+  "historical_rehydration": {
+    "lossless_from_canonical_committed_bytes_proven": false,
+    "complete_runtime_predecessor_bytes_available": false,
+    "hashes_reconstruct_missing_bytes": false,
+    "reconstruction_from_summary_would_be_fabrication": true,
+    "performed": false
+  },
+  "fresh_package_path": {
+    "existing_runner": "tests/helpers/phase_j_closure_r2.py::execute(root)",
+    "production_path": "Local Service validate -> Mode B1 planner -> Mode B2 authorization -> execute-once -> production adapter with deterministic fixture transport -> Result V3 -> Audit V3 -> Mode C persisted package/handoff",
+    "caller_selected_control_root_supported": true,
+    "process_restart_and_actual_mcp_read_feasible_without_production_code_change": true,
+    "market_network_expected": "zero"
+  },
+  "acceptance_laundering_review": {
+    "hardcoded_stale_output": "PROHIBITED",
+    "governance_json_as_agent_input": "PROHIBITED",
+    "bypass_local_service_or_mcp_or_mode_c": "PROHIBITED",
+    "inject_expected_answer": "PROHIBITED",
+    "alter_currentness_policy": "PROHIBITED",
+    "fake_mcp_or_manual_result_audit_package": "PROHIBITED",
+    "claim_fresh_execution_is_historical_execution": "PROHIBITED",
+    "additional_execution_hidden": "PROHIBITED",
+    "market_source_network": "PROHIBITED"
+  },
+  "attempt_2_proxy": {
+    "disposition": "RETAINABLE_WITH_FRESH_CONTROL_PACKAGE_PARAMETERIZATION",
+    "historical_failure_receipt": "PUBLISH_UNCHANGED_WITH_ADDITIVE_R3_ADJUDICATION"
+  },
+  "netlify_auxiliary_diagnostic": {
+    "disposition": "UNRESOLVED_NON_BLOCKING_OBSERVATION",
+    "external_request_count_established": false,
+    "follow_up_performed": false
+  },
+  "decision": "PHASE_J_REAL_AGENT_R3_USE_FRESH_DETERMINISTIC_PACKAGE_RECOMMENDED",
+  "next_gate": "R4 persisted deterministic package preparation, followed by independent review and a separate fresh Owner authorization for any later real-agent attempt",
+  "real_agent_execution_in_r3": 0,
+  "provider_inference_in_r3": 0,
+  "market_get_head_post_in_r3": [0, 0, 0],
+  "historical_authorities_modified": false
+}

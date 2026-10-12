@@ -22,7 +22,7 @@ from server.services.unified_local_service import describe_capabilities
 
 ROOT = Path(__file__).resolve().parents[2]
 NOW = "2026-09-30T02:00:00Z"
-PHASE_H_ACTIVE = {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}
+PHASE_H_ACTIVE = {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED", "H2-TWSE-EXRIGHT-PRE-OPENAPI"}
 I1_ACTIVE = {
     "I1-TWSE-FMTQIK-OPENAPI",
     "I1-TWSE-BREADTH-TWTAZU-OPENAPI",
@@ -202,7 +202,7 @@ def test_i1_roll_001_in_memory_rollback_preserves_other_authorities_and_evidence
         assert all(item["operation_status"] != "executable_pending_approval" for item in plan["operations"])
         assert all(item.get("executor_id") is None for item in plan["operations"])
         assert all(item.get("network_required") is False for item in plan["operations"])
-    assert phase_h_before["active_source_count"] == 4 and phase_h_active_before == PHASE_H_ACTIVE
+    assert phase_h_before["active_source_count"] == 5 and phase_h_active_before == PHASE_H_ACTIVE
     assert next(item for item in rolled_routing["routes"] if item["capability_id"] == "trading_status_context") == h1_before
     assert next(item for item in rolled_routing["routes"] if item["capability_id"] == "recent_performance") == h3_before
     assert [item for item in rolled_routing["routes"] if item["capability_id"] == "corporate_action_context"] == h2_before

@@ -129,11 +129,18 @@ def validate_phase_i_i1_contracts() -> None:
         raise I1ValidationError("i1_route_scope_invalid")
     if route.get("output_evidence_contract") != "market_state_context_evidence.v1":
         raise I1ValidationError("i1_output_contract_mismatch")
-    if catalog.get("phase_h_contract", {}).get("active_phase_h_source_count") != 4 or routing.get("phase_h_source_authority", {}).get("active_source_count") != 4:
+    # J-B04-A6 adds one exact TWSE H2 route while preserving the historical
+    # four H1/H3 routes and every unrelated source record.
+    if catalog.get("phase_h_contract", {}).get("active_phase_h_source_count") != 5 or routing.get("phase_h_source_authority", {}).get("active_source_count") != 5:
         raise I1ValidationError("phase_h_source_count_changed")
     active = {x.get("source_id") for x in routing.get("phase_h_source_authority", {}).get("records", []) if x.get("activation_state") == "active" and x.get("runtime_executable") is True}
-    if active != {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}:
+    if active != {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED", "H2-TWSE-EXRIGHT-PRE-OPENAPI"}:
         raise I1ValidationError("phase_h_active_set_changed")
+    h2_capability = next(x for x in catalog.get("data_need_capabilities", []) if x.get("capability_id") == "corporate_action_context")
+    h2_route = next(x for x in routing.get("routes", []) if x.get("capability_id") == "corporate_action_context")
+    active_h2 = [x for x in routing["phase_h_source_authority"]["records"] if x.get("source_id", "").startswith("H2-") and x.get("activation_state") == "active" and x.get("runtime_executable") is True]
+    if (h2_capability.get("runtime_executable"), h2_capability.get("supported_markets"), h2_route.get("routing_status"), h2_route.get("selected_executor_id"), h2_route.get("supported_markets")) != (True, ["TWSE"], "resolved", "phase_h_h2_twse_exright_pre_executor", ["TWSE"]) or [(x.get("source_id"), x.get("source_contract")) for x in active_h2] != [("H2-TWSE-EXRIGHT-PRE-OPENAPI", "TWT48U_ALL")]:
+        raise I1ValidationError("a6_bounded_h2_overlay_invalid")
     expected_sources = {"I1-TWSE-FMTQIK-OPENAPI", "I1-TWSE-BREADTH-TWTAZU-OPENAPI", "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI"}
     if source_authority.get("active_source_count") != 3 or source_authority.get("runtime_executable") is not True or {x.get("source_id") for x in source_authority.get("records", [])} != expected_sources or any(x.get("activation_state") != "active" or x.get("runtime_executable") is not True for x in source_authority.get("records", [])):
         raise I1ValidationError("phase_i_source_authority_activation_candidate_invalid")

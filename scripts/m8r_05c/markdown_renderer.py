@@ -78,6 +78,8 @@ def _fmt_evidence_envelope(envelope: dict, data_need: str) -> str:
     if observed:
         if data_need == "current_observation":
             labels = {"instrument_context": "Instrument Context", "source_context": "Source", "price_snapshot": "Current Market Snapshot", "reference_price_context": "Reference Prices", "displayed_quote_snapshot": "Displayed Quote Snapshot", "extended_displayed_depth_snapshot": "Extended Displayed Depth", "freshness_context": "Freshness / Source", "market_session_context": "Market / Session", "data_quality_context": "Data Quality"}
+            if envelope.get("currentness", {}).get("status") == "stale":
+                labels["price_snapshot"] = "Stale Source Snapshot"
             for key, value in observed.items():
                 lines.append(f"\n**{labels.get(key, key)}**:")
                 if isinstance(value, dict):

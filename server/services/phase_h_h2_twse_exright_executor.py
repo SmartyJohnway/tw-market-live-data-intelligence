@@ -1,14 +1,15 @@
-"""Bounded, dependency-bound TWSE TWT48U H2 executor candidate.
+"""Bounded, dependency-bound TWSE TWT48U H2 executor.
 
-This executor is intentionally not selected by canonical routing in A3.  It is
-available to the approved orchestration path only when an explicit same-target
-H3 dependency is present in the approved plan.
+The canonical route selects this executor only for the approved TWSE
+pre-announcement scope. Execution still requires an explicit same-target H3
+dependency in the approved plan.
 """
 from __future__ import annotations
 
 from datetime import datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import ssl
 import socket
@@ -64,17 +65,25 @@ def official_get_once(*, timeout_seconds: int = TIMEOUT_SECONDS) -> dict[str, An
         raise OrchestrationError("h2_transport_tls_policy_invalid")
     opener = urllib.request.build_opener(_NoRedirect(), urllib.request.HTTPSHandler(context=context))
     request = urllib.request.Request(ENDPOINT, method="GET", headers={"Accept": "application/json"})
+    from scripts.a6_session_transport import complete_dispatch, reserve_dispatch
+    reservation = reserve_dispatch(method="GET", url=ENDPOINT)
     try:
         response = opener.open(request, timeout=timeout_seconds)
     except urllib.error.HTTPError as response:
         raw = response.read(MAX_RESPONSE_BYTES + 1)
+        complete_dispatch(reservation, status=int(response.code), final_url=response.geturl(),
+                          content_type=str(response.headers.get("Content-Type", "")), body=raw)
         return {"raw_bytes": raw, "status": int(response.code), "content_type": str(response.headers.get("Content-Type", "")), "effective_url": response.geturl(), "retrieved_at": _now()}
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        complete_dispatch(reservation, status=None, final_url=None, content_type=None, body=None,
+                          error=type(exc).__name__)
         # OSError here is limited to urllib/socket transport.  Internal
         # normalization and invariant failures occur outside this boundary.
         raise H2SourceAttemptError("source_failed:transport_unavailable") from exc
     with response:
         raw = response.read(MAX_RESPONSE_BYTES + 1)
+        complete_dispatch(reservation, status=int(response.status), final_url=response.geturl(),
+                          content_type=str(response.headers.get("Content-Type", "")), body=raw)
         return {"raw_bytes": raw, "status": int(response.status), "content_type": str(response.headers.get("Content-Type", "")), "effective_url": response.geturl(), "retrieved_at": _now()}
 
 
@@ -254,7 +263,9 @@ def execute_h2_twse_exright_pre(request: dict[str, Any], context: DispatchRuntim
     source_fetch = official_get_once if fetch_response is None else fetch_response
     try:
         try:
-            response = source_fetch(timeout_seconds=min(request.get("timeout_seconds", TIMEOUT_SECONDS), TIMEOUT_SECONDS))
+            from scripts.a6_session_transport import operation_context
+            with operation_context(int(os.environ.get("A6_ATTEMPT", "1")), "H2", request["operation_id"]):
+                response = source_fetch(timeout_seconds=min(request.get("timeout_seconds", TIMEOUT_SECONDS), TIMEOUT_SECONDS))
         except (urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError) as exc:
             raise H2SourceAttemptError("source_failed:transport_unavailable") from exc
         observed_at = response.get("retrieved_at") if isinstance(response.get("retrieved_at"), str) else observed_at

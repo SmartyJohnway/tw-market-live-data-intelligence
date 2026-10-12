@@ -1,0 +1,710 @@
+from __future__ import annotations
+
+import importlib.util
+import io
+import json
+import sys
+from email.message import Message
+from pathlib import Path
+import urllib.error
+from urllib.request import HTTPRedirectHandler
+
+import pytest
+
+
+ROOT = Path(__file__).resolve().parents[2]
+SKILL_SCRIPTS = ROOT / "skills/tw-security-master-classifier/scripts"
+sys.path.insert(0, str(SKILL_SCRIPTS))
+import probe_sources  # noqa: E402
+
+
+class FakeResponse:
+    def __init__(self, url: str, body: bytes = b"<html>bounded fixture</html>") -> None:
+        self.status = 200
+        self._url = url
+        self._body = body
+        self.headers = Message()
+        self.headers["Content-Type"] = "text/html; charset=utf-8"
+
+    def geturl(self) -> str:
+        return self._url
+
+    def read(self, _size: int = -1) -> bytes:
+        return self._body
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return None
+
+
+class FakeOpener:
+    def __init__(self, handler, steps, budget):
+        self.handler = handler
+        self.steps = list(steps)
+        self.budget = budget
+        self.starting_dispatches = budget.used_dispatches
+        self.dispatched_urls: list[str] = []
+        self.requests = []
+
+    def open(self, request, timeout):
+        assert self.budget.used_dispatches == self.starting_dispatches + len(self.dispatched_urls) + 1
+        self.dispatched_urls.append(request.full_url)
+        self.requests.append(request)
+        kind, value = self.steps.pop(0)
+        if kind == "redirect":
+            headers = {"Location": value}
+            redirected = self.handler.redirect_request(
+                request, None, 302, "Found", headers, value
+            )
+            if redirected is None:
+                error_headers = Message()
+                error_headers["Location"] = value
+                raise urllib.error.HTTPError(
+                    request.full_url, 302, "Found", error_headers, io.BytesIO(b"")
+                )
+            return self.open(redirected, timeout=0)
+        return FakeResponse(request.full_url, value)
+
+
+def install_fake_opener(monkeypatch, steps, budget):
+    created = []
+
+    def build_opener(handler, _https_handler):
+        opener = FakeOpener(handler, steps, budget)
+        created.append(opener)
+        return opener
+
+    monkeypatch.setattr(probe_sources.urllib.request, "build_opener", build_opener)
+    return created
+
+
+def test_runtime_inherited_urllib_redirect_bounds_are_observed():
+    handler = probe_sources.SafeRedirectHandler(["example.test"])
+    assert issubclass(probe_sources.SafeRedirectHandler, HTTPRedirectHandler)
+    assert handler.max_repeats == HTTPRedirectHandler.max_repeats
+    assert handler.max_redirections == HTTPRedirectHandler.max_redirections
+    assert isinstance(handler.max_repeats, int)
+    assert isinstance(handler.max_redirections, int)
+
+
+def test_no_redirect_uses_one_reserved_and_dispatched_request(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    openers = install_fake_opener(monkeypatch, [("response", b"<html>fixture</html>")], budget)
+    result = probe_sources.probe(
+        "https://example.test/start",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+    )
+    assert result["transport_success"] is True
+    assert result["redirect_count"] == 0
+    assert result["dispatch_reservations"] == 1
+    assert len(openers[0].dispatched_urls) == 1
+
+
+def test_post_probe_preserves_method_body_and_content_type(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    openers = install_fake_opener(monkeypatch, [("response", b'{"stat":"ok"}')], budget)
+    result = probe_sources.probe(
+        "https://example.test/data",
+        ["example.test"],
+        dispatch_budget=budget,
+        method="POST",
+        body=b"date=ALL",
+        content_type="application/x-www-form-urlencoded; charset=UTF-8",
+    )
+    request = openers[0].requests[0]
+    assert request.get_method() == "POST"
+    assert request.data == b"date=ALL"
+    assert request.get_header("Content-type") == "application/x-www-form-urlencoded; charset=UTF-8"
+    assert result["request_method"] == "POST"
+    assert result["request_content_type"] == "application/x-www-form-urlencoded; charset=UTF-8"
+    assert result["dispatch_reservations"] == 1
+
+
+def test_post_302_is_not_followed_or_redispatched(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    openers = install_fake_opener(
+        monkeypatch,
+        [("redirect", "https://example.test/data-again")],
+        budget,
+    )
+    result = probe_sources.probe(
+        "https://example.test/data",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+        method="POST",
+        body=b"date=ALL",
+        content_type="application/x-www-form-urlencoded",
+    )
+    assert result["acquisition_status"] == "redirect_rejected"
+    assert result["transport_error_code"] == "BOOTSTRAP_REDIRECT_REJECTED"
+    assert result["dispatch_reservations"] == 1
+    assert openers[0].dispatched_urls == ["https://example.test/data"]
+
+
+def test_one_allowed_redirect_dispatches_twice_and_passes_bound(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    openers = install_fake_opener(
+        monkeypatch,
+        [("redirect", "https://example.test/final"), ("response", b"<html>fixture</html>")],
+        budget,
+    )
+    result = probe_sources.probe(
+        "https://example.test/start",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+    )
+    assert result["transport_success"] is True
+    assert result["redirect_count"] == 1
+    assert result["dispatch_reservations"] == 2
+    assert len(openers[0].dispatched_urls) == 2
+
+
+def test_second_redirect_target_is_not_dispatched(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    openers = install_fake_opener(
+        monkeypatch,
+        [
+            ("redirect", "https://example.test/second"),
+            ("redirect", "https://example.test/third"),
+        ],
+        budget,
+    )
+    result = probe_sources.probe(
+        "https://example.test/start",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+    )
+    assert result["acquisition_status"] == "redirect_limit_exceeded"
+    assert result["transport_error_code"] == "BOOTSTRAP_REDIRECT_LIMIT_EXCEEDED"
+    assert result["dispatch_reservations"] == 2
+    assert openers[0].dispatched_urls == [
+        "https://example.test/start",
+        "https://example.test/second",
+    ]
+
+
+def test_disallowed_redirect_host_is_rejected_before_target_dispatch(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    openers = install_fake_opener(
+        monkeypatch, [("redirect", "https://evil.test/target")], budget
+    )
+    result = probe_sources.probe(
+        "https://example.test/start",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+    )
+    assert result["acquisition_status"] == "redirect_rejected"
+    assert result["transport_error_code"] == "BOOTSTRAP_REDIRECT_REJECTED"
+    assert result["dispatch_reservations"] == 1
+    assert openers[0].dispatched_urls == ["https://example.test/start"]
+
+
+def test_five_probe_complete_envelope_uses_shared_ten_slot_budget(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    total_dispatched = 0
+    for index in range(5):
+        url = f"https://example.test/start-{index}"
+        openers = install_fake_opener(
+            monkeypatch,
+            [("redirect", f"https://example.test/final-{index}"), ("response", b"ok")],
+            budget,
+        )
+        result = probe_sources.probe(
+            url,
+            ["example.test"],
+            dispatch_budget=budget,
+            max_followed_redirects=1,
+        )
+        assert result["transport_success"] is True
+        assert result["dispatch_reservations"] == 2
+        total_dispatched += len(openers[0].dispatched_urls)
+
+    assert budget.used_dispatches == 10
+    assert budget.remaining_dispatches == 0
+    assert total_dispatched == 10
+
+    extra_opener = install_fake_opener(monkeypatch, [("response", b"unused")], budget)
+    extra = probe_sources.probe(
+        "https://example.test/eleventh",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+    )
+    assert extra["acquisition_status"] == "dispatch_budget_exhausted"
+    assert extra["transport_error_code"] == "BOOTSTRAP_DISPATCH_BUDGET_EXHAUSTED"
+    assert extra["dispatch_reservations"] == 0
+    assert extra_opener[0].dispatched_urls == []
+
+
+def test_materializer_binds_one_shared_ten_dispatch_budget_and_exact_sources():
+    spec = importlib.util.spec_from_file_location(
+        "a6p1_materializer", ROOT / "scripts/m8r_06_01b_materialize_production_inputs.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    assert module.IDENTITY_MODES == [2, 4]
+    assert module.BOOTSTRAP_LOGICAL_PROBE_COUNT == 5
+    assert module.BOOTSTRAP_MAX_REDIRECTS_PER_PROBE == 1
+    assert module.BOOTSTRAP_MAX_DISPATCHES_PER_PROBE == 2
+    assert module.BOOTSTRAP_MAX_TOTAL_DISPATCHES == 10
+    source = (ROOT / "scripts/m8r_06_01b_materialize_production_inputs.py").read_text()
+    assert source.count("dispatch_budget=dispatch_budget") == 2
+    assert '"twse_delisted"' in source
+    assert '"tpex_delisted"' in source
+    assert '"twse_etn_expired"' in source
+    for code in (
+        "BOOTSTRAP_REDIRECT_LIMIT_EXCEEDED",
+        "BOOTSTRAP_DISPATCH_BUDGET_EXHAUSTED",
+        "BOOTSTRAP_REDIRECT_REJECTED",
+    ):
+        with pytest.raises(RuntimeError, match=code):
+            module._stop_on_bootstrap_transport_limit({"transport_error_code": code})
+
+
+@pytest.mark.parametrize("location", [None, "https://example.test/redirected?token=do-not-persist#frag"])
+def test_http_307_is_sanitized_and_never_followed(monkeypatch, location):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    headers = Message()
+    if location is not None:
+        headers["Location"] = location
+
+    class ErrorOpener:
+        dispatched = 0
+
+        def open(self, request, timeout):
+            self.dispatched += 1
+            assert budget.used_dispatches == 1
+            raise urllib.error.HTTPError(
+                request.full_url, 307, "Temporary Redirect", headers, io.BytesIO(b"diagnostic body")
+            )
+
+    opener = ErrorOpener()
+    monkeypatch.setattr(
+        probe_sources.urllib.request,
+        "build_opener",
+        lambda *_args: opener,
+    )
+    result = probe_sources.probe(
+        "https://example.test/start",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+    )
+    assert opener.dispatched == 1
+    assert result["http_status"] == 307
+    assert result["transport_error_code"] == "BOOTSTRAP_HTTP_REDIRECT_NOT_FOLLOWED"
+    assert result["redirect_followed"] is False
+    assert result["redirect_location_present"] is (location is not None)
+    if location is None:
+        assert result["redirect_location_allowed"] is False
+        assert result["redirect_location_scheme"] is None
+    else:
+        assert result["redirect_location_allowed"] is True
+        assert result["redirect_location_scheme"] == "https"
+        assert result["redirect_location_host"] == "example.test"
+        assert result["redirect_location_path_or_sanitized_url"] == "/redirected"
+        assert "token" not in str(result)
+        assert "do-not-persist" not in str(result)
+
+
+def test_307_disallowed_location_is_reported_not_dispatched(monkeypatch):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+    headers = Message()
+    headers["Location"] = "https://evil.example/secret?key=private"
+
+    class ErrorOpener:
+        dispatched = 0
+
+        def open(self, request, timeout):
+            self.dispatched += 1
+            raise urllib.error.HTTPError(
+                request.full_url, 307, "Temporary Redirect", headers, io.BytesIO(b"")
+            )
+
+    opener = ErrorOpener()
+    monkeypatch.setattr(probe_sources.urllib.request, "build_opener", lambda *_args: opener)
+    result = probe_sources.probe(
+        "https://example.test/start",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+    )
+    assert opener.dispatched == 1
+    assert budget.used_dispatches == 1
+    assert result["redirect_location_host"] == "evil.example"
+    assert result["redirect_location_allowed"] is False
+    assert result["redirect_followed"] is False
+    assert "private" not in str(result)
+
+
+@pytest.mark.parametrize("status", [404, 500])
+def test_non_redirect_http_errors_keep_ordinary_classification(monkeypatch, status):
+    budget = probe_sources.BootstrapDispatchBudget(10)
+
+    class ErrorOpener:
+        def open(self, request, timeout):
+            raise urllib.error.HTTPError(
+                request.full_url, status, "HTTP failure", Message(), io.BytesIO(b"failure")
+            )
+
+    monkeypatch.setattr(probe_sources.urllib.request, "build_opener", lambda *_args: ErrorOpener())
+    result = probe_sources.probe(
+        "https://example.test/start",
+        ["example.test"],
+        dispatch_budget=budget,
+        max_followed_redirects=1,
+    )
+    assert result["acquisition_status"] == "http_error"
+    assert result["http_status"] == status
+    assert "transport_error_code" not in result
+    assert "redirect_followed" not in result
+
+
+def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None,
+                           tpex_drift=False, identity_transport_failure=False,
+                           etn_transport_failure=None, etn_drift=False,
+                           etn_content_type="application/json"):
+    spec = importlib.util.spec_from_file_location(
+        "a6_sm_b1_r2_materializer",
+        ROOT / "scripts/m8r_06_01b_materialize_production_inputs.py",
+    )
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    monkeypatch.setattr(module, "BUNDLE_BASE", tmp_path / "bundles")
+    # This downstream fake drift test starts after the separately tested R3
+    # source-contract guard; the real current manifest cannot authorize probes.
+    monkeypatch.setattr(module, "_require_tpex_lifecycle_data_contract", lambda _manifest: None)
+    calls = []
+    report = {}
+    qualification_calls = []
+    export_calls = []
+    parser_calls = []
+    probe_call_details = []
+
+    def fake_probe(url, _allowed_hosts, *, save_raw=None, dispatch_budget=None, method="GET", body=None, content_type=None, **_kwargs):
+        dispatch_budget.reserve_before_dispatch()
+        probe_call_details.append({"url": url, "method": method, "body": body, "save_raw": save_raw})
+        save_raw.parent.mkdir(parents=True, exist_ok=True)
+        save_raw.write_bytes(b"sanitized test capture")
+        if "strMode=2" in url:
+            source_id = "twse_isin_mode2_zh"
+        elif "strMode=4" in url:
+            source_id = "twse_isin_mode4_zh"
+        elif "suspendListing" in url:
+            source_id = "twse_delisted"
+        elif "tpex.org.tw" in url:
+            source_id = "tpex_delisted"
+        else:
+            source_id = "twse_etn_expired"
+        calls.append(source_id)
+        if identity_transport_failure and source_id.startswith("twse_isin_mode"):
+            return {
+                "acquisition_status": "network_error",
+                "transport_success": False,
+                "transport_error_code": "TEST_IDENTITY_TRANSPORT_FAILURE",
+                "dispatch_reservations": 1,
+                "request_method": method,
+            }
+        if source_id == "tpex_delisted" and tpex_transport_failure:
+            return {
+                "acquisition_status": tpex_transport_failure,
+                "transport_success": False,
+                "transport_error_code": "TEST_TRANSPORT_FAILURE",
+                "dispatch_reservations": 1,
+                "request_method": method,
+                "request_body": body,
+                "request_content_type": content_type,
+            }
+        if source_id == "twse_etn_expired" and etn_transport_failure:
+            return {
+                "acquisition_status": etn_transport_failure,
+                "transport_success": False,
+                "transport_error_code": "TEST_ETN_TRANSPORT_FAILURE",
+                "dispatch_reservations": 1,
+                "request_method": method,
+            }
+        if source_id == "tpex_delisted":
+            save_raw.parent.mkdir(parents=True, exist_ok=True)
+            save_raw.write_bytes(b"sanitized test capture")
+        return {
+            "acquisition_status": "data",
+            "transport_success": True,
+            "http_status": 200,
+            "byte_count": 24,
+            "content_type": (etn_content_type if source_id == "twse_etn_expired" else "application/json") if method == "POST" or source_id == "twse_etn_expired" else "text/html",
+            "dispatch_reservations": 1,
+            "source_id": source_id,
+        }
+
+    monkeypatch.setattr(module, "probe", fake_probe)
+    monkeypatch.setattr(module, "find_source_contract", lambda *_args: {})
+    monkeypatch.setattr(
+        module,
+        "parse_html",
+        lambda *_args, **_kwargs: {
+            "acquisition_status": "data",
+            "records": [{"identity": {"security_code": "2330"}}],
+        },
+    )
+    monkeypatch.setattr(
+        module,
+        "classify_all",
+        lambda *_args: {
+            "record_count": 1,
+            "records": [{"identity": {}, "classification": {}, "observation": {}}],
+        },
+    )
+    monkeypatch.setattr(
+        module, "parse_twse_delisted", lambda *_args: parser_calls.append("twse_delisted") or []
+    )
+
+    def parse_tpex(*_args):
+        parser_calls.append("tpex_delisted")
+        if tpex_drift:
+            raise module.LifecycleSchemaDrift("no_html_tables")
+        return []
+
+    monkeypatch.setattr(module, "parse_tpex_delisted", parse_tpex)
+    monkeypatch.setattr(module, "parse_etn", lambda *_args: parser_calls.append("twse_etn_expired") or [])
+    def parse_etn_json(*_args):
+        parser_calls.append("twse_etn_expired_json")
+        if etn_drift:
+            raise module.LifecycleSchemaDrift("twse_etn_json_fields_drift", {"observed": ["unexpected"]})
+        return []
+
+    monkeypatch.setattr(module, "parse_twse_expired_json", parse_etn_json)
+    monkeypatch.setattr(
+        module,
+        "_write_failure_report",
+        lambda *_args, **kwargs: report.update(
+            {"sources": _args[4], "decision": _args[5], "reason": _args[6]}
+        ),
+    )
+    monkeypatch.setattr(
+        module,
+        "qualify_record",
+        lambda *_args: qualification_calls.append(True),
+    )
+    monkeypatch.setattr(
+        module,
+        "export_verified_security_master_snapshot",
+        lambda **_kwargs: export_calls.append(True),
+    )
+
+    module._test_probe_call_details = probe_call_details
+    return module, calls, report, qualification_calls, export_calls, parser_calls
+
+
+def test_tpex_transport_failure_stops_before_next_probe_and_phase_e(monkeypatch, tmp_path, capsys):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, tpex_transport_failure="network_error"
+    )
+    assert module.main() == 1
+    assert calls == [
+        "twse_isin_mode2_zh",
+        "twse_isin_mode4_zh",
+        "twse_delisted",
+        "tpex_delisted",
+    ]
+    assert "twse_etn_expired" not in calls
+    assert len(report["sources"]) == 4
+    result = report["sources"][-1]
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+    assert report["decision"] == "BLOCKED_BY_TPEX_LIFECYCLE_SOURCE_FAILURE"
+    assert report["reason"] == "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+    assert result["request_method"] == "POST"
+    assert result["request_body"] == b"code=&date=ALL&reason=-1&response=json&paging-offset=0&paging-size=1000"
+    assert parser_calls == ["twse_delisted"]
+    assert qualification_calls == []
+    assert export_calls == []
+    assert "HARD STOP: BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE" in capsys.readouterr().out
+
+
+def test_tpex_schema_drift_stops_before_next_probe_and_phase_e(monkeypatch, tmp_path, capsys):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, tpex_drift=True
+    )
+    assert module.main() == 1
+    assert calls == [
+        "twse_isin_mode2_zh",
+        "twse_isin_mode4_zh",
+        "twse_delisted",
+        "tpex_delisted",
+    ]
+    assert "twse_etn_expired" not in calls
+    assert len(report["sources"]) == 4
+    result = report["sources"][-1]
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert result["lifecycle_schema_drift"] == {
+        "source_id": "tpex_delisted",
+        "parser": "parse_tpex_delisted",
+        "issue_code": "no_html_tables",
+        "sanitized_detail": {},
+        "dispatch_reservations_used": 4,
+        "probe_dispatch_reservations": 1,
+    }
+    assert result["acquisition_status"] == "schema_drift"
+    assert report["decision"] == "BLOCKED_BY_LIFECYCLE_SCHEMA_DRIFT"
+    assert report["reason"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert parser_calls == ["twse_delisted", "tpex_delisted"]
+    assert qualification_calls == []
+    assert export_calls == []
+    assert "HARD STOP: BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT" in capsys.readouterr().out
+
+
+def test_identity_source_transport_failure_remains_source_generic(monkeypatch, tmp_path):
+    module, calls, report, _qualification_calls, _export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, identity_transport_failure=True
+    )
+    assert module.main() == 1
+    assert calls == ["twse_isin_mode2_zh", "twse_isin_mode4_zh"]
+    assert parser_calls == []
+    assert report["decision"] == "BLOCKED_BY_OFFICIAL_SOURCE_PROBE_FAILURE"
+    assert report["reason"] == "All identity source probes failed"
+    assert all(
+        source.get("bootstrap_failure_code") != "BOOTSTRAP_TPEX_LIFECYCLE_SOURCE_FAILURE"
+        for source in report["sources"]
+    )
+
+
+def test_twse_etn_transport_failure_stops_before_phase_e_and_export(monkeypatch, tmp_path, capsys):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, etn_transport_failure="http_error"
+    )
+    assert module.main() == 1
+    assert calls == [
+        "twse_isin_mode2_zh", "twse_isin_mode4_zh", "twse_delisted",
+        "tpex_delisted", "twse_etn_expired",
+    ]
+    result = report["sources"][-1]
+    assert result["source_id"] == "twse_etn_expired"
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE"
+    assert report["decision"] == "BLOCKED_BY_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE"
+    assert report["reason"] == "BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE"
+    assert parser_calls == ["twse_delisted", "tpex_delisted"]
+    assert qualification_calls == []
+    assert export_calls == []
+    etn_request = module._test_probe_call_details[-1]
+    assert etn_request["url"] == "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json"
+    assert etn_request["method"] == "GET"
+    assert etn_request["body"] is None
+    assert etn_request["save_raw"].suffix == ".json"
+    assert "HARD STOP: BOOTSTRAP_TWSE_ETN_LIFECYCLE_SOURCE_FAILURE" in capsys.readouterr().out
+
+
+def test_twse_etn_production_route_uses_one_direct_get_and_json_adapter(monkeypatch, tmp_path):
+    module, calls, report, _qualification_calls, _export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path
+    )
+    assert module.main() == 1  # deterministic fixture has no production-qualified identity
+    assert calls[-1] == "twse_etn_expired"
+    etn_request = module._test_probe_call_details[-1]
+    assert etn_request["url"] == "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json"
+    assert etn_request["method"] == "GET"
+    assert etn_request["body"] is None
+    assert etn_request["save_raw"].suffix == ".json"
+    assert "twse_etn_expired_json" in parser_calls
+
+
+def test_twse_etn_schema_drift_is_distinct_and_blocks_phase_e_export(monkeypatch, tmp_path):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, etn_drift=True
+    )
+    assert module.main() == 1
+    assert calls[-1] == "twse_etn_expired"
+    result = report["sources"][-1]
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert result["lifecycle_schema_drift"]["issue_code"] == "twse_etn_json_fields_drift"
+    assert result["lifecycle_schema_drift"]["source_id"] == "twse_etn_expired"
+    assert report["decision"] == "BLOCKED_BY_LIFECYCLE_SCHEMA_DRIFT"
+    assert report["reason"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert parser_calls[-1] == "twse_etn_expired_json"
+    assert qualification_calls == []
+    assert export_calls == []
+
+
+def test_twse_etn_wrong_content_type_is_schema_drift_before_parser(monkeypatch, tmp_path):
+    module, calls, report, qualification_calls, export_calls, parser_calls = _run_materializer_case(
+        monkeypatch, tmp_path, etn_content_type="text/html"
+    )
+    assert module.main() == 1
+    result = report["sources"][-1]
+    assert calls[-1] == "twse_etn_expired"
+    assert result["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert result["lifecycle_schema_drift"]["issue_code"] == "twse_etn_api_content_type_drift"
+    assert "twse_etn_expired_json" not in parser_calls
+    assert qualification_calls == []
+    assert export_calls == []
+
+
+def test_lifecycle_drift_detail_retains_shape_without_source_header_text():
+    spec = importlib.util.spec_from_file_location(
+        "a6_sm_b1_r2_detail_materializer",
+        ROOT / "scripts/m8r_06_01b_materialize_production_inputs.py",
+    )
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    drift = module.LifecycleSchemaDrift(
+        "unrecognized_lifecycle_header",
+        {"observed_header_candidates": [["sensitive source header", "second"]]},
+    )
+    assert module._sanitize_lifecycle_drift_detail(drift) == {
+        "observed_header_candidate_count": 1,
+        "observed_header_widths": [2],
+        "truncated": False,
+    }
+    assert "sensitive source header" not in str(module._sanitize_lifecycle_drift_detail(drift))
+
+
+def test_lifecycle_drift_failure_report_preserves_code_without_retry_authority(tmp_path):
+    spec = importlib.util.spec_from_file_location(
+        "a6_sm_b1_r2_failure_report_materializer",
+        ROOT / "scripts/m8r_06_01b_materialize_production_inputs.py",
+    )
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    bundle_id = "m8r06-01b-20261010T000000Z"
+    bundle_dir = tmp_path / "input_bundles" / bundle_id
+    probe = {
+        "source_id": "tpex_delisted",
+        "parser_selected": "parse_tpex_delisted",
+        "acquisition_status": "schema_drift",
+        "bootstrap_failure_code": "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT",
+        "lifecycle_schema_drift": {
+            "source_id": "tpex_delisted",
+            "parser": "parse_tpex_delisted",
+            "issue_code": "no_html_tables",
+            "sanitized_detail": {},
+            "dispatch_reservations_used": 4,
+            "probe_dispatch_reservations": 1,
+        },
+    }
+    module._write_failure_report(
+        bundle_dir,
+        "2026-10-10T00:00:00+00:00",
+        "2026-10-10",
+        bundle_id,
+        [probe],
+        "BLOCKED_BY_LIFECYCLE_SCHEMA_DRIFT",
+        "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT",
+        repo_root=tmp_path,
+    )
+    reports = list(tmp_path.rglob("*.json"))
+    report = next(json.loads(path.read_text()) for path in reports if "bootstrap_failure_code" in path.read_text())
+    assert report["bootstrap_failure_code"] == "BOOTSTRAP_LIFECYCLE_SCHEMA_DRIFT"
+    assert report["source_probes"][0]["lifecycle_schema_drift"]["dispatch_reservations_used"] == 4
+    assert report["authorized_next_task"] == "independent_review_required_no_bootstrap_retry"
+    assert report["exporter_dry_run_attempted"] is False
+    assert report["production_input_bundle_created"] is False

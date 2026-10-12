@@ -1,0 +1,178 @@
+{
+  "schema_version": "phase_j_j2_coverage_delta.v1",
+  "authority_status": "J2_FROZEN_ACCEPTANCE_CANDIDATE",
+  "tranche": "PHASE_J_J2",
+  "baseline_authority": {
+    "registry_path": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+    "registry_sha256": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864",
+    "matrix_path": "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json",
+    "matrix_sha256": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45",
+    "j1_independent_review_id": "5481271339",
+    "starting_head": "230606eb0b51b2004dbeac72f8c2908abe0372d3",
+    "starting_tree": "225a964207cc4a9edded1e2928a7cac1ba303d4a",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "owner_authorization_sha256": "6657ce311e1d360cf3ab9af6f8f1d4ca78b68cb84d7dfa750cb1254b30ca10a2"
+  },
+  "target_scenario_ids": [
+    "J1-01",
+    "J1-07",
+    "J1-08",
+    "J1-10",
+    "J1-11",
+    "J1-12",
+    "J1-13",
+    "J1-14",
+    "J1-16",
+    "J1-18",
+    "J1-20",
+    "J1-22",
+    "J1-23",
+    "J1-24",
+    "J1-25",
+    "J1-26",
+    "J1-27"
+  ],
+  "promotions": [
+    {
+      "scenario_id": "J1-11",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2",
+      "scenario_match": "The real Local Service Mode C result/audit/handoff routes read the one fixture-backed H1 package; Result/Audit identities and H1 scope survive the route.",
+      "evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py",
+          "test_node_id": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-11-False-targets0-full_success-succeeded]",
+          "kind": "service_test",
+          "scenario_match": "The real Local Service Mode C result/audit/handoff routes read the one fixture-backed H1 package; Result/Audit identities and H1 scope survive the route."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2",
+      "scenario_match": "The actual market_read_result and market_export_ai_handoff MCP handlers read the same package and preserve its Result identity, bounded handoff, and no-extra-execution property.",
+      "evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py",
+          "test_node_id": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-11-False-targets0-full_success-succeeded]",
+          "kind": "mcp_test",
+          "scenario_match": "The actual market_read_result and market_export_ai_handoff MCP handlers read the same package and preserve its Result identity, bounded handoff, and no-extra-execution property."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2",
+      "scenario_match": "The real Local Service Mode C routes preserve the same multi-target partial package, per-operation outcome lineage, and partial handoff outcome.",
+      "evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py",
+          "test_node_id": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-20-False-targets1-partially_failed-partial_success]",
+          "kind": "service_test",
+          "scenario_match": "The real Local Service Mode C routes preserve the same multi-target partial package, per-operation outcome lineage, and partial handoff outcome."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2",
+      "scenario_match": "The actual MCP read/export handlers reuse the partial package, preserve its partial outcome and Result identity, and do not execute again.",
+      "evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py",
+          "test_node_id": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-20-False-targets1-partially_failed-partial_success]",
+          "kind": "mcp_test",
+          "scenario_match": "The actual MCP read/export handlers reuse the partial package, preserve its partial outcome and Result identity, and do not execute again."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2",
+      "scenario_match": "The real Local Service Mode C routes preserve source_failed as failed, distinct from valid empty, with matching Audit lineage.",
+      "evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py",
+          "test_node_id": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-23-True-targets2-failed-failed]",
+          "kind": "service_test",
+          "scenario_match": "The real Local Service Mode C routes preserve source_failed as failed, distinct from valid empty, with matching Audit lineage."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2",
+      "scenario_match": "The actual MCP read/export handlers expose the same failed package and handoff without another execution.",
+      "evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py",
+          "test_node_id": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-23-True-targets2-failed-failed]",
+          "kind": "mcp_test",
+          "scenario_match": "The actual MCP read/export handlers expose the same failed package and handoff without another execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2",
+      "scenario_match": "The real validation endpoint rejects unsupported financial_statements as REQUEST_SCHEMA_INVALID before operation planning or execution.",
+      "evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py",
+          "test_node_id": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_j1_10_financial_statements_fail_closed_through_local_service_and_mcp",
+          "kind": "service_test",
+          "scenario_match": "The real validation endpoint rejects unsupported financial_statements as REQUEST_SCHEMA_INVALID before operation planning or execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2",
+      "scenario_match": "The actual MCP validation handler refuses the unsupported request at its unchanged input schema before invoking Local Service; result is invalid_tool_arguments and no execution occurs.",
+      "evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py",
+          "test_node_id": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_j1_10_financial_statements_fail_closed_through_local_service_and_mcp",
+          "kind": "mcp_test",
+          "scenario_match": "The actual MCP validation handler refuses the unsupported request at its unchanged input schema before invoking Local Service; result is invalid_tool_arguments and no execution occurs."
+        }
+      ]
+    }
+  ],
+  "authorization": {
+    "bounded_live": "NOT_GRANTED",
+    "real_agent": "NOT_GRANTED"
+  },
+  "network_activity": {
+    "market_get": 0,
+    "market_head": 0,
+    "market_post": 0,
+    "browser": 0,
+    "firecrawl": 0,
+    "security_master_acquisition": 0,
+    "security_master_mutation": 0
+  }
+}

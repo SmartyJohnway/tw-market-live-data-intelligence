@@ -211,12 +211,15 @@ def validate_contract(record: dict[str, Any], *, check_repository: bool = False)
         assert descriptor["activation_state"] == "eligible" and descriptor["runtime_executable"] is False
         catalog = _load(ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json")
         capability = next(item for item in catalog["data_need_capabilities"] if item["capability_id"] == "corporate_action_context")
-        assert capability["runtime_executable"] is False
+        assert capability["runtime_executable"] is True
+        assert capability["phase_h_activation_state"] == "selected_route_active"
         routing = _load(ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json")
         route = next(item for item in routing["routes"] if item["capability_id"] == "corporate_action_context")
-        assert route["runtime_executable"] is False and route["selected_executor_id"] is None
-        assert route["routing_status"] == "plan_only"
+        assert route["runtime_executable"] is True and route["selected_executor_id"] == machine["executor_id"]
+        assert route["routing_status"] == "resolved" and route["supported_markets"] == ["TWSE"]
         assert route["candidate_executor_ids"] == [machine["executor_id"]]
+        h2_active = [item for item in routing["phase_h_source_authority"]["records"] if item["source_id"].startswith("H2-") and item["activation_state"] == "active" and item["runtime_executable"] is True]
+        assert [(item["source_id"], item["source_contract"]) for item in h2_active] == [("H2-TWSE-EXRIGHT-PRE-OPENAPI", "TWT48U_ALL")]
         registry = _load(ROOT / "config/m8r_06_03_executor_registry_metadata.json")
         candidate = [item for item in registry["executors"] if item["executor_id"] == machine["executor_id"]]
         assert len(candidate) == 1 and candidate[0]["network_required"] is True

@@ -1,0 +1,413 @@
+{
+  "authority": {
+    "historical_a6_disposition": "J_B04_A6_INTEGRATED_LIVE_ACCEPTANCE_HARD_BLOCK",
+    "implementation_commit": "0f610dca09c34e101d8d7eb70755b0c0e0a7525d",
+    "implementation_parent": "8a56fcd3204fa852a7444363485bfc8af264e74c",
+    "implementation_subject": "fix(a6): align transport ledger and fresh session authority",
+    "implementation_tree": "0366ef3399b59a28e9ea76392024fc349b2f76ac",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "owner_authorization_sha256": "a78b43ae8d251c96604820ac0e3f985eb5b92ea23d9020880ea0425cb8369252",
+    "pr_326": "open / Draft / unmerged",
+    "prior_a6_r1_independent_review": "5479120206",
+    "starting_head": "8a56fcd3204fa852a7444363485bfc8af264e74c",
+    "starting_tree": "c3e245b8a31a600e45c3552cd90a778baff6288e"
+  },
+  "final_state": {
+    "A6": "PASS_PENDING_INDEPENDENT_EXACT_HEAD_REVIEW",
+    "H2": "ACTIVE_FOR_BOUNDED_TWSE_ROUTE",
+    "H3": "LIVE_REACCEPTED",
+    "J_B04": "BLOCKING_PENDING_EXACT_HEAD_CLOSURE_REVIEW",
+    "MCP": 6,
+    "PR_326": "OPEN_DRAFT_UNMERGED",
+    "Phase_J": "NOT_STARTED",
+    "production_identity": "VERIFIED_TWSE:2330",
+    "security_master": "ACTIVE",
+    "selected_h2_executor": "phase_h_h2_twse_exright_pre_executor"
+  },
+  "gate": "J-B04-A6-R2",
+  "local_evidence": {
+    "acceptance_result": {
+      "path": "/tmp/j-b04-a6-r2/acceptance-result.json",
+      "sha256": "14c9f2fc94c3816af890435674f1bef683e1eec030ac8823e52319c2b951195d"
+    },
+    "artifacts": {
+      "audit_package": {
+        "path": "artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec/audit/unified_market_evidence_audit_package.v3.json",
+        "sha256": "49077aad477ee8b84619c8e1c5003697f1e37523846c9e52266f75cc488ffc1f"
+      },
+      "control_manifest": {
+        "path": "artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec/control/manifest.json",
+        "sha256": "eb168a675dcf56629ae8379bf15b6a0c91a7eb831af8725e2da16f0c20564798"
+      },
+      "evidence_bundle": {
+        "path": "artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec/bundles/umea-v1-55386b4d1e28bf5866ec.evidence-bundle.json",
+        "sha256": "f78b64dd293f7119bbcd2e10d2783b1d05cb2f71745e93d0e9a1aed1227cb616"
+      },
+      "h2_evidence": {
+        "path": "artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec/evidence/phase_h/h2/umeop-op-v1-45c3540d62483fa75833.json",
+        "sha256": "3e70ae05bf8bf9dcefa347f923c191ceb2014aea05148203b99bc70463199c24"
+      },
+      "h3_evidence": {
+        "path": "artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec/evidence/phase_h/h3/umeop-op-v1-287f8a8b66d14d4ba53e.json",
+        "sha256": "4efbfeb51fc550f10cebdcb09853db4bf90a2926a7e575d24ff0074e44fa6246"
+      },
+      "h3_transport_summary": {
+        "path": "artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec/h3-live-transport-summary.json",
+        "sha256": "8ece95b5d97c7ce5c87849295d7e73a9641592b7b7d1d3b9ce481f75bbb36f22"
+      },
+      "h4_evidence": {
+        "path": "artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec/evidence/phase_h/h4/umeop-op-v1-45c3540d62483fa75833.json",
+        "sha256": "6f4e6874de53a2efb8f419b485e8d3780b1fac73ede98515a4f244e60cbb3bbc"
+      },
+      "normalized_result": {
+        "path": "artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec/ai_context/unified_market_evidence_result.v3.json",
+        "sha256": "0cc4bdae67c2ff6e15232f155b47d4179aac91cbcea7471898184a1cf3c4dce6"
+      }
+    },
+    "authorization_file": {
+      "path": "/tmp/j-b04-a6-r2/owner-authorization.json",
+      "sha256": "4dcf83333f70498a877ee3021239313e6bc96a19f2602dc7ec2053cd4f527b48"
+    },
+    "live_command_log": {
+      "path": "/tmp/j-b04-a6-r2/live-command.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "preflight": {
+      "path": "/tmp/j-b04-a6-r2/preflight.json",
+      "sha256": "40d914724f0364d49cc810655d35ae1695e3d45710cb786c001dab93328ed29b"
+    },
+    "raw_response_policy": "Response bodies were consumed by the governed executor; sanitized transport byte/hash metadata and normalized hash-bound evidence remain installation-local. No raw source body was committed.",
+    "session": {
+      "path": "/tmp/j-b04-a6-r2/session.json",
+      "sha256": "c5fa91b72bf0fa15bd7672fbbc84002316631e7e2c976ec46de62e8f8ad1ea9e"
+    },
+    "standalone_raw_response_bodies_retained": false,
+    "transport_ledger": {
+      "path": "/tmp/j-b04-a6-r2/transport-ledger.jsonl",
+      "sha256": "a503355bab396b729963e803b29dab194d3a6de6065c0f1a324e02d129f192ab"
+    },
+    "workbench_package_root": "/workspace/tw-market-a5/artifacts/m8r_06_03_workbench/umea-v1-55386b4d1e28bf5866ec"
+  },
+  "network": {
+    "TAIFEX": 0,
+    "TPEx": 0,
+    "after_session": 0,
+    "bootstrap": 0,
+    "browser": 0,
+    "security_master_acquisition": 0,
+    "stage_1_market_source_get_head_post": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "stage_2_market_source_get_head_post": {
+      "GET": 3,
+      "HEAD": 0,
+      "POST": 0
+    },
+    "trading_order_broker_recommendation": 0,
+    "unofficial_fallback": 0
+  },
+  "publication": "This record, Markdown report, and final validator are in the evidence-only commit after the tested implementation. The evidence commit ID is reported outside this record to avoid self-reference.",
+  "schema_version": "j_b04_a6_r2_transport_ledger_repair_and_live_reacceptance.v1",
+  "stage_1": {
+    "default_ci": {
+      "base": {
+        "collected": 1288,
+        "deselected": 5,
+        "failed": 30,
+        "head": "8a56fcd3204fa852a7444363485bfc8af264e74c",
+        "passed": 1249,
+        "profile_status": "fail",
+        "selected": 1283,
+        "skipped": 4
+      },
+      "base_only_failed_nodes": 0,
+      "candidate": {
+        "collected": 1288,
+        "deselected": 5,
+        "failed": 30,
+        "head": "0f610dca09c34e101d8d7eb70755b0c0e0a7525d",
+        "passed": 1249,
+        "profile_status": "fail",
+        "selected": 1283,
+        "skipped": 4
+      },
+      "candidate_only_failed_nodes": 0,
+      "command": "python scripts/run_test_profile.py default-ci --json",
+      "comparison": "clean detached Git worktrees at exact base and candidate; Git metadata retained because tests inspect Git objects",
+      "environment": {
+        "PYTHONHASHSEED": "0",
+        "TW_MARKET_SECURITY_MASTER_ROOT": "same empty isolated directory on both sides",
+        "TZ": "Etc/UTC",
+        "external_network": "denied; loopback permitted for local service tests",
+        "python": "CPython 3.12.14"
+      },
+      "existing_failed_node_ids_sha256": "d134f20a8e168d4c10ac707c0c474372099c501f69a701cb36b7457d5e26c9c8",
+      "failed_node_sets_equal": true,
+      "new_failure_delta": 0
+    },
+    "network_source_requests": {
+      "GET": 0,
+      "HEAD": 0,
+      "POST": 0,
+      "security_master_acquisition": 0
+    },
+    "repair": {
+      "fresh_authority": {
+        "allowed_linear_commit_prefixes": [
+          "fix(a6):",
+          "test(a6):",
+          "feat(a6):"
+        ],
+        "authorized_base": "8a56fcd3204fa852a7444363485bfc8af264e74c",
+        "authorized_tree": "c3e245b8a31a600e45c3552cd90a778baff6288e",
+        "consumed_old_base_rejected": true,
+        "owner_authorization_sha256": "a78b43ae8d251c96604820ac0e3f985eb5b92ea23d9020880ea0425cb8369252",
+        "tracked_dirty_worktree_rejected": true,
+        "unrelated_commit_rejected": true,
+        "wrong_tree_rejected": true
+      },
+      "historical_a6_or_r1_evidence_modified": false,
+      "historical_compatibility": "A frozen completion may omit method only when paired to exactly one reservation by reservation_id; the validator derives method solely from that reservation. If completion contains method, exact equality is required.",
+      "historical_ledger_modified": false,
+      "ledger_defect": "reserve_dispatch wrote method to the reservation event but omitted it from the returned metadata; complete_dispatch expands that return object, so the historical completion omitted method and the prior validator indexed x[method] for every event, raising KeyError.",
+      "new_session_repair": "reserve_dispatch now returns method with dispatch identity, so both reservation and completion events include it.",
+      "pair_integrity": "Require one reservation and one completion per reservation_id, no duplicates/orphans, matching attempt/operation/source_id/target/operation_id/dispatch_number/URL/method, allowed GET source and URL, contiguous dispatch numbers, zero retry/redirect, and per-attempt/session budgets."
+    },
+    "stage_1_production_implementation_frozen_before_live": true,
+    "validation": {
+      "a6_ledger_authority_tests": {
+        "failed": 0,
+        "passed": 22
+      },
+      "compileall": "PASS",
+      "deselected_node": "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation",
+      "deselection_reason": "This node is an existing default-CI failure on both exact base and candidate commits.",
+      "expanded_diagnostic": {
+        "adjudication": "The two historical P1 tests assert pre-A6 H2 inactivity; separate P1 and P1-R1 validators pass and explicitly acknowledge current authorized A6 supersession. The pointer-loader node is an existing base/candidate default-CI failure.",
+        "failed": 3,
+        "failure_nodes": [
+          "tests/unit/test_phase_j_b04_a6_p1_prerequisite_authority.py::test_h2_remains_plan_only_inactive_and_unselected",
+          "tests/unit/test_phase_j_b04_a6_p1_prerequisite_authority.py::test_inventory_and_authority_helpers_are_network_free",
+          "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation"
+        ],
+        "passed": 317,
+        "skipped": 1
+      },
+      "focused_product_tests": {
+        "deselected": 1,
+        "failed": 0,
+        "passed": 314,
+        "skipped": 1
+      },
+      "git_diff_check": "PASS",
+      "historical_validators": {
+        "A6_P0": "PASS",
+        "A6_P1": "PASS",
+        "A6_P1_R1": "PASS",
+        "A6_R1_H3": "PASS",
+        "A6_terminal_evidence": "PASS",
+        "integrated_current_and_historical_ledger": "PASS"
+      },
+      "network_denied": true,
+      "python": "CPython 3.12.14 at /tmp/a5test-venv/bin/python",
+      "strict_duplicate_key_json": {
+        "status": "PASS",
+        "tracked_json_files": 1057
+      }
+    }
+  },
+  "stage_2": {
+    "attempt_2_result": "Not required: the existing runner performed one fresh attempt which reached terminal PASS.",
+    "attempt_2_used": false,
+    "attempt_count": 1,
+    "audit_v3": {
+      "all_artifact_hashes_verified": true,
+      "authorization_id": "umea-v1-55386b4d1e28bf5866ec",
+      "bundle_hash_verified": true,
+      "claim_id": "umecl-v1-52c7cf0e5f6856c5681c",
+      "control_package_id": "umea-v1-55386b4d1e28bf5866ec",
+      "execution_authorization_hash": "55386b4d1e28bf5866ec4fa8601940627e2473ac59af584860b5b6f959dfde",
+      "operation_ids": [
+        "umeop-op-v1-287f8a8b66d14d4ba53e",
+        "umeop-op-v1-45c3540d62483fa75833"
+      ],
+      "package_hash": "83200ede745933ac8b13f3080757984dfc6fa18d7a5d90c8692c105b42fba645",
+      "package_id": "umeap-v3-716997640f93cae2bf97",
+      "raw_artifact_sha256": "49077aad477ee8b84619c8e1c5003697f1e37523846c9e52266f75cc488ffc1f",
+      "receipt_hash": "41d3d90af8924d94c54463230e89026a45e908b53399b5ba70a9eba314448cb2",
+      "receipt_hash_verified": true,
+      "receipt_id": "umerec-v1-41d3d90af8924d94c544",
+      "result_hash": "ec1666e600a1d90167f894a913db0d749e7a458be86d188f2995310d015cb133",
+      "schema": "unified_market_evidence_audit_package.v3",
+      "schema_valid": true
+    },
+    "command": "A6_SESSION_ROOT=/tmp/j-b04-a6-r2 python scripts/phase_j_b04_a6_integrated_acceptance.py --live",
+    "execution_outcome": "succeeded",
+    "fresh_session_root": "/tmp/j-b04-a6-r2",
+    "h2": {
+      "artifact_sha256": "3e70ae05bf8bf9dcefa347f923c191ceb2014aea05148203b99bc70463199c24",
+      "claim_of_historical_absence": false,
+      "exact_target_search_succeeded": true,
+      "executor": "phase_h_h2_twse_exright_pre_executor",
+      "matching_target_events_in_retrieved_current_source_slice": 0,
+      "method": "GET",
+      "requested_window": {
+        "end": "2026-10-08",
+        "start": "2026-09-08"
+      },
+      "result": "valid successful retrieval with partial declared subtype coverage",
+      "source_id": "H2-TWSE-EXRIGHT-PRE-OPENAPI"
+    },
+    "h3": {
+      "artifact_sha256": "4efbfeb51fc550f10cebdcb09853db4bf90a2926a7e575d24ff0074e44fa6246",
+      "baseline_window": {
+        "actual_distinct_close_count": 21,
+        "end_observation_date": "2026-10-08",
+        "required_distinct_close_count": 21,
+        "start_observation_date": "2026-09-08",
+        "status": "available"
+      },
+      "coverage_status": "complete",
+      "distinct_months": [
+        "2026-09",
+        "2026-10"
+      ],
+      "executor": "phase_h_h3_twse_recent_performance_executor",
+      "first_observation_date": "2026-09-08",
+      "last_observation_date": "2026-10-07",
+      "method": "GET",
+      "requested_lookback_trading_days": 20,
+      "result": "succeeded",
+      "source_id": "H3-TWSE-DEFAULT-BOUNDED",
+      "valid_observations": 20
+    },
+    "h4": {
+      "artifact_sha256": "6f4e6874de53a2efb8f419b485e8d3780b1fac73ede98515a4f244e60cbb3bbc",
+      "comparison_window": {
+        "end_observation_date": "2026-10-08",
+        "start_observation_date": "2026-09-08"
+      },
+      "derived": true,
+      "interpretation_guard": "CORPORATE_ACTION_COVERAGE_INCOMPLETE",
+      "ordinary_return_interpretation": "blocked",
+      "state": "coverage_incomplete"
+    },
+    "network_frozen": true,
+    "preflight": {
+      "disposition": "J_B04_A6_READY_FOR_BOUNDED_LIVE_ACCEPTANCE",
+      "h2_executor": "phase_h_h2_twse_exright_pre_executor",
+      "h2_scope": "TWSE TWT48U_ALL only; blocked source gaps unchanged",
+      "h3_executor": "phase_h_h3_twse_recent_performance_executor",
+      "identity": {
+        "canonical_target_id": "TWSE:2330",
+        "execution_eligibility": "allowed",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0002330008",
+        "market": "TWSE",
+        "resolution": "exact_listing_id",
+        "security_code": "2330"
+      },
+      "market_and_security_master_calls": {
+        "GET": 0,
+        "HEAD": 0,
+        "POST": 0,
+        "security_master_acquisition": 0
+      },
+      "mcp_tools": 6,
+      "path": "/tmp/j-b04-a6-r2/preflight.json",
+      "security_master": {
+        "active_selector_sha256": "25b24e55b188fc2fa08efbe227d98c5890b31f179168665bab8f1f413a55f0fc",
+        "index_sha256": "3ac2b751ef96b7b488bbcba9c0e67980fdf13c7f22b33c41fb346fd6a6ceaae7",
+        "manifest_sha256": "e23d5a60053aec9733764adc49908b3a238d2108cd70ac6e3965d99a1e2a26bc",
+        "qualification_sha256": "ecea8b143ecb2bd335ede982a29ce2e576162f8a1d0319c3d15bedd8b3be3238",
+        "release_id": "security-master-20261010T112837Z",
+        "state": "ACTIVE"
+      },
+      "sha256": "40d914724f0364d49cc810655d35ae1695e3d45710cb786c001dab93328ed29b"
+    },
+    "result_v3": {
+      "raw_artifact_sha256": "0cc4bdae67c2ff6e15232f155b47d4179aac91cbcea7471898184a1cf3c4dce6",
+      "result_hash": "ec1666e600a1d90167f894a913db0d749e7a458be86d188f2995310d015cb133",
+      "result_id": "umeresult-v3-8c69362ef4dea4292714",
+      "schema": "unified_market_evidence_result.v3",
+      "schema_valid": true,
+      "status": "full_success"
+    },
+    "runner_intermediate_disposition": "REQUIRES_SANITIZED_RESULT_REVIEW",
+    "surfaces": {
+      "additional_market_executions": 0,
+      "handoff_sha256": "b4fe0800e870a5e8bbae70fa34fa7679f756f3222365c4d002cab06872d8bef1",
+      "interpretation_guard_visible": true,
+      "local_service": "PASS",
+      "market_export_ai_handoff": "PASS",
+      "market_read_result": "PASS",
+      "mcp_tools": 6,
+      "recommendation_language_present": false,
+      "workbench_result_audit_handoff": "PASS"
+    },
+    "transport": {
+      "GET": 3,
+      "HEAD": 0,
+      "POST": 0,
+      "actual_market_get_dispatches": 3,
+      "attempt_limit": {
+        "h2_gets": 1,
+        "h3_gets": 3,
+        "total": 4
+      },
+      "completions": 3,
+      "dispatches": [
+        {
+          "bytes": 7529,
+          "content_type": "text/html;charset=utf-8",
+          "dispatch": 1,
+          "http_status": 200,
+          "method": "GET",
+          "operation": "H3",
+          "redirects": 0,
+          "response_sha256": "9bf1dc0caf51a596f422e4194058616a744db5dbe85c0475d1085ec19cb63f60",
+          "retry_count": 0,
+          "source_id": "H3-TWSE-DEFAULT-BOUNDED",
+          "url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20261001&stockNo=2330"
+        },
+        {
+          "bytes": 17932,
+          "content_type": "text/html;charset=utf-8",
+          "dispatch": 2,
+          "http_status": 200,
+          "method": "GET",
+          "operation": "H3",
+          "redirects": 0,
+          "response_sha256": "c21f4b19e9bdc1d6862c01e1ef037ff6c17755c468a98cfcc2ce894c9f333baa",
+          "retry_count": 0,
+          "source_id": "H3-TWSE-DEFAULT-BOUNDED",
+          "url": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&date=20260901&stockNo=2330"
+        },
+        {
+          "bytes": 15728,
+          "content_type": "application/json;charset=UTF-8",
+          "dispatch": 3,
+          "http_status": 200,
+          "method": "GET",
+          "operation": "H2",
+          "redirects": 0,
+          "response_sha256": "eaeb52d866a371f7062dd019c38aee13534f024a44fc47d24b7ec3f591533640",
+          "retry_count": 0,
+          "source_id": "H2-TWSE-EXRIGHT-PRE-OPENAPI",
+          "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL"
+        }
+      ],
+      "ledger_sha256": "a503355bab396b729963e803b29dab194d3a6de6065c0f1a324e02d129f192ab",
+      "pair_validation": "PASS",
+      "redirects": 0,
+      "reservations": 3,
+      "retries": 0,
+      "session_designed_ceiling": 8,
+      "session_hard_ceiling": 10
+    }
+  },
+  "terminal_disposition": "J_B04_A6_R2_INTEGRATED_LIVE_REACCEPTANCE_PASS"
+}

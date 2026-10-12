@@ -1,0 +1,29 @@
+{
+  "changed_paths": [],
+  "affected_sources": [
+    "synthetic_new_official_source"
+  ],
+  "affected_data_needs": [],
+  "affected_evidence_families": [],
+  "affected_public_contracts": [],
+  "affected_scenario_ids": [
+    "J1-09"
+  ],
+  "touches_mcp": false,
+  "touches_agent_host": false,
+  "touches_security_master": false,
+  "release_candidate": false,
+  "requested_live_revalidation": true,
+  "requested_real_agent_revalidation": false,
+  "change_id": "synthetic_new_source",
+  "candidate_commit": "1111111111111111111111111111111111111111",
+  "candidate_tree": "2222222222222222222222222222222222222222",
+  "change_classes": [
+    "NEW_SOURCE"
+  ],
+  "fixture_metadata": {
+    "synthetic": true,
+    "network_free": true,
+    "acceptance_only": true
+  }
+}

@@ -1,0 +1,365 @@
+{
+  "gate": "J-B04-A6-SM-B1-R5-P2-R1",
+  "disposition": "SM_B1_R5_P2_R1_TWSE_ETN_CONTRACT_QUALIFIED_BOOTSTRAP_FIT",
+  "authorized_starting_authority": {
+    "head": "d411933247487075e250f41db87688fe02fa5740",
+    "tree": "acb77b24a32677279fff7a16869231899fb25747",
+    "main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "tracked_worktree_clean": true
+  },
+  "prior_r5_p2_review": {
+    "review_id": "5478481588",
+    "disposition": "PASS_AS_PARTIAL",
+    "twse_delisted": "QUALIFIED_DIRECT_CANONICAL_SOURCE",
+    "twse_etn_expired": "SOURCE_CONTRACT_PARTIAL"
+  },
+  "owner_authorization": {
+    "statement_sha256": "5467ebfa813bae9ddea8a4b1e501c5c70d5423b30b206f6d7e1a7b6d137bd32d",
+    "external_record_path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/owner-authorization.json",
+    "committed": false
+  },
+  "scope": {
+    "source_id": "twse_etn_expired",
+    "twse_delisted_probed_or_modified": false,
+    "tpex_delisted_probed_or_modified": false,
+    "other_sources_probed": false,
+    "bootstrap_executed": false,
+    "H3_H2_A6_live_executed": false
+  },
+  "probe_accounting": {
+    "logical_probes": 2,
+    "explicit_http_dispatches": 2,
+    "GET": 2,
+    "HEAD": 0,
+    "POST": 0,
+    "redirects_followed": 0,
+    "automatic_retries": 0,
+    "browser_navigations": 0,
+    "browser_incidental_requests": 0,
+    "twse_etn_endpoint_requests": 1,
+    "twse_delisted_requests": 0,
+    "tpex_requests": 0,
+    "network_frozen_after_probe_number": 2
+  },
+  "probes": [
+    {
+      "logical_probe_number": 1,
+      "dispatch_number": 1,
+      "source_id": "twse_etn_expired",
+      "purpose": "fresh landing capture and page configuration recovery",
+      "url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+      "redirect_count": 0,
+      "content_type": "text/html",
+      "raw_path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/raw/001-etn-landing.html",
+      "bytes": 11284,
+      "sha256": "265d3eeb30e292795ad9a089f6e34f10c6c5b781b756c9766f796717b97cb8d9",
+      "matches_r5_p2_landing_hash": true,
+      "matches_r5_p2_historical_byte_count": true
+    },
+    {
+      "logical_probe_number": 2,
+      "dispatch_number": 2,
+      "source_id": "twse_etn_expired",
+      "purpose": "fresh page-derived default JSON GET and offered-response coverage check",
+      "url": "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json",
+      "redirect_count": 0,
+      "content_type": "application/json;charset=UTF-8",
+      "raw_path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/raw/002-etn-data-default.json",
+      "bytes": 1703,
+      "sha256": "e049ed302b3bdd7b73bc77a3c8d2d015835da6882db8652f397d4c8514019484"
+    }
+  ],
+  "evidence_storage": {
+    "session_root": "/tmp/j-b04-a6-sm-b1-r5-p2-r1",
+    "raw_write_once": true,
+    "unique_raw_paths": true,
+    "write_mode_exclusive_create": true,
+    "ledger_path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/transport-ledger.jsonl",
+    "hash_manifest_path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/final-hash-manifest.json",
+    "artifacts": [
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/raw/001-etn-landing.html",
+        "bytes": 11284,
+        "sha256": "265d3eeb30e292795ad9a089f6e34f10c6c5b781b756c9766f796717b97cb8d9"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/raw/002-etn-data-default.json",
+        "bytes": 1703,
+        "sha256": "e049ed302b3bdd7b73bc77a3c8d2d015835da6882db8652f397d4c8514019484"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/transport-ledger.jsonl",
+        "bytes": 1881,
+        "sha256": "9ae877a57ff32682a6164e9f83f4be60404e3953e37d70b19c3d33d41fde3a5d"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/analysis/landing-config.json",
+        "bytes": 2218,
+        "sha256": "a6f004ae88316fde837dbb98b2e299b48199ddcfb7ebefc937ad2b07cd7faed1"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/analysis/response-summary.json",
+        "bytes": 1485,
+        "sha256": "f3033bf3752e72ea2a410cc9af0de7d6f806b87043c12ff9af619a328bde3e7c"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/runner.py",
+        "bytes": 4005,
+        "sha256": "f841faeb30b41ecea806cecd9486bb195f1e1b4f8405aefb813bd491b63c1e82"
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p2/raw/main.js",
+        "bytes": 128697,
+        "sha256": "e904e5819a818a414c893d4f878e8f13fd745a14418666c849f2975020349252",
+        "reused_without_refetch": true
+      },
+      {
+        "path": "/tmp/j-b04-a6-sm-b1-r5-p2/raw/web-report.js",
+        "bytes": 19650,
+        "sha256": "fb42365f6eb8a1516408e7604f502c134c5e54de0c4f6449c6e10c2915685058",
+        "reused_without_refetch": true
+      }
+    ],
+    "response_bodies_committed": false,
+    "authorization_record_committed": false,
+    "hash_manifest_sha256": "c0bc544aea10c31f3fb0c53ef479338867bdc8fcd4d2aa8b30cb4143f49df238"
+  },
+  "landing_page_contract": {
+    "form_count": 1,
+    "form_id": "form",
+    "form_action": null,
+    "form_method": null,
+    "data_api": "/ETN/expireEnd",
+    "form_data_attributes": {
+      "data-api": "/ETN/expireEnd"
+    },
+    "form_controls": [],
+    "hidden_inputs": [],
+    "controls_outside_form": [
+      "font-size radio controls and navigation; no ETN report filters"
+    ],
+    "date_year_status_code_reason_type_filters": [],
+    "onload_argv_present": false,
+    "onload_arguments": {},
+    "default_filter_arguments": {},
+    "query_parameter_injected_by_runtime": {
+      "response": "json"
+    },
+    "external_scripts_in_order": [
+      "https://www.googletagmanager.com/gtag/js?id=G-J2HVMN6FVP",
+      "/res/lib/ie-hints.min.js",
+      "/res/js/main.js",
+      "/res/js/web.js",
+      "/res/js/web-report.js"
+    ],
+    "inline_scripts": [
+      "font-size/localStorage UI initialization",
+      "jsonDecoration formatting helper"
+    ],
+    "report_nodes": [
+      "#reports",
+      ".rwd-table"
+    ],
+    "data_paging": false,
+    "data_server_side": false,
+    "initial_request_count": 1,
+    "initial_request_method": "GET",
+    "client_renders_single_response_array": true,
+    "landing_configuration_path": "/tmp/j-b04-a6-sm-b1-r5-p2-r1/analysis/landing-config.json",
+    "preserved_runtime_evidence": [
+      {
+        "file": "main.js",
+        "sha256": "e904e5819a818a414c893d4f878e8f13fd745a14418666c849f2975020349252",
+        "rwd_base": "/rwd",
+        "language": "zh"
+      },
+      {
+        "file": "web-report.js",
+        "sha256": "fb42365f6eb8a1516408e7604f502c134c5e54de0c4f6449c6e10c2915685058",
+        "behavior": "one getJSON call; empty form/onload args; response=json; paging only when data-paging and data-server-side flags are present"
+      }
+    ],
+    "hidden_defaults": []
+  },
+  "request_contract": {
+    "canonical_url": "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json",
+    "method": "GET",
+    "query_parameters": {
+      "response": "json"
+    },
+    "parameter_derivation": "landing form data-api=/ETN/expireEnd + preserved main.js rwd base=/rwd and language=zh + preserved web-report.js composition + response=json injection",
+    "omitted_blank_parameters": true,
+    "filter_parameters": [],
+    "paging_parameters": [],
+    "explicit_endpoint_call_count": 1,
+    "redirects_required": 0
+  },
+  "response_contract": {
+    "content_type": "application/json;charset=UTF-8",
+    "root_keys_exact": [
+      "stat",
+      "title",
+      "data",
+      "fields"
+    ],
+    "success_stat": "ok",
+    "title": "到期或終止上市資訊",
+    "fields_exact_order": [
+      "終止上市日期",
+      "證券代號",
+      "證券簡稱",
+      "發行證券商",
+      "終止上市理由"
+    ],
+    "row_shape": "exactly five strings in fields order",
+    "observed_row_count": 13,
+    "response_has_total_count_or_paging_metadata": false,
+    "valid_empty": "Only exact root/title/stat/field contract with data=[]",
+    "non_ok_malformed_wrong_root_fields_order_row_width_type_date_or_identity": "LifecycleSchemaDrift; never treated as empty"
+  },
+  "lifecycle_semantics": {
+    "code_field": "證券代號",
+    "company_name_field": "證券簡稱",
+    "issuer_field": "發行證券商",
+    "termination_date_field": "終止上市日期",
+    "reason_field": "終止上市理由",
+    "date_calendar": "Gregorian",
+    "date_shape": "YYYY/MM/DD",
+    "normalization": "YYYY/MM/DD to YYYY-MM-DD",
+    "earliest_observed_date": "2020-04-30",
+    "latest_observed_date": "2026-05-28",
+    "duplicate_full_rows": 0,
+    "duplicate_lifecycle_identities": 0,
+    "event_semantics": "twse_delisted from explicit termination date only; no maturity or last-trading date inferred from free text"
+  },
+  "coverage": {
+    "source_data_is_unfiltered": true,
+    "source_data_is_unpaged": true,
+    "complete_dataset_offered_by_landing_report_proven": true,
+    "coverage_basis": "Fresh page has no filter controls, hidden defaults, onload arguments, data-paging or data-server-side attributes; preserved runtime shows one GET and client rendering of complete response.data without follow-up page/offset requests.",
+    "limitation": "Complete only for the dataset offered by the official expired-ETN report at acquisition time; does not assert events absent from the exchange's offered source. No totalCount is returned.",
+    "qualification": "Fully qualified under the page/runtime contract; one response's complete data array is the enumerated offered dataset."
+  },
+  "bootstrap_fit": {
+    "classification": "COMPATIBLE_WITH_EXISTING_BOOTSTRAP_ENVELOPE",
+    "logical_source_probes": 5,
+    "normal_no_redirect_dispatches": 5,
+    "twse_etn_dispatches": 1,
+    "max_dispatches_per_probe": 2,
+    "redirects_per_probe_max": 1,
+    "global_hard_ceiling": 10,
+    "automatic_retry": 0,
+    "envelope_changed": false
+  },
+  "implementation": {
+    "commit": "eba68f0c0f37c56c1aad6e60da1f0f557f414773",
+    "tree": "c3629c3ecf5b26829b7f7e7bc7f3c914b889ea1f",
+    "changes": [
+      "strict TWSE ETN JSON parser separate from legacy HTML parser",
+      "direct JSON GET route with .json raw bundle name",
+      "distinct transport hard stop before Phase E/export/activation",
+      "schema drift remains distinct and immediate",
+      "manifest and lifecycle contract promote only observed offered-response semantics",
+      "historical validators now compare their original manifest snapshots and permit this explicit ETN supersession"
+    ]
+  },
+  "validation": {
+    "python_interpreter": "/tmp/a5test-venv/bin/python",
+    "python_version": "Python 3.12.14",
+    "environment_recovery": "existing local virtualenv; no dependency installation",
+    "network_denied": true,
+    "focused_pytest": {
+      "collected": 101,
+      "passed": 101,
+      "failed": 0,
+      "skipped": 0
+    },
+    "default_ci": {
+      "command": "python scripts/run_test_profile.py default-ci --json",
+      "base": "d411933247487075e250f41db87688fe02fa5740",
+      "candidate": "eba68f0c0f37c56c1aad6e60da1f0f557f414773",
+      "clean_archives": true,
+      "network_denial": "sitecustomize guard denies non-loopback socket name resolution and connections; localhost allowed for deterministic tests",
+      "base_counts": {
+        "collected": 1288,
+        "selected": 1283,
+        "deselected": 5,
+        "passed": 1234,
+        "failed": 45,
+        "skipped": 4
+      },
+      "candidate_counts": {
+        "collected": 1288,
+        "selected": 1283,
+        "deselected": 5,
+        "passed": 1234,
+        "failed": 45,
+        "skipped": 4
+      },
+      "base_failure_ids": "candidate comparison exact equality; 45/45 IDs identical; full result at /tmp/j-b04-a6-sm-b1-r5-p2-r1/ci-base.json and ci-candidate.json",
+      "new_failure_delta": 0,
+      "candidate_failure_set_expanded": false
+    },
+    "compileall": "PASS",
+    "source_manifest_schema": "PASS",
+    "historical_validators": [
+      "scripts/validate_phase_j_b04_a6_p1_prerequisite_authority.py PASS",
+      "scripts/validate_phase_j_b04_a6_p1_r1_bootstrap_transport_bound.py PASS",
+      "scripts/validate_phase_j_b04_a6_sm_b1_r2_fail_closed_repair.py PASS",
+      "scripts/validate_phase_j_b04_a6_sm_b1_r3_tpex_source_contract.py PASS",
+      "scripts/validate_phase_j_b04_a6_sm_b1_r5_p1_r2_tpex_history.py PASS",
+      "scripts/validate_phase_j_b04_a6_sm_b1_r5_p1_r2_r1.py PASS"
+    ],
+    "raw_13_row_replay": {
+      "result": "13 events parsed; all LifecycleEvent schema-valid",
+      "duplicate_identities": 0,
+      "earliest": "2020-04-30",
+      "latest": "2026-05-28"
+    },
+    "git_diff_check": "PASS"
+  },
+  "source_network_counts": {
+    "GET": 2,
+    "HEAD": 0,
+    "POST": 0,
+    "Security_Master_live_acquisition": 0
+  },
+  "security_master": {
+    "state": "NOT_INITIALIZED",
+    "production_identity_verified": false,
+    "active_json_present": false,
+    "bootstrap_attempt_2": "NOT_AUTHORIZED"
+  },
+  "canonical_runtime_state": {
+    "H2": "INACTIVE",
+    "routing": "plan_only",
+    "selected_executor": null,
+    "J-B04": "BLOCKING",
+    "Phase_J": "NOT_STARTED",
+    "MCP": 6
+  },
+  "historical_state_preserved": {
+    "r5_p2_json_rewritten": false,
+    "r5_p2_markdown_rewritten": false,
+    "r5_p2_disposition_remains": "PASS_AS_PARTIAL",
+    "twse_delisted_remains_qualified_and_unchanged": true,
+    "tpex_delisted_remains_qualified_and_unchanged": true
+  },
+  "pr_status": {
+    "number": 326,
+    "state": "OPEN",
+    "draft": true,
+    "merged": false
+  },
+  "remaining_blockers": [
+    "Security Master bootstrap attempt #2 remains unauthorized.",
+    "TWSE/TPEx source terms or provider automation permission are not established by this technical contract qualification.",
+    "No production Security Master release or TWSE:2330 production identity has been activated or verified."
+  ]
+}

@@ -1,0 +1,405 @@
+[
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-01",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-01",
+      "status": "full_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-01",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ],
+      "artifact_inventory": [
+        {
+          "artifact_id": "synthetic-artifact-1",
+          "citation_id": "synthetic-citation-1"
+        }
+      ]
+    },
+    "handoff": "Evidence-only handoff. Source and observation times are cited. No recommendation or trading instruction.",
+    "semantic_facts": {
+      "identity": "exact",
+      "source": "official_market_source",
+      "currentness": "observed_not_realtime",
+      "coverage": "bounded",
+      "no_recommendation": true,
+      "no_trade_action": true,
+      "evidence_bearing": true,
+      "citation_present": true,
+      "lineage_continuous": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-07",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-07",
+      "status": "full_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-07",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ]
+    },
+    "handoff": "Evidence-only result: no evidence in the covered scope. No conclusion is made about periods outside that scope.",
+    "semantic_facts": {
+      "evidence_state": "no_evidence_in_covered_scope",
+      "source_failure": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-08",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-08",
+      "status": "full_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-08",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ]
+    },
+    "handoff": "Evidence-only result: the official correction relation is unresolved. No correction conclusion is asserted.",
+    "semantic_facts": {
+      "revision_relation": "unresolved",
+      "correction_linkage_proven": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-10",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-10",
+      "status": "rejected"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-10",
+      "operation_lineage": []
+    },
+    "handoff": "Financial statements are unsupported. No values are fabricated and monthly revenue is not substituted.",
+    "semantic_facts": {
+      "capability": "unsupported",
+      "execution_started": false,
+      "fabricated_values": false,
+      "revenue_substitution": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-11",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-11",
+      "status": "partial_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-11",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ]
+    },
+    "handoff": "Trading-status coverage is representative and partial; uncovered status families remain unresolved.",
+    "semantic_facts": {
+      "coverage": "representative_attention_and_disposition",
+      "uncovered_status_families": [
+        "suspension",
+        "resumption",
+        "changed_trading_method"
+      ],
+      "normal_inferred_from_no_match": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-12",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-12",
+      "status": "partial_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-12",
+      "operation_lineage": []
+    },
+    "handoff": "Suspension and resumption are uncovered here; no normal-trading conclusion follows.",
+    "semantic_facts": {
+      "coverage": "uncovered",
+      "status_conclusion": "unresolved",
+      "normal_inferred_from_no_match": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-13",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-13",
+      "status": "full_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-13",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ]
+    },
+    "handoff": "Corporate-action subtype coverage is incomplete; ordinary-return interpretation is blocked.",
+    "semantic_facts": {
+      "corporate_action_subtype": "ex_dividend",
+      "coverage": "incomplete",
+      "ordinary_return_interpretation": "blocked",
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-14",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-14",
+      "status": "full_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-14",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ]
+    },
+    "handoff": "The bounded accepted ex-right-pre route is cited; it does not imply full corporate-action history.",
+    "semantic_facts": {
+      "corporate_action_subtype": "ex_right_pre",
+      "coverage": "bounded",
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-16",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-16",
+      "status": "full_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-16",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ]
+    },
+    "handoff": "Execution completed, but H4 reports coverage_incomplete and blocks ordinary-return interpretation.",
+    "semantic_facts": {
+      "h4_state": "coverage_incomplete",
+      "ordinary_return_interpretation": "blocked",
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-18",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-18",
+      "status": "full_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-18",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ]
+    },
+    "handoff": "Optional index/futures context is explicitly requested and descriptive only.",
+    "semantic_facts": {
+      "context_family": "index_futures_context",
+      "requested_explicitly": true,
+      "loaded_by_default": false,
+      "inference": "descriptive_only",
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-20",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-20",
+      "status": "partial_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-20",
+      "operation_lineage": [
+        "synthetic-operation-1",
+        "synthetic-operation-2"
+      ]
+    },
+    "handoff": "A partial result preserves per-operation outcomes and citations.",
+    "semantic_facts": {
+      "result_status": "partial_success",
+      "operation_outcomes_preserved": true,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-22",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-22",
+      "status": "partial_success"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-22",
+      "operation_lineage": []
+    },
+    "handoff": "Evidence is missing or not yet available in the covered scope; it is not zero.",
+    "semantic_facts": {
+      "evidence_state": "missing_or_not_yet_available_or_no_evidence",
+      "source_failure": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-23",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-23",
+      "status": "failed"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-23",
+      "operation_lineage": [
+        "synthetic-operation-1"
+      ]
+    },
+    "handoff": "The source failed. This is not a valid empty result.",
+    "semantic_facts": {
+      "evidence_state": "source_failed",
+      "valid_empty": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-24",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-24",
+      "status": "rejected"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-24",
+      "operation_lineage": []
+    },
+    "handoff": "Identity is ambiguous; execution did not start and no name fallback was used.",
+    "semantic_facts": {
+      "identity_resolution": "ambiguous",
+      "execution_started": false,
+      "name_fallback": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-25",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-25",
+      "status": "rejected"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-25",
+      "operation_lineage": []
+    },
+    "handoff": "Identity is known, but this requested capability is unsupported; execution did not start.",
+    "semantic_facts": {
+      "capability": "unsupported_for_identity",
+      "execution_started": false,
+      "identity_known": true,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-26",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-26",
+      "status": "rejected"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-26",
+      "status": "refused",
+      "operation_lineage": []
+    },
+    "handoff": "Authorization was refused; no execution occurred.",
+    "semantic_facts": {
+      "authorization": "refused",
+      "execution_started": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  },
+  {
+    "fixture_kind": "synthetic",
+    "scenario_id": "J1-27",
+    "result_v3": {
+      "schema_version": "unified_market_evidence_result.v3",
+      "result_id": "synthetic-result-j1-27",
+      "status": "rejected"
+    },
+    "audit_v3": {
+      "schema_version": "unified_market_evidence_audit_package.v3",
+      "result_id": "synthetic-result-j1-27",
+      "operation_lineage": []
+    },
+    "handoff": "The resource bound was enforced; no unbounded execution or backfill occurred.",
+    "semantic_facts": {
+      "resource_bound": "enforced",
+      "unbounded_execution": false,
+      "no_recommendation": true,
+      "no_trade_action": true
+    }
+  }
+]

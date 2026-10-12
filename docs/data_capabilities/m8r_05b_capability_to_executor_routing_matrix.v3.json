@@ -1,7 +1,7 @@
 {
   "schema_version": "m8r_05b_capability_to_executor_routing_matrix.v3",
   "authoritative_capability_catalog": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-  "routing_scope": "Current active Phase H sources: H1-TPEX-ATTENTION-OPENAPI, H1-TPEX-DISPOSITION-OPENAPI, H1-TPEX-CHANGED-TRADING-OPENAPI, H3-TWSE-DEFAULT-BOUNDED. H0-SRC-02 remains open; complete H1 coverage is not claimed.",
+  "routing_scope": "Current active Phase H sources: H1-TPEX-ATTENTION-OPENAPI, H1-TPEX-DISPOSITION-OPENAPI, H1-TPEX-CHANGED-TRADING-OPENAPI, H3-TWSE-DEFAULT-BOUNDED, H2-TWSE-EXRIGHT-PRE-OPENAPI. H2 selection is limited to TWSE pre-announcement context; incomplete subtype coverage blocks ordinary-return interpretation. H0-SRC-02 remains open; complete H1 coverage is not claimed.",
   "routes": [
     {
       "capability_id": "identity",
@@ -557,12 +557,13 @@
     },
     {
       "capability_id": "corporate_action_context",
-      "capability_status_source": "catalog v3 support_status=contract_supported; runtime inactive",
+      "capability_status_source": "catalog v3 support_status=runtime_executable; J-B04-A6 selected bounded TWSE route",
       "supported_markets": [
-        "TWSE",
-        "TPEX"
+        "TWSE"
       ],
-      "supported_security_types": [],
+      "supported_security_types": [
+        "equity"
+      ],
       "supported_instrument_families": [
         "company_share"
       ],
@@ -571,32 +572,30 @@
       ],
       "target_required": true,
       "time_scope_required": true,
-      "runtime_executable": false,
+      "runtime_executable": true,
       "provisional": false,
       "candidate_executor_ids": [
         "phase_h_h2_twse_exright_pre_executor"
       ],
-      "selected_executor_id": null,
-      "routing_status": "plan_only",
+      "selected_executor_id": "phase_h_h2_twse_exright_pre_executor",
+      "routing_status": "resolved",
       "batching_scope": "none",
       "approval_required": true,
       "network_required": true,
-      "estimated_operation_rule": "A3 implementation candidate only; one explicit TWSE TWT48U_ALL GET, retry zero; remains plan-only and inactive until separately accepted",
+      "estimated_operation_rule": "One approved exact TWSE target operation; one TWT48U_ALL GET maximum; consumes only the successful same-target H3-derived comparison window; retry zero; no fallback.",
       "parameter_mapping": {},
       "output_evidence_contract": "corporate_action_context_evidence.v1",
       "known_limitations": [
-        "A3 implementation candidate only; H2 activation and bounded-live acceptance require separate authorization",
-        "capital-reduction routes are manual-only and par/split/consolidation routes remain source gaps"
+        "Only H2-TWSE-EXRIGHT-PRE-OPENAPI is selected; TPEx, TWT49U final, capital-reduction, par-value, split, and consolidation routes remain inactive or blocked.",
+        "The selected source is subtype-limited; unsupported or insufficient coverage remains explicit and blocks ordinary-return interpretation.",
+        "Owner-controlled bounded A6 use is authorized; provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED and no provider approval is claimed."
       ],
       "evidence_paths": [
         "docs/governance/phase_h/Phase_H_H2_Price_Basis_Corporate_Action_Contract_FROZEN.md"
       ],
       "capability_requires_execution_approval": true,
       "package_approval_policy": "strictest_operation_controls_package",
-      "blocking_reasons": [
-        "H2 activation and bounded-live acceptance require separate authorization",
-        "capital-reduction routes are manual-only and par/split/consolidation routes remain source gaps"
-      ]
+      "blocking_reasons": []
     }
   ],
   "provisional_market_policy": "A capability result of provisional is never executable. It may be represented only as plan_only_not_executable by a future planner.",
@@ -606,7 +605,7 @@
   },
   "activation_status": "selected_phase_h_routes_active",
   "phase_h_source_authority": {
-    "active_source_count": 4,
+    "active_source_count": 5,
     "records": [
       {
         "source_id": "H1-TWSE-ATTENTION-OPENAPI",
@@ -693,8 +692,8 @@
         "market": "TWSE",
         "source_contract": "TWT48U_ALL",
         "source_role": "default_candidate",
-        "activation_state": "eligible",
-        "runtime_executable": false
+        "activation_state": "active",
+        "runtime_executable": true
       },
       {
         "source_id": "H2-TWSE-EXRIGHT-FINAL-TWT49U",

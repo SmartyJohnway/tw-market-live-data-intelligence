@@ -17,6 +17,9 @@ from urllib.request import Request, urlopen
 from jsonschema import Draft7Validator, Draft202012Validator, FormatChecker
 
 from scripts.m5k_common import execute_live_observation
+from scripts.m8_source_freshness_evaluator import build_source_freshness_assessment
+from scripts.m8r_03d_watchlist_source_integration import evaluate_evidence_currentness
+from scripts.m8r_bounded_market_context_request import load_source_registry
 from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
 from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adapter
 from scripts.m8r_05b_03.dispatch import (
@@ -344,6 +347,92 @@ def _research_batch_operation_adapter(
     return outcomes
 
 
+def _assess_current_observation(item: dict[str, Any], source_policy: dict[str, Any], *, now_utc: str | None = None) -> dict[str, Any]:
+    """Delegate timing decisions; acquisition time is the replayable reference clock.
+
+    M8 supplies source-family semantics. The accepted 03D evaluator supplies
+    source-age semantics when an authoritative intraday source time exists.
+    Retrieved-only observations retain M8 semantics when source policy allows.
+    An explicit replay clock may be supplied; production defaults to acquisition.
+    Neither clock is rewritten and no threshold is duplicated here.
+    """
+    observation = {
+        "source_id": item.get("source"),
+        "source_timestamp": item.get("source_timestamp"),
+        "retrieved_at_utc": item.get("retrieved_at_utc") or item.get("retrieved_at"),
+        "source_unavailable": item.get("source_unavailable", False),
+        "source_unavailable_reason": item.get("source_unavailable_reason"),
+        "value_status": item.get("value_status"),
+        "market_date": item.get("market_date"),
+        "trading_date": item.get("trading_date"),
+        "session_state": item.get("session_state"),
+    }
+    reference_clock = now_utc if now_utc is not None else observation["retrieved_at_utc"]
+    policy = source_policy.get("freshness_evaluator_policy", {})
+    policy_valid = (isinstance(policy, dict)
+                    and isinstance(policy.get("max_intraday_age_seconds"), int)
+                    and not isinstance(policy.get("max_intraday_age_seconds"), bool)
+                    and policy["max_intraday_age_seconds"] >= 0)
+    # M8 owns retrieval-age classification. Invalid policy cannot invoke its
+    # compatibility default as current production authority.
+    assessment_policy = source_policy if (isinstance(policy, dict) and (policy_valid or source_policy.get("timing_class") != "liveish_intraday_snapshot")) else {**source_policy, "freshness_evaluator_policy": {}}
+    assessment = build_source_freshness_assessment(
+        observation, assessment_policy, now_utc=reference_clock or "invalid"
+    )
+    if (source_policy.get("source_id") == observation["source_id"]
+            and source_policy.get("timing_class") == "liveish_intraday_snapshot"
+            and assessment["freshness_assessment"] != "source_unavailable"):
+        # Missing policy/timing is unresolved, never an implicit default policy
+        # or a retrieval timestamp masquerading as exchange time.
+        retrieved_only_allowed = (policy_valid
+                                  and policy.get("allow_retrieved_at_only_intraday_freshness") is True
+                                  and policy.get("requires_exchange_timestamp_for_fresh") is False)
+        if not policy_valid or assessment["freshness_assessment"] == "unknown":
+            currentness = {"status": "unresolved", "reason": "insufficient_policy_or_timing_authority"}
+        elif not observation["source_timestamp"]:
+            if retrieved_only_allowed:
+                currentness = {
+                    "status": {"fresh_intraday_snapshot": "fresh", "stale_intraday_snapshot": "stale"}[assessment["freshness_assessment"]],
+                    "reason": assessment["freshness_reason"],
+                    "age_seconds": assessment["age_seconds"],
+                }
+            else:
+                currentness = {"status": "unresolved", "reason": "exchange_timestamp_required_by_source_policy"}
+        else:
+            currentness = evaluate_evidence_currentness(
+                reference_clock_str=reference_clock,
+                source_timestamp_str=observation["source_timestamp"],
+                retrieved_at_str=observation["retrieved_at_utc"],
+                timing_class=source_policy["timing_class"],
+                max_age_seconds=policy["max_intraday_age_seconds"],
+            )
+        assessment.update(
+            status=currentness["status"],
+            freshness_assessment={"fresh": "fresh_intraday_snapshot", "stale": "stale_intraday_snapshot", "unresolved": "unknown"}[currentness["status"]],
+            freshness_reason=currentness["reason"],
+            age_seconds=currentness.get("age_seconds"),
+            delay_seconds=currentness.get("transport_latency_seconds"),
+            safe_for_ai_context=currentness["status"] == "fresh",
+        )
+        if currentness["status"] != "fresh":
+            assessment["requires_caveats"] = True
+            assessment["blocked_interpretation"] = sorted(set(assessment["blocked_interpretation"] + ["not current market evidence"]))
+            assessment["allowed_interpretation"] = [value for value in assessment["allowed_interpretation"] if value != "bounded live-ish observation"]
+        if currentness["status"] == "stale":
+            assessment["stale_reason"] = currentness["reason"]
+    elif source_policy.get("source_id") != observation["source_id"]:
+        assessment.update(status="unresolved", freshness_assessment="unknown", safe_for_ai_context=False)
+    canonical = lambda value: hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    assessment.update(
+        currentness_policy="family_specific",
+        evaluation_timestamp=reference_clock,
+        evaluator_id="m8_source_freshness_evaluator+m8r_03d_watchlist_source_integration",
+        evaluator_input_sha256=canonical(observation),
+        source_policy_sha256=canonical(source_policy),
+    )
+    return assessment
+
+
 def _current_observation(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
     _require_approved_execution((request,), context)
     identifiers = request["approved_security_identifiers"]
@@ -387,9 +476,16 @@ def _current_observation(request: dict[str, Any], context: DispatchRuntimeContex
     records = [item for item in observation.get("observations", []) if isinstance(item, dict)]
     if not records:
         return _result_base(request, status="failed", error_code="current_observation_unavailable")
+    registry = load_source_registry(str(ROOT / "docs/data_capabilities/m8_source_capability_registry.json"))
+    policy = next((source for source in registry["sources"] if source.get("source_id") == "TWSE_MIS"), {})
+    records = [{**item, "governed_currentness": _assess_current_observation(item, policy)} for item in records]
     artifact = _write_safe_evidence(request, context, records, source_family="TWSE_MIS")
     result = _result_base(request, status="succeeded", error_code=None)
     result.update(result_item_count=len(records), evidence_artifacts=[artifact])
+    if any(item["governed_currentness"].get("status") == "stale" for item in records):
+        # Existing receipt/Audit warning vocabulary carries the same typed
+        # assessment without changing transport success or the public schema.
+        result["warnings"].append("stale_intraday_snapshot")
     return result
 
 
@@ -667,16 +763,18 @@ def _phase_h_h3_twse_recent_performance(
             )
         # Caller-supplied timeout is retained; TLS policy and response cap are
         # fixed by the selected route. No retry or redirect behavior is added.
-        result = fetch_twse_stock_day_month(
-            target=target,
-            instrument_family="company_share",
-            instrument_type="common_share",
-            requested_month=month,
-            retrieved_at=kwargs["retrieved_at"],
-            timeout_seconds=request["timeout_seconds"],
-            max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,
-            ssl_policy="compatibility",
-        )
+        from scripts.a6_session_transport import operation_context
+        with operation_context(int(os.environ.get("A6_ATTEMPT", "1")), "H3", request["operation_id"]):
+            result = fetch_twse_stock_day_month(
+                target=target,
+                instrument_family="company_share",
+                instrument_type="common_share",
+                requested_month=month,
+                retrieved_at=kwargs["retrieved_at"],
+                timeout_seconds=request["timeout_seconds"],
+                max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,
+                ssl_policy="compatibility",
+            )
         result = _validate_h3_month_result(
             result,
             target=target,

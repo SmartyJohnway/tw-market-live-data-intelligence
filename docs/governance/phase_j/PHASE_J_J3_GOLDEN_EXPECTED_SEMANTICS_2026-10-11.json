@@ -1,0 +1,250 @@
+{
+  "disposition": "PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_PASS",
+  "candidate_status": "FROZEN_ACCEPTANCE_CANDIDATE_PENDING_EXACT_HEAD_INDEPENDENT_REVIEW",
+  "starting_authority": {
+    "head": "7454c4613e50759265ebf4c96ec6571117b2c1a4",
+    "tree": "75f6f907102ab469e0e7a6de381eec206ba9620a",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "pr": 326,
+    "pr_state": "OPEN",
+    "draft": true,
+    "merged": false
+  },
+  "accepted_reviews": {
+    "J1": "5481271339",
+    "J2_R1": "5481723267",
+    "J2_closure_J3_start": "5481754513",
+    "J3_operational": "5481764589"
+  },
+  "owner_authorization_statement": "AUTHORIZE PHASE J J3 GOLDEN EXPECTED SEMANTICS ON HEAD 7454c4613e50759265ebf4c96ec6571117b2c1a4 TREE 75f6f907102ab469e0e7a6de381eec206ba9620a AFTER J2-R1 EXACT-HEAD INDEPENDENT REVIEW 5481723267 AND J2 CLOSURE/J3 START AUTHORIZATION REVIEW 5481754513: perform a strictly network-free Phase J J3 tranche that preserves the independently accepted J1 27-scenario registry, accepted J1 baseline matrix, accepted J2-R1 deterministic cross-layer evidence and all historical J2 records as immutable authorities, and formalizes machine-verifiable golden expected semantics for all 27 governed scenarios across correct identity, source, period, currentness, missing, partial, corporate-action handling, authorization, bounded execution, citations/lineage, and no-trading boundaries without using exact natural-language output as acceptance; reuse existing Unified Request/Result/Audit V3, Workbench, Local Service, MCP and semantic evidence contracts, add only acceptance/governance schemas or data, validators and tests, make no production runtime, public schema, route, capability, Security Master or six-tool MCP changes, make zero market/source requests, zero bounded-live executions and zero real-agent executions, grant no live or real-agent authority, do not start J4 or Phase K, do not merge or mark PR #326 ready, require focused semantic/regression validation, strict duplicate-key JSON validation, compileall, git diff --check and clean-archive default-CI with zero candidate-only failures, publish a validated implementation commit followed only by sanitized evidence, and stop for exact-head independent review.",
+  "owner_authorization_sha256": "7dd958505bbd70fda4c0b7be712c98c05987e4552a7c6ee89c4affde5a6a91e0",
+  "phase_state": {
+    "Phase_J": "STARTED",
+    "J0": "COMPLETE",
+    "J1": "INDEPENDENTLY_ACCEPTED",
+    "J2": "CLOSED_INDEPENDENTLY_ACCEPTED",
+    "J3": "FROZEN_ACCEPTANCE_CANDIDATE_PENDING_REVIEW",
+    "J4": "NOT_STARTED",
+    "Phase_K": "NOT_STARTED",
+    "bounded_live_authorization": "NOT_GRANTED",
+    "real_agent_authorization": "NOT_GRANTED"
+  },
+  "immutable_authorities": {
+    "J1_registry": {
+      "path": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+      "sha256": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864"
+    },
+    "J1_matrix": {
+      "path": "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json",
+      "sha256": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45"
+    },
+    "J2_R1_artifacts": {
+      "docs/governance/phase_j/PHASE_J_J2_DETERMINISTIC_CROSS_LAYER_COVERAGE_DELTA_V1.json": "03160d7103f6f28944903f6982ecab5ee5709516e9dbc51d5d98614987fe0fdc",
+      "docs/governance/phase_j/PHASE_J_J2_DETERMINISTIC_CROSS_LAYER_EXECUTION_LEDGER_V1.json": "6b32f88e9f659d54f0d1b07a1b7c048ab78205ae0a65eb4aae04595a26993cc0",
+      "docs/governance/phase_j/PHASE_J_J2_DETERMINISTIC_CROSS_LAYER_SCENARIO_EXECUTION_2026-10-11.json": "fdf622061c18f421fdfb031fb7f5e20293ef1fb104eab20841686452b17f370d",
+      "docs/governance/phase_j/PHASE_J_J2_DETERMINISTIC_CROSS_LAYER_SCENARIO_EXECUTION_2026-10-11.md": "f942e7aa1e39e260207a4c2a7bcf9a35125d7872d04446e7946c9a4df3833454",
+      "docs/governance/phase_j/PHASE_J_J2_EFFECTIVE_COVERAGE_MATRIX_V1.json": "252fb9b36fe7920f51ffde763a51565b3d4a8170ed297c6b564edd161ff55982",
+      "docs/governance/phase_j/PHASE_J_J2_R1_COVERAGE_DELTA_V1.json": "321e9008ebca8d8a42e77993ae9329b274dd3e05ad5553554890f97e65618539",
+      "docs/governance/phase_j/PHASE_J_J2_R1_EFFECTIVE_COVERAGE_MATRIX_V1.json": "8fe53871a764d66dcca6d3a5531d4801008c58f77e74ace7eede637f15436c3a",
+      "docs/governance/phase_j/PHASE_J_J2_R1_WORKBENCH_HEADLESS_CROSS_LAYER_COMPLETION_2026-10-11.json": "74e27776bf9768613cbc25f1f6cf3c81687f29be2551f4f9e31141772ac29487",
+      "docs/governance/phase_j/PHASE_J_J2_R1_WORKBENCH_HEADLESS_CROSS_LAYER_COMPLETION_2026-10-11.md": "eb324584ef03103137eec03a5190ba5bb6c2bd7d6b1d66c16693cae3920975f0",
+      "docs/governance/phase_j/PHASE_J_J2_R1_WORKBENCH_HEADLESS_EXECUTION_LEDGER_V1.json": "2c30451e2dc6071191d7d5107149770c4d34767cc45c26b5fa819b68249239fa"
+    },
+    "historical_J2_unchanged": true
+  },
+  "J3_artifacts": {
+    "golden_semantics": {
+      "path": "docs/governance/phase_j/PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json",
+      "sha256": "c87557fd24b303d18edeaece467b9ffdf22096599b3538422326ffd27467d2b2"
+    },
+    "traceability": {
+      "path": "docs/governance/phase_j/PHASE_J_J3_SEMANTIC_TRACEABILITY_V1.json",
+      "sha256": "b93f452fdfbd02cec529165c100c96776e76b4a5b7bf3c47144053d1fd9e27f4"
+    }
+  },
+  "semantic_counts": {
+    "scenarios": 27,
+    "dimensions_per_scenario": 11,
+    "j1_assertions_mapped": 182,
+    "j1_forbidden_claims_mapped": 178,
+    "orphan_assertions": 0,
+    "dropped_assertions": 0,
+    "total_scenarios": 27,
+    "exact_identity_expectation": 5,
+    "fail_closed_identity_semantics": 2,
+    "positive_source_semantics": 18,
+    "unsupported_source_or_capability_semantics": 10,
+    "missing_semantics": 27,
+    "partial_semantics": 27,
+    "corporate_action_safety_guard": 27,
+    "authorization_required": 27,
+    "preexecution_rejection": 4,
+    "citations_required": 27,
+    "global_no_trading_boundary": 27
+  },
+  "traceability": {
+    "J1_to_J3": "PASS",
+    "J3_to_J1_and_product_authority": "PASS",
+    "assertion_mappings": 182,
+    "forbidden_claim_mappings": 178,
+    "authority_refs_on_each_assertion": true
+  },
+  "semantic_regression": {
+    "positive_calibration_cases": 17,
+    "wording_variant_positive_cases": 1,
+    "negative_mutation_cases": 16,
+    "focused_j3_tests": "35 passed",
+    "broad_focused_tests": "278 passed"
+  },
+  "prose_independence": {
+    "exact_prose_comparisons": 0,
+    "wording_variants_semantically_equal_pass": true,
+    "typed_wrong_identity_with_similar_prose_fails": true
+  },
+  "validation": {
+    "J3_validator": "PASS",
+    "J1_validator": "PASS",
+    "J2_R1_validator": "PASS",
+    "J_B03": "PASS",
+    "historical_readiness_validator": "PASS_HISTORICAL_STATE",
+    "Phase_I_closure": "PASS",
+    "Phase_H_V3": "PASS",
+    "A6_R2_exact_historical_head": "PASS",
+    "strict_duplicate_key_JSON": "PASS, 1073 files",
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "default_ci": {
+    "base": "7454c4613e50759265ebf4c96ec6571117b2c1a4",
+    "candidate": "5ad7ec0d7330d675323b97a024f1da470dfb2b2e",
+    "environment": {
+      "python": "/tmp/j2r1-browser-venv/bin/python",
+      "python_version": "3.12",
+      "TZ": "Etc/UTC",
+      "PYTHONHASHSEED": "0",
+      "network_guard": "/tmp/j2r1-ci-network/sitecustomize.py",
+      "Security_Master": "same TW_MARKET_SECURITY_MASTER_ROOT path, emptied/recreated between sequential runs"
+    },
+    "runs": {
+      "base": {
+        "collected": 1288,
+        "selected": 1283,
+        "passed": 1249,
+        "failed": 30,
+        "skipped": 4,
+        "deselected": 5,
+        "failure_nodes": [
+          "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation",
+          "tests/unit/test_phase_g_pr_d_public_surfaces.py::test_current_portable_catalog_is_exact_generated_v3_projection",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]"
+        ],
+        "profile_status": "fail",
+        "network_may_have_occurred": false
+      },
+      "candidate": {
+        "collected": 1288,
+        "selected": 1283,
+        "passed": 1249,
+        "failed": 30,
+        "skipped": 4,
+        "deselected": 5,
+        "failure_nodes": [
+          "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation",
+          "tests/unit/test_phase_g_pr_d_public_surfaces.py::test_current_portable_catalog_is_exact_generated_v3_projection",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]",
+          "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]"
+        ],
+        "profile_status": "fail",
+        "network_may_have_occurred": false
+      },
+      "candidate_only_failure_nodes": [],
+      "base_only_failure_nodes": []
+    },
+    "candidate_only_failure_count": 0,
+    "same_failure_set": true,
+    "interpretation": "Default-CI exited nonzero on both revisions because of 30 pre-existing failures; not reported as global PASS."
+  },
+  "network": {
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0,
+    "browser_external": 0,
+    "live_executions": 0,
+    "real_agent_executions": 0
+  },
+  "Security_Master": {
+    "acquisition": 0,
+    "mutation": 0
+  },
+  "product_boundary": {
+    "production_runtime_changes": 0,
+    "public_schema_changes": 0,
+    "new_routes": 0,
+    "new_capabilities": 0,
+    "MCP_tools": 6
+  },
+  "implementation": {
+    "commit": "5ad7ec0d7330d675323b97a024f1da470dfb2b2e",
+    "tree": "881e87e2e0af847c931b22f0dc08983a249e2212",
+    "files": [
+      "docs/governance/phase_j/PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json",
+      "docs/governance/phase_j/PHASE_J_J3_SEMANTIC_TRACEABILITY_V1.json",
+      "scripts/validate_phase_j_j3_golden_expected_semantics.py",
+      "tests/acceptance/test_phase_j_j3_golden_expected_semantics.py"
+    ]
+  }
+}

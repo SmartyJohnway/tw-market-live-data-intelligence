@@ -1,0 +1,515 @@
+{
+  "schema_version": "phase_j_j0_j1_start_and_acceptance_architecture.v1",
+  "gate": "PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_AND_COVERAGE_MATRIX",
+  "terminal_disposition": "PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_AND_COVERAGE_MATRIX_PASS",
+  "authority": {
+    "starting_head": "2455fd0875bc09d6bc5926a6267351aadb38beb1",
+    "starting_tree": "1c42fd165bbbbd32249b9a43fc2b813182b31ca3",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "pr_326": "OPEN_DRAFT_UNMERGED",
+    "entry_review_id": "5479545125",
+    "j_b04_closure_review_id": "5479527453",
+    "start_authorization_sha256": "46cb965043659cbc82eced142b3d7c12eef119b4942124513fabb6305e894198",
+    "implementation_commit": "08ddd9f835a0470829d99898888ef18852d567f7",
+    "implementation_tree": "c81998d07b8fe4b13124ff95a7aac10940b8cea8",
+    "evidence_commit": "self-reference omitted; commit ID in terminal publication report"
+  },
+  "phase_j_state": {
+    "previous": "NOT_STARTED",
+    "new": "STARTED",
+    "j0": "COMPLETE",
+    "j1_registry": "FROZEN_ACCEPTANCE_CANDIDATE",
+    "j1_coverage_matrix": "FROZEN_ACCEPTANCE_CANDIDATE",
+    "phase_j_complete": false,
+    "phase_k": "NOT_STARTED"
+  },
+  "authority_sources": [
+    {
+      "path": "ROADMAP.md",
+      "authority": "Roadmap V3.2 J.0-J.4; J.0 no capability; J.1 27 scenarios; J.2 nine layers; J.3 typed semantics; Phase J checkbox stays unchecked"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+      "sha256": "06dad4d27f4088abe201da8a43afaee6d4b6c155c8c8fa06cc69584792966624",
+      "authority": "stable J1 scenario IDs, historical readiness, and relevance classifications; runtime readiness recomputed"
+    },
+    {
+      "path": "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json",
+      "sha256": "f0379356dc5a5e51f6889266de8571b70fb286afbab05aa1408e13fde897d98b",
+      "authority": "Phase I final exit review PASS; I1/I2/I3 accepted"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_J_B03_C0_CLOSURE_AND_READINESS_RECONCILIATION_2026-10-07.json",
+      "sha256": "68d3bc28f03683e015349fc5b0fa9d352660e648cd803846e39a83aea9c7d65e",
+      "authority": "J-B03 closed; H1 coverage remains representative, not complete"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json",
+      "sha256": "050a94438a6ca907fb02bfafcc0ba17e3019d994a5bb5be63fb79b9c65975e86",
+      "authority": "A6-R2 execution PASS; H4 coverage_incomplete blocks ordinary-return interpretation"
+    },
+    {
+      "path": "GitHub PR #326 review 5479527453",
+      "authority": "J-B04 exact-head closure PASS; J-B04 CLOSED/CLEARED"
+    },
+    {
+      "path": "GitHub PR #326 review 5479545125",
+      "authority": "Phase J entry/start PASS; network-free J0/J1 authorized"
+    }
+  ],
+  "current_entry_disposition": {
+    "J-B01": "NON-BLOCKING",
+    "J-B02": "NON-BLOCKING",
+    "J-B03": "CLOSED",
+    "J-B04": "CLOSED / CLEARED"
+  },
+  "readiness_reconciliation": {
+    "historical_preflight_phase_j": "NOT_STARTED",
+    "historical_preflight_blockers": [
+      "J-B03",
+      "J-B04"
+    ],
+    "current_phase_j": "STARTED",
+    "current_j_b03": "CLOSED",
+    "current_j_b04": "CLOSED / CLEARED",
+    "method": "Preserve inherited scenario IDs and historical rows; record superseding current readiness per scenario; do not rewrite old readiness evidence."
+  },
+  "registry": {
+    "path": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+    "sha256": "279f9bca5f3e1373315f8bfa297dae6fbb55586e8e0737d0a06bb0febb69cedd",
+    "schema_version": "phase_j_governed_scenario_registry.v1",
+    "scenario_count": 27,
+    "scenario_ids": [
+      "J1-01",
+      "J1-02",
+      "J1-03",
+      "J1-04",
+      "J1-05",
+      "J1-06",
+      "J1-07",
+      "J1-08",
+      "J1-09",
+      "J1-10",
+      "J1-11",
+      "J1-12",
+      "J1-13",
+      "J1-14",
+      "J1-15",
+      "J1-16",
+      "J1-17",
+      "J1-18",
+      "J1-19",
+      "J1-20",
+      "J1-21",
+      "J1-22",
+      "J1-23",
+      "J1-24",
+      "J1-25",
+      "J1-26",
+      "J1-27"
+    ],
+    "inherited_scenario_ids_preserved": true,
+    "duplicate_ids": 0,
+    "roadmap_required_scenarios": 27,
+    "roadmap_requirement_traceability": "Every inherited scenario binds to its J.1 item and the 2026-10-05 historical readiness source.",
+    "product_relevance_counts": {
+      "MUST_HAVE_FOR_CONVERSATIONAL_J": 16,
+      "ACCEPTANCE_HARNESS_ONLY": 1,
+      "OPTIONAL_EVIDENCE_NOT_J_BLOCKING": 5,
+      "SAFE_FAIL_CLOSED_IS_SUFFICIENT": 5
+    },
+    "current_readiness_recomputed": true,
+    "accepted_fail_closed_scenario_ids": [
+      "J1-08",
+      "J1-10",
+      "J1-12",
+      "J1-13",
+      "J1-15",
+      "J1-25"
+    ],
+    "historical_readiness_source": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+    "live_authorization": "NOT_GRANTED",
+    "real_agent_authorization": "NOT_GRANTED"
+  },
+  "coverage_matrix": {
+    "path": "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json",
+    "sha256": "34df5972122421ec6b7a90e0281928f4f516122cce2709db478058bb7489ace8",
+    "schema_version": "phase_j_coverage_matrix.v1",
+    "dimensions": [
+      "contract_fixture",
+      "deterministic_unit",
+      "integration",
+      "service_api",
+      "workbench",
+      "mcp",
+      "fresh_install",
+      "bounded_live",
+      "real_agent"
+    ],
+    "scenario_ids_match_registry": true,
+    "status_counts": {
+      "COVERED_J0_J1": 34,
+      "COVERED_EXISTING": 37,
+      "PLANNED": 127,
+      "REQUIRES_LIVE_AUTH": 15,
+      "REQUIRES_REAL_AGENT_AUTH": 27,
+      "NOT_APPLICABLE": 3
+    },
+    "per_layer_status_counts": {
+      "contract_fixture": {
+        "COVERED_J0_J1": 17,
+        "PLANNED": 10
+      },
+      "deterministic_unit": {
+        "COVERED_J0_J1": 17,
+        "PLANNED": 10
+      },
+      "integration": {
+        "COVERED_EXISTING": 27
+      },
+      "service_api": {
+        "PLANNED": 27
+      },
+      "workbench": {
+        "PLANNED": 27
+      },
+      "mcp": {
+        "PLANNED": 27
+      },
+      "fresh_install": {
+        "PLANNED": 26,
+        "COVERED_EXISTING": 1
+      },
+      "bounded_live": {
+        "REQUIRES_LIVE_AUTH": 15,
+        "COVERED_EXISTING": 9,
+        "NOT_APPLICABLE": 3
+      },
+      "real_agent": {
+        "REQUIRES_REAL_AGENT_AUTH": 27
+      }
+    },
+    "scenarios_with_j0_j1_fixture_unit_coverage": 17,
+    "scenarios_with_existing_network_free_integration_evidence": 27,
+    "scenarios_with_historical_bounded_live_evidence": 9,
+    "scenarios_requiring_future_bounded_live_authorization": 15,
+    "scenarios_requiring_future_real_agent_authorization": 27,
+    "existing_layer_baselines": [
+      {
+        "layer": "service_api",
+        "status": "COVERED_EXISTING",
+        "semantics": [
+          "validate",
+          "preview",
+          "authorization",
+          "execute_once",
+          "result",
+          "audit",
+          "handoff"
+        ],
+        "evidence_refs": [
+          "tests/integration/test_unified_workbench_api.py"
+        ]
+      },
+      {
+        "layer": "workbench",
+        "status": "COVERED_EXISTING",
+        "semantics": [
+          "same canonical request/result flow",
+          "stored result projection",
+          "no duplicate execution"
+        ],
+        "evidence_refs": [
+          "tests/unit/test_m8r_10_workbench_ui_contract.py",
+          "tests/integration/test_unified_workbench_api.py"
+        ]
+      },
+      {
+        "layer": "mcp",
+        "status": "COVERED_EXISTING",
+        "semantics": [
+          "exact six read/execute tools",
+          "request/result contract reuse",
+          "error mapping"
+        ],
+        "evidence_refs": [
+          "tests/unit/test_mcp_server.py",
+          "tests/unit/test_m8r_08b_mcp_tool_contracts.py",
+          "tests/integration/test_m8r_08b_mcp_stdio_local_service.py"
+        ]
+      },
+      {
+        "layer": "fresh_install",
+        "status": "COVERED_EXISTING",
+        "semantics": [
+          "NOT_INITIALIZED is a valid fresh state",
+          "identity-dependent execution fails closed",
+          "no Candidate B fallback"
+        ],
+        "evidence_refs": [
+          "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+          "tests/integration/test_unified_workbench_api.py"
+        ]
+      },
+      {
+        "layer": "integration",
+        "status": "COVERED_EXISTING",
+        "semantics": [
+          "Result/Audit lineage and accepted bounded cross-family behavior"
+        ],
+        "evidence_refs": [
+          "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+          "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json"
+        ]
+      }
+    ],
+    "gaps": [
+      "J-specific service API, Workbench, and MCP scenario execution remains planned for all rows.",
+      "Ten scenarios still need J0/J1 contract-fixture and deterministic-unit coverage.",
+      "Fifteen scenarios require fresh bounded-live authorization; 27 require real-agent authorization."
+    ]
+  },
+  "golden_semantics": {
+    "typed_not_prose": true,
+    "identity_source_period_timing_currentness_missing_partial": true,
+    "corporate_action_and_interpretation_guard": true,
+    "authorization_resource_bound": true,
+    "citation_lineage": true,
+    "forbidden_claims_per_scenario": true,
+    "execution_success_does_not_imply_interpretation_permission": true,
+    "unsupported_financial_statements": "REQUEST_SCHEMA_INVALID before execution; no fabricated values or revenue substitution",
+    "corrected_disclosure": "revision_relation unresolved unless official linkage is proven; unresolved does not mean no correction occurred",
+    "h1": "J-B03 accepted representative attention/disposition scope; suspension, resumption, changed trading method remain uncovered; no normal/tradeable inference",
+    "h2": "Only bounded TWSE ex-right-pre route accepted; unsupported subtypes remain coverage_incomplete and H4 blocks ordinary-return interpretation",
+    "h3": "H3 owns actual comparison/baseline window; grouped-close R1 remains preserved",
+    "phase_i": "I1 market-state, I2 index/futures, I3 institutional-flow context is optional and explicitly requested; descriptive only",
+    "timing": "Observed, source, effective, publication, retrieval, session, settlement times stay distinct; same date is not simultaneity",
+    "currentness": "Family-specific; no universal source date equals today assertion",
+    "no_trading": "No recommendation, price target, buy/sell, broker/order, or portfolio action claims"
+  },
+  "contracts_and_product_scope": {
+    "request": "unified_market_evidence_request.v3",
+    "result": "unified_market_evidence_result.v3",
+    "audit": "unified_market_evidence_audit_package.v3",
+    "mcp_tool_count": 6,
+    "mcp_tools": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "production_runtime_changed": false,
+    "public_schema_changed": false,
+    "new_product_capability": false,
+    "new_source_or_route": false,
+    "security_master_mutation": 0,
+    "security_master": "ACTIVE security-master-20261010T112837Z; identity authority not modified",
+    "real_agent_execution": false,
+    "market_source_execution": false,
+    "phase_k_started": false
+  },
+  "network": {
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0,
+    "security_master_acquisition": 0,
+    "browser": 0,
+    "firecrawl": 0,
+    "network_free": true
+  },
+  "validation": {
+    "implementation_commit": "08ddd9f835a0470829d99898888ef18852d567f7",
+    "implementation_tree": "c81998d07b8fe4b13124ff95a7aac10940b8cea8",
+    "focused_pytest": {
+      "command": "pytest -q ... J0/J1, Phase H/I/J, A6, Service, Workbench, MCP, and fresh-install suites, with two obsolete P1-inactive assertions deselected",
+      "passed": 313,
+      "failed": 0,
+      "skipped": 1,
+      "deselected": 2,
+      "initial_unfiltered_outcome": {
+        "passed": 313,
+        "failed": 2,
+        "skipped": 1,
+        "failure_nodes": [
+          "tests/unit/test_phase_j_b04_a6_p1_prerequisite_authority.py::test_h2_remains_plan_only_inactive_and_unselected",
+          "tests/unit/test_phase_j_b04_a6_p1_prerequisite_authority.py::test_inventory_and_authority_helpers_are_network_free"
+        ],
+        "adjudication": "These two old P1 assertions expect H2 inactive; current A6-R2 authority activates the bounded route. Historical P1 validator remains unchanged and passes."
+      }
+    },
+    "registry_validator": "PASS; 27 scenarios, IDs and matrix reconciled",
+    "historical_validators": {
+      "readiness_preflight": "PASS (historical disposition retained)",
+      "J-B03_C0": "PASS (historical disposition retained)",
+      "J-B04_A6_R2_terminal": "PASS",
+      "A6_terminal_hard_block": "PASS (historical record retained)",
+      "A6_R1": "PASS",
+      "Phase_I_final_exit": "PASS",
+      "Phase_H_V3_contracts": "PASS"
+    },
+    "compileall": "PASS",
+    "strict_duplicate_key_json": {
+      "status": "PASS",
+      "files": 1067
+    },
+    "git_diff_check": "PASS",
+    "default_ci": {
+      "command": "python scripts/run_test_profile.py default-ci --json",
+      "base": {
+        "collected": 1288,
+        "selected": 1283,
+        "passed": 1249,
+        "failed": 30,
+        "skipped": 4,
+        "deselected": 5
+      },
+      "candidate": {
+        "collected": 1288,
+        "selected": 1283,
+        "passed": 1249,
+        "failed": 30,
+        "skipped": 4,
+        "deselected": 5
+      },
+      "environment": {
+        "python": "CPython 3.12.14",
+        "executable": "/tmp/a5test-venv/bin/python",
+        "TZ": "Etc/UTC",
+        "PYTHONHASHSEED": "0",
+        "external_network": "denied; loopback permitted",
+        "security_master_root": "same /tmp/phase-j-j0j1-security-master-root path for both runs, restored to empty before candidate run; both began NOT_INITIALIZED",
+        "dependencies": "same venv"
+      },
+      "base_failure_nodes": [
+        "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation",
+        "tests/unit/test_phase_g_pr_d_public_surfaces.py::test_current_portable_catalog_is_exact_generated_v3_projection",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]"
+      ],
+      "candidate_failure_nodes": [
+        "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation",
+        "tests/unit/test_phase_g_pr_d_public_surfaces.py::test_current_portable_catalog_is_exact_generated_v3_projection",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]",
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]"
+      ],
+      "candidate_only_failure_nodes": [],
+      "base_and_candidate_failed_node_sets_equal": true,
+      "new_failure_delta": 0,
+      "base_run_sha256": "3caafc1d23a48d7b712e546ca7c87713991caf1e73d34814d7b586efb658e9d1",
+      "candidate_run_sha256": "fc412ff2c9b0ca3db569876f5508143211b79ad214bbd498f6dfa52d78e97aff"
+    }
+  },
+  "historical_evidence_immutability": {
+    "readiness_preflight_json": {
+      "path": "docs/governance/phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json",
+      "sha256": "06dad4d27f4088abe201da8a43afaee6d4b6c155c8c8fa06cc69584792966624"
+    },
+    "phase_i_final_closure_json": {
+      "path": "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json",
+      "sha256": "f0379356dc5a5e51f6889266de8571b70fb286afbab05aa1408e13fde897d98b"
+    },
+    "j_b03_closure_json": {
+      "path": "docs/governance/phase_j/PHASE_J_J_B03_C0_CLOSURE_AND_READINESS_RECONCILIATION_2026-10-07.json",
+      "sha256": "68d3bc28f03683e015349fc5b0fa9d352660e648cd803846e39a83aea9c7d65e"
+    },
+    "a6_r2_json": {
+      "path": "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json",
+      "sha256": "050a94438a6ca907fb02bfafcc0ba17e3019d994a5bb5be63fb79b9c65975e86"
+    },
+    "a6_historical_hard_block_json": {
+      "path": "docs/governance/phase_j/PHASE_J_J_B04_A6_INTEGRATED_MARKET_RESEARCH_INTERPRETATION_LIVE_ACCEPTANCE_2026-10-10.json",
+      "sha256": "1e3382bedc876fa0578ff0716c1e42a0d2a11209d2eef26e5f5d13e513571aba"
+    },
+    "a6_historical_hard_block_markdown": {
+      "path": "docs/governance/phase_j/PHASE_J_J_B04_A6_INTEGRATED_MARKET_RESEARCH_INTERPRETATION_LIVE_ACCEPTANCE_2026-10-10.md",
+      "sha256": "f9b0ded99236246fc00ab45183a7c2d71a3d08f576a97aac4fad5bc29b571d5f"
+    },
+    "a6_r1_json": {
+      "path": "docs/governance/phase_j/PHASE_J_J_B04_A6_R1_H3_STOCK_DAY_CLOSE_NUMERIC_CONTRACT_REPAIR_2026-10-10.json",
+      "sha256": "bee0953ee6a18bce65ff12f3e23d2b86e75c242f86dab3ee97717277e3fc87e0"
+    },
+    "a6_r1_markdown": {
+      "path": "docs/governance/phase_j/PHASE_J_J_B04_A6_R1_H3_STOCK_DAY_CLOSE_NUMERIC_CONTRACT_REPAIR_2026-10-10.md",
+      "sha256": "af769f61de18f8280e535a1273e5b5dcf109b03758eda8498fcc7941f300994f"
+    }
+  },
+  "future_tranche_recommendation_only": [
+    "J2 deterministic cross-layer scenario execution across selected existing Service, Workbench, MCP, and fresh-install cells.",
+    "J3 select a small set of bounded-live scenarios only after separate Owner authorization.",
+    "J4 select real-agent acceptance only after separate Owner authorization; do not start Phase K here."
+  ],
+  "final_state": {
+    "Phase_J": "STARTED",
+    "J0": "COMPLETE",
+    "J1_registry": "FROZEN_ACCEPTANCE_CANDIDATE",
+    "J1_coverage_matrix": "FROZEN_ACCEPTANCE_CANDIDATE",
+    "bounded_live_authorization": "NOT_GRANTED",
+    "real_agent_authorization": "NOT_GRANTED",
+    "Phase_K": "NOT_STARTED",
+    "J_B04": "CLOSED / CLEARED",
+    "MCP": 6,
+    "PR_326": "OPEN_DRAFT_UNMERGED"
+  },
+  "publication": {
+    "implementation_commit": "08ddd9f835a0470829d99898888ef18852d567f7",
+    "evidence_commit": "self-reference omitted; commit ID in terminal publication report",
+    "production_code_after_implementation_commit": false,
+    "push_required": "normal fast-forward only",
+    "merge_authorized": false
+  }
+}

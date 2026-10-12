@@ -1,0 +1,194 @@
+{
+  "schema_version": "phase_j_j2_deterministic_cross_layer_scenario_execution.v1",
+  "terminal_disposition": "PHASE_J_J2_HARD_BLOCK_EXISTING_SURFACE_GAP",
+  "authority": {
+    "starting_head": "230606eb0b51b2004dbeac72f8c2908abe0372d3",
+    "starting_tree": "225a964207cc4a9edded1e2928a7cac1ba303d4a",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "pr": {"number": 326, "state": "OPEN", "draft": true, "merged": false},
+    "j1_independent_review_id": "5481271339",
+    "owner_authorization_sha256": "6657ce311e1d360cf3ab9af6f8f1d4ca78b68cb84d7dfa750cb1254b30ca10a2"
+  },
+  "immutable_j1_authority": {
+    "registry_path": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+    "registry_sha256": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864",
+    "matrix_path": "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json",
+    "matrix_sha256": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45",
+    "baseline_review_id": "5481271339",
+    "unchanged": true
+  },
+  "implementation": {
+    "commit": "2f4434a8e77e9b7badf88e7789704c1bb6f3a071",
+    "tree": "82b370f79c0af1926347f00600f72390e6271197",
+    "subject": "test(phase-j): add deterministic cross-layer scenario acceptance",
+    "production_runtime_files_changed": 0,
+    "public_schema_changes": 0,
+    "new_routes": 0,
+    "new_capabilities": 0,
+    "mcp_tool_count": 6
+  },
+  "scenario_execution": {
+    "target_scenario_ids": [
+      "J1-01", "J1-07", "J1-08", "J1-10", "J1-11", "J1-12", "J1-13", "J1-14", "J1-16",
+      "J1-18", "J1-20", "J1-22", "J1-23", "J1-24", "J1-25", "J1-26", "J1-27"
+    ],
+    "adjudicated": 17,
+    "classifications": {
+      "FIXTURE_BACKED_PRODUCTION_PATH": 3,
+      "PREEXECUTION_FAIL_CLOSED": 1,
+      "STORED_RESULT_PROJECTION": 0,
+      "EXISTING_SURFACE_GAP": 13
+    },
+    "fixture_backed_scenarios": ["J1-11", "J1-20", "J1-23"],
+    "preexecution_fail_closed_scenarios": ["J1-10"],
+    "surface_gap_scenarios": [
+      "J1-01", "J1-07", "J1-08", "J1-12", "J1-13", "J1-14", "J1-16", "J1-18", "J1-22",
+      "J1-24", "J1-25", "J1-26", "J1-27"
+    ],
+    "required_surface_gap": "Scenario-level Workbench semantic state/render execution has no existing browserless acceptance seam. The four scenarios with exercised service/MCP behavior still lack Workbench semantic coverage; the remaining scenarios also lack one or more required production-path seams. No test-only backdoor or new browser dependency was added.",
+    "execution_ledger_path": "docs/governance/phase_j/PHASE_J_J2_DETERMINISTIC_CROSS_LAYER_EXECUTION_LEDGER_V1.json",
+    "execution_ledger_sha256": "6b32f88e9f659d54f0d1b07a1b7c048ab78205ae0a65eb4aae04595a26993cc0"
+  },
+  "coverage_overlay": {
+    "delta_path": "docs/governance/phase_j/PHASE_J_J2_DETERMINISTIC_CROSS_LAYER_COVERAGE_DELTA_V1.json",
+    "delta_sha256": "03160d7103f6f28944903f6982ecab5ee5709516e9dbc51d5d98614987fe0fdc",
+    "effective_matrix_path": "docs/governance/phase_j/PHASE_J_J2_EFFECTIVE_COVERAGE_MATRIX_V1.json",
+    "effective_matrix_sha256": "252fb9b36fe7920f51ffde763a51565b3d4a8170ed297c6b564edd161ff55982",
+    "promotions": [
+      {"scenario_id": "J1-10", "layer": "service_api", "from": "PLANNED", "to": "COVERED_EXISTING"},
+      {"scenario_id": "J1-10", "layer": "mcp", "from": "PLANNED", "to": "COVERED_EXISTING"},
+      {"scenario_id": "J1-11", "layer": "service_api", "from": "PLANNED", "to": "COVERED_EXISTING"},
+      {"scenario_id": "J1-11", "layer": "mcp", "from": "PLANNED", "to": "COVERED_EXISTING"},
+      {"scenario_id": "J1-20", "layer": "service_api", "from": "PLANNED", "to": "COVERED_EXISTING"},
+      {"scenario_id": "J1-20", "layer": "mcp", "from": "PLANNED", "to": "COVERED_EXISTING"},
+      {"scenario_id": "J1-23", "layer": "service_api", "from": "PLANNED", "to": "COVERED_EXISTING"},
+      {"scenario_id": "J1-23", "layer": "mcp", "from": "PLANNED", "to": "COVERED_EXISTING"}
+    ],
+    "promotion_counts": {"integration": 0, "service_api": 4, "workbench": 0, "mcp": 4, "fresh_install": 0},
+    "existing_integration_claims_preserved": 7,
+    "j1_25_fresh_install_claim_revalidated": true,
+    "j1_matrix_rewritten": false
+  },
+  "coverage_status_counts": {
+    "baseline": {
+      "COVERED_EXISTING": 16,
+      "COVERED_J0_J1": 34,
+      "PLANNED": 147,
+      "REQUIRES_LIVE_AUTH": 16,
+      "REQUIRES_REAL_AGENT_AUTH": 27,
+      "NOT_APPLICABLE": 3,
+      "EXPECTED_FAIL_CLOSED": 0,
+      "BLOCKED": 0
+    },
+    "effective_candidate": {
+      "COVERED_EXISTING": 24,
+      "COVERED_J0_J1": 34,
+      "PLANNED": 139,
+      "REQUIRES_LIVE_AUTH": 16,
+      "REQUIRES_REAL_AGENT_AUTH": 27,
+      "NOT_APPLICABLE": 3,
+      "EXPECTED_FAIL_CLOSED": 0,
+      "BLOCKED": 0
+    },
+    "per_layer_baseline": {
+      "integration": {"COVERED_EXISTING": 7, "PLANNED": 20},
+      "service_api": {"PLANNED": 27},
+      "workbench": {"PLANNED": 27},
+      "mcp": {"PLANNED": 27},
+      "fresh_install": {"COVERED_EXISTING": 1, "PLANNED": 26},
+      "bounded_live": {"COVERED_EXISTING": 8, "REQUIRES_LIVE_AUTH": 16, "NOT_APPLICABLE": 3},
+      "real_agent": {"REQUIRES_REAL_AGENT_AUTH": 27}
+    },
+    "per_layer_effective_candidate": {
+      "integration": {"COVERED_EXISTING": 7, "PLANNED": 20},
+      "service_api": {"COVERED_EXISTING": 4, "PLANNED": 23},
+      "workbench": {"PLANNED": 27},
+      "mcp": {"COVERED_EXISTING": 4, "PLANNED": 23},
+      "fresh_install": {"COVERED_EXISTING": 1, "PLANNED": 26},
+      "bounded_live": {"COVERED_EXISTING": 8, "REQUIRES_LIVE_AUTH": 16, "NOT_APPLICABLE": 3},
+      "real_agent": {"REQUIRES_REAL_AGENT_AUTH": 27}
+    }
+  },
+  "validation": {
+    "focused_tests": {
+      "j2_registry_and_fresh_install": {"passed": 20, "failed": 0},
+      "j2_workbench_and_mode_c_regression_batch": {"passed": 35, "failed": 0, "skipped": 1, "deselected": 2},
+      "narrowly_deselected_historical_nodes": [
+        "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+        "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected"
+      ],
+      "deselection_reason": "These historical V1 Mode C assertions require generated outputs not present in the clean baseline; they are not J2 acceptance nodes. The same two nodes fail on the clean baseline and are not part of default-ci."
+    },
+    "default_ci": {
+      "profile": "default-ci",
+      "base": "230606eb0b51b2004dbeac72f8c2908abe0372d3",
+      "candidate": "2f4434a8e77e9b7badf88e7789704c1bb6f3a071",
+      "python": "CPython 3.12.14",
+      "timezone": "Etc/UTC",
+      "pythonhashseed": "0",
+      "network_denied": true,
+      "same_dependency_environment": true,
+      "same_isolated_security_master_root": true,
+      "base_counts": {"collected": 1288, "passed": 1278, "failed": 2, "skipped": 3, "deselected": 5},
+      "candidate_counts": {"collected": 1288, "passed": 1278, "failed": 2, "skipped": 3, "deselected": 5},
+      "base_failure_nodes": [
+        "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation",
+        "tests/unit/test_phase_g_pr_d_public_surfaces.py::test_current_portable_catalog_is_exact_generated_v3_projection"
+      ],
+      "candidate_failure_nodes": [
+        "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_api_reuses_one_successful_process_activation",
+        "tests/unit/test_phase_g_pr_d_public_surfaces.py::test_current_portable_catalog_is_exact_generated_v3_projection"
+      ],
+      "candidate_only_failure_nodes": [],
+      "status": "PASS_ZERO_NEW_FAILURES"
+    },
+    "historical_validators": {
+      "j0_j1_registry": "PASS",
+      "j_b03_closure": "PASS",
+      "j_b04_a6_r2_exact_historical_head": "PASS",
+      "a6_terminal_evidence": "PASS",
+      "a6_r1": "PASS",
+      "phase_i_final_closure": "PASS",
+      "phase_h_v3_contracts": "PASS",
+      "j2_overlay_validator": "PASS_STRUCTURAL_TERMINAL_HARD_BLOCK"
+    },
+    "compileall": "PASS",
+    "strict_duplicate_key_json": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "network_and_product_boundary": {
+    "market_get": 0,
+    "market_head": 0,
+    "market_post": 0,
+    "browser": 0,
+    "firecrawl": 0,
+    "security_master_acquisition": 0,
+    "security_master_mutation": 0,
+    "real_agent_execution": 0,
+    "bounded_live_execution": 0,
+    "host_active_selector_sha256_before_after": "25b24e55b188fc2fa08efbe227d98c5890b31f179168665bab8f1f413a55f0fc",
+    "mcp_tool_count": 6
+  },
+  "canonical_state": {
+    "j_b01": "NON_BLOCKING",
+    "j_b02": "NON_BLOCKING",
+    "j_b03": "CLOSED",
+    "j_b04": "CLOSED_CLEARED",
+    "phase_j": "STARTED",
+    "j0": "COMPLETE",
+    "j1_registry": "INDEPENDENTLY_ACCEPTED_BASELINE",
+    "j1_matrix": "INDEPENDENTLY_ACCEPTED_BASELINE",
+    "j2": "HARD_BLOCK_EXISTING_SURFACE_GAP",
+    "bounded_live_authorization": "NOT_GRANTED",
+    "real_agent_authorization": "NOT_GRANTED",
+    "phase_k": "NOT_STARTED",
+    "mcp_tool_count": 6
+  },
+  "publication": {
+    "remote_branch_pre_push_head": "b05ae6dc548e305ae4783420b46ae0eb6b743f41",
+    "remote_branch_is_implementation_ancestor": true,
+    "origin_main_verified": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "pr_state_before_publish": "OPEN_DRAFT_UNMERGED"
+  }
+}

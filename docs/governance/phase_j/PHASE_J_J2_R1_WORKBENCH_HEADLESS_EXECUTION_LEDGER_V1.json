@@ -1,0 +1,1870 @@
+{
+  "schema_version": "phase_j_j2_r1_execution_ledger.v1",
+  "scenarios": [
+    {
+      "scenario_id": "J1-01",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 2,
+      "control_package_id": "umea-v1-10f44e43b941751104fb",
+      "result_download_sha256": "0943d669939dcadace04bf7f5858f02dba271d38217daa0c01646b34a60608be",
+      "audit_download_sha256": "81cdfe88350a28ac7794e48a9a12642cc0311fba20af82758fcf701c23561539",
+      "handoff_download_sha256": "8ff914e945b29d16a6c4f34dc53f008988c23c47a5bcc37f28a9f90d2e7fef82",
+      "post_workbench_execution_count": 2,
+      "result_id": "umeresult-v3-60ecd243f457ebf90607",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 2,
+      "post_mcp_execution_count": 2,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-01\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request.",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-60ecd243f457ebf90607",
+          "result_status": "full_success",
+          "result_hash": "0e0a61b6127a58ab5710b682bc90f838771b10c96f3881787e02b7567157c5b5"
+        }
+      },
+      "audit_result_id": "umeresult-v3-60ecd243f457ebf90607",
+      "handoff_result_id": "umeresult-v3-60ecd243f457ebf90607",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-01]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-01",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-10f44e43b941751104fb/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-07",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 1,
+      "control_package_id": "umea-v1-b8e44f8e498b341106ba",
+      "result_download_sha256": "7a85460e3046ebe6eb17f0b61ba046b389a36e29114543c8da914ebb9c7451ab",
+      "audit_download_sha256": "a4ba17725d37bddf6e3b3cd8d07133c2cfab01c770d0455aa3062c480a826535",
+      "handoff_download_sha256": "a3a7fecaf401b9b029a7a3a1515412a42a30e6fb614e6ecdcbe160c68e053e8e",
+      "post_workbench_execution_count": 1,
+      "result_id": "umeresult-v3-981ac2e67ff2def2c2af",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 1,
+      "post_mcp_execution_count": 1,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-07\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request. TWSE:2330 material_disclosures: no matching disclosure in the latest completed official daily batch; this is not a claim of no historical disclosures",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-981ac2e67ff2def2c2af",
+          "result_status": "full_success",
+          "result_hash": "0317ee9b8dba8e0a50c9c6a0607a7223e1b130d7dad3e9c653b9b60b309ebcab"
+        }
+      },
+      "audit_result_id": "umeresult-v3-981ac2e67ff2def2c2af",
+      "handoff_result_id": "umeresult-v3-981ac2e67ff2def2c2af",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-07]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-07",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-b8e44f8e498b341106ba/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-08",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 1,
+      "control_package_id": "umea-v1-4e0732609712f66c1f8e",
+      "result_download_sha256": "ec54dcd3136b5b5a50a14278b133d5fbdd69912991e2239c0d17663b3d2303f7",
+      "audit_download_sha256": "afabe4a5bb1ebe54eaa214380bafff7f84c36d9f5193e87f63761ef931bbe615",
+      "handoff_download_sha256": "57d6dc9d50fda63a6206931f18737e044841124245e4d6b28321f868570255c5",
+      "post_workbench_execution_count": 1,
+      "result_id": "umeresult-v3-8e43ff5bd69d0336e6ff",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 1,
+      "post_mcp_execution_count": 1,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-08\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request. TWSE:2330 material_disclosures: available",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-8e43ff5bd69d0336e6ff",
+          "result_status": "full_success",
+          "result_hash": "0a4a4c13cb8bbab2b16d4172048b6930b1774ee20d74f0d33306e6d469a70132"
+        }
+      },
+      "audit_result_id": "umeresult-v3-8e43ff5bd69d0336e6ff",
+      "handoff_result_id": "umeresult-v3-8e43ff5bd69d0336e6ff",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-08]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-08",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-4e0732609712f66c1f8e/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-10",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 0,
+      "classification": "PREEXECUTION_FAIL_CLOSED",
+      "result_id": null,
+      "post_workbench_execution_count": 0,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 8,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 0,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-10\nOverall Status:\ninvalid\nSchema Status:\ninvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 0"
+      },
+      "audit_result_id": null,
+      "handoff_result_id": null,
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-10]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-10",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {
+        "integration": "Governed pre-execution refusal; no execution Result/Audit is fabricated."
+      },
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-11",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 3,
+      "control_package_id": "umea-v1-bf4d6268c24fb59e8d2d",
+      "result_download_sha256": "4deaa7deb53f871bc1aeb10829ca148ed6054d3b2ca51c523bfa288b95072523",
+      "audit_download_sha256": "81dc1b0f07eec15b749ef89bbbefdd0954f362368bf5c1c174f17722359d7ae2",
+      "handoff_download_sha256": "fe528cef1d61cfdfffdb8435348c6d1ed3400e1db79e0989c5e77643c72646cf",
+      "post_workbench_execution_count": 3,
+      "result_id": "umeresult-v3-10c32189199a3bad43f8",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 3,
+      "post_mcp_execution_count": 3,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-11\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request.",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-10c32189199a3bad43f8",
+          "result_status": "full_success",
+          "result_hash": "c5161bfb855f01290c0e5c6c235d4cd5d944db2832cf88a48c265b1f3fefd94c"
+        }
+      },
+      "audit_result_id": "umeresult-v3-10c32189199a3bad43f8",
+      "handoff_result_id": "umeresult-v3-10c32189199a3bad43f8",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-11]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-11",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-bf4d6268c24fb59e8d2d/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-12",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 0,
+      "classification": "PREEXECUTION_FAIL_CLOSED",
+      "result_id": null,
+      "post_workbench_execution_count": 0,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 9,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 0,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-12\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: unsupported_capability"
+      },
+      "audit_result_id": null,
+      "handoff_result_id": null,
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-12]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-12",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {
+        "integration": "Governed pre-execution refusal; no execution Result/Audit is fabricated."
+      },
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-13",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 3,
+      "control_package_id": "umea-v1-a41af5b64bfdc1b5cef7",
+      "result_download_sha256": "b9138ff7960de010bf928575f8278539f5e122b7763907ffe6160dd033852540",
+      "audit_download_sha256": "2125b834c9f757a816860b0df45037c67ed34f904ab8230e5057a8fb3bf06117",
+      "handoff_download_sha256": "39e045929993d1318dd0adbab9014b8be195499e8f36851c7d5b309fb431847f",
+      "post_workbench_execution_count": 3,
+      "result_id": "umeresult-v3-0b8ac7943fa8fa321c94",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 3,
+      "post_mcp_execution_count": 3,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-13\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request.",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-0b8ac7943fa8fa321c94",
+          "result_status": "full_success",
+          "result_hash": "6d7d093cf2e2769364fc1291b79377cf94b30a6c2d8ba4064ca40d5a9284c908"
+        }
+      },
+      "audit_result_id": "umeresult-v3-0b8ac7943fa8fa321c94",
+      "handoff_result_id": "umeresult-v3-0b8ac7943fa8fa321c94",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-13]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-13",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-a41af5b64bfdc1b5cef7/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-14",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 3,
+      "control_package_id": "umea-v1-8b9f6d882a4b453b5e02",
+      "result_download_sha256": "e0635b754495da1b08bc33f677d2bb719a7226aac23b58054e92acddbc0b405e",
+      "audit_download_sha256": "7837475ca8d58bc541b8cea4302b4d7fc8179579ce225c74075a56be292997b0",
+      "handoff_download_sha256": "f7d86025c3ad10df996110d2dbdaa32324e8fcc28d4c4c745d9f11b2f8d88ea0",
+      "post_workbench_execution_count": 3,
+      "result_id": "umeresult-v3-7dff051073a7f5eeabe8",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 3,
+      "post_mcp_execution_count": 3,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-14\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request.",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-7dff051073a7f5eeabe8",
+          "result_status": "full_success",
+          "result_hash": "a2f6b4bce8c87ed8f165e875b0fdaf7b3d4bc45dc52519b95a3873987b0935e8"
+        }
+      },
+      "audit_result_id": "umeresult-v3-7dff051073a7f5eeabe8",
+      "handoff_result_id": "umeresult-v3-7dff051073a7f5eeabe8",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-14]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-14",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-8b9f6d882a4b453b5e02/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-16",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 3,
+      "control_package_id": "umea-v1-d54f2d6a1d7b2c086da6",
+      "result_download_sha256": "0849080cb46106fa814cfb51eba2a52ab50be54233cf2237921742dd8efda5b6",
+      "audit_download_sha256": "3d5f3d9762a36df12b59df46eeb2d2653a979b5fe995c40f1ac783914a44b25b",
+      "handoff_download_sha256": "baaeb24de6462a3829ca327e4ff84645e018854ea18893d0af23305f04860abf",
+      "post_workbench_execution_count": 3,
+      "result_id": "umeresult-v3-286b3bedd2c6c3d5429a",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 3,
+      "post_mcp_execution_count": 3,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-16\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request.",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-286b3bedd2c6c3d5429a",
+          "result_status": "full_success",
+          "result_hash": "dbbc6b3096d81b1573cd0bb4ac712851b8eafa3f56e91dd21c36c7b97e8db5ff"
+        }
+      },
+      "audit_result_id": "umeresult-v3-286b3bedd2c6c3d5429a",
+      "handoff_result_id": "umeresult-v3-286b3bedd2c6c3d5429a",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-16]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-16",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-d54f2d6a1d7b2c086da6/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-18",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 1,
+      "control_package_id": "umea-v1-1017b72deb566276d954",
+      "result_download_sha256": "366536f0341fc29a4769f763fc15e5e7e044b16f86fcc2a957070d913cefa2d5",
+      "audit_download_sha256": "3f97b7d0ffc671001b599053febf5ea973626b65d33f36236e78c75f2e5d807d",
+      "handoff_download_sha256": "d8d2d0fb01feab3e24e98f13bf08013ae98471e229ec868d0bcf4c71487a4aea",
+      "post_workbench_execution_count": 1,
+      "result_id": "umeresult-v3-e30bdce998a0dc6bae10",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 1,
+      "post_mcp_execution_count": 1,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-18\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request.",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-e30bdce998a0dc6bae10",
+          "result_status": "full_success",
+          "result_hash": "0c16be07c10216afffb6a2956a82617be0916b597a464697fae9fba43d4f3dbf"
+        }
+      },
+      "audit_result_id": "umeresult-v3-e30bdce998a0dc6bae10",
+      "handoff_result_id": "umeresult-v3-e30bdce998a0dc6bae10",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-18]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-18",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-1017b72deb566276d954/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-20",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 3,
+      "control_package_id": "umea-v1-4010bf6586c514058e07",
+      "result_download_sha256": "a0c1efd0841314ed56c1c88d96131699b300ba464c78d38e81b9cb482de7ad16",
+      "audit_download_sha256": "9a3543434c13c138ff072358b3958ab0885f041932989e608c1e6c93057823e5",
+      "handoff_download_sha256": "a0f8684d987ab5f64ee5ac0bebc5aa977b2b98f21f6acb5b4499ddd6298b62fc",
+      "post_workbench_execution_count": 3,
+      "result_id": "umeresult-v3-7f7609c58c2d1db59136",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 3,
+      "post_mcp_execution_count": 3,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-20\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — partial_success; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — partially_failed; newly_materialized; Mode C projection made no additional market request. TWSE:2330 material_disclosures: source_failed",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-7f7609c58c2d1db59136",
+          "result_status": "partially_failed",
+          "result_hash": "897825b38e0950e0ae96b78d018f167c3a8681d0f5a5da21318b2dd46268772c"
+        }
+      },
+      "audit_result_id": "umeresult-v3-7f7609c58c2d1db59136",
+      "handoff_result_id": "umeresult-v3-7f7609c58c2d1db59136",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-20]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-20",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-4010bf6586c514058e07/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-22",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 1,
+      "control_package_id": "umea-v1-3426068767f17d2ffeb3",
+      "result_download_sha256": "85e779153ac4578e46fc41cdb98c277591a73ade93121e5914da04e796adfe69",
+      "audit_download_sha256": "8032099ecbec33313fc44267259210e9dbd5dbd33944a1ca5fedd7b0536f25b1",
+      "handoff_download_sha256": "8b255742737fbea9c5f31df3ae046673de0601233fc6d6a1c698a4c3d287cd42",
+      "post_workbench_execution_count": 1,
+      "result_id": "umeresult-v3-8c4487dfb6c8c99d5e11",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 1,
+      "post_mcp_execution_count": 1,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-22\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — succeeded; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — full_success; newly_materialized; Mode C projection made no additional market request. TWSE:2330 material_disclosures: no matching disclosure in the latest completed official daily batch; this is not a claim of no historical disclosures",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-8c4487dfb6c8c99d5e11",
+          "result_status": "full_success",
+          "result_hash": "ee4aa13078a273c0bc496684b41ccfaac4cfabc130e258092e12dde3517d73a1"
+        }
+      },
+      "audit_result_id": "umeresult-v3-8c4487dfb6c8c99d5e11",
+      "handoff_result_id": "umeresult-v3-8c4487dfb6c8c99d5e11",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-22]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-22",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-3426068767f17d2ffeb3/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-23",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 2,
+      "control_package_id": "umea-v1-221b688ee5542f7ccff6",
+      "result_download_sha256": "c6e7519ff4f38b47ab1064b4077cb171c1b90f74ba1e869d9a12c34f58d360c9",
+      "audit_download_sha256": "cb356402ade7debb08fa7a2ebed55103d9896810a67bb01d41c0f0b91711e153",
+      "handoff_download_sha256": "a20b43a4c3acf47e69f6fb13242154a904baad20539ec5a60eb5acd9237c5559",
+      "post_workbench_execution_count": 2,
+      "result_id": "umeresult-v3-54be0ae60805c0c99d59",
+      "classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "post_service_execution_count": 2,
+      "post_mcp_execution_count": 2,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 13,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 1,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-23\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation",
+        "#mode-b2-summary": "EXECUTION ATTEMPTED — failed; authorization consumed = YES.",
+        "#mode-c-summary": "RESULT READY — failed; newly_materialized; Mode C projection made no additional market request. TWSE:2330 material_disclosures: source_failed",
+        "#mode-c-result-view": {
+          "result_id": "umeresult-v3-54be0ae60805c0c99d59",
+          "result_status": "failed",
+          "result_hash": "c86c2c8ddf9e0a5e5e0cd6102022b6a09e8ef92fd113d03a669c07fc1e772239"
+        }
+      },
+      "audit_result_id": "umeresult-v3-54be0ae60805c0c99d59",
+      "handoff_result_id": "umeresult-v3-54be0ae60805c0c99d59",
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-23]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-23",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp",
+        "integration"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {},
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/authorizations"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/executions"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/result-package"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/result-package/umea-v1-221b688ee5542f7ccff6/audit.json"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-24",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 0,
+      "classification": "PREEXECUTION_FAIL_CLOSED",
+      "result_id": null,
+      "post_workbench_execution_count": 0,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 8,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 0,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-24\nOverall Status:\nrequires_clarification\nSchema Status:\nvalid\nTarget Status:\nrequires_clarification\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50"
+      },
+      "audit_result_id": null,
+      "handoff_result_id": null,
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-24]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-24",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {
+        "integration": "Governed pre-execution refusal; no execution Result/Audit is fabricated."
+      },
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-25",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 0,
+      "classification": "PREEXECUTION_FAIL_CLOSED",
+      "result_id": null,
+      "post_workbench_execution_count": 0,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 8,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 0,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-25\nOverall Status:\ninvalid\nSchema Status:\nvalid\nTarget Status:\ninvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50"
+      },
+      "audit_result_id": null,
+      "handoff_result_id": null,
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-25]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-25",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {
+        "integration": "Governed pre-execution refusal; no execution Result/Audit is fabricated."
+      },
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-26",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 0,
+      "service_authorization_refusal": {
+        "http_status": 422,
+        "body": {
+          "error": "authorization_confirmation_required",
+          "trace_id": "570e7649-9933-4ff9-9856-76f7757803e9"
+        }
+      },
+      "classification": "PREEXECUTION_FAIL_CLOSED",
+      "authorization_refused": true,
+      "result_id": null,
+      "post_workbench_execution_count": 0,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 9,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 0,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-26\nOverall Status:\nvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 1 / 50",
+        "#preview-summary": "Preview status: ready_for_confirmation"
+      },
+      "audit_result_id": null,
+      "handoff_result_id": null,
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-26]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-26",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {
+        "integration": "Governed pre-execution refusal; no execution Result/Audit is fabricated."
+      },
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/preview-request"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    },
+    {
+      "scenario_id": "J1-27",
+      "synthetic": true,
+      "network_free": true,
+      "acceptance_only": true,
+      "external_market_GET": 0,
+      "external_market_HEAD": 0,
+      "external_market_POST": 0,
+      "initial_execution_count": 0,
+      "classification": "PREEXECUTION_FAIL_CLOSED",
+      "result_id": null,
+      "post_workbench_execution_count": 0,
+      "additional_execution_count": 0,
+      "browser_local_request_count": 8,
+      "browser_external_request_count": 0,
+      "execute_once_request_count": 0,
+      "browser": "headless_chromium",
+      "browser_version": "140.0.7339.16",
+      "dom_observations": {
+        "#validation-summary": "Request ID:\nj2-r1-j1-27\nOverall Status:\ninvalid\nSchema Status:\nvalid\nTarget Status:\nvalid\nCapability Status:\nvalid\nMetadata:\nOffline: true, Deterministic: true\nLimits:\nTargets: 51 / 50"
+      },
+      "audit_result_id": null,
+      "handoff_result_id": null,
+      "test_node_ids": [
+        "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-27]"
+      ],
+      "registry_semantics_reference": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json#J1-27",
+      "fixture_setup_refs": [
+        "tests/helpers/phase_j_j2_r1_transport.py",
+        "tests/helpers/phase_j_j2_r1_browser.py"
+      ],
+      "applicable_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "passed_layers": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "blocked_layers": [],
+      "not_applicable_layers": {
+        "integration": "Governed pre-execution refusal; no execution Result/Audit is fabricated."
+      },
+      "semantic_assertions_checked": "scenario-specific assert_semantics in exact test node",
+      "forbidden_claims_checked": "no recommendation/trading markers; scenario-specific J1 guards",
+      "browser_transport": {
+        "local_requests": [
+          {
+            "method": "GET",
+            "path": "/workbench/"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.css"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/workbench-state.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/unified-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/workbench/watchlist-workbench.js"
+          },
+          {
+            "method": "GET",
+            "path": "/api/unified/capabilities"
+          },
+          {
+            "method": "GET",
+            "path": "/api/watchlists"
+          },
+          {
+            "method": "POST",
+            "path": "/api/unified/validate-request"
+          }
+        ],
+        "external_requests": []
+      },
+      "external_browser_request_count": 0
+    }
+  ],
+  "fresh_install": {
+    "scenario_id": "J1-25",
+    "dom_observations": {
+      "#validation-summary": "Error:\nSECURITY_MASTER_NOT_INITIALIZED\nDetail:\n7f7af6f0-c6b3-4440-b67d-9c4c43d17f16"
+    },
+    "initial_execution_count": 0,
+    "classification": "PREEXECUTION_FAIL_CLOSED",
+    "additional_execution_count": 0,
+    "browser_local_request_count": 8,
+    "browser_external_request_count": 0
+  }
+}

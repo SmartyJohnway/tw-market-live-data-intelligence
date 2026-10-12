@@ -85,16 +85,17 @@ def _set_test_h2_overlay(validation: dict, authorities: dict) -> None:
         "routing_status": "resolved",
         "network_required": True,
     })
-    inventory = next(item for item in authorities["executor_disposition"]["surfaces"] if item["surface_id"] == "phase_h_h3_twse_recent_performance_executor")
-    h2_inventory = deepcopy(inventory)
-    h2_inventory.update({
-        "surface_id": "phase_h_h2_twse_exright_pre_executor",
-        "surface_type": "controlled_phase_h_h2_executor",
-        "current_status": "test-only A3 overlay; canonical production route remains plan-only",
-        "reusable_for_05b": True,
-        "disposition": "adapter_required",
-    })
-    authorities["executor_disposition"]["surfaces"].append(h2_inventory)
+    if not any(item.get("surface_id") == "phase_h_h2_twse_exright_pre_executor" for item in authorities["executor_disposition"]["surfaces"]):
+        inventory = next(item for item in authorities["executor_disposition"]["surfaces"] if item["surface_id"] == "phase_h_h3_twse_recent_performance_executor")
+        h2_inventory = deepcopy(inventory)
+        h2_inventory.update({
+            "surface_id": "phase_h_h2_twse_exright_pre_executor",
+            "surface_type": "controlled_phase_h_h2_executor",
+            "current_status": "test-only A3 overlay; the canonical route is independently governed",
+            "reusable_for_05b": True,
+            "disposition": "adapter_required",
+        })
+        authorities["executor_disposition"]["surfaces"].append(h2_inventory)
     f3_cap = next(item for item in validation["capability_results"] if item["capability_id"] == "corporate_action_context")
     f3_cap["status"] = "runtime_executable"
 

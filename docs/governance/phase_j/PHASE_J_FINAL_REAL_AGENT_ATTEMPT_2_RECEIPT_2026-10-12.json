@@ -1,0 +1,151 @@
+{
+  "schema_version": "phase_j_final_real_agent_attempt_receipt.v1",
+  "attempt": 2,
+  "authorization": {
+    "owner_authorized": true,
+    "authorization_scope": "one LOCAL_WINDOWS real-agent acceptance session for remaining real_agent_layer only",
+    "consumed": true,
+    "retry_authorized": false,
+    "retry_performed": false
+  },
+  "canonical_authority": {
+    "repository": "SmartyJohnway/tw-market-live-data-intelligence",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "authorized_start_head": "f2958a9a42dd3b100d1734400c13898afb7ddfb6",
+    "authorized_start_tree": "975682fbac2d4defc0080027e0b7ee7cd348b9d7",
+    "base_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "pr": 326,
+    "pr_state_at_start": "OPEN/DRAFT/UNMERGED",
+    "review_id": "5485596229",
+    "reviewed_head": "f2958a9a42dd3b100d1734400c13898afb7ddfb6",
+    "post_attempt_local_implementation_head": "101290f52291e3e5c4619522064b07e964ec080f",
+    "post_attempt_remote_pr_head": "f2958a9a42dd3b100d1734400c13898afb7ddfb6"
+  },
+  "runtime": {
+    "execution_environment": "LOCAL_WINDOWS",
+    "codex_cli_version": "0.160.1",
+    "authentication_class": "ChatGPT login; codex login status reported Logged in using ChatGPT",
+    "provider_class": "OpenAI ChatGPT-backed Codex inference",
+    "model_requested": "gpt-6.1-sol",
+    "runtime_reported_model": null,
+    "runtime_reported_model_note": "The Codex event stream did not expose a model field; only the requested CLI model is recorded.",
+    "agent_session_id": "01a12dfd-5a41-7c13-b6bf-1919f85a81ed",
+    "inference_started_utc": "2026-10-12T02:42:20.3825936Z",
+    "inference_ended_utc": "2026-10-12T02:42:53.7320288Z",
+    "inference_success": true,
+    "codex_cli_exit_code": 0,
+    "agent_final_output_sha256": "973fce1f8ab6570998ef6db0bbd8c8475b095163bae5940570196cbdc8de532a",
+    "agent_final_output_ref": "PHASE_J_FINAL_REAL_AGENT_ATTEMPT_2_RECEIPT_2026-10-12.md#agent-output"
+  },
+  "mcp": {
+    "adapter_name": "unified_market_evidence_mcp_adapter.v2",
+    "adapter_version": "unified_market_evidence_mcp_adapter.v2",
+    "protocol_version": "2025-06-18",
+    "tools_list_pass": true,
+    "tool_count": 6,
+    "tool_names": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "call_sequence": [
+      {
+        "ordinal": 1,
+        "tool": "market_read_result",
+        "arguments": {
+          "control_package_id": "umea-v1-559d58856cff60f2f2e0"
+        },
+        "success": false,
+        "http_status_reported_by_tool": 422,
+        "error_code": "control_package_id_invalid",
+        "canonical_result_id_returned": null,
+        "canonical_audit_id_returned": null,
+        "mcp_result_canonical_sha256": "4c01ed824edf5acfb405cfc86e11dc022493c564f75f05bdb5a9aa93c93271bd"
+      },
+      {
+        "ordinal": 2,
+        "tool": "market_export_ai_handoff",
+        "arguments": {
+          "control_package_id": "umea-v1-559d58856cff60f2f2e0"
+        },
+        "success": false,
+        "http_status_reported_by_tool": 409,
+        "error_code": "control_package_id_invalid",
+        "canonical_result_id_returned": null,
+        "canonical_audit_id_returned": null,
+        "mcp_result_canonical_sha256": "f8466a9f9b0ccbedb7e99d574c499b18a209ef038f58d9354c1fe0547a2e2200"
+      }
+    ],
+    "total_semantic_tool_calls": 2,
+    "blocked_or_unapproved_tool_calls": 0,
+    "additional_semantic_tool_calls": 0,
+    "result_audit_handoff_lineage_observed": false,
+    "canonical_package_readiness": "NOT_ESTABLISHED_BY_ATTEMPT"
+  },
+  "canonical_package": {
+    "scenario_id": "J1-21",
+    "expected_result_id": "umeresult-v3-a99fe623f3b79a9c9a7f",
+    "expected_audit_package_id": "umeap-v3-3841e537261650c2231d",
+    "read_result_tool_success": false,
+    "handoff_tool_success": false,
+    "actual_result_id_bound_by_tools": null,
+    "actual_audit_package_id_bound_by_tools": null
+  },
+  "semantic_evaluation": {
+    "authority": "docs/governance/phase_j/PHASE_J_J3_GOLDEN_EXPECTED_SEMANTICS_V1.json#J1-21",
+    "evaluator": "scripts/validate_phase_j_j3_golden_expected_semantics.py:evaluate_scenario",
+    "status": "FAIL_NO_CANONICAL_PRODUCT_OUTPUT",
+    "j3_errors": [
+      "result_v3_contract: expected 'unified_market_evidence_result.v3'",
+      "audit_v3_contract: expected 'unified_market_evidence_audit_package.v3'",
+      "j1-21_evidence_state: expected 'stale'",
+      "j1-21_currentness_policy: expected 'family_specific'"
+    ],
+    "required_typed_state_recovered_from_agent": false,
+    "required_freshness_classification_recovered_from_agent": false,
+    "agent_avoided_unsupported_currentness_claim": true,
+    "agent_avoided_trading_recommendation": true,
+    "closure_credit": false
+  },
+  "observed_auxiliary_diagnostic": {
+    "source": "Codex CLI stderr",
+    "sanitized_message": "rmcp transport reported AuthRequired for a Netlify MCP resource after the turn; no corresponding MCP tool call appeared in the session event stream.",
+    "external_request_count_established": false,
+    "disposition": "recorded as an unexplained runtime diagnostic; no retry or follow-up connection was made"
+  },
+  "boundary_counters": {
+    "market_get": 0,
+    "market_head": 0,
+    "market_post": 0,
+    "new_market_source_execution": 0,
+    "browser_use": 0,
+    "firecrawl": 0,
+    "security_master_acquisition": 0,
+    "security_master_mutation": 0,
+    "new_source": 0,
+    "new_route": 0,
+    "new_capability": 0,
+    "new_public_schema": 0,
+    "mcp_tool_count_change": 0,
+    "trading_or_order_execution": 0,
+    "formal_real_agent_sessions": 1,
+    "formal_real_agent_mcp_tool_calls": 2
+  },
+  "derived_state": {
+    "remaining_obligations": [
+      "real_agent_layer"
+    ],
+    "phase_j": "STARTED",
+    "roadmap_phase_j": "UNCHECKED",
+    "phase_k": "NOT_STARTED",
+    "pr_326": "OPEN/DRAFT/UNMERGED"
+  },
+  "terminal_disposition": "PHASE_J_REAL_AGENT_ATTEMPT_2_HARD_BLOCK_STORED_RESULT_MCP_RETRIEVAL_FAILED",
+  "authorization_status": "CONSUMED_FAILED_ATTEMPT",
+  "retry": "PROHIBITED_UNDER_THIS_AUTHORIZATION",
+  "secrets_recorded": false,
+  "raw_market_payload_committed": false
+}

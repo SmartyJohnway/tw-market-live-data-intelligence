@@ -1,0 +1,2 @@
+2026-10-12T08:24:31.041842Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer realm=\"MCP Server\", resource_metadata=\"https://netlify-mcp.netlify.app/.well-known/oauth-protected-resource/mcp\"" })
+2026-10-12T08:24:38.198864Z ERROR codex_core::tools::router: error=failed to spawn code-mode host D:\Codex-Workspace\runtime\tw-market-live-data-intelligence\phase-j-real-agent-r4-r2\codex-pinned\0.160.1\codex-code-mode-host.exe: 系統找不到指定的檔案。 (os error 2)

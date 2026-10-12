@@ -1,0 +1,807 @@
+{
+  "baseline_registry_sha256": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864",
+  "baseline_matrix_sha256": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45",
+  "baseline_review": "5481271339",
+  "starting_head": "74772af61780f637f859eaad453c6e147fc83fc6",
+  "starting_tree": "2bfe71203ccdf6663fc6368183847ac8f50d4157",
+  "promotions": [
+    {
+      "scenario_id": "J1-01",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-01]",
+          "kind": "service_test",
+          "scenario_match": "J1-01: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-01",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-01]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-01: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-01",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-01]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-01: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-01",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-01]",
+          "kind": "integration_test",
+          "scenario_match": "J1-01: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-07]",
+          "kind": "service_test",
+          "scenario_match": "J1-07: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-07]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-07: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-07]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-07: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-07",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-07]",
+          "kind": "integration_test",
+          "scenario_match": "J1-07: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-08]",
+          "kind": "service_test",
+          "scenario_match": "J1-08: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-08]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-08: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-08]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-08: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-08",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-08]",
+          "kind": "integration_test",
+          "scenario_match": "J1-08: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-10]",
+          "kind": "service_test",
+          "scenario_match": "J1-10: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-10]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-10: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-10",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-10]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-10: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-11]",
+          "kind": "service_test",
+          "scenario_match": "J1-11: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-11]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-11: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-11",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-11]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-11: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-12]",
+          "kind": "service_test",
+          "scenario_match": "J1-12: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-12]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-12: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-12",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-12]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-12: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-13]",
+          "kind": "service_test",
+          "scenario_match": "J1-13: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-13]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-13: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-13]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-13: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-13",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-13]",
+          "kind": "integration_test",
+          "scenario_match": "J1-13: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-14]",
+          "kind": "service_test",
+          "scenario_match": "J1-14: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-14]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-14: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-14]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-14: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-14",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-14]",
+          "kind": "integration_test",
+          "scenario_match": "J1-14: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-16]",
+          "kind": "service_test",
+          "scenario_match": "J1-16: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-16]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-16: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-16",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-16]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-16: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-18]",
+          "kind": "service_test",
+          "scenario_match": "J1-18: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-18]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-18: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-18]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-18: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-20]",
+          "kind": "service_test",
+          "scenario_match": "J1-20: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-20]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-20: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-20]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-20: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-22]",
+          "kind": "service_test",
+          "scenario_match": "J1-22: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-22]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-22: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-22]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-22: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-22",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-22]",
+          "kind": "integration_test",
+          "scenario_match": "J1-22: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-23]",
+          "kind": "service_test",
+          "scenario_match": "J1-23: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-23]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-23: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-23",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-23]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-23: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-24]",
+          "kind": "service_test",
+          "scenario_match": "J1-24: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-24]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-24: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-24",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-24]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-24: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-25]",
+          "kind": "service_test",
+          "scenario_match": "J1-25: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-25]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-25: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-25",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-25]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-25: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-26]",
+          "kind": "service_test",
+          "scenario_match": "J1-26: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-26]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-26: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-26",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-26]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-26: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-27]",
+          "kind": "service_test",
+          "scenario_match": "J1-27: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "layer": "workbench",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-27]",
+          "kind": "workbench_test",
+          "scenario_match": "J1-27: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-27",
+      "layer": "mcp",
+      "baseline_status": "PLANNED",
+      "new_status": "COVERED_EXISTING",
+      "introduced_by_tranche": "PHASE_J_J2_R1",
+      "evidence_refs": [
+        {
+          "ref": "tests/acceptance/test_phase_j_j2_r1_workbench_headless.py::test_scenario_real_workbench_service_mcp[J1-27]",
+          "kind": "mcp_test",
+          "scenario_match": "J1-27: actual local production path and headless DOM; no replaced layer or repeated source execution."
+        }
+      ]
+    }
+  ]
+}

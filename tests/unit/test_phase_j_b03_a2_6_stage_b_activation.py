@@ -42,12 +42,13 @@ def test_stage_b_current_authority_selects_composite_and_activates_exact_three_h
     assert route["output_evidence_contract"] == "trading_status_context_composite.v1"
     assert route["source_compatibility_key"] == "H1-TPEX-COMPOSITE"
     assert route["estimated_network_requests_per_invocation"] == 3
-    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
-    assert routing["phase_h_source_authority"]["active_source_count"] == 4
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 5
+    assert routing["phase_h_source_authority"]["active_source_count"] == 5
     active = {item["source_id"] for item in routing["phase_h_source_authority"]["records"]
               if item["activation_state"] == "active" and item["runtime_executable"] is True}
     assert active == {"H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI",
-                      "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}
+                      "H1-TPEX-CHANGED-TRADING-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED",
+                      "H2-TWSE-EXRIGHT-PRE-OPENAPI"}
     by_id = {item["source_id"]: item for item in descriptors["sources"]}
     for source_id in ("H1-TPEX-ATTENTION-OPENAPI", "H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"):
         assert (by_id[source_id]["activation_state"], by_id[source_id]["runtime_executable"]) == ("active", True)
@@ -263,7 +264,7 @@ def test_stage_b_b_c14_rollback_copy_restores_pre_stage_b_two_source_topology():
     source.update(activation_state="eligible", runtime_executable=False)
     cmode = next(item for item in rolled_routing["phase_h_source_authority"]["records"] if item["source_id"] == "H1-TPEX-CHANGED-TRADING-OPENAPI")
     cmode.update(activation_state="eligible", runtime_executable=False)
-    rolled_routing["phase_h_source_authority"]["active_source_count"] = 2
+    rolled_routing["phase_h_source_authority"]["active_source_count"] = 3
     rolled_routing["routing_scope"] = "rollback fixture: H1-TPEX-ATTENTION-OPENAPI and H3-TWSE-DEFAULT-BOUNDED are active"
     for item in rolled_descriptors["sources"]:
         if item["source_id"] in {"H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}:
@@ -276,10 +277,10 @@ def test_stage_b_b_c14_rollback_copy_restores_pre_stage_b_two_source_topology():
     assert route["selected_executor_id"] == PHASE_H_H1_EXECUTOR_ID
     assert route["output_evidence_contract"] == "trading_status_context_evidence.v1"
     assert route["candidate_executor_ids"] == [PHASE_H_H1_EXECUTOR_ID]
-    assert rolled_routing["phase_h_source_authority"]["active_source_count"] == 2
+    assert rolled_routing["phase_h_source_authority"]["active_source_count"] == 3
     rolled_active_sources = {item["source_id"] for item in rolled_routing["phase_h_source_authority"]["records"]
                              if item["activation_state"] == "active" and item["runtime_executable"] is True}
-    assert rolled_active_sources == {"H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED"}
+    assert rolled_active_sources == {"H1-TPEX-ATTENTION-OPENAPI", "H3-TWSE-DEFAULT-BOUNDED", "H2-TWSE-EXRIGHT-PRE-OPENAPI"}
     assert all(next(x for x in rolled_descriptors["sources"] if x["source_id"] == source_id)["runtime_executable"] is False
                for source_id in ("H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"))
     assert any(item["executor_id"] == PHASE_H_H1_EXECUTOR_ID for item in rolled_metadata["executors"])

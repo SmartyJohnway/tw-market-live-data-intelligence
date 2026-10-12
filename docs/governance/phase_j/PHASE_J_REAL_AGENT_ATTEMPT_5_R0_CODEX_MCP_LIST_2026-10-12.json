@@ -1,0 +1,27 @@
+[
+  {
+    "name": "phase_j_witness",
+    "enabled": true,
+    "disabled_reason": null,
+    "transport": {
+      "type": "stdio",
+      "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "args": [
+        "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\scripts\\phase_j_real_agent_attempt2_proxy.py",
+        "--log",
+        "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\attempt5\\attempt5-slot-01\\witness-events.jsonl",
+        "--control-package-id",
+        "umea-v1-64317f4f3435611c2bb5"
+      ],
+      "env": {
+        "PHASEJ_WITNESS_PROXY_LOG": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\attempt5\\attempt5-slot-01\\witness-events.jsonl",
+        "UNIFIED_MARKET_EVIDENCE_SERVICE_URL": "http://127.0.0.1:18264"
+      },
+      "env_vars": [],
+      "cwd": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence"
+    },
+    "startup_timeout_sec": 30.0,
+    "tool_timeout_sec": null,
+    "auth_status": "unsupported"
+  }
+]

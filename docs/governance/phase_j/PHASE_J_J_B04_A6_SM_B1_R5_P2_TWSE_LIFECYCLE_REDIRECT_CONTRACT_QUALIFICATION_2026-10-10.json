@@ -1,0 +1,199 @@
+{
+  "gate": "J-B04-A6-SM-B1-R5-P2",
+  "authorized_head": "b05ae6dc548e305ae4783420b46ae0eb6b743f41",
+  "authorized_tree": "1103202d7f90494e6a0339467a01e3257f52cb1b",
+  "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "prior_r5_p1_r2_r1_review_id": "5478405866",
+  "owner_authorization_sha256": "002d84ae99ba9ed6de4c8d517985804848c768d8a7da35c52e1b666716284af1",
+  "overall_disposition": "SM_B1_R5_P2_TWSE_LIFECYCLE_CONTRACTS_PARTIAL",
+  "probe_accounting": {
+    "logical_probes": 6,
+    "explicit_http_dispatches": 6,
+    "explicit_get": 6,
+    "explicit_head": 0,
+    "explicit_post": 0,
+    "automatic_retries": 0,
+    "redirects_followed": 0,
+    "browser_navigations": 0,
+    "browser_incidental_requests": 0,
+    "security_master_bootstrap": false,
+    "tp_ex_requests": 0,
+    "per_source_dispatches": {
+      "twse_delisted": 1,
+      "twse_etn_expired": 5
+    },
+    "authorization_limits_respected": true
+  },
+  "predispatch_guard": {
+    "method": "GET only",
+    "https_required": true,
+    "official_host_allowlist_enforced": true,
+    "source_and_purpose_separate_from_method": true,
+    "budget_reserved_before_dispatch": true,
+    "invalid_methods_rejected_without_dispatch": ["landing", "probe", "FETCH", "get", "", null],
+    "self_test": "PASS"
+  },
+  "sources": {
+    "twse_delisted": {
+      "historical_materializer_url": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html",
+      "manifest_human_facing_url": "https://www.twse.com.tw/zh/listed/suspend-listing.html",
+      "current_request": {
+        "url": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html",
+        "method": "GET",
+        "status": 200,
+        "redirect": false,
+        "location": null,
+        "final_url": "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html",
+        "content_type": "text/html;charset=utf-8",
+        "bytes": 51814,
+        "sha256": "3ba1395a7549d8ebee35c02350bb5470c9cdde68ddc4339a461b6d19953a9228",
+        "dispatches": 1
+      },
+      "payload": {
+        "representation": "HTML",
+        "tables": 1,
+        "header": ["終止上市日期", "公司名稱", "上市編號"],
+        "data_rows": 265,
+        "parser": "parse_twse_delisted / parse_standard_table",
+        "parser_compatibility": "PASS",
+        "parsed_events": 265,
+        "security_code_field": "上市編號",
+        "company_name_field": "公司名稱",
+        "termination_date_field": "終止上市日期",
+        "date_calendar": "ROC/Minguo, normalized by the existing production parser",
+        "earliest_event_date": "2001-01-20",
+        "latest_event_date": "2026-09-01",
+        "duplicate_lifecycle_identities": 0,
+        "pagination_or_filtering_observed": false,
+        "coverage_statement": "The single returned HTML table contained all 265 rows exposed by this response; no paging controls or page metadata were observed in the response. This qualifies deterministic acquisition of the source's offered table, not events outside that offered history.",
+        "empty_result_semantics": "Not exercised; response was non-empty."
+      },
+      "production_dispatch_requirement": 1,
+      "disposition": "QUALIFIED_DIRECT_CANONICAL_SOURCE",
+      "production_change_required": false
+    },
+    "twse_etn_expired": {
+      "historical_url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+      "landing_request": {
+        "method": "GET",
+        "status": 200,
+        "redirect": false,
+        "location": null,
+        "final_url": "https://www.twse.com.tw/zh/products/securities/etn/products/expire.html",
+        "content_type": "text/html",
+        "bytes": 11284,
+        "sha256": "265d3eeb30e292795ad9a089f6e34f10c6c5b781b756c9766f796717b97cb8d9",
+        "dispatches": 1,
+        "raw_body_retained": false,
+        "raw_body_retention_note": "The initial temporary runner used a colliding per-process filename; subsequent requests overwrote the local landing body. Its status, size, hash, structure inventory, and data-api value were recorded before overwrite. No source body was published."
+      },
+      "landing_evidence": {
+        "classification": "client-loaded lifecycle interface",
+        "html_table_count": 0,
+        "forms": 1,
+        "form_data_api": "/ETN/expireEnd",
+        "direct_first_party_scripts": ["/res/js/main.js", "/res/js/web.js", "/res/js/web-report.js"],
+        "other_scripts_excluded_from_source_authority": ["https://www.googletagmanager.com/gtag/js?id=G-J2HVMN6FVP", "/res/lib/ie-hints.min.js"]
+      },
+      "first_party_runtime_evidence": {
+        "main_js": {
+          "url": "https://www.twse.com.tw/res/js/main.js",
+          "status": 200,
+          "content_type": "application/javascript",
+          "bytes": 128697,
+          "sha256": "e904e5819a818a414c893d4f878e8f13fd745a14418666c849f2975020349252",
+          "static_facts": ["production rwd API base is /rwd", "language is derived from the page path, zh"]
+        },
+        "web_report_js": {
+          "url": "https://www.twse.com.tw/res/js/web-report.js",
+          "status": 200,
+          "content_type": "application/javascript",
+          "bytes": 19650,
+          "sha256": "fb42365f6eb8a1516408e7604f502c134c5e54de0c4f6449c6e10c2915685058",
+          "static_facts": ["composes ${cfg.apiHost.rwd}/${cfg.lan}${data-api}", "uses $.getJSON", "adds response=json", "uses configured onload arguments when present", "adds paging and offset only for server-side paged tables"]
+        }
+      },
+      "data_request": {
+        "url": "https://www.twse.com.tw/rwd/zh/ETN/expireEnd?response=json",
+        "method": "GET",
+        "status": 200,
+        "redirect": false,
+        "location": null,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 1703,
+        "sha256": "e049ed302b3bdd7b73bc77a3c8d2d015835da6882db8652f397d4c8514019484",
+        "dispatches": 1,
+        "request_parameters_observed": {"response": "json"},
+        "method_and_parameter_basis": "The current page exposes data-api=/ETN/expireEnd; the directly referenced production runtime sets rwd=/rwd and lan=zh; the directly referenced report code uses $.getJSON and sets response=json. The verified request used these proven values. Other page onload/filter arguments were not recovered from the overwritten landing body."
+      },
+      "payload": {
+        "representation": "JSON",
+        "root_keys": ["stat", "title", "data", "fields"],
+        "stat": "ok",
+        "fields": ["終止上市日期", "證券代號", "證券簡稱", "發行證券商", "終止上市理由"],
+        "row_shape": "array aligned positionally with fields",
+        "rows": 13,
+        "date_field": "終止上市日期",
+        "date_representation": "YYYY/MM/DD Gregorian in observed data rows",
+        "security_code_field": "證券代號",
+        "security_name_field": "證券簡稱",
+        "termination_reason_field": "終止上市理由",
+        "issuer_field": "發行證券商",
+        "observed_earliest_event_date": "2020-04-30",
+        "observed_latest_event_date": "2026-05-28",
+        "total_count_or_pagination_metadata": "absent",
+        "valid_empty_semantics": "not established",
+        "error_semantics": "not established",
+        "coverage_conclusion": "Incomplete: response contains 13 rows over 2020-04-30 through 2026-05-28, but provides no total count, page metadata, or other completeness marker. Whether this is the complete historical lifecycle set is unproven.",
+        "current_parser_compatibility": "FAIL closed with no_html_tables; parse_etn currently expects an HTML lifecycle table",
+        "production_contract": "partial; do not promote or route production acquisition to this endpoint"
+      },
+      "production_dispatch_requirement": "unresolved",
+      "disposition": "SOURCE_CONTRACT_PARTIAL"
+    }
+  },
+  "overall_bootstrap_fit": {
+    "existing_contract": {"logical_source_probes": 5, "max_redirects_per_probe": 1, "max_dispatches_per_probe": 2, "max_total_dispatches": 10, "automatic_retries": 0},
+    "qualified_twse_delisted_dispatches": 1,
+    "qualified_tpex_dispatches_from_prior_review": 1,
+    "twse_etn_expired_dispatches": "unresolved pending contract/parser/coverage repair",
+    "bootstrap_ready": false,
+    "reason": "The ETN lifecycle endpoint's completeness and production parser contract remain unqualified."
+  },
+  "historical_307_observations": "Preserved as true historical observations for SM-B1; current direct requests to both historical URLs returned 200 without redirects.",
+  "production_changes": [],
+  "validation": {
+    "temporary_runner_method_guard": "PASS",
+    "twse_delisted_parser_replay": "PASS: 265 events, dates 2001-01-20 through 2026-09-01, duplicate identities 0",
+    "twse_etn_existing_parser_replay": "FAIL_CLOSED: no_html_tables on JSON payload",
+    "network_after_evidence_freeze": "OFF",
+    "security_master_status": "NOT_INITIALIZED",
+    "active_json_present": false
+  },
+  "raw_local_evidence": [
+    {"path": "/tmp/j-b04-a6-sm-b1-r5-p2/raw/twse_delisted-probe-01.bin", "bytes": 51814, "sha256": "3ba1395a7549d8ebee35c02350bb5470c9cdde68ddc4339a461b6d19953a9228"},
+    {"path": "/tmp/j-b04-a6-sm-b1-r5-p2/raw/etn-expireEnd-response.bin", "bytes": 1703, "sha256": "e049ed302b3bdd7b73bc77a3c8d2d015835da6882db8652f397d4c8514019484"},
+    {"path": "/tmp/j-b04-a6-sm-b1-r5-p2/raw/main.js", "bytes": 128697, "sha256": "e904e5819a818a414c893d4f878e8f13fd745a14418666c849f2975020349252"},
+    {"path": "/tmp/j-b04-a6-sm-b1-r5-p2/raw/web-report.js", "bytes": 19650, "sha256": "fb42365f6eb8a1516408e7604f502c134c5e54de0c4f6449c6e10c2915685058"},
+    {"path": "/tmp/j-b04-a6-sm-b1-r5-p2/transport-ledger.jsonl", "raw_landing_metadata": {"path": null, "bytes": 11284, "sha256": "265d3eeb30e292795ad9a089f6e34f10c6c5b781b756c9766f796717b97cb8d9"}}
+  ],
+  "governance_state": {
+    "security_master": "NOT_INITIALIZED",
+    "production_identity": "NOT_VERIFIED",
+    "bootstrap_attempt_2": "NOT_AUTHORIZED",
+    "h2_runtime": "INACTIVE",
+    "routing": "plan_only",
+    "selected_executor": null,
+    "j_b04": "BLOCKING",
+    "phase_j": "NOT_STARTED",
+    "mcp_tools": 6,
+    "pr_326": "Draft/open/unmerged"
+  },
+  "source_network_activity": {"GET": 6, "HEAD": 0, "POST": 0, "security_master_bootstrap": 0, "h3_live": 0, "h2_live": 0, "a6_integrated_live": 0},
+  "unresolved_concerns": [
+    "The original ETN landing HTML body was overwritten in temporary evidence storage by a filename collision; its status, byte count, SHA-256, and parsed structural observations were retained, but its raw bytes are unavailable.",
+    "The page's exact onload arguments and any table paging attributes were not retained, so the endpoint request is reproduced from directly observed data-api/runtime composition plus response=json, but the full official default filter/page contract is not established.",
+    "The ETN JSON response lacks a total count or pagination marker, so historical completeness is not established.",
+    "The current ETN parser is HTML-based and rejects the observed JSON response; a separately reviewed contract/parser repair is needed before production promotion."
+  ]
+}

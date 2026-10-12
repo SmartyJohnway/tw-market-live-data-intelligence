@@ -1,0 +1,171 @@
+{
+  "agent_output": {
+    "byte_length": 2234,
+    "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_6_OUTPUT_2026-10-12.txt",
+    "sha256": "5e971dbd6b2059d13fd7f91efc990edcd23ee883d7c5dd2daa10a7275533325b",
+    "verbatim_copy": true
+  },
+  "attempt_5_history": "unchanged; previous terminal receipt/output retained",
+  "attempt_5_refined_root_cause": "ATTEMPT_5_J3_NOT_REACHED_REQUIRED_CONTROL_PACKAGE_ID_NOT_SUPPLIED",
+  "boundaries": {
+    "browser_use": 0,
+    "firecrawl": 0,
+    "formal_sessions": 1,
+    "fresh_market_get_head_post": [
+      0,
+      0,
+      0
+    ],
+    "new_j1_21_executions": 0,
+    "new_packages": 0,
+    "production_schema_mcp_surface_changes": 0,
+    "security_master_acquisition_mutation": [
+      0,
+      0
+    ],
+    "semantic_tool_attempts": 2,
+    "slots_launched": 1,
+    "slots_reserved": 1,
+    "source_fixture_invocation_delta": 0
+  },
+  "derived_state": {
+    "phase_j": "STARTED",
+    "phase_k": "NOT_STARTED",
+    "pull_request": "OPEN / Draft / unmerged",
+    "real_agent_layer_credit": false,
+    "remaining_obligations": [
+      "real_agent_layer"
+    ],
+    "roadmap_phase_j": "UNCHECKED"
+  },
+  "disposition": "PHASE_J_REAL_AGENT_ATTEMPT_6_HARD_BLOCK_TOOL_POLICY_VIOLATION",
+  "formal_mcp_event_sequence": [
+    {
+      "event": "blocked_tool_call",
+      "name": "market_export_ai_handoff",
+      "ordinal": null,
+      "success": null
+    },
+    {
+      "event": "tool_call",
+      "name": "market_read_result",
+      "ordinal": 1,
+      "success": null
+    },
+    {
+      "event": "tool_result",
+      "name": "market_read_result",
+      "ordinal": null,
+      "success": true
+    }
+  ],
+  "mcp_outcome": {
+    "audit_id": "umeap-v3-9063d2331c6cc7718a1e",
+    "first_attempt": "market_export_ai_handoff blocked by proxy because market_read_result had not yet occurred",
+    "handoff_retrieved": false,
+    "initialize": "PASS",
+    "result_id": "umeresult-v3-63bd91d7e710438dbdd6",
+    "result_tool_result_sha256": "99b22813482e435df9414f88ee7b684498d6ad1dac656c9442ecf9846e462a85",
+    "second_attempt": "market_read_result succeeded",
+    "semantic_attempts": 2,
+    "tool_count": 6,
+    "tools_list": "PASS"
+  },
+  "product_input": {
+    "control_package_id": "umea-v1-64317f4f3435611c2bb5",
+    "expected_audit_id": "umeap-v3-9063d2331c6cc7718a1e",
+    "expected_result_id": "umeresult-v3-63bd91d7e710438dbdd6",
+    "inventory_sha256": "caa4b43c67b235ce104c0277b1493031466d39159591e87f56c8765ed0c09096"
+  },
+  "repair": {
+    "commit": "8a139b9c5320156c9274d4f7b87164e13ef0f8e6",
+    "prompt_path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_6_NEUTRAL_PROMPT_2026-10-12.txt",
+    "prompt_sha256": "7ca1e6fffaccc42c674ab9a5609dcb998c1e667107c9971f1b3d1bd97d6fb7ca",
+    "receipt_path_fix": "file_sha256 now normalizes str paths to Path; focused regression passed",
+    "tree": "8198ee07506bf365d723e452ebde639538b96a59"
+  },
+  "retry": {
+    "eligible": false,
+    "reason": "semantic MCP activity occurred and a substantive task response was produced"
+  },
+  "runtime": {
+    "bundle_inventory_sha256": "5e0e4b9752aa06cc0d8609168cae658efcd1c544160272f8a64f3a1c1ea08629",
+    "version": "codex-cli 0.160.1"
+  },
+  "schema_version": "phase_j_real_agent_attempt_6_receipt.v1",
+  "semantic_evaluation": {
+    "basis": "actual market_read_result output",
+    "full_attempt_acceptance": "FAIL",
+    "observed": "model states stale_intraday_snapshot and status=stale, not current market evidence; limits use to descriptive snapshot context; gives no trading recommendation/signal",
+    "reason": "required call order was violated; handoff was not retrieved",
+    "result_interpretation": "PASS"
+  },
+  "slot": {
+    "agent_final_bytes": 2234,
+    "agent_final_sha256": "5e971dbd6b2059d13fd7f91efc990edcd23ee883d7c5dd2daa10a7275533325b",
+    "codex_events_sha256": "76c63012f5964104f763edb7a1b030a3a47795338bb12ee545d007fe42efb331",
+    "codex_executable": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1-bundle\\bin\\codex.exe",
+    "codex_exit_code": 0,
+    "codex_stderr_sha256": "9cd2bda85489736d5e0d64f82f76cc39504e81662e21ba0b5755a7e1a1ad9ce7",
+    "codex_version": "codex-cli 0.160.1",
+    "lineage_events": [
+      {
+        "audit_package_id": "umeap-v3-9063d2331c6cc7718a1e",
+        "result_id": "umeresult-v3-63bd91d7e710438dbdd6"
+      }
+    ],
+    "mcp_preflight": {
+      "initialize": "PASS",
+      "log_sha256": "60b855dff7a3366ad410a6df3cddd16559b70fed5195c3f667d65b6374f32753",
+      "semantic_calls": 0,
+      "tool_count": 6,
+      "tools_list": "PASS"
+    },
+    "owner_authorization": "Explicitly provided in the Attempt #6 user instruction",
+    "process_end_utc": "2026-10-12T09:50:11.683436Z",
+    "process_start_utc": "2026-10-12T09:49:26.247706Z",
+    "reservation": {
+      "control_package_id": "umea-v1-64317f4f3435611c2bb5",
+      "preflight_log_sha256": "60b855dff7a3366ad410a6df3cddd16559b70fed5195c3f667d65b6374f32753",
+      "prompt_sha256": "7ca1e6fffaccc42c674ab9a5609dcb998c1e667107c9971f1b3d1bd97d6fb7ca",
+      "reserved_at_utc": "2026-10-12T09:49:24.786816Z",
+      "runtime_inventory_sha256": "5e0e4b9752aa06cc0d8609168cae658efcd1c544160272f8a64f3a1c1ea08629",
+      "semantic_mcp_calls_before_launch": 0,
+      "slot": "attempt6-slot-01",
+      "starting_head": "8a139b9c5320156c9274d4f7b87164e13ef0f8e6",
+      "starting_tree": "8198ee07506bf365d723e452ebde639538b96a59",
+      "state": "RESERVED"
+    },
+    "result_lineage_obtained": true,
+    "retry_eligible": false,
+    "schema_version": "phase_j_attempt_6_slot_receipt.v1",
+    "semantic_mcp_call_count": 2,
+    "semantic_mcp_events": [
+      {
+        "event": "blocked_tool_call",
+        "name": "market_export_ai_handoff",
+        "reason": "tool_order_or_arguments_or_call_limit"
+      },
+      {
+        "arguments": {
+          "control_package_id": "umea-v1-64317f4f3435611c2bb5"
+        },
+        "event": "tool_call",
+        "name": "market_read_result",
+        "ordinal": 1
+      }
+    ],
+    "session_id": "01a12f84-5dc7-7522-a0f0-495eb585727f",
+    "slot": "attempt6-slot-01",
+    "substantive_model_task_output": true,
+    "timeout": false,
+    "witness_events_sha256": "3e9e573777fb345203e36ecc8e6848c2ffdbdac89313704caf40022cf0a8aca9"
+  },
+  "starting_authority": {
+    "base_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "head": "8a139b9c5320156c9274d4f7b87164e13ef0f8e6",
+    "pull_request": 326,
+    "tree": "8198ee07506bf365d723e452ebde639538b96a59"
+  }
+}

@@ -479,11 +479,14 @@ def test_catalog_routing_truth_exposes_selected_h1_composite_and_h3_twse_routes_
     assert routes["trading_status_context"]["network_required"] is True
 
     h2 = capabilities["corporate_action_context"]
-    assert h2["support_status"] == "contract_supported"
-    assert h2["runtime_executable"] is False
-    assert h2["phase_h_activation_state"] == "inactive"
-    assert routes["corporate_action_context"]["runtime_executable"] is False
-    assert routes["corporate_action_context"]["selected_executor_id"] is None
+    assert h2["support_status"] == "runtime_executable"
+    assert h2["runtime_executable"] is True
+    assert h2["phase_h_activation_state"] == "selected_route_active"
+    assert routes["corporate_action_context"]["runtime_executable"] is True
+    assert routes["corporate_action_context"]["selected_executor_id"] == "phase_h_h2_twse_exright_pre_executor"
+    assert routes["corporate_action_context"]["supported_markets"] == ["TWSE"]
+    assert next(item for item in routing["phase_h_source_authority"]["records"] if item["source_id"] == "H2-TWSE-EXRIGHT-PRE-OPENAPI")["activation_state"] == "active"
+    assert all(item["activation_state"] != "active" and item["runtime_executable"] is False for item in routing["phase_h_source_authority"]["records"] if item["source_id"].startswith("H2-") and item["source_id"] != "H2-TWSE-EXRIGHT-PRE-OPENAPI")
 
     h3 = capabilities["recent_performance"]
     h3_route = routes["recent_performance"]
@@ -513,16 +516,17 @@ def test_catalog_routing_truth_exposes_selected_h1_composite_and_h3_twse_routes_
     assert h3_surface["current_status"] == "H-ACT-H3 selected TWSE route is Owner-accepted and active"
 
     assert catalog["contract_versions"]["v3_runtime_authority_status"] == "v3_preferred_selected_routes_active"
-    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 4
-    assert routing["phase_h_source_authority"]["active_source_count"] == 4
+    assert catalog["phase_h_contract"]["active_phase_h_source_count"] == 5
+    assert routing["phase_h_source_authority"]["active_source_count"] == 5
     active = [item for item in routing["phase_h_source_authority"]["records"] if item["activation_state"] == "active"]
     assert {(item["source_id"], item["runtime_executable"]) for item in active} == {
         ("H1-TPEX-ATTENTION-OPENAPI", True),
         ("H1-TPEX-DISPOSITION-OPENAPI", True),
         ("H1-TPEX-CHANGED-TRADING-OPENAPI", True),
         ("H3-TWSE-DEFAULT-BOUNDED", True),
+        ("H2-TWSE-EXRIGHT-PRE-OPENAPI", True),
     }
-    assert len(active) == 4
+    assert len(active) == 5
     assert "discontinuity_safety" not in request_needs
     assert routing["derived_contracts"][0]["network_required"] is False
     assert routing["derived_contracts"][0]["request_capability"] is False

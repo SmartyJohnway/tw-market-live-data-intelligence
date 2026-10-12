@@ -1,0 +1,1081 @@
+{
+  "schema_version": "phase_j_j2_deterministic_cross_layer_execution_ledger.v1",
+  "authority_status": "J2_FROZEN_ACCEPTANCE_CANDIDATE",
+  "baseline_authority": {
+    "registry_path": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+    "registry_sha256": "b26712d1389b904ff003b22aa135caac43ab8f6fc7b32dad571b70438248c864",
+    "matrix_path": "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json",
+    "matrix_sha256": "5d07ab2618e6bfa6c79f796df28cd69df5c105fb8f60396c293675737febcd45",
+    "j1_independent_review_id": "5481271339",
+    "starting_head": "230606eb0b51b2004dbeac72f8c2908abe0372d3",
+    "starting_tree": "225a964207cc4a9edded1e2928a7cac1ba303d4a",
+    "origin_main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+    "owner_authorization_sha256": "6657ce311e1d360cf3ab9af6f8f1d4ca78b68cb84d7dfa750cb1254b30ca10a2"
+  },
+  "registry_semantic_authority": "docs/governance/phase_j/PHASE_J_J0_J1_GOVERNED_SCENARIO_REGISTRY_V1.json",
+  "baseline_matrix": "docs/governance/phase_j/PHASE_J_J0_J1_COVERAGE_MATRIX_V1.json",
+  "target_scenario_ids": [
+    "J1-01",
+    "J1-07",
+    "J1-08",
+    "J1-10",
+    "J1-11",
+    "J1-12",
+    "J1-13",
+    "J1-14",
+    "J1-16",
+    "J1-18",
+    "J1-20",
+    "J1-22",
+    "J1-23",
+    "J1-24",
+    "J1-25",
+    "J1-26",
+    "J1-27"
+  ],
+  "scenario_adjudication_count": 17,
+  "scenarios": [
+    {
+      "scenario_id": "J1-01",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-01_identity",
+        "j1-01_source",
+        "j1-01_currentness",
+        "j1-01_coverage"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-07",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-07_evidence_state",
+        "j1-07_source_failure"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "historical_absence"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-08",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-08_revision_relation",
+        "j1-08_correction_linkage_proven"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "correction_relation_asserted"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-10",
+      "execution_classification": "PREEXECUTION_FAIL_CLOSED",
+      "layers_attempted": [
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "layers_passed": [
+        "service_api",
+        "mcp"
+      ],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "The request is rejected before plan/authorization/claim; the current repo has no integration fixture that creates a Result/Audit package for a pre-execution schema rejection, and such a package would misrepresent execution."
+        },
+        {
+          "layer": "workbench",
+          "reason": "The Workbench page and validation script are served, but there is no existing browserless DOM harness to execute the rendered refusal state."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics",
+        "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_j1_10_financial_statements_fail_closed_through_local_service_and_mcp"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "REQUEST_SCHEMA_INVALID at Local Service validation",
+        "operation_count_computed = false",
+        "MCP input schema refusal before service invocation",
+        "execution not started"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "financial_values_fabricated"
+      ],
+      "coverage_promotions": [
+        {
+          "layer": "service_api",
+          "status": "COVERED_EXISTING"
+        },
+        {
+          "layer": "mcp",
+          "status": "COVERED_EXISTING"
+        }
+      ],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-11",
+      "execution_classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "layers_attempted": [
+        "integration",
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "layers_passed": [
+        "integration",
+        "service_api",
+        "mcp"
+      ],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "workbench",
+          "reason": "The existing static Workbench route and result endpoint are reachable, but repository test infrastructure does not execute the Workbench JS state/render path. No existing browserless DOM seam is present; J2 cannot claim scenario-specific Workbench projection coverage without adding unsupported test infrastructure or replacing the UI boundary."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics",
+        "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-11-False-targets0-full_success-succeeded]"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": "umeresult-v3-45a743417889822cfe57",
+      "audit_identity": "umeap-v3-f42519665672fcd76c97",
+      "handoff_identity": "umeresult-v3-45a743417889822cfe57",
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "Result V3 schema/status",
+        "Audit V3 schema and result identity",
+        "target identity TPEX:6488",
+        "source execution outcome",
+        "handoff execution outcome",
+        "no recommendation/trading language",
+        "same stored result reused across service/MCP",
+        "additional execution count = 0"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "tradeability_from_uncovered_status"
+      ],
+      "coverage_promotions": [
+        {
+          "layer": "service_api",
+          "status": "COVERED_EXISTING"
+        },
+        {
+          "layer": "mcp",
+          "status": "COVERED_EXISTING"
+        }
+      ],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change.",
+      "baseline_integration_evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_J_B03_A2_6_REPRESENTATIVE_INTEGRATED_ACCEPTANCE_AND_ACTIVATION_DECISION_2026-10-07.json",
+          "kind": "e2e_acceptance",
+          "scenario_match": "J-B03 A2.6 C3 carried multiple disposition rows through Result V3, Audit V3, and handoff; bounded live acceptance exercised the same H1 composite route for a representative TPEX target. Full H1 coverage remains explicitly false, with changed-trading-method, suspension, and resumption uncovered."
+        }
+      ],
+      "control_package_id": "umea-v1-e36681c7d4b9a0aa45de"
+    },
+    {
+      "scenario_id": "J1-12",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-12_coverage",
+        "j1-12_status_conclusion",
+        "j1-12_normal_inferred_from_no_match"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "suspension_absence_inferred"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-13",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-13_corporate_action_subtype",
+        "j1-13_coverage",
+        "j1-13_ordinary_return_interpretation"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "ordinary_return_across_gap"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-14",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-14_corporate_action_subtype",
+        "j1-14_coverage"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-16",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [
+        "integration"
+      ],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-16_h4_state",
+        "j1-16_ordinary_return_interpretation"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "discontinuity_interpreted_as_ordinary"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change.",
+      "baseline_integration_evidence_refs": [
+        {
+          "ref": "docs/governance/phase_j/PHASE_J_J_B04_A6_R2_TRANSPORT_LEDGER_VALIDATOR_REPAIR_AND_LIVE_REACCEPTANCE_2026-10-10.json",
+          "kind": "e2e_acceptance",
+          "scenario_match": "Accepted integrated A6-R2 shows successful bounded retrieval with H4 coverage_incomplete and ordinary-return interpretation blocked; it does not claim complete corporate-action coverage."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-18",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [
+        "integration"
+      ],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-18_context_family",
+        "j1-18_requested_explicitly",
+        "j1-18_loaded_by_default",
+        "j1-18_inference"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "phase_i_market_conclusion"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change.",
+      "baseline_integration_evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_i_i2_a3_p0_governed_runner.py",
+          "kind": "integration_test",
+          "scenario_match": "test_fake_transport_completes_real_authorization_dispatch_and_v3_chain exercises explicitly requested TAIFEX context through the governed runner and V3 result/audit path using fake transport."
+        }
+      ]
+    },
+    {
+      "scenario_id": "J1-20",
+      "execution_classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "layers_attempted": [
+        "integration",
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "layers_passed": [
+        "integration",
+        "service_api",
+        "mcp"
+      ],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "workbench",
+          "reason": "The existing static Workbench route and result endpoint are reachable, but repository test infrastructure does not execute the Workbench JS state/render path. No existing browserless DOM seam is present; J2 cannot claim scenario-specific Workbench projection coverage without adding unsupported test infrastructure or replacing the UI boundary."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics",
+        "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-20-False-targets1-partially_failed-partial_success]"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": "umeresult-v3-d4ff6179a426ae505b8c",
+      "audit_identity": "umeap-v3-310f8679d1e3cd9b9bb7",
+      "handoff_identity": "umeresult-v3-d4ff6179a426ae505b8c",
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "Result V3 schema/status",
+        "Audit V3 schema and result identity",
+        "target identity TPEX:6488",
+        "source execution outcome",
+        "handoff execution outcome",
+        "no recommendation/trading language",
+        "same stored result reused across service/MCP",
+        "additional execution count = 0"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction"
+      ],
+      "coverage_promotions": [
+        {
+          "layer": "service_api",
+          "status": "COVERED_EXISTING"
+        },
+        {
+          "layer": "mcp",
+          "status": "COVERED_EXISTING"
+        }
+      ],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change.",
+      "baseline_integration_evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+          "kind": "integration_test",
+          "scenario_match": "test_s2_multi_target_controlled_e2e_preserves_target_scoped_mixed_outcomes proves partial_success and per-operation outcomes through Result/Audit/handoff."
+        }
+      ],
+      "control_package_id": "umea-v1-2363bd9c65972a0c57fd"
+    },
+    {
+      "scenario_id": "J1-22",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-22_evidence_state",
+        "j1-22_source_failure"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "missing_converted_to_zero"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-23",
+      "execution_classification": "FIXTURE_BACKED_PRODUCTION_PATH",
+      "layers_attempted": [
+        "integration",
+        "service_api",
+        "workbench",
+        "mcp"
+      ],
+      "layers_passed": [
+        "integration",
+        "service_api",
+        "mcp"
+      ],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "workbench",
+          "reason": "The existing static Workbench route and result endpoint are reachable, but repository test infrastructure does not execute the Workbench JS state/render path. No existing browserless DOM seam is present; J2 cannot claim scenario-specific Workbench projection coverage without adding unsupported test infrastructure or replacing the UI boundary."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics",
+        "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_result_audit_workbench_and_mcp_reuse_one_fixture_execution[J1-23-True-targets2-failed-failed]"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": "umeresult-v3-b87ab1783996da3b44bf",
+      "audit_identity": "umeap-v3-ca137fdfb922379274ae",
+      "handoff_identity": "umeresult-v3-b87ab1783996da3b44bf",
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "Result V3 schema/status",
+        "Audit V3 schema and result identity",
+        "target identity TPEX:6488",
+        "source execution outcome",
+        "handoff execution outcome",
+        "no recommendation/trading language",
+        "same stored result reused across service/MCP",
+        "additional execution count = 0"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "failure_converted_to_empty"
+      ],
+      "coverage_promotions": [
+        {
+          "layer": "service_api",
+          "status": "COVERED_EXISTING"
+        },
+        {
+          "layer": "mcp",
+          "status": "COVERED_EXISTING"
+        }
+      ],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change.",
+      "baseline_integration_evidence_refs": [
+        {
+          "ref": "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
+          "kind": "integration_test",
+          "scenario_match": "test_s3_fixture_source_failure_propagates_truthfully_to_result_audit_and_h5 proves source_failed remains distinct through the governed Result/Audit/handoff chain."
+        }
+      ],
+      "control_package_id": "umea-v1-e36681c7d4b9a0aa45de"
+    },
+    {
+      "scenario_id": "J1-24",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-24_identity_resolution",
+        "j1-24_execution_started",
+        "j1-24_name_fallback"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "identity_name_fallback"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-25",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [
+        "fresh_install"
+      ],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics",
+        "tests/unit/test_m8r_08g_identity_service_and_releases.py::test_not_initialized_has_no_fallback"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-25_capability",
+        "j1-25_execution_started",
+        "j1-25_identity_known",
+        "isolated NOT_INITIALIZED fresh-install state does not fall back to Candidate B"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "identity_implies_capability"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-26",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-26_authorization",
+        "j1-26_execution_started"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "refusal_bypassed"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    },
+    {
+      "scenario_id": "J1-27",
+      "execution_classification": "EXISTING_SURFACE_GAP",
+      "layers_attempted": [],
+      "layers_passed": [],
+      "layers_not_applicable": [],
+      "layers_blocked": [
+        {
+          "layer": "integration",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "service_api",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "workbench",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        },
+        {
+          "layer": "mcp",
+          "reason": "No existing deterministic fixture-backed production path or pre-execution test seam represents this scenario through the actual layer; J1 synthetic semantic fixtures are expectation oracles only and cannot qualify J2 execution coverage."
+        }
+      ],
+      "test_node_ids": [
+        "tests/unit/test_phase_j_j0_j1_scenario_registry.py::test_synthetic_j0_j1_cases_satisfy_registered_semantics"
+      ],
+      "fixture_input_refs": [
+        "tests/fixtures/phase_j/j0_j1_semantic_fixtures.json"
+      ],
+      "result_identity": null,
+      "audit_identity": null,
+      "handoff_identity": null,
+      "network_dispatch_count": 0,
+      "additional_execution_count": 0,
+      "semantic_assertions_checked": [
+        "result_v3_contract",
+        "audit_v3_contract",
+        "no_recommendation",
+        "no_trading_action",
+        "j1-27_resource_bound",
+        "j1-27_unbounded_execution"
+      ],
+      "forbidden_claims_checked": [
+        "directional_market_label",
+        "price_target",
+        "broker_action",
+        "unsupported_source_substitution",
+        "investment_recommendation",
+        "buy_or_sell_instruction",
+        "bound_bypassed"
+      ],
+      "coverage_promotions": [],
+      "adjudication": "Existing J1 semantic fixture remains the oracle; J2 has no existing production-path fixture seam that can faithfully execute this scenario through every required cross-layer surface without a runtime or public-contract change."
+    }
+  ],
+  "execution_summary": {
+    "fixture_backed_production_path": 3,
+    "preexecution_fail_closed": 1,
+    "stored_result_projection": 0,
+    "existing_surface_gap": 13,
+    "no_unproven_coverage_claims": true
+  },
+  "network_activity": {
+    "market_get": 0,
+    "market_head": 0,
+    "market_post": 0,
+    "browser": 0,
+    "firecrawl": 0,
+    "security_master_acquisition": 0,
+    "security_master_mutation": 0
+  },
+  "product_boundary": {
+    "production_runtime_changes": 0,
+    "public_schema_changes": 0,
+    "new_routes": 0,
+    "new_capabilities": 0,
+    "mcp_tool_count": 6,
+    "security_master_mutation": 0
+  },
+  "authorization": {
+    "bounded_live": "NOT_GRANTED",
+    "real_agent": "NOT_GRANTED",
+    "phase_k": "NOT_STARTED"
+  },
+  "terminal_disposition": "PHASE_J_J2_HARD_BLOCK_EXISTING_SURFACE_GAP"
+}

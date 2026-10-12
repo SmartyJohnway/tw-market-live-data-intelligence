@@ -1,0 +1,63 @@
+{
+  "schema_version": "phase_j_final_closure_r2_witness_delta.v1",
+  "starting_head": "09b8c16f0aced84cf85c10b0da1c09d95e7f09c5",
+  "starting_tree": "6e0e7124d7bfbd2504c15027c447d981f9d5bfb0",
+  "baseline_bindings": {
+    "accepted_J2_matrix": {
+      "path": "docs/governance/phase_j/PHASE_J_J2_R1_EFFECTIVE_COVERAGE_MATRIX_V1.json",
+      "sha256": "8fe53871a764d66dcca6d3a5531d4801008c58f77e74ace7eede637f15436c3a",
+      "review": "5481723267"
+    },
+    "Closure_R1_overlay": {
+      "path": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R1_EFFECTIVE_COVERAGE_V1.json",
+      "sha256": "53c5ce2efa72e8b91a94f586f7da647abde2f721a3ae4ab31c13d73310b06b30",
+      "review": "5483192952"
+    }
+  },
+  "promotions": [
+    {
+      "scenario_id": "J1-21",
+      "layer": "integration",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "fixture_backed_production_path",
+      "evidence_refs": [
+        {
+          "kind": "integration_test",
+          "ref": "tests/acceptance/test_phase_j_final_closure_r2.py::test_j1_21_production_path"
+        },
+        {
+          "kind": "integration_test",
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R2_J1_21_WITNESS_LEDGER_V1.json#J1-21"
+        }
+      ],
+      "scenario_match": "J3 typed stale and family-specific policy",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R2",
+      "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+      "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a"
+    },
+    {
+      "scenario_id": "J1-21",
+      "layer": "service_api",
+      "baseline_status": "PLANNED",
+      "new_overlay_status": "COVERED_EXISTING",
+      "witness_kind": "fixture_backed_production_path",
+      "evidence_refs": [
+        {
+          "kind": "service_test",
+          "ref": "tests/acceptance/test_phase_j_final_closure_r2.py::test_j1_21_production_path"
+        },
+        {
+          "kind": "service_test",
+          "ref": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R2_J1_21_WITNESS_LEDGER_V1.json#J1-21"
+        }
+      ],
+      "scenario_match": "J3 typed stale and family-specific policy",
+      "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R2",
+      "result_id": "umeresult-v3-73dfa71dc4126a54f2e7",
+      "audit_package_id": "umeap-v3-a72554a8b0fe19353c6a"
+    }
+  ],
+  "introduced_by_tranche": "PHASE_J_FINAL_CLOSURE_R2",
+  "witness_ledger_sha256": "a78b4879c507e1cb4e6af402b27bb115642f5a6521c410783328be3bc7305113"
+}

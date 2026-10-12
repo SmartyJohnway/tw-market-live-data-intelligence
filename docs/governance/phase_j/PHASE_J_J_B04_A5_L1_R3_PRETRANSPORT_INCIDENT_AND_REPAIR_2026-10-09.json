@@ -1,0 +1,153 @@
+{
+  "schema_version": "phase_j_j_b04_a5_l1_r3_pretransport_incident_and_repair.v1",
+  "gate": "J-B04-A5-L1-R3",
+  "starting_head": "e70f866fb6192ca0f0386c18ee55d56284d2ced2",
+  "starting_tree": "5e4036f82e1be1174459b3bd89319bae97f08832",
+  "main": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "incident": {
+    "session_directory": "j-b04-a5-session-78e1b2c1db127926",
+    "disposition": "J_B04_A5_BLOCKED_SOURCE_CONTRACT_OR_IMPLEMENTATION_REVIEW_REQUIRED",
+    "terminal_reason": "HARD_BLOCK",
+    "attempt_reserved": 1,
+    "transport_attempted": false,
+    "logical_GET": 0,
+    "HTTP_dispatch": 0,
+    "source_contacted": false,
+    "incident_class": "PRETRANSPORT_RUNNER_OR_RUNTIME_DEFECT",
+    "session_remains_terminal": true
+  },
+  "cold_start_diagnostics": {
+    "diagnostic_A_direct_h2_import": {
+      "result": "FAIL",
+      "exception_module": "builtins",
+      "exception_type": "ImportError",
+      "exception_message": "cannot import name 'derive_h4_for_completed_plan' from partially initialized module 'server.services.phase_h_h2_twse_exright_executor' (most likely due to a circular import) (/workspace/tw-market-a5/server/services/phase_h_h2_twse_exright_executor.py)"
+    },
+    "diagnostic_B_package_first_import": {
+      "result": "PASS",
+      "callable": true
+    },
+    "pretransport_artifact_init": "PASS",
+    "root_cause": "J_B04_A5_R3_ROOT_CAUSE_CONFIRMED_COLD_START_IMPORT_ORDER"
+  },
+  "repair": {
+    "production_adapter": "existing official_get_once from phase_h_h2_twse_exright_executor",
+    "resolver": "import scripts.m8r_05b_03 before importing the H2 executor; verify callable; do not invoke it",
+    "resolver_before_attempt_reservation": true,
+    "adapter_resolution_failure_disposition": "J_B04_A5_LIVE_TRANSPORT_ADAPTER_UNAVAILABLE",
+    "adapter_failure_reserves_attempt": false,
+    "adapter_failure_logical_GET": 0,
+    "failure_stage_field": "sanitized enumerated stage; exception module/type only for pre-transport adapter resolution",
+    "session_1_modified": false
+  },
+  "session_1_artifact_sha256": {
+    "attempt-001/acceptance_summary.json": "5453dc991639115ebf5a84f7af31a8ba0dd1a5b0e1fe272f94fa71288d079b79",
+    "attempt-001/artifact_manifest.json": "1b9dd96e7684f46ef0f85f6922c9698a441bebe4eedd0c6c765f11d095b9e2a3",
+    "attempt-001/attempt_reserved.json": "da943d83671782656ac48b3ae695e91414e16ed55c385624f8045d34a08bd6d1",
+    "attempt-001/session_authorization.json": "4845ca5f0f0ae9f380e46dad45ef2aee775956045965d90569894b84f6d2a305",
+    "attempt-001/transport_attempt.json": "a18e248c9baa855af844e81d64fa9c470b91c18803600cebc7a8b1a219a30818",
+    "session.execution.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "session.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "session_authorization.json": "1e3742016abb8df55ae2619d930b69c1f92e97df6544f005a6c191810d2a733b",
+    "session_summary.json": "a115232fb4ffbebf26c49e01f7f1f34026147b4c343c6e3f601d8e2abdc80587",
+    "session_terminal.json": "9e0378572c236d6936213252bc01050d9caa8c75ddd80d0c814d57543c74a164"
+  },
+  "real_R3_live_calls": 0,
+  "new_production_execution_lease_prepared": false,
+  "new_owner_authorization_created": false,
+  "network_calls": {
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0,
+    "security_master_live_acquisition": 0
+  },
+  "canonical_state": {
+    "H2_runtime": "INACTIVE",
+    "selected_executor_id": null,
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT_STARTED",
+    "MCP": 6
+  },
+  "validation": {
+    "cold_start_subprocess": "PASS",
+    "adapter_failure_before_reservation": "PASS",
+    "A5_tests": {
+      "passed": 73,
+      "failed": 0
+    },
+    "focused_regressions": {
+      "passed": 228,
+      "failed": 0,
+      "skipped": 2,
+      "warnings": 1
+    },
+    "validators": {
+      "A5_P0": "PASS",
+      "A5_L1": "PASS",
+      "A5_R1": "PASS",
+      "A5_R2": "PASS",
+      "A5_R3": "PASS",
+      "A1": "PASS",
+      "A2": "PASS",
+      "A3": "PASS",
+      "Phase_H_V3": "PASS",
+      "Phase_J_GHI": "PASS",
+      "portable_catalog_sync": "PASS",
+      "runtime_Skill_guide_sync": "PASS"
+    },
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "strict_duplicate_key_json_scan": {
+      "status": "PASS",
+      "file_count": 1021
+    },
+    "default_ci_comparison": {
+      "candidate": "681f9b9",
+      "python": "3.12.14",
+      "timezone": "Etc/UTC",
+      "PYTHONHASHSEED": "0",
+      "command": "python scripts/run_test_profile.py default-ci --json",
+      "same_dependency_environment": true,
+      "shared_failure_nodes": [
+        "tests/unit/test_twse_mis_normalization_v2.py",
+        "tests/unit/test_twse_openapi_normalization_v1.py",
+        "tests/unit/test_tpex_openapi_normalization_v1.py",
+        "tests/unit/test_yahoo_normalized_chart_v1.py",
+        "tests/unit/test_m8c_01_taifex_mis_runtime.py"
+      ],
+      "new_failure_nodes": [],
+      "resolved_failure_nodes": [],
+      "new_failure_delta": 0,
+      "base_revision": "e70f866fb6192ca0f0386c18ee55d56284d2ced2",
+      "candidate_revision": "681f9b94ad54ac66261baead7a1ec122e9187764",
+      "base_result": {
+        "status": "collection_failed",
+        "selected_profile_nodes": 1230,
+        "deselected": 5,
+        "collection_error_count": 5,
+        "error_nodes": [
+          "tests/unit/test_twse_mis_normalization_v2.py",
+          "tests/unit/test_twse_openapi_normalization_v1.py",
+          "tests/unit/test_tpex_openapi_normalization_v1.py",
+          "tests/unit/test_yahoo_normalized_chart_v1.py",
+          "tests/unit/test_m8c_01_taifex_mis_runtime.py"
+        ],
+        "stable_failure_class": "ModuleNotFoundError: requests unavailable during collection"
+      },
+      "head_result": {
+        "status": "collection_failed",
+        "selected_profile_nodes": 1230,
+        "deselected": 5,
+        "collection_error_count": 5,
+        "error_nodes": [
+          "tests/unit/test_twse_mis_normalization_v2.py",
+          "tests/unit/test_twse_openapi_normalization_v1.py",
+          "tests/unit/test_tpex_openapi_normalization_v1.py",
+          "tests/unit/test_yahoo_normalized_chart_v1.py",
+          "tests/unit/test_m8c_01_taifex_mis_runtime.py"
+        ],
+        "stable_failure_class": "ModuleNotFoundError: requests unavailable during collection"
+      }
+    }
+  }
+}

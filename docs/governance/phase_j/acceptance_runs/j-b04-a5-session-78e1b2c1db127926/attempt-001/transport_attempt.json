@@ -1,0 +1,1 @@
+{"actual_http_dispatch_attempts":0,"attempt_number":1,"completed_at":"2026-10-09T08:28:42Z","failure_class":"runner_or_source_failure","logical_get_attempts":0,"outcome":"failure_after_authority_reservation","redirect_follow_count":0,"retry_count":0,"started_at":"2026-10-09T08:28:42Z","transport_attempted":false}

@@ -437,12 +437,11 @@
     {
       "capability_id": "corporate_action_context",
       "description": "Quote-relevant price-basis corporate-action evidence with explicit subtype coverage and lifecycle stage.",
-      "support_status": "contract_supported",
-      "runtime_executable": false,
-      "phase_h_activation_state": "inactive",
+      "support_status": "runtime_executable",
+      "runtime_executable": true,
+      "phase_h_activation_state": "selected_route_active",
       "supported_markets": [
-        "TWSE",
-        "TPEX"
+        "TWSE"
       ],
       "provisional_markets": [],
       "allowed_parameters": {},
@@ -453,8 +452,11 @@
       ],
       "possible_fallbacks": [],
       "known_limitations": [
-        "V3 contract is current, but no H2 corporate-action route has been activated",
-        "coverage and provider asymmetry remain explicit"
+        "Only the TWSE TWT48U_ALL pre-announcement route is selected; no TPEx H2 route is activated.",
+        "TWT48U_ALL provides pre-announcement context only; final TWT49U evidence remains inactive.",
+        "Capital-reduction events require manual verification; par-value changes, splits, and consolidations remain source gaps.",
+        "Coverage remains subtype-limited; insufficient subtype coverage must remain coverage_incomplete and block ordinary-return interpretation.",
+        "Owner-controlled bounded A6 use is authorized; provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED and no provider approval is claimed."
       ],
       "instrument_scope": {
         "instrument_families": [
@@ -593,7 +595,7 @@
   ],
   "phase_h_contract": {
     "runtime_authority": "v3_preferred_selected_routes_active",
-    "active_phase_h_source_count": 4,
+    "active_phase_h_source_count": 5,
     "source_role_vocabulary": [
       "default_candidate",
       "governed_fallback",

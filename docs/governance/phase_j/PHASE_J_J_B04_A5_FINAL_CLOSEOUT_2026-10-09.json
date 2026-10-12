@@ -1,0 +1,144 @@
+{
+  "schema_version": "phase_j_j_b04_a5_final_closeout.v1",
+  "record_kind": "final_closeout",
+  "gate": "J-B04-A5",
+  "closeout_date": "2026-10-09",
+  "disposition": "PASS",
+  "scope": "bounded-live TWSE H2 source acceptance",
+  "closeout_statement": "J-B04-A5 bounded-live TWSE H2 source acceptance is complete and independently verified PASS. No further A5 live TWT48U session is required.",
+  "repository": "SmartyJohnway/tw-market-live-data-intelligence",
+  "pull_request": 326,
+  "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+  "main_authority_sha": "6daf6e2dcc6fd34e00e7e3831c25e98bb4d2399a",
+  "live_execution_revision": {
+    "head_sha": "2941a1ff067f3c9d7de5165e443ca5dce2fa6c4b",
+    "tree_sha": "f8e6e2f46ce4988fefc59b7a9f3a0ae4f37d52fe"
+  },
+  "evidence_publication_revision": {
+    "commit_sha": "b443cfc0b5cacd326f3f891cf27573869c6cf4c0",
+    "tree_sha": "8dd1b344c40dc1632cba485a7b872b71bf6e4eab",
+    "parent_sha": "2941a1ff067f3c9d7de5165e443ca5dce2fa6c4b",
+    "commit_scope": "Session #2 sanitized evidence only"
+  },
+  "independent_review": {
+    "result": "PASS",
+    "review_id": 5469250567,
+    "review_scope": "exact-evidence independent review",
+    "artifact_sha256_recalculation": "20/20 published files matched",
+    "manifest_binding_verified": true,
+    "authorization_binding_verified": true,
+    "terminal_binding_verified": true
+  },
+  "session_1": {
+    "session_directory": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-78e1b2c1db127926",
+    "disposition": "HARD_BLOCK",
+    "classification": "HISTORICAL_PRETRANSPORT_INCIDENT",
+    "source_contacted": false,
+    "logical_GET": 0,
+    "HTTP_dispatch": 0,
+    "immutable_historical_evidence": true,
+    "root_cause": "J_B04_A5_R3_ROOT_CAUSE_CONFIRMED_COLD_START_IMPORT_ORDER",
+    "repaired_by": "J-B04-A5-L1-R3"
+  },
+  "session_2": {
+    "session_directory": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68",
+    "terminal_disposition": "J_B04_A5_BOUNDED_LIVE_SOURCE_ACCEPTANCE_PASS_AWAITING_INDEPENDENT_REVIEW",
+    "terminal_reason": "PASS",
+    "attempts_reserved": 1,
+    "attempts_completed": 1,
+    "attempts_remaining_unused": 9,
+    "successful_attempt_number": 1,
+    "logical_GET": 1,
+    "HTTP_dispatch": 1,
+    "retry_count": 0,
+    "redirect_follow_count": 0,
+    "source_endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",
+    "http_status": 200,
+    "content_type": "application/json",
+    "response_byte_count": 15728,
+    "response_sha256": "eaeb52d866a371f7062dd019c38aee13534f024a44fc47d24b7ec3f591533640",
+    "json_root_type": "array",
+    "root_row_count": 58,
+    "raw_payload_persistence": "NONE",
+    "raw_body_absence_verified": true
+  },
+  "source_acceptance": {
+    "source_transport_accepted": true,
+    "source_contract_accepted": true,
+    "target": "TWSE:2330",
+    "primary_target_outcome": "zero_exact_code_matches",
+    "primary_target_semantic": "no_evidence_in_retrieved_current_source_slice",
+    "historical_absence_asserted": false,
+    "h2_evidence_status": "partial",
+    "declared_scope_complete": false,
+    "stage_witness": {
+      "canonical_target_id": "TWSE:2614",
+      "source_evidence_stage": "preannouncement",
+      "event_lifecycle": "scheduled",
+      "product_scope_identity_verified": false,
+      "source_stage_witness_only": true
+    },
+    "h4": {
+      "state": "coverage_incomplete",
+      "interpretation_guard": "CORPORATE_ACTION_COVERAGE_INCOMPLETE",
+      "ordinary_return_interpretation": "blocked"
+    }
+  },
+  "identity_boundary": {
+    "execution_environment_class": "cloud_clean_source_acceptance",
+    "identity_assurance_level": "acceptance_only_predeclared_source_target",
+    "production_identity_verified": false,
+    "A6_identity_reverification_required": true,
+    "security_master_live_acquisition": 0
+  },
+  "canonical_runtime_state_at_closeout": {
+    "H2_runtime": "INACTIVE",
+    "selected_executor_id": null,
+    "J-B04": "BLOCKING",
+    "Phase J": "NOT_STARTED",
+    "MCP": 6
+  },
+  "a5_component_status": {
+    "P0-R2": "PASS",
+    "L1-P0-R1": "PASS",
+    "L1-P0-R2": "PASS",
+    "L1-R3": "PASS",
+    "Session_1": "HISTORICAL_HARD_BLOCK",
+    "Session_2": "INDEPENDENTLY_VERIFIED_PASS",
+    "A5_overall": "COMPLETE_PASS"
+  },
+  "non_blocking_observability_issue": {
+    "issue": "successful transport_attempt retains failure_stage=h4_replay while failure_class=null",
+    "interpretation": "field currently represents the last processing stage on the success path, not a failure",
+    "closeout_impact": "NONE",
+    "future_hardening": "rename to last_processing_stage or clear failure_stage on successful completion",
+    "historical_evidence_must_not_be_rewritten": true
+  },
+  "explicit_non_authorizations": {
+    "H2_activation": false,
+    "selected_executor_change": false,
+    "J_B04_closure": false,
+    "Phase_J_start": false,
+    "A6_execution": false,
+    "PR_326_merge": false,
+    "additional_A5_live_session": false
+  },
+  "next_gate": {
+    "gate": "J-B04-A6",
+    "purpose": "integrated H3 -> H2 -> H4 -> Result/Audit/handoff acceptance",
+    "requires_canonical_ACTIVE_QUALIFIED_security_master": true,
+    "requires_exact_identity_reverification": true,
+    "may_close_J_B04_only_if_A6_acceptance_passes": true
+  },
+  "authoritative_evidence": {
+    "session_2_manifest": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/attempt-001/artifact_manifest.json",
+    "session_2_acceptance_summary": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/attempt-001/acceptance_summary.json",
+    "session_2_source_telemetry": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/attempt-001/source_telemetry.json",
+    "session_2_primary_target_summary": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/attempt-001/primary_target_summary.json",
+    "session_2_stage_witness_summary": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/attempt-001/stage_witness_summary.json",
+    "session_2_h2_evidence": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/attempt-001/evidence/phase_h/h2/a5-twse-2330-corporate-action.json",
+    "session_2_h4_evidence": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/attempt-001/evidence/phase_h/h4/a5-twse-2330-corporate-action.json",
+    "session_2_summary": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/session_summary.json",
+    "session_2_terminal": "docs/governance/phase_j/acceptance_runs/j-b04-a5-session-bb17ab31639e6e68/session_terminal.json"
+  }
+}

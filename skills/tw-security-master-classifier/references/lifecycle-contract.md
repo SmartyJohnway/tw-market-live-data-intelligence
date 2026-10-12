@@ -80,9 +80,9 @@ Use three-state values:
 | Event | Preferred source |
 |---|---|
 | TWSE company delisting | TWSE terminated-listing table |
-| TPEx company delisting | TPEx terminated-OTC table |
+| TPEx company delisting | Official TPEx structured `company/deListed` JSON endpoint; POST `date=ALL`, single-response count reconciliation, ROC date parser |
 | Emerging termination/transfer | TPEx market announcement |
-| ETN expiry/termination | TWSE or TPEx ETN termination table |
+| ETN expiry/termination | TWSE qualified single-response expired-ETN JSON; TPEx governed ETN lifecycle source |
 | ETF termination | Exchange announcement and ETF information center |
 | Warrant scheduled maturity | Warrant basic-data endpoint |
 | Warrant early termination | Exchange/MOPS announcement and attachment |
@@ -153,6 +153,8 @@ parse_etn_termination.py
 
 `parse_tpex_announcement.py` requires an explicit controlled event type; it does not guess an event solely from prose. `parse_etn_termination.py` emits separate delisting, maturity, and last-trading events when those dates are present. Use `merge_lifecycle_events.py` for append-only deduplication.
 
+TWSE expired-ETN production acquisition uses the page-configured `GET /rwd/zh/ETN/expireEnd?response=json` contract, not the client-loaded landing shell. The landing has no filters, on-load arguments, or paging attributes; one successful response supplies the complete data array offered by that page at acquisition time. `parse_twse_expired_json` validates the exact JSON root and field order, five-string rows, Gregorian termination date, required identity, and duplicate lifecycle identity. It emits only the termination/delisting event represented by the source's explicit `終止上市日期`; it does not infer separate maturity or last-trading dates from free-text reasons.
+
 Active retrieval and interpretation of linked PDFs or announcement attachments remain adapter/manual-review work. Until a capture is successfully parsed, describe the capability as validating or modeling supplied lifecycle evidence, not guaranteed automatic enrichment.
 
 ### Header and calendar safety
@@ -160,3 +162,41 @@ Active retrieval and interpretation of linked PDFs or announcement attachments r
 - TWSE's official terminated-listing table uses `終止上市日期`, `公司名稱`, and `上市編號`; `上市編號` is a governed security-code alias.
 - Recognizable HTML with no governed lifecycle header is `schema_drift`, not a valid empty result. CLI adapters must return a nonzero exit code and structured issue details.
 - Detect ROC forms including `114年07月24日`, `114/07/24`, `114-07-24`, and seven-digit compact dates. Preserve `date_raw` and never infer `Gregorian` merely because a ROC separator was not `/`.
+
+### TPEx company-delisting landing and qualified data contract (2026-10-10)
+
+The preserved SM-B1 capture of the official company-delisting landing URL is an
+HTML client-loaded interface, not a lifecycle HTML table. Its SHA-256 is
+`f6eaa4a4969219dc5a633f43e056d8fa2d31fa944c1e23125f24836733f86853`
+(11,521 bytes). R3 correctly treated this capture alone as insufficient to
+establish the data contract. Later bounded R4/R5-P1 evidence established the
+official endpoint and its request composition; R5-P1-R2 qualified historical
+coverage from one `date=ALL` response.
+
+The governed production request is one POST to
+`https://www.tpex.org.tw/www/zh-tw/company/deListed` using
+`application/x-www-form-urlencoded; charset=UTF-8` and fixed parameters
+`code=&date=ALL&reason=-1&response=json&paging-offset=0&paging-size=1000`.
+The JSON response must have `stat == "ok"`, the expected `tables/date/stat`
+root and five-field table schema, and `len(data) == totalCount <= 1000`.
+Qualification observed 582 rows in one response across 33 years, from
+1992-10-27 through 2026-10-01. Dates must be valid ROC dates and are normalized
+using the existing date utilities. Empty `data=[]` with `totalCount=0` and
+`stat=ok` is a valid empty result; a non-ok application status is a source
+failure, not an empty result. Blank reasons are retained as blank/unknown.
+
+This is technical source-contract qualification only. It does not assert provider
+automation or redistribution permission. The Security Master bootstrap remains
+separately authorized and has not been run by this qualification tranche.
+
+`parse_tpex_delisted.py` parses the qualified JSON endpoint and retains supplied
+legacy HTML-table compatibility for historical captures. A client shell without
+a table raises `LifecycleSchemaDrift`; it does not produce a valid empty lifecycle
+dataset.
+No valid source evidence is not proof that no lifecycle event occurred.
+
+The offline R3 landing analyzer emits structural/discovery metadata only and
+creates no lifecycle events. Any proposed inspection of captured script references
+required separate bounded authorization. Historical manifests and supplied
+fixtures did not establish retrieval authority; the later R5-P1-R2 qualification
+evidence now governs the current endpoint contract.

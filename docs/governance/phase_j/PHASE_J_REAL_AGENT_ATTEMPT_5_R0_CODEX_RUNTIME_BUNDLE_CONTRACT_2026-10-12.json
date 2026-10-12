@@ -1,0 +1,859 @@
+{
+  "schema_version": "phase_j_attempt5_r0_codex_runtime_bundle_acceptance.v1",
+  "authority": {
+    "starting_head": "083d636d7315372dd0c6defb4f2bdc398f1155ed",
+    "starting_tree": "03f312ef67ce44714ddd31cd177016baf629af1a",
+    "branch": "phase-j/j-b04-a5-bounded-live-source-acceptance",
+    "pr_number": 326,
+    "prior_attempt4_review": "5488441715",
+    "prior_attempt4_disposition": "PHASE_J_REAL_AGENT_ATTEMPT_4_HARD_BLOCK_CODE_MODE_HOST_UNAVAILABLE = INDEPENDENTLY VERIFIED",
+    "pr_state": "OPEN_DRAFT_UNMERGED"
+  },
+  "root_cause": {
+    "classification": "PIN_SINGLE_EXECUTABLE_INSUFFICIENT",
+    "attempt4_failure": "codex.exe required its same-vendor sibling codex-code-mode-host.exe, absent from the executable-only pin",
+    "repair_model": "PIN_COMPLETE_VENDOR_RUNTIME_BUNDLE",
+    "no_helper_mixing": true,
+    "attempt4_terminal": true,
+    "attempt4_unused_slots_not_transferable": true
+  },
+  "source_bundle": {
+    "root": "C:\\Users\\weitang\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc",
+    "file_count": 45,
+    "total_byte_size": 450588539,
+    "inventory_sha256": "5e0e4b9752aa06cc0d8609168cae658efcd1c544160272f8a64f3a1c1ea08629",
+    "entries": [
+      {
+        "path": "bin/codex-code-mode-host.exe",
+        "size": 74669360,
+        "sha256": "b905b5169bd758dbe3c31ca22c22ad0c24df0047ba7ae32652c706d3ac3ba78d"
+      },
+      {
+        "path": "bin/codex.exe",
+        "size": 326875440,
+        "sha256": "9e7c59c05cc1ce5677b1f94e835b2ac038ca3be14504e78d558eacdb0ea3f55d"
+      },
+      {
+        "path": "codex-package.json",
+        "size": 215,
+        "sha256": "07043ad1bfec6934b83af0cb50308ba452b06f4341ca2b2fdb9a80d4c621bdb8"
+      },
+      {
+        "path": "codex-path/rg.exe",
+        "size": 4218880,
+        "sha256": "14231169855ec5205cf5a1b6f1db358ff4aed4247c86b69ce8aae647c77f6680"
+      },
+      {
+        "path": "codex-resources/codex-command-runner.exe",
+        "size": 8207152,
+        "sha256": "dd2309aa856f9a951c43e88f91200887e0054897f3c866983439b69036a95774"
+      },
+      {
+        "path": "codex-resources/codex-windows-sandbox-setup.exe",
+        "size": 17684272,
+        "sha256": "aeddd768276e4d0123154d7ee65876ec92b1cf8a0481c4d9c5cd8b31f2de6bf5"
+      },
+      {
+        "path": "codex-resources/voice/NOTICE.md",
+        "size": 2439,
+        "sha256": "473fcf8ccb68ce726111d016d133f0555adba730d057591512f3f71fb46aeb6e"
+      },
+      {
+        "path": "codex-resources/voice/bin/codex-voice-host.exe",
+        "size": 8603952,
+        "sha256": "94f7ff449860f0564c7da5eae80df0845f522a4299497a47428749849ee33d78"
+      },
+      {
+        "path": "codex-resources/voice/bin/gio-2.0-0.dll",
+        "size": 1695536,
+        "sha256": "eafa1d0a142f4d649b3b3ea38355f4b50cc26e4cd14af40594a91717e70f15a5"
+      },
+      {
+        "path": "codex-resources/voice/bin/glib-2.0-0.dll",
+        "size": 1390896,
+        "sha256": "d5b9345300a2d5d6bc8740e0f8791331b5fe41db9c540146f27267be5d26b729"
+      },
+      {
+        "path": "codex-resources/voice/bin/gmodule-2.0-0.dll",
+        "size": 34608,
+        "sha256": "09f613dc64395d1f26f1fc40c7b11d4d0705b2724406e19ed5c32aa4c3c1bf2b"
+      },
+      {
+        "path": "codex-resources/voice/bin/gobject-2.0-0.dll",
+        "size": 348464,
+        "sha256": "5f095ec7eb180e936fc0a39f1ae36dce576627e1afc6325e0c2dfe28d78a4639"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstapp-1.0-0.dll",
+        "size": 100136,
+        "sha256": "3e8d9cd43c7067c03afb05e46170ed08af1fe465f0df13b9ef4a98090f8ff191"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstapp.dll",
+        "size": 25392,
+        "sha256": "7780c9953d4a60725ca1dd0eff1bc08f17c4b9ba0c3034c25ed4ca73106c8721"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstaudio-1.0-0.dll",
+        "size": 512304,
+        "sha256": "55f2cab0b6697529fd409b58a01c3c28a179e1daba382493665409e2262770d8"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstaudioconvert.dll",
+        "size": 48432,
+        "sha256": "a4d18ff9b81a8f97f0929791103ebb37f1aaadfcea0fc99e99a623ff359f90fd"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstaudioresample.dll",
+        "size": 45360,
+        "sha256": "e3a411dc7091b24be3f730de10bbe8df50120ba8dd67f84441bb55d1ba25dd54"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstbase-1.0-0.dll",
+        "size": 484144,
+        "sha256": "65462209a186375a9a9c53d934f822b88c8d7a3e5dbe176c44eb01d39d27797f"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstcoreelements.dll",
+        "size": 409904,
+        "sha256": "772d47c9918381d6d62e3f9f8e9a7219714a746747f1e4ac0d0f1c1f22a18d1a"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstnet-1.0-0.dll",
+        "size": 116528,
+        "sha256": "6a8db042ce16f0c00d9b5731fb30f48f4262fb0b669c94885e93646b637a9038"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstopus.dll",
+        "size": 69424,
+        "sha256": "692c3b969c3bb1a1938eacf91b91a8db12d06ccbddd8478aa5a34ead019c2505"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstpbutils-1.0-0.dll",
+        "size": 262448,
+        "sha256": "9ab569a781c019d129e531803a70b78756a1f0859f5d44c27a3119bfd2148e8c"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstreamer-1.0-0.dll",
+        "size": 1257264,
+        "sha256": "c901c8746bd3e28391ea0e02a5b6f636dc938cb5e8edca86a4f67ae0faab6d79"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstrtp-1.0-0.dll",
+        "size": 167216,
+        "sha256": "0a7f08c5bc448c44c184d900425cf8b3f113bf419a1cce3da9df36d15c2b40cc"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstrtp.dll",
+        "size": 607536,
+        "sha256": "77db3902778d49187a0935914a088b327e4d7220d24b55d68ccdc7eea7ac1f31"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstrtpmanager.dll",
+        "size": 501040,
+        "sha256": "9e47fcd913ca543d7d809585e3ba5d42e7a383653c803cc5eed2fcb28adb8aed"
+      },
+      {
+        "path": "codex-resources/voice/bin/gsttag-1.0-0.dll",
+        "size": 254256,
+        "sha256": "b87c5b30592f63577d350017e6194fc1b0d351f870295beb1181f5ffe95b3c6c"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstvideo-1.0-0.dll",
+        "size": 769840,
+        "sha256": "84190c5e2d9cdb8ae5c5c899672011944955eec73a1819ad1340b7cb0ed4d38b"
+      },
+      {
+        "path": "codex-resources/voice/bin/intl-8.dll",
+        "size": 25392,
+        "sha256": "89b798c1e81510c91814ca8decd941747a46412881540b1ad0c668b4b6c75047"
+      },
+      {
+        "path": "codex-resources/voice/bin/libffi-8.dll",
+        "size": 43312,
+        "sha256": "45702f42e1258bd3954ee8b6bca8fe93cb9a7fd8b0e5f647046df0ad62288a7d"
+      },
+      {
+        "path": "codex-resources/voice/bin/opus.dll",
+        "size": 440112,
+        "sha256": "88d8f48acd34cb6a6c21dfca75b0ee309384d4199348464b3a639f23a6bc813b"
+      },
+      {
+        "path": "codex-resources/voice/bin/pcre2-8.dll",
+        "size": 398128,
+        "sha256": "bd9b1f03fe85918dc082a133148c2e1ee886967b61ca1d82d98c5502eacccd60"
+      },
+      {
+        "path": "codex-resources/voice/bin/vcruntime140.dll",
+        "size": 123472,
+        "sha256": "184146852727a9db4eea06178716bec3cdbb1015c911f6b0f915b184ad7775b2"
+      },
+      {
+        "path": "codex-resources/voice/bin/z.dll",
+        "size": 105264,
+        "sha256": "5c96176022bcb9cda12d012921a1a9b27a3d58f12492e25a86f8cd7367bee1d4"
+      },
+      {
+        "path": "codex-resources/voice/licenses/LGPL-2.1.txt",
+        "size": 26934,
+        "sha256": "c7ce1276717604c29c5469179a2f368eac42846557be671bb52f4e16e884b2ad"
+      },
+      {
+        "path": "codex-resources/voice/licenses/Opus.txt",
+        "size": 1989,
+        "sha256": "cbd8bd07329a234413710c02b19d22c0cf78fc451882593e817130779b5455e3"
+      },
+      {
+        "path": "codex-resources/voice/licenses/PCRE2.md",
+        "size": 4115,
+        "sha256": "4195c519dcfe4a4ffedc4b8ccc5d49e4dd02efd5ece6b69a4fba5d20080902a9"
+      },
+      {
+        "path": "codex-resources/voice/licenses/libffi.txt",
+        "size": 1153,
+        "sha256": "e2a9b884b1c5d718efd6121457a1fbe7ece431352ca75c901260cef2e7d040e5"
+      },
+      {
+        "path": "codex-resources/voice/licenses/proxy-libintl.txt",
+        "size": 25774,
+        "sha256": "aa092600e3f475f0a55821fb9c529583d8e23e41bf0461254f02fcf94d3a32c2"
+      },
+      {
+        "path": "codex-resources/voice/licenses/sljit.txt",
+        "size": 1469,
+        "sha256": "37c7a090fc61388430d63fc97bf8a22ffce92d3ca2249aac572cfaf411d3070f"
+      },
+      {
+        "path": "codex-resources/voice/licenses/zlib.txt",
+        "size": 1024,
+        "sha256": "439c75ab12b340c5362b9d4b08ff05ec3a4d0eb7667a6fff49a9b16d8795c78e"
+      },
+      {
+        "path": "codex-resources/voice/manifest.json",
+        "size": 4773,
+        "sha256": "86c381543e2dbc26234c7536a7be9539338d1b56d7a1cb0d1d4080d4916202d6"
+      },
+      {
+        "path": "codex-resources/voice/runtime.json",
+        "size": 16894,
+        "sha256": "e74aab179b495c963a85266daa8b1e02f34c0619ecb39d8345ae6cd00e87bdfe"
+      },
+      {
+        "path": "codex-resources/voice/sources.json",
+        "size": 4911,
+        "sha256": "e2f6b124f6277e7c3c4f5c7cc8830c66190f671ad65e972bb2cc9507dbfcb937"
+      },
+      {
+        "path": "codex-resources/voice/windows-crt.json",
+        "size": 1385,
+        "sha256": "d16939bc85da395ded5411724fed84ffd36810b78d47c756cf094b0956bc3892"
+      }
+    ]
+  },
+  "target_bundle": {
+    "root": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1-bundle",
+    "file_count": 45,
+    "total_byte_size": 450588539,
+    "inventory_sha256": "5e0e4b9752aa06cc0d8609168cae658efcd1c544160272f8a64f3a1c1ea08629",
+    "entries": [
+      {
+        "path": "bin/codex-code-mode-host.exe",
+        "size": 74669360,
+        "sha256": "b905b5169bd758dbe3c31ca22c22ad0c24df0047ba7ae32652c706d3ac3ba78d"
+      },
+      {
+        "path": "bin/codex.exe",
+        "size": 326875440,
+        "sha256": "9e7c59c05cc1ce5677b1f94e835b2ac038ca3be14504e78d558eacdb0ea3f55d"
+      },
+      {
+        "path": "codex-package.json",
+        "size": 215,
+        "sha256": "07043ad1bfec6934b83af0cb50308ba452b06f4341ca2b2fdb9a80d4c621bdb8"
+      },
+      {
+        "path": "codex-path/rg.exe",
+        "size": 4218880,
+        "sha256": "14231169855ec5205cf5a1b6f1db358ff4aed4247c86b69ce8aae647c77f6680"
+      },
+      {
+        "path": "codex-resources/codex-command-runner.exe",
+        "size": 8207152,
+        "sha256": "dd2309aa856f9a951c43e88f91200887e0054897f3c866983439b69036a95774"
+      },
+      {
+        "path": "codex-resources/codex-windows-sandbox-setup.exe",
+        "size": 17684272,
+        "sha256": "aeddd768276e4d0123154d7ee65876ec92b1cf8a0481c4d9c5cd8b31f2de6bf5"
+      },
+      {
+        "path": "codex-resources/voice/NOTICE.md",
+        "size": 2439,
+        "sha256": "473fcf8ccb68ce726111d016d133f0555adba730d057591512f3f71fb46aeb6e"
+      },
+      {
+        "path": "codex-resources/voice/bin/codex-voice-host.exe",
+        "size": 8603952,
+        "sha256": "94f7ff449860f0564c7da5eae80df0845f522a4299497a47428749849ee33d78"
+      },
+      {
+        "path": "codex-resources/voice/bin/gio-2.0-0.dll",
+        "size": 1695536,
+        "sha256": "eafa1d0a142f4d649b3b3ea38355f4b50cc26e4cd14af40594a91717e70f15a5"
+      },
+      {
+        "path": "codex-resources/voice/bin/glib-2.0-0.dll",
+        "size": 1390896,
+        "sha256": "d5b9345300a2d5d6bc8740e0f8791331b5fe41db9c540146f27267be5d26b729"
+      },
+      {
+        "path": "codex-resources/voice/bin/gmodule-2.0-0.dll",
+        "size": 34608,
+        "sha256": "09f613dc64395d1f26f1fc40c7b11d4d0705b2724406e19ed5c32aa4c3c1bf2b"
+      },
+      {
+        "path": "codex-resources/voice/bin/gobject-2.0-0.dll",
+        "size": 348464,
+        "sha256": "5f095ec7eb180e936fc0a39f1ae36dce576627e1afc6325e0c2dfe28d78a4639"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstapp-1.0-0.dll",
+        "size": 100136,
+        "sha256": "3e8d9cd43c7067c03afb05e46170ed08af1fe465f0df13b9ef4a98090f8ff191"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstapp.dll",
+        "size": 25392,
+        "sha256": "7780c9953d4a60725ca1dd0eff1bc08f17c4b9ba0c3034c25ed4ca73106c8721"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstaudio-1.0-0.dll",
+        "size": 512304,
+        "sha256": "55f2cab0b6697529fd409b58a01c3c28a179e1daba382493665409e2262770d8"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstaudioconvert.dll",
+        "size": 48432,
+        "sha256": "a4d18ff9b81a8f97f0929791103ebb37f1aaadfcea0fc99e99a623ff359f90fd"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstaudioresample.dll",
+        "size": 45360,
+        "sha256": "e3a411dc7091b24be3f730de10bbe8df50120ba8dd67f84441bb55d1ba25dd54"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstbase-1.0-0.dll",
+        "size": 484144,
+        "sha256": "65462209a186375a9a9c53d934f822b88c8d7a3e5dbe176c44eb01d39d27797f"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstcoreelements.dll",
+        "size": 409904,
+        "sha256": "772d47c9918381d6d62e3f9f8e9a7219714a746747f1e4ac0d0f1c1f22a18d1a"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstnet-1.0-0.dll",
+        "size": 116528,
+        "sha256": "6a8db042ce16f0c00d9b5731fb30f48f4262fb0b669c94885e93646b637a9038"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstopus.dll",
+        "size": 69424,
+        "sha256": "692c3b969c3bb1a1938eacf91b91a8db12d06ccbddd8478aa5a34ead019c2505"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstpbutils-1.0-0.dll",
+        "size": 262448,
+        "sha256": "9ab569a781c019d129e531803a70b78756a1f0859f5d44c27a3119bfd2148e8c"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstreamer-1.0-0.dll",
+        "size": 1257264,
+        "sha256": "c901c8746bd3e28391ea0e02a5b6f636dc938cb5e8edca86a4f67ae0faab6d79"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstrtp-1.0-0.dll",
+        "size": 167216,
+        "sha256": "0a7f08c5bc448c44c184d900425cf8b3f113bf419a1cce3da9df36d15c2b40cc"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstrtp.dll",
+        "size": 607536,
+        "sha256": "77db3902778d49187a0935914a088b327e4d7220d24b55d68ccdc7eea7ac1f31"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstrtpmanager.dll",
+        "size": 501040,
+        "sha256": "9e47fcd913ca543d7d809585e3ba5d42e7a383653c803cc5eed2fcb28adb8aed"
+      },
+      {
+        "path": "codex-resources/voice/bin/gsttag-1.0-0.dll",
+        "size": 254256,
+        "sha256": "b87c5b30592f63577d350017e6194fc1b0d351f870295beb1181f5ffe95b3c6c"
+      },
+      {
+        "path": "codex-resources/voice/bin/gstvideo-1.0-0.dll",
+        "size": 769840,
+        "sha256": "84190c5e2d9cdb8ae5c5c899672011944955eec73a1819ad1340b7cb0ed4d38b"
+      },
+      {
+        "path": "codex-resources/voice/bin/intl-8.dll",
+        "size": 25392,
+        "sha256": "89b798c1e81510c91814ca8decd941747a46412881540b1ad0c668b4b6c75047"
+      },
+      {
+        "path": "codex-resources/voice/bin/libffi-8.dll",
+        "size": 43312,
+        "sha256": "45702f42e1258bd3954ee8b6bca8fe93cb9a7fd8b0e5f647046df0ad62288a7d"
+      },
+      {
+        "path": "codex-resources/voice/bin/opus.dll",
+        "size": 440112,
+        "sha256": "88d8f48acd34cb6a6c21dfca75b0ee309384d4199348464b3a639f23a6bc813b"
+      },
+      {
+        "path": "codex-resources/voice/bin/pcre2-8.dll",
+        "size": 398128,
+        "sha256": "bd9b1f03fe85918dc082a133148c2e1ee886967b61ca1d82d98c5502eacccd60"
+      },
+      {
+        "path": "codex-resources/voice/bin/vcruntime140.dll",
+        "size": 123472,
+        "sha256": "184146852727a9db4eea06178716bec3cdbb1015c911f6b0f915b184ad7775b2"
+      },
+      {
+        "path": "codex-resources/voice/bin/z.dll",
+        "size": 105264,
+        "sha256": "5c96176022bcb9cda12d012921a1a9b27a3d58f12492e25a86f8cd7367bee1d4"
+      },
+      {
+        "path": "codex-resources/voice/licenses/LGPL-2.1.txt",
+        "size": 26934,
+        "sha256": "c7ce1276717604c29c5469179a2f368eac42846557be671bb52f4e16e884b2ad"
+      },
+      {
+        "path": "codex-resources/voice/licenses/Opus.txt",
+        "size": 1989,
+        "sha256": "cbd8bd07329a234413710c02b19d22c0cf78fc451882593e817130779b5455e3"
+      },
+      {
+        "path": "codex-resources/voice/licenses/PCRE2.md",
+        "size": 4115,
+        "sha256": "4195c519dcfe4a4ffedc4b8ccc5d49e4dd02efd5ece6b69a4fba5d20080902a9"
+      },
+      {
+        "path": "codex-resources/voice/licenses/libffi.txt",
+        "size": 1153,
+        "sha256": "e2a9b884b1c5d718efd6121457a1fbe7ece431352ca75c901260cef2e7d040e5"
+      },
+      {
+        "path": "codex-resources/voice/licenses/proxy-libintl.txt",
+        "size": 25774,
+        "sha256": "aa092600e3f475f0a55821fb9c529583d8e23e41bf0461254f02fcf94d3a32c2"
+      },
+      {
+        "path": "codex-resources/voice/licenses/sljit.txt",
+        "size": 1469,
+        "sha256": "37c7a090fc61388430d63fc97bf8a22ffce92d3ca2249aac572cfaf411d3070f"
+      },
+      {
+        "path": "codex-resources/voice/licenses/zlib.txt",
+        "size": 1024,
+        "sha256": "439c75ab12b340c5362b9d4b08ff05ec3a4d0eb7667a6fff49a9b16d8795c78e"
+      },
+      {
+        "path": "codex-resources/voice/manifest.json",
+        "size": 4773,
+        "sha256": "86c381543e2dbc26234c7536a7be9539338d1b56d7a1cb0d1d4080d4916202d6"
+      },
+      {
+        "path": "codex-resources/voice/runtime.json",
+        "size": 16894,
+        "sha256": "e74aab179b495c963a85266daa8b1e02f34c0619ecb39d8345ae6cd00e87bdfe"
+      },
+      {
+        "path": "codex-resources/voice/sources.json",
+        "size": 4911,
+        "sha256": "e2f6b124f6277e7c3c4f5c7cc8830c66190f671ad65e972bb2cc9507dbfcb937"
+      },
+      {
+        "path": "codex-resources/voice/windows-crt.json",
+        "size": 1385,
+        "sha256": "d16939bc85da395ded5411724fed84ffd36810b78d47c756cf094b0956bc3892"
+      }
+    ],
+    "new_distinct_target": true,
+    "source_target_entries_equal": true
+  },
+  "bundle_identity": {
+    "bundle_root_absolute_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1-bundle",
+    "bundle_manifest_schema_version": "codex_vendor_runtime_bundle_inventory.v1",
+    "file_count": 45,
+    "total_byte_size": 450588539,
+    "canonical_inventory_sha256": "5e0e4b9752aa06cc0d8609168cae658efcd1c544160272f8a64f3a1c1ea08629",
+    "executable_relative_path": "bin/codex.exe",
+    "executable_absolute_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1-bundle\\bin\\codex.exe",
+    "executable_observed_version": "codex-cli 0.160.1",
+    "executable_sha256": "9e7c59c05cc1ce5677b1f94e835b2ac038ca3be14504e78d558eacdb0ea3f55d",
+    "code_mode_host_relative_path": "bin/codex-code-mode-host.exe",
+    "code_mode_host_sha256": "b905b5169bd758dbe3c31ca22c22ad0c24df0047ba7ae32652c706d3ac3ba78d",
+    "command_runner_relative_path": "codex-resources/codex-command-runner.exe",
+    "command_runner_sha256": "dd2309aa856f9a951c43e88f91200887e0054897f3c866983439b69036a95774",
+    "sandbox_setup_relative_path": "codex-resources/codex-windows-sandbox-setup.exe",
+    "sandbox_setup_sha256": "aeddd768276e4d0123154d7ee65876ec92b1cf8a0481c4d9c5cd8b31f2de6bf5",
+    "package_descriptor_relative_path": "codex-package.json",
+    "package_descriptor_sha256": "07043ad1bfec6934b83af0cb50308ba452b06f4341ca2b2fdb9a80d4c621bdb8",
+    "rg_relative_path": "codex-path/rg.exe",
+    "rg_sha256": "14231169855ec5205cf5a1b6f1db358ff4aed4247c86b69ce8aae647c77f6680"
+  },
+  "launch_contract": {
+    "schema_version": "phase_j_real_agent_attempt_5_launch_contract.v1",
+    "canonical_sha256": "01f51f75dc62f01afef9ed2c260c02439d3ddf73b8447e98d471335c0019aeb3",
+    "contract": {
+      "schema_version": "phase_j_real_agent_attempt_5_launch_contract.v1",
+      "codex_runtime_bundle_identity": {
+        "bundle_root_absolute_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1-bundle",
+        "bundle_manifest_schema_version": "codex_vendor_runtime_bundle_inventory.v1",
+        "file_count": 45,
+        "total_byte_size": 450588539,
+        "canonical_inventory_sha256": "5e0e4b9752aa06cc0d8609168cae658efcd1c544160272f8a64f3a1c1ea08629",
+        "executable_relative_path": "bin/codex.exe",
+        "executable_absolute_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1-bundle\\bin\\codex.exe",
+        "executable_observed_version": "codex-cli 0.160.1",
+        "executable_sha256": "9e7c59c05cc1ce5677b1f94e835b2ac038ca3be14504e78d558eacdb0ea3f55d",
+        "code_mode_host_relative_path": "bin/codex-code-mode-host.exe",
+        "code_mode_host_sha256": "b905b5169bd758dbe3c31ca22c22ad0c24df0047ba7ae32652c706d3ac3ba78d",
+        "command_runner_relative_path": "codex-resources/codex-command-runner.exe",
+        "command_runner_sha256": "dd2309aa856f9a951c43e88f91200887e0054897f3c866983439b69036a95774",
+        "sandbox_setup_relative_path": "codex-resources/codex-windows-sandbox-setup.exe",
+        "sandbox_setup_sha256": "aeddd768276e4d0123154d7ee65876ec92b1cf8a0481c4d9c5cd8b31f2de6bf5",
+        "package_descriptor_relative_path": "codex-package.json",
+        "package_descriptor_sha256": "07043ad1bfec6934b83af0cb50308ba452b06f4341ca2b2fdb9a80d4c621bdb8",
+        "rg_relative_path": "codex-path/rg.exe",
+        "rg_sha256": "14231169855ec5205cf5a1b6f1db358ff4aed4247c86b69ce8aae647c77f6680"
+      },
+      "formal_executable_absolute_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1-bundle\\bin\\codex.exe",
+      "formal_cli_grammar": [
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--json",
+        "--output-last-message",
+        "--cd",
+        "-c",
+        "-"
+      ],
+      "repository_cwd": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence",
+      "mcp_server_name": "phase_j_witness",
+      "mcp_server_template": {
+        "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "args": [
+          "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\scripts\\phase_j_real_agent_attempt2_proxy.py",
+          "--log",
+          "<SLOT>/witness-events.jsonl",
+          "--control-package-id",
+          "umea-v1-64317f4f3435611c2bb5"
+        ],
+        "cwd": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence",
+        "env": {
+          "PHASEJ_WITNESS_PROXY_LOG": "<SLOT>/witness-events.jsonl",
+          "UNIFIED_MARKET_EVIDENCE_SERVICE_URL": "http://127.0.0.1:18264"
+        },
+        "enabled": true,
+        "required": true,
+        "startup_timeout_sec": 30
+      },
+      "control_package_id": "umea-v1-64317f4f3435611c2bb5",
+      "package_inventory_sha256": "caa4b43c67b235ce104c0277b1493031466d39159591e87f56c8765ed0c09096",
+      "result_id": "umeresult-v3-63bd91d7e710438dbdd6",
+      "result_sha256": "d6737011bdf12e3893bbc0d6c54d98a4a472c7ebd34692276e84b250b87b0db9",
+      "audit_id": "umeap-v3-9063d2331c6cc7718a1e",
+      "audit_sha256": "490145920801afd443ff8f41bd9dcea97985bc362c726c89f1037fc1f047427d",
+      "handoff_sha256": "b1fa8e28ef25f4f369904f6d8bf17047e3adff46d1c497a8f323396384bd8e57",
+      "local_service_url": "http://127.0.0.1:18264",
+      "prompt_path": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\docs\\governance\\phase_j\\PHASE_J_REAL_AGENT_ATTEMPT_3_R1_NEUTRAL_PROMPT_2026-10-12.txt",
+      "prompt_sha256": "8ee5459c7217ff34d091385f588d8b53794a1053ace2a44e5b262e4f6757621c",
+      "maximum_slots": 3,
+      "attempt_evidence_root": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\attempt5",
+      "slot_path_template": "attempt5-slot-{slot:02d}/{witness-events.jsonl,codex-events.jsonl,codex-stderr.txt,agent-final.txt,slot-receipt.json}",
+      "stdout_capture": "Codex JSONL stdout -> slot codex-events.jsonl",
+      "stderr_capture": "Codex stderr -> slot codex-stderr.txt",
+      "final_output_capture": "--output-last-message -> slot agent-final.txt",
+      "witness_capture": "phase_j_witness proxy --log -> slot witness-events.jsonl",
+      "semantic_call_policy": {
+        "maximum_calls": 2,
+        "ordered_tools": [
+          "market_read_result",
+          "market_export_ai_handoff"
+        ],
+        "exact_arguments": {
+          "control_package_id": "umea-v1-64317f4f3435611c2bb5"
+        }
+      },
+      "expected_tools": [
+        "market_describe_capabilities",
+        "market_export_ai_handoff",
+        "market_fetch_evidence",
+        "market_preview_request",
+        "market_read_result",
+        "market_validate_request"
+      ],
+      "attempt4_terminal": true,
+      "attempt4_unused_slots_not_transferable": true,
+      "attempt5_slots_reserved": 0,
+      "attempt5_slots_launched": 0
+    }
+  },
+  "key_file_identities": {
+    "bin/codex-code-mode-host.exe": {
+      "size": 74669360,
+      "sha256": "b905b5169bd758dbe3c31ca22c22ad0c24df0047ba7ae32652c706d3ac3ba78d"
+    },
+    "bin/codex.exe": {
+      "size": 326875440,
+      "sha256": "9e7c59c05cc1ce5677b1f94e835b2ac038ca3be14504e78d558eacdb0ea3f55d"
+    },
+    "codex-package.json": {
+      "size": 215,
+      "sha256": "07043ad1bfec6934b83af0cb50308ba452b06f4341ca2b2fdb9a80d4c621bdb8"
+    },
+    "codex-path/rg.exe": {
+      "size": 4218880,
+      "sha256": "14231169855ec5205cf5a1b6f1db358ff4aed4247c86b69ce8aae647c77f6680"
+    },
+    "codex-resources/codex-command-runner.exe": {
+      "size": 8207152,
+      "sha256": "dd2309aa856f9a951c43e88f91200887e0054897f3c866983439b69036a95774"
+    },
+    "codex-resources/codex-windows-sandbox-setup.exe": {
+      "size": 17684272,
+      "sha256": "aeddd768276e4d0123154d7ee65876ec92b1cf8a0481c4d9c5cd8b31f2de6bf5"
+    }
+  },
+  "runtime_preflight": {
+    "complete_file_set_exact": true,
+    "source_target_one_for_one": true,
+    "version_command": "PASS codex-cli 0.160.1",
+    "code_mode_host_exact_sibling": true,
+    "all_helpers_readable_pe": true,
+    "full_pre_reservation_remeasurement_gate": "verify_contract_runtime_identity",
+    "provider_launch": false
+  },
+  "codex_parser_proof": {
+    "binary_path": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\codex-pinned\\0.160.1-bundle\\bin\\codex.exe",
+    "version": "codex-cli 0.160.1",
+    "exec_help_ignore_user_config": true,
+    "mcp_list_exit_code": 0,
+    "mcp_get_exit_code": 0,
+    "isolated_codex_home": "D:\\Codex-Workspace\\runtime\\tw-market-live-data-intelligence\\phase-j-real-agent-r4-r2\\attempt5-r0-preflight-20261012\\codex-config-replay",
+    "effective_server_count": 1,
+    "server_name": "phase_j_witness",
+    "enabled": true,
+    "required_input_value": true,
+    "startup_timeout_sec": 30,
+    "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "args": [
+      "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence\\scripts\\phase_j_real_agent_attempt2_proxy.py",
+      "--log",
+      "<SLOT>/witness-events.jsonl",
+      "--control-package-id",
+      "umea-v1-64317f4f3435611c2bb5"
+    ],
+    "cwd": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence",
+    "cli_readback_required_field_note": "mcp list/get JSON output does not project required; the exact supplied override sets required=true",
+    "login_status": "Logged in using ChatGPT",
+    "provider_session_launched": false,
+    "raw_artifacts": [
+      {
+        "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_5_R0_CODEX_VERSION_2026-10-12.txt",
+        "sha256": "eeecd3950ed2edf22e2f7ac0317480e921226b0a28df75a7f4af0f4bfe91fa49"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_5_R0_CODEX_EXEC_HELP_2026-10-12.txt",
+        "sha256": "256f36a3970220364c64fc687da4a145c60f4b1f73a2c500e0878f900420d0d4"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_5_R0_CODEX_MCP_LIST_2026-10-12.json",
+        "sha256": "3150cc367007b883a9575d6e22c60dfb430788fc25091be6db9ff60fa4f65027"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_5_R0_CODEX_MCP_GET_2026-10-12.json",
+        "sha256": "0d47216cb23f9a2298320e2412b8e4eb2d1d83203d4d93582107b917d9587dbf"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_5_R0_CODEX_LOGIN_STATUS_2026-10-12.txt",
+        "sha256": "16118df3eb3595e44a4721878cef0f79910e6564e10ff0e78e451e7c4e478947"
+      },
+      {
+        "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_5_R0_MCP_STDIO_EVENTS_2026-10-12.jsonl",
+        "sha256": "60b855dff7a3366ad410a6df3cddd16559b70fed5195c3f667d65b6374f32753"
+      }
+    ]
+  },
+  "local_service_preflight": {
+    "health": "healthy",
+    "service_contract_version": "unified_market_evidence_local_service.v2",
+    "capability_count": 14,
+    "market_execution": 0,
+    "stopped_after_probe": true
+  },
+  "mcp_preflight": {
+    "initialize": "PASS",
+    "tools_list": "PASS",
+    "protocol_version": "2025-11-25",
+    "tool_count": 6,
+    "tool_names": [
+      "market_describe_capabilities",
+      "market_validate_request",
+      "market_preview_request",
+      "market_read_result",
+      "market_export_ai_handoff",
+      "market_fetch_evidence"
+    ],
+    "semantic_calls": 0,
+    "event_log_artifact": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_5_R0_MCP_STDIO_EVENTS_2026-10-12.jsonl",
+    "event_log_sha256": "60b855dff7a3366ad410a6df3cddd16559b70fed5195c3f667d65b6374f32753"
+  },
+  "retained_product_authority": {
+    "control_package_id": "umea-v1-64317f4f3435611c2bb5",
+    "package_inventory_sha256": "caa4b43c67b235ce104c0277b1493031466d39159591e87f56c8765ed0c09096",
+    "result_id": "umeresult-v3-63bd91d7e710438dbdd6",
+    "result_sha256": "d6737011bdf12e3893bbc0d6c54d98a4a472c7ebd34692276e84b250b87b0db9",
+    "audit_id": "umeap-v3-9063d2331c6cc7718a1e",
+    "audit_sha256": "490145920801afd443ff8f41bd9dcea97985bc362c726c89f1037fc1f047427d",
+    "handoff_sha256": "b1fa8e28ef25f4f369904f6d8bf17047e3adff46d1c497a8f323396384bd8e57",
+    "mutated": false,
+    "regenerated": false,
+    "j1_21_executed": false
+  },
+  "immutable_historical_files": [
+    {
+      "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_3_RECEIPT_2026-10-12.json",
+      "sha256": "5fe1fce46efd86a8d6a963420b9875beda5b29a509589ad11e8026d58dcfe6d8"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_3_RECEIPT_2026-10-12.md",
+      "sha256": "f4af9c4f5c895c1d12caae675b5ef795cdb6de61c94ecc8cc496ac69298b1794"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_3_OUTPUT_2026-10-12.txt",
+      "sha256": "a8a6d0ec917934c34c4b36c76b0e33aae0dcf91bfc658a299b9d2e07aaff6352"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_3_R1_MCP_ATTACHMENT_CONTRACT_2026-10-12.json",
+      "sha256": "007a260539933f596643323576fec4072fbf74f2354116f3d6e983709b602070"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_3_R1_MCP_ATTACHMENT_CONTRACT_2026-10-12.md",
+      "sha256": "e2d15496e03e30b689671d4682169dcbd2cdab9107546e3cc7989cf30c94761c"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_3_R1_NEUTRAL_PROMPT_2026-10-12.txt",
+      "sha256": "8ee5459c7217ff34d091385f588d8b53794a1053ace2a44e5b262e4f6757621c"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_R4_R2_PERSISTED_DETERMINISTIC_PACKAGE_PREPARATION_2026-10-12.json",
+      "sha256": "c55e3821ad666bf79c6712c496fea6629ce58912967ed472fe904e2e2177c7a4"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_R4_R2_PERSISTED_DETERMINISTIC_PACKAGE_PREPARATION_2026-10-12.md",
+      "sha256": "80ccfb8cd3ad4890d929d62cfb14bb5b9037451ccd28e8636a2c81fca83f8363"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_R0_PINNED_CODEX_RUNTIME_CONTRACT_2026-10-12.json",
+      "sha256": "2a99fac4b96fd69256083680add718ae0504f2d0c53ea2bbc5c05ff757455f17"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_R0_PINNED_CODEX_RUNTIME_CONTRACT_2026-10-12.md",
+      "sha256": "68e466316afe9292ef4612e76a1a77155971d3027bf938ac60b55bdbf69f15f6"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_4_RECEIPT_2026-10-12.json",
+      "sha256": "e6caa9a54280dc2f71a028dc3e753df1684be6b46552ce6eb9c1f64fa1b1c799"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_RECEIPT_2026-10-12.json",
+      "sha256": "f9b48cc55e097bfbb041b55c282d9bb56091d2c935046e2e573f80fcc103ad87"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_OUTPUT_2026-10-12.txt",
+      "sha256": "09cafa4f5883e8c82f354db3a2edc0f0038af2ebb6549566ccfe4a6121eb0c49"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_CODEX_EVENTS_2026-10-12.jsonl",
+      "sha256": "867586b509ac3d298525bd2e0517d22689938d706eca897897827e02f36f0244"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_CODEX_STDERR_2026-10-12.txt",
+      "sha256": "e0e961f7b2b899435666d1e16e07accb8c681924fc9976fef57ad1af17bf4751"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_REAL_AGENT_ATTEMPT_4_SLOT_01_WITNESS_EVENTS_2026-10-12.jsonl",
+      "sha256": "b0ca604dfd6ab70a55eb4e67ef3dfe7dd526bb85a172e5777dbc0300cd842853"
+    },
+    {
+      "path": "docs/governance/phase_j/PHASE_J_FINAL_REAL_AGENT_ATTEMPT_4_SLOT_01_2026-10-12.md",
+      "sha256": "4ab3b67b136c137a88cfc82c34ac65f7350b8b411cb346050da728d31434fba3"
+    }
+  ],
+  "attempt4_status": {
+    "terminal": true,
+    "disposition": "PHASE_J_REAL_AGENT_ATTEMPT_4_HARD_BLOCK_CODE_MODE_HOST_UNAVAILABLE",
+    "unused_slots_not_transferable": true,
+    "slot_02_03_used": false
+  },
+  "boundaries": {
+    "provider_inference": 0,
+    "real_agent_sessions": 0,
+    "attempt5_slots_reserved": 0,
+    "attempt5_slots_launched": 0,
+    "semantic_mcp_calls": 0,
+    "market_GET": 0,
+    "market_HEAD": 0,
+    "market_POST": 0,
+    "j1_21_executions": 0,
+    "browser_use": 0,
+    "firecrawl": 0,
+    "security_master_acquisition": 0,
+    "security_master_mutation": 0,
+    "production_changes": 0,
+    "public_schema_changes": 0,
+    "new_capabilities": 0,
+    "new_routes": 0,
+    "mcp_tool_count_change": 0,
+    "source_fixture_invocation_delta": 0,
+    "package_generation": 0
+  },
+  "attempt5_state": {
+    "slots_reserved": 0,
+    "slots_launched": 0,
+    "maximum_slots": 3
+  },
+  "validation": {
+    "bundle_inventory": "PASS",
+    "source_target_copy_equivalence": "PASS",
+    "codex_runtime_bundle": "PASS",
+    "launch_contract": "PASS",
+    "codex_parser_config": "PASS",
+    "local_service_health": "PASS",
+    "mcp_initialize_tools_list": "PASS",
+    "immutable_attempt3_attempt4_r4r2_authorities": "PASS",
+    "focused_tests": "72 passed",
+    "attempt4_r0_validator": "PASS",
+    "attempt3_r1_and_retained_package_validator": "PASS",
+    "strict_duplicate_json": "PASS (governance JSON, MCP parser JSON, event JSONL; duplicate keys rejected)",
+    "compileall_scripts_tests": "PASS",
+    "git_diff_check": "PASS (staged diff)"
+  },
+  "derived_state": {
+    "remaining_obligations": [
+      "real_agent_layer"
+    ],
+    "phase_j": "STARTED",
+    "roadmap_phase_j": "UNCHECKED",
+    "phase_k": "NOT_STARTED",
+    "pr_state": "OPEN_DRAFT_UNMERGED",
+    "closure_credit": false
+  },
+  "disposition": "PHASE_J_REAL_AGENT_ATTEMPT_5_R0_COMPLETE_CODEX_RUNTIME_BUNDLE_READY_FOR_INDEPENDENT_REVIEW"
+}
