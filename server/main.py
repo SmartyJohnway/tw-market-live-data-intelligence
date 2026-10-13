@@ -15,6 +15,7 @@ from server.operational_diagnostics import (
     build_event,
     emit_jsonl,
     normalize_trace_id,
+    process_memory_bytes,
     reset_trace_id,
 )
 
@@ -46,18 +47,26 @@ async def unified_operational_trace(request: Request, call_next):
     started = time.monotonic()
     try:
         response = await call_next(request)
+        metrics = {"duration_ms": round((time.monotonic() - started) * 1000, 3), "http_status": response.status_code}
+        memory = process_memory_bytes()
+        if memory is not None:
+            metrics["process_memory_bytes"] = memory
         emit_jsonl(build_event(
             component="local_service", event_code="http.request.completed",
             status="ok" if response.status_code < 400 else "error", trace_id=trace_id,
-            metrics={"duration_ms": round((time.monotonic() - started) * 1000, 3), "http_status": response.status_code},
+            metrics=metrics,
         ))
         response.headers[TRACE_HEADER] = trace_id
         return response
     except Exception:
+        metrics = {"duration_ms": round((time.monotonic() - started) * 1000, 3)}
+        memory = process_memory_bytes()
+        if memory is not None:
+            metrics["process_memory_bytes"] = memory
         emit_jsonl(build_event(
             component="local_service", event_code="http.request.completed",
             status="error", trace_id=trace_id, reason_code="UNHANDLED_EXCEPTION",
-            metrics={"duration_ms": round((time.monotonic() - started) * 1000, 3)},
+            metrics=metrics,
         ))
         raise
     finally:

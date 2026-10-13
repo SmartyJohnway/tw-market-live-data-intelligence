@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import contextvars
+import ctypes
 import datetime as dt
 import json
 import os
 from pathlib import Path
+import shutil
 import sys
 from typing import Any, TextIO
 import uuid
@@ -63,6 +65,58 @@ def current_trace_id() -> str:
     trace_id = new_trace_id()
     _TRACE_ID.set(trace_id)
     return trace_id
+
+
+def process_memory_bytes(pid: int | None = None) -> int | None:
+    target = os.getpid() if pid is None else pid
+    if not isinstance(target, int) or target <= 0:
+        return None
+    try:
+        if os.name == "nt":
+            from ctypes import wintypes
+
+            class ProcessMemoryCounters(ctypes.Structure):
+                _fields_ = [
+                    ("cb", wintypes.DWORD), ("PageFaultCount", wintypes.DWORD),
+                    ("PeakWorkingSetSize", ctypes.c_size_t), ("WorkingSetSize", ctypes.c_size_t),
+                    ("QuotaPeakPagedPoolUsage", ctypes.c_size_t), ("QuotaPagedPoolUsage", ctypes.c_size_t),
+                    ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t), ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+                    ("PagefileUsage", ctypes.c_size_t), ("PeakPagefileUsage", ctypes.c_size_t),
+                ]
+
+            kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+            psapi = ctypes.WinDLL("psapi", use_last_error=True)
+            kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+            kernel.OpenProcess.restype = wintypes.HANDLE
+            kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+            kernel.CloseHandle.restype = wintypes.BOOL
+            psapi.GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, ctypes.POINTER(ProcessMemoryCounters), wintypes.DWORD]
+            psapi.GetProcessMemoryInfo.restype = wintypes.BOOL
+            handle = kernel.OpenProcess(0x1000, False, target)
+            if not handle:
+                return None
+            try:
+                counters = ProcessMemoryCounters()
+                counters.cb = ctypes.sizeof(counters)
+                if not psapi.GetProcessMemoryInfo(handle, ctypes.byref(counters), counters.cb):
+                    return None
+                return int(counters.WorkingSetSize)
+            finally:
+                kernel.CloseHandle(handle)
+        statm = Path(f"/proc/{target}/statm").read_text(encoding="ascii").split()
+        return int(statm[1]) * int(os.sysconf("SC_PAGE_SIZE"))
+    except (OSError, ValueError, IndexError, AttributeError):
+        return None
+
+
+def disk_free_bytes(path: str | os.PathLike[str]) -> int | None:
+    try:
+        probe = Path(path).expanduser().resolve()
+        while not probe.exists() and probe.parent != probe:
+            probe = probe.parent
+        return int(shutil.disk_usage(probe).free)
+    except (OSError, ValueError):
+        return None
 
 
 def _bounded_string(value: object) -> str | None:

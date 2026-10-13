@@ -26,8 +26,10 @@ if str(ROOT) not in sys.path:
 from server.operational_diagnostics import (
     EVENT_PATH_ENV,
     build_event,
+    disk_free_bytes,
     emit_jsonl,
     new_trace_id,
+    process_memory_bytes,
 )
 
 DEFAULT_HOST = "127.0.0.1"
@@ -250,6 +252,14 @@ def _base(host: str, port: int, sources: dict[str, str], service_url: str | None
         import importlib.metadata as metadata
         mcp_ok = metadata.version("mcp") == "1.29.0"
     except Exception: mcp_ok = False
+    service_memory = None
+    if owner_state == "RUNNING" and isinstance(owner, dict) and isinstance(owner.get("pid"), int):
+        service_memory = process_memory_bytes(owner["pid"])
+    resources = {
+        "managed_service_process_memory_bytes": service_memory,
+        "application_root_disk_free_bytes": disk_free_bytes(ROOT),
+        "runtime_root_disk_free_bytes": disk_free_bytes(_owner_path(port).parent),
+    }
     return {
         "status": "SERVICE_ALIVE" if alive and sm["status"] == "ACTIVE" else "SERVICE_ALIVE / IDENTITY_NOT_INITIALIZED" if alive else process,
         "service": {"process": process, "alive": alive, "health": health, "host": host, "port": port,
@@ -266,6 +276,7 @@ def _base(host: str, port: int, sources: dict[str, str], service_url: str | None
                   "ownership_file": str(path),
                   "operational_event_path": str(_event_path(port))},
         "configuration": {"host": host, "port": port, "sources": sources},
+        "resources": resources,
         "checks": [],
     }
 
@@ -296,6 +307,23 @@ def _doctor(host: str, port: int, sources: dict[str, str], service_url: str | No
         "PASS" if event_parent_ready else "WARN",
         None if event_parent_ready else "EVENT_SINK_PARENT_NOT_READY",
         {"event_file_exists": event_path.is_file(), "parent_ready": event_parent_ready},
+    )
+    resources = report["resources"]
+    disks_ready = all(
+        isinstance(resources.get(key), int) and resources[key] >= 0
+        for key in ("application_root_disk_free_bytes", "runtime_root_disk_free_bytes")
+    )
+    process_state = report["service"]["process"]
+    memory_ready = process_state != "RUNNING" or (
+        isinstance(resources.get("managed_service_process_memory_bytes"), int)
+        and resources["managed_service_process_memory_bytes"] > 0
+    )
+    resource_ready = disks_ready and memory_ready
+    check(
+        "resource_snapshot",
+        "PASS" if resource_ready else "WARN",
+        None if resource_ready else "RESOURCE_SNAPSHOT_PARTIAL",
+        dict(resources),
     )
     identity_status = report["identity"]["status"]
     identity_severity = "PASS" if identity_status == "ACTIVE" else "WARN" if identity_status == "NOT_INITIALIZED" else "FAIL"

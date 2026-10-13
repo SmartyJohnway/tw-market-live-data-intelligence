@@ -199,7 +199,11 @@ def test_doctor_uses_severity_aggregation_and_keeps_not_initialized_warning(tmp_
             "paths": {**{key: str(tmp_path) for key in ("security_master_root", "watchlist_root", "control_root")},
                       "operational_event_path": str(tmp_path / "operational-events.jsonl")},
             "readiness": {"routes": {"projection": "READY"}},
-            "mcp": {"status": "READY", "service_url": "http://127.0.0.1:8000", "local_service_reachable": True}, "checks": []}
+            "mcp": {"status": "READY", "service_url": "http://127.0.0.1:8000", "local_service_reachable": True},
+            "resources": {"managed_service_process_memory_bytes": 64 * 1024 * 1024,
+                          "application_root_disk_free_bytes": 10 * 1024 * 1024,
+                          "runtime_root_disk_free_bytes": 10 * 1024 * 1024},
+            "checks": []}
 
     def run_ok(args, **kwargs):
         stdout = json.dumps({"canonical_schema_loaded": True, "capability_catalog_loaded": True}) if "run_unified_workbench.py" in args[1] else ""
@@ -228,3 +232,45 @@ def test_doctor_uses_severity_aggregation_and_keeps_not_initialized_warning(tmp_
         report = lifecycle._doctor("127.0.0.1", 8000, {})
     assert report["status"] == "FAIL"
     assert next(check for check in report["checks"] if check["name"] == "mcp_tool_contract")["reason_code"] == "MCP_TOOL_SURFACE_MISMATCH"
+
+
+def test_base_reports_owned_service_memory_and_disk_snapshots():
+    owner = {"pid": 4321}
+    startup = subprocess.CompletedProcess([], 0, json.dumps({
+        "canonical_schema_loaded": True, "capability_catalog_loaded": True,
+    }), "")
+    with patch.object(lifecycle, "_read_owner", return_value=(owner, None)), \
+         patch.object(lifecycle, "_owner_state", return_value="RUNNING"), \
+         patch.object(lifecycle, "_port_open", return_value=False), \
+         patch.object(lifecycle, "_sm_status", return_value={"status": "NOT_INITIALIZED", "root": str(lifecycle.ROOT)}), \
+         patch.object(lifecycle.subprocess, "run", return_value=startup), \
+         patch.object(lifecycle, "process_memory_bytes", return_value=7654321) as memory, \
+         patch.object(lifecycle, "disk_free_bytes", side_effect=[111, 222]):
+        report = lifecycle._base("127.0.0.1", 8000, {})
+    assert report["resources"] == {
+        "managed_service_process_memory_bytes": 7654321,
+        "application_root_disk_free_bytes": 111,
+        "runtime_root_disk_free_bytes": 222,
+    }
+    memory.assert_called_once_with(4321)
+
+
+def test_doctor_warns_on_partial_resource_snapshot(tmp_path):
+    base = {"status": "SERVICE_ALIVE", "service": {"process": "RUNNING", "alive": True},
+            "identity": {"status": "ACTIVE", "root": str(tmp_path)},
+            "paths": {**{key: str(tmp_path) for key in ("security_master_root", "watchlist_root", "control_root")},
+                      "operational_event_path": str(tmp_path / "operational-events.jsonl")},
+            "readiness": {"routes": {"projection": "READY"}},
+            "mcp": {"status": "READY", "service_url": "http://127.0.0.1:8000", "local_service_reachable": True},
+            "resources": {"managed_service_process_memory_bytes": None,
+                          "application_root_disk_free_bytes": 100,
+                          "runtime_root_disk_free_bytes": 100}, "checks": []}
+    def run_ok(args, **kwargs):
+        stdout = json.dumps({"canonical_schema_loaded": True, "capability_catalog_loaded": True}) if "run_unified_workbench.py" in args[1] else ""
+        return subprocess.CompletedProcess(args, 0, stdout, "")
+    with patch.object(lifecycle, "_base", side_effect=lambda *args, **kwargs: copy.deepcopy(base)), \
+         patch.object(lifecycle.subprocess, "run", side_effect=run_ok):
+        report = lifecycle._doctor("127.0.0.1", 8000, {})
+    resource_check = next(check for check in report["checks"] if check["name"] == "resource_snapshot")
+    assert resource_check["status"] == "WARN"
+    assert resource_check["reason_code"] == "RESOURCE_SNAPSHOT_PARTIAL"

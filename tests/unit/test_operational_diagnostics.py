@@ -98,3 +98,22 @@ def test_stderr_event_is_one_line_and_failure_is_contained():
             raise AssertionError("unreachable")
 
     assert ops.emit_stderr(event, Broken()) is False
+
+
+def test_resource_snapshots_are_best_effort_and_bounded(tmp_path, monkeypatch):
+    memory = ops.process_memory_bytes()
+    assert memory is None or (isinstance(memory, int) and memory > 0)
+
+    free = ops.disk_free_bytes(tmp_path / "missing" / "child")
+    assert isinstance(free, int) and free >= 0
+
+    monkeypatch.setattr(ops.shutil, "disk_usage", lambda _path: (_ for _ in ()).throw(OSError("synthetic")))
+    assert ops.disk_free_bytes(tmp_path) is None
+
+
+def test_process_memory_metric_remains_allowlisted():
+    event = ops.build_event(
+        component="local_service", event_code="http.request.completed", status="ok",
+        metrics={"process_memory_bytes": 123456, "not_allowed": 1},
+    )
+    assert event["metrics"] == {"process_memory_bytes": 123456}
