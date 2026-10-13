@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K K2-B initial three-host pilot complete on 2026-10-13; Hermes and ChatGPT NATIVE_PASS; Antigravity CLI PARTIAL_HOST_LIMITATION / HOST_LIMITATION; host evaluation count 3; product compatibility defects 0"
+status_reconciled_through: "Phase J COMPLETE; Phase K final adjudication PASS owner-acceptance candidate on 2026-10-13; K2-B 3/3 hosts evaluated; product compatibility defects 0; Phase K checkbox pending Owner acceptance"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -44,7 +44,9 @@ tags:
 > its initial three-host pilot: Hermes Agent and ChatGPT are `NATIVE_PASS`;
 > Antigravity CLI is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`; host evaluation
 > count is three, product compatibility defects found remain zero, and no fresh
-> market/source acquisition was introduced.
+> market/source acquisition was introduced. Final adjudication is
+> `PHASE_K_FINAL_ADJUDICATION_PASS_OWNER_ACCEPTANCE_CANDIDATE`; the Phase K checkbox
+> remains unchecked until explicit Owner acceptance.
 
 ---
 
@@ -1321,7 +1323,7 @@ Golden scenarios 應成為 new source、new evidence family、new MCP version、
 
 # [ ] Phase K — Multi-Agent Compatibility & Evaluation
 
-### Current entry — K2-B small multi-host pilot (2026-10-13)
+### Current entry — Final adjudication / Owner acceptance boundary (2026-10-13)
 
 K0, K1, K2-A, and the K1-05 finalized stale-package supplement are merged. K2-A
 now provides deterministic assets for all eight K1 scenarios with no preparation
@@ -1334,8 +1336,11 @@ Hermes Agent and ChatGPT are `NATIVE_PASS`. Antigravity CLI is
 `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION` because headless large Result/Handoff
 synthesis may require additional host-side permissions; this is not a core defect.
 Host evaluation count is three, product compatibility defects found remain zero,
-and no fresh market/source acquisition occurred. **Validate interoperability, not behavioral conformity.**
-The Phase K checklist remains unchecked pending explicit phase adjudication / closure.
+and no fresh market/source acquisition occurred. Final adjudication is
+`PHASE_K_FINAL_ADJUDICATION_PASS_OWNER_ACCEPTANCE_CANDIDATE` under
+`docs/governance/phase_k/PHASE_K_FINAL_ADJUDICATION_AND_CLOSURE_REVIEW_2026-10-13.md`.
+**Validate interoperability, not behavioral conformity.** The Phase K checklist remains
+unchecked pending explicit Owner acceptance.
 
 ## K.0 Phase Goal
 

@@ -17,8 +17,12 @@ was reused across hosts. Host evaluation count is three. Hermes and ChatGPT are
 `NATIVE_PASS`. Antigravity is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`
 because its headless large Result/Handoff synthesis may require additional
 host-side file/command permissions; no TW-Market product defect was found. No fresh
-market/source requests were made. The next boundary is Phase K evaluator adjudication /
-closure planning; do not broaden the host matrix or start Phase L implicitly.
+market/source requests were made. Final adjudication is
+`PHASE_K_FINAL_ADJUDICATION_PASS_OWNER_ACCEPTANCE_CANDIDATE` under
+`docs/governance/phase_k/PHASE_K_FINAL_ADJUDICATION_AND_CLOSURE_REVIEW_2026-10-13.md`.
+The next boundary is explicit Owner acceptance: until then, keep the Phase K checkbox
+unchecked, keep PR #332 open/unmerged, do not broaden the host matrix, and do not start
+Phase L implicitly.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
@@ -321,7 +325,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K K2-A is complete with all eight deterministic assets and no preparation gaps; K2-B initial three-host pilot is complete with Hermes Agent and ChatGPT `NATIVE_PASS`, Antigravity CLI `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`, host evaluation count three, zero product compatibility defects, and zero fresh market/source requests. Do not broaden the host matrix or start Phase L implicitly; next is Phase K adjudication / closure planning.**
+Phase K K2-A is complete with all eight deterministic assets and no preparation gaps; K2-B initial three-host pilot is complete with Hermes Agent and ChatGPT `NATIVE_PASS`, Antigravity CLI `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`, host evaluation count three, zero product compatibility defects, and zero fresh market/source requests. Final adjudication is `PHASE_K_FINAL_ADJUDICATION_PASS_OWNER_ACCEPTANCE_CANDIDATE`. Do not broaden the host matrix or start Phase L implicitly; next is explicit Owner acceptance, checkbox closure, and exact-head merge decision for PR #332.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
