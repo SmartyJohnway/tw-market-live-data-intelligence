@@ -18,11 +18,17 @@ no-silent-migration, backup/restore, and optional Agent integrations. `v1.5.0` i
 provisional stable target; `v2.0.0` is reserved for an explicitly approved breaking
 change.
 
-The next boundary is **L1 — Runtime Operability**. Begin with an inventory of current
-startup, health, logging, process control and diagnostic behavior, then implement the
-minimum lean lifecycle/diagnostic substrate. Do not start L2-L7, broaden the host
-matrix, add a new evidence family, or perform new live-source acquisition unless a later
-step explicitly requires and authorizes it.
+L1-A0 inventory is complete. L1-A1 bounded Owner review repairs are implemented, technical
+review is `L1_A1_ACCEPTANCE_REVIEW_PASS`, and Owner acceptance/merge authorization is
+recorded as `L1_A1_OWNER_ACCEPTED_FOR_MERGE`.
+The current product entry point is `python -m scripts.tw_market` with `start`, `status`,
+`stop`, and read-only `doctor`; it wraps the existing Workbench service. Security Master
+initialization remains explicit. See
+`docs/governance/phase_l/PHASE_L_L1_A1_MINIMUM_RUNTIME_LIFECYCLE_STATUS_DOCTOR_2026-10-13.md`.
+After A1 merge, create a fresh L1 worktree from the new main and select the next smallest
+operability gap from L0/L1 plus A0 inventory; do not pre-name it A2 or infer implementation
+authorization. Do not begin L2-L7, broaden the host matrix, add evidence families, or perform
+market/source acquisition.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
