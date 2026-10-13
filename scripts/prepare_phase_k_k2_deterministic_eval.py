@@ -41,7 +41,7 @@ SCENARIO_ASSETS = [
     {"scenario_id": "K1-02", "authority": "tests/fixtures/m8r_05a_f3/verified_security_master_snapshot.json; tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_localhost_operator_matrix", "kind": "deterministic_ambiguous_identity", "root_asset": "scenario_assets/K1-02/verified_security_master_snapshot.json"},
     {"scenario_id": "K1-03", "authority": "tests/helpers/phase_h_imp_7d_control_package.py::fixture_request; fixture_plan; network_required=false", "kind": "resolved_execute_request_and_offline_preview_precondition", "root_asset": "scenario_assets/K1-03/execute_request.json"},
     {"scenario_id": "K1-04", "authority": "tests/helpers/phase_h_imp_7d_control_package.py::execute_fixture_package; server/services/unified_mode_c.py; server/unified_mcp/local_service_client.py", "kind": "freshly_prepared_finalized_result_audit_handoff", "package_key": "success"},
-    {"scenario_id": "K1-05", "authority": "tests/fixtures/m8r_03c/snapshot_stale_observations.json; tests/fixtures/m8r_03e/stale_currentness_unresolved/bundle.json", "kind": "deterministic_stale_observation_input", "root_asset": "scenario_assets/K1-05/snapshot_stale_observations.json", "gap": "No reusable finalized Unified V3 Result/Audit/Handoff fixture projects this stale observation while retaining evidence availability."},
+    {"scenario_id": "K1-05", "authority": "scripts/prepare_phase_k_k2_deterministic_eval.py::_prepare_stale_package; repository-owned deterministic raw-source path", "kind": "freshly_prepared_finalized_stale_result_audit_handoff", "package_key": "stale"},
     {"scenario_id": "K1-06", "authority": "tests/acceptance/test_m8r_06_05_operator_acceptance.py::test_m8r_06_05_partial_source_failure_and_ui_bindings", "kind": "deterministic_partial_source_failure", "package_key": "partial"},
     {"scenario_id": "K1-07", "authority": "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_j1_10_financial_statements_fail_closed_through_local_service_and_mcp; schemas/unified_market_evidence_request.v3.schema.json", "kind": "schema_fail_closed_request_case", "root_asset": "scenario_assets/K1-07/unsupported_financial_statements_request.json"},
     {"scenario_id": "K1-08", "authority": "K2-A prepared representative Result/Audit/Handoff package", "kind": "representative_nontrivial_result_handoff", "package_key": "success"},
@@ -196,6 +196,104 @@ def _prepare_partial_failure_package(root: Path) -> dict:
         server.close()
 
 
+def _prepare_stale_package(root: Path) -> dict:
+    # Regenerate the accepted stale semantics through the repository-owned
+    # deterministic raw-source boundary. No historical Result/control package is reused.
+    from tests.helpers.phase_j_closure_r1 import service
+
+    stale_root = root / "stale_test"
+    with service("J1-21", stale_root) as url:
+        with httpx.Client(base_url=url, trust_env=False, timeout=140) as client:
+            def post(path: str, payload: dict) -> dict:
+                response = client.post(f"/api/unified/{path}", json=payload)
+                if response.status_code != 200:
+                    raise RuntimeError(f"stale_{path}_failed:{response.status_code}:{response.text}")
+                return response.json()
+
+            request = {
+                "schema_version": "unified_market_evidence_request.v3",
+                "request_id": "k2a-k1-05-finalized-stale",
+                "targets": [{"input": "TWSE:2330", "resolution_requirement": "exact"}],
+                "data_needs": [{"type": "current_observation", "priority": "required", "parameters": {}}],
+                "execution_mode": "execute",
+            }
+            validation = post("validate-request", {"request": request})
+            if validation.get("validation_status") != "valid":
+                raise RuntimeError("stale_request_invalid")
+            preview = post("preview-request", {"request": request})
+            authorization = post("authorizations", {
+                "request": request,
+                "expected_preview_id": preview["preview"]["internal_execution_reference"]["preview_id"],
+                "expected_plan_id": preview["orchestration_plan"]["plan_id"],
+                "expected_plan_hash": preview["orchestration_plan"]["plan_hash"],
+                "confirm_authorization": True,
+                "approval_scope_mode": "whole_plan_executable_scope",
+            })
+            control_id = authorization["control_package_id"]
+            execution = post("executions", {
+                "control_package_id": control_id,
+                "confirm_execution": True,
+                "operator_confirmation_reference": "k2a-k1-05-deterministic-stale",
+                "confirm_network_execution": True,
+            })
+            if execution.get("external_market_network_attempted") is not False or execution.get("external_market_network_executed") is not False:
+                raise RuntimeError("stale_fixture_attempted_external_market_network")
+            package = post("result-package", {"control_package_id": control_id})
+            result = package["canonical_result"]
+            audit_response = client.get(f"/api/unified/result-package/{control_id}/audit.json")
+            handoff_response = client.get(f"/api/unified/result-package/{control_id}/handoff")
+            if audit_response.status_code != 200 or handoff_response.status_code != 200:
+                raise RuntimeError("stale_audit_or_handoff_unavailable")
+            audit = audit_response.json()
+            handoff = handoff_response.json()
+
+        invocations_before_reads = len(list((stale_root / "invocations").glob("*.invoked")))
+
+        async def consume(order: tuple[str, str]) -> dict:
+            observed = {}
+            client = UnifiedLocalServiceClient(url)
+            for operation in order:
+                if operation == "read_result":
+                    observed[operation] = await client.read_result(control_id)
+                else:
+                    observed[operation] = await client.export_ai_handoff(control_id)
+            return observed
+
+        with patch("server.unified_mcp.local_service_client.httpx.AsyncClient", REAL_HTTPX_ASYNC_CLIENT):
+            read_first = asyncio.run(consume(("read_result", "export_ai_handoff")))
+            export_first = asyncio.run(consume(("export_ai_handoff", "read_result")))
+        if len(list((stale_root / "invocations").glob("*.invoked"))) != invocations_before_reads:
+            raise RuntimeError("stale_read_only_consumption_reexecuted_source")
+
+    evidence = result["targets"][0]["evidence"]["current_observation"]
+    currentness = evidence.get("currentness", {})
+    if result.get("status") != "full_success" or evidence.get("status") != "available":
+        raise RuntimeError("stale_result_not_available_full_success")
+    if currentness.get("status") != "stale" or currentness.get("freshness_assessment") != "stale_intraday_snapshot":
+        raise RuntimeError("stale_currentness_not_projected")
+    if currentness.get("source_timestamp") != "2026-09-01T05:30:00Z" or currentness.get("retrieved_at_utc") != "2026-10-08T06:00:00Z":
+        raise RuntimeError("stale_timestamps_not_preserved")
+    if currentness.get("recommendation_allowed") is not False or currentness.get("trading_advice_allowed") is not False:
+        raise RuntimeError("stale_safety_semantics_regressed")
+    for observation in (read_first, export_first):
+        if observation["read_result"]["canonical_result"]["result_id"] != result["result_id"] or observation["export_ai_handoff"]["result_id"] != result["result_id"]:
+            raise RuntimeError("stale_read_export_verification_failed")
+    _lineage(result, audit, handoff)
+
+    source_invocations = [json.loads(path.read_text(encoding="utf-8")) for path in sorted((stale_root / "invocations").glob("*.invoked"))]
+    if len(source_invocations) != 1 or any(item.get("external_dispatch") is not False for item in source_invocations):
+        raise RuntimeError("stale_source_boundary_not_isolated")
+    return {
+        "control_id": control_id, "result": result, "audit": audit, "handoff": handoff,
+        "package_dir": stale_root / "control" / control_id,
+        "read_first": read_first, "export_first": export_first,
+        "transport_invocations": len(source_invocations),
+        "external_market_network_executed": False,
+        "fixture_executor_id": "repository_deterministic_stale_source_boundary",
+        "currentness": currentness,
+    }
+
+
 def prepare(root: Path) -> dict:
     root = root.expanduser().resolve()
     if root == ROOT or ROOT in root.parents:
@@ -220,8 +318,6 @@ def prepare(root: Path) -> dict:
     from tests.helpers.phase_h_imp_7d_control_package import fixture_request
     request = fixture_request(request_id="k2a-k1-03", target_inputs=("6488",))
     _write_json(root / "scenario_assets" / "K1-03" / "execute_request.json", request)
-    _copy_fixture("tests/fixtures/m8r_03c/snapshot_stale_observations.json", root,
-                  "scenario_assets/K1-05/snapshot_stale_observations.json")
     unsupported_request = {
         "schema_version": "unified_market_evidence_request.v3",
         "request_id": "k2a-k1-07-unsupported-financial-statements",
@@ -273,6 +369,7 @@ def prepare(root: Path) -> dict:
          patch.object(unified_mode_c, "CONTROL_ROOT", package_root), \
          patch.object(unified_mode_c, "validate_mode_a_request", lambda request: unified_mode_a.validate_mode_a_request(request, allow_fixture_snapshot=True)):
         success = _prepare_package(package_root, ("6488",), expected_status="full_success")
+        stale = _prepare_stale_package(root)
         partial = _prepare_partial_failure_package(root)
         if socket_attempts["external"]:
             raise RuntimeError("network_socket_attempt_observed")
@@ -281,7 +378,7 @@ def prepare(root: Path) -> dict:
         return hashlib.sha256(path.read_bytes()).hexdigest()
 
     packages = {}
-    for key, prepared in (("success", success), ("partial", partial)):
+    for key, prepared in (("success", success), ("stale", stale), ("partial", partial)):
         package_dir = prepared["package_dir"]
         result_path = package_dir / "ai_context" / "unified_market_evidence_result.v3.json"
         audit_path = package_dir / "audit" / "unified_market_evidence_audit_package.v3.json"
@@ -295,10 +392,11 @@ def prepare(root: Path) -> dict:
             "control_package_id": prepared["control_id"],
             "package_path": package_dir.relative_to(root).as_posix(),
             "fixture_authority": "NON_AUTHORITATIVE_TEST_ONLY",
-            "isolated_security_master_root": "partial_test/security-master" if key == "partial" else None,
+            "isolated_security_master_root": {"partial": "partial_test/security-master", "stale": "stale_test/security"}.get(key),
             "fixture_executor_id": prepared.get("fixture_executor_id", "phase_h_imp_7d_deterministic_fixture_executor"),
             "executor_invocations": invocation_count,
             "result_status": prepared["result"]["status"],
+            "currentness": prepared.get("currentness"),
             "result": {"path": result_path.relative_to(root).as_posix(), "result_id": prepared["result"]["result_id"], "sha256": sha(result_path)},
             "audit": {"path": audit_path.relative_to(root).as_posix(), "audit_package_id": prepared["audit"]["audit_package_id"], "sha256": sha(audit_path)},
             "handoff": {"path": handoff_path.relative_to(root).as_posix(), "result_id": prepared["handoff"]["result_id"], "sha256": sha(handoff_path)},
@@ -316,7 +414,7 @@ def prepare(root: Path) -> dict:
             "packages": packages,
         },
         "read_only_order_checks": {"read_then_export": "PASS", "export_then_read": "PASS", "ordering_precondition_enforced": False},
-        "network_counters": {"market_source_GET": 0, "market_source_HEAD": 0, "market_source_POST": 0, "external_socket_connect_attempts": socket_attempts["external"], "loopback_test_transport_connects": socket_attempts["loopback"], "fixture_executor_network_required": False, "partial_fixture_external_market_network_executed": partial["external_market_network_executed"]},
+        "network_counters": {"market_source_GET": 0, "market_source_HEAD": 0, "market_source_POST": 0, "external_socket_connect_attempts": socket_attempts["external"], "loopback_test_transport_connects": socket_attempts["loopback"], "fixture_executor_network_required": False, "stale_fixture_external_market_network_executed": stale["external_market_network_executed"], "partial_fixture_external_market_network_executed": partial["external_market_network_executed"]},
         "canonical_mcp_tools": tools,
         "generation_command": "python scripts/prepare_phase_k_k2_deterministic_eval.py --root <disposable-evaluation-root>",
         "known_preparation_gaps": [f"{item['scenario_id']}: {item['gap']}" for item in SCENARIO_ASSETS if item.get("gap")],
