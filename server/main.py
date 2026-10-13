@@ -1,13 +1,22 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from scripts.ssl_policy import resolve_ssl_policy
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import sys
 import json
+import time
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 from server.unified_workbench_router import router as unified_workbench_router
 from server.unified_mcp import LOCAL_SERVICE_CONTRACT_VERSION
+from server.operational_diagnostics import (
+    TRACE_HEADER,
+    bind_trace_id,
+    build_event,
+    emit_jsonl,
+    normalize_trace_id,
+    reset_trace_id,
+)
 
 # Product server intentionally avoids importing live probe modules.
 # Future market-data execution belongs behind M5I authorization in a separate legacy/refresh app.
@@ -26,6 +35,34 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 WORKBENCH_DIR = REPO_ROOT / "frontend" / "unified-workbench"
+
+
+@app.middleware("http")
+async def unified_operational_trace(request: Request, call_next):
+    if not request.url.path.startswith("/api/unified/"):
+        return await call_next(request)
+    incoming = normalize_trace_id(request.headers.get(TRACE_HEADER))
+    trace_id, token = bind_trace_id(incoming)
+    started = time.monotonic()
+    try:
+        response = await call_next(request)
+        emit_jsonl(build_event(
+            component="local_service", event_code="http.request.completed",
+            status="ok" if response.status_code < 400 else "error", trace_id=trace_id,
+            metrics={"duration_ms": round((time.monotonic() - started) * 1000, 3), "http_status": response.status_code},
+        ))
+        response.headers[TRACE_HEADER] = trace_id
+        return response
+    except Exception:
+        emit_jsonl(build_event(
+            component="local_service", event_code="http.request.completed",
+            status="error", trace_id=trace_id, reason_code="UNHANDLED_EXCEPTION",
+            metrics={"duration_ms": round((time.monotonic() - started) * 1000, 3)},
+        ))
+        raise
+    finally:
+        reset_trace_id(token)
+
 
 app.include_router(unified_workbench_router)
 

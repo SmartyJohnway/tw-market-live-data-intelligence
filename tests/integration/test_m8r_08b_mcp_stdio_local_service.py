@@ -21,6 +21,7 @@ CONTROL_ID = "umea-v1-0123456789abcdef0123"
 
 class _Handler(BaseHTTPRequestHandler):
     calls = []
+    trace_headers = []
 
     def log_message(self, *_args):
         return
@@ -34,6 +35,7 @@ class _Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        type(self).trace_headers.append(self.headers.get("X-TW-Market-Trace-ID"))
         type(self).calls.append(("GET", self.path, None))
         if self.path == "/api/unified/capabilities":
             self._json(200, {"service_contract_version": "unified_market_evidence_local_service.v2", "capabilities": []})
@@ -43,6 +45,7 @@ class _Handler(BaseHTTPRequestHandler):
             self._json(404, {"error": "not_found", "trace_id": "test"})
 
     def do_POST(self):
+        type(self).trace_headers.append(self.headers.get("X-TW-Market-Trace-ID"))
         size = int(self.headers.get("Content-Length", "0"))
         raw = self.rfile.read(size)
         payload = json.loads(raw)
@@ -62,6 +65,7 @@ class _Handler(BaseHTTPRequestHandler):
 class LoopbackService:
     def __enter__(self):
         _Handler.calls = []
+        _Handler.trace_headers = []
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
@@ -115,7 +119,10 @@ def test_real_stdio_to_actual_loopback_http_service():
                         unknown = await session.call_tool("market_execute_request", {"confirm_execution": True})
                         assert unknown.isError is True
                 stderr.seek(0)
-                assert "Starting unified_market_evidence_mcp_adapter.v2 over stdio" in stderr.read()
+                stderr_text = stderr.read()
+                assert "Starting unified_market_evidence_mcp_adapter.v2 over stdio" in stderr_text
+                assert '"event_code":"mcp.tool.completed"' in stderr_text
+                assert '"trace_id":' in stderr_text
         asyncio.run(run())
     assert _Handler.calls == [
         ("GET", "/api/unified/capabilities", None),
@@ -126,3 +133,8 @@ def test_real_stdio_to_actual_loopback_http_service():
         ("GET", f"/api/unified/result-package/{CONTROL_ID}/handoff", None),
         ("POST", "/api/unified/fetch-evidence", {"request": _request() | {"execution_mode": "execute"}}),
     ]
+    assert _Handler.trace_headers[0] is None  # launcher startup contract check
+    tool_traces = _Handler.trace_headers[1:]
+    assert len(tool_traces) == 6
+    assert all(isinstance(trace, str) and len(trace) == 36 for trace in tool_traces)
+    assert len(set(tool_traces)) == 6

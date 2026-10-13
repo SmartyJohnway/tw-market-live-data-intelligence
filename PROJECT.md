@@ -23,14 +23,18 @@ bounded runtime telemetry. Do not begin L2-L7, add evidence families, or broaden
 activity implicitly.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
-accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor has passed technical review under
-`L1_A1_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted/merge-authorized under
-`L1_A1_OWNER_ACCEPTED_FOR_MERGE` in
-`docs/governance/phase_l/PHASE_L_L1_A1_MINIMUM_RUNTIME_LIFECYCLE_STATUS_DOCTOR_2026-10-13.md`.
-The lifecycle wrapper reuses the Workbench Local Service and keeps Security Master
-initialization explicit. After A1 merge, the next L1 tranche must be selected from the frozen
-L0/L1 obligations plus A0 inventory and the merged A1 surface; it is not pre-authorized or
-pre-named A2. This does not complete Phase L or authorize L2-L7.
+accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
+`L1_A1_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted/merge-authorized under
+`L1_A1_OWNER_ACCEPTED_FOR_MERGE`, and is merged in main through PR #335.
+
+The post-A1 next-tranche selection chose the narrower **Operational Correlation Foundation**
+without pre-naming it A2. Its implementation has passed technical review under
+`L1_OPERATIONAL_CORRELATION_FOUNDATION_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted /
+merge-authorized under `L1_OPERATIONAL_CORRELATION_FOUNDATION_OWNER_ACCEPTED_FOR_MERGE`. The implementation adds dedicated operational `trace_id` propagation across MCP,
+Local Service, and execute-once boundaries plus bounded ephemeral diagnostics while keeping
+Audit as governed truth and preserving the exact six-tool/public contract surfaces. See
+`docs/governance/phase_l/PHASE_L_L1_OPERATIONAL_CORRELATION_FOUNDATION_2026-10-13.md`.
+Do not begin another L1 tranche or L2-L7 until a later Owner decision selects the next gap.
 
 ## Current I3 production boundary (2026-10-05)
 

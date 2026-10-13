@@ -59,6 +59,7 @@ def test_api_returns_409_when_production_security_master_missing(monkeypatch, tm
     data = response.json()
     assert data["error"] == "canonical_security_master_unavailable"
     assert "trace_id" in data
+    assert response.headers["X-TW-Market-Trace-ID"] == data["trace_id"]
     # Ensure no absolute paths or tracebacks are leaked
     error_str = str(data).lower()
     assert "tests/fixtures" not in error_str
@@ -103,6 +104,68 @@ def test_validate_request_valid_envelope(mock_validation):
     data = response.json()
     assert data["validation_status"] == "valid"
     assert data["target_results"][0]["canonical_identity"]["market"] == "TWSE"
+    assert len(response.headers["X-TW-Market-Trace-ID"]) == 36
+
+
+def test_unified_http_accepts_valid_private_trace_and_does_not_put_it_in_success_payload(mock_validation):
+    trace = "12345678-1234-5678-1234-567812345678"
+    req = {
+        "schema_version": "unified_market_evidence_request.v1",
+        "request_id": "api-trace-test",
+        "execution_mode": "preview",
+        "targets": [{"input": "2330"}],
+        "data_needs": [{"type": "identity", "priority": "required"}],
+    }
+    response = client.post(
+        "/api/unified/validate-request", json={"request": req},
+        headers={"X-TW-Market-Trace-ID": trace},
+    )
+    assert response.status_code == 200
+    assert response.headers["X-TW-Market-Trace-ID"] == trace
+    assert "trace_id" not in response.json()
+
+
+def test_http_trace_reaches_execute_once_child_private_environment(monkeypatch):
+    import subprocess
+    from server.services import unified_mode_b2_execution
+
+    trace = "12345678-1234-5678-1234-567812345678"
+    control_id = "umea-v1-0123456789abcdef0123"
+    child_payload = {
+        "schema_version": "unified_market_evidence_execution_result.v1",
+        "authorization_id": control_id,
+        "consumption_state": "consumed_success",
+        "operation_statuses": [],
+        "aggregation_status": "complete",
+        "execution_receipt_id": "receipt-http-trace",
+        "evidence_bundle_id": "bundle-http-trace",
+        "transport_mode": "production_transport",
+        "test_transport_active": False,
+        "external_market_network_attempted": True,
+        "external_market_network_executed": True,
+    }
+    captured = {}
+
+    def fake_run(command, **kwargs):
+        captured["trace"] = kwargs["env"][unified_mode_b2_execution.TRACE_ENV]
+        return subprocess.CompletedProcess(command, 0, json.dumps(child_payload), "")
+
+    monkeypatch.setattr(unified_mode_b2_execution.subprocess, "run", fake_run)
+    response = client.post(
+        "/api/unified/executions",
+        json={
+            "control_package_id": control_id,
+            "confirm_execution": True,
+            "operator_confirmation_reference": "http-trace-test",
+            "confirm_network_execution": True,
+        },
+        headers={"X-TW-Market-Trace-ID": trace},
+    )
+    assert response.status_code == 200
+    assert response.headers["X-TW-Market-Trace-ID"] == trace
+    assert captured["trace"] == trace
+    assert response.json() == child_payload
+    assert "trace_id" not in response.json()
 
 
 def test_mode_a_workbench_routes_and_health():

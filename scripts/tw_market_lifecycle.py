@@ -23,6 +23,13 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from server.operational_diagnostics import (
+    EVENT_PATH_ENV,
+    build_event,
+    emit_jsonl,
+    new_trace_id,
+)
+
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
 _INSTANCE = "TW_MARKET_LIFECYCLE_INSTANCE"
@@ -66,6 +73,10 @@ def _effective(cli_host: str | None, cli_port: int | None) -> tuple[str, int, di
 def _owner_path(port: int) -> Path:
     install = hashlib.sha256(str(ROOT.resolve()).encode("utf-8")).hexdigest()[:20]
     return Path(tempfile.gettempdir()) / "tw-market-runtime" / install / f"service-{port}.json"
+
+
+def _event_path(port: int) -> Path:
+    return _owner_path(port).parent / "operational-events.jsonl"
 
 
 def _process_start_token(pid: int) -> str | None:
@@ -252,7 +263,8 @@ def _base(host: str, port: int, sources: dict[str, str], service_url: str | None
         "paths": {"security_master_root": sm["root"],
                   "watchlist_root": str(Path(os.environ.get("TW_MARKET_WATCHLIST_ROOT", ROOT / "data" / "watchlists")).expanduser().resolve()),
                   "control_root": str(Path(os.environ.get("M8R_06_03_CONTROL_ROOT", ROOT / "artifacts" / "m8r_06_03_workbench")).expanduser().resolve()),
-                  "ownership_file": str(path)},
+                  "ownership_file": str(path),
+                  "operational_event_path": str(_event_path(port))},
         "configuration": {"host": host, "port": port, "sources": sources},
         "checks": [],
     }
@@ -277,6 +289,14 @@ def _doctor(host: str, port: int, sources: dict[str, str], service_url: str | No
     for label, value in (("security_master_root", report["paths"]["security_master_root"]), ("watchlist_root", report["paths"]["watchlist_root"]), ("control_root", report["paths"]["control_root"])):
         p = Path(value)
         check(label, "PASS" if p.exists() and os.access(p, os.R_OK) else "WARN", None if p.exists() else "PATH_NOT_PRESENT", {"exists": p.exists(), "readable": bool(p.exists() and os.access(p, os.R_OK))})
+    event_path = Path(report["paths"]["operational_event_path"])
+    event_parent_ready = event_path.parent.is_dir() and os.access(event_path.parent, os.W_OK)
+    check(
+        "operational_event_sink",
+        "PASS" if event_parent_ready else "WARN",
+        None if event_parent_ready else "EVENT_SINK_PARENT_NOT_READY",
+        {"event_file_exists": event_path.is_file(), "parent_ready": event_parent_ready},
+    )
     identity_status = report["identity"]["status"]
     identity_severity = "PASS" if identity_status == "ACTIVE" else "WARN" if identity_status == "NOT_INITIALIZED" else "FAIL"
     identity_reason = "SECURITY_MASTER_NOT_INITIALIZED" if identity_status == "NOT_INITIALIZED" else report["identity"].get("reason_code")
@@ -352,6 +372,7 @@ def _start(host: str, port: int) -> dict:
     except FileExistsError:
         return {"status": "START_IN_PROGRESS", "reason_code": "START_IN_PROGRESS"}
     env = os.environ.copy(); env[_INSTANCE] = instance
+    env[EVENT_PATH_ENV] = str(_event_path(port))
     creationflags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0) if os.name == "nt" else 0
     args = [sys.executable, "-m", "scripts.tw_market_lifecycle", "_serve", "--host", host, "--port", str(port)]
     try:
@@ -503,9 +524,11 @@ def main(argv: list[str] | None = None) -> int:
     sub.choices["_serve"].add_argument("--port", type=int, required=True)
     args = parser.parse_args(argv)
     if args.command == "_serve": return _serve(args.host, args.port)
-    started = time.monotonic(); operation_id = str(uuid.uuid4()); timestamp = dt.datetime.now(dt.timezone.utc).isoformat()
+    started = time.monotonic(); operation_id = str(uuid.uuid4()); trace_id = new_trace_id(); timestamp = dt.datetime.now(dt.timezone.utc).isoformat()
+    port_for_event: int | None = None
     try:
         host, port, sources = _effective(args.host, args.port)
+        port_for_event = port
         service_url = args.service_url or (f"http://{host}:{port}" if args.host is not None or args.port is not None else os.environ.get("UNIFIED_MARKET_EVIDENCE_SERVICE_URL"))
         if args.command == "start": result = _start(host, port)
         elif args.command == "stop": result = _stop(host, port)
@@ -513,7 +536,16 @@ def main(argv: list[str] | None = None) -> int:
         else: result = _doctor(host, port, sources, service_url)
     except (ValueError, subprocess.TimeoutExpired) as exc:
         result = {"status": "FAIL", "reason_code": str(exc) if isinstance(exc, ValueError) else "CHECK_TIMEOUT"}
-    result.update({"operation_id": operation_id, "started_at": timestamp, "duration_ms": round((time.monotonic() - started) * 1000, 2)})
+    duration_ms = round((time.monotonic() - started) * 1000, 2)
+    result.update({"operation_id": operation_id, "trace_id": trace_id, "started_at": timestamp, "duration_ms": duration_ms})
+    if args.command in {"start", "stop"} and port_for_event is not None:
+        emit_jsonl(build_event(
+            component="lifecycle", event_code=f"lifecycle.{args.command}.completed",
+            status="ok" if _exit_code(result["status"]) == 0 else "error",
+            trace_id=trace_id, reason_code=result.get("reason_code"),
+            references={"lifecycle_operation_id": operation_id},
+            metrics={"duration_ms": duration_ms},
+        ), _event_path(port_for_event))
     if args.json: print(json.dumps(result, ensure_ascii=False, sort_keys=True))
     else:
         print(f"{result['status']}" + (f" ({result.get('reason_code')})" if result.get("reason_code") else ""))

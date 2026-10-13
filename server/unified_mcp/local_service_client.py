@@ -7,6 +7,7 @@ from urllib.parse import urlsplit, urlunsplit
 
 import httpx
 
+from server.operational_diagnostics import TRACE_HEADER, normalize_trace_id
 from . import LOCAL_SERVICE_CONTRACT_VERSION
 from .tool_contracts import CONTROL_PACKAGE_PATTERN
 import re
@@ -71,9 +72,14 @@ class UnifiedLocalServiceClient:
     def _url(self, route: str) -> str:
         return f"{self.base_url}{route}"
 
-    async def _request(self, method: str, route: str, payload: dict[str, Any] | None = None, *, timeout_seconds: float | None = None, timeout_error_code: str = "local_service_timeout") -> dict[str, Any]:
+    async def _request(self, method: str, route: str, payload: dict[str, Any] | None = None, *, trace_id: str | None = None, timeout_seconds: float | None = None, timeout_error_code: str = "local_service_timeout") -> dict[str, Any]:
         body: bytes | None = None
         headers: dict[str, str] = {"Accept": "application/json"}
+        if trace_id is not None:
+            normalized_trace = normalize_trace_id(trace_id)
+            if normalized_trace is None:
+                raise LocalServiceClientError("local_service_trace_invalid")
+            headers[TRACE_HEADER] = normalized_trace
         if payload is not None:
             try:
                 body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
@@ -114,24 +120,25 @@ class UnifiedLocalServiceClient:
             raise LocalServiceClientError("local_service_http_error", status_code=response.status_code, payload=decoded)
         return decoded
 
-    async def describe_capabilities(self) -> dict[str, Any]:
-        return await self._request("GET", "/api/unified/capabilities")
+    async def describe_capabilities(self, *, trace_id: str | None = None) -> dict[str, Any]:
+        return await self._request("GET", "/api/unified/capabilities", trace_id=trace_id)
 
-    async def verify_service_contract(self) -> dict[str, Any]:
-        payload = await self.describe_capabilities()
+    async def verify_service_contract(self, *, trace_id: str | None = None) -> dict[str, Any]:
+        payload = await self.describe_capabilities(trace_id=trace_id)
         if payload.get("service_contract_version") != LOCAL_SERVICE_CONTRACT_VERSION:
             raise LocalServiceClientError("local_service_contract_incompatible")
         return payload
 
-    async def validate_request(self, request_envelope: dict[str, Any]) -> dict[str, Any]:
-        return await self._request("POST", "/api/unified/validate-request", request_envelope)
+    async def validate_request(self, request_envelope: dict[str, Any], *, trace_id: str | None = None) -> dict[str, Any]:
+        return await self._request("POST", "/api/unified/validate-request", request_envelope, trace_id=trace_id)
 
-    async def preview_request(self, request_envelope: dict[str, Any]) -> dict[str, Any]:
-        return await self._request("POST", "/api/unified/preview-request", request_envelope)
+    async def preview_request(self, request_envelope: dict[str, Any], *, trace_id: str | None = None) -> dict[str, Any]:
+        return await self._request("POST", "/api/unified/preview-request", request_envelope, trace_id=trace_id)
 
-    async def fetch_evidence(self, request_envelope: dict[str, Any]) -> dict[str, Any]:
+    async def fetch_evidence(self, request_envelope: dict[str, Any], *, trace_id: str | None = None) -> dict[str, Any]:
         return await self._request(
             "POST", "/api/unified/fetch-evidence", request_envelope,
+            trace_id=trace_id,
             timeout_seconds=ACTION_TIMEOUT_SECONDS,
             timeout_error_code="local_service_action_timeout",
         )
@@ -142,10 +149,10 @@ class UnifiedLocalServiceClient:
             raise LocalServiceClientError("control_package_id_invalid")
         return control_package_id
 
-    async def read_result(self, control_package_id: object) -> dict[str, Any]:
+    async def read_result(self, control_package_id: object, *, trace_id: str | None = None) -> dict[str, Any]:
         identifier = self._validate_control_package_id(control_package_id)
-        return await self._request("POST", "/api/unified/result-package", {"control_package_id": identifier})
+        return await self._request("POST", "/api/unified/result-package", {"control_package_id": identifier}, trace_id=trace_id)
 
-    async def export_ai_handoff(self, control_package_id: object) -> dict[str, Any]:
+    async def export_ai_handoff(self, control_package_id: object, *, trace_id: str | None = None) -> dict[str, Any]:
         identifier = self._validate_control_package_id(control_package_id)
-        return await self._request("GET", f"/api/unified/result-package/{identifier}/handoff")
+        return await self._request("GET", f"/api/unified/result-package/{identifier}/handoff", trace_id=trace_id)

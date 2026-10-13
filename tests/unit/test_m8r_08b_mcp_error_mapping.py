@@ -42,16 +42,19 @@ def test_bounded_upstream_error_preserves_only_governed_fields():
 
 
 def test_adapter_errors_are_opaque_and_do_not_echo_exception_text():
-    result = map_local_service_error(LocalServiceClientError("local_service_timeout"))
+    trace = "12345678-1234-5678-1234-567812345678"
+    result = map_local_service_error(LocalServiceClientError("local_service_timeout"), trace_id=trace)
     assert result.isError is True
     assert result.structuredContent["error"] == "local_service_timeout"
-    internal = map_internal_error()
+    assert result.structuredContent["trace_id"] == trace
+    internal = map_internal_error(trace_id=trace)
     assert internal.structuredContent["error"] == "mcp_adapter_internal_error"
-    assert "trace_id" in internal.structuredContent
+    assert internal.structuredContent["trace_id"] == trace
 
 
 class _ServiceHandler(BaseHTTPRequestHandler):
     calls: list[tuple[str, str, object]] = []
+    trace_headers: list[str | None] = []
     mode = "normal"
 
     def log_message(self, *_args):
@@ -65,6 +68,7 @@ class _ServiceHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        type(self).trace_headers.append(self.headers.get("X-TW-Market-Trace-ID"))
         type(self).calls.append(("GET", self.path, None))
         if type(self).mode == "redirect":
             self.send_response(302)
@@ -80,6 +84,7 @@ class _ServiceHandler(BaseHTTPRequestHandler):
             self._send(200, json.dumps({"service_contract_version": "unified_market_evidence_local_service.v1"}).encode())
 
     def do_POST(self):
+        type(self).trace_headers.append(self.headers.get("X-TW-Market-Trace-ID"))
         length = int(self.headers.get("Content-Length", "0"))
         payload = json.loads(self.rfile.read(length))
         type(self).calls.append(("POST", self.path, payload))
@@ -91,6 +96,7 @@ class _ServiceHandler(BaseHTTPRequestHandler):
 class _LoopbackService:
     def __enter__(self):
         _ServiceHandler.calls = []
+        _ServiceHandler.trace_headers = []
         _ServiceHandler.mode = "normal"
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), _ServiceHandler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
@@ -124,6 +130,16 @@ def test_client_uses_only_fixed_exact_routes_and_envelopes():
         ("POST", "/api/unified/result-package", {"control_package_id": "umea-v1-0123456789abcdef0123"}),
         ("GET", "/api/unified/result-package/umea-v1-0123456789abcdef0123/handoff", None),
     ]
+    assert _ServiceHandler.trace_headers == [None] * 6
+
+
+def test_client_propagates_private_trace_header_without_payload_change():
+    trace = "12345678-1234-5678-1234-567812345678"
+    envelope = {"request": {"request_id": "unchanged"}}
+    with _LoopbackService() as url:
+        asyncio.run(UnifiedLocalServiceClient(url).validate_request(envelope, trace_id=trace))
+    assert _ServiceHandler.calls == [("POST", "/api/unified/validate-request", envelope)]
+    assert _ServiceHandler.trace_headers == [trace]
 
 
 @pytest.mark.parametrize(

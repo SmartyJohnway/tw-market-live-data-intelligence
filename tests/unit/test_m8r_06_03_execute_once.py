@@ -58,6 +58,42 @@ def test_fixed_child_rejects_unknown_arguments_without_command_execution():
     assert "whoami" not in result.stdout
 
 
+def test_parent_propagates_operational_trace_to_child_without_public_payload_change(monkeypatch):
+    trace = "12345678-1234-5678-1234-567812345678"
+    control_id = "umea-v1-0123456789abcdef0123"
+    child_payload = {
+        "schema_version": "unified_market_evidence_execution_result.v1",
+        "authorization_id": control_id,
+        "consumption_state": "consumed_success",
+        "operation_statuses": [],
+        "aggregation_status": "complete",
+        "execution_receipt_id": "receipt-test",
+        "evidence_bundle_id": "bundle-test",
+        "transport_mode": "production_transport",
+        "test_transport_active": False,
+        "external_market_network_attempted": True,
+        "external_market_network_executed": True,
+    }
+    captured = {}
+
+    def fake_run(command, **kwargs):
+        captured["env"] = kwargs["env"]
+        return subprocess.CompletedProcess(command, 0, json.dumps(child_payload), "")
+
+    monkeypatch.setattr(unified_mode_b2_execution, "current_trace_id", lambda: trace)
+    monkeypatch.setattr(unified_mode_b2_execution, "emit_jsonl", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(unified_mode_b2_execution.subprocess, "run", fake_run)
+    result = unified_mode_b2_execution.execute_mode_b2_once({
+        "control_package_id": control_id,
+        "confirm_execution": True,
+        "operator_confirmation_reference": "trace-test",
+        "confirm_network_execution": True,
+    })
+    assert captured["env"][unified_mode_b2_execution.TRACE_ENV] == trace
+    assert result == child_payload
+    assert "trace_id" not in result
+
+
 @pytest.mark.parametrize("protocol", ["non_json", "incomplete_json", "unexpected_shape", "unexpected_nonzero"])
 def test_parent_rejects_actual_malformed_child_protocol_without_leakage(monkeypatch, protocol):
     monkeypatch.setenv("M8R_06_03_TEST_CHILD_PROTOCOL", protocol)
