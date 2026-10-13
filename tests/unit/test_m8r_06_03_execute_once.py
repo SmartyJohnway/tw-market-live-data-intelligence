@@ -10,6 +10,7 @@ from pathlib import Path
 
 import pytest
 
+from server import operational_diagnostics as ops
 from server.services import unified_mode_b2
 from server.services import unified_mode_b2_execution
 
@@ -209,3 +210,27 @@ def test_identical_same_second_local_action_tickets_each_consume_once(tmp_path, 
     assert unified_mode_b2_execution.execute_local_operator_ticket(second["control_package_id"], network_required=True)["consumption_state"]
     with pytest.raises(unified_mode_b2.ModeB2Error, match="mode_b2_execution_unavailable"):
         unified_mode_b2_execution.execute_local_operator_ticket(first["control_package_id"], network_required=True)
+
+
+def test_parent_trace_reaches_child_adapter_operational_event(tmp_path, monkeypatch):
+    package = _package(tmp_path, monkeypatch)
+    trace = "12345678-1234-5678-1234-567812345678"
+    event_path = tmp_path / "operational-events.jsonl"
+    monkeypatch.setenv("M8R_06_03_CONTROL_ROOT", str(tmp_path))
+    monkeypatch.setenv("M8R_06_03_EXECUTION_ENVIRONMENT", "test")
+    monkeypatch.setenv("M8R_06_03_TEST_SOURCE_TRANSPORT", "deterministic")
+    monkeypatch.setenv(ops.EVENT_PATH_ENV, str(event_path))
+    bound_trace, token = ops.bind_trace_id(trace)
+    try:
+        result = unified_mode_b2_execution.execute_mode_b2_once(_parent_payload(package))
+    finally:
+        ops.reset_trace_id(token)
+
+    assert bound_trace == trace
+    assert "trace_id" not in result
+    events = [json.loads(line) for line in event_path.read_text(encoding="utf-8").splitlines()]
+    adapter_events = [event for event in events if event.get("component") == "adapter_dispatch"]
+    assert adapter_events
+    assert all(event["trace_id"] == trace for event in adapter_events)
+    assert all(event["metrics"]["duration_ms"] >= 0 for event in adapter_events)
+    assert all(event["event_code"] in {"adapter.execution.completed", "adapter.batch.completed"} for event in adapter_events)

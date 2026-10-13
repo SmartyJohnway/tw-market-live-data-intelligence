@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -13,6 +14,7 @@ from scripts.m8r_filesystem_safety import (
     FilesystemSafetyError,
     safe_destination,
 )
+from server.operational_diagnostics import build_event, current_trace_id, emit_jsonl
 
 from .containment import validate_contained_relative_paths
 from .errors import OrchestrationError
@@ -243,6 +245,74 @@ def request_identity(request: dict) -> tuple[str, str]:
     return request["execution_request_id"], request["execution_request_hash"]
 
 
+def _emit_adapter_invocation_event(
+    item: PreparedDispatch,
+    *,
+    started: float,
+    status: str,
+    reason_code: str | None,
+    operation_count: int,
+) -> None:
+    references = {
+        "executor_id": item.request["executor_id"],
+        "capability_id": item.request["capability_id"],
+        "market": item.request["market"],
+        "batch_group_id": item.request["batch_group_id"],
+    }
+    if operation_count == 1:
+        references["governed_operation_id"] = item.request["operation_id"]
+        references["execution_request_id"] = item.request["execution_request_id"]
+    emit_jsonl(build_event(
+        component="adapter_dispatch",
+        event_code="adapter.execution.completed" if operation_count == 1 else "adapter.batch.completed",
+        status=status,
+        trace_id=current_trace_id(),
+        reason_code=reason_code,
+        references=references,
+        metrics={
+            "duration_ms": round((time.monotonic() - started) * 1000, 3),
+            "operation_count": operation_count,
+        },
+    ))
+
+
+def _invoke_adapter(item: PreparedDispatch, context: DispatchRuntimeContext) -> dict[str, Any]:
+    started = time.monotonic()
+    try:
+        result = item.registration.adapter(item.request, context)
+    except OrchestrationError as exc:
+        _emit_adapter_invocation_event(item, started=started, status="error", reason_code=exc.code, operation_count=1)
+        raise
+    except TimeoutError:
+        _emit_adapter_invocation_event(item, started=started, status="error", reason_code="adapter_timeout", operation_count=1)
+        raise
+    except Exception:
+        _emit_adapter_invocation_event(item, started=started, status="error", reason_code="adapter_exception", operation_count=1)
+        raise
+    _emit_adapter_invocation_event(item, started=started, status="ok", reason_code=None, operation_count=1)
+    return result
+
+
+def _invoke_batch_adapter(items: list[PreparedDispatch], context: DispatchRuntimeContext) -> list[dict[str, Any]]:
+    first = items[0]
+    if first.registration.batch_adapter is None:
+        raise OrchestrationError("batch_runtime_adapter_required")
+    started = time.monotonic()
+    try:
+        result = first.registration.batch_adapter(tuple(item.request for item in items), context)
+    except OrchestrationError as exc:
+        _emit_adapter_invocation_event(first, started=started, status="error", reason_code=exc.code, operation_count=len(items))
+        raise
+    except TimeoutError:
+        _emit_adapter_invocation_event(first, started=started, status="error", reason_code="adapter_timeout", operation_count=len(items))
+        raise
+    except Exception:
+        _emit_adapter_invocation_event(first, started=started, status="error", reason_code="adapter_exception", operation_count=len(items))
+        raise
+    _emit_adapter_invocation_event(first, started=started, status="ok", reason_code=None, operation_count=len(items))
+    return result
+
+
 def dispatch_prepared(
     prepared: tuple[PreparedDispatch, ...],
     *,
@@ -406,9 +476,7 @@ def dispatch_prepared(
                 raise OrchestrationError("batch_dispatch_binding_mismatch")
         try:
             if len(items) > 1:
-                if first.registration.batch_adapter is None:
-                    raise OrchestrationError("batch_runtime_adapter_required")
-                raw_results = first.registration.batch_adapter(tuple(x.request for x in items), base_context)
+                raw_results = _invoke_batch_adapter(items, base_context)
                 if not isinstance(raw_results, list) or len(raw_results) != len(items):
                     raise OrchestrationError("batch_operation_result_count_mismatch")
                 by_operation = {item.get("operation_id"): item for item in raw_results if isinstance(item, dict)}
@@ -432,7 +500,7 @@ def dispatch_prepared(
                     mode=mode,
                     dependency_context={"dependencies": dependency_values},
                 )
-                validated = validate_result(first, first.registration.adapter(first.request, context))
+                validated = validate_result(first, _invoke_adapter(first, context))
                 outcomes.append(validated)
                 outcome_by_operation[operation_id] = validated
         except OrchestrationError:
