@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K K2-A deterministic preparation ready for review on 2026-10-13; K1-05 fixture gap recorded; host evaluation count 0"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE on 2026-10-13 under PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS; K2-B 3/3 hosts evaluated; product compatibility defects 0"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -38,9 +38,14 @@ tags:
 > candidates are not phase-exit prerequisites. Phase I is checked complete by
 > the final exit review. Phase J is checked complete by the 2026-10-12
 > closure authority reconciliation. Post-Phase-J portability/runtime hygiene
-> (PR #327), K0 Charter PR #328, and K1 Scenario Set PR #329 are merged. K2-A
-> deterministic preparation is ready for review; K1-05 has an explicit fixture
-> gap. K2-B is NOT_STARTED; host evaluation count remains zero.
+> (PR #327), K0 Charter PR #328, K1 Scenario Set PR #329, K2-A PR #330, and the
+> K1-05 finalized stale-package supplement PR #331 are merged. K2-A is complete
+> with all eight deterministic assets and no preparation gaps. K2-B has completed
+> its initial three-host pilot: Hermes Agent and ChatGPT are `NATIVE_PASS`;
+> Antigravity CLI is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`; host evaluation
+> count is three, product compatibility defects found remain zero, and no fresh
+> market/source acquisition was introduced. Phase K is complete under
+> `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
 
 ---
 
@@ -1315,17 +1320,23 @@ Golden scenarios 應成為 new source、new evidence family、new MCP version、
 
 > **TW-Market 不只會抓資料；它能在主要台灣市場研究情境下維持一致、可驗證的 evidence semantics。**
 
-# [ ] Phase K — Multi-Agent Compatibility & Evaluation
+# [x] Phase K — Multi-Agent Compatibility & Evaluation
 
-### Current entry — K2-A deterministic preparation (2026-10-13)
+### Current entry — Phase K COMPLETE (2026-10-13)
 
-K0 and K1 are merged. K2-A prepares the shared market/source-network-free
-scenario assets and deterministic Result/Audit/Handoff packages under
-`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`.
-K1-05 remains an explicit fixture gap: no reusable finalized Unified V3 stale
-Result/Audit/Handoff package is available. No host evaluation has run; K2-B is
-NOT_STARTED. **Validate interoperability, not behavioral conformity.** The Phase K
-checklist remains unchecked until the full phase is complete.
+K0, K1, K2-A, and the K1-05 finalized stale-package supplement are merged. K2-A
+provides deterministic assets for all eight K1 scenarios with no preparation gaps.
+K2-B completed the initial three-host pilot under
+`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md` and
+`docs/governance/phase_k/PHASE_K_K2B_INITIAL_HOST_OBSERVATIONS_2026-10-13.md`.
+Hermes Agent and ChatGPT are `NATIVE_PASS`. Antigravity CLI remains
+`PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`; this is a non-blocking host limitation,
+not a core product defect. Host evaluation count is three, product compatibility
+defects found remain zero, and no fresh market/source acquisition occurred.
+Final adjudication passed and Owner accepted closure under
+`PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, recorded in
+`docs/governance/phase_k/PHASE_K_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-13.md`.
+**Validate interoperability, not behavioral conformity.** Phase K is complete.
 
 ## K.0 Phase Goal
 

@@ -3,18 +3,24 @@
 ## Current Phase K boundary (2026-10-13)
 
 Roadmap Phase J — Integrated Research Acceptance is **COMPLETE** under
-`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. Attempt #6 remains immutable
-historical evidence with its original harness disposition; its Result/Audit
-lineage and interpretation satisfy the Roadmap-level `real_agent_layer`.
-`remaining_obligations=[]`; Attempt #7 is not required. PR #326, PR #327, K0
-Charter PR #328, and K1 Scenario Set PR #329 are merged. Phase K is STARTED.
-K2-A deterministic preparation is ready for review; host evaluation count is
-zero. K1-05 has an explicit preparation gap: no reusable finalized Unified V3
-Result/Audit/Handoff fixture currently projects stale evidence while preserving
-availability. K2-B is NOT STARTED. Current Phase K authorities are
+`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`; Attempt #7 is not required.
+PR #326/#327, K0 PR #328, K1 PR #329, K2-A PR #330, and the K1-05 finalized
+stale-package supplement PR #331 are merged. K2-A now has deterministic assets
+for all eight K1 scenarios with `known_preparation_gaps=[]` and zero market/source
+network acquisition. Phase K is **COMPLETE** under
+`PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. K2-B — Small Multi-Host Pilot &
+Compatibility Matrix completed its initial three-host pilot: Hermes Agent and ChatGPT
+are `NATIVE_PASS`; Antigravity CLI is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`
+because of a headless large-output permission path. Host evaluation count is three,
+product compatibility defects found remain zero, and fresh market/source requests remain
+zero. Codex CLI remains an optional reference/fourth host. Current Phase K authorities are
 `docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`,
-`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`, and
-`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`.
+`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`,
+`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`,
+`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`,
+`docs/governance/phase_k/PHASE_K_K2B_INITIAL_HOST_OBSERVATIONS_2026-10-13.md`,
+`docs/governance/phase_k/PHASE_K_FINAL_ADJUDICATION_AND_CLOSURE_REVIEW_2026-10-13.md`, and
+`docs/governance/phase_k/PHASE_K_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-13.md`.
 See `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`.
 
 ## Current I3 production boundary (2026-10-05)
@@ -276,7 +282,7 @@ Current interpretation:
   and active with two sources, one logical route, and two runtime registrations;
   The Phase I final exit review passed; optional candidates remain deferred.
   Phase J is complete under the 2026-10-12 closure authority reconciliation;
-  Phase K K2-A deterministic preparation is ready for review; K1-05 fixture gap is explicit, K2-B is NOT_STARTED, and host evaluation count remains zero.
+  Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. K2-A completed all eight deterministic assets with no preparation gaps; K2-B completed the three-host pilot with Hermes Agent and ChatGPT `NATIVE_PASS`, Antigravity CLI `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`, host evaluation count three, zero product compatibility defects, and zero fresh market/source requests.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is
