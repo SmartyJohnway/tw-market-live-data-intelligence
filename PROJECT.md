@@ -1,20 +1,20 @@
 # PROJECT.md — Current Project Authority
 
-## Current Phase K boundary (2026-10-12)
+## Current Phase K boundary (2026-10-13)
 
 Roadmap Phase J — Integrated Research Acceptance is **COMPLETE** under
 `PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. Attempt #6 remains immutable
-historical evidence with its original harness disposition, while the preserved
-real-agent Result/Audit lineage and correct stale/currentness/no-trading
-interpretation satisfy the Roadmap-level `real_agent_layer` obligation.
-`remaining_obligations=[]`; Attempt #7 is not required. Tool-call sequencing and
-a successful host-level AI Handoff export witness carry forward to Phase K
-compatibility evaluation. PR #326, post-Phase-J portability PR #327, and K0
-Charter PR #328 are merged. Phase K is STARTED. K1 defines the eight-scenario
-Minimal Common Conformance Scenario Set; host evaluation count remains zero.
-Current Phase K authorities are
-`docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md` and
-`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`.
+historical evidence with its original harness disposition; its Result/Audit
+lineage and interpretation satisfy the Roadmap-level `real_agent_layer`.
+`remaining_obligations=[]`; Attempt #7 is not required. PR #326, PR #327, K0
+Charter PR #328, and K1 Scenario Set PR #329 are merged. Phase K is STARTED.
+K2-A deterministic preparation is ready for review; host evaluation count is
+zero. K1-05 has an explicit preparation gap: no reusable finalized Unified V3
+Result/Audit/Handoff fixture currently projects stale evidence while preserving
+availability. K2-B is NOT STARTED. Current Phase K authorities are
+`docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`,
+`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`, and
+`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`.
 See `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`.
 
 ## Current I3 production boundary (2026-10-05)
@@ -276,7 +276,7 @@ Current interpretation:
   and active with two sources, one logical route, and two runtime registrations;
   The Phase I final exit review passed; optional candidates remain deferred.
   Phase J is complete under the 2026-10-12 closure authority reconciliation;
-  Phase K K1 scenario definition is current; host evaluation count remains zero.
+  Phase K K2-A deterministic preparation is ready for review; K1-05 fixture gap is explicit, K2-B is NOT_STARTED, and host evaluation count remains zero.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is

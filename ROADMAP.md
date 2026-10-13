@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K K1 minimal common conformance scenario set defined on 2026-10-12; host evaluation count 0"
+status_reconciled_through: "Phase J COMPLETE; Phase K K2-A deterministic preparation ready for review on 2026-10-13; K1-05 fixture gap recorded; host evaluation count 0"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -30,7 +30,7 @@ tags:
 > **本文件不是 Git / release / deployment 狀態日誌。**  
 > **未來一般進度更新只需由 Owner 將 `[ ]` 改為 `[x]`；不需要因 milestone 完成而重寫 Roadmap。**
 
-> **Current repository reconciliation — 2026-10-05:** This file remains the
+> **Current repository reconciliation — 2026-10-13:** This file remains the
 > canonical Roadmap V3.2 authority; durable phase scope is unchanged. Broader
 > Phase G and Phase H scope remains incomplete. Phase I's accepted I1, I2, and
 > I3 capabilities satisfy its minimum optional cross-market and spot/derivatives
@@ -38,8 +38,9 @@ tags:
 > candidates are not phase-exit prerequisites. Phase I is checked complete by
 > the final exit review. Phase J is checked complete by the 2026-10-12
 > closure authority reconciliation. Post-Phase-J portability/runtime hygiene
-> (PR #327) and K0 Charter PR #328 are merged. Phase K K1 has defined the minimal
-> common conformance scenario set; host evaluation count remains zero.
+> (PR #327), K0 Charter PR #328, and K1 Scenario Set PR #329 are merged. K2-A
+> deterministic preparation is ready for review; K1-05 has an explicit fixture
+> gap. K2-B is NOT_STARTED; host evaluation count remains zero.
 
 ---
 
@@ -1316,14 +1317,15 @@ Golden scenarios 應成為 new source、new evidence family、new MCP version、
 
 # [ ] Phase K — Multi-Agent Compatibility & Evaluation
 
-### Current entry — K1 minimal common conformance set (2026-10-12)
+### Current entry — K2-A deterministic preparation (2026-10-13)
 
-K0 established the canonical Lean Compatibility Charter: **Validate interoperability,
-not behavioral conformity.** K1 now defines eight common, market/source-network-free
-compatibility scenarios in
-`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`.
-No host evaluation has been executed. The Phase K checklist remains unchecked until
-the full phase is complete.
+K0 and K1 are merged. K2-A prepares the shared market/source-network-free
+scenario assets and deterministic Result/Audit/Handoff packages under
+`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`.
+K1-05 remains an explicit fixture gap: no reusable finalized Unified V3 stale
+Result/Audit/Handoff package is available. No host evaluation has run; K2-B is
+NOT_STARTED. **Validate interoperability, not behavioral conformity.** The Phase K
+checklist remains unchecked until the full phase is complete.
 
 ## K.0 Phase Goal
 
