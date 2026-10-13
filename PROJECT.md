@@ -8,14 +8,16 @@ PR #326/#327, K0 PR #328, K1 PR #329, K2-A PR #330, and the K1-05 finalized
 stale-package supplement PR #331 are merged. K2-A now has deterministic assets
 for all eight K1 scenarios with `known_preparation_gaps=[]` and zero market/source
 network acquisition. Phase K remains STARTED and K2-B — Small Multi-Host Pilot &
-Compatibility Matrix is now STARTED at pilot-authority entry; host evaluation
-count remains zero. The initial pilot hosts are ChatGPT, Hermes Agent, and
-Antigravity CLI; Codex CLI is an optional reference/fourth host. Current Phase K
-authorities are
+Compatibility Matrix is in progress. Hermes Agent and Antigravity CLI have been
+evaluated; host evaluation count is two and the fresh ChatGPT conversation is
+pending. No product compatibility defect has been found; Antigravity CLI has one
+headless large-output host limitation. Codex CLI remains an optional reference/fourth
+host. Current Phase K authorities are
 `docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`,
 `docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`,
-`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`, and
-`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`.
+`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`,
+`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`, and
+`docs/governance/phase_k/PHASE_K_K2B_INITIAL_HOST_OBSERVATIONS_2026-10-13.md`.
 See `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`.
 
 ## Current I3 production boundary (2026-10-05)
@@ -277,7 +279,7 @@ Current interpretation:
   and active with two sources, one logical route, and two runtime registrations;
   The Phase I final exit review passed; optional candidates remain deferred.
   Phase J is complete under the 2026-10-12 closure authority reconciliation;
-  Phase K K2-A is complete with all eight deterministic assets and no preparation gaps; K2-B pilot authority is STARTED with ChatGPT, Hermes Agent, and Antigravity CLI, while host evaluation count remains zero.
+  Phase K K2-A is complete with all eight deterministic assets and no preparation gaps; K2-B is in progress with Hermes Agent and Antigravity CLI evaluated, host evaluation count two, no product compatibility defect found, and the fresh ChatGPT test conversation pending.
 
 I1 bounded-live timing semantics are recorded without changing the accepted
 evidence: the execution/acquisition reference timestamp is

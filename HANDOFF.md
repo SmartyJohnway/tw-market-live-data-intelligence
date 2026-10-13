@@ -12,9 +12,13 @@ Compatibility Matrix is now STARTED at pilot-authority entry under
 `docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`.
 Initial hosts are ChatGPT, Hermes Agent, and Antigravity CLI; Codex CLI is an
 optional reference/fourth host. A single shared deterministic preparation instance
-must be reused across hosts. Host evaluation count is still zero. The next action
-is host transport/profile attachment followed by the first controlled K1 scenario.
-Do not broaden the matrix or make fresh market/source requests.
+is reused across hosts. Hermes Agent and Antigravity CLI are now evaluated; host
+evaluation count is two. Hermes is `NATIVE_PASS`. Antigravity is
+`PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION` because its headless large
+Result/Handoff synthesis may require additional host-side file/command permissions;
+no TW-Market product defect was found. The next action is the fresh ChatGPT test
+conversation through Secure MCP Tunnel. Do not broaden the matrix or make fresh
+market/source requests.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
@@ -317,7 +321,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K K2-A is complete with all eight deterministic assets and no preparation gaps; K2-B pilot authority is STARTED with ChatGPT, Hermes Agent, and Antigravity CLI, and host evaluation count remains zero.**
+Phase K K2-A is complete with all eight deterministic assets and no preparation gaps; K2-B is in progress with Hermes Agent and Antigravity CLI evaluated, host evaluation count two, no product compatibility defect found, and the fresh ChatGPT test conversation pending.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The

@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K K2-B small multi-host pilot started on 2026-10-13 after K2-A completed with all eight deterministic assets; host evaluation count 0"
+status_reconciled_through: "Phase J COMPLETE; Phase K K2-B small multi-host pilot in progress on 2026-10-13; Hermes and Antigravity CLI evaluated, host evaluation count 2; ChatGPT pending"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -41,7 +41,8 @@ tags:
 > (PR #327), K0 Charter PR #328, K1 Scenario Set PR #329, K2-A PR #330, and the
 > K1-05 finalized stale-package supplement PR #331 are merged. K2-A is complete
 > with all eight deterministic assets and no preparation gaps. K2-B is STARTED
-> at the small multi-host pilot authority entry; host evaluation count remains zero.
+> and in progress: Hermes Agent and Antigravity CLI are evaluated, host evaluation
+> count is two, no product compatibility defect has been found, and ChatGPT remains pending.
 
 ---
 
@@ -1326,9 +1327,12 @@ gaps. K2-B is STARTED under
 `docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`.
 The initial pilot hosts are ChatGPT, Hermes Agent, and Antigravity CLI, using one
 shared deterministic preparation instance; Codex CLI is an optional reference
-host. No host evaluation has run and no fresh market/source acquisition is part of
-this pilot. **Validate interoperability, not behavioral conformity.** The Phase K
-checklist remains unchecked until the full phase is complete.
+host. Hermes Agent and Antigravity CLI have now been evaluated; host evaluation
+count is two, no product compatibility defect has been found, and ChatGPT remains
+pending. Antigravity CLI exposes a headless large-output permission limitation,
+classified as a host limitation rather than a core defect. No fresh market/source
+acquisition is part of this pilot. **Validate interoperability, not behavioral conformity.**
+The Phase K checklist remains unchecked until the full phase is complete.
 
 ## K.0 Phase Goal
 

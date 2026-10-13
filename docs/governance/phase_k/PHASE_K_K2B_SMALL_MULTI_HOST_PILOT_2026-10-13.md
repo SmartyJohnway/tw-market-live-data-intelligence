@@ -1,7 +1,7 @@
 # Phase K K2-B — Small Multi-Host Pilot & Compatibility Matrix
 
 **Date:** 2026-10-13
-**Status:** STARTED; pilot authority established; host evaluation count 0
+**Status:** STARTED; Hermes and Antigravity CLI evaluated; ChatGPT pending; host evaluation count 2
 
 ## Purpose
 
