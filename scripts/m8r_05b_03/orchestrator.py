@@ -7,7 +7,6 @@ from .controlled_dispatch import claim_and_dispatch_approved
 from .dispatch import RuntimeAdapterRegistry
 from .evidence_aggregation import aggregate_dispatch_outcomes
 from .receipt import finalize_consumption_and_write_receipt
-from server.services.phase_h_h2_twse_exright_executor import derive_h4_for_completed_plan
 
 
 def execute_controlled_plan(
@@ -47,6 +46,10 @@ def execute_controlled_plan(
 
     derived_artifacts = []
     if mode == "execute-approved":
+        # Keep the H2 module lazy: it imports this package's primitives, so an
+        # eager module-level import creates a cycle during direct H2 imports.
+        from server.services.phase_h_h2_twse_exright_executor import derive_h4_for_completed_plan
+
         derived_artifacts = derive_h4_for_completed_plan(
             plan, dispatch_res["dispatch_outcomes"], output_root=output_root,
         )

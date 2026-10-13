@@ -254,7 +254,12 @@ def strip_a26_production_adapter_addition(text: str) -> str:
 
 
 def strip_a6_transport_instrumentation(text: str) -> str:
-    """Project only the A6 operation-context wrapper from the shared adapter."""
+    """Normalize either the historical A6 wrapper or current product call.
+
+    This is a historical compatibility projection: old captured snapshots keep
+    their original shape, while current product source may already have removed
+    the acceptance-only wrapper.
+    """
     wrapper = (
         '        from scripts.a6_session_transport import operation_context\n'
         '        with operation_context(int(os.environ.get("A6_ATTEMPT", "1")), "H3", request["operation_id"]):\n'
@@ -281,9 +286,11 @@ def strip_a6_transport_instrumentation(text: str) -> str:
         '            ssl_policy="compatibility",\n'
         '        )\n'
     )
-    if wrapper not in text:
-        raise AssertionError("a6_h3_transport_instrumentation_shape_changed")
-    return text.replace(wrapper, baseline, 1)
+    if wrapper in text:
+        return text.replace(wrapper, baseline, 1)
+    if baseline in text:
+        return text
+    raise AssertionError("h3_transport_call_shape_changed")
 
 
 def strip_a3_h2_production_adapter_addition(text: str) -> str:
