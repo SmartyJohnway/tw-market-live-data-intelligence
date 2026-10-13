@@ -12,7 +12,7 @@ from .services.unified_mode_b2_execution import execute_mode_b2_once
 from .services.unified_mode_c import ModeCError, build_mode_c_ai_handoff, build_mode_c_result_package, read_mode_c_audit
 from .services.unified_local_service import LocalServiceError, describe_capabilities
 from .services.unified_local_operator_action import LocalOperatorActionError, fetch_market_evidence
-import uuid
+from .operational_diagnostics import current_trace_id
 
 router = APIRouter(
     prefix="/api/unified",
@@ -28,7 +28,7 @@ async def get_capabilities():
     try:
         return JSONResponse(status_code=200, content=describe_capabilities())
     except LocalServiceError as exc:
-        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": current_trace_id()})
 
 
 @router.post("/validate-request")
@@ -52,23 +52,23 @@ async def validate_request(request: Request):
         raise HTTPException(status_code=422, detail="invalid_api_envelope: missing 'request' key")
 
     target_request = payload["request"]
-    
+
     # 4. Invoke Mode A adapter
     try:
         validation_result = validate_mode_a_request(target_request)
     except ModeASecurityMasterUnavailable as e:
         if e.reason_code == "NOT_INITIALIZED":
-            return JSONResponse(status_code=503, content={"error": "SECURITY_MASTER_NOT_INITIALIZED", "trace_id": str(uuid.uuid4())})
-        return JSONResponse(status_code=409, content={"error": "canonical_security_master_unavailable", "trace_id": str(uuid.uuid4())})
+            return JSONResponse(status_code=503, content={"error": "SECURITY_MASTER_NOT_INITIALIZED", "trace_id": current_trace_id()})
+        return JSONResponse(status_code=409, content={"error": "canonical_security_master_unavailable", "trace_id": current_trace_id()})
     except FileNotFoundError as e:
         error_msg = str(e)
         if "security_master_snapshot" in error_msg:
-            return JSONResponse(status_code=409, content={"error": "canonical_security_master_unavailable", "trace_id": str(uuid.uuid4())})
-        return JSONResponse(status_code=500, content={"error": "canonical_dependency_missing", "trace_id": str(uuid.uuid4())})
+            return JSONResponse(status_code=409, content={"error": "canonical_security_master_unavailable", "trace_id": current_trace_id()})
+        return JSONResponse(status_code=500, content={"error": "canonical_dependency_missing", "trace_id": current_trace_id()})
     except ValueError as e:
-        return JSONResponse(status_code=500, content={"error": "canonical_dependency_malformed", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=500, content={"error": "canonical_dependency_malformed", "trace_id": current_trace_id()})
     except RuntimeError as e:
-        return JSONResponse(status_code=500, content={"error": "mode_a_internal_error", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=500, content={"error": "mode_a_internal_error", "trace_id": current_trace_id()})
 
     # 5. Return canonical F3 result directly
     return JSONResponse(status_code=200, content=validation_result)
@@ -100,7 +100,7 @@ async def preview_request(request: Request):
             status_code=409,
             content={
                 "error": "canonical_security_master_unavailable",
-                "trace_id": str(uuid.uuid4()),
+                "trace_id": current_trace_id(),
             },
         )
     except ModeB1PlanningUnavailable:
@@ -108,13 +108,13 @@ async def preview_request(request: Request):
             status_code=409,
             content={
                 "error": "mode_b1_planning_dependency_unavailable",
-                "trace_id": str(uuid.uuid4()),
+                "trace_id": current_trace_id(),
             },
         )
     except RuntimeError:
         return JSONResponse(
             status_code=500,
-            content={"error": "mode_b1_internal_error", "trace_id": str(uuid.uuid4())},
+            content={"error": "mode_b1_internal_error", "trace_id": current_trace_id()},
         )
     return JSONResponse(status_code=200, content=result)
 
@@ -137,11 +137,11 @@ async def create_authorization(request: Request):
             "authorization_confirmation_required", "authorization_ttl_invalid",
             "approval_scope_mode_invalid", "approval_scope_input_conflict",
         } else 409
-        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": current_trace_id()})
     except FileNotFoundError:
-        return JSONResponse(status_code=409, content={"error": "canonical_security_master_unavailable", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=409, content={"error": "canonical_security_master_unavailable", "trace_id": current_trace_id()})
     except Exception:
-        return JSONResponse(status_code=500, content={"error": "mode_b2_internal_error", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=500, content={"error": "mode_b2_internal_error", "trace_id": current_trace_id()})
     return JSONResponse(status_code=200, content=result)
 
 
@@ -163,9 +163,9 @@ async def execute_authorization(request: Request):
             "execution_confirmation_required", "operator_confirmation_reference_invalid",
             "network_execution_confirmation_required",
         } else 409
-        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": current_trace_id()})
     except Exception:
-        return JSONResponse(status_code=500, content={"error": "mode_b2_execution_internal_error", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=500, content={"error": "mode_b2_execution_internal_error", "trace_id": current_trace_id()})
     return JSONResponse(status_code=200, content=result)
 
 
@@ -183,9 +183,9 @@ async def fetch_evidence(request: Request):
         result = fetch_market_evidence(payload)
     except LocalOperatorActionError as exc:
         status = 422 if exc.code in {"invalid_api_envelope", "market_fetch_requires_execute_mode"} else 409
-        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": current_trace_id()})
     except Exception:
-        return JSONResponse(status_code=500, content={"error": "local_operator_action_internal_error", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=500, content={"error": "local_operator_action_internal_error", "trace_id": current_trace_id()})
     return JSONResponse(status_code=200, content=result)
 
 
@@ -203,9 +203,9 @@ async def build_result_package(request: Request):
         result = build_mode_c_result_package(payload)
     except ModeCError as exc:
         status = 422 if exc.code in {"invalid_api_envelope", "control_package_id_invalid"} else 409
-        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": current_trace_id()})
     except Exception:
-        return JSONResponse(status_code=500, content={"error": "mode_c_internal_error", "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=500, content={"error": "mode_c_internal_error", "trace_id": current_trace_id()})
     return JSONResponse(status_code=200, content=result)
 
 
@@ -214,7 +214,7 @@ async def download_result_audit(control_package_id: str):
     try:
         return JSONResponse(status_code=200, content=read_mode_c_audit(control_package_id))
     except ModeCError as exc:
-        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": current_trace_id()})
 
 
 @router.get("/result-package/{control_package_id}/handoff")
@@ -223,4 +223,4 @@ async def read_ai_handoff(control_package_id: str):
     try:
         return JSONResponse(status_code=200, content=build_mode_c_ai_handoff(control_package_id))
     except ModeCError as exc:
-        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": str(uuid.uuid4())})
+        return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": current_trace_id()})

@@ -2,7 +2,10 @@
 from __future__ import annotations
 
 import json
+import time
 from typing import Any
+
+from server.operational_diagnostics import build_event, emit_stderr, new_trace_id
 
 from mcp.server import Server
 from mcp.types import CallToolResult, TextContent
@@ -60,34 +63,50 @@ async def dispatch_safe_tool(
     tool_contract_snapshot: ToolContractSnapshot,
 ) -> CallToolResult:
     """Dispatch only fixed safe operations; no generic REST proxy exists."""
-    if not tool_contract_snapshot.validate_arguments(name, arguments):
-        return _invalid_arguments()
-    args = arguments
+    trace_id = new_trace_id()
+    started = time.monotonic()
+    status = "error"
+    reason_code: str | None = None
     try:
+        if not tool_contract_snapshot.validate_arguments(name, arguments):
+            reason_code = "invalid_tool_arguments"
+            return _invalid_arguments()
+        args = arguments
         if name == "market_describe_capabilities":
-            payload = await client.describe_capabilities()
+            payload = await client.describe_capabilities(trace_id=trace_id)
         elif name == "market_validate_request":
-            payload = await client.validate_request(args)
+            payload = await client.validate_request(args, trace_id=trace_id)
         elif name == "market_preview_request":
-            payload = await client.preview_request(args)
+            payload = await client.preview_request(args, trace_id=trace_id)
         elif name == "market_fetch_evidence":
             if args["request"].get("execution_mode") != "execute":
+                reason_code = "market_fetch_requires_execute_mode"
                 return CallToolResult(
                     content=[TextContent(type="text", text='{"error":"market_fetch_requires_execute_mode"}')],
                     structuredContent={"error": "market_fetch_requires_execute_mode"}, isError=True,
                 )
-            payload = await client.fetch_evidence(args)
+            payload = await client.fetch_evidence(args, trace_id=trace_id)
         elif name == "market_read_result":
-            payload = await client.read_result(args["control_package_id"])
+            payload = await client.read_result(args["control_package_id"], trace_id=trace_id)
         elif name == "market_export_ai_handoff":
-            payload = await client.export_ai_handoff(args["control_package_id"])
+            payload = await client.export_ai_handoff(args["control_package_id"], trace_id=trace_id)
         else:
+            reason_code = "invalid_tool_arguments"
             return _invalid_arguments()
+        status = "ok"
         return _success(name, payload)
     except LocalServiceClientError as exc:
-        return map_local_service_error(exc)
+        reason_code = exc.code
+        return map_local_service_error(exc, trace_id=trace_id)
     except Exception:
-        return map_internal_error()
+        reason_code = "mcp_adapter_internal_error"
+        return map_internal_error(trace_id=trace_id)
+    finally:
+        emit_stderr(build_event(
+            component="mcp", event_code="mcp.tool.completed", status=status,
+            trace_id=trace_id, reason_code=reason_code,
+            metrics={"duration_ms": round((time.monotonic() - started) * 1000, 3)},
+        ))
 
 
 def build_unified_market_evidence_mcp_server(

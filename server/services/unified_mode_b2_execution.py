@@ -5,9 +5,11 @@ import json
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
+from server.operational_diagnostics import TRACE_ENV, build_event, current_trace_id, emit_jsonl
 from server.services.unified_mode_b2 import ModeB2Error
 
 
@@ -21,6 +23,26 @@ def _timeout_seconds(payload: dict[str, Any]) -> int:
     # Eight committed market/research route groups permit at most 15 seconds
     # each; no browser value is used to extend this bounded parent deadline.
     return min(MAX_CHILD_TIMEOUT_SECONDS, (8 * 15) + FIXED_OVERHEAD_SECONDS)
+
+
+def _emit_child_event(
+    trace_id: str, started: float, *, status: str, reason_code: str | None,
+    authorization_id: str, child_returncode: int | None = None,
+    execution_receipt_id: str | None = None,
+) -> None:
+    references = {"authorization_id": authorization_id}
+    if execution_receipt_id:
+        references["execution_receipt_id"] = execution_receipt_id
+    metrics: dict[str, int | float | bool | None] = {
+        "duration_ms": round((time.monotonic() - started) * 1000, 3)
+    }
+    if child_returncode is not None:
+        metrics["child_returncode"] = child_returncode
+    emit_jsonl(build_event(
+        component="execute_once_parent", event_code="execution.child.completed",
+        status=status, trace_id=trace_id, reason_code=reason_code,
+        references=references, metrics=metrics,
+    ))
 
 
 def execute_mode_b2_once(payload: dict[str, Any]) -> dict[str, Any]:
@@ -51,22 +73,42 @@ def execute_mode_b2_once(payload: dict[str, Any]) -> dict[str, Any]:
     ]
     if payload["confirm_network_execution"]:
         command.append("--confirm-network-execution")
+    trace_id = current_trace_id()
     environment = os.environ.copy()
+    environment[TRACE_ENV] = trace_id
+    started = time.monotonic()
     try:
         child = subprocess.run(
             command, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             timeout=_timeout_seconds(payload), env=environment,
         )
     except subprocess.TimeoutExpired as exc:
+        _emit_child_event(
+            trace_id, started, status="error", reason_code="mode_b2_execution_timeout",
+            authorization_id=control_id,
+        )
         raise ModeB2Error("mode_b2_execution_timeout") from exc
     try:
         result = json.loads(child.stdout)
     except json.JSONDecodeError as exc:
+        _emit_child_event(
+            trace_id, started, status="error", reason_code="mode_b2_execution_child_protocol_invalid",
+            authorization_id=control_id, child_returncode=child.returncode,
+        )
         raise ModeB2Error("mode_b2_execution_child_protocol_invalid") from exc
     if not isinstance(result, dict):
+        _emit_child_event(
+            trace_id, started, status="error", reason_code="mode_b2_execution_child_protocol_invalid",
+            authorization_id=control_id, child_returncode=child.returncode,
+        )
         raise ModeB2Error("mode_b2_execution_child_protocol_invalid")
     if child.returncode == 2:
-        raise ModeB2Error(str(result.get("error") or "mode_b2_execution_unavailable"))
+        reason = str(result.get("error") or "mode_b2_execution_unavailable")
+        _emit_child_event(
+            trace_id, started, status="error", reason_code=reason,
+            authorization_id=control_id, child_returncode=child.returncode,
+        )
+        raise ModeB2Error(reason)
     required = {"schema_version", "authorization_id", "consumption_state", "operation_statuses", "aggregation_status", "execution_receipt_id", "evidence_bundle_id", "transport_mode", "test_transport_active", "external_market_network_attempted", "external_market_network_executed"}
     transport_mode = result.get("transport_mode")
     transport_valid = (
@@ -74,7 +116,16 @@ def execute_mode_b2_once(payload: dict[str, Any]) -> dict[str, Any]:
         or (transport_mode == "production_transport" and result.get("test_transport_active") is False and type(result.get("external_market_network_attempted")) is bool and type(result.get("external_market_network_executed")) is bool)
     )
     if child.returncode != 0 or set(result) != required or result.get("authorization_id") != control_id or not transport_valid:
+        _emit_child_event(
+            trace_id, started, status="error", reason_code="mode_b2_execution_child_protocol_invalid",
+            authorization_id=control_id, child_returncode=child.returncode,
+        )
         raise ModeB2Error("mode_b2_execution_child_protocol_invalid")
+    _emit_child_event(
+        trace_id, started, status="ok", reason_code=None,
+        authorization_id=control_id, child_returncode=child.returncode,
+        execution_receipt_id=result.get("execution_receipt_id"),
+    )
     return result
 
 

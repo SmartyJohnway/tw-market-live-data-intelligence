@@ -196,7 +196,8 @@ def test_not_initialized_remains_doctor_warning():
 def test_doctor_uses_severity_aggregation_and_keeps_not_initialized_warning(tmp_path):
     base = {"status": "SERVICE_ALIVE", "service": {"process": "RUNNING", "alive": True},
             "identity": {"status": "ACTIVE", "root": str(tmp_path)},
-            "paths": {key: str(tmp_path) for key in ("security_master_root", "watchlist_root", "control_root")},
+            "paths": {**{key: str(tmp_path) for key in ("security_master_root", "watchlist_root", "control_root")},
+                      "operational_event_path": str(tmp_path / "operational-events.jsonl")},
             "readiness": {"routes": {"projection": "READY"}},
             "mcp": {"status": "READY", "service_url": "http://127.0.0.1:8000", "local_service_reachable": True}, "checks": []}
 

@@ -18,17 +18,25 @@ no-silent-migration, backup/restore, and optional Agent integrations. `v1.5.0` i
 provisional stable target; `v2.0.0` is reserved for an explicitly approved breaking
 change.
 
-L1-A0 inventory is complete. L1-A1 bounded Owner review repairs are implemented, technical
-review is `L1_A1_ACCEPTANCE_REVIEW_PASS`, and Owner acceptance/merge authorization is
-recorded as `L1_A1_OWNER_ACCEPTED_FOR_MERGE`.
-The current product entry point is `python -m scripts.tw_market` with `start`, `status`,
-`stop`, and read-only `doctor`; it wraps the existing Workbench service. Security Master
-initialization remains explicit. See
-`docs/governance/phase_l/PHASE_L_L1_A1_MINIMUM_RUNTIME_LIFECYCLE_STATUS_DOCTOR_2026-10-13.md`.
-After A1 merge, create a fresh L1 worktree from the new main and select the next smallest
-operability gap from L0/L1 plus A0 inventory; do not pre-name it A2 or infer implementation
-authorization. Do not begin L2-L7, broaden the host matrix, add evidence families, or perform
-market/source acquisition.
+L1-A0 inventory is complete. L1-A1 minimum lifecycle/status/doctor passed
+`L1_A1_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted under `L1_A1_OWNER_ACCEPTED_FOR_MERGE`,
+and is merged through PR #335. The product entry point remains `python -m scripts.tw_market`
+with `start`, `status`, `stop`, and read-only `doctor`; Security Master initialization remains
+explicit.
+
+The next-tranche selection chose **Operational Correlation Foundation** without assigning an
+A2 name. Implementation and technical review are complete under
+`L1_OPERATIONAL_CORRELATION_FOUNDATION_ACCEPTANCE_REVIEW_PASS` and Owner acceptance / merge
+authorization is recorded as `L1_OPERATIONAL_CORRELATION_FOUNDATION_OWNER_ACCEPTED_FOR_MERGE`;
+commit, push, PR, and merge are the current authorized closure operations. Current implementation adds dedicated runtime
+`trace_id` propagation across MCP → Local Service → execute-once private boundaries and a
+bounded ephemeral diagnostic sink; it does not change Audit/Result/authorization semantics or
+the six-tool MCP surface. See
+`docs/governance/phase_l/PHASE_L_L1_OPERATIONAL_CORRELATION_FOUNDATION_2026-10-13.md`.
+
+**Current stop boundary:** close this accepted tranche through commit / PR / exact-head review /
+merge. Do not start another L1 tranche, L2-L7, a new evidence family, or market/source
+acquisition implicitly.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.

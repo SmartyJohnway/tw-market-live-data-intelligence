@@ -40,28 +40,38 @@ FORBIDDEN = {
 class RecordingClient:
     def __init__(self):
         self.calls = []
+        self.traces = []
 
-    async def describe_capabilities(self):
+    def _trace(self, trace_id):
+        self.traces.append(trace_id)
+
+    async def describe_capabilities(self, *, trace_id=None):
+        self._trace(trace_id)
         self.calls.append(("describe", None))
         return {"service_contract_version": "unified_market_evidence_local_service.v2"}
 
-    async def validate_request(self, envelope):
+    async def validate_request(self, envelope, *, trace_id=None):
+        self._trace(trace_id)
         self.calls.append(("validate", envelope))
         return {"validation_status": "valid"}
 
-    async def preview_request(self, envelope):
+    async def preview_request(self, envelope, *, trace_id=None):
+        self._trace(trace_id)
         self.calls.append(("preview", envelope))
         return {"status": "ready_for_confirmation"}
 
-    async def read_result(self, identifier):
+    async def read_result(self, identifier, *, trace_id=None):
+        self._trace(trace_id)
         self.calls.append(("read", identifier))
         return {"canonical_result": {"status": "success"}}
 
-    async def export_ai_handoff(self, identifier):
+    async def export_ai_handoff(self, identifier, *, trace_id=None):
+        self._trace(trace_id)
         self.calls.append(("export", identifier))
         return {"ai_ready_markdown": "# governed"}
 
-    async def fetch_evidence(self, envelope):
+    async def fetch_evidence(self, envelope, *, trace_id=None):
+        self._trace(trace_id)
         self.calls.append(("fetch", envelope))
         return {"ai_ready_markdown": "# fetched", "canonical_result": {"status": "success"}}
 
@@ -147,6 +157,9 @@ def test_dispatch_uses_exact_envelopes_and_rejects_preview_action_before_service
         ("describe", None), ("validate", {"request": request}), ("preview", {"request": request}),
         ("read", identifier), ("export", identifier), ("fetch", {"request": request | {"execution_mode": "execute"}}),
     ]
+    assert len(client.traces) == 6
+    assert all(isinstance(trace, str) and len(trace) == 36 for trace in client.traces)
+    assert len(set(client.traces)) == 6
 
 
 def test_malformed_control_identifier_is_rejected_before_client_dispatch():
