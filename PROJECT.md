@@ -1,27 +1,26 @@
 # PROJECT.md — Current Project Authority
 
-## Current Phase K boundary (2026-10-13)
+## Current Phase L boundary (2026-10-13)
 
-Roadmap Phase J — Integrated Research Acceptance is **COMPLETE** under
-`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`; Attempt #7 is not required.
-PR #326/#327, K0 PR #328, K1 PR #329, K2-A PR #330, and the K1-05 finalized
-stale-package supplement PR #331 are merged. K2-A now has deterministic assets
-for all eight K1 scenarios with `known_preparation_gaps=[]` and zero market/source
-network acquisition. Phase K is **COMPLETE** under
-`PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. K2-B — Small Multi-Host Pilot &
-Compatibility Matrix completed its initial three-host pilot: Hermes Agent and ChatGPT
-are `NATIVE_PASS`; Antigravity CLI is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`
-because of a headless large-output permission path. Host evaluation count is three,
-product compatibility defects found remain zero, and fresh market/source requests remain
-zero. Codex CLI remains an optional reference/fourth host. Current Phase K authorities are
-`docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`,
-`docs/governance/phase_k/PHASE_K_K1_MINIMAL_COMMON_CONFORMANCE_SCENARIO_SET_2026-10-12.md`,
-`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`,
-`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`,
-`docs/governance/phase_k/PHASE_K_K2B_INITIAL_HOST_OBSERVATIONS_2026-10-13.md`,
-`docs/governance/phase_k/PHASE_K_FINAL_ADJUDICATION_AND_CLOSURE_REVIEW_2026-10-13.md`, and
-`docs/governance/phase_k/PHASE_K_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-13.md`.
-See `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`.
+Roadmap Phase J and Phase K are **COMPLETE**. Phase K closed under
+`PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with three evaluated hosts, two
+`NATIVE_PASS`, one bounded `HOST_LIMITATION`, zero product compatibility defects,
+and zero fresh market/source acquisition during K2-B.
+
+Phase L — Production Hardening & Extension Architecture is now **STARTED**. L0 —
+Production Boundary & Architecture Contract is **FROZEN** under
+`PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN` in
+`docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md`.
+The contract freezes D01-D12: product goal, versioning rule, Windows platform tiers,
+Native/Docker deployment profiles, machine/user/path/state portability, application/state
+separation, state classes, configuration precedence, lifecycle UX, migration/rollback,
+backup/restore, and optional Agent integrations. Provisional release target is `v1.5.0`;
+`v2.0.0` requires an explicitly approved breaking change.
+
+The next authorized Phase L boundary is **L1 — Runtime Operability**. L1 must remain
+lean: start/stop/status/health/doctor, structured operational diagnostics, correlation and
+bounded runtime telemetry. Do not begin L2-L7, add evidence families, or broaden live-source
+activity implicitly.
 
 ## Current I3 production boundary (2026-10-05)
 
