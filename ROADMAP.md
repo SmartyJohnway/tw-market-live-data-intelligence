@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K K2-B small multi-host pilot in progress on 2026-10-13; Hermes and Antigravity CLI evaluated, host evaluation count 2; ChatGPT pending"
+status_reconciled_through: "Phase J COMPLETE; Phase K K2-B initial three-host pilot complete on 2026-10-13; Hermes and ChatGPT NATIVE_PASS; Antigravity CLI PARTIAL_HOST_LIMITATION / HOST_LIMITATION; host evaluation count 3; product compatibility defects 0"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -40,9 +40,11 @@ tags:
 > closure authority reconciliation. Post-Phase-J portability/runtime hygiene
 > (PR #327), K0 Charter PR #328, K1 Scenario Set PR #329, K2-A PR #330, and the
 > K1-05 finalized stale-package supplement PR #331 are merged. K2-A is complete
-> with all eight deterministic assets and no preparation gaps. K2-B is STARTED
-> and in progress: Hermes Agent and Antigravity CLI are evaluated, host evaluation
-> count is two, no product compatibility defect has been found, and ChatGPT remains pending.
+> with all eight deterministic assets and no preparation gaps. K2-B has completed
+> its initial three-host pilot: Hermes Agent and ChatGPT are `NATIVE_PASS`;
+> Antigravity CLI is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`; host evaluation
+> count is three, product compatibility defects found remain zero, and no fresh
+> market/source acquisition was introduced.
 
 ---
 
@@ -1323,16 +1325,17 @@ Golden scenarios 應成為 new source、new evidence family、new MCP version、
 
 K0, K1, K2-A, and the K1-05 finalized stale-package supplement are merged. K2-A
 now provides deterministic assets for all eight K1 scenarios with no preparation
-gaps. K2-B is STARTED under
-`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`.
-The initial pilot hosts are ChatGPT, Hermes Agent, and Antigravity CLI, using one
-shared deterministic preparation instance; Codex CLI is an optional reference
-host. Hermes Agent and Antigravity CLI have now been evaluated; host evaluation
-count is two, no product compatibility defect has been found, and ChatGPT remains
-pending. Antigravity CLI exposes a headless large-output permission limitation,
-classified as a host limitation rather than a core defect. No fresh market/source
-acquisition is part of this pilot. **Validate interoperability, not behavioral conformity.**
-The Phase K checklist remains unchecked until the full phase is complete.
+gaps. K2-B initial three-host pilot is COMPLETE under
+`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md` and
+`docs/governance/phase_k/PHASE_K_K2B_INITIAL_HOST_OBSERVATIONS_2026-10-13.md`.
+The pilot hosts were ChatGPT, Hermes Agent, and Antigravity CLI, using one shared
+deterministic preparation instance; Codex CLI remains an optional reference host.
+Hermes Agent and ChatGPT are `NATIVE_PASS`. Antigravity CLI is
+`PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION` because headless large Result/Handoff
+synthesis may require additional host-side permissions; this is not a core defect.
+Host evaluation count is three, product compatibility defects found remain zero,
+and no fresh market/source acquisition occurred. **Validate interoperability, not behavioral conformity.**
+The Phase K checklist remains unchecked pending explicit phase adjudication / closure.
 
 ## K.0 Phase Goal
 

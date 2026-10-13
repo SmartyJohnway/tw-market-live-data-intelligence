@@ -1,8 +1,8 @@
 # Phase K K2-B — Initial Host Observations
 
 **Date:** 2026-10-13
-**Status:** Hermes evaluated; Antigravity CLI evaluated; ChatGPT pending
-**Host evaluation count:** 2
+**Status:** Initial three-host pilot evaluated; ChatGPT and Hermes native pass; Antigravity CLI host limitation recorded
+**Host evaluation count:** 3
 
 This record summarizes adjudicable observations only. Raw transcripts remain runtime-only evidence and are not product dependencies. No hidden reasoning is captured or required.
 
@@ -64,10 +64,29 @@ This is a host/output-permission limitation, not a product compatibility defect.
 
 Runtime evidence references: `k2b-host-evidence/antigravity/K1-01`, `K1-02-R1`, `K1-03`, `K1-04`/`K1-04-R1`/`K1-04-R2`, and `K1-05` through `K1-07`.
 
+## ChatGPT through Secure MCP Tunnel
+
+Overall pilot disposition: **NATIVE_PASS**; overall finding class: **NONE**. The test subject was a fresh ChatGPT conversation using the dedicated `tw-market-local` Secure MCP Tunnel to the same deterministic Local Service.
+
+| Scenario | Outcome | Finding class | Observed TW-Market tools | Semantic observation |
+| --- | --- | --- | --- | --- |
+| K1-01 | NATIVE_PASS | NONE | `market_describe_capabilities` | Exactly six public tools; five read-only and `market_fetch_evidence` as the sole bounded execution entry point; no fixed pipeline assumed. |
+| K1-02 | NATIVE_PASS | NONE | `market_validate_request` | Bare `3333` remained ambiguous across TPEX/TWSE durable identities; clarification required; no acquisition. |
+| K1-03 | NATIVE_PASS | NONE | `market_validate_request`, `market_preview_request` | Resolved `TPEX:6488` execute-mode request reached `ready_for_confirmation` / `plan_ready` and stopped before authorization/fetch. |
+| K1-04 | NATIVE_PASS | NONE | `market_read_result`, `market_export_ai_handoff` | Result/Audit/citation/Handoff lineage was preserved; representative non-trivial structured Result/Handoff output was handled successfully; no canonical read/export order was asserted. |
+| K1-05 | NATIVE_PASS | NONE | `market_read_result`, `market_export_ai_handoff` | Available evidence was correctly distinguished from stale currentness; source, retrieval, and materialization timestamps were not conflated; no trading claim was produced. |
+| K1-06 | NATIVE_PASS | NONE | `market_read_result`, `market_export_ai_handoff` | `partially_failed` semantics, successful current observation, failed official EOD family, and citation/provenance boundaries were preserved without fallback. |
+| K1-07 | NATIVE_PASS | NONE | `market_describe_capabilities`; schema validation at MCP boundary | `financial_statements` was rejected as unsupported before canonical request/service execution; no substitution, fabrication, preview, fetch, or source acquisition occurred. |
+| K1-08 | NATIVE_PASS | NONE | K1-01 + K1-04 evidence | Secure MCP Tunnel transport, six-tool discovery, structured tool calls, and representative Result/Handoff output all succeeded without an observed host output ceiling. |
+
+ChatGPT runtime evidence was observed through the dedicated tunnel and Local Service logs. K1-07 schema rejection occurred in the MCP/request-schema boundary before a Local Service validation POST, which is the expected fail-closed behavior rather than a missing validation step.
+
 ## Current pilot state
 
-- Evaluated hosts: **2 / 3** — Hermes, Antigravity CLI.
-- Pending initial host: **ChatGPT fresh conversation through Secure MCP Tunnel**.
+- Evaluated hosts: **3 / 3** — Hermes, Antigravity CLI, ChatGPT.
+- Initial K2-B three-host pilot: **COMPLETE**.
+- Native-pass hosts: **2** — Hermes, ChatGPT.
+- Host-limited host: **1** — Antigravity CLI (`PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`).
 - Product compatibility defects found: **0**.
 - Fresh market/source requests: **0**.
-- Phase K remains **STARTED** and the checklist remains unchecked.
+- Phase K remains **STARTED** and the checklist remains unchecked; K2-B completion alone does not close the full phase.
