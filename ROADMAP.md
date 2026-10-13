@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K K2-A deterministic preparation ready for review on 2026-10-13; K1-05 fixture gap recorded; host evaluation count 0"
+status_reconciled_through: "Phase J COMPLETE; Phase K K2-B small multi-host pilot started on 2026-10-13 after K2-A completed with all eight deterministic assets; host evaluation count 0"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -38,9 +38,10 @@ tags:
 > candidates are not phase-exit prerequisites. Phase I is checked complete by
 > the final exit review. Phase J is checked complete by the 2026-10-12
 > closure authority reconciliation. Post-Phase-J portability/runtime hygiene
-> (PR #327), K0 Charter PR #328, and K1 Scenario Set PR #329 are merged. K2-A
-> deterministic preparation is ready for review; K1-05 has an explicit fixture
-> gap. K2-B is NOT_STARTED; host evaluation count remains zero.
+> (PR #327), K0 Charter PR #328, K1 Scenario Set PR #329, K2-A PR #330, and the
+> K1-05 finalized stale-package supplement PR #331 are merged. K2-A is complete
+> with all eight deterministic assets and no preparation gaps. K2-B is STARTED
+> at the small multi-host pilot authority entry; host evaluation count remains zero.
 
 ---
 
@@ -1317,14 +1318,16 @@ Golden scenarios 應成為 new source、new evidence family、new MCP version、
 
 # [ ] Phase K — Multi-Agent Compatibility & Evaluation
 
-### Current entry — K2-A deterministic preparation (2026-10-13)
+### Current entry — K2-B small multi-host pilot (2026-10-13)
 
-K0 and K1 are merged. K2-A prepares the shared market/source-network-free
-scenario assets and deterministic Result/Audit/Handoff packages under
-`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`.
-K1-05 remains an explicit fixture gap: no reusable finalized Unified V3 stale
-Result/Audit/Handoff package is available. No host evaluation has run; K2-B is
-NOT_STARTED. **Validate interoperability, not behavioral conformity.** The Phase K
+K0, K1, K2-A, and the K1-05 finalized stale-package supplement are merged. K2-A
+now provides deterministic assets for all eight K1 scenarios with no preparation
+gaps. K2-B is STARTED under
+`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`.
+The initial pilot hosts are ChatGPT, Hermes Agent, and Antigravity CLI, using one
+shared deterministic preparation instance; Codex CLI is an optional reference
+host. No host evaluation has run and no fresh market/source acquisition is part of
+this pilot. **Validate interoperability, not behavioral conformity.** The Phase K
 checklist remains unchecked until the full phase is complete.
 
 ## K.0 Phase Goal

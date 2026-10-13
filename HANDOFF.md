@@ -4,16 +4,17 @@
 
 Roadmap Phase J is **COMPLETE** by
 `PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`; Attempt #7 is not required.
-PR #326, PR #327, K0 Charter PR #328, and K1 Scenario Set PR #329 are merged.
-Phase K is STARTED. K2-A deterministic preparation is ready for review; no
-ChatGPT, Codex, Hermes, or other host evaluation has run. The K2-A preparation
-authority is
-`docs/governance/phase_k/PHASE_K_K2A_DETERMINISTIC_EVALUATION_PREPARATION_2026-10-13.md`.
-It records the eight K1 asset mappings and the K1-05 gap: a reusable finalized
-Unified V3 stale Result/Audit/Handoff fixture is not available. K2-B is NOT
-STARTED. After K2-A review, the next phase step is K2-B — Small Multi-Host Pilot
-& Compatibility Matrix; carry the K1-05 gap explicitly into its readiness review.
-Do not run a broad matrix or make market/source requests.
+PR #326/#327, K0 PR #328, K1 PR #329, K2-A PR #330, and the K1-05 finalized
+stale-package supplement PR #331 are merged. K2-A is complete with deterministic
+assets for all eight K1 scenarios and `known_preparation_gaps=[]`; no live
+market/source acquisition was introduced. K2-B — Small Multi-Host Pilot &
+Compatibility Matrix is now STARTED at pilot-authority entry under
+`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md`.
+Initial hosts are ChatGPT, Hermes Agent, and Antigravity CLI; Codex CLI is an
+optional reference/fourth host. A single shared deterministic preparation instance
+must be reused across hosts. Host evaluation count is still zero. The next action
+is host transport/profile attachment followed by the first controlled K1 scenario.
+Do not broaden the matrix or make fresh market/source requests.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
@@ -316,7 +317,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K K2-A deterministic preparation is ready for review; K1-05 fixture gap is explicit, K2-B is NOT_STARTED, and host evaluation count remains zero.**
+Phase K K2-A is complete with all eight deterministic assets and no preparation gaps; K2-B pilot authority is STARTED with ChatGPT, Hermes Agent, and Antigravity CLI, and host evaluation count remains zero.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
