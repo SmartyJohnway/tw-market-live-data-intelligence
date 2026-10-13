@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import ast
 import json
+from pathlib import Path
 
 from scripts.m8r_05b_03.dispatch import DispatchRuntimeContext
 from scripts.m8r_06_03_production_adapter import (
@@ -10,6 +12,31 @@ from scripts.m8r_06_03_production_adapter import (
     production_executor_metadata_sha256,
     production_operation_adapter,
 )
+
+
+def test_current_h2_h3_production_files_do_not_import_a6_acceptance_transport():
+    root = Path(__file__).resolve().parents[2]
+    paths = (
+        root / "scripts/m8r_06_03_production_adapter.py",
+        root / "server/services/phase_h_h2_twse_exright_executor.py",
+        root / "server/services/phase_h_h3_twse_stock_day_adapter.py",
+    )
+    for path in paths:
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom):
+                forbidden = node.module == "scripts.a6_session_transport" or (
+                    node.module == "scripts"
+                    and any(alias.name == "a6_session_transport" for alias in node.names)
+                )
+            elif isinstance(node, ast.Import):
+                forbidden = any(
+                    alias.name == "scripts.a6_session_transport"
+                    for alias in node.names
+                )
+            else:
+                forbidden = False
+            assert not forbidden, path
 
 
 def _request(capability_id: str, market: str, *, executor_id: str = "m8r_03d_watchlist_controlled_executor_adapter", code: str = "2330") -> dict:
