@@ -30,14 +30,21 @@ provides dedicated `trace_id` propagation across MCP → Local Service → execu
 boundaries and a bounded ephemeral diagnostic sink while preserving Audit/Result/authorization
 semantics and the exact six-tool MCP surface.
 
-The next bounded selection chose **Adapter Execution Timing** without assigning an A2 name.
-Implementation and technical review are complete under
-`L1_ADAPTER_EXECUTION_TIMING_ACCEPTANCE_REVIEW_PASS`; Owner acceptance / merge authorization is recorded as `L1_ADAPTER_EXECUTION_TIMING_OWNER_ACCEPTED_FOR_MERGE`; commit, push, PR, and merge are the current authorized closure operations. It instruments the common controlled single/batch adapter callable
-boundary with monotonic elapsed timing and bounded diagnostic events only. Source transports,
-canonical artifacts, routing, retry/timeout policy, and authorization semantics are unchanged.
-See `docs/governance/phase_l/PHASE_L_L1_ADAPTER_EXECUTION_TIMING_2026-10-13.md`.
+The **Adapter Execution Timing** tranche passed technical review, was Owner-accepted, and is
+merged through PR #337 at `ea0f4683e662b8d3f89c032ea94dd1ab139cebe2`. It instruments the
+common controlled single/batch adapter callable boundary with monotonic elapsed timing and
+bounded diagnostic events only; source transports, canonical artifacts, routing, retry/timeout
+policy, and authorization semantics remain unchanged.
 
-**Current stop boundary:** close Adapter Execution Timing through commit / PR / exact-head review / merge. Do not start another L1 tranche, L2-L7, a new evidence family, or market/source acquisition implicitly.
+The next bounded selection chose **Bounded Resource Snapshots** without assigning an A2 name.
+Implementation and technical review are complete under
+`L1_BOUNDED_RESOURCE_SNAPSHOTS_ACCEPTANCE_REVIEW_PASS`; Owner acceptance / merge authorization is recorded as `L1_BOUNDED_RESOURCE_SNAPSHOTS_OWNER_ACCEPTED_FOR_MERGE`; commit, push, PR, exact-head review, and merge are the current authorized closure operations. It adds instantaneous best-effort managed-service process memory,
+application/runtime disk-free snapshots, and Local Service process-memory event metrics only.
+There is no background sampler, threshold policy, resource-limit enforcement, or governed
+artifact change. See
+`docs/governance/phase_l/PHASE_L_L1_BOUNDED_RESOURCE_SNAPSHOTS_2026-10-13.md`.
+
+**Current stop boundary:** close Bounded Resource Snapshots through commit / PR / exact-head review / merge. Do not start another L1 tranche, L2-L7, a new evidence family, or market/source acquisition implicitly.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.

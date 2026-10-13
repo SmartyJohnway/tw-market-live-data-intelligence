@@ -527,3 +527,27 @@ def test_authorization_api_uses_real_service_boundary_and_sanitizes_dependency(
     result = response.json()
     assert result["error"] == "mode_b1_planning_dependency_unavailable"
     assert "secret" not in json.dumps(result).lower()
+
+
+def test_unified_http_operational_event_includes_best_effort_process_memory(monkeypatch, mock_validation):
+    from server import main as main_module
+
+    events = []
+    monkeypatch.setattr(main_module, "emit_jsonl", lambda event: events.append(event) or True)
+    monkeypatch.setattr(main_module, "process_memory_bytes", lambda: 424242)
+    request = {
+        "schema_version": "unified_market_evidence_request.v1",
+        "request_id": "api-resource-test",
+        "execution_mode": "preview",
+        "targets": [{"input": "2330"}],
+        "data_needs": [{"type": "identity", "priority": "required"}],
+    }
+    response = client.post("/api/unified/validate-request", json={"request": request})
+    assert response.status_code == 200
+    assert events[-1]["metrics"]["process_memory_bytes"] == 424242
+
+    events.clear()
+    monkeypatch.setattr(main_module, "process_memory_bytes", lambda: None)
+    response = client.post("/api/unified/validate-request", json={"request": request})
+    assert response.status_code == 200
+    assert "process_memory_bytes" not in events[-1]["metrics"]
