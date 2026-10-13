@@ -24,19 +24,20 @@ and is merged through PR #335. The product entry point remains `python -m script
 with `start`, `status`, `stop`, and read-only `doctor`; Security Master initialization remains
 explicit.
 
-The next-tranche selection chose **Operational Correlation Foundation** without assigning an
-A2 name. Implementation and technical review are complete under
-`L1_OPERATIONAL_CORRELATION_FOUNDATION_ACCEPTANCE_REVIEW_PASS` and Owner acceptance / merge
-authorization is recorded as `L1_OPERATIONAL_CORRELATION_FOUNDATION_OWNER_ACCEPTED_FOR_MERGE`;
-commit, push, PR, and merge are the current authorized closure operations. Current implementation adds dedicated runtime
-`trace_id` propagation across MCP → Local Service → execute-once private boundaries and a
-bounded ephemeral diagnostic sink; it does not change Audit/Result/authorization semantics or
-the six-tool MCP surface. See
-`docs/governance/phase_l/PHASE_L_L1_OPERATIONAL_CORRELATION_FOUNDATION_2026-10-13.md`.
+The **Operational Correlation Foundation** passed technical review, was Owner-accepted, and is
+merged through PR #336 at `e16303935fef75a38159c5cebfd7b74c37fd33f3`. The merged runtime
+provides dedicated `trace_id` propagation across MCP → Local Service → execute-once private
+boundaries and a bounded ephemeral diagnostic sink while preserving Audit/Result/authorization
+semantics and the exact six-tool MCP surface.
 
-**Current stop boundary:** close this accepted tranche through commit / PR / exact-head review /
-merge. Do not start another L1 tranche, L2-L7, a new evidence family, or market/source
-acquisition implicitly.
+The next bounded selection chose **Adapter Execution Timing** without assigning an A2 name.
+Implementation and technical review are complete under
+`L1_ADAPTER_EXECUTION_TIMING_ACCEPTANCE_REVIEW_PASS`; Owner acceptance / merge authorization is recorded as `L1_ADAPTER_EXECUTION_TIMING_OWNER_ACCEPTED_FOR_MERGE`; commit, push, PR, and merge are the current authorized closure operations. It instruments the common controlled single/batch adapter callable
+boundary with monotonic elapsed timing and bounded diagnostic events only. Source transports,
+canonical artifacts, routing, retry/timeout policy, and authorization semantics are unchanged.
+See `docs/governance/phase_l/PHASE_L_L1_ADAPTER_EXECUTION_TIMING_2026-10-13.md`.
+
+**Current stop boundary:** close Adapter Execution Timing through commit / PR / exact-head review / merge. Do not start another L1 tranche, L2-L7, a new evidence family, or market/source acquisition implicitly.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.

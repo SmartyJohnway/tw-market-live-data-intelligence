@@ -25,10 +25,11 @@ _LEVELS = frozenset({"INFO", "WARN", "ERROR"})
 _REFERENCE_FIELDS = frozenset({
     "lifecycle_operation_id", "request_id", "execution_request_id",
     "governed_operation_id", "authorization_id", "execution_receipt_id",
+    "executor_id", "capability_id", "market", "batch_group_id",
 })
 _METRIC_FIELDS = frozenset({
     "duration_ms", "http_status", "request_bytes", "response_bytes",
-    "child_returncode", "process_memory_bytes",
+    "child_returncode", "process_memory_bytes", "operation_count",
 })
 
 

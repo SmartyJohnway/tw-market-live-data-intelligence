@@ -27,14 +27,22 @@ accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doct
 `L1_A1_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted/merge-authorized under
 `L1_A1_OWNER_ACCEPTED_FOR_MERGE`, and is merged in main through PR #335.
 
-The post-A1 next-tranche selection chose the narrower **Operational Correlation Foundation**
-without pre-naming it A2. Its implementation has passed technical review under
-`L1_OPERATIONAL_CORRELATION_FOUNDATION_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted /
-merge-authorized under `L1_OPERATIONAL_CORRELATION_FOUNDATION_OWNER_ACCEPTED_FOR_MERGE`. The implementation adds dedicated operational `trace_id` propagation across MCP,
-Local Service, and execute-once boundaries plus bounded ephemeral diagnostics while keeping
-Audit as governed truth and preserving the exact six-tool/public contract surfaces. See
-`docs/governance/phase_l/PHASE_L_L1_OPERATIONAL_CORRELATION_FOUNDATION_2026-10-13.md`.
-Do not begin another L1 tranche or L2-L7 until a later Owner decision selects the next gap.
+The post-A1 **Operational Correlation Foundation** passed
+`L1_OPERATIONAL_CORRELATION_FOUNDATION_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted under
+`L1_OPERATIONAL_CORRELATION_FOUNDATION_OWNER_ACCEPTED_FOR_MERGE`, and is merged through
+PR #336 at `e16303935fef75a38159c5cebfd7b74c37fd33f3`. It provides dedicated operational
+`trace_id` propagation across MCP, Local Service, and execute-once boundaries plus bounded
+ephemeral diagnostics while keeping Audit as governed truth and preserving the exact
+six-tool/public contract surfaces.
+
+The subsequent gap selection chose **Adapter Execution Timing**, again without assigning an
+A2 name. Its bounded implementation has passed technical review under
+`L1_ADAPTER_EXECUTION_TIMING_ACCEPTANCE_REVIEW_PASS`; Owner acceptance / merge authorization is recorded under `L1_ADAPTER_EXECUTION_TIMING_OWNER_ACCEPTED_FOR_MERGE`.
+The tranche measures monotonic elapsed time only at the common controlled adapter/batch-adapter
+callable boundary and emits bounded operational events without modifying adapter results,
+canonical artifacts, source transports, routing, or authorization semantics. See
+`docs/governance/phase_l/PHASE_L_L1_ADAPTER_EXECUTION_TIMING_2026-10-13.md`.
+Do not begin another L1 tranche or L2-L7 until this accepted tranche is closed through commit / PR / exact-head review / merge and a later Owner decision selects the next gap.
 
 ## Current I3 production boundary (2026-10-05)
 

@@ -28,6 +28,7 @@ from scripts.m8r_06_03_production_adapter import (
     load_production_executor_metadata,
 )
 from scripts.m8r_filesystem_safety import safe_destination
+from server.operational_diagnostics import TRACE_ENV, bind_trace_id, reset_trace_id
 
 
 # Test harnesses may redirect the server-owned root through process environment;
@@ -227,15 +228,19 @@ def main(argv: list[str] | None = None) -> int:
     if protocol_mode == "unexpected_nonzero":
         print(json.dumps({"unexpected": True}, separators=(",", ":")))
         return 7
+    _trace_id, trace_token = bind_trace_id(os.environ.get(TRACE_ENV))
     try:
-        result = execute_once(
-            args.authorization_id, confirm_execution=args.confirm_execution,
-            operator_confirmation_reference=args.operator_confirmation_reference,
-            confirm_network_execution=args.confirm_network_execution,
-        )
-    except (OrchestrationError, ValueError, KeyError):
-        print(json.dumps({"error": "mode_b2_execution_unavailable"}, separators=(",", ":")))
-        return 2
+        try:
+            result = execute_once(
+                args.authorization_id, confirm_execution=args.confirm_execution,
+                operator_confirmation_reference=args.operator_confirmation_reference,
+                confirm_network_execution=args.confirm_network_execution,
+            )
+        except (OrchestrationError, ValueError, KeyError):
+            print(json.dumps({"error": "mode_b2_execution_unavailable"}, separators=(",", ":")))
+            return 2
+    finally:
+        reset_trace_id(trace_token)
     print(json.dumps(result, separators=(",", ":")))
     return 0
 

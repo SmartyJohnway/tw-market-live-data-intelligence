@@ -5,6 +5,7 @@ from copy import deepcopy
 
 import pytest
 
+from scripts.m8r_05b_03 import dispatch as dispatch_module
 from scripts.m8r_05b_03.dispatch import (
     RuntimeAdapterRegistry,
     dispatch_prepared,
@@ -284,3 +285,130 @@ def test_generic_adapter_failures_preserve_execution_request_result_version(
         "evidence_artifacts": [],
         "warnings": [],
     }
+
+
+def test_adapter_execution_event_uses_monotonic_duration_and_preserves_result(tmp_path, monkeypatch):
+    events = []
+    ticks = iter((10.0, 10.125))
+    trace = "12345678-1234-5678-1234-567812345678"
+    monkeypatch.setattr(dispatch_module.time, "monotonic", lambda: next(ticks))
+    monkeypatch.setattr(dispatch_module, "current_trace_id", lambda: trace)
+    monkeypatch.setattr(dispatch_module, "emit_jsonl", lambda event: events.append(event) or True)
+
+    plan, _auth, _bind, _state = artifacts()
+    preflight = build_valid_preflight(tmp_path)
+    metadata = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
+    runtime = RuntimeAdapterRegistry([runtime_registration(plan, fake_adapter=True)])
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="dry-run")
+    outcome = dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="dry-run")[0]
+
+    assert outcome["status"] == "succeeded"
+    assert "duration_ms" not in outcome and "trace_id" not in outcome
+    assert len(events) == 1
+    event = events[0]
+    assert event["event_code"] == "adapter.execution.completed"
+    assert event["trace_id"] == trace and event["status"] == "ok"
+    assert event["governed_operation_id"] == prepared[0].request["operation_id"]
+    assert event["metrics"] == {"duration_ms": 125.0, "operation_count": 1}
+
+
+def test_adapter_timeout_event_preserves_existing_normalized_failure(tmp_path, monkeypatch):
+    events = []
+    ticks = iter((20.0, 20.05))
+    monkeypatch.setattr(dispatch_module.time, "monotonic", lambda: next(ticks))
+    monkeypatch.setattr(dispatch_module, "current_trace_id", lambda: "12345678-1234-5678-1234-567812345678")
+    monkeypatch.setattr(dispatch_module, "emit_jsonl", lambda event: events.append(event) or True)
+
+    def timeout_adapter(_request, _context):
+        raise TimeoutError("bounded")
+
+    plan, _auth, _bind, _state = artifacts()
+    preflight = build_valid_preflight(tmp_path)
+    metadata = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
+    runtime = RuntimeAdapterRegistry([
+        runtime_registration(plan, adapter=timeout_adapter, fake_adapter=True)
+    ])
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="dry-run")
+    outcome = dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="dry-run")[0]
+
+    assert outcome["status"] == "failed" and outcome["error_code"] == "adapter_timeout"
+    assert "duration_ms" not in outcome and "trace_id" not in outcome
+    assert len(events) == 1
+    assert events[0]["status"] == "error"
+    assert events[0]["reason_code"] == "adapter_timeout"
+    assert events[0]["metrics"] == {"duration_ms": 50.0, "operation_count": 1}
+
+
+def test_batch_adapter_emits_one_bounded_invocation_event(tmp_path, monkeypatch):
+    events = []
+    ticks = iter((30.0, 30.2))
+    monkeypatch.setattr(dispatch_module.time, "monotonic", lambda: next(ticks))
+    monkeypatch.setattr(dispatch_module, "current_trace_id", lambda: "12345678-1234-5678-1234-567812345678")
+    monkeypatch.setattr(dispatch_module, "emit_jsonl", lambda event: events.append(event) or True)
+
+    multi_plan = json.loads((ROOT / "tests/fixtures/m8r_05b_01/golden/multi_target_same_source_batch.json").read_text(encoding="utf-8"))
+    plan, authorization, binding, state = artifacts(multi_plan)
+    preflight = build_orchestrator_preflight(
+        plan, authorization, binding, supplied_consumption_state=state,
+        evaluation_timestamp=EVALUATION_TIMESTAMP,
+        executor_registry_metadata=registry_metadata(plan), output_root=str(tmp_path),
+    )
+
+    def batch_adapter(requests, context):
+        return [default_mock_adapter(request, context) for request in requests]
+
+    metadata = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
+    runtime = RuntimeAdapterRegistry([
+        runtime_registration(plan, fake_adapter=True, batch_adapter=batch_adapter)
+    ])
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="dry-run")
+    outcomes = dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="dry-run")
+    assert len(outcomes) == len(prepared)
+    assert len(events) == 1
+    event = events[0]
+    assert event["event_code"] == "adapter.batch.completed"
+    assert event["status"] == "ok"
+    assert event["metrics"] == {"duration_ms": 200.0, "operation_count": len(prepared)}
+    assert "governed_operation_id" not in event
+    assert "execution_request_id" not in event
+    assert event["batch_group_id"] == prepared[0].request["batch_group_id"]
+
+
+def test_adapter_event_sink_failure_does_not_change_dispatch_success(tmp_path, monkeypatch):
+    monkeypatch.setattr(dispatch_module, "emit_jsonl", lambda _event: False)
+    plan, _auth, _bind, _state = artifacts()
+    preflight = build_valid_preflight(tmp_path)
+    metadata = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
+    runtime = RuntimeAdapterRegistry([runtime_registration(plan, fake_adapter=True)])
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="dry-run")
+
+    outcome = dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="dry-run")[0]
+
+    assert outcome["status"] == "succeeded"
+    assert outcome["error_code"] is None
+    assert "duration_ms" not in outcome and "trace_id" not in outcome
+
+
+def test_adapter_orchestration_error_is_re_raised_and_diagnosed(tmp_path, monkeypatch):
+    events = []
+    ticks = iter((40.0, 40.01))
+    monkeypatch.setattr(dispatch_module.time, "monotonic", lambda: next(ticks))
+    monkeypatch.setattr(dispatch_module, "emit_jsonl", lambda event: events.append(event) or True)
+
+    def rejected_adapter(_request, _context):
+        raise OrchestrationError("adapter_binding_rejected")
+    plan, _auth, _bind, _state = artifacts()
+    preflight = build_valid_preflight(tmp_path)
+    metadata = ExecutorMetadataRegistry.from_json(registry_metadata(plan))
+    runtime = RuntimeAdapterRegistry([
+        runtime_registration(plan, adapter=rejected_adapter, fake_adapter=True)
+    ])
+    prepared = prepare_dispatch(preflight, metadata, runtime, mode="dry-run")
+
+    with pytest.raises(OrchestrationError, match="adapter_binding_rejected"):
+        dispatch_prepared(prepared, governed_output_root=str(tmp_path), mode="dry-run")
+
+    assert len(events) == 1
+    assert events[0]["status"] == "error"
+    assert events[0]["reason_code"] == "adapter_binding_rejected"
+    assert events[0]["metrics"] == {"duration_ms": 10.0, "operation_count": 1}
