@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE on 2026-10-13 under PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS; K2-B 3/3 hosts evaluated; product compatibility defects 0"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED on 2026-10-13 with L0 architecture contract FROZEN under PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN; next L1 Runtime Operability"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -45,7 +45,10 @@ tags:
 > Antigravity CLI is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`; host evaluation
 > count is three, product compatibility defects found remain zero, and no fresh
 > market/source acquisition was introduced. Phase K is complete under
-> `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
+> `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Phase L is now STARTED. L0 —
+> Production Boundary & Architecture Contract is frozen under
+> `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`; the next authorized boundary is
+> L1 — Runtime Operability.
 
 ---
 
@@ -1418,6 +1421,18 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
+### Current entry — L0 frozen / L1 Runtime Operability next (2026-10-13)
+
+Phase L is **STARTED**. L0 — Production Boundary & Architecture Contract is frozen
+under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN` in
+`docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md`.
+The frozen contract preserves the full Phase L design intent while fixing D01-D12:
+product goal, provisional `v1.5.0` / breaking-change `v2.0.0` rule, Windows 10/11
+Tier-1 targets, Native Windows and Docker Local Service profiles, machine/user/path/state
+portability, app/state separation, state classification, configuration precedence,
+lifecycle UX, migration/rollback, backup/restore, and optional Agent integrations.
+The next authorized boundary is **L1 — Runtime Operability**; L2-L7 are not started.
+
 ## L.0 Phase Goal
 
 把已經能用的產品，整理成：
@@ -1516,7 +1531,7 @@ secret handling if future source requires it
 large Watchlist
 multi-target
 large disclosure result
-large financial result
+large supported evidence result
 long AI handoff
 bounded concurrent local calls
 timeout

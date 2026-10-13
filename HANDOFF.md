@@ -1,27 +1,28 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current Phase K handoff (2026-10-13)
+## Current Phase L handoff (2026-10-13)
 
-Roadmap Phase J is **COMPLETE** by
-`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`; Attempt #7 is not required.
-PR #326/#327, K0 PR #328, K1 PR #329, K2-A PR #330, and the K1-05 finalized
-stale-package supplement PR #331 are merged. K2-A is complete with deterministic
-assets for all eight K1 scenarios and `known_preparation_gaps=[]`; no live
-market/source acquisition was introduced. K2-B — Small Multi-Host Pilot &
-Compatibility Matrix has completed its initial three-host pilot under
-`docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md` and
-`docs/governance/phase_k/PHASE_K_K2B_INITIAL_HOST_OBSERVATIONS_2026-10-13.md`.
-Initial hosts are ChatGPT, Hermes Agent, and Antigravity CLI; Codex CLI remains an
-optional reference/fourth host. A single shared deterministic preparation instance
-was reused across hosts. Host evaluation count is three. Hermes and ChatGPT are
-`NATIVE_PASS`. Antigravity is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`
-because its headless large Result/Handoff synthesis may require additional
-host-side file/command permissions; no TW-Market product defect was found. No fresh
-market/source requests were made. Phase K is **COMPLETE** under
-`PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, recorded in
-`docs/governance/phase_k/PHASE_K_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-13.md`.
-No further Phase K host expansion or repeated K1 execution is required for closure.
-The next boundary is Phase L entry planning only; do not start Phase L implicitly.
+Phase J and Phase K are **COMPLETE**; do not reopen their acceptance work. Phase K
+closed under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with no product
+compatibility defect.
+
+Phase L is now **STARTED**. L0 — Production Boundary & Architecture Contract is
+**FROZEN** under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`:
+
+`docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md`
+
+L0 freezes the D01-D12 product boundary, including Windows 10/11 Tier-1 targets,
+Native Windows plus Docker Local Service deployment, machine/user/path/state
+portability, application/state separation, configuration precedence, lifecycle UX,
+no-silent-migration, backup/restore, and optional Agent integrations. `v1.5.0` is the
+provisional stable target; `v2.0.0` is reserved for an explicitly approved breaking
+change.
+
+The next boundary is **L1 — Runtime Operability**. Begin with an inventory of current
+startup, health, logging, process control and diagnostic behavior, then implement the
+minimum lean lifecycle/diagnostic substrate. Do not start L2-L7, broaden the host
+matrix, add a new evidence family, or perform new live-source acquisition unless a later
+step explicitly requires and authorizes it.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
@@ -324,7 +325,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. K2-B closed with Hermes Agent and ChatGPT `NATIVE_PASS`, Antigravity CLI `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`, host evaluation count three, zero product compatibility defects, and zero fresh market/source requests. Do not repeat the Phase K host matrix for closure. Stop at the Phase L entry boundary; Phase L requires a separate planning/start decision.**
+Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Do not repeat the Phase K host matrix for closure. Phase L is started and L0 is frozen under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. The current stop boundary is L1 — Runtime Operability only: do not begin L2-L7, add evidence families, or broaden live-source work implicitly.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
