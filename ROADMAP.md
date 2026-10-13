@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K final adjudication PASS owner-acceptance candidate on 2026-10-13; K2-B 3/3 hosts evaluated; product compatibility defects 0; Phase K checkbox pending Owner acceptance"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE on 2026-10-13 under PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS; K2-B 3/3 hosts evaluated; product compatibility defects 0"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -44,9 +44,8 @@ tags:
 > its initial three-host pilot: Hermes Agent and ChatGPT are `NATIVE_PASS`;
 > Antigravity CLI is `PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`; host evaluation
 > count is three, product compatibility defects found remain zero, and no fresh
-> market/source acquisition was introduced. Final adjudication is
-> `PHASE_K_FINAL_ADJUDICATION_PASS_OWNER_ACCEPTANCE_CANDIDATE`; the Phase K checkbox
-> remains unchecked until explicit Owner acceptance.
+> market/source acquisition was introduced. Phase K is complete under
+> `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
 
 ---
 
@@ -1321,26 +1320,23 @@ Golden scenarios 應成為 new source、new evidence family、new MCP version、
 
 > **TW-Market 不只會抓資料；它能在主要台灣市場研究情境下維持一致、可驗證的 evidence semantics。**
 
-# [ ] Phase K — Multi-Agent Compatibility & Evaluation
+# [x] Phase K — Multi-Agent Compatibility & Evaluation
 
-### Current entry — Final adjudication / Owner acceptance boundary (2026-10-13)
+### Current entry — Phase K COMPLETE (2026-10-13)
 
 K0, K1, K2-A, and the K1-05 finalized stale-package supplement are merged. K2-A
-now provides deterministic assets for all eight K1 scenarios with no preparation
-gaps. K2-B initial three-host pilot is COMPLETE under
+provides deterministic assets for all eight K1 scenarios with no preparation gaps.
+K2-B completed the initial three-host pilot under
 `docs/governance/phase_k/PHASE_K_K2B_SMALL_MULTI_HOST_PILOT_2026-10-13.md` and
 `docs/governance/phase_k/PHASE_K_K2B_INITIAL_HOST_OBSERVATIONS_2026-10-13.md`.
-The pilot hosts were ChatGPT, Hermes Agent, and Antigravity CLI, using one shared
-deterministic preparation instance; Codex CLI remains an optional reference host.
-Hermes Agent and ChatGPT are `NATIVE_PASS`. Antigravity CLI is
-`PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION` because headless large Result/Handoff
-synthesis may require additional host-side permissions; this is not a core defect.
-Host evaluation count is three, product compatibility defects found remain zero,
-and no fresh market/source acquisition occurred. Final adjudication is
-`PHASE_K_FINAL_ADJUDICATION_PASS_OWNER_ACCEPTANCE_CANDIDATE` under
-`docs/governance/phase_k/PHASE_K_FINAL_ADJUDICATION_AND_CLOSURE_REVIEW_2026-10-13.md`.
-**Validate interoperability, not behavioral conformity.** The Phase K checklist remains
-unchecked pending explicit Owner acceptance.
+Hermes Agent and ChatGPT are `NATIVE_PASS`. Antigravity CLI remains
+`PARTIAL_HOST_LIMITATION` / `HOST_LIMITATION`; this is a non-blocking host limitation,
+not a core product defect. Host evaluation count is three, product compatibility
+defects found remain zero, and no fresh market/source acquisition occurred.
+Final adjudication passed and Owner accepted closure under
+`PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, recorded in
+`docs/governance/phase_k/PHASE_K_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-13.md`.
+**Validate interoperability, not behavioral conformity.** Phase K is complete.
 
 ## K.0 Phase Goal
 
