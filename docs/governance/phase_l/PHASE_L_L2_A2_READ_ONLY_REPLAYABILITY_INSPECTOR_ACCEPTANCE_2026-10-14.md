@@ -4,6 +4,7 @@
 **Base:** `main@2398e1fa4c3501ccd9e65efdfa428beaad05117d`
 **Disposition:** `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_ACCEPTANCE_REVIEW_PASS`
 **Owner acceptance:** `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`
+**Merged:** PR #343 / `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`
 **Authority:** L2-A0 inventory; frozen L2-A1 semantics; L2-A1-R1 scope clarification.
 
 ## 1. Outcome
@@ -81,6 +82,6 @@ A2 stops under:
 
 `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`
 
-Owner acceptance is recorded. Commit, push, PR, and merge may proceed for this exact A2 tranche only. Do not start backup/restore,
+Owner acceptance is recorded and merge closure completed through PR #343 at `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`. Do not start backup/restore,
 retention cleanup, migration apply, public `market_read_result` semantic changes, or the next L2
-implementation tranche before A2 merge closure.
+implementation tranche without separate Owner authorization.
