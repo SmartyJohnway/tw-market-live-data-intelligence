@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 Runtime Operability CLOSED under PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS on 2026-10-14; L2 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 Runtime Operability CLOSED; L2 Replay / Retention / Migration STARTED on 2026-10-14 with A0 inventory complete and A1 replay semantics frozen; current next boundary L2-A2 read-only replayability inspector; L3-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,17 +1421,18 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry — L1 Runtime Operability CLOSED (2026-10-14)
+### Current entry ? L2 Replay / Retention / Migration STARTED (2026-10-14)
 
-Phase L is **STARTED**. L0 — Production Boundary & Architecture Contract remains frozen
-under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN` in
-`docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md`.
-L1 Runtime Operability implementation is merged through PR #339; its formal technical exit
-review passes under `PHASE_L_L1_EXIT_REVIEW_PASS`, and the Owner closed L1 under
-`PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` in
-`docs/governance/phase_l/PHASE_L_L1_EXIT_REVIEW_2026-10-14.md`.
-L2-L7 are not started or authorized. The next candidate boundary is L2 — Replay / Retention /
-Migration, subject to a separate Owner start decision. Future Phase L recovery should begin with
+Phase L is **STARTED**. L0 ? Production Boundary & Architecture Contract remains frozen
+under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
+`PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
+
+L2 ? Replay / Retention / Migration is **STARTED** by explicit Owner authorization. L2-A0
+current persistence/replay inventory is complete under
+`L2_A0_CURRENT_PERSISTENCE_REPLAY_INVENTORY_COMPLETE`; L2-A1 replay semantics are frozen
+under `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`. The current bounded implementation boundary
+is L2-A2 - Read-Only Finalized Package Inspector / Replayability Classifier. L3-L7 remain
+not started or authorized. Future recovery begins with
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
 
 ## L.0 Phase Goal

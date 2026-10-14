@@ -54,11 +54,17 @@ production registry boundary. See
 
 The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
 Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. **L1 is CLOSED.**
-The next candidate Phase L boundary is L2 — Replay / Retention / Migration, but L2-L7 remain
-unauthorized until a separate Owner start decision.
 
-**Current stop boundary:** L1 closed; do not begin L2-L7, a new evidence family, packaging,
-migration, or market/source acquisition implicitly. For future conversation recovery, read
+L2 — Replay / Retention / Migration is **STARTED** by explicit Owner authorization on
+2026-10-14. L2-A0 current persistence/replay inventory is complete under
+`L2_A0_CURRENT_PERSISTENCE_REPLAY_INVENTORY_COMPLETE`; L2-A1 replay semantics are frozen
+under `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`. The next bounded implementation tranche is
+L2-A2 — Read-Only Finalized Package Inspector / Replayability Classifier, with Codex as the
+implementation worker and ChatGPT as reviewer/governor. L3-L7 remain unauthorized.
+
+**Current stop boundary:** execute/review only the bounded L2-A2 inspector tranche. Do not
+implement backup/restore, retention cleanup, migration apply, public MCP/API changes, a new
+evidence family, packaging, or market/source acquisition implicitly. Recover Phase L from
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` first.
 
 The older Phase J readiness section below is historical pre-entry context and is
@@ -362,7 +368,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Do not repeat the Phase K host matrix for closure. Phase L is started and L0 is frozen under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 - Runtime Operability is CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; L2-L7 remain unauthorized. Recover current Phase L state from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` before starting a new boundary.**
+Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Do not repeat the Phase K host matrix for closure. Phase L is started and L0 is frozen under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 - Runtime Operability is CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; L2 - Replay / Retention / Migration is STARTED, while L3-L7 remain unauthorized. Recover current Phase L state from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` before starting a new boundary.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
