@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 STARTED; A0 complete; A1 and A1-R1 frozen; L2-A2 Owner-accepted and merged through PR #343 at bdd9588bc34ab25af8e22ba7cd7900160a56abf5; L3-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 STARTED; A0 complete; A1/A1-R1 frozen; A2 merged; A3 Owner-accepted under L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE pending merge closure; A4+ and L3-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,20 +1421,19 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L2-A2 Owner accepted / merged (2026-10-14)
+### Current entry - L2-A3 Owner accepted / merge closure pending (2026-10-14)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
 `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
 
-L2 - Replay / Retention / Migration is **STARTED** by explicit Owner authorization. L2-A0
-current persistence/replay inventory is complete under
-`L2_A0_CURRENT_PERSISTENCE_REPLAY_INVENTORY_COMPLETE`; L2-A1 replay semantics are frozen
-under `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`, with A1-R1 clarification under
-`L2_A1_R1_STATE_CLASSIFICATION_SCOPE_CLARIFICATION_FROZEN`. L2-A2 passed technical review
-under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted
-under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #343 at `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`.
-L3-L7 remain not started or authorized. Future recovery begins with
+L2 - Replay / Retention / Migration is **STARTED**. A0 is complete, A1/A1-R1 are frozen, and
+A2 is Owner-accepted and merged through PR #343. L2-A3 Retention Classification & Policy passed
+technical review under `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_ACCEPTANCE_REVIEW_PASS` and
+is Owner-accepted under `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE`
+pending merge closure. A3 performs no deletion, cleanup, backup, restore, migration, or
+retention-duration enforcement. A4 and later L2 tranches and L3-L7 remain unauthorized. Future
+recovery begins with
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
 
 ## L.0 Phase Goal
