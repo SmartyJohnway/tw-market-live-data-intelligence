@@ -32,7 +32,14 @@ L2-A2 - Read-Only Finalized Package Inspector / Replayability Classifier has pas
 review under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_ACCEPTANCE_REVIEW_PASS`; Owner acceptance
 is recorded under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`. It adds an internal zero-write/zero-network package inspector only.
 Public `market_read_result`, HTTP/MCP contracts, backup/restore, retention, and migration remain
-unchanged. L3-L7 remain unauthorized.
+unchanged.
+
+L2-A3 - Retention Classification & Policy has passed technical review under
+`L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted under
+`L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE` pending merge closure. It adds
+an internal read-only retention family registry/policy matrix only; no cleanup, deletion, backup,
+restore, migration, or retention-duration policy is authorized. A4 and later L2 tranches remain
+unauthorized. L3-L7 remain unauthorized.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
 accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
@@ -74,9 +81,10 @@ transport/error semantics and the historical frozen I1 live-tested implementatio
 
 The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
 Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**. L2 is
-**STARTED**; A0/A1 are complete/frozen and A2 is Owner-accepted and merged through PR #343 at `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`.
+**STARTED**; A0/A1 are complete/frozen, A2 is merged, and A3 is Owner-accepted under
+`L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE` pending merge closure.
 See the Phase L recovery index and L2 governance records under `docs/governance/phase_l/`.
-L3-L7 remain unauthorized.
+A4 and later L2 tranches plus L3-L7 remain unauthorized.
 
 ## Current I3 production boundary (2026-10-05)
 
