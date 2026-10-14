@@ -74,7 +74,7 @@ transport/error semantics and the historical frozen I1 live-tested implementatio
 
 The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
 Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**. L2 is
-**STARTED**; A0/A1 are complete/frozen and A2 is Owner-accepted under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE` pending merge closure.
+**STARTED**; A0/A1 are complete/frozen and A2 is Owner-accepted and merged through PR #343 at `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`.
 See the Phase L recovery index and L2 governance records under `docs/governance/phase_l/`.
 L3-L7 remain unauthorized.
 

@@ -5,7 +5,7 @@
 **Phase L status:** STARTED
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
-**L2:** STARTED - A0 complete; A1 semantics frozen; A1-R1 classification scope frozen; A2 Owner-accepted under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE` pending merge closure
+**L2:** STARTED - A0 complete; A1 semantics frozen; A1-R1 classification scope frozen; A2 Owner-accepted and merged through PR #343 at `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`
 **L3-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -48,7 +48,7 @@ This index must never override L0, an Owner acceptance record, or current Git re
 - L2-A1 semantics: `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`.
 - L2-A1-R1 scope clarification: `L2_A1_R1_STATE_CLASSIFICATION_SCOPE_CLARIFICATION_FROZEN`.
 - L2-A2 technical review: `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_ACCEPTANCE_REVIEW_PASS`.
-- L2-A2 Owner acceptance: `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`; merge closure pending.
+- L2-A2 Owner acceptance: `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #343 at `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`.
 ## 4. What L1 delivered
 
 Current merged Runtime Operability includes:
@@ -81,9 +81,9 @@ Current technical state:
 
 `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`
 
-L2-A2 has technical PASS and Owner acceptance; merge closure is pending. Do not begin
+L2-A2 has technical PASS, Owner acceptance, and merge closure through PR #343 at `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`. Do not begin
 backup/restore, retention cleanup, migration apply, public `market_read_result` semantic changes,
-or the next L2 implementation tranche before A2 merge closure.
+or the next L2 implementation tranche without separate Owner authorization.
 
 `MIGRATION_REQUIRED` and `UNSUPPORTED_NEWER_STATE` remain mandatory L2 states, but per
 L2-A1-R1 they require a later versioned installation-state compatibility authority and are not
@@ -91,6 +91,6 @@ fabricated by the package-local A2 inspector.
 
 A concise future-conversation instruction is sufficient:
 
-> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and stop at the recorded A2 merge-closure boundary unless separately authorized.
+> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and stop after the merged A2 boundary unless a new L2 tranche is separately authorized.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.
