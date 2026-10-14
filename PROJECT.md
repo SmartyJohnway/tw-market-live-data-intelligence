@@ -20,9 +20,14 @@ backup/restore, and optional Agent integrations. Provisional release target is `
 L1 — Runtime Operability is **CLOSED** under
 `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Its merged scope covers lifecycle,
 structured operational diagnostics/correlation, adapter/source timing, failure-code reuse,
-and bounded resource snapshots. L2-L7 are not started or authorized. Under frozen L0
-sequencing the next candidate boundary is **L2 — Replay / Retention / Migration**, but it
-requires a separate Owner start decision.
+and bounded resource snapshots.
+
+L2 — Replay / Retention / Migration is now **STARTED** by explicit Owner authorization on
+2026-10-14. L2-A0 current persistence/replay inventory is complete under
+`L2_A0_CURRENT_PERSISTENCE_REPLAY_INVENTORY_COMPLETE`, and L2-A1 replay semantics are frozen
+under `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`. L3-L7 remain unauthorized. The current
+implementation boundary is L2-A2 — Read-Only Finalized Package Inspector / Replayability
+Classifier, with Codex assigned as bounded implementation worker.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
 accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
@@ -63,10 +68,10 @@ transport/error semantics and the historical frozen I1 live-tested implementatio
 `docs/governance/phase_l/PHASE_L_L1_SOURCE_ACQUISITION_TIMING_2026-10-14.md`.
 
 The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
-Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**;
-L2-L7 remain unauthorized. See
-`docs/governance/phase_l/PHASE_L_L1_EXIT_REVIEW_2026-10-14.md` and the Phase L recovery index
-`docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
+Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**. L2 is
+**STARTED**; see the A0 inventory, A1 replay-semantics contract, and A2 Codex handoff under
+`docs/governance/phase_l/`. L3-L7 remain unauthorized. The Phase L recovery index remains the
+front-door recovery document.
 
 ## Current I3 production boundary (2026-10-05)
 

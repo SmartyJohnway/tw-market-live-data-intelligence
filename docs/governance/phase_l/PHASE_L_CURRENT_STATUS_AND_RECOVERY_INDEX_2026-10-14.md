@@ -5,7 +5,8 @@
 **Phase L status:** STARTED
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
-**L2-L7:** NOT STARTED / NOT AUTHORIZED
+**L2:** STARTED ? A0 inventory complete; A1 replay semantics frozen; A2 Codex tranche selected
+**L3-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
 
@@ -73,14 +74,14 @@ These boundaries must be started explicitly and must not be collapsed into one b
 
 Current approved state:
 
-`PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
+`L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`
 
-L1 is closed. No L2 implementation, migration, packaging, Docker, new evidence family, or live-source expansion is authorized by L1 closure.
+L2 is started. L2-A0 is complete. The current bounded implementation boundary is L2-A2 - Read-Only Finalized Package Inspector / Replayability Classifier, with Codex as implementation worker and ChatGPT as reviewer/governor.
 
-When the Owner later says to continue Phase L, first recover this index and current Git main. Then decide whether to explicitly start L2. Do not infer that L2 has already begun.
+Do not infer authorization for backup/restore, retention cleanup, migration apply, public MCP/API changes, L3-L7, new evidence families, packaging, or live-source expansion.
 
 A concise future-conversation instruction is sufficient:
 
-> Continue TW-Market Phase L from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and do not start a new boundary unless explicitly authorized.
+> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and the L2-A0/A1 records, then continue only the current bounded L2 tranche.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.
