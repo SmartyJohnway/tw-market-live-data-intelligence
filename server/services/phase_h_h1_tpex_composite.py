@@ -24,6 +24,7 @@ from scripts.m8r_05c.trading_status_composer import (
     validate_trading_status_context_composite,
 )
 from scripts.m8r_filesystem_safety import safe_destination
+from server.operational_diagnostics import timed_source_call
 from scripts.ssl_policy import build_ssl_context
 from .phase_h_trading_status_adapters import (
     H1NormalizationError, _tpex_attention_date_value, _tpex_cmode_date_value,
@@ -210,7 +211,14 @@ def execute_composite_operation(
         source_meta: dict[str, Any] | None = None
         try:
             try:
-                response = response_provider(source) if response_provider is not None else official_get(source["endpoint"], timeout_seconds=request.get("timeout_seconds", TIMEOUT_SECONDS))
+                response = timed_source_call(
+                    source["source_id"],
+                    lambda: response_provider(source) if response_provider is not None else official_get(
+                        source["endpoint"], timeout_seconds=request.get("timeout_seconds", TIMEOUT_SECONDS)
+                    ),
+                    market="TPEX",
+                    capability_id="trading_status_context",
+                )
             except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
                 raise H1CompositeSourceAttemptError("source_failed:transport_failure") from exc
             if response.get("effective_url") != source["endpoint"] or response.get("redirect_count") != 0:

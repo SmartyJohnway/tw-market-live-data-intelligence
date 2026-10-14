@@ -16,8 +16,11 @@ from .phase_i_i2_index_futures_adapters import (
     MAX_RESPONSE_BYTES,
     MAX_ROOT_ROWS,
     SOURCE_ENDPOINT,
+    SOURCE_ID,
     decode_taifex_payload,
 )
+
+from server.operational_diagnostics import timed_source_call
 
 TIMEOUT_SECONDS = 30
 MAX_READ_BYTES = MAX_RESPONSE_BYTES + 1
@@ -88,7 +91,12 @@ An absent delegate fails before I/O; this module has no implicit acquisition.
     if transport is None:
         raise ProductionTransportError("live_execution_not_rearmed")
     try:
-        status, headers, body = transport(SOURCE_ENDPOINT, TIMEOUT_SECONDS)
+        status, headers, body = timed_source_call(
+            SOURCE_ID,
+            lambda: transport(SOURCE_ENDPOINT, TIMEOUT_SECONDS),
+            market="TWSE",
+            capability_id="index_futures_context",
+        )
     except Exception as exc:
         raise ProductionTransportError("source_failed:transport_exception") from exc
     if not isinstance(body, bytes):

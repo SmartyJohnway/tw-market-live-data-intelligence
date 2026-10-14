@@ -117,3 +117,41 @@ def test_process_memory_metric_remains_allowlisted():
         metrics={"process_memory_bytes": 123456, "not_allowed": 1},
     )
     assert event["metrics"] == {"process_memory_bytes": 123456}
+
+
+def test_timed_source_call_preserves_return_and_emits_bounded_event(monkeypatch):
+    events = []
+    monkeypatch.setattr(ops, "emit_runtime_event", lambda **kwargs: events.append(kwargs) or True)
+    result = ops.timed_source_call(
+        "SOURCE-1", lambda: {"ok": True}, market="TWSE", capability_id="recent_performance"
+    )
+    assert result == {"ok": True}
+    assert len(events) == 1
+    event = events[0]
+    assert event["event_code"] == "source.acquisition.completed"
+    assert event["status"] == "returned"
+    assert event["references"] == {
+        "source_id": "SOURCE-1", "market": "TWSE", "capability_id": "recent_performance"
+    }
+    assert event["metrics"]["duration_ms"] >= 0
+
+
+def test_timed_source_call_preserves_exception_and_telemetry_is_fail_open(monkeypatch):
+    events = []
+    monkeypatch.setattr(ops, "emit_runtime_event", lambda **kwargs: events.append(kwargs) or False)
+
+    class SourceBoom(RuntimeError):
+        pass
+
+    def fail():
+        raise SourceBoom("synthetic")
+
+    try:
+        ops.timed_source_call("SOURCE-2", fail, market="TPEX")
+    except SourceBoom as exc:
+        assert str(exc) == "synthetic"
+    else:
+        raise AssertionError("source exception was not preserved")
+    assert len(events) == 1
+    assert events[0]["status"] == "raised"
+    assert events[0]["reason_code"] == "SourceBoom"

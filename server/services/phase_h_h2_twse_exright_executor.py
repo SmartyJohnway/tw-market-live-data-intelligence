@@ -23,6 +23,7 @@ from scripts.m8r_05b_03.dispatch import DispatchRuntimeContext
 from scripts.m8r_05b_03.errors import OrchestrationError
 from scripts.m8r_filesystem_safety import FilesystemSafetyError, atomic_write_bytes, safe_destination
 from scripts.ssl_policy import build_ssl_context
+from server.operational_diagnostics import timed_source_call
 from scripts.validate_phase_h_v3_contracts import validate_recent_performance_semantics
 from .phase_h_corporate_action_adapters import (
     H2NormalizationError,
@@ -254,7 +255,12 @@ def execute_h2_twse_exright_pre(request: dict[str, Any], context: DispatchRuntim
     source_fetch = official_get_once if fetch_response is None else fetch_response
     try:
         try:
-            response = source_fetch(timeout_seconds=min(request.get("timeout_seconds", TIMEOUT_SECONDS), TIMEOUT_SECONDS))
+            response = timed_source_call(
+                SOURCE_ID,
+                lambda: source_fetch(timeout_seconds=min(request.get("timeout_seconds", TIMEOUT_SECONDS), TIMEOUT_SECONDS)),
+                market="TWSE",
+                capability_id="corporate_action_context",
+            )
         except (urllib.error.URLError, TimeoutError, socket.timeout, ConnectionError) as exc:
             raise H2SourceAttemptError("source_failed:transport_unavailable") from exc
         observed_at = response.get("retrieved_at") if isinstance(response.get("retrieved_at"), str) else observed_at

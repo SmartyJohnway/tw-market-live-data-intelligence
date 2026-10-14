@@ -16,7 +16,10 @@ from scripts.m8r_05c.citation_builder import build_citation_index
 from scripts.m8r_05c.lineage_resolver import build_lineage_map
 from scripts.m8r_05c.models import ProjectionInputs
 from scripts.m8r_05c.result_builder import build_result
-from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
+from scripts.m8r_06_03_production_adapter import (
+    build_production_runtime_adapter_registry,
+    phase_i_i1_timed_batch_adapter,
+)
 from server.services.phase_i_i1_production_candidate import (
     CAPABILITY_ID,
     EVIDENCE_CONTRACT,
@@ -364,7 +367,7 @@ def test_candidate_adapter_is_promoted_to_two_normal_production_routes_with_batc
     normal = build_production_runtime_adapter_registry().routes_for_executor(EXECUTOR_ID)
     assert {item.market for item in normal} == {"TWSE", "TPEX"}
     assert len(normal) == 2
-    assert all(item.batch_adapter is production_batch_operation_adapter_candidate for item in normal)
+    assert all(item.batch_adapter is phase_i_i1_timed_batch_adapter for item in normal)
     candidate = build_i1_candidate_runtime_adapter_registry()
     assert {item.market for item in candidate.routes_for_executor(EXECUTOR_ID)} == {"TWSE", "TPEX"}
 

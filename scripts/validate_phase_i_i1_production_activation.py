@@ -10,13 +10,15 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
+from scripts.m8r_06_03_production_adapter import (
+    build_production_runtime_adapter_registry,
+    phase_i_i1_timed_batch_adapter,
+    phase_i_i1_timed_operation_adapter,
+)
 from server.services.phase_i_i1_production_candidate import (
     CAPABILITY_ID,
     EVIDENCE_CONTRACT,
     EXECUTOR_ID,
-    production_batch_operation_adapter_candidate,
-    production_operation_adapter_candidate,
 )
 from server.unified_mcp.tool_contracts import build_tool_contract_snapshot
 
@@ -88,7 +90,14 @@ def validate() -> None:
     registrations = normal.routes_for_executor(EXECUTOR_ID)
     if len(registrations) != 2 or {item.market for item in registrations} != {"TWSE", "TPEX"}:
         raise ValueError("i1_normal_registry_route_set_invalid")
-    if any(item.capability_id != CAPABILITY_ID or item.expected_evidence_contract != EVIDENCE_CONTRACT or item.adapter is not production_operation_adapter_candidate or item.batch_adapter is not production_batch_operation_adapter_candidate or item.fake_adapter for item in registrations):
+    if any(
+        item.capability_id != CAPABILITY_ID
+        or item.expected_evidence_contract != EVIDENCE_CONTRACT
+        or item.adapter is not phase_i_i1_timed_operation_adapter
+        or item.batch_adapter is not phase_i_i1_timed_batch_adapter
+        or item.fake_adapter
+        for item in registrations
+    ):
         raise ValueError("i1_normal_registry_adapter_binding_invalid")
     # Later I2 A4 authority is separate from the frozen I1 activation gate.
     if any(item.get("capability_id") == "index_futures_context" for item in metadata.get("executors", [])):
