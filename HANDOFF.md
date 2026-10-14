@@ -74,13 +74,17 @@ at `378acb454a4e1e4e82e2be14b5957dc7d912f751`.
 L2-A4 - Backup Manifest & Verification passed technical review under
 `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted under
 `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE` and is merged through PR #347
-at `fb2fef0c50c3ee50581bc62af534b36116b332e7`. The tranche remains internal and does not
-perform restore, migration, deletion, or cleanup.
+at `fb2fef0c50c3ee50581bc62af534b36116b332e7`.
 
-**Current stop boundary:** L2-A4 is merged. A5 Restore Compatibility & Bounded Restore is separately
-authorized under its bounded Codex contract. Codex may implement, commit, push, and open the A5 PR,
-but must not merge it. A6+, L3-L7, packaging, and market/source acquisition remain unauthorized. Recover Phase L from
-`docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` first.
+L2-A5 - Restore Compatibility & Bounded Restore passed technical review under
+`L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
+`L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_OWNER_ACCEPTED_FOR_MERGE`, and is merged through
+PR #349 at `97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2`. The tranche remains internal, restores only to
+isolated targets, and does not activate state or apply migration.
+
+**Current stop boundary:** L2-A5 is merged and closed. A6 and later L2 tranches, L3-L7, packaging,
+market/source acquisition, migration apply, rollback, and activation remain unauthorized. Recover
+Phase L from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` first.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.

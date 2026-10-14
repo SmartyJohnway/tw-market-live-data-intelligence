@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 STARTED; A0 complete; A1/A1-R1 frozen; A2/A3 merged; A4 Owner-accepted and merged through PR #347 at fb2fef0c50c3ee50581bc62af534b36116b332e7; A5 authorized under bounded Codex contract; A6+ and L3-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 STARTED; A0 complete; A1/A1-R1 frozen; A2/A3/A4 merged; A5 Owner-accepted and merged through PR #349 at 97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2; A6+ and L3-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,20 +1421,18 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L2-A4 Owner accepted / merged; A5 authorized (2026-10-14)
+### Current entry - L2-A5 Owner accepted / merged (2026-10-14)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
 `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
 
-L2 - Replay / Retention / Migration is **STARTED**. A0 is complete, A1/A1-R1 are frozen, A2/A3
-are merged, and L2-A4 Backup Manifest & Verification passed technical review under
-`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted under
-`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #347
-at `fb2fef0c50c3ee50581bc62af534b36116b332e7`. A5 Restore Compatibility & Bounded Restore is
-separately authorized under its bounded Codex contract; Codex may implement, commit, push, and open
-the A5 PR but must not merge it. A6 and later L2 tranches and L3-L7 remain unauthorized. Future
-recovery begins with
+L2 - Replay / Retention / Migration is **STARTED**. A0 is complete, A1/A1-R1 are frozen, A2/A3/A4
+are merged, and L2-A5 Restore Compatibility & Bounded Restore passed technical review under
+`L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted under
+`L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_OWNER_ACCEPTED_FOR_MERGE`, and is merged through
+PR #349 at `97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2`. A5 does not activate state or apply migration.
+A6 and later L2 tranches and L3-L7 remain unauthorized. Future recovery begins with
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
 
 ## L.0 Phase Goal
