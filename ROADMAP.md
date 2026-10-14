@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 STARTED; A0 complete; A1/A1-R1 frozen; A2/A3 merged; A4 technical PASS and Owner-accepted under L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE pending merge closure; A5+ and L3-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 STARTED; A0 complete; A1/A1-R1 frozen; A2/A3 merged; A4 Owner-accepted and merged through PR #347 at fb2fef0c50c3ee50581bc62af534b36116b332e7; A5 authorized under bounded Codex contract; A6+ and L3-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,7 +1421,7 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L2-A4 Owner accepted / merge closure pending (2026-10-14)
+### Current entry - L2-A4 Owner accepted / merged; A5 authorized (2026-10-14)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
@@ -1429,11 +1429,12 @@ under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSE
 
 L2 - Replay / Retention / Migration is **STARTED**. A0 is complete, A1/A1-R1 are frozen, A2/A3
 are merged, and L2-A4 Backup Manifest & Verification passed technical review under
-`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS`. A4 is Owner-accepted under
-`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE` pending merge closure. A4 adds
-bounded internal backup planning/creation/read-only verification only; restore/migration are not
-part of this tranche. A5 and later L2 tranches and L3-L7 remain unauthorized until A4 merges and
-a separate bounded contract is used. Future recovery begins with
+`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted under
+`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #347
+at `fb2fef0c50c3ee50581bc62af534b36116b332e7`. A5 Restore Compatibility & Bounded Restore is
+separately authorized under its bounded Codex contract; Codex may implement, commit, push, and open
+the A5 PR but must not merge it. A6 and later L2 tranches and L3-L7 remain unauthorized. Future
+recovery begins with
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
 
 ## L.0 Phase Goal

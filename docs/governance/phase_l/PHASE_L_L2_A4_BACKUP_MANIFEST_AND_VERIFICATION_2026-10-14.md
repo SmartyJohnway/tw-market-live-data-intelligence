@@ -4,6 +4,7 @@
 **Base:** `main@b36a11c26590c6b00745cbb66e17ec55c81cbbf0`
 **Technical disposition:** `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS`
 **Owner acceptance:** `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`
+**Merged:** PR #347 / `fb2fef0c50c3ee50581bc62af534b36116b332e7`
 **Authority:** frozen L0; L2-A0; frozen L2-A1 and A1-R1; accepted A2; Owner-accepted A3 in PR #345 and merge-closure PR #346; current A4 candidate.
 
 ## 1. Scope and implementation
@@ -76,4 +77,4 @@ Public HTTP/MCP surfaces, exact-six MCP tools, schemas, Catalog/Route/Executor, 
 - Watchlist backup is a DB snapshot, including its current database contents; expired preview rows are not separately filtered or rewritten.
 - Restore, migration, compatibility inspection, retention-duration policy, backup rotation, and deletion remain deferred to separately authorized tranches. A valid hash proves byte integrity, not restore compatibility.
 
-Technical disposition: `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is recorded under `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`. Commit, push, PR, and merge may proceed for this exact A4 tranche only. Restore, migration, deletion, cleanup, or A5 implementation are not authorized by this closure.
+Technical disposition: `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is recorded under `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`, and merge closure completed through PR #347 at `fb2fef0c50c3ee50581bc62af534b36116b332e7`. A4 is closed. Restore/migration are not part of A4. A5 may proceed under its separately authorized bounded contract; A6 and later tranches remain unauthorized.
