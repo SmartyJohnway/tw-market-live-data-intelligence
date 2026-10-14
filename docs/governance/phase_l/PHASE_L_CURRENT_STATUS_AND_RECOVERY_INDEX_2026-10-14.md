@@ -5,7 +5,7 @@
 **Phase L status:** STARTED
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
-**L2:** STARTED ? A0 inventory complete; A1 replay semantics frozen; A2 Codex tranche selected
+**L2:** STARTED - A0 complete; A1 semantics frozen; A1-R1 classification scope frozen; A2 Owner-accepted under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE` pending merge closure
 **L3-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -44,6 +44,11 @@ This index must never override L0, an Owner acceptance record, or current Git re
 - Source Acquisition Timing Coverage: PR #339.
 - L1 technical exit: `PHASE_L_L1_EXIT_REVIEW_PASS`.
 - L1 final Owner closure: `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
+- L2-A0 inventory: `L2_A0_CURRENT_PERSISTENCE_REPLAY_INVENTORY_COMPLETE`.
+- L2-A1 semantics: `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`.
+- L2-A1-R1 scope clarification: `L2_A1_R1_STATE_CLASSIFICATION_SCOPE_CLARIFICATION_FROZEN`.
+- L2-A2 technical review: `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_ACCEPTANCE_REVIEW_PASS`.
+- L2-A2 Owner acceptance: `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`; merge closure pending.
 ## 4. What L1 delivered
 
 Current merged Runtime Operability includes:
@@ -72,16 +77,20 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 These boundaries must be started explicitly and must not be collapsed into one broad refactor.
 ## 6. Current stop boundary
 
-Current approved state:
+Current technical state:
 
-`L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`
+`L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`
 
-L2 is started. L2-A0 is complete. The current bounded implementation boundary is L2-A2 - Read-Only Finalized Package Inspector / Replayability Classifier, with Codex as implementation worker and ChatGPT as reviewer/governor.
+L2-A2 has technical PASS and Owner acceptance; merge closure is pending. Do not begin
+backup/restore, retention cleanup, migration apply, public `market_read_result` semantic changes,
+or the next L2 implementation tranche before A2 merge closure.
 
-Do not infer authorization for backup/restore, retention cleanup, migration apply, public MCP/API changes, L3-L7, new evidence families, packaging, or live-source expansion.
+`MIGRATION_REQUIRED` and `UNSUPPORTED_NEWER_STATE` remain mandatory L2 states, but per
+L2-A1-R1 they require a later versioned installation-state compatibility authority and are not
+fabricated by the package-local A2 inspector.
 
 A concise future-conversation instruction is sufficient:
 
-> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and the L2-A0/A1 records, then continue only the current bounded L2 tranche.
+> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and stop at the recorded A2 merge-closure boundary unless separately authorized.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.

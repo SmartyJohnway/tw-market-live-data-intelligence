@@ -22,12 +22,17 @@ L1 — Runtime Operability is **CLOSED** under
 structured operational diagnostics/correlation, adapter/source timing, failure-code reuse,
 and bounded resource snapshots.
 
-L2 — Replay / Retention / Migration is now **STARTED** by explicit Owner authorization on
-2026-10-14. L2-A0 current persistence/replay inventory is complete under
-`L2_A0_CURRENT_PERSISTENCE_REPLAY_INVENTORY_COMPLETE`, and L2-A1 replay semantics are frozen
-under `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`. L3-L7 remain unauthorized. The current
-implementation boundary is L2-A2 — Read-Only Finalized Package Inspector / Replayability
-Classifier, with Codex assigned as bounded implementation worker.
+L2 - Replay / Retention / Migration is **STARTED**. L2-A0 current persistence/replay
+inventory is complete under `L2_A0_CURRENT_PERSISTENCE_REPLAY_INVENTORY_COMPLETE`; L2-A1
+replay semantics are frozen under `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`, with package vs
+installation-state classification placement clarified under
+`L2_A1_R1_STATE_CLASSIFICATION_SCOPE_CLARIFICATION_FROZEN`.
+
+L2-A2 - Read-Only Finalized Package Inspector / Replayability Classifier has passed technical
+review under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_ACCEPTANCE_REVIEW_PASS`; Owner acceptance
+is recorded under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`. It adds an internal zero-write/zero-network package inspector only.
+Public `market_read_result`, HTTP/MCP contracts, backup/restore, retention, and migration remain
+unchanged. L3-L7 remain unauthorized.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
 accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
@@ -69,9 +74,9 @@ transport/error semantics and the historical frozen I1 live-tested implementatio
 
 The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
 Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**. L2 is
-**STARTED**; see the A0 inventory, A1 replay-semantics contract, and A2 Codex handoff under
-`docs/governance/phase_l/`. L3-L7 remain unauthorized. The Phase L recovery index remains the
-front-door recovery document.
+**STARTED**; A0/A1 are complete/frozen and A2 is Owner-accepted under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE` pending merge closure.
+See the Phase L recovery index and L2 governance records under `docs/governance/phase_l/`.
+L3-L7 remain unauthorized.
 
 ## Current I3 production boundary (2026-10-05)
 
