@@ -17,10 +17,12 @@ separation, state classes, configuration precedence, lifecycle UX, migration/rol
 backup/restore, and optional Agent integrations. Provisional release target is `v1.5.0`;
 `v2.0.0` requires an explicitly approved breaking change.
 
-The next authorized Phase L boundary is **L1 — Runtime Operability**. L1 must remain
-lean: start/stop/status/health/doctor, structured operational diagnostics, correlation and
-bounded runtime telemetry. Do not begin L2-L7, add evidence families, or broaden live-source
-activity implicitly.
+L1 — Runtime Operability is **CLOSED** under
+`PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Its merged scope covers lifecycle,
+structured operational diagnostics/correlation, adapter/source timing, failure-code reuse,
+and bounded resource snapshots. L2-L7 are not started or authorized. Under frozen L0
+sequencing the next candidate boundary is **L2 — Replay / Retention / Migration**, but it
+requires a separate Owner start decision.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
 accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
@@ -53,13 +55,18 @@ enforcement, or governed-artifact changes.
 
 The next bounded selection chose **Source Acquisition Timing Coverage**, again without assigning
 an A2 name. Its implementation has passed technical review under
-`L1_SOURCE_ACQUISITION_TIMING_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted under
-`L1_SOURCE_ACQUISITION_TIMING_OWNER_ACCEPTED_FOR_MERGE`. The
-tranche adds bounded monotonic source-call timing across current production acquisition seams
-while preserving existing source transport/error semantics and the historical frozen I1
-live-tested implementation. See
+`L1_SOURCE_ACQUISITION_TIMING_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted under
+`L1_SOURCE_ACQUISITION_TIMING_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #339 at
+`b3d6722d174f91da3e9c7cba4cf11e2f1306102b`. The tranche adds bounded monotonic source-call
+timing across current production acquisition seams while preserving existing source
+transport/error semantics and the historical frozen I1 live-tested implementation. See
 `docs/governance/phase_l/PHASE_L_L1_SOURCE_ACQUISITION_TIMING_2026-10-14.md`.
-Do not begin another implementation tranche or L2-L7 until this accepted tranche is closed through commit / PR / exact-head review / merge. After merge, perform the separate L1 exit review now authorized by the Owner before declaring L1 complete.
+
+The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
+Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**;
+L2-L7 remain unauthorized. See
+`docs/governance/phase_l/PHASE_L_L1_EXIT_REVIEW_2026-10-14.md` and the Phase L recovery index
+`docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
 
 ## Current I3 production boundary (2026-10-05)
 

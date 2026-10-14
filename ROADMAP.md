@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED on 2026-10-13 with L0 architecture contract FROZEN under PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN; next L1 Runtime Operability"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 Runtime Operability CLOSED under PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS on 2026-10-14; L2 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,17 +1421,18 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry — L0 frozen / L1 Runtime Operability next (2026-10-13)
+### Current entry — L1 Runtime Operability CLOSED (2026-10-14)
 
-Phase L is **STARTED**. L0 — Production Boundary & Architecture Contract is frozen
+Phase L is **STARTED**. L0 — Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN` in
 `docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md`.
-The frozen contract preserves the full Phase L design intent while fixing D01-D12:
-product goal, provisional `v1.5.0` / breaking-change `v2.0.0` rule, Windows 10/11
-Tier-1 targets, Native Windows and Docker Local Service profiles, machine/user/path/state
-portability, app/state separation, state classification, configuration precedence,
-lifecycle UX, migration/rollback, backup/restore, and optional Agent integrations.
-The next authorized boundary is **L1 — Runtime Operability**; L2-L7 are not started.
+L1 Runtime Operability implementation is merged through PR #339; its formal technical exit
+review passes under `PHASE_L_L1_EXIT_REVIEW_PASS`, and the Owner closed L1 under
+`PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` in
+`docs/governance/phase_l/PHASE_L_L1_EXIT_REVIEW_2026-10-14.md`.
+L2-L7 are not started or authorized. The next candidate boundary is L2 — Replay / Retention /
+Migration, subject to a separate Owner start decision. Future Phase L recovery should begin with
+`docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
 
 ## L.0 Phase Goal
 
@@ -1941,7 +1942,7 @@ External Agent Scheduler
 [ ] Phase H — Interpretation & Historical Reference
 [x] Phase I — Cross-Market & Optional Context
 [x] Phase J — Integrated Research Acceptance
-[ ] Phase K — Multi-Agent Compatibility & Evaluation
+[x] Phase K — Multi-Agent Compatibility & Evaluation
 [ ] Phase L — Production Hardening & Extension Architecture
 [ ] Phase M — Agent-Scheduled Research & Bounded Monitoring
 ```
