@@ -4,7 +4,7 @@
 **Base:** `origin/main@7ec872d7a72a22993917e4413d4c640a35f53e4e`
 **Predecessor:** L2-A4 implementation PR #347 (`fb2fef0c50c3ee50581bc62af534b36116b332e7`) and governance closure PR #348; A4 is Owner-accepted and merged.
 **Technical disposition:** `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`
-**Owner acceptance:** not recorded.
+**Owner acceptance:** `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_OWNER_ACCEPTED_FOR_MERGE`.
 
 ## 1. Authority and boundary
 
@@ -91,4 +91,4 @@ No HTTP/MCP route, MCP tool, schema, Catalog/Route/Executor, authorization mode,
 
 ## 9. Stop boundary
 
-Technical disposition: `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`. Independent exact-head review is complete; Owner acceptance remains outstanding. PR #349 must remain unmerged until Owner acceptance. Do not apply migration, activate state, or begin A6.
+Technical disposition: `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is recorded under `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_OWNER_ACCEPTED_FOR_MERGE`. PR #349 may be merged for this exact reviewed head once checks remain green. Do not apply migration, activate state, or begin A6.
