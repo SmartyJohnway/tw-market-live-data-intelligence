@@ -4,6 +4,7 @@
 **Base:** `main@7b5f0fdca04dcd1ac5847f4582309a48e1984682`
 **Technical disposition:** `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_ACCEPTANCE_REVIEW_PASS`
 **Owner acceptance:** `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE`
+**Merged:** PR #345 / `378acb454a4e1e4e82e2be14b5957dc7d912f751`
 **Authority:** frozen L0; L2-A0 inventory; frozen L2-A1; frozen A1-R1; A2 acceptance at PR #343; current implementation on the A3 branch.
 
 ## 1. Scope and implementation
@@ -85,4 +86,4 @@ No market/source acquisition is performed. Classifier invocation has no filesyst
 
 ## 8. Stop boundary
 
-Technical disposition: `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is recorded under `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE`. Commit, push, PR, and merge may proceed for this exact A3 tranche only. No deletion, cleanup, backup, restore, migration, live acquisition, or next tranche is authorized.
+Technical disposition: `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is recorded under `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE`, and merge closure completed through PR #345 at `378acb454a4e1e4e82e2be14b5957dc7d912f751`. A3 is closed. No deletion, cleanup, backup, restore, migration, live acquisition, or A4/later tranche is authorized by this closure.
