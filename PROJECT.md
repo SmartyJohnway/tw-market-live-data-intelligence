@@ -37,9 +37,13 @@ unchanged.
 L2-A3 - Retention Classification & Policy has passed technical review under
 `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted under
 `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE` and is merged through PR #345
-at `378acb454a4e1e4e82e2be14b5957dc7d912f751`. It adds an internal read-only retention family
-registry/policy matrix only; no cleanup, deletion, backup, restore, migration, or retention-duration
-policy is authorized. A4 and later L2 tranches remain unauthorized. L3-L7 remain unauthorized.
+at `378acb454a4e1e4e82e2be14b5957dc7d912f751`.
+
+L2-A4 - Backup Manifest & Verification has passed technical review under
+`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted under
+`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE` pending merge closure. It adds
+internal bounded backup planning/creation/read-only verification only. Restore, migration, deletion,
+cleanup, and A5 implementation remain unauthorized until A4 merge closure. L3-L7 remain unauthorized.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
 accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
@@ -81,10 +85,10 @@ transport/error semantics and the historical frozen I1 live-tested implementatio
 
 The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
 Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**. L2 is
-**STARTED**; A0/A1 are complete/frozen, A2 is merged, and A3 is Owner-accepted and merged through
-PR #345 at `378acb454a4e1e4e82e2be14b5957dc7d912f751`.
+**STARTED**; A0/A1 are complete/frozen, A2/A3 are merged, and A4 is Owner-accepted under
+`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE` pending merge closure.
 See the Phase L recovery index and L2 governance records under `docs/governance/phase_l/`.
-A4 and later L2 tranches plus L3-L7 remain unauthorized.
+A5 and later L2 tranches plus L3-L7 remain unauthorized until A4 merge closure.
 
 ## Current I3 production boundary (2026-10-05)
 
