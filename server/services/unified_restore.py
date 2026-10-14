@@ -317,6 +317,11 @@ def _resolve_destination(destination: Path, *, backup_path: Path,
     if not isinstance(forbidden_roots, Sequence) or isinstance(forbidden_roots, (str, bytes)):
         raise RestoreError("RESTORE_TARGET_UNSAFE")
     original = Path(destination)
+    original_text = os.fspath(original)
+    # Tier-1 restore targets are local filesystem paths. Reject UNC/device paths
+    # before exists()/resolve() can trigger SMB or other network filesystem I/O.
+    if original_text.startswith("\\\\") or original_text.startswith("//"):
+        raise RestoreError("RESTORE_TARGET_UNSAFE")
     if any(part == ".." for part in original.parts):
         raise RestoreError("RESTORE_TARGET_UNSAFE")
     raw = Path(os.path.abspath(original))
@@ -414,6 +419,52 @@ def _make_receipt(manifest: Mapping[str, Any], *, manifest_sha256: str,
     }
     receipt["receipt_integrity"]["sha256"] = _receipt_hash(receipt)
     return receipt
+
+
+def _validate_receipt_envelope(receipt: Mapping[str, Any]) -> None:
+    if not isinstance(receipt, Mapping) or set(receipt) != _RECEIPT_FIELDS:
+        raise RestoreError("RESTORE_VERIFICATION_FAILED")
+    if not isinstance(receipt.get("restore_id"), str) or not _ID_RE.fullmatch(receipt["restore_id"]):
+        raise RestoreError("RESTORE_VERIFICATION_FAILED")
+    try:
+        created_at = datetime.fromisoformat(str(receipt.get("created_at", "")).replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise RestoreError("RESTORE_VERIFICATION_FAILED") from exc
+    if created_at.tzinfo is None or created_at.utcoffset() != timezone.utc.utcoffset(created_at):
+        raise RestoreError("RESTORE_VERIFICATION_FAILED")
+    integrity = receipt.get("receipt_integrity")
+    if (not isinstance(integrity, Mapping)
+            or set(integrity) != {"algorithm", "coverage", "sha256"}
+            or integrity.get("algorithm") != "SHA-256"
+            or integrity.get("coverage") != "canonical UTF-8 JSON excluding receipt_integrity"
+            or not isinstance(integrity.get("sha256"), str)
+            or not _HASH_RE.fullmatch(integrity["sha256"])
+            or integrity["sha256"] != _receipt_hash(receipt)):
+        raise RestoreError("RESTORE_VERIFICATION_FAILED")
+    for field in ("restored_member_count", "restored_total_bytes"):
+        value = receipt.get(field)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            raise RestoreError("RESTORE_VERIFICATION_FAILED")
+    versions = receipt.get("state_family_versions")
+    if (not isinstance(versions, Mapping)
+            or any(not isinstance(key, str) or not key or not isinstance(value, str) or not value
+                   for key, value in versions.items())):
+        raise RestoreError("RESTORE_VERIFICATION_FAILED")
+    rows = receipt.get("members")
+    if not isinstance(rows, list):
+        raise RestoreError("RESTORE_VERIFICATION_FAILED")
+    for row in rows:
+        if not isinstance(row, Mapping) or set(row) != _MEMBER_RECEIPT_FIELDS:
+            raise RestoreError("RESTORE_VERIFICATION_FAILED")
+        if not isinstance(row.get("logical_member_id"), str) or not _ID_RE.fullmatch(row["logical_member_id"]):
+            raise RestoreError("RESTORE_VERIFICATION_FAILED")
+        if not isinstance(row.get("artifact_family"), str) or not row["artifact_family"]:
+            raise RestoreError("RESTORE_VERIFICATION_FAILED")
+        size = row.get("size_bytes")
+        if not isinstance(size, int) or isinstance(size, bool) or size < 0:
+            raise RestoreError("RESTORE_VERIFICATION_FAILED")
+        if not isinstance(row.get("sha256"), str) or not _HASH_RE.fullmatch(row["sha256"]):
+            raise RestoreError("RESTORE_VERIFICATION_FAILED")
 
 
 def restore_backup(*, backup_path: Path, destination: Path,
@@ -534,12 +585,8 @@ def verify_restored_state(*, backup_path: Path, restored_path: Path,
         raise
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         raise RestoreError("RESTORE_VERIFICATION_FAILED") from exc
-    if not isinstance(receipt, dict) or set(receipt) != _RECEIPT_FIELDS:
-        raise RestoreError("RESTORE_VERIFICATION_FAILED")
-    if (receipt.get("restore_receipt_schema_version") != RECEIPT_SCHEMA_VERSION
-            or receipt.get("receipt_integrity", {}).get("algorithm") != "SHA-256"
-            or receipt.get("receipt_integrity", {}).get("coverage") != "canonical UTF-8 JSON excluding receipt_integrity"
-            or receipt.get("receipt_integrity", {}).get("sha256") != _receipt_hash(receipt)):
+    _validate_receipt_envelope(receipt)
+    if receipt.get("restore_receipt_schema_version") != RECEIPT_SCHEMA_VERSION:
         raise RestoreError("RESTORE_VERIFICATION_FAILED")
     manifest = _load_manifest(Path(backup_path).resolve(strict=True))
     if (receipt.get("backup_id") != manifest.get("backup_id")

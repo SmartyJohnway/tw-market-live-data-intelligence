@@ -10,6 +10,7 @@ import pytest
 
 from scripts.m8r_09_persistent_watchlists import PersistentWatchlistStore
 from server.services import unified_backup as backup_module
+from server.services import unified_restore as restore_module
 from server.services.unified_backup import BackupMember, BackupRoot, create_backup, plan_backup
 from server.services.unified_restore import (
     CompatibilityAttestation,
@@ -222,6 +223,38 @@ def test_scope_cannot_be_laundered_by_rehash(tmp_path: Path) -> None:
         verify_restored_state(backup_path=package, restored_path=destination,
                               compatibility=attestation, max_total_bytes=LIMIT,
                               max_member_count=100)
+
+
+def test_receipt_envelope_metadata_cannot_be_laundered_by_rehash(tmp_path: Path) -> None:
+    _, package, attestation = _create_backup(tmp_path)
+    destination = tmp_path / "restored"
+    restore_backup(backup_path=package, destination=destination, compatibility=attestation,
+                   forbidden_roots=[], max_total_bytes=LIMIT, max_member_count=100,
+                   restore_id="restore-envelope", created_at=UTC)
+    receipt_path = destination / RECEIPT_NAME
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["restore_id"] = "invalid restore id"
+    receipt["created_at"] = "not-a-timestamp"
+    receipt["receipt_integrity"]["extra"] = "not-allowed"
+    _rehash_receipt(receipt)
+    receipt_path.write_text(json.dumps(receipt, sort_keys=True), encoding="utf-8")
+    with pytest.raises(RestoreError, match="RESTORE_VERIFICATION_FAILED"):
+        verify_restored_state(backup_path=package, restored_path=destination,
+                              compatibility=attestation, max_total_bytes=LIMIT,
+                              max_member_count=100)
+
+
+def test_unc_destination_rejected_before_filesystem_probe(tmp_path: Path, monkeypatch) -> None:
+    _, package, _ = _create_backup(tmp_path)
+
+    def forbidden_probe(path):
+        raise AssertionError("UNC destination must be rejected before filesystem probing")
+
+    monkeypatch.setattr(restore_module, "_unsafe_path", forbidden_probe)
+    with pytest.raises(RestoreError, match="RESTORE_TARGET_UNSAFE"):
+        restore_module._resolve_destination(
+            Path(r"\\\\server\\share\\restored"), backup_path=package, forbidden_roots=[]
+        )
 
 
 def test_extra_or_tampered_restored_member_fails_read_only_verification(tmp_path: Path) -> None:

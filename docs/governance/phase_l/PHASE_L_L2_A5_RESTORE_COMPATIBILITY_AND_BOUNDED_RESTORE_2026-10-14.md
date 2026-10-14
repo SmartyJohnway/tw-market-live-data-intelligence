@@ -3,7 +3,7 @@
 **Date:** 2026-10-14
 **Base:** `origin/main@7ec872d7a72a22993917e4413d4c640a35f53e4e`
 **Predecessor:** L2-A4 implementation PR #347 (`fb2fef0c50c3ee50581bc62af534b36116b332e7`) and governance closure PR #348; A4 is Owner-accepted and merged.
-**Technical disposition:** `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS` (candidate; independent review pending)
+**Technical disposition:** `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`
 **Owner acceptance:** not recorded.
 
 ## 1. Authority and boundary
@@ -46,7 +46,7 @@ Only `DIRECT_RESTORE_COMPATIBLE` proceeds to restore execution. `MIGRATION_REQUI
 
 ## 4. Bounded restore and containment
 
-`restore_backup`, `inspect_restore`, and `verify_restored_state` are internal functions. All require explicit byte and member bounds. Restore also requires an explicit `forbidden_roots` argument (an empty list only when the trusted caller has no known live roots). It preflights A4 declared size/member count before member hashing/copying, verifies A4, checks the compatibility attestation, and accepts only a new destination whose parent already exists. It rejects `..`, existing targets, reparse/symlink components, paths overlapping the backup, repository, or caller-provided forbidden/live roots. The trusted caller must provide every known active/durable source root; canonical physical installation roots remain deferred under L0/L6.
+`restore_backup`, `inspect_restore`, and `verify_restored_state` are internal functions. All require explicit byte and member bounds. Restore also requires an explicit `forbidden_roots` argument (an empty list only when the trusted caller has no known live roots). It preflights A4 declared size/member count before member hashing/copying, verifies A4, checks the compatibility attestation, and accepts only a new destination whose parent already exists. It rejects `..`, existing targets, reparse/symlink components, UNC/device-root destinations before filesystem probing, and paths overlapping the backup, repository, or caller-provided forbidden/live roots. The trusted caller must provide every known active/durable source root; canonical physical installation roots remain deferred under L0/L6.
 
 Restore stages in a sibling `.<name>.staging-<restore_id>` directory, copies each verified member's exact bytes, writes a receipt, independently verifies staging, checks the A4 package inventory and SHA-256 values remain unchanged, then renames staging to the absent final path. A failed attempt can leave a non-final staging directory. It never overwrites, merges, activates, registers, or points the product at restored state. It never changes the backup package or active installation.
 
@@ -60,7 +60,7 @@ Relative member validation reuses A4's strict path rules and is repeated against
 
 Each member records logical ID, A3 artifact family, backup-relative path, restore-relative path, byte size, and SHA-256. Receipt SHA-256 covers canonical UTF-8 JSON excluding the entire `receipt_integrity` field. It proves receipt self-consistency only, not signer identity or external provenance authenticity.
 
-`verify_restored_state` is read-only. It re-verifies A4, recomputes compatibility from the supplied target contract plus manifest-bound caller attestation, checks receipt bindings/scope/integrity, exact expected files and directories, no extra members, sizes/hashes/aggregate bounds, path containment, and Watchlist SQLite integrity. A receipt's claimed compatibility outcome is never accepted by itself. Rehashing a receipt after changing outcome, compatibility metadata, or restore scope does not pass without matching the independently supplied contract/attestation and required scope.
+`verify_restored_state` is read-only. It re-verifies A4, recomputes compatibility from the supplied target contract plus manifest-bound caller attestation, checks receipt bindings/scope/integrity, exact expected files and directories, no extra members, sizes/hashes/aggregate bounds, path containment, and Watchlist SQLite integrity. The independent reviewer tightened the receipt envelope so `restore_id`, UTC `created_at`, integer counts/sizes, member IDs/hashes, state-family version facts, and the exact `receipt_integrity` object shape are validated in addition to the self-hash. A receipt's claimed compatibility outcome is never accepted by itself. Rehashing a receipt after changing outcome, compatibility metadata, restore scope, or malformed operation metadata does not pass without matching the independently supplied contract/attestation and strict receipt schema.
 
 ## 6. State-family behavior
 
@@ -77,7 +77,7 @@ Focused command:
 python -m pytest -q tests/unit/test_unified_restore.py tests/unit/test_unified_backup.py tests/unit/test_unified_retention_inventory.py tests/unit/test_unified_replay_inspector.py tests/unit/test_m8r_08b_mcp_tool_contracts.py tests/unit/test_m8r_09_persistent_watchlists.py
 ```
 
-The focused gate passed **109 tests, 393 warnings**. The warnings are the existing Persistent Watchlist `jsonschema.RefResolver` deprecation. The candidate gate covers direct compatibility, migration-only classification, newer/unknown versions, attestation binding, exact-byte restore, A4 member/manifest tamper, receipt/outcome/scope/version-metadata rehash attempts, isolated/existing/protected targets, path safety vocabulary, resource bounds before member hashing, read-only restored verification, backup and declared source inventory immutability, offline socket sentinels, Watchlist SQLite integrity, and existing A4/A3/A2/MCP/Watchlist regressions. No default/full CI or live acceptance was run.
+Codex's original focused gate passed **109 tests, 393 warnings**. Independent exact-head review added two bounded contract tests and repairs: malformed receipt operation metadata can no longer be laundered by recomputing the receipt self-hash, and UNC/device-root restore destinations are rejected before filesystem probing. The reviewer focused gate after repairs passed **111 tests, 393 warnings**. The warnings are the existing Persistent Watchlist `jsonschema.RefResolver` deprecation. The gate covers direct compatibility, migration-only classification, newer/unknown versions, attestation binding, exact-byte restore, A4 member/manifest tamper, receipt/outcome/scope/version-metadata/operation-metadata rehash attempts, isolated/existing/protected/UNC targets, path safety vocabulary, resource bounds before member hashing, read-only restored verification, backup and declared source inventory immutability, offline socket sentinels, Watchlist SQLite integrity, and existing A4/A3/A2/MCP/Watchlist regressions. No default/full CI or live acceptance was run.
 
 No HTTP/MCP route, MCP tool, schema, Catalog/Route/Executor, authorization mode, A2/A3/A4 implementation, or public `market_read_result` field is changed. No market/source acquisition or external network is used.
 
@@ -91,4 +91,4 @@ No HTTP/MCP route, MCP tool, schema, Catalog/Route/Executor, authorization mode,
 
 ## 9. Stop boundary
 
-Technical disposition is a candidate for `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`; independent exact-head review and Owner acceptance remain outstanding. A5 must stop after its bounded PR is created and verified. Do not merge, record Owner acceptance, apply migration, activate state, or begin A6.
+Technical disposition: `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`. Independent exact-head review is complete; Owner acceptance remains outstanding. PR #349 must remain unmerged until Owner acceptance. Do not apply migration, activate state, or begin A6.
