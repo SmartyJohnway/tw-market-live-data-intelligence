@@ -25,6 +25,7 @@ from .phase_i_i3_cash_institutional_flow_adapters import (
 )
 from .phase_i_i3_cash_institutional_flow_v2_evidence import validate_evidence_v2
 from .phase_i_i3_production_transport import AcquisitionError, acquire_once
+from server.operational_diagnostics import timed_source_call
 
 CAPABILITY_ID = "cash_institutional_flow_context"
 EXECUTOR_ID = "phase_i_i3_cash_institutional_flow_context_executor"
@@ -129,8 +130,14 @@ def production_batch_operation_adapter_candidate(
     """Acquire once for one approved same-market batch and persist V2 only."""
     batch = tuple(requests)
     market, source_date = _validate_batch(batch, context)
+    source_contract = load_frozen_contract()["sources"][market]
     try:
-        acquired = acquire(market, resolved_source_trade_date=source_date)
+        acquired = timed_source_call(
+            source_contract["source_id"],
+            lambda: acquire(market, resolved_source_trade_date=source_date),
+            market=market,
+            capability_id=CAPABILITY_ID,
+        )
         body, transport = acquired.body, dict(acquired.telemetry)
     except AcquisitionError as exc:
         transport = dict(exc.telemetry)
@@ -153,7 +160,6 @@ def production_batch_operation_adapter_candidate(
             code = "source_failed"
     outcomes: list[dict[str, Any]] = []
     schema = json.loads((ROOT / "schemas/unified_market_evidence_operation_result.v2.schema.json").read_text(encoding="utf-8"))
-    source_contract = load_frozen_contract()["sources"][market]
     for request in batch:
         target_id = request["approved_security_identifiers"][0]
         code_value = target_id.split(":", 1)[1]

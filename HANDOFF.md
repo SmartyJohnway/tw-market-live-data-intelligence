@@ -1,6 +1,6 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current Phase L handoff (2026-10-13)
+## Current Phase L handoff (2026-10-14)
 
 Phase J and Phase K are **COMPLETE**; do not reopen their acceptance work. Phase K
 closed under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with no product
@@ -36,15 +36,22 @@ common controlled single/batch adapter callable boundary with monotonic elapsed 
 bounded diagnostic events only; source transports, canonical artifacts, routing, retry/timeout
 policy, and authorization semantics remain unchanged.
 
-The next bounded selection chose **Bounded Resource Snapshots** without assigning an A2 name.
-Implementation and technical review are complete under
-`L1_BOUNDED_RESOURCE_SNAPSHOTS_ACCEPTANCE_REVIEW_PASS`; Owner acceptance / merge authorization is recorded as `L1_BOUNDED_RESOURCE_SNAPSHOTS_OWNER_ACCEPTED_FOR_MERGE`; commit, push, PR, exact-head review, and merge are the current authorized closure operations. It adds instantaneous best-effort managed-service process memory,
-application/runtime disk-free snapshots, and Local Service process-memory event metrics only.
-There is no background sampler, threshold policy, resource-limit enforcement, or governed
-artifact change. See
-`docs/governance/phase_l/PHASE_L_L1_BOUNDED_RESOURCE_SNAPSHOTS_2026-10-13.md`.
+The **Bounded Resource Snapshots** tranche passed technical review, was Owner-accepted, and is
+merged through PR #338 at `42ca42d8bbe12b591a266e1ea6637a70477a6e22`. It adds
+instantaneous best-effort managed-service process memory, application/runtime disk-free
+snapshots, and Local Service process-memory event metrics only; no background sampler,
+threshold policy, resource-limit enforcement, or governed artifact change was introduced.
 
-**Current stop boundary:** close Bounded Resource Snapshots through commit / PR / exact-head review / merge. Do not start another L1 tranche, L2-L7, a new evidence family, or market/source acquisition implicitly.
+The next bounded selection chose **Source Acquisition Timing Coverage** without assigning an A2
+name. Implementation and technical review are complete under
+`L1_SOURCE_ACQUISITION_TIMING_ACCEPTANCE_REVIEW_PASS`; Owner acceptance, commit, push, PR, and
+merge are not recorded. Current production source acquisition callables emit bounded monotonic
+operational timing while preserving source transport/error semantics. The frozen I1 live-tested
+candidate remains unchanged and is wrapped only at the current production registry boundary.
+See `docs/governance/phase_l/PHASE_L_L1_SOURCE_ACQUISITION_TIMING_2026-10-14.md`.
+
+**Current stop boundary:** close the Owner-accepted Source Acquisition Timing Coverage through commit / PR / exact-head review / merge, then perform the separately authorized L1 exit review before declaring L1 complete. Do not
+start L2-L7, a new evidence family, or market/source acquisition implicitly.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.

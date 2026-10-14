@@ -1,6 +1,6 @@
 # PROJECT.md — Current Project Authority
 
-## Current Phase L boundary (2026-10-13)
+## Current Phase L boundary (2026-10-14)
 
 Roadmap Phase J and Phase K are **COMPLETE**. Phase K closed under
 `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with three evaluated hosts, two
@@ -43,14 +43,23 @@ common controlled adapter/batch-adapter callable boundary and emits bounded oper
 without modifying adapter results, canonical artifacts, source transports, routing, or
 authorization semantics.
 
-The next bounded selection chose **Bounded Resource Snapshots**, again without assigning an A2
-name. Its implementation has passed technical review under
-`L1_BOUNDED_RESOURCE_SNAPSHOTS_ACCEPTANCE_REVIEW_PASS`; Owner acceptance / merge authorization is recorded under `L1_BOUNDED_RESOURCE_SNAPSHOTS_OWNER_ACCEPTED_FOR_MERGE`.
-The tranche adds instantaneous best-effort managed-service memory and application/runtime
-disk-free observations plus Local Service process-memory event metrics, without background
-sampling, threshold policy, capacity enforcement, or governed-artifact changes. See
-`docs/governance/phase_l/PHASE_L_L1_BOUNDED_RESOURCE_SNAPSHOTS_2026-10-13.md`.
-Do not begin another L1 tranche or L2-L7 until this accepted tranche is closed through commit / PR / exact-head review / merge and a later Owner decision selects the next gap.
+The **Bounded Resource Snapshots** tranche passed technical review under
+`L1_BOUNDED_RESOURCE_SNAPSHOTS_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted under
+`L1_BOUNDED_RESOURCE_SNAPSHOTS_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #338 at
+`42ca42d8bbe12b591a266e1ea6637a70477a6e22`. It adds instantaneous best-effort
+managed-service memory and application/runtime disk-free observations plus Local Service
+process-memory event metrics, without background sampling, threshold policy, capacity
+enforcement, or governed-artifact changes.
+
+The next bounded selection chose **Source Acquisition Timing Coverage**, again without assigning
+an A2 name. Its implementation has passed technical review under
+`L1_SOURCE_ACQUISITION_TIMING_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted under
+`L1_SOURCE_ACQUISITION_TIMING_OWNER_ACCEPTED_FOR_MERGE`. The
+tranche adds bounded monotonic source-call timing across current production acquisition seams
+while preserving existing source transport/error semantics and the historical frozen I1
+live-tested implementation. See
+`docs/governance/phase_l/PHASE_L_L1_SOURCE_ACQUISITION_TIMING_2026-10-14.md`.
+Do not begin another implementation tranche or L2-L7 until this accepted tranche is closed through commit / PR / exact-head review / merge. After merge, perform the separate L1 exit review now authorized by the Owner before declaring L1 complete.
 
 ## Current I3 production boundary (2026-10-05)
 

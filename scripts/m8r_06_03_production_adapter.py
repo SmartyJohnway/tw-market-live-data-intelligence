@@ -20,8 +20,8 @@ from scripts.m5k_common import execute_live_observation
 from scripts.m8_source_freshness_evaluator import build_source_freshness_assessment
 from scripts.m8r_03d_watchlist_source_integration import evaluate_evidence_currentness
 from scripts.m8r_bounded_market_context_request import load_source_registry
-from scripts.m8a_tpex_official_eod_adapter import execute_tpex_official_eod_adapter
-from scripts.m8a_twse_official_eod_adapter import execute_twse_official_eod_adapter
+from scripts.m8a_tpex_official_eod_adapter import SOURCE_ID as TPEX_EOD_SOURCE_ID, execute_tpex_official_eod_adapter
+from scripts.m8a_twse_official_eod_adapter import SOURCE_ID as TWSE_EOD_SOURCE_ID, execute_twse_official_eod_adapter
 from scripts.m8r_05b_03.dispatch import (
     DispatchRuntimeContext,
     RuntimeAdapterRegistration,
@@ -31,8 +31,9 @@ from scripts.m8r_05b_03.errors import OrchestrationError
 from scripts.m8r_05b_03.registry import ExecutorMetadataRegistry
 from scripts.m8r_filesystem_safety import atomic_write_bytes
 from scripts.m8r_05c.citation_builder import _build_citation_id
-from scripts.phase_g.mops_material_disclosures import execute as execute_material_disclosures
-from scripts.phase_g.mops_monthly_revenue import execute as execute_monthly_revenue
+from server.operational_diagnostics import timed_source_call
+from scripts.phase_g.mops_material_disclosures import SOURCE_FAMILY as MATERIAL_DISCLOSURE_SOURCE_FAMILY, execute as execute_material_disclosures
+from scripts.phase_g.mops_monthly_revenue import SOURCE_FAMILY as MONTHLY_REVENUE_SOURCE_FAMILY, execute as execute_monthly_revenue
 from server.services.phase_h_trading_status_adapters import (
     H1NormalizationError,
     failed_source_result,
@@ -316,12 +317,22 @@ def _research_batch_operation_adapter(
     observed_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     timeout = first["timeout_seconds"]
     execute = execute_material_disclosures if capability == "material_disclosures" else execute_monthly_revenue
+    source_family = MATERIAL_DISCLOSURE_SOURCE_FAMILY if capability == "material_disclosures" else MONTHLY_REVENUE_SOURCE_FAMILY
+
+    def timed_fetch(url: str) -> bytes:
+        return timed_source_call(
+            source_family,
+            lambda: _fetch_official_payload(url, timeout=timeout),
+            market=first["market"],
+            capability_id=capability,
+        )
+
     evidence_items = execute(
         targets,
         first["market"],
         observed_at=observed_at,
-        csv_fetcher=lambda url: _fetch_official_payload(url, timeout=timeout),
-        json_fetcher=lambda url: _fetch_official_payload(url, timeout=timeout),
+        csv_fetcher=timed_fetch,
+        json_fetcher=timed_fetch,
     )
     if len(evidence_items) != len(requests):
         raise OrchestrationError("research_evidence_count_mismatch")
@@ -467,11 +478,16 @@ def _current_observation(request: dict[str, Any], context: DispatchRuntimeContex
             "notes": "",
         }],
     }
-    observation = execute_live_observation(
-        watchlist,
-        write_latest=False,
-        timeout=request["timeout_seconds"],
-        allow_individual_fallback=False,
+    observation = timed_source_call(
+        "TWSE_MIS",
+        lambda: execute_live_observation(
+            watchlist,
+            write_latest=False,
+            timeout=request["timeout_seconds"],
+            allow_individual_fallback=False,
+        ),
+        market=market,
+        capability_id="current_observation",
     )
     records = [item for item in observation.get("observations", []) if isinstance(item, dict)]
     if not records:
@@ -503,7 +519,13 @@ def _official_eod(request: dict[str, Any], context: DispatchRuntimeContext) -> d
     execute = execute_twse_official_eod_adapter if market == "TWSE" else execute_tpex_official_eod_adapter if market == "TPEX" else None
     if execute is None:
         return _result_base(request, status="failed", error_code="unsupported_market")
-    source_result = execute([symbol], timeout=request["timeout_seconds"])
+    source_id = TWSE_EOD_SOURCE_ID if market == "TWSE" else TPEX_EOD_SOURCE_ID
+    source_result = timed_source_call(
+        source_id,
+        lambda: execute([symbol], timeout=request["timeout_seconds"]),
+        market=market,
+        capability_id="official_eod_reference",
+    )
     records = [item for item in source_result.get("observations", []) if isinstance(item, dict)]
     if not records:
         return _result_base(request, status="failed", error_code="official_eod_unavailable")
@@ -625,7 +647,12 @@ def _phase_h_h1_tpex_attention(
     failure_code: str | None = None
 
     try:
-        payload = _fetch_official_payload(PHASE_H_H1_TPEX_ATTENTION_URL, timeout=request["timeout_seconds"])
+        payload = timed_source_call(
+            PHASE_H_H1_SOURCE_ID,
+            lambda: _fetch_official_payload(PHASE_H_H1_TPEX_ATTENTION_URL, timeout=request["timeout_seconds"]),
+            market="TPEX",
+            capability_id="trading_status_context",
+        )
         rows = json.loads(payload.decode("utf-8-sig"))
         evidence = normalize_tpex_attention(
             rows, target, observed_at=observed_at, citation_id=citation_id
@@ -763,15 +790,20 @@ def _phase_h_h3_twse_recent_performance(
             )
         # Caller-supplied timeout is retained; TLS policy and response cap are
         # fixed by the selected route. No retry or redirect behavior is added.
-        result = fetch_twse_stock_day_month(
-            target=target,
-            instrument_family="company_share",
-            instrument_type="common_share",
-            requested_month=month,
-            retrieved_at=kwargs["retrieved_at"],
-            timeout_seconds=request["timeout_seconds"],
-            max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,
-            ssl_policy="compatibility",
+        result = timed_source_call(
+            PHASE_H_H3_SOURCE_ID,
+            lambda: fetch_twse_stock_day_month(
+                target=target,
+                instrument_family="company_share",
+                instrument_type="common_share",
+                requested_month=month,
+                retrieved_at=kwargs["retrieved_at"],
+                timeout_seconds=request["timeout_seconds"],
+                max_response_bytes=PHASE_H_H3_MAX_RESPONSE_BYTES,
+                ssl_policy="compatibility",
+            ),
+            market="TWSE",
+            capability_id="recent_performance",
         )
         result = _validate_h3_month_result(
             result,
@@ -1053,11 +1085,16 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
                 for index, symbol in enumerate(symbols, 1)
             ],
         }
-        source = execute_live_observation(
-            watchlist,
-            write_latest=False,
-            timeout=first["timeout_seconds"],
-            allow_individual_fallback=False,
+        source = timed_source_call(
+            "TWSE_MIS",
+            lambda: execute_live_observation(
+                watchlist,
+                write_latest=False,
+                timeout=first["timeout_seconds"],
+                allow_individual_fallback=False,
+            ),
+            market=market,
+            capability_id="current_observation",
         )
         records = {str(item.get("symbol")): item for item in source.get("observations", []) if isinstance(item, dict)}
         family = "TWSE_MIS"
@@ -1071,7 +1108,13 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
         )
         if execute is None:
             raise OrchestrationError("unsupported_market")
-        source = execute(symbols, timeout=first["timeout_seconds"])
+        source_id = TWSE_EOD_SOURCE_ID if market == "TWSE" else TPEX_EOD_SOURCE_ID
+        source = timed_source_call(
+            source_id,
+            lambda: execute(symbols, timeout=first["timeout_seconds"]),
+            market=market,
+            capability_id="official_eod_reference",
+        )
         records = {str(item.get("symbol")): item for item in source.get("observations", []) if isinstance(item, dict)}
         family = source.get("source_id", "official_eod")
     else:
@@ -1087,6 +1130,35 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
             result.update(result_item_count=1, evidence_artifacts=[artifact])
             results.append(result)
     return results
+
+
+def _phase_i_i1_timed_transport(url: str, timeout_seconds: int):
+    from server.services.phase_i_i1_production_candidate import SOURCE_DESCRIPTORS, _http_transport
+
+    match = next((item for item in SOURCE_DESCRIPTORS.items() if item[1]["url"] == url), None)
+    if match is None:
+        return _http_transport(url, timeout_seconds)
+    source_id, descriptor = match
+    return timed_source_call(
+        source_id,
+        lambda: _http_transport(url, timeout_seconds),
+        market=descriptor["market"],
+        capability_id="market_state_context",
+    )
+
+
+def phase_i_i1_timed_operation_adapter(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
+    from server.services.phase_i_i1_production_candidate import production_operation_adapter_candidate
+
+    return production_operation_adapter_candidate(request, context, transport=_phase_i_i1_timed_transport)
+
+
+def phase_i_i1_timed_batch_adapter(
+    requests: tuple[dict[str, Any], ...], context: DispatchRuntimeContext
+) -> list[dict[str, Any]]:
+    from server.services.phase_i_i1_production_candidate import production_batch_operation_adapter_candidate
+
+    return production_batch_operation_adapter_candidate(requests, context, transport=_phase_i_i1_timed_transport)
 
 
 def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) -> RuntimeAdapterRegistry:
@@ -1147,10 +1219,10 @@ def build_production_runtime_adapter_registry(*, i3_acquire: Any | None = None) 
             timeout_seconds=entry.timeout_seconds,
             maximum_result_items=entry.maximum_result_items,
             output_policy=entry.output_policy,
-            adapter=i2_operation_adapter if is_i2 else production_operation_adapter_candidate if is_i1 else production_operation_adapter,
+            adapter=i2_operation_adapter if is_i2 else phase_i_i1_timed_operation_adapter if is_i1 else production_operation_adapter,
             batch_adapter=(
                 i2_batch_adapter if is_i2 else
-                production_batch_operation_adapter_candidate
+                phase_i_i1_timed_batch_adapter
                 if is_i1
                 else None
                 if entry.executor_id in {PHASE_H_H1_EXECUTOR_ID, PHASE_H_H1_COMPOSITE_EXECUTOR_ID, PHASE_H_H3_EXECUTOR_ID, PHASE_H_H2_EXECUTOR_ID}

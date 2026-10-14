@@ -8,12 +8,14 @@ import zipfile
 
 from scripts.m8r_05b_03.dispatch import RuntimeAdapterRegistry
 from scripts.m8r_06_02_mode_b1_preview import build_mode_b1_preview_package, load_planning_authorities
-from scripts.m8r_06_03_production_adapter import build_production_runtime_adapter_registry
+from scripts.m8r_06_03_production_adapter import (
+    build_production_runtime_adapter_registry,
+    phase_i_i1_timed_batch_adapter,
+)
 from scripts.validate_phase_i_i1_production_activation import validate
 from server.services.phase_i_i1_production_candidate import (
     CAPABILITY_ID,
     EXECUTOR_ID,
-    production_batch_operation_adapter_candidate,
 )
 from server.services.unified_mode_a import validate_mode_a_request
 from server.unified_mcp.tool_contracts import build_tool_contract_snapshot
@@ -87,7 +89,7 @@ def test_activation_validator_and_normal_registry_are_exactly_two_bounded_routes
     routes = registry.routes_for_executor(EXECUTOR_ID)
     assert len(routes) == 2
     assert {route.market for route in routes} == {"TWSE", "TPEX"}
-    assert all(route.network_required and route.timeout_seconds == 15 and route.batch_adapter is production_batch_operation_adapter_candidate for route in routes)
+    assert all(route.network_required and route.timeout_seconds == 15 and route.batch_adapter is phase_i_i1_timed_batch_adapter for route in routes)
     assert calls == []
     assert len(build_tool_contract_snapshot().tools) == 6
 

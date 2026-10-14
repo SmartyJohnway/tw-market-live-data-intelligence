@@ -9,7 +9,8 @@ import os
 from pathlib import Path
 import shutil
 import sys
-from typing import Any, TextIO
+import time
+from typing import Any, Callable, TextIO
 import uuid
 
 TRACE_HEADER = "X-TW-Market-Trace-ID"
@@ -27,7 +28,7 @@ _LEVELS = frozenset({"INFO", "WARN", "ERROR"})
 _REFERENCE_FIELDS = frozenset({
     "lifecycle_operation_id", "request_id", "execution_request_id",
     "governed_operation_id", "authorization_id", "execution_receipt_id",
-    "executor_id", "capability_id", "market", "batch_group_id",
+    "executor_id", "capability_id", "market", "batch_group_id", "source_id",
 })
 _METRIC_FIELDS = frozenset({
     "duration_ms", "http_status", "request_bytes", "response_bytes",
@@ -118,6 +119,38 @@ def disk_free_bytes(path: str | os.PathLike[str]) -> int | None:
     except (OSError, ValueError):
         return None
 
+
+
+def timed_source_call(
+    source_id: str,
+    call: Callable[[], Any],
+    *,
+    market: str | None = None,
+    capability_id: str | None = None,
+) -> Any:
+    """Measure one source acquisition callable without changing its semantics."""
+    started = time.monotonic()
+    status = "returned"
+    reason_code: str | None = None
+    try:
+        return call()
+    except Exception as exc:
+        status = "raised"
+        reason_code = type(exc).__name__
+        raise
+    finally:
+        emit_runtime_event(
+            component="source_transport",
+            event_code="source.acquisition.completed",
+            status=status,
+            reason_code=reason_code,
+            references={
+                "source_id": source_id,
+                "market": market,
+                "capability_id": capability_id,
+            },
+            metrics={"duration_ms": round((time.monotonic() - started) * 1000, 3)},
+        )
 
 def _bounded_string(value: object) -> str | None:
     if not isinstance(value, str) or not value:
