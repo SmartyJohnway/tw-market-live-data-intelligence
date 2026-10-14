@@ -44,14 +44,22 @@ threshold policy, resource-limit enforcement, or governed artifact change was in
 
 The next bounded selection chose **Source Acquisition Timing Coverage** without assigning an A2
 name. Implementation and technical review are complete under
-`L1_SOURCE_ACQUISITION_TIMING_ACCEPTANCE_REVIEW_PASS`; Owner acceptance, commit, push, PR, and
-merge are not recorded. Current production source acquisition callables emit bounded monotonic
-operational timing while preserving source transport/error semantics. The frozen I1 live-tested
-candidate remains unchanged and is wrapped only at the current production registry boundary.
-See `docs/governance/phase_l/PHASE_L_L1_SOURCE_ACQUISITION_TIMING_2026-10-14.md`.
+`L1_SOURCE_ACQUISITION_TIMING_ACCEPTANCE_REVIEW_PASS`; Owner acceptance is recorded under
+`L1_SOURCE_ACQUISITION_TIMING_OWNER_ACCEPTED_FOR_MERGE`; PR #339 is merged at
+`b3d6722d174f91da3e9c7cba4cf11e2f1306102b`. Current production source acquisition callables
+emit bounded monotonic operational timing while preserving source transport/error semantics.
+The frozen I1 live-tested candidate remains unchanged and is wrapped only at the current
+production registry boundary. See
+`docs/governance/phase_l/PHASE_L_L1_SOURCE_ACQUISITION_TIMING_2026-10-14.md`.
 
-**Current stop boundary:** close the Owner-accepted Source Acquisition Timing Coverage through commit / PR / exact-head review / merge, then perform the separately authorized L1 exit review before declaring L1 complete. Do not
-start L2-L7, a new evidence family, or market/source acquisition implicitly.
+The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
+Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. **L1 is CLOSED.**
+The next candidate Phase L boundary is L2 — Replay / Retention / Migration, but L2-L7 remain
+unauthorized until a separate Owner start decision.
+
+**Current stop boundary:** L1 closed; do not begin L2-L7, a new evidence family, packaging,
+migration, or market/source acquisition implicitly. For future conversation recovery, read
+`docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` first.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
