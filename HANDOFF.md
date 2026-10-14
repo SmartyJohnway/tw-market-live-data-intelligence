@@ -69,12 +69,17 @@ backup/restore, retention, or migration apply semantics.
 L2-A3 - Retention Classification & Policy passed technical review under
 `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted under
 `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #345
-at `378acb454a4e1e4e82e2be14b5957dc7d912f751`. The tranche is read-only policy metadata and
-performs no cleanup, deletion, backup, restore, migration, or retention-duration enforcement.
+at `378acb454a4e1e4e82e2be14b5957dc7d912f751`.
 
-**Current stop boundary:** L2-A3 is merged. Do not begin A4 backup/manifest work, retention cleanup,
-deletion, restore, migration apply, public API/MCP changes, L3-L7, packaging, or market/source
-acquisition without separate Owner authorization. Recover Phase L from
+L2-A4 - Backup Manifest & Verification passed technical review under
+`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted under
+`L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE` pending merge closure. The
+tranche remains internal and does not authorize restore, migration, deletion, or cleanup.
+
+**Current stop boundary:** complete merge closure for the Owner-accepted L2-A4 tranche. Do not begin
+A5 restore work, migration apply, public API/MCP changes, L3-L7, packaging, or market/source
+acquisition until A4 is merged; after merge, A5 may proceed only under the separately supplied
+bounded Codex contract. Recover Phase L from
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` first.
 
 The older Phase J readiness section below is historical pre-entry context and is
