@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 Runtime Operability CLOSED; L2 Replay / Retention / Migration STARTED on 2026-10-14 with A0 inventory complete and A1 replay semantics frozen; current next boundary L2-A2 read-only replayability inspector; L3-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 STARTED; A0 complete; A1 and A1-R1 frozen; L2-A2 Owner-accepted under L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE pending merge closure; L3-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,18 +1421,20 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry ? L2 Replay / Retention / Migration STARTED (2026-10-14)
+### Current entry - L2-A2 Owner accepted / merge closure pending (2026-10-14)
 
-Phase L is **STARTED**. L0 ? Production Boundary & Architecture Contract remains frozen
+Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
 `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
 
-L2 ? Replay / Retention / Migration is **STARTED** by explicit Owner authorization. L2-A0
+L2 - Replay / Retention / Migration is **STARTED** by explicit Owner authorization. L2-A0
 current persistence/replay inventory is complete under
 `L2_A0_CURRENT_PERSISTENCE_REPLAY_INVENTORY_COMPLETE`; L2-A1 replay semantics are frozen
-under `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`. The current bounded implementation boundary
-is L2-A2 - Read-Only Finalized Package Inspector / Replayability Classifier. L3-L7 remain
-not started or authorized. Future recovery begins with
+under `L2_A1_REPLAY_SEMANTICS_CONTRACT_FROZEN`, with A1-R1 clarification under
+`L2_A1_R1_STATE_CLASSIFICATION_SCOPE_CLARIFICATION_FROZEN`. L2-A2 passed technical review
+under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_ACCEPTANCE_REVIEW_PASS` and is Owner-accepted
+under `L2_A2_READ_ONLY_REPLAYABILITY_INSPECTOR_OWNER_ACCEPTED_FOR_MERGE`; merge closure is
+pending. L3-L7 remain not started or authorized. Future recovery begins with
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
 
 ## L.0 Phase Goal
