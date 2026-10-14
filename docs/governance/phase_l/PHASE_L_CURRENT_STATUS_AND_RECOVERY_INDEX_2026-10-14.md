@@ -5,7 +5,7 @@
 **Phase L status:** STARTED
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
-**L2:** STARTED - A0 complete; A1/A1-R1 frozen; A2/A3 merged; A4 technical PASS and Owner-accepted under `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE` pending merge closure
+**L2:** STARTED - A0 complete; A1/A1-R1 frozen; A2/A3 merged; A4 Owner-accepted and merged through PR #347 at `fb2fef0c50c3ee50581bc62af534b36116b332e7`; A5 separately authorized under bounded Codex contract
 **L3-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -52,7 +52,7 @@ This index must never override L0, an Owner acceptance record, or current Git re
 - L2-A3 technical review: `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_ACCEPTANCE_REVIEW_PASS`.
 - L2-A3 Owner acceptance: `L2_A3_RETENTION_CLASSIFICATION_AND_POLICY_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #345 at `378acb454a4e1e4e82e2be14b5957dc7d912f751`.
 - L2-A4 technical review: `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_ACCEPTANCE_REVIEW_PASS`.
-- L2-A4 Owner acceptance: `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`; merge closure pending.
+- L2-A4 Owner acceptance: `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #347 at `fb2fef0c50c3ee50581bc62af534b36116b332e7`.
 ## 4. What L1 delivered
 
 Current merged Runtime Operability includes:
@@ -85,9 +85,10 @@ Current technical state:
 
 `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`
 
-L2-A4 has technical PASS and Owner acceptance; merge closure is pending. Do not begin A5 restore,
-migration apply, public API/MCP semantic changes, or any later L2/L3-L7 tranche before A4 merge
-closure. After A4 merges, A5 may proceed only under the separately supplied bounded Codex contract.
+L2-A4 has technical PASS, Owner acceptance, and merge closure through PR #347 at
+`fb2fef0c50c3ee50581bc62af534b36116b332e7`. A5 Restore Compatibility & Bounded Restore is
+separately authorized under its bounded Codex contract. Codex may implement, commit, push, and
+open the A5 PR, but must not merge it. A6 and later L2/L3-L7 tranches remain unauthorized.
 
 `MIGRATION_REQUIRED` and `UNSUPPORTED_NEWER_STATE` remain mandatory L2 states, but per
 L2-A1-R1 they require a later versioned installation-state compatibility authority and are not
@@ -95,6 +96,6 @@ fabricated by the package-local A2 inspector.
 
 A concise future-conversation instruction is sufficient:
 
-> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and complete only the recorded A4 merge closure. A5 may start only after A4 is merged and under its separate bounded contract.
+> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main. A4 is merged through PR #347. A5 is authorized under its separate bounded contract; Codex may commit/push/open the A5 PR but must not merge it.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.
