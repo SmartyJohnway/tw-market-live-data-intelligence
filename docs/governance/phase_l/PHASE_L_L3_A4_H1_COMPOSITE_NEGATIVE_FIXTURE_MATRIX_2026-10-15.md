@@ -167,6 +167,32 @@ No fresh source GET/POST, live TPEX endpoint access, or production-state
 mutation occurred. All fixture execution artifacts were written under isolated
 pytest temporary roots; no production-state root was used.
 
+## Independent exact-head review
+
+Independent review began from PR #363 candidate head
+`849807d171825bab09aa8ce186ef9f4c1424568d`. No production-runtime correctness
+defect was found. The reviewer independently re-ran the focused matrix at
+**42 passed** and the selected integrated gate at **199 passed, 1 deselected**.
+A reviewer-level global socket/`urlopen` sentinel measured
+`L3_A4_REVIEW_EXTERNAL_NETWORK_ATTEMPTS=0`. Phase H contracts, source registry,
+Portable Catalog sync, runtime/Skill exact-six, V1 public contracts, Python
+compile, and `git diff --check` all passed.
+
+Review found one bounded fixture/governance mismatch: the governance matrix
+claimed direct `missing required field` coverage for P08/P09/P10, while the
+candidate A4 file directly exercised that failure class only for P08; the P09
+and P10 entries in the mixed test exercised type and date drift instead. The
+reviewer repaired the test-only matrix by parameterizing a contract-critical
+missing-field mutation for each of P08 (`SecuritiesCompanyCode`), P09
+(`DispositionPeriod`), and P10 (`AlteredTrading`). Existing separate three-source
+type-drift and date-drift tests remain unchanged, so coverage was reconciled
+without adding production code or changing test count. Focused and integrated
+gates remained 42 and 199/1-deselected respectively after the repair.
+
+The independent disposition remains
+`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`. Owner
+acceptance is still `NOT RECORDED`; G05, A5+, and L4-L7 remain unauthorized.
+
 ## Boundaries and disposition
 
 G05 remains deferred: throttling/429, Retry-After, 404/410, source removal or

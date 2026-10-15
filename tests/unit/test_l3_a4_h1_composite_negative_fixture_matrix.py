@@ -232,20 +232,20 @@ def test_decode_json_and_root_shape_failures_remain_source_local(tmp_path, raw_b
 
 
 @pytest.mark.parametrize(
-    ("source_index", "mutation", "expected"),
+    ("source_index", "field"),
     [
-        (0, lambda row: row.pop("SecuritiesCompanyCode"), "source_failed:missing_required_field:SecuritiesCompanyCode"),
-        (1, lambda row: row.__setitem__("DispositionReasons", 4), "source_failed:invalid_required_field_type:DispositionReasons"),
-        (2, lambda row: row.__setitem__("Date", "not-a-date"), "source_failed:date_contract_drift:source_failed:unresolved_source_record_date:Date"),
+        (0, "SecuritiesCompanyCode"),
+        (1, "DispositionPeriod"),
+        (2, "AlteredTrading"),
     ],
 )
-def test_required_field_type_and_date_contract_drift_fail_source_locally(tmp_path, source_index, mutation, expected):
+def test_missing_required_field_is_source_local_for_all_sources(tmp_path, source_index, field):
     rows = _rows()
     source = h1.SOURCES[source_index]
-    mutation(rows[source["source_id"]][0])
+    rows[source["source_id"]][0].pop(field)
     provider, _ = _provider_for(rows=rows)
     result = _run(tmp_path, provider)
-    assert _component_sidecar(tmp_path, result, source_index)["attempts"][0]["failure_code"] == expected
+    assert _component_sidecar(tmp_path, result, source_index)["attempts"][0]["failure_code"] == f"source_failed:missing_required_field:{field}"
 
 
 @pytest.mark.parametrize(
