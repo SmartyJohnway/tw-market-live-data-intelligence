@@ -6,6 +6,8 @@
 
 **Disposition:** `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`
 
+**Independent technical review:** `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_ACCEPTANCE_REVIEW_PASS`
+
 **Owner entry authority:** explicit 2026-10-15 L3-A0 instruction.
 
 **Owner candidate acceptance:** not recorded. L3 STARTED; A1 NOT YET AUTHORIZED;
@@ -408,6 +410,34 @@ performed; Git/GitHub operations are the only external service operations.
 Candidate containment: exactly this inventory plus PROJECT, HANDOFF, ROADMAP
 current reconciliation, and the Phase L recovery index. No runtime/test/schema/
 registry file is changed. `git diff --cached --check`: PASS.
+
+### 8.1 Independent reviewer verification
+
+Independent exact-head review reproduced the confirmed MIS wrong-binding path
+with an injected retained fixture and no source network: a response row with a
+matching requested channel key but contradictory `c=2317` / `ex=otc` still
+produced a caller-bound `TWSE:2330` observation with `status=ok`. The simplified
+review print did not project the price field, but the identity-coherence defect
+itself was reproduced and remains a `BLOCKING_CORRECTNESS_GAP`.
+
+The reviewer re-ran the guarded focused gate and confirmed **354 passed, 1
+deselected, 0 failed**, with `L3_A0_REVIEW_EXTERNAL_SOCKET_ATTEMPTS=0`. Source
+registry validation, Portable Catalog synchronization, runtime/Skill exact-six
+validation, and `git diff --check` also passed. A direct runtime registry sanity
+check confirmed 17 current registrations, consistent with the inventory basis.
+
+One governance-only inconsistency was repaired: the later `HANDOFF.md` section
+named `Explicit stop boundary` still said L3-L7 were unauthorized, while the
+current handoff already recorded Owner-authorized L3-A0 entry. That section now
+matches the current A0 candidate boundary. No runtime, test, schema, registry,
+route, activation, authorization, or source behavior changed.
+
+Independent technical disposition:
+
+`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_ACCEPTANCE_REVIEW_PASS`
+
+Owner candidate acceptance remains not recorded. A1 and L4-L7 remain not
+authorized.
 
 ## 9. Deferred boundaries and stop
 
