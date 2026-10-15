@@ -276,7 +276,7 @@ instrument TWSE:2330, `write_latest=False`, `allow_individual_fallback=False`.
 No bytes were fetched or persisted. Actual output:
 
 ```json
-{"validation":true,"observations":[{"symbol":"2330","market":"twse","status":"ok","price":1015.0}],"returned_c":"2317","returned_ex":"otc","network_calls":[]}
+{"validation":true,"observations":[{"symbol":"2330","market":"twse","status":"ok","value":1015.0,"price_like_value":1015.0}],"returned_c":"2317","returned_ex":"otc","network_calls":[]}
 ```
 
 The normalizer fills symbol/market from the caller rather than proving coherence
@@ -416,9 +416,9 @@ registry file is changed. `git diff --cached --check`: PASS.
 Independent exact-head review reproduced the confirmed MIS wrong-binding path
 with an injected retained fixture and no source network: a response row with a
 matching requested channel key but contradictory `c=2317` / `ex=otc` still
-produced a caller-bound `TWSE:2330` observation with `status=ok`. The simplified
-review print did not project the price field, but the identity-coherence defect
-itself was reproduced and remains a `BLOCKING_CORRECTNESS_GAP`.
+produced a caller-bound `TWSE:2330` observation with `status=ok`, while retaining
+`value=1015.0` / `price_like_value=1015.0`. The identity-coherence defect is
+therefore reproduced and remains a `BLOCKING_CORRECTNESS_GAP`.
 
 The reviewer re-ran the guarded focused gate and confirmed **354 passed, 1
 deselected, 0 failed**, with `L3_A0_REVIEW_EXTERNAL_SOCKET_ATTEMPTS=0`. Source
