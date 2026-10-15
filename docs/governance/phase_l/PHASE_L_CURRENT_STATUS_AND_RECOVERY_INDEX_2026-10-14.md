@@ -6,7 +6,7 @@
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
-**L3:** STARTED; A0/A1/A2/A3 Owner-accepted and merged through PRs #355/#357/#359/#361; A3 merged at `ddd023f11a23420c096a5b20022848cfcf900db9`; A4+ NOT AUTHORIZED
+**L3:** STARTED; A0/A1/A2/A3 Owner-accepted and merged through PRs #355/#357/#359/#361; A4 H1 negative-fixture independent technical review PASS, Owner acceptance not recorded; G05/A5+ NOT AUTHORIZED
 **L4-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -70,6 +70,7 @@ This index must never override L0, an Owner acceptance record, or current Git re
 - L3-A2 Owner acceptance: `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #359 at `e521a2fcc73ecd40e819a0d51342abcd4a55354c`. See `PHASE_L_L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_2026-10-15.md`.
 - L3-A3 independent technical review: `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS`.
 - L3-A3 Owner acceptance: `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #361 at `ddd023f11a23420c096a5b20022848cfcf900db9`. Scope is Phase G P04-P07 CSV structure and bounded fallback failure provenance. See `PHASE_L_L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_2026-10-15.md`.
+- L3-A4 independent technical review: `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`; current production H1 composite negative fixtures and R1 exception-boundary checks passed independent review without runtime changes. Reviewer repair reconciled direct missing-required-field coverage across P08/P09/P10. Owner acceptance is `NOT RECORDED`. See `PHASE_L_L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_2026-10-15.md`.
 ## 4. What L1 delivered
 
 Current merged Runtime Operability includes:
@@ -89,7 +90,7 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 ## 5. Remaining Phase L boundaries
 
 - L2 Replay / Retention / Migration: CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
-- L3 Source Drift Hardening: STARTED; A0/A1/A2/A3 are Owner-accepted and merged through PRs #355/#357/#359/#361. A3 merged at `ddd023f11a23420c096a5b20022848cfcf900db9`. A4+ is not authorized.
+- L3 Source Drift Hardening: STARTED; A0/A1/A2/A3 are Owner-accepted and merged through PRs #355/#357/#359/#361. A4 H1 negative-fixture independent technical review is PASS; Owner acceptance is not recorded. G05, A5+, and L4-L7 are not authorized.
 - L4 Security & Resource Boundaries: localhost/path/input/output/load/concurrency/large-result limits.
 - L5 Extension Architecture: minimum evidence-family extension contract; no new family merely to prove it.
 - L6 Packaging & Portability: Native Windows + Docker Local Service, fresh install, P1-P6 portability, final state/config mapping and product `init` integration.
@@ -100,7 +101,7 @@ These boundaries must be started explicitly and must not be collapsed into one b
 
 Current technical state:
 
-`L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_OWNER_ACCEPTED_FOR_MERGE` (A3 Owner-accepted and merged through PR #361 at `ddd023f11a23420c096a5b20022848cfcf900db9`)
+`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS` (independent technical review PASS; Owner acceptance not recorded)
 
 L2 is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` through
 PR #353, with PR #354 reconciliation at `3b8f1532fac1a2d2366d0d38254ebd4a7a7c6b55`.
@@ -116,11 +117,12 @@ performed in A0 or A1. See `PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-
 and `PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
 
 Frozen L0 sequencing controls current L3 Source Drift Hardening; old Roadmap
-subject subsection numbers remain unchanged. A0-A3 are Owner-accepted and merged. A4+ and L4-L7
-remain NOT AUTHORIZED.
+subject subsection numbers remain unchanged. A0-A3 are Owner-accepted and merged.
+A4 has passed independent technical review and remains a test/governance tranche only;
+Owner acceptance is not recorded. G05, A5+, and L4-L7 remain NOT AUTHORIZED.
 
 A concise future-conversation instruction is sufficient:
 
-> Recover current main, read the L3-A0 inventory and A1/A2/A3 acceptance records. L2 is CLOSED; L3 is STARTED. A0-A3 are Owner-accepted and merged. Do not start A4+, G05/G06, probe live sources, or begin L4-L7 without separate explicit Owner authorization.
+> Recover current main, read the L3-A0 inventory and A1/A2/A3 acceptance records plus the A4 fixture record. L2 is CLOSED; L3 is STARTED. A0-A3 are Owner-accepted and merged; A4 independent technical review is PASS and Owner acceptance is not recorded. Do not start G05, A5+, probe live sources, or begin L4-L7 without separate explicit Owner authorization.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.
