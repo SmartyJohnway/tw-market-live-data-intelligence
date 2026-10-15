@@ -387,6 +387,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                     'reason_code':'missing_fixture_or_source_result'
                 }
                 if fam_diag := target_eod_diagnostics.get(fam):
+                    target_result['source_family']=fam
                     _attach_eod_target_diagnostics(target_result, fam_diag, eod_issues)
                     rejected = fam_diag.get('rejected_rows') or []
                     if rejected:
@@ -395,6 +396,8 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                         target_result['rejection_reason_codes'] = sorted({r['reason_code'] for r in rejected})[:8]
                     elif fam_diag.get('batch_status') in {'date_mismatch','source_error','schema_drift'}:
                         target_result.update({'status':'failed','reason_code':fam_diag['batch_status']})
+                    elif fam_diag.get('batch_status') == 'empty_non_trading_day':
+                        target_result['reason_code']='empty_non_trading_day'
                 target_results.append(target_result)
             elif fam_diag := target_eod_diagnostics.get(fam):
                 rejected=fam_diag.get('rejected_rows') or []
@@ -439,6 +442,8 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                             target_result.update({'status':'failed','reason_code':rejected[0]['reason_code']})
                         elif fam_diag.get('batch_status') in {'date_mismatch','source_error','schema_drift'}:
                             target_result.update({'status':'failed','reason_code':fam_diag['batch_status']})
+                        elif fam_diag.get('batch_status') == 'empty_non_trading_day':
+                            target_result['reason_code']='empty_non_trading_day'
                     target_results.append(target_result)
                 elif fam_diag := target_eod_diagnostics.get(fam):
                     rejected=fam_diag.get('rejected_rows') or []
@@ -456,7 +461,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         bundle=build_watchlist_snapshot_bundle(request=request,observations=observations,generated_at_utc=started) if bundle_type=='snapshot' else build_watchlist_performance_bundle(request=request,observations=observations,generated_at_utc=started)
         partial=any(c['coverage_state']!='usable' for c in bundle['coverage']['targets'])
         any_group_failed=any(g.get('status')=='failed' for g in group_results)
-        any_group_partial=any(g.get('status')=='partial_source_success' for g in group_results)
+        any_group_partial=any(g.get('reason_code')=='partial_source_success' for g in group_results)
         status='success_with_partial_coverage' if partial or any_group_failed or any_group_partial or normalize_issues or eod_issues else 'success'; issues=normalize_issues+eod_issues
         if not observations and any_group_failed: status='source_execution_failed'
     except Exception as exc:
@@ -655,10 +660,11 @@ def _eod_group_status(diagnostics):
     batch_status=diagnostics.get('batch_status')
     if source_status != 'success' or batch_status in {'source_error','schema_drift','date_mismatch'}:
         return 'failed'
-    if batch_status == 'partial_source_success': return 'partial_source_success'
-    if diagnostics.get('partial_observations'): return 'partial_source_success'
-    if batch_status == 'empty_non_trading_day': return 'empty_non_trading_day'
-    return 'success' if batch_status == 'successful_eod_batch' else 'failed'
+    if batch_status in {'successful_eod_batch','partial_source_success','empty_non_trading_day'}:
+        return 'success'
+    if diagnostics.get('partial_observations'):
+        return 'success'
+    return 'failed'
 
 
 def _eod_group_reason(diagnostics):
@@ -666,7 +672,8 @@ def _eod_group_reason(diagnostics):
     if diagnostics.get('source_status') != 'success' and status not in {'source_error','schema_drift'}:
         return 'source_error'
     if diagnostics.get('partial_observations'): return 'partial_source_success'
-    return None if status in {'successful_eod_batch','empty_non_trading_day','partial_source_success'} else status
+    if status in {'partial_source_success','empty_non_trading_day'}: return status
+    return None if status == 'successful_eod_batch' else status
 
 
 def _attach_eod_target_diagnostics(target_result, diagnostic, issues):

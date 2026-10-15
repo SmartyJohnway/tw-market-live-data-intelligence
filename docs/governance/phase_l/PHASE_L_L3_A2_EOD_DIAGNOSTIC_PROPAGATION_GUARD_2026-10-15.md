@@ -40,11 +40,11 @@ Rows, values, raw payloads, HTTP bodies, headers, URLs, cookies, and tokens are 
 | Adapter state | Unified group outcome | Unified result behavior |
 |---|---|---|
 | `source_status=success`, `successful_eod_batch` | `success` | Existing normalized success remains possible. |
-| `partial_source_success` | `partial_source_success` | Retained observations remain usable; result cannot be clean success. Rejection reasons survive. |
-| `date_mismatch` | `failed`, reason `date_mismatch` | Adapter rows are retained only in bounded diagnostics and are not normalized into target evidence; reported dates and issue survive. No date is selected or rewritten. |
-| `source_error` / `schema_drift`, or non-success source status | `failed` | Adapter rows are not normalized into target evidence. No observation can hide a source or contract failure. With no other retained evidence, execution is `source_execution_failed`. |
-| `empty_non_trading_day` with successful source status | `empty_non_trading_day` | No row is fabricated; it is not reclassified as transport/source failure. Existing missing/coverage semantics apply. |
-| Clean batch with invalid optional values in retained row | `partial_source_success` group disposition | Only invalid field names and bounded reason codes propagate; no values are defaulted to zero. |
+| `partial_source_success` | `status=success`, `reason_code=partial_source_success` | Retained observations remain usable; result cannot be clean success. Rejection reasons survive. The pre-existing group status vocabulary remains `success|failed`. |
+| `date_mismatch` | `status=failed`, `reason_code=date_mismatch` | Adapter rows are retained only in bounded diagnostics and are not normalized into target evidence; reported dates and issue survive. No date is selected or rewritten. |
+| `source_error` / `schema_drift`, or non-success source status | `status=failed`, bounded reason code | Adapter rows are not normalized into target evidence. No observation can hide a source or contract failure. With no other retained evidence, execution is `source_execution_failed`. |
+| `empty_non_trading_day` with successful source status | `status=success`, `reason_code=empty_non_trading_day` | No row is fabricated; it is not reclassified as transport/source failure. Target remains unavailable/no-evidence with the legitimate empty-day reason rather than `missing_fixture_or_source_result`. |
+| Clean batch with invalid optional values in retained row | `status=success`, `reason_code=partial_source_success` | Only invalid field names and bounded reason codes propagate; no values are defaulted to zero. Final Unified result is not clean success. |
 | Rejected requested row | source/batch outcome retained | Exact-symbol rejection reason is attached to that target; unknown-symbol rejection remains group-level. |
 
 ### TWSE / TPEx adapter invariant
@@ -107,6 +107,14 @@ git diff --check                                                  PASS
 ```
 
 All source adapter inputs in the focused gate are fixture or injected results. The socket sentinel recorded zero external attempts and no fresh market/source GET/POST occurred. Execution artifacts and authorization claims used isolated pytest temporary roots; no Security Master, persistent Watchlist, production Result/Audit, or repo-local live state was created or changed.
+
+## Independent reviewer verification
+
+Independent exact-head review re-ran the complete 101-case guarded gate and independently enforced a socket sentinel. Result: **101 passed, 0 failed, 0 warnings**, with `L3_A2_REVIEW_EXTERNAL_SOCKET_ATTEMPTS=0`. Source registry, Portable Catalog, runtime/Skill exact-six, public-contract validation, and `git diff --check` also passed.
+
+Two bounded semantic defects were found and repaired on the same candidate branch without broadening A2 scope. First, the candidate had expanded `source_execution_summary.group_results.status` from the historical `success|failed` vocabulary to `partial_source_success` and `empty_non_trading_day`. The reviewer repair preserves the existing status vocabulary and carries partial/legitimate-empty detail through the already-existing `reason_code` plus bounded `adapter_diagnostics.batch_status`; final overall adjudication still treats `partial_source_success` as non-clean. Second, a legitimate `empty_non_trading_day` target could still be labeled `reason_code=missing_fixture_or_source_result` even though the source had returned a valid empty batch. The repaired target remains unavailable/no-evidence but now carries `reason_code=empty_non_trading_day` and the EOD source family/diagnostics.
+
+These repairs do not change Request/Result/Audit schema versions, MCP/HTTP surfaces, source acquisition behavior, fallback policy, adapter field parsing, capability scope, or evidence-family boundaries. Independent technical disposition remains `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`; Owner acceptance is not recorded.
 
 ## Remaining boundary and stop
 

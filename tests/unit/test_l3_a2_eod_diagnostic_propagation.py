@@ -122,19 +122,21 @@ def test_all_rejected_status_parity_for_both_openapi_adapters(source):
     assert result["batch_status"] == "source_error"
 
 
-def test_group_state_adjudication_keeps_empty_distinct_from_failure():
+def test_group_state_adjudication_keeps_existing_status_vocabulary_and_reason_detail():
     states = {
-        "successful_eod_batch": "success",
-        "partial_source_success": "partial_source_success",
-        "date_mismatch": "failed",
-        "empty_non_trading_day": "empty_non_trading_day",
-        "source_error": "failed",
-        "schema_drift": "failed",
-        "unknown_status": "failed",
+        "successful_eod_batch": ("success", None),
+        "partial_source_success": ("success", "partial_source_success"),
+        "date_mismatch": ("failed", "date_mismatch"),
+        "empty_non_trading_day": ("success", "empty_non_trading_day"),
+        "source_error": ("failed", "source_error"),
+        "schema_drift": ("failed", "schema_drift"),
+        "unknown_status": ("failed", "unknown_status"),
     }
-    for batch_status, expected in states.items():
+    for batch_status, (expected_status, expected_reason) in states.items():
         source_status = "error" if batch_status in {"source_error", "schema_drift"} else "success"
-        assert executor._eod_group_status({"source_status": source_status, "batch_status": batch_status}) == expected
+        diagnostics = {"source_status": source_status, "batch_status": batch_status}
+        assert executor._eod_group_status(diagnostics) == expected_status
+        assert executor._eod_group_reason(diagnostics) == expected_reason
 
 
 def test_partial_batch_retains_observation_and_diagnostics_without_clean_success(tmp_path, monkeypatch):
@@ -148,7 +150,8 @@ def test_partial_batch_retains_observation_and_diagnostics_without_clean_success
     out = _run(request, tmp_path, monkeypatch, {"TWSE_OPENAPI": result})
     assert out["status"] == "success_with_partial_coverage"
     group = next(g for g in out["source_execution_summary"]["group_results"] if g["source_family"] == "TWSE_OPENAPI")
-    assert group["status"] == "partial_source_success"
+    assert group["status"] == "success"
+    assert group["reason_code"] == "partial_source_success"
     assert group["adapter_diagnostics"]["rejection_reason_codes"] == ["missing_required_fields"]
     assert "source_row" not in json.dumps(out)
     target = next(t for t in out["target_results"] if t["target_id"] == "TWSE:2330" and t.get("source_family") == "TWSE_OPENAPI")
@@ -184,8 +187,11 @@ def test_empty_non_trading_day_is_not_source_or_schema_failure(tmp_path, monkeyp
     request["persistent_watchlist_reference"]["enabled_target_ids"] = ["TWSE:2330"]
     out = _run(request, tmp_path, monkeypatch, {"TWSE_OPENAPI": result})
     group = next(g for g in out["source_execution_summary"]["group_results"] if g["source_family"] == "TWSE_OPENAPI")
-    assert group["status"] == "empty_non_trading_day"
-    assert group["reason_code"] is None
+    assert group["status"] == "success"
+    assert group["reason_code"] == "empty_non_trading_day"
+    target = next(t for t in out["target_results"] if t.get("source_family") == "TWSE_OPENAPI")
+    assert target["status"] == "source_unavailable"
+    assert target["reason_code"] == "empty_non_trading_day"
     assert out["status"] != "source_execution_failed"
     assert out["observation_count"] == 0
 
