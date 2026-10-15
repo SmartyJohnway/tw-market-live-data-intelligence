@@ -4,7 +4,7 @@
 **Base:** `origin/main@ef95878d0c1ae7b800df595c8a9f44fdc5090c58`
 **R1:** `L2_A6_R1_MIGRATION_SOURCE_LINEAGE_CLARIFICATION_FROZEN_FOR_A6_CANDIDATE`
 **Technical disposition:** `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS`
-**Owner acceptance:** not recorded
+**Owner acceptance:** `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`
 
 ## 1. Authority and scope
 
@@ -156,5 +156,6 @@ network access, or A7. A7 remains not authorized.
 
 Independent exact-head review is complete. Technical disposition is
 `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS`. Owner acceptance
-remains not recorded. PR #351 must remain unmerged until Owner acceptance; no
+is recorded under `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`.
+PR #351 may be merged for this exact reviewed head once checks remain green; no
 A7 work is authorized here.
