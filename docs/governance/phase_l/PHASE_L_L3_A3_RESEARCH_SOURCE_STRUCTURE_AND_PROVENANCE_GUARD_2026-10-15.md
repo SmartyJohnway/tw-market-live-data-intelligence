@@ -5,7 +5,8 @@
 **Branch:** `phase-l/l3-a3-research-source-contract-guard`
 **Scope:** L3-A0 Gap G04 only
 **Disposition:** `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS`
-**Owner acceptance:** NOT RECORDED
+**Owner acceptance:** `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_OWNER_ACCEPTED_FOR_MERGE`
+**Owner authority:** `USER_CHAT_2026-10-15_L3_A3_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`
 
 ## Authority and predecessor state
 
@@ -154,10 +155,11 @@ contracts, Python compile, and `git diff --check` all passed.
 Review found only stale current-governance wording: several front-door locations
 still described A3 as unauthorized or technical-review-pending after the
 Owner-authorized candidate had reached independent review. Those current-state
-lines were reconciled to `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS`;
-Owner acceptance remains NOT RECORDED, and A4+/G05/G06/L4-L7 remain unauthorized.
-No runtime, test, schema, source, route, or capability behavior changed in the
-reviewer repair.
+lines were reconciled to `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS`.
+The Owner subsequently accepted A3 and authorized merge under
+`L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_OWNER_ACCEPTED_FOR_MERGE`.
+A4+/G05/G06/L4-L7 remain unauthorized. No runtime, test, schema, source, route,
+or capability behavior changed in the reviewer or Owner-acceptance governance updates.
 
 ## Public and frozen-surface containment
 
@@ -177,6 +179,7 @@ performed. A4+ and L4-L7 remain unauthorized.
 
 ## Stop boundary
 
-This candidate closes only the L3-A0 G04 structural CSV and bounded failure
-provenance gap. It does not authorize A4, G05/G06, live probes, or later Phase L
-work. Owner acceptance remains NOT RECORDED.
+This tranche closes only the L3-A0 G04 structural CSV and bounded failure
+provenance gap. It is Owner-accepted for merge under
+`L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_OWNER_ACCEPTED_FOR_MERGE`.
+It does not authorize A4, G05/G06, live probes, or later Phase L work.
