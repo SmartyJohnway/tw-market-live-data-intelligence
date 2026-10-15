@@ -135,6 +135,30 @@ No fresh source GET/POST was performed. No production Security Master,
 Watchlist, authorization, Result/Audit, live evidence root, or primary-worktree
 `data/` state was read or mutated. `git diff --check` — PASS after final candidate edits.
 
+## Independent exact-head review
+
+Independent review was performed against candidate head
+`92c9bda0809ab45607d173dcb68a65cb3892660b`. No runtime correctness defect was
+found in the bounded G04 implementation. The reviewer independently reproduced
+the CSV structural rejection and verified that a malformed primary CSV followed
+by a JSON fallback that later fails source semantic normalization remains
+`source_failed`, with `fallback_used=false`, `fallback_attempted=true`, and both
+the primary `csv_row_width_mismatch` and fallback
+`source_contract_required_field_missing` reasons retained in order.
+
+The complete 10-module offline gate was re-run with a reviewer socket/urlopen
+sentinel: **176 passed, 0 failed, 0 warnings; external network attempts = 0**.
+Source registry, Portable Catalog sync, runtime/Skill exact-six, V1 public
+contracts, Python compile, and `git diff --check` all passed.
+
+Review found only stale current-governance wording: several front-door locations
+still described A3 as unauthorized or technical-review-pending after the
+Owner-authorized candidate had reached independent review. Those current-state
+lines were reconciled to `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS`;
+Owner acceptance remains NOT RECORDED, and A4+/G05/G06/L4-L7 remain unauthorized.
+No runtime, test, schema, source, route, or capability behavior changed in the
+reviewer repair.
+
 ## Public and frozen-surface containment
 
 No schema, request/result, Audit, Catalog, Route, Executor registration,
