@@ -5,7 +5,7 @@
 **Phase L status:** STARTED
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
-**L2:** STARTED - A0 complete; A1/A1-R1 frozen; A2/A3/A4 merged; A5 Owner-accepted and merged through PR #349 at `97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2`; A6 not authorized
+**L2:** STARTED - A0 complete; A1/A1-R1 frozen; A2/A3/A4/A5 merged; A6 Owner-accepted and merged through PR #351 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`; A7 not authorized
 **L3-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -55,6 +55,9 @@ This index must never override L0, an Owner acceptance record, or current Git re
 - L2-A4 Owner acceptance: `L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #347 at `fb2fef0c50c3ee50581bc62af534b36116b332e7`.
 - L2-A5 technical review: `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`.
 - L2-A5 Owner acceptance: `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #349 at `97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2`.
+- L2-A6-R1 lineage clarification: `L2_A6_R1_MIGRATION_SOURCE_LINEAGE_CLARIFICATION_FROZEN_FOR_A6_CANDIDATE`; accepted as part of the A6 Owner-approved merge boundary.
+- L2-A6 technical review: `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS`.
+- L2-A6 Owner acceptance: `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #351 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`.
 ## 4. What L1 delivered
 
 Current merged Runtime Operability includes:
@@ -85,19 +88,21 @@ These boundaries must be started explicitly and must not be collapsed into one b
 
 Current technical state:
 
-`L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_OWNER_ACCEPTED_FOR_MERGE`
+`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`
 
-L2-A5 has technical PASS, Owner acceptance, and merge closure through PR #349 at
-`97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2`. A5 is CLOSED. A6 and later L2/L3-L7 tranches remain
-unauthorized; migration apply, rollback, activation, public API/MCP expansion, packaging, and
-market/source acquisition are not authorized by this closure.
+L2-A6 has technical PASS, Owner acceptance, and merge closure through PR #351 at
+`e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. A6 is CLOSED. Its corrected R1 lineage keeps the
+verified A4 package as `SOURCE_A4_BACKUP`; A5 still stops on `MIGRATION_REQUIRED`, and the current
+production `watchlist-schema-v0-to-v1` path remains `KNOWN_NOT_IMPLEMENTED`. A7 and later L2/L3-L7
+tranches remain unauthorized; activation, public API/MCP expansion, packaging, and market/source
+acquisition are not authorized by this closure.
 
-`MIGRATION_REQUIRED` and `UNSUPPORTED_NEWER_STATE` remain mandatory L2 states, but per
-L2-A1-R1 they require a later versioned installation-state compatibility authority and are not
-fabricated by the package-local A2 inspector.
+`MIGRATION_REQUIRED` and `UNSUPPORTED_NEWER_STATE` are now represented through the accepted A5/A6
+compatibility and migration lifecycle boundaries; no package-local A2 inference or fabricated
+production migration is permitted.
 
 A concise future-conversation instruction is sufficient:
 
-> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main. A5 is Owner-accepted and merged through PR #349. Stop at the merged A5 boundary; A6 is not authorized.
+> Continue TW-Market Phase L L2 from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main. A6 is Owner-accepted and merged through PR #351. Stop at the merged A6 boundary; A7 is not authorized.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.

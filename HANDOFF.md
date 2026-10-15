@@ -82,9 +82,16 @@ L2-A5 - Restore Compatibility & Bounded Restore passed technical review under
 PR #349 at `97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2`. The tranche remains internal, restores only to
 isolated targets, and does not activate state or apply migration.
 
-**Current stop boundary:** L2-A5 is merged and closed. A6 and later L2 tranches, L3-L7, packaging,
-market/source acquisition, migration apply, rollback, and activation remain unauthorized. Recover
-Phase L from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` first.
+L2-A6 - Migration & Rollback Lifecycle passed technical review under
+`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
+`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #351
+at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. The tranche uses the verified A4 package as
+`SOURCE_A4_BACKUP`, preserves A5 migration classification semantics, and keeps the only current
+production migration ID `watchlist-schema-v0-to-v1` as `KNOWN_NOT_IMPLEMENTED`.
+
+**Current stop boundary:** L2-A6 is merged and closed. A7 and later L2 tranches, L3-L7, packaging,
+market/source acquisition, activation, and any fabricated production migration remain unauthorized.
+Recover Phase L from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` first.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.

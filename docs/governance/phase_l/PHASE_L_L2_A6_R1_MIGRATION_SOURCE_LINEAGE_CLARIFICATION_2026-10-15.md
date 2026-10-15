@@ -3,7 +3,7 @@
 **Date:** 2026-10-15
 **Disposition:** `L2_A6_R1_MIGRATION_SOURCE_LINEAGE_CLARIFICATION_FROZEN_FOR_A6_CANDIDATE`
 **A6 base:** `origin/main@ef95878d0c1ae7b800df595c8a9f44fdc5090c58`
-**Owner final acceptance:** not recorded
+**Owner final acceptance:** accepted as part of `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #351 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`
 
 ## 1. Corrected A6 entry authority
 

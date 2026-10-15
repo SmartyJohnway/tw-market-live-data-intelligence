@@ -48,7 +48,14 @@ L2-A5 - Restore Compatibility & Bounded Restore has passed technical review unde
 `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
 `L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_OWNER_ACCEPTED_FOR_MERGE`, and is merged through
 PR #349 at `97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2`. A5 remains internal and does not activate
-restored state or apply migration. A6 and later L2 tranches plus L3-L7 remain unauthorized.
+restored state or apply migration.
+
+L2-A6 - Migration & Rollback Lifecycle has passed technical review under
+`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
+`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #351
+at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. A6 keeps A4 as immutable source/checkpoint,
+preserves A5 `MIGRATION_REQUIRED` zero-restore-write semantics, and has no production transformer
+for `watchlist-schema-v0-to-v1`. A7 and later L2 tranches plus L3-L7 remain unauthorized.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
 accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
@@ -90,10 +97,10 @@ transport/error semantics and the historical frozen I1 live-tested implementatio
 
 The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
 Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**. L2 is
-**STARTED**; A0/A1 are complete/frozen, A2/A3/A4 are merged, and A5 is Owner-accepted and merged
-through PR #349 at `97386f756f2dcc6dbf4d3ee7934a41066fa1b0c2`.
+**STARTED**; A0/A1 are complete/frozen, A2/A3/A4/A5 are merged, and A6 is Owner-accepted and merged
+through PR #351 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`.
 See the Phase L recovery index and L2 governance records under `docs/governance/phase_l/`.
-A6 and later L2 tranches plus L3-L7 remain unauthorized.
+A7 and later L2 tranches plus L3-L7 remain unauthorized.
 
 ## Current I3 production boundary (2026-10-05)
 
