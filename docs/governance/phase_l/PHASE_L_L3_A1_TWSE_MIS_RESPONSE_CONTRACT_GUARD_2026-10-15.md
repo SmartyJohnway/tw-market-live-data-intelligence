@@ -5,6 +5,7 @@
 **Authority:** frozen L0; L2 Owner closure; merged and Owner-accepted L3-A0; the explicit Owner authorization in the A1 tranche instruction.
 **Technical disposition:** `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`
 **Owner acceptance:** `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_OWNER_ACCEPTED_FOR_MERGE` recorded 2026-10-15.
+**Merge:** PR #357 merged at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`.
 **Scope:** current TWSE MIS current-observation seam in `scripts/m5k_common.py` only; no fresh source access.
 
 ## Predecessor and reproduced defect
@@ -108,4 +109,4 @@ Independent technical disposition remains `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUAR
 
 ## Remaining boundary
 
-This closes the A0 G01 MIS wrong-binding path for the covered seam. A0 G03 EOD result-diagnostic propagation remains a separate candidate gap, not included here. Other A0 hardening/probe/fixture gaps remain deferred. No fresh live probe was needed or authorized. L3-A2 is not authorized; L4-L7 remain not authorized. Independent exact-head review is complete; Owner acceptance applies to this A1 boundary only and does not claim L3 closure or authorize A2.
+This closes the A0 G01 MIS wrong-binding path for the covered seam. A0 G03 EOD result-diagnostic propagation remains a separate candidate gap, not included here. Other A0 hardening/probe/fixture gaps remain deferred. No fresh live probe was needed or authorized. L3-A2 is not authorized; L4-L7 remain not authorized. Independent exact-head review and Owner acceptance are complete, PR #357 is merged, and this reconciliation records that Git reality without claiming L3 closure or authorizing A2.
