@@ -5,7 +5,8 @@
 **Branch:** `phase-l/l3-a4-h1-composite-negative-fixtures`
 **Scope:** L3-A0 G06 fixture coverage only
 **Disposition:** `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`
-**Owner acceptance:** `NOT RECORDED`
+**Owner acceptance:** `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE`
+**Owner authority:** `USER_CHAT_2026-10-15_L3_A4_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`
 
 ## Authority and entry
 
@@ -190,8 +191,10 @@ without adding production code or changing test count. Focused and integrated
 gates remained 42 and 199/1-deselected respectively after the repair.
 
 The independent disposition remains
-`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`. Owner
-acceptance is still `NOT RECORDED`; G05, A5+, and L4-L7 remain unauthorized.
+`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`. The Owner
+subsequently accepted A4 and authorized merge under
+`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE`. G05,
+A5+, and L4-L7 remain unauthorized.
 
 ## Boundaries and disposition
 
@@ -203,5 +206,6 @@ Executor activation, authorization semantics, or evidence family changed; MCP
 remains exactly six tools.
 
 Candidate technical disposition: `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`.
-Owner acceptance is `NOT RECORDED`. Stop after the A4 PR is opened; do not
-merge, probe live sources, start A5/G05, or begin L4.
+Owner acceptance is recorded under
+`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE`. Merge of
+PR #363 is authorized. This does not authorize live probes, A5/G05, or L4.
