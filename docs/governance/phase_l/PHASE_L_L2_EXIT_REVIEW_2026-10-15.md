@@ -191,7 +191,13 @@ whole-installation completeness. No production historical migration can run
 until an authoritative old-state transformation is supplied by a future
 authorized boundary.
 
-## 10. Exit decision and next boundary
+## 10. Independent exact-head review
+
+Independent reviewer verification of PR #353 re-ran the same integrated deterministic gate and confirmed **129 passed, 393 existing warnings, 0 failed**. The reviewer also verified that the accepted A0-A6 and A6 merge-closure commits are ancestors of the reviewed `origin/main`, and that the PR changes governance/front-door files only.
+
+One governance-consistency defect was found outside the primary current handoff summary: the later `HANDOFF.md` section titled `Explicit stop boundary` still described L2 only through A2. Because that section presents itself as a current stop boundary rather than historical evidence, it was reconciled to the same A7 technical-exit / Owner-closure-pending state. No runtime, test, schema, MCP, evidence-family, market/source, or product-state behavior changed. `git diff --check` remained clean.
+
+## 11. Exit decision and next boundary
 
 No unresolved L2 blocker was found against frozen L0 and accepted A0-A6
 authority. Technical disposition is:
