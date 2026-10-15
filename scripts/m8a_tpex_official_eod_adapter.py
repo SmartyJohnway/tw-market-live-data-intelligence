@@ -42,6 +42,7 @@ def parse_tpex_official_eod_rows(rows:Any,*,requested_symbols:list[str],retrieve
     result["reported_trade_dates"]=sorted(d for d in dates if d); result["row_count_retained"]=len(result["observations"]); result["row_count_rejected"]=len(result["rejected_rows"])
     if len(result["reported_trade_dates"])>1: result["batch_status"]="date_mismatch"
     elif result["row_count_rejected"] and result["observations"]: result["batch_status"]="partial_source_success"
+    elif result["row_count_rejected"] and not result["observations"]: result["batch_status"]="source_error"
     result["completed_at_utc"]=utc_now(); return result
 def execute_tpex_official_eod_adapter(requested_symbols:list[str],*,timeout:int=20,security_master:dict|None=None)->dict:
     ts=utc_now()
