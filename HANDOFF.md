@@ -1,6 +1,6 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current Phase L handoff (2026-10-14)
+## Current Phase L handoff (2026-10-15)
 
 Phase J and Phase K are **COMPLETE**; do not reopen their acceptance work. Phase K
 closed under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with no product
@@ -89,9 +89,13 @@ at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. The tranche uses the verified A4 
 `SOURCE_A4_BACKUP`, preserves A5 migration classification semantics, and keeps the only current
 production migration ID `watchlist-schema-v0-to-v1` as `KNOWN_NOT_IMPLEMENTED`.
 
-**Current stop boundary:** L2-A6 is merged and closed. A7 and later L2 tranches, L3-L7, packaging,
-market/source acquisition, activation, and any fabricated production migration remain unauthorized.
-Recover Phase L from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` first.
+**Current stop boundary:** A7's integrated review records
+`PHASE_L_L2_EXIT_REVIEW_PASS`. L2 technical exit is PASS; Owner final closure is
+pending/not recorded, so L2 is not marked CLOSED. L3-L7 remain NOT AUTHORIZED.
+The result does not authorize packaging, activation, market/source acquisition,
+or a fabricated production migration. Recover Phase L from
+`docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`
+and read `docs/governance/phase_l/PHASE_L_L2_EXIT_REVIEW_2026-10-15.md`.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
@@ -394,7 +398,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Do not repeat the Phase K host matrix for closure. Phase L is started and L0 is frozen under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 - Runtime Operability is CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; L2 - Replay / Retention / Migration is STARTED; L2-A2 is Owner-accepted and merged through PR #343 at `bdd9588bc34ab25af8e22ba7cd7900160a56abf5`, while L3-L7 remain unauthorized. Recover current Phase L state from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` before starting a new boundary.**
+Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Do not repeat the Phase K host matrix for closure. Phase L is started and L0 is frozen under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 - Runtime Operability is CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; L2 - Replay / Retention / Migration has technical exit PASS under `PHASE_L_L2_EXIT_REVIEW_PASS`, but Owner final closure remains pending/not recorded, so L2 is not yet CLOSED. L3-L7 remain unauthorized. Recover current Phase L state from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` and the L2 exit review before starting a new boundary.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The

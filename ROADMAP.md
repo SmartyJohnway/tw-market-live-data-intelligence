@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 STARTED; A0 complete; A1/A1-R1 frozen; A2/A3/A4/A5 merged; A6 Owner-accepted and merged through PR #351 at e090ae353cb00d3b1d076cdb40c5a76cf2229d5d; A7+ and L3-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 technical exit PASS under PHASE_L_L2_EXIT_REVIEW_PASS; Owner final closure pending/not recorded; L3-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,7 +1421,7 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L2-A6 Owner accepted / merged (2026-10-15)
+### Current entry - L2 technical exit PASS; Owner closure pending (2026-10-15)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
@@ -1433,8 +1433,10 @@ are merged, and L2-A6 Migration & Rollback Lifecycle passed technical review und
 `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #351
 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. A6 preserves A5 migration classification semantics,
 uses verified A4 backup authority for checkpoint/rollback lineage, and does not fabricate a production
-Watchlist v0-to-v1 transformer. A7 and later L2 tranches and L3-L7 remain unauthorized. Future recovery
-begins with `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`.
+Watchlist v0-to-v1 transformer. The integrated A7 review records
+`PHASE_L_L2_EXIT_REVIEW_PASS`: L2 technical exit is PASS and Owner final closure is pending/not
+recorded. L2 is not yet marked CLOSED. L3-L7 remain NOT AUTHORIZED. See
+`docs/governance/phase_l/PHASE_L_L2_EXIT_REVIEW_2026-10-15.md` and the Phase L recovery index.
 
 ## L.0 Phase Goal
 
