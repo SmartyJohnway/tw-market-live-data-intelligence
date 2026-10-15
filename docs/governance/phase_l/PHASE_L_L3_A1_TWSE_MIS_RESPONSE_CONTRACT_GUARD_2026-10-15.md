@@ -4,7 +4,7 @@
 **Branch:** `phase-l/l3-a1-mis-response-contract-guard`
 **Authority:** frozen L0; L2 Owner closure; merged and Owner-accepted L3-A0; the explicit Owner authorization in the A1 tranche instruction.
 **Technical disposition:** `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`
-**Owner acceptance:** not recorded.
+**Owner acceptance:** `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_OWNER_ACCEPTED_FOR_MERGE` recorded 2026-10-15.
 **Scope:** current TWSE MIS current-observation seam in `scripts/m5k_common.py` only; no fresh source access.
 
 ## Predecessor and reproduced defect
@@ -104,8 +104,8 @@ Independent exact-head review reproduced the G01 fail-closed behavior, re-ran th
 
 One bounded diagnostic defect was found and repaired on the same candidate branch. When the response envelope was valid but every requested row was rejected by the new identity guard, `failures` correctly reported identity conflicts while `source_investigation_notes` still said `accepted_for_bounded_observation` / `batch_request_status=accepted`. The reviewer repair now distinguishes envelope acceptance from row-contract acceptance: all rejected requested rows produce `batch_rows_rejected` / `rows_rejected`; a mixed valid/rejected batch produces `accepted_with_row_rejections` and bounded accepted/rejected target counts. No failure reason, public schema, acquisition policy, route, normalization, or fallback behavior changed.
 
-Independent technical disposition remains `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is not recorded.
+Independent technical disposition remains `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is recorded under `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_OWNER_ACCEPTED_FOR_MERGE`.
 
 ## Remaining boundary
 
-This closes the A0 G01 MIS wrong-binding path for the covered seam. A0 G03 EOD result-diagnostic propagation remains a separate candidate gap, not included here. Other A0 hardening/probe/fixture gaps remain deferred. No fresh live probe was needed or authorized. L3-A2 is not authorized; L4-L7 remain not authorized. Independent exact-head review is complete; Owner acceptance remains pending and this does not claim L3 closure.
+This closes the A0 G01 MIS wrong-binding path for the covered seam. A0 G03 EOD result-diagnostic propagation remains a separate candidate gap, not included here. Other A0 hardening/probe/fixture gaps remain deferred. No fresh live probe was needed or authorized. L3-A2 is not authorized; L4-L7 remain not authorized. Independent exact-head review is complete; Owner acceptance applies to this A1 boundary only and does not claim L3 closure or authorize A2.
