@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 STARTED; L3-A0 Owner-accepted and merged; L3-A1 technical candidate pending review; A2+ and L4-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 STARTED; L3-A0/A1 Owner-accepted and merged; A2+ and L4-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,7 +1421,7 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L3-A0 source drift inventory candidate (2026-10-15)
+### Current entry - L3 source drift hardening after A1 merge (2026-10-15)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
@@ -1440,11 +1440,13 @@ L3 — Source Drift Hardening is STARTED under explicit Owner entry authority.
 L3-A0 inventory is COMPLETE under `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`, passed
 independent review under `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_ACCEPTANCE_REVIEW_PASS`, and is
 Owner-accepted under `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`; PR #355
-merged at `1983c1d5363fe3253a3c5e556508ba5138163337`. The explicitly authorized L3-A1
-TWSE MIS returned-identity/response-contract candidate passed its technical gate and awaits
-independent review; Owner acceptance is not recorded. L3-A2+ and L4-L7 remain NOT AUTHORIZED. See
-`docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
-The A1 candidate record is `docs/governance/phase_l/PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
+merged at `1983c1d5363fe3253a3c5e556508ba5138163337`. L3-A1 TWSE MIS
+returned-identity/response-contract guard passed independent review under
+`L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
+`L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #357
+at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. L3-A2+ and L4-L7 remain NOT AUTHORIZED. See
+`docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md` and
+`docs/governance/phase_l/PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
 
 Frozen L0 implementation sequencing maps Source Drift Hardening to current L3;
 the older durable subsection label `L.4 Source Drift Management` remains

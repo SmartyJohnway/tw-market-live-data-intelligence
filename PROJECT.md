@@ -68,12 +68,12 @@ L3 — Source Drift Hardening is **STARTED**. L3-A0 source-drift inventory is co
 `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`; PR #355 merged at
 `1983c1d5363fe3253a3c5e556508ba5138163337`. Current acquisition contracts and drift gaps are
 documented in `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
-L3-A1 TWSE MIS returned-identity/response-contract guard is authorized by the explicit Owner
-instruction following A0 closure. Its implementation candidate is complete under
-`L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`, pending independent review;
-Owner acceptance is not recorded. L3-A2+ and L4-L7 remain NOT AUTHORIZED. Frozen L0
-implementation sequencing places Source Drift Hardening in L3; old Roadmap subject numbering
-is retained.
+L3-A1 TWSE MIS returned-identity/response-contract guard passed independent review under
+`L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
+`L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #357
+at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. L3-A2+ and L4-L7 remain NOT AUTHORIZED.
+Frozen L0 implementation sequencing places Source Drift Hardening in L3; old Roadmap subject
+numbering is retained.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
 accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
@@ -120,8 +120,8 @@ A2-A6 are merged/closed, and the A7 integrated exit review passed under
 `PHASE_L_L2_EXIT_REVIEW_PASS`. PR #353 merged the final L2 closure at
 `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. See the Phase L recovery index and L2 exit record
 under `docs/governance/phase_l/`. L3-A0 inventory is Owner-accepted and merged through PR #355
-at `1983c1d5363fe3253a3c5e556508ba5138163337`; A1 implementation candidate is pending review,
-Owner acceptance is not recorded, and A2+ / L4-L7 remain not authorized.
+at `1983c1d5363fe3253a3c5e556508ba5138163337`; L3-A1 is Owner-accepted and merged through PR #357
+at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. A2+ / L4-L7 remain not authorized.
 
 ## Current I3 production boundary (2026-10-05)
 
