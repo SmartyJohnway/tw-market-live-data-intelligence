@@ -1,6 +1,6 @@
 # PROJECT.md — Current Project Authority
 
-## Current Phase L boundary (2026-10-14)
+## Current Phase L boundary (2026-10-15)
 
 Roadmap Phase J and Phase K are **COMPLETE**. Phase K closed under
 `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with three evaluated hosts, two
@@ -55,7 +55,11 @@ L2-A6 - Migration & Rollback Lifecycle has passed technical review under
 `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #351
 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. A6 keeps A4 as immutable source/checkpoint,
 preserves A5 `MIGRATION_REQUIRED` zero-restore-write semantics, and has no production transformer
-for `watchlist-schema-v0-to-v1`. A7 and later L2 tranches plus L3-L7 remain unauthorized.
+for `watchlist-schema-v0-to-v1`. The integrated L2 exit review has technical
+disposition `PHASE_L_L2_EXIT_REVIEW_PASS`; L2 technical exit is PASS and Owner
+final closure is pending/not recorded. This is not an L2 CLOSED declaration.
+L3-L7 remain NOT AUTHORIZED. See
+`docs/governance/phase_l/PHASE_L_L2_EXIT_REVIEW_2026-10-15.md`.
 
 L1-A0 current runtime inventory is complete, including A0R removal of historical A6
 accounting from current H2/H3 product paths. L1-A1 minimum lifecycle/status/doctor passed
@@ -98,9 +102,12 @@ transport/error semantics and the historical frozen I1 live-tested implementatio
 The formal L1 Exit Review passes technically under `PHASE_L_L1_EXIT_REVIEW_PASS` and is
 Owner-closed under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L1 is **CLOSED**. L2 is
 **STARTED**; A0/A1 are complete/frozen, A2/A3/A4/A5 are merged, and A6 is Owner-accepted and merged
-through PR #351 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`.
-See the Phase L recovery index and L2 governance records under `docs/governance/phase_l/`.
-A7 and later L2 tranches plus L3-L7 remain unauthorized.
+through PR #351 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. The A7
+integrated exit review passes technically under
+`PHASE_L_L2_EXIT_REVIEW_PASS`; Owner final closure is pending/not recorded.
+L2 is not marked CLOSED until Owner final closure. See the Phase L recovery
+index and L2 exit record under `docs/governance/phase_l/`. L3-L7 remain not
+authorized.
 
 ## Current I3 production boundary (2026-10-05)
 
