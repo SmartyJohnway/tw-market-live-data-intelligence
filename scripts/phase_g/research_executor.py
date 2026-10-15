@@ -30,10 +30,42 @@ class TransportResult:
     attempt_failures: list[dict[str, str]]
 
 def parse_csv(payload: str | bytes) -> list[dict[str, str]]:
-    text = payload.decode("utf-8-sig") if isinstance(payload, bytes) else payload
-    rows = list(csv.DictReader(io.StringIO(text)))
-    if not rows or not rows[0] or not any(rows[0].keys()): raise SourceFailure("empty_or_unverifiable_source")
-    return [{str(k).strip(): (v or "").strip() for k, v in row.items() if k is not None} for row in rows]
+    try:
+        text = payload.decode("utf-8-sig", errors="strict") if isinstance(payload, bytes) else payload
+    except UnicodeDecodeError as exc:
+        raise SourceFailure("csv_decode_failed") from exc
+    if not text.strip():
+        raise SourceFailure("empty_or_unverifiable_source")
+
+    try:
+        reader = csv.reader(io.StringIO(text, newline=""), strict=True)
+        header_row = next(reader, None)
+        if not header_row:
+            raise SourceFailure("csv_header_invalid")
+        header = [value.strip() for value in header_row]
+        if any(not value for value in header):
+            raise SourceFailure("csv_header_invalid")
+        if len(set(header)) != len(header):
+            raise SourceFailure("csv_duplicate_header")
+
+        rows: list[dict[str, str]] = []
+        for row in reader:
+            if len(row) != len(header):
+                raise SourceFailure("csv_row_width_mismatch")
+            rows.append({name: value.strip() for name, value in zip(header, row, strict=True)})
+    except csv.Error as exc:
+        raise SourceFailure("csv_parse_failed") from exc
+
+    if not rows:
+        raise SourceFailure("empty_or_unverifiable_source")
+    return rows
+
+
+def _failure_reason(exc: Exception) -> str:
+    """Return bounded, deterministic failure provenance without exception text."""
+    if isinstance(exc, SourceFailure):
+        return exc.code
+    return type(exc).__name__
 
 def parse_json(payload: str | bytes | list[dict[str, Any]]) -> list[dict[str, Any]]:
     if isinstance(payload, list): rows = payload
@@ -47,11 +79,11 @@ def fetch_once(route: dict[str, str], csv_fetcher: Fetcher, json_fetcher: Fetche
     try:
         return TransportResult(parse_csv(csv_fetcher(route["csv_url"])), "official_csv", False, [])
     except Exception as primary:
-        attempts=[{"transport":"official_csv","failure":type(primary).__name__}]
+        attempts=[{"transport":"official_csv","failure":_failure_reason(primary)}]
         try:
             return TransportResult(parse_json(json_fetcher(route["json_url"])), "official_json_openapi", True, attempts)
         except Exception as fallback:
-            raise SourceFailure("all_governed_transports_failed", attempts+[{"transport":"official_json_openapi","failure":type(fallback).__name__}]) from fallback
+            raise SourceFailure("all_governed_transports_failed", attempts+[{"transport":"official_json_openapi","failure":_failure_reason(fallback)}]) from fallback
 
 def failed_provenance(result: TransportResult | None, failure: SourceFailure) -> tuple[str, bool, bool, list[dict[str, str]]]:
     """Retain transport state when parse/normalization fails after a fetch."""
