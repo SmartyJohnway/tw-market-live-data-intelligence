@@ -6,7 +6,8 @@
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
-**L3-L7:** NOT STARTED / NOT AUTHORIZED
+**L3:** STARTED under explicit Owner L3-A0 entry authorization; A0 inventory candidate COMPLETE; A1 NOT YET AUTHORIZED
+**L4-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
 
@@ -79,7 +80,7 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 ## 5. Remaining Phase L boundaries
 
 - L2 Replay / Retention / Migration: CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
-- L3 Source Drift Hardening: transport/contract/semantic drift, bounded probes and fixtures.
+- L3 Source Drift Hardening: STARTED; A0 inventory candidate COMPLETE under `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`. Confirmed MIS identity gap selected for a bounded A1 recommendation; A1 not yet authorized.
 - L4 Security & Resource Boundaries: localhost/path/input/output/load/concurrency/large-result limits.
 - L5 Extension Architecture: minimum evidence-family extension contract; no new family merely to prove it.
 - L6 Packaging & Portability: Native Windows + Docker Local Service, fresh install, P1-P6 portability, final state/config mapping and product `init` integration.
@@ -90,23 +91,23 @@ These boundaries must be started explicitly and must not be collapsed into one b
 
 Current technical state:
 
-`PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
+`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`
 
-L2-A7 completed the integrated technical exit review under
-`PHASE_L_L2_EXIT_REVIEW_PASS` at reviewed base
-`a23119a7243627b140c5678911e6e522b94ddda2`. Owner final closure is accepted under
-`PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, and PR #353 merged at
-`b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. L2 is CLOSED. A6's corrected R1
-lineage keeps the verified A4 package as `SOURCE_A4_BACKUP`; A5 still stops on
-`MIGRATION_REQUIRED`, and production `watchlist-schema-v0-to-v1` remains
-`KNOWN_NOT_IMPLEMENTED`.
+L2 is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` through
+PR #353, with PR #354 reconciliation at `3b8f1532fac1a2d2366d0d38254ebd4a7a7c6b55`.
+L3 entry is explicitly Owner-authorized. The A0 source drift inventory candidate
+is COMPLETE at that base; candidate Owner acceptance is not recorded. It
+identifies 18 current Unified source contracts plus five explicit bootstrap
+members and inventories auxiliary/dormant/historical surfaces separately.
+The confirmed MIS wrong-binding gap is the first bounded A1 recommendation.
+No production behavior is changed and no fresh source acquisition is performed.
+See `PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
 
-`MIGRATION_REQUIRED` and `UNSUPPORTED_NEWER_STATE` are now represented through the accepted A5/A6
-compatibility and migration lifecycle boundaries; no package-local A2 inference or fabricated
-production migration is permitted.
+Frozen L0 sequencing controls current L3 Source Drift Hardening; old Roadmap
+subject subsection numbers remain unchanged. A1 and L4-L7 remain NOT AUTHORIZED.
 
 A concise future-conversation instruction is sufficient:
 
-> Continue TW-Market Phase L from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and read the A7 exit review. L2 is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` through PR #353. Do not begin L3-L7 without separate explicit Owner authorization.
+> Recover current main and read the L3-A0 source drift inventory. L2 is CLOSED; L3 is STARTED. A0 inventory candidate is complete and awaits independent review. Do not implement A1, probe live sources, or begin L4-L7 without separate explicit authorization.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.

@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 CLOSED under PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after PHASE_L_L2_EXIT_REVIEW_PASS; PR #353 merged at b84ba8a4ac4819d115de33e55cf9adf2a5801e00; L3-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 STARTED; L3-A0 inventory candidate COMPLETE; A1 and L4-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,7 +1421,7 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L2 CLOSED; L3-L7 not authorized (2026-10-15)
+### Current entry - L3-A0 source drift inventory candidate (2026-10-15)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
@@ -1433,8 +1433,20 @@ merged/closed, and the integrated A7 exit review passed under `PHASE_L_L2_EXIT_R
 PR #353 merged the final L2 closure at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
 The accepted L2 boundary preserves conservative retention, explicit backup/restore compatibility,
 A5 `MIGRATION_REQUIRED` zero-restore-write semantics, verified A4 checkpoint/rollback lineage,
-and no fabricated production Watchlist v0-to-v1 transformer. L3-L7 remain NOT AUTHORIZED. See
+and no fabricated production Watchlist v0-to-v1 transformer. See
 `docs/governance/phase_l/PHASE_L_L2_EXIT_REVIEW_2026-10-15.md` and the Phase L recovery index.
+
+L3 — Source Drift Hardening is STARTED under explicit Owner entry authority.
+L3-A0 inventory candidate is COMPLETE under
+`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`; Owner candidate acceptance is
+not recorded. A1 returned-identity/response-contract remediation is recommended
+for the confirmed TWSE MIS gap and is NOT YET AUTHORIZED. L4-L7 remain NOT AUTHORIZED.
+See `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
+
+Frozen L0 implementation sequencing maps Source Drift Hardening to current L3;
+the older durable subsection label `L.4 Source Drift Management` remains
+historical roadmap organization and is not rewritten. No architecture conflict
+exists; durable subject matter remains valid while L0 controls tranche sequencing.
 
 ## L.0 Phase Goal
 

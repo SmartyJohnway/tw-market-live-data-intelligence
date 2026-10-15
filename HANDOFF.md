@@ -90,14 +90,19 @@ at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. The tranche uses the verified A4 
 `SOURCE_A4_BACKUP`, preserves A5 migration classification semantics, and keeps the only current
 production migration ID `watchlist-schema-v0-to-v1` as `KNOWN_NOT_IMPLEMENTED`.
 
-**Current stop boundary:** L2 is **CLOSED** under
+L2 is **CLOSED** under
 `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit
 `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at
-`b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. L3-L7 remain NOT AUTHORIZED.
-The closure does not authorize packaging, activation, market/source acquisition,
-or a fabricated production migration. Recover Phase L from
+`b84ba8a4ac4819d115de33e55cf9adf2a5801e00` and PR #354 reconciled final closure.
+
+**Current stop boundary:** Owner-authorized L3 — Source Drift Hardening is
+STARTED. L3-A0 inventory candidate is COMPLETE under
+`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`; Owner candidate acceptance is
+not recorded. The confirmed TWSE MIS returned-identity gap is selected for a
+bounded A1 recommendation; A1 is NOT YET AUTHORIZED. L4-L7 remain NOT AUTHORIZED.
+No live probe or source acquisition was performed. Recover Phase L from
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`
-and read `docs/governance/phase_l/PHASE_L_L2_EXIT_REVIEW_2026-10-15.md`.
+and read `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
 
 The older Phase J readiness section below is historical pre-entry context and is
 superseded for current operational status by this closure handoff.
