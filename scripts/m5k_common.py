@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import urllib.error
 import urllib.parse
 import urllib.request
 import ssl
@@ -394,6 +395,143 @@ def _parse_mis_item(item: dict[str, Any], instrument: dict[str, Any], retrieved_
     return parsed
 
 
+class _MisResponseError(ValueError):
+    def __init__(self, reason: str, facts: dict[str, Any] | None = None):
+        super().__init__(reason)
+        self.reason = reason
+        self.facts = facts or {}
+
+
+class _MisTransportError(OSError):
+    def __init__(self, reason: str, facts: dict[str, Any] | None = None):
+        super().__init__(reason)
+        self.reason = reason
+        self.facts = facts or {}
+
+
+def _mis_reject_duplicate_json_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise _MisResponseError("source_response_contract_invalid", {"detail": "duplicate_json_object_key"})
+        result[key] = value
+    return result
+
+
+def _decode_mis_response(raw: bytes) -> dict[str, Any]:
+    if not isinstance(raw, bytes):
+        raise _MisResponseError("source_response_contract_invalid", {"detail": "response_body_not_bytes"})
+    try:
+        body = raw.decode("utf-8", "strict")
+    except UnicodeDecodeError as exc:
+        raise _MisResponseError("source_response_decode_failed", {"detail": "invalid_utf8"}) from exc
+    try:
+        data = json.loads(body, object_pairs_hook=_mis_reject_duplicate_json_keys)
+    except _MisResponseError:
+        raise
+    except (json.JSONDecodeError, TypeError) as exc:
+        raise _MisResponseError("source_response_contract_invalid", {"detail": "invalid_json"}) from exc
+    if not isinstance(data, dict):
+        raise _MisResponseError("source_response_contract_invalid", {"detail": "root_not_object"})
+    msg_array = data.get("msgArray")
+    if not isinstance(msg_array, list):
+        raise _MisResponseError("source_response_contract_invalid", {"detail": "msgArray_not_array"})
+    if any(not isinstance(item, dict) for item in msg_array):
+        raise _MisResponseError("source_response_contract_invalid", {"detail": "msgArray_item_not_object"})
+    rtcode_values = [data[key] for key in ("rtcode", "rtCode") if key in data and data[key] not in (None, "")]
+    if not rtcode_values or any(not isinstance(value, (str, int)) or not str(value).strip() for value in rtcode_values):
+        raise _MisResponseError("source_response_contract_invalid", {"detail": "rtcode_missing_or_invalid"})
+    if len({str(value) for value in rtcode_values}) != 1:
+        raise _MisResponseError("source_response_contract_invalid", {"detail": "rtcode_alias_conflict"})
+    if str(rtcode_values[0]) != "0000":
+        raise _MisResponseError("source_response_contract_invalid", {"detail": "rtcode_not_success"})
+    return data
+
+
+_MIS_CHANNEL_RE = re.compile(r"^(tse|otc)_([A-Za-z0-9]+)\.tw$")
+_MIS_KEY_RE = re.compile(r"^(tse|otc)_([A-Za-z0-9]+)\.tw(?:_(.+))?$")
+_MIS_CH_RE = re.compile(r"^([A-Za-z0-9]+)\.tw$")
+
+
+def _mis_expected_identity(plan: dict[str, Any]) -> tuple[str, str] | None:
+    match = _MIS_CHANNEL_RE.fullmatch(str(plan.get("ex_ch") or ""))
+    if not match:
+        return None
+    return f"{match.group(1)}_{match.group(2)}.tw", match.group(2)
+
+
+def _mis_requested_channels_for_symbol(requested: dict[str, dict[str, Any]], symbol: str) -> set[str]:
+    matches: set[str] = set()
+    for route, plan in requested.items():
+        identity = _mis_expected_identity(plan)
+        if identity is not None and identity[1].casefold() == symbol.casefold():
+            matches.add(route)
+    return matches
+
+
+def _mis_candidate_channels(item: dict[str, Any], requested: dict[str, dict[str, Any]]) -> set[str]:
+    """Use identity claims only to route rows to candidates; never to validate them."""
+    exact_claims: set[str] = set()
+    symbol_claims: set[str] = set()
+    key = item.get("key")
+    if isinstance(key, str):
+        match = _MIS_KEY_RE.fullmatch(key.strip())
+        if match:
+            route = f"{match.group(1)}_{match.group(2)}.tw"
+            exact_claims.add(route)
+    ch = item.get("ch")
+    if isinstance(ch, str):
+        match = _MIS_CH_RE.fullmatch(ch.strip())
+        if match:
+            symbol_claims.update(_mis_requested_channels_for_symbol(requested, match.group(1)))
+            if isinstance(item.get("ex"), str) and item["ex"].strip().casefold() in {"tse", "otc"}:
+                exact_claims.add(f"{item['ex'].strip().casefold()}_{match.group(1)}.tw")
+    code = item.get("c")
+    exchange = item.get("ex")
+    if isinstance(code, str) and isinstance(exchange, str) and exchange.strip().casefold() in {"tse", "otc"}:
+        route = f"{exchange.strip().casefold()}_{code.strip()}.tw"
+        exact_claims.add(route)
+    if isinstance(code, str):
+        symbol_claims.update(_mis_requested_channels_for_symbol(requested, code.strip()))
+    requested_exact = exact_claims.intersection(requested)
+    return requested_exact or symbol_claims
+
+
+def _validate_mis_item_identity(item: dict[str, Any], plan: dict[str, Any]) -> tuple[bool, str | None, dict[str, Any]]:
+    identity = _mis_expected_identity(plan)
+    if identity is None:
+        return False, "source_response_contract_invalid", {"detail": "unsupported_request_channel"}
+    expected_channel, expected_symbol = identity
+    expected_market = str(plan.get("market") or ("twse" if expected_channel.startswith("tse_") else "tpex"))
+    raw = {field: item.get(field) for field in ("c", "ex", "ch", "key") if field in item}
+    facts = {"expected_market": expected_market, "expected_symbol": expected_symbol, "expected_channel": expected_channel, "returned": raw}
+    required = ("c", "ex", "ch")
+    if any(not isinstance(item.get(field), str) or not item[field].strip() for field in required):
+        return False, "source_response_contract_invalid", facts | {"detail": "required_identity_fact_missing_or_invalid"}
+    c = item["c"].strip()
+    ex = item["ex"].strip().casefold()
+    ch = item["ch"].strip()
+    ch_match = _MIS_CH_RE.fullmatch(ch)
+    if ex not in {"tse", "otc"} or ch_match is None:
+        return False, "source_response_contract_invalid", facts | {"detail": "malformed_identity_fact"}
+    returned_symbols = {c.casefold(), ch_match.group(1).casefold()}
+    returned_markets = {ex}
+    key = item.get("key")
+    if key is not None:
+        if not isinstance(key, str) or not key.strip():
+            return False, "source_response_contract_invalid", facts | {"detail": "malformed_key"}
+        key_match = _MIS_KEY_RE.fullmatch(key.strip())
+        if key_match is None:
+            return False, "source_response_contract_invalid", facts | {"detail": "malformed_key"}
+        returned_symbols.add(key_match.group(2).casefold())
+        returned_markets.add(key_match.group(1))
+    if len(returned_symbols) != 1 or len(returned_markets) != 1:
+        return False, "source_response_identity_conflict", facts
+    if next(iter(returned_symbols)) != expected_symbol.casefold() or next(iter(returned_markets)) != expected_channel.split("_", 1)[0]:
+        return False, "source_response_identity_mismatch", facts
+    return True, None, facts
+
+
 def execute_live_observation(
     watchlist: dict[str, Any],
     *,
@@ -436,8 +574,34 @@ def execute_live_observation(
         else:
             payload["failures"].append(normalize_failure(symbol=plan["symbol"], source="TAIFEX", adapter_id="taifex_mis_tx_futures_quote", status="failed" if not evidence else evidence.get("status", "failed"), reason=(evidence or {}).get("reason", "no_supported_tx_observation"), investigation_summary=evidence, recommended_next_step="Use TAIFEX MIS getQuoteList with TXF and front-month normalization, or apply for licensed TAIFEX market data for SLA-backed production usage.", caveats=governance()["caveats"]))
 
-    mis_channels = [p["ex_ch"] for p in plans if p.get("source") == "TWSE_MIS" and p.get("ex_ch")]
+    mis_plans = [p for p in plans if p.get("source") == "TWSE_MIS" and p.get("ex_ch")]
+    mis_channels = [p["ex_ch"] for p in mis_plans]
     mis_by_channel: dict[str, dict[str, Any]] = {}
+    mis_failures: dict[str, tuple[str, dict[str, Any]]] = {}
+    requested_by_channel = {p["ex_ch"]: p for p in mis_plans}
+
+    def assign_batch_rows(rows: list[dict[str, Any]]) -> None:
+        candidates_by_channel: dict[str, list[dict[str, Any]]] = {channel: [] for channel in requested_by_channel}
+        for row in rows:
+            candidates = _mis_candidate_channels(row, requested_by_channel)
+            if len(candidates) > 1:
+                for channel in candidates:
+                    mis_failures[channel] = ("source_response_identity_conflict", {"detail": "row_claims_multiple_requested_targets"})
+            elif len(candidates) == 1:
+                candidates_by_channel[next(iter(candidates))].append(row)
+        for channel, matched_rows in candidates_by_channel.items():
+            if channel in mis_failures:
+                continue
+            if len(matched_rows) > 1:
+                mis_failures[channel] = ("source_response_duplicate_ambiguous", {"detail": "multiple_rows_claim_same_requested_target", "row_count": len(matched_rows)})
+            elif len(matched_rows) == 1:
+                plan = requested_by_channel[channel]
+                valid, reason, facts = _validate_mis_item_identity(matched_rows[0], plan)
+                if valid:
+                    mis_by_channel[channel] = matched_rows[0]
+                else:
+                    mis_failures[channel] = (reason or "source_response_contract_invalid", facts)
+
     if mis_channels:
         query = urllib.parse.urlencode({"ex_ch": "|".join(mis_channels), "json": "1", "delay": "0"})
         url = f"https://mis.twse.com.tw/stock/api/getStockInfo.jsp?{query}"
@@ -445,35 +609,58 @@ def execute_live_observation(
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 tw-market-m5k-live-observation/1.0", "Referer": "https://mis.twse.com.tw/stock/fibest.jsp"})
             with urllib.request.urlopen(req, timeout=timeout, context=ssl_context) as resp:
-                body = resp.read().decode("utf-8", "replace")
-                payload["request"]["status_code"] = resp.status
-            data = json.loads(body.strip())
-            msg_array = data.get("msgArray", [])
-            rtcode = str(data.get("rtcode") or data.get("rtCode") or "")
-            if rtcode == "9999" or not isinstance(msg_array, list):
-                raise ValueError(f"batch_request_failed:rtcode={rtcode or 'missing'}")
-            for item in msg_array:
-                if isinstance(item, dict):
-                    mis_key = str(item.get("key") or "").rsplit("_", 1)[0] or str(item.get("ch") or "")
-                    mis_by_channel[mis_key] = item
+                status_code = getattr(resp, "status", None)
+                payload["request"]["status_code"] = status_code
+                if status_code != 200:
+                    raise _MisTransportError("source_failed:http_status", {"status_code": status_code})
+                data = _decode_mis_response(resp.read())
+            assign_batch_rows(data["msgArray"])
             payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "batch_request_status": "accepted", "sample_retained": False})
+        except _MisResponseError as exc:
+            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "batch_response_rejected", "reason": exc.reason, "details": exc.facts, "sample_retained": False})
+            for channel in mis_channels:
+                mis_failures[channel] = (exc.reason, exc.facts)
         except Exception as exc:
-            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "batch_request_failed", "reason": str(exc), "fallback": "individual_bounded_requests", "sample_retained": False})
+            if isinstance(exc, _MisTransportError):
+                failure_reason, failure_details = exc.reason, exc.facts
+            elif isinstance(exc, urllib.error.HTTPError):
+                failure_reason, failure_details = "source_failed:http_status", {"status_code": exc.code}
+            else:
+                failure_reason, failure_details = "source_failed:transport", {"detail": type(exc).__name__}
+            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "batch_request_failed", "reason": failure_reason, "details": failure_details, "fallback": "individual_bounded_requests", "sample_retained": False})
             if not allow_individual_fallback:
                 payload["source_investigation_notes"][-1]["fallback"] = "disabled_by_caller"
-            for ch in (mis_channels if allow_individual_fallback else []):
-                single_url = f"https://mis.twse.com.tw/stock/api/getStockInfo.jsp?{urllib.parse.urlencode({'ex_ch': ch, 'json': '1', 'delay': '0'})}"
+            for channel in (mis_channels if allow_individual_fallback else []):
+                single_url = f"https://mis.twse.com.tw/stock/api/getStockInfo.jsp?{urllib.parse.urlencode({'ex_ch': channel, 'json': '1', 'delay': '0'})}"
                 try:
                     req = urllib.request.Request(single_url, headers={"User-Agent": "Mozilla/5.0 tw-market-m5k-live-observation/1.0", "Referer": "https://mis.twse.com.tw/stock/fibest.jsp"})
                     with urllib.request.urlopen(req, timeout=timeout, context=ssl_context) as resp:
-                        body = resp.read().decode("utf-8", "replace")
-                    data = json.loads(body.strip())
-                    for item in data.get("msgArray", []):
-                        if isinstance(item, dict):
-                            mis_key = str(item.get("key") or "").rsplit("_", 1)[0] or str(item.get("ch") or "")
-                            mis_by_channel[mis_key] = item
-                except Exception:
-                    continue
+                        status_code = getattr(resp, "status", None)
+                        if status_code != 200:
+                            raise _MisResponseError("source_failed:http_status", {"status_code": status_code})
+                        data = _decode_mis_response(resp.read())
+                    rows = data["msgArray"]
+                    if not rows:
+                        continue
+                    if len(rows) != 1:
+                        mis_failures[channel] = ("source_response_duplicate_ambiguous", {"detail": "individual_response_row_count_not_one", "row_count": len(rows)})
+                        continue
+                    valid, reason, facts = _validate_mis_item_identity(rows[0], requested_by_channel[channel])
+                    if valid:
+                        mis_by_channel[channel] = rows[0]
+                    else:
+                        mis_failures[channel] = (reason or "source_response_contract_invalid", facts)
+                except _MisResponseError as exc:
+                    mis_failures[channel] = (exc.reason, exc.facts)
+                except _MisTransportError as exc:
+                    mis_failures[channel] = (exc.reason, exc.facts)
+                except urllib.error.HTTPError as fallback_exc:
+                    mis_failures[channel] = ("source_failed:http_status", {"status_code": fallback_exc.code})
+                except Exception as fallback_exc:
+                    mis_failures[channel] = ("source_failed:transport", {"detail": type(fallback_exc).__name__})
+            if not allow_individual_fallback:
+                for channel in mis_channels:
+                    mis_failures.setdefault(channel, (failure_reason, failure_details))
     for plan in plans:
         instrument = plan["instrument"]
         if plan.get("adapter_id") == "taifex_mis_tx_futures_quote":
@@ -481,7 +668,12 @@ def execute_live_observation(
         if plan.get("status") == "unsupported_in_m5k_initial":
             payload["failures"].append(normalize_failure(symbol=instrument["symbol"], source=plan.get("source"), adapter_id=plan.get("adapter_id"), status=plan.get("status", "failed"), reason=plan.get("reason", "unsupported_route"), extra={k: v for k, v in plan.items() if k not in {"instrument", "symbol", "source", "adapter_id", "status", "reason"}}, caveats=governance()["caveats"]))
             continue
-        item = mis_by_channel.get(plan.get("ex_ch", ""))
+        channel = plan.get("ex_ch", "")
+        if channel in mis_failures:
+            reason, facts = mis_failures[channel]
+            payload["failures"].append(normalize_failure(symbol=instrument["symbol"], source=plan.get("source"), adapter_id=plan.get("adapter_id"), reason=reason, investigation_summary=facts, recommended_next_step="Verify the bounded MIS response identity and contract before accepting an observation; no source row was selected by caller identity alone.", caveats=governance()["caveats"]))
+            continue
+        item = mis_by_channel.get(channel)
         if item:
             parsed = _parse_mis_item(item, instrument | {"adapter_id": plan.get("adapter_id")}, retrieved_at)
             if parsed.get("status") == "ok":
