@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 technical exit PASS under PHASE_L_L2_EXIT_REVIEW_PASS; Owner final closure pending/not recorded; L3-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1 CLOSED; L2 CLOSED under PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after PHASE_L_L2_EXIT_REVIEW_PASS; PR #353 merged at b84ba8a4ac4819d115de33e55cf9adf2a5801e00; L3-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,21 +1421,19 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L2 technical exit PASS; Owner closure pending (2026-10-15)
+### Current entry - L2 CLOSED; L3-L7 not authorized (2026-10-15)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
 `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
 
-L2 - Replay / Retention / Migration is **STARTED**. A0 is complete, A1/A1-R1 are frozen, A2/A3/A4/A5
-are merged, and L2-A6 Migration & Rollback Lifecycle passed technical review under
-`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS`, was Owner-accepted under
-`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`, and is merged through PR #351
-at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`. A6 preserves A5 migration classification semantics,
-uses verified A4 backup authority for checkpoint/rollback lineage, and does not fabricate a production
-Watchlist v0-to-v1 transformer. The integrated A7 review records
-`PHASE_L_L2_EXIT_REVIEW_PASS`: L2 technical exit is PASS and Owner final closure is pending/not
-recorded. L2 is not yet marked CLOSED. L3-L7 remain NOT AUTHORIZED. See
+L2 - Replay / Retention / Migration is **CLOSED** under
+`PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. A0 is complete, A1/A1-R1 are frozen, A2-A6 are
+merged/closed, and the integrated A7 exit review passed under `PHASE_L_L2_EXIT_REVIEW_PASS`.
+PR #353 merged the final L2 closure at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
+The accepted L2 boundary preserves conservative retention, explicit backup/restore compatibility,
+A5 `MIGRATION_REQUIRED` zero-restore-write semantics, verified A4 checkpoint/rollback lineage,
+and no fabricated production Watchlist v0-to-v1 transformer. L3-L7 remain NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L2_EXIT_REVIEW_2026-10-15.md` and the Phase L recovery index.
 
 ## L.0 Phase Goal

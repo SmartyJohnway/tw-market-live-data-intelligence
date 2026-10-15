@@ -5,7 +5,7 @@
 **Phase L status:** STARTED
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
-**L2:** A0 complete; A1/A1-R1 frozen; A2-A6 merged/closed; A7 technical exit PASS under `PHASE_L_L2_EXIT_REVIEW_PASS`; Owner final closure pending/not recorded; do not mark L2 CLOSED yet
+**L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
 **L3-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -58,7 +58,8 @@ This index must never override L0, an Owner acceptance record, or current Git re
 - L2-A6-R1 lineage clarification: `L2_A6_R1_MIGRATION_SOURCE_LINEAGE_CLARIFICATION_FROZEN_FOR_A6_CANDIDATE`; accepted as part of the A6 Owner-approved merge boundary.
 - L2-A6 technical review: `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS`.
 - L2-A6 Owner acceptance: `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #351 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`.
-- L2-A7 technical exit review: `PHASE_L_L2_EXIT_REVIEW_PASS` at reviewed base `a23119a7243627b140c5678911e6e522b94ddda2`; Owner final closure is pending/not recorded. See `PHASE_L_L2_EXIT_REVIEW_2026-10-15.md`.
+- L2-A7 technical exit review: `PHASE_L_L2_EXIT_REVIEW_PASS` at reviewed base `a23119a7243627b140c5678911e6e522b94ddda2`.
+- L2 final Owner closure: `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; merged through PR #353 at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. See `PHASE_L_L2_EXIT_REVIEW_2026-10-15.md`.
 ## 4. What L1 delivered
 
 Current merged Runtime Operability includes:
@@ -77,7 +78,7 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 
 ## 5. Remaining Phase L boundaries
 
-- L2 Replay / Retention / Migration: technical exit PASS under `PHASE_L_L2_EXIT_REVIEW_PASS`; Owner final closure pending/not recorded. Do not mark L2 CLOSED until Owner closure.
+- L2 Replay / Retention / Migration: CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
 - L3 Source Drift Hardening: transport/contract/semantic drift, bounded probes and fixtures.
 - L4 Security & Resource Boundaries: localhost/path/input/output/load/concurrency/large-result limits.
 - L5 Extension Architecture: minimum evidence-family extension contract; no new family merely to prove it.
@@ -89,13 +90,13 @@ These boundaries must be started explicitly and must not be collapsed into one b
 
 Current technical state:
 
-`PHASE_L_L2_EXIT_REVIEW_PASS`
+`PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 
-L2-A7 has completed the integrated technical exit review at base
-`a23119a7243627b140c5678911e6e522b94ddda2`. A0-A6 are complete/frozen/merged
-as applicable; A6 merge closure is PR #352 at the reviewed base. The A7 matrix
-finds no unresolved L2 blocker. L2 technical exit is PASS; Owner final closure
-is NOT RECORDED / PENDING, so L2 is not declared CLOSED. A6's corrected R1
+L2-A7 completed the integrated technical exit review under
+`PHASE_L_L2_EXIT_REVIEW_PASS` at reviewed base
+`a23119a7243627b140c5678911e6e522b94ddda2`. Owner final closure is accepted under
+`PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, and PR #353 merged at
+`b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. L2 is CLOSED. A6's corrected R1
 lineage keeps the verified A4 package as `SOURCE_A4_BACKUP`; A5 still stops on
 `MIGRATION_REQUIRED`, and production `watchlist-schema-v0-to-v1` remains
 `KNOWN_NOT_IMPLEMENTED`.
@@ -106,6 +107,6 @@ production migration is permitted.
 
 A concise future-conversation instruction is sufficient:
 
-> Continue TW-Market Phase L from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and read the A7 exit review. L2 technical exit passed; Owner final closure is pending/not recorded. Do not mark L2 CLOSED or begin L3-L7 without explicit Owner closure/authorization.
+> Continue TW-Market Phase L from `PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`; recover current main and read the A7 exit review. L2 is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` through PR #353. Do not begin L3-L7 without separate explicit Owner authorization.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.
