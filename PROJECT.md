@@ -76,8 +76,12 @@ at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. L3-A2 passed independent review u
 `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #359
 at `e521a2fcc73ecd40e819a0d51342abcd4a55354c`. It propagates bounded TWSE/TPEx EOD batch and
 row-validation diagnostics through existing Unified envelopes without public schema or source-acquisition changes.
-L3-A3+ and L4-L7 remain NOT AUTHORIZED. See
-`docs/governance/phase_l/PHASE_L_L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_2026-10-15.md`.
+L3-A3 — Phase G research CSV structure and bounded attempt provenance — has an implementation
+candidate under `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS`.
+Technical review and Owner acceptance are pending. It hardens P04-P07 row-width/header validation
+and preserves primary CSV failure codes through the existing governed JSON fallback; public schemas
+remain unchanged. A4+ and L4-L7 remain NOT AUTHORIZED. See
+`docs/governance/phase_l/PHASE_L_L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_2026-10-15.md`.
 Frozen L0 implementation sequencing places Source Drift Hardening in L3; old Roadmap subject
 numbering is retained.
 
@@ -130,7 +134,8 @@ at `1983c1d5363fe3253a3c5e556508ba5138163337`; L3-A1 is Owner-accepted and merge
 at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`; L3-A2 is Owner-accepted under
 `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #359
 at `e521a2fcc73ecd40e819a0d51342abcd4a55354c` after independent technical review PASS.
-A3+ / L4-L7 remain not authorized.
+L3-A3 implementation candidate is complete with technical review and Owner acceptance pending;
+A4+ and L4-L7 remain not authorized.
 
 ## Current I3 production boundary (2026-10-05)
 

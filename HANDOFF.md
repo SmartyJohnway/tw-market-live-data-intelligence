@@ -107,7 +107,12 @@ was addressed by L3-A1, which passed independent review under
 at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. L3-A2 EOD diagnostic propagation passed independent
 technical review under `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
 `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #359 at
-`e521a2fcc73ecd40e819a0d51342abcd4a55354c`. L3-A3+ and L4-L7 remain NOT AUTHORIZED. No live probe or source acquisition was performed. Recover Phase L from
+`e521a2fcc73ecd40e819a0d51342abcd4a55354c`. L3-A3 Phase G research CSV structural and bounded
+attempt-provenance guard is now an implementation candidate. The focused offline gate passed with
+176 tests and zero external network attempts; technical review and Owner acceptance are pending.
+A4+, G05/G06, and L4-L7 remain NOT AUTHORIZED. No live probe or source acquisition was performed.
+See `docs/governance/phase_l/PHASE_L_L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_2026-10-15.md`.
+Recover Phase L from
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`
 and read `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
 

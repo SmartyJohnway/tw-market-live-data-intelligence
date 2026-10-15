@@ -1447,9 +1447,12 @@ returned-identity/response-contract guard passed independent review under
 at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. L3-A2 EOD diagnostic propagation passed independent review under
 `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
 `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #359 at
-`e521a2fcc73ecd40e819a0d51342abcd4a55354c`. L3-A3+ / L4-L7 remain NOT AUTHORIZED. See
+`e521a2fcc73ecd40e819a0d51342abcd4a55354c`. L3-A3 Phase G research CSV structure and bounded
+attempt provenance is an implementation candidate under
+`L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS`; technical review and
+Owner acceptance are pending. A4+ / L4-L7 remain NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md` and
-`docs/governance/phase_l/PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
+`docs/governance/phase_l/PHASE_L_L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_2026-10-15.md`.
 
 Frozen L0 implementation sequencing maps Source Drift Hardening to current L3;
 the older durable subsection label `L.4 Source Drift Management` remains

@@ -6,7 +6,7 @@
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
-**L3:** STARTED; A0 Owner-accepted and merged through PR #355; A1 Owner-accepted and merged through PR #357 at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`; A2 Owner-accepted under `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #359 at `e521a2fcc73ecd40e819a0d51342abcd4a55354c`; A3+ NOT AUTHORIZED
+**L3:** STARTED; A0/A1/A2 Owner-accepted and merged through PRs #355/#357/#359; A3 research CSV structure/provenance implementation candidate complete, technical review and Owner acceptance pending; A4+ NOT AUTHORIZED
 **L4-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -68,6 +68,7 @@ This index must never override L0, an Owner acceptance record, or current Git re
 - L3-A1 Owner acceptance: `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #357 at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`.
 - L3-A2 technical review: `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`.
 - L3-A2 Owner acceptance: `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #359 at `e521a2fcc73ecd40e819a0d51342abcd4a55354c`. See `PHASE_L_L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_2026-10-15.md`.
+- L3-A3 candidate: `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS`; Owner acceptance NOT RECORDED. Scope is Phase G P04-P07 CSV structure and bounded fallback failure provenance. See `PHASE_L_L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_2026-10-15.md`.
 ## 4. What L1 delivered
 
 Current merged Runtime Operability includes:
@@ -98,7 +99,7 @@ These boundaries must be started explicitly and must not be collapsed into one b
 
 Current technical state:
 
-`L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE` (A2 Owner-accepted and merged through PR #359 at `e521a2fcc73ecd40e819a0d51342abcd4a55354c`)
+`L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_ACCEPTANCE_REVIEW_PASS` (A3 implementation candidate complete; technical review and Owner acceptance pending)
 
 L2 is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` through
 PR #353, with PR #354 reconciliation at `3b8f1532fac1a2d2366d0d38254ebd4a7a7c6b55`.
@@ -114,10 +115,11 @@ performed in A0 or A1. See `PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-
 and `PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
 
 Frozen L0 sequencing controls current L3 Source Drift Hardening; old Roadmap
-subject subsection numbers remain unchanged. A2 is Owner-accepted and merged. A3+ and L4-L7 remain NOT AUTHORIZED.
+subject subsection numbers remain unchanged. A0-A2 are Owner-accepted and merged. A3 is a candidate
+pending review/Owner acceptance. A4+ and L4-L7 remain NOT AUTHORIZED.
 
 A concise future-conversation instruction is sufficient:
 
-> Recover current main, read the L3-A0 inventory, A1 response-contract record, and A2 EOD diagnostic record. L2 is CLOSED; L3 is STARTED. A0, A1, and A2 are Owner-accepted and merged. Do not start A3+, probe live sources, or begin L4-L7 without separate explicit authorization.
+> Recover current main, read the L3-A0 inventory, A1/A2 acceptance records, and A3 research CSV candidate record. L2 is CLOSED; L3 is STARTED. A0, A1, and A2 are Owner-accepted and merged. A3 technical review/Owner acceptance are pending; do not start A4+, G05/G06, probe live sources, or begin L4-L7.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.
