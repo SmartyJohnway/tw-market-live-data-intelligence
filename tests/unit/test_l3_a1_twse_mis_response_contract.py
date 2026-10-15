@@ -111,6 +111,11 @@ def test_g01_matching_channel_cannot_override_contradictory_returned_identity(mo
     assert failure["reason"] == "source_response_identity_conflict"
     assert failure["investigation_summary"]["expected_symbol"] == "2330"
     assert failure["investigation_summary"]["returned"]["c"] == "2317"
+    note = result["source_investigation_notes"][-1]
+    assert note["status"] == "batch_rows_rejected"
+    assert note["batch_request_status"] == "rows_rejected"
+    assert note["accepted_target_count"] == 0
+    assert note["rejected_target_count"] == 1
 
 
 @pytest.mark.parametrize(
@@ -259,6 +264,11 @@ def test_mixed_batch_keeps_valid_target_and_fails_only_incoherent_target(monkeyp
     result = _run(monkeypatch, response, ("2330", "twse", "equity"), ("6488", "tpex", "equity"))
     assert [row["symbol"] for row in result["observations"]] == ["2330"]
     assert [(row["symbol"], row["reason"]) for row in result["failures"]] == [("6488", "source_response_identity_conflict")]
+    note = result["source_investigation_notes"][-1]
+    assert note["status"] == "accepted_with_row_rejections"
+    assert note["batch_request_status"] == "accepted_with_row_rejections"
+    assert note["accepted_target_count"] == 1
+    assert note["rejected_target_count"] == 1
 
 
 def test_taiex_t00_contract_remains_valid(monkeypatch):

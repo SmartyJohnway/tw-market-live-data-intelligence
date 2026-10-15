@@ -615,7 +615,21 @@ def execute_live_observation(
                     raise _MisTransportError("source_failed:http_status", {"status_code": status_code})
                 data = _decode_mis_response(resp.read())
             assign_batch_rows(data["msgArray"])
-            payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "batch_request_status": "accepted", "sample_retained": False})
+            accepted_target_count = len(mis_by_channel)
+            rejected_target_count = len(mis_failures)
+            if rejected_target_count:
+                row_status = "accepted_with_row_rejections" if accepted_target_count else "batch_rows_rejected"
+                batch_request_status = "accepted_with_row_rejections" if accepted_target_count else "rows_rejected"
+                payload["source_investigation_notes"].append({
+                    "source": "TWSE_MIS",
+                    "status": row_status,
+                    "batch_request_status": batch_request_status,
+                    "accepted_target_count": accepted_target_count,
+                    "rejected_target_count": rejected_target_count,
+                    "sample_retained": False,
+                })
+            else:
+                payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "accepted_for_bounded_observation", "batch_request_status": "accepted", "sample_retained": False})
         except _MisResponseError as exc:
             payload["source_investigation_notes"].append({"source": "TWSE_MIS", "status": "batch_response_rejected", "reason": exc.reason, "details": exc.facts, "sample_retained": False})
             for channel in mis_channels:

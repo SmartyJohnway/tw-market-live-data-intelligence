@@ -98,6 +98,14 @@ python -X utf8 -B scripts/validate_v1_public_contracts.py   PASS; tool_count=6
 
 Every new runtime test injects response bytes and patches `urlopen`; the guarded suite recorded zero external socket attempts. `write_latest=False` is used throughout. No Security Master, Watchlist, Result/Audit, or other production state was initialized or mutated. No live market/source GET or POST occurred.
 
+## Independent reviewer verification
+
+Independent exact-head review reproduced the G01 fail-closed behavior, re-ran the 35-test A1 module and the 12-module guarded gate, and confirmed **35 passed** plus **167 passed**, with `L3_A1_EXTERNAL_SOCKET_ATTEMPTS=0`. Source registry, Portable Catalog, runtime/Skill exact-six, public-contract validation, and `git diff origin/main...HEAD --check` also passed.
+
+One bounded diagnostic defect was found and repaired on the same candidate branch. When the response envelope was valid but every requested row was rejected by the new identity guard, `failures` correctly reported identity conflicts while `source_investigation_notes` still said `accepted_for_bounded_observation` / `batch_request_status=accepted`. The reviewer repair now distinguishes envelope acceptance from row-contract acceptance: all rejected requested rows produce `batch_rows_rejected` / `rows_rejected`; a mixed valid/rejected batch produces `accepted_with_row_rejections` and bounded accepted/rejected target counts. No failure reason, public schema, acquisition policy, route, normalization, or fallback behavior changed.
+
+Independent technical disposition remains `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is not recorded.
+
 ## Remaining boundary
 
-This closes the A0 G01 MIS wrong-binding path for the covered seam. A0 G03 EOD result-diagnostic propagation remains a separate candidate gap, not included here. Other A0 hardening/probe/fixture gaps remain deferred. No fresh live probe was needed or authorized. L3-A2 is not authorized; L4-L7 remain not authorized. This technical disposition is a candidate for independent exact-head review, not Owner acceptance or L3 closure.
+This closes the A0 G01 MIS wrong-binding path for the covered seam. A0 G03 EOD result-diagnostic propagation remains a separate candidate gap, not included here. Other A0 hardening/probe/fixture gaps remain deferred. No fresh live probe was needed or authorized. L3-A2 is not authorized; L4-L7 remain not authorized. Independent exact-head review is complete; Owner acceptance remains pending and this does not claim L3 closure.
