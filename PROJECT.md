@@ -89,8 +89,9 @@ has passed independent technical review under
 the current fixed P08/P09/P10 composite and R1 source-local versus unexpected
 exception boundary without changing production runtime. Reviewer verification
 reconciled the direct missing-required-field matrix so P08/P09/P10 are each
-covered. Owner acceptance is not recorded. A5+, G05, and L4-L7 remain NOT
-AUTHORIZED. See
+covered. It is Owner-accepted under
+`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #363 at
+`ff330f94049adce93c72a9179b4d7b44d297fb2b`. A5+, G05, and L4-L7 remain NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_2026-10-15.md`.
 See also
 `docs/governance/phase_l/PHASE_L_L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_2026-10-15.md`.
@@ -148,9 +149,10 @@ at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`; L3-A2 is Owner-accepted under
 at `e521a2fcc73ecd40e819a0d51342abcd4a55354c` after independent technical review PASS.
 L3-A3 passed independent technical review, is Owner-accepted under
 `L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_OWNER_ACCEPTED_FOR_MERGE`, and merged through
-PR #361 at `ddd023f11a23420c096a5b20022848cfcf900db9`. A4 has passed independent
-technical review under `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`;
-Owner acceptance is not recorded. A5+, G05, and L4-L7 remain not authorized.
+PR #361 at `ddd023f11a23420c096a5b20022848cfcf900db9`. A4 passed independent technical review under
+`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
+`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #363 at
+`ff330f94049adce93c72a9179b4d7b44d297fb2b`. A5+, G05, and L4-L7 remain not authorized.
 
 ## Current I3 production boundary (2026-10-05)
 
