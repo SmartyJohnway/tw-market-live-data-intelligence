@@ -6,7 +6,7 @@
 **Scope:** A0 Gap G03 only. No source polling or fresh market acquisition.
 **Technical disposition:** `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`
 **Owner acceptance:** `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE`
-**Owner acceptance authority:** explicitly granted in conversation on 2026-10-15 after independent exact-head review of `0b88a1ba0df300d598c2587c3e7a581b7eca5d7e`; merge authorized, L3-A3+ and L4-L7 remain unauthorized.
+**Owner acceptance authority:** explicitly granted in conversation on 2026-10-15 after independent exact-head review of `0b88a1ba0df300d598c2587c3e7a581b7eca5d7e`; acceptance commit `033454bbdada09caa3866e44b03581e169dbf68f`; PR #359 merged at `e521a2fcc73ecd40e819a0d51342abcd4a55354c`. L3-A3+ and L4-L7 remain unauthorized.
 
 ## Predecessor and G03 root cause
 
@@ -121,4 +121,4 @@ These repairs do not change Request/Result/Audit schema versions, MCP/HTTP surfa
 
 This candidate closes G03 only. G04 research CSV structure, G05 bounded probes for rate limiting/removal/publication/universe changes, and G06 H1 negative fixtures remain deferred. No live probe, retry redesign, global resource ceiling, general observability framework, public surface, or capability expansion is included. L3-A3+ and L4-L7 remain unauthorized.
 
-Candidate disposition: `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`. Owner acceptance is recorded under `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE`; merge is authorized. L3-A3+ and L4-L7 remain unauthorized; do not begin A3.
+Final A2 disposition: `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`; Owner acceptance `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #359 at `e521a2fcc73ecd40e819a0d51342abcd4a55354c`. L3-A3+ and L4-L7 remain unauthorized; do not begin A3.
