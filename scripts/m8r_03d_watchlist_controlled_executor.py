@@ -310,7 +310,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
     else:
         source_data=fixture_source_data or {}; group_results=_fixture_group_results(plan, source_data, started)
         
-    observations=[]; target_results=[]; normalize_issues=[]
+    observations=[]; target_results=[]; normalize_issues=[]; eod_issues=[]
     if phase_c_active and mode == 'execute':
         target_results.extend(session_results)
     for t in plan['targets']:
@@ -318,6 +318,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
         if t['identity_status']!='resolved':
             target_results.append({'target_id':tid,'status':'skipped','reason_code':'identity_unresolved'}); continue
         srcs=(source_data.get('targets') or {}).get(tid,{})
+        target_eod_diagnostics=(source_data.get('_target_eod_diagnostics') or {}).get(tid,{})
         
         if phase_c_active:
             # Phase C 啟用時：完全由 registry 與 plan 驅動的動態處理
@@ -352,7 +353,7 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                     if obs: observations.append(obs); kept+=1
                     else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
                 if is_fallback:
-                    target_results.append({
+                    target_result={
                         'target_id':tid,
                         'source_family':fam,
                         'status':'fallback_success',
@@ -366,9 +367,9 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                         'planned_operation_id': f"op-{tid}-{live_fam}",
                         'actual_operation_id': f"op-{tid}-{fam}",
                         'fallback_from_operation_id': f"op-{tid}-{live_fam}"
-                    })
+                    }
                 else:
-                    target_results.append({
+                    target_result={
                         'target_id':tid,
                         'source_family':fam,
                         'status':'normalized' if kept else 'failed',
@@ -376,13 +377,39 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                         'planned_operation_id': f"op-{tid}-{fam}",
                         'actual_operation_id': f"op-{tid}-{fam}",
                         'fallback_from_operation_id': None
-                    })
+                    }
+                _attach_eod_target_diagnostics(target_result, target_eod_diagnostics.get(fam), eod_issues)
+                target_results.append(target_result)
             elif not live_fam or not srcs.get(live_fam):
-                target_results.append({
+                target_result={
                     'target_id':tid,
                     'status':'source_unavailable',
                     'reason_code':'missing_fixture_or_source_result'
-                })
+                }
+                if fam_diag := target_eod_diagnostics.get(fam):
+                    target_result['source_family']=fam
+                    _attach_eod_target_diagnostics(target_result, fam_diag, eod_issues)
+                    rejected = fam_diag.get('rejected_rows') or []
+                    if rejected:
+                        first = rejected[0]
+                        target_result.update({'status':'failed','reason_code':first['reason_code']})
+                        target_result['rejection_reason_codes'] = sorted({r['reason_code'] for r in rejected})[:8]
+                    elif fam_diag.get('batch_status') in {'date_mismatch','source_error','schema_drift'}:
+                        target_result.update({'status':'failed','reason_code':fam_diag['batch_status']})
+                    elif fam_diag.get('batch_status') == 'empty_non_trading_day':
+                        target_result['reason_code']='empty_non_trading_day'
+                target_results.append(target_result)
+            elif fam_diag := target_eod_diagnostics.get(fam):
+                rejected=fam_diag.get('rejected_rows') or []
+                batch_status=fam_diag.get('batch_status')
+                if rejected or batch_status in {'partial_source_success','date_mismatch','source_error','schema_drift'}:
+                    target_result={'target_id':tid,'source_family':fam,'status':'failed' if rejected or batch_status in {'date_mismatch','source_error','schema_drift'} else 'source_unavailable'}
+                    if rejected:
+                        target_result['reason_code']=rejected[0]['reason_code']
+                    elif batch_status:
+                        target_result['reason_code']=batch_status
+                    _attach_eod_target_diagnostics(target_result,fam_diag,eod_issues)
+                    target_results.append(target_result)
         else:
             # 傳統模式：完全回退到 PR #157 原始的硬編碼處理邏輯
             if bundle_type=='snapshot' and srcs.get('TWSE_MIS'):
@@ -400,17 +427,42 @@ def execute_watchlist(request:dict, *, mode:str, bundle_type:str, authorization:
                         else: normalize_issues.append({'code':'source_identity_mismatch','target_id':tid,'source_family':fam})
                     is_fallback=(not srcs.get('TWSE_MIS')) and (fam in ('TWSE_OPENAPI','TPEX_OPENAPI'))
                     if is_fallback:
-                        target_results.append({'target_id':tid,'source_family':fam,'status':'fallback_success','fallback_used':True,'requested_source_family':'TWSE_MIS','actual_source_family':fam,'requested_timing_class':'liveish_intraday_snapshot','actual_timing_class':'official_eod','fallback_reason':'liveish_observation_unavailable','row_count':kept})
+                        target_result={'target_id':tid,'source_family':fam,'status':'fallback_success','fallback_used':True,'requested_source_family':'TWSE_MIS','actual_source_family':fam,'requested_timing_class':'liveish_intraday_snapshot','actual_timing_class':'official_eod','fallback_reason':'liveish_observation_unavailable','row_count':kept}
                     else:
-                        target_results.append({'target_id':tid,'source_family':fam,'status':'normalized' if kept else 'failed','row_count':kept})
+                        target_result={'target_id':tid,'source_family':fam,'status':'normalized' if kept else 'failed','row_count':kept}
+                    _attach_eod_target_diagnostics(target_result,target_eod_diagnostics.get(fam),eod_issues)
+                    target_results.append(target_result)
                 elif not srcs.get('TWSE_MIS'):
-                    target_results.append({'target_id':tid,'status':'source_unavailable','reason_code':'missing_fixture_or_source_result'})
+                    target_result={'target_id':tid,'status':'source_unavailable','reason_code':'missing_fixture_or_source_result'}
+                    if fam_diag := target_eod_diagnostics.get(fam):
+                        target_result['source_family']=fam
+                        _attach_eod_target_diagnostics(target_result,fam_diag,eod_issues)
+                        rejected=fam_diag.get('rejected_rows') or []
+                        if rejected:
+                            target_result.update({'status':'failed','reason_code':rejected[0]['reason_code']})
+                        elif fam_diag.get('batch_status') in {'date_mismatch','source_error','schema_drift'}:
+                            target_result.update({'status':'failed','reason_code':fam_diag['batch_status']})
+                        elif fam_diag.get('batch_status') == 'empty_non_trading_day':
+                            target_result['reason_code']='empty_non_trading_day'
+                    target_results.append(target_result)
+                elif fam_diag := target_eod_diagnostics.get(fam):
+                    rejected=fam_diag.get('rejected_rows') or []
+                    batch_status=fam_diag.get('batch_status')
+                    if rejected or batch_status in {'partial_source_success','date_mismatch','source_error','schema_drift'}:
+                        target_result={'target_id':tid,'source_family':fam,'status':'failed' if rejected or batch_status in {'date_mismatch','source_error','schema_drift'} else 'source_unavailable'}
+                        if rejected:
+                            target_result['reason_code']=rejected[0]['reason_code']
+                        elif batch_status:
+                            target_result['reason_code']=batch_status
+                        _attach_eod_target_diagnostics(target_result,fam_diag,eod_issues)
+                        target_results.append(target_result)
             
     try:
         bundle=build_watchlist_snapshot_bundle(request=request,observations=observations,generated_at_utc=started) if bundle_type=='snapshot' else build_watchlist_performance_bundle(request=request,observations=observations,generated_at_utc=started)
         partial=any(c['coverage_state']!='usable' for c in bundle['coverage']['targets'])
         any_group_failed=any(g.get('status')=='failed' for g in group_results)
-        status='success_with_partial_coverage' if partial or any_group_failed or normalize_issues else 'success'; issues=normalize_issues
+        any_group_partial=any(g.get('reason_code')=='partial_source_success' for g in group_results)
+        status='success_with_partial_coverage' if partial or any_group_failed or any_group_partial or normalize_issues or eod_issues else 'success'; issues=normalize_issues+eod_issues
         if not observations and any_group_failed: status='source_execution_failed'
     except Exception as exc:
         bundle=None; status='bundle_validation_failed'; issues=normalize_issues+[{'code':'bundle_validation_failed','detail':str(exc)[:160]}]
@@ -458,7 +510,7 @@ NORMALIZERS = {
 }
 
 def _execute_source_groups(plan, request, executors):
-    data={'targets':{}}; results=[]
+    data={'targets':{},'_target_eod_diagnostics':{}}; results=[]
     for g in plan.get('source_call_groups',[]):
         fam=g['source_family']; start=utc_now(); count=0; status='success'; reason=None
         try:
@@ -471,6 +523,20 @@ def _execute_source_groups(plan, request, executors):
                 for sf, rows in srcs.items():
                     data['targets'].setdefault(tid,{})[sf]=rows
                     count += len(rows) if isinstance(rows,list) else (1 if rows else 0)
+            diagnostics=res.get('_eod_adapter_diagnostics')
+            if isinstance(diagnostics,dict):
+                projected=dict(diagnostics)
+                for tid in g.get('target_ids',[]):
+                    data['_target_eod_diagnostics'].setdefault(tid,{})[fam]=projected
+                for tid, rejection in (res.get('_eod_rejected_by_target') or {}).items():
+                    if tid in g.get('target_ids',[]):
+                        data['_target_eod_diagnostics'].setdefault(tid,{})[fam]={**projected,'rejected_rows':rejection}
+                for tid, validation in (res.get('_eod_validation_by_target') or {}).items():
+                    if tid in g.get('target_ids',[]):
+                        current=data['_target_eod_diagnostics'].setdefault(tid,{}).get(fam,projected)
+                        data['_target_eod_diagnostics'][tid][fam]={**current,'observation_field_validation':validation}
+                results.append({'source_family':fam,'target_ids':g['target_ids'],'started_at_utc':start,'completed_at_utc':utc_now(),'status':_eod_group_status(diagnostics),'observation_count':count,'reason_code':_eod_group_reason(diagnostics),'adapter_diagnostics':projected})
+                continue
         except Exception as exc:
             status='failed'; reason=str(exc).splitlines()[0][:80]
         results.append({'source_family':fam,'target_ids':g['target_ids'],'started_at_utc':start,'completed_at_utc':utc_now(),'status':status,'observation_count':count,'reason_code':reason})
@@ -489,7 +555,141 @@ def _live_eod(plan, g, fn, pref):
     byid={t['target_id']:t for t in plan['targets']}; syms=[byid[tid]['security_code'] for tid in g['target_ids']]
     res=fn(syms); out={'targets':{}}
     for obs in res.get('observations',[]): out['targets'].setdefault(pref+obs.get('symbol'),{})[g['source_family']]=obs
+    out['_eod_adapter_diagnostics']=_project_eod_diagnostics(res)
+    by_symbol={str(byid[tid]['security_code']):tid for tid in g['target_ids']}
+    rejected_by_target={}
+    for rejected in res.get('rejected_rows',[]) if isinstance(res.get('rejected_rows'),list) else []:
+        if not isinstance(rejected,dict): continue
+        symbol=rejected.get('symbol')
+        tid=by_symbol.get(str(symbol)) if symbol is not None else None
+        projection=_project_eod_rejected_row(rejected)
+        if tid is not None:
+            rejected_by_target.setdefault(tid,[]).append(projection)
+    if rejected_by_target:
+        out['_eod_rejected_by_target']={tid:sorted(rows,key=lambda row:(row['reason_code'],tuple(row['invalid_fields'])))[:8] for tid,rows in rejected_by_target.items()}
+    validation_by_target={}
+    for obs in res.get('observations',[]) if isinstance(res.get('observations'),list) else []:
+        if not isinstance(obs,dict): continue
+        tid=by_symbol.get(str(obs.get('symbol'))) if obs.get('symbol') is not None else None
+        validation=_project_eod_observation_validation(obs)
+        if tid is not None and validation['invalid_fields']:
+            validation_by_target.setdefault(tid,[]).append(validation)
+    if validation_by_target:
+        out['_eod_validation_by_target']={tid:sorted(rows,key=lambda row:(row['symbol'] or '',tuple(row['invalid_fields'])))[:8] for tid,rows in validation_by_target.items()}
+    if res.get('source_status') != 'success' or res.get('batch_status') in {'source_error','schema_drift','date_mismatch'}:
+        out['targets']={}
     return out
+
+
+def _project_eod_rejected_row(row):
+    validation=row.get('field_validation') if isinstance(row.get('field_validation'),dict) else {}
+    invalid=[]
+    missing=validation.get('missing')
+    if isinstance(missing,list): invalid.extend(str(name) for name in missing if isinstance(name,str))
+    for name,value in validation.items():
+        if isinstance(value,dict) and value.get('valid') is False: invalid.append(str(name))
+    return {'symbol':row.get('symbol')[:32] if isinstance(row.get('symbol'),str) else None,
+            'reason_code':str(row.get('reason_code') or 'source_row_rejected')[:80],
+            'invalid_fields':sorted({name[:80] for name in invalid})[:16]}
+
+
+def _project_eod_observation_validation(row):
+    validation=row.get('field_validation') if isinstance(row.get('field_validation'),dict) else {}
+    invalid=[]
+    for name,value in validation.items():
+        if isinstance(value,dict) and value.get('valid') is False:
+            reason=value.get('reason')
+            invalid.append({'field':str(name)[:80],'reason_code':str(reason).split(':',1)[0][:40] if isinstance(reason,str) else 'invalid'})
+    invalid.sort(key=lambda item:(item['field'],item['reason_code']))
+    return {'symbol':row.get('symbol')[:32] if isinstance(row.get('symbol'),str) else None,
+            'observation_status':str(row.get('observation_status') or 'unknown')[:24],
+            'invalid_fields':invalid[:16]}
+
+
+def _project_eod_diagnostics(result):
+    if not isinstance(result,dict):
+        return {'source_status':'error','batch_status':'source_error','adapter_result_invalid':True}
+    def count(name):
+        value=result.get(name)
+        return value if isinstance(value,int) and not isinstance(value,bool) and value >= 0 else None
+    raw_dates=result.get('reported_trade_dates')
+    unique_dates=sorted({value for value in raw_dates if isinstance(value,str)}) if isinstance(raw_dates,list) else []
+    dates=[value[:32] for value in unique_dates[:16]]
+    rejected=result.get('rejected_rows')
+    projected_rejections=[_project_eod_rejected_row(row) for row in rejected[:32] if isinstance(row,dict)] if isinstance(rejected,list) else []
+    reasons=sorted({row['reason_code'] for row in projected_rejections})[:16]
+    observations=result.get('observations')
+    invalid_observations=[_project_eod_observation_validation(row) for row in observations if isinstance(row,dict)] if isinstance(observations,list) else []
+    invalid_observations=[row for row in invalid_observations if row['invalid_fields']][:32]
+    return {
+        'source_id':str(result.get('source_id') or '')[:80],
+        'endpoint_contract_id':str(result.get('endpoint_contract_id') or '')[:120],
+        'source_status':str(result.get('source_status') or 'unknown')[:40],
+        'batch_status':str(result.get('batch_status') or 'unknown')[:40],
+        'row_count_received':count('row_count_received'),
+        'row_count_examined':count('row_count_examined'),
+        'row_count_retained':count('row_count_retained'),
+        'row_count_rejected':count('row_count_rejected'),
+        'reported_trade_dates':dates,
+        'reported_trade_date_count':len(unique_dates),
+        'rejection_reason_codes':reasons,
+        'rejected_rows':projected_rejections,
+        'partial_observations':invalid_observations,
+        'caveat_count':len(result.get('caveats')) if isinstance(result.get('caveats'),list) else 0,
+        'caveat_codes':_project_eod_caveat_codes(result.get('caveats')),
+        'http_status':result.get('http_status') if isinstance(result.get('http_status'),int) else None,
+    }
+
+
+def _project_eod_caveat_codes(caveats):
+    if not isinstance(caveats,list): return []
+    codes=set()
+    for caveat in caveats[:32]:
+        if not isinstance(caveat,str): continue
+        lower=caveat.lower()
+        if 'mixed trade dates' in lower: codes.add('mixed_trade_dates')
+        elif 'tradevolume unit' in lower: codes.add('volume_unit_caveat')
+        elif 'top-level response was not an array' in lower: codes.add('top_level_response_not_array')
+        elif 'classification' in lower or 'unclassified' in lower: codes.add('instrument_classification_caveat')
+        else: codes.add('source_caveat_present')
+    return sorted(codes)[:8]
+
+
+def _eod_group_status(diagnostics):
+    source_status=diagnostics.get('source_status')
+    batch_status=diagnostics.get('batch_status')
+    if source_status != 'success' or batch_status in {'source_error','schema_drift','date_mismatch'}:
+        return 'failed'
+    if batch_status in {'successful_eod_batch','partial_source_success','empty_non_trading_day'}:
+        return 'success'
+    if diagnostics.get('partial_observations'):
+        return 'success'
+    return 'failed'
+
+
+def _eod_group_reason(diagnostics):
+    status=diagnostics.get('batch_status')
+    if diagnostics.get('source_status') != 'success' and status not in {'source_error','schema_drift'}:
+        return 'source_error'
+    if diagnostics.get('partial_observations'): return 'partial_source_success'
+    if status in {'partial_source_success','empty_non_trading_day'}: return status
+    return None if status == 'successful_eod_batch' else status
+
+
+def _attach_eod_target_diagnostics(target_result, diagnostic, issues):
+    if not isinstance(diagnostic,dict): return
+    target_result['source_diagnostics']={key:value for key,value in diagnostic.items() if key != 'rejected_rows'}
+    rejected=diagnostic.get('rejected_rows') or []
+    if rejected:
+        target_result['rejection_reason_codes']=sorted({row['reason_code'] for row in rejected})[:8]
+        target_result['rejected_row_diagnostics']=rejected[:8]
+    batch_status=diagnostic.get('batch_status')
+    invalid_fields=diagnostic.get('observation_field_validation') or []
+    if invalid_fields:
+        target_result['field_validation_diagnostics']=invalid_fields
+    issue_code=batch_status if batch_status in {'partial_source_success','date_mismatch','source_error','schema_drift'} else ('partial_source_success' if invalid_fields else None)
+    if issue_code:
+        issues.append({'code':issue_code,'source_family':target_result.get('source_family'),'target_id':target_result.get('target_id'),'reported_trade_dates':diagnostic.get('reported_trade_dates',[]),'rejection_reason_codes':target_result.get('rejection_reason_codes',[]),'invalid_field_names':sorted({item['field'] for row in invalid_fields for item in row['invalid_fields']})[:16]})
 
 def _normalize_checked(fam, row, target, retrieved_at, calendar_artifact=None, closure_events=None):
     symbol=str(row.get('symbol') or row.get('c') or row.get('safe_fields',{}).get('symbol') or '')

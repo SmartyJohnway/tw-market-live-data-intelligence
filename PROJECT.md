@@ -71,7 +71,13 @@ documented in `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVE
 L3-A1 TWSE MIS returned-identity/response-contract guard passed independent review under
 `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
 `L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #357
-at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. L3-A2+ and L4-L7 remain NOT AUTHORIZED.
+at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. L3-A3+ and L4-L7 remain NOT AUTHORIZED.
+L3-A2 — Official EOD Diagnostic Propagation & Batch Contract Guard is implemented as a bounded
+candidate under `L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`; independent
+technical review has passed and Owner acceptance is not recorded. The candidate propagates bounded TWSE/TPEx EOD
+batch and row-validation diagnostics through existing Unified envelopes, without public schema or
+source acquisition changes. L3-A3+ and L4-L7 remain NOT AUTHORIZED. See
+`docs/governance/phase_l/PHASE_L_L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_2026-10-15.md`.
 Frozen L0 implementation sequencing places Source Drift Hardening in L3; old Roadmap subject
 numbering is retained.
 
@@ -121,7 +127,10 @@ A2-A6 are merged/closed, and the A7 integrated exit review passed under
 `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. See the Phase L recovery index and L2 exit record
 under `docs/governance/phase_l/`. L3-A0 inventory is Owner-accepted and merged through PR #355
 at `1983c1d5363fe3253a3c5e556508ba5138163337`; L3-A1 is Owner-accepted and merged through PR #357
-at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. A2+ / L4-L7 remain not authorized.
+at `b2e1908fb5d2e584b38bc354f88df6e121b7b13b`. A3+ / L4-L7 remain not authorized.
+L3-A2 implementation candidate is complete under
+`L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_ACCEPTANCE_REVIEW_PASS`; independent technical review is PASS,
+Owner acceptance is not recorded, and A3+ remains unauthorized.
 
 ## Current I3 production boundary (2026-10-05)
 

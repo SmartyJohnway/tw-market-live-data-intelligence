@@ -4,8 +4,10 @@ import uuid
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from scripts import m8r_03d_watchlist_controlled_executor as executor
 from scripts.m8r_03d_watchlist_controlled_executor import execute_watchlist
 from scripts.m8r_03d_watchlist_execution_plan import build_execution_plan
+from scripts.m8a_twse_official_eod_adapter import parse_twse_official_eod_rows
 
 TAIPEI = ZoneInfo("Asia/Taipei")
 
@@ -54,12 +56,33 @@ def load_schema_compliant_request() -> dict:
     req["request_id"] = f"test-req-{uuid.uuid4()}"
     return req
 
+
+def install_offline_source_adapters(monkeypatch):
+    mis_rows = {
+        "TWSE:2330": {"symbol": "2330", "market": "TWSE", "price": 505, "source_timestamp": "2026-01-02T14:00:00Z", "retrieved_at": "2026-01-02T14:00:01Z"},
+        "TWSE:2317": {"symbol": "2317", "market": "TWSE", "price": 200, "source_timestamp": "2026-01-02T14:00:00Z", "retrieved_at": "2026-01-02T14:00:01Z"},
+    }
+    monkeypatch.setitem(executor.SOURCE_ADAPTERS, "TWSE_MIS", lambda plan, request, group: {"targets": {tid: {"TWSE_MIS": mis_rows[tid]} for tid in group["target_ids"]}})
+
+    def offline_eod(plan, request, group):
+        base = json.loads(Path("tests/fixtures/m8a_official_eod/twse_normal_rows.json").read_text(encoding="utf-8"))[0]
+        rows = []
+        by_target = {target["target_id"]: target for target in plan["targets"]}
+        for tid in group["target_ids"]:
+            row = dict(base, Code=by_target[tid]["security_code"], Date="1150102")
+            rows.append(row)
+        result = parse_twse_official_eod_rows(rows, requested_symbols=[by_target[tid]["security_code"] for tid in group["target_ids"]], retrieved_at_utc="2026-01-02T14:00:01Z")
+        return executor._live_eod(plan, group, lambda symbols: result, "TWSE:")
+
+    monkeypatch.setitem(executor.SOURCE_ADAPTERS, "TWSE_OPENAPI", offline_eod)
+
 def test_production_calendar_successful_fetch_and_caching(monkeypatch, tmp_path):
     def mock_urlopen(req, timeout=10):
         return MockHttpResponse(MOCK_HOLIDAY_RECORDS)
         
     import urllib.request
     monkeypatch.setattr(urllib.request, "urlopen", mock_urlopen)
+    install_offline_source_adapters(monkeypatch)
     
     request_payload = load_schema_compliant_request()
     
@@ -78,39 +101,6 @@ def test_production_calendar_successful_fetch_and_caching(monkeypatch, tmp_path)
         "approved_text_summary": "執行"
     }
 
-    mock_source_data = {
-        "TWSE_OPENAPI": {
-            "observations": [
-                {
-                    "symbol": "2330",
-                    "trade_date": "2026-01-02",
-                    "open": "500.0",
-                    "high": "510.0",
-                    "low": "490.0",
-                    "close": "505.0",
-                    "volume": "1000",
-                    "retrieved_at_utc": "2026-01-02T14:00:00Z"
-                }
-            ],
-            "source_status": "success",
-            "reported_trade_dates": ["2026-01-02"]
-        }
-    }
-    
-    def mock_fetch(groups, security_master):
-        return {
-            "group_results": [
-                {
-                    "source_family": "TWSE_OPENAPI",
-                    "status": "success",
-                    "results": mock_source_data["TWSE_OPENAPI"]
-                }
-            ],
-            "network_calls_performed": True
-        }
-        
-    executors = {"fetch_source_call_groups": mock_fetch}
-
     # Run in execute mode
     res = execute_watchlist(
         request_payload,
@@ -121,7 +111,7 @@ def test_production_calendar_successful_fetch_and_caching(monkeypatch, tmp_path)
         generated_at_utc=gen_time,
         preview=preview,
         approval=approval,
-        executors=executors,
+        executors={},
         source_capability_registry=PHASE_C_REGISTRY
     )
     
@@ -142,6 +132,7 @@ def test_production_calendar_fallback_on_network_failure(monkeypatch, tmp_path):
         
     import urllib.request
     monkeypatch.setattr(urllib.request, "urlopen", mock_urlopen_fail)
+    install_offline_source_adapters(monkeypatch)
     
     request_payload = load_schema_compliant_request()
     
@@ -159,39 +150,6 @@ def test_production_calendar_fallback_on_network_failure(monkeypatch, tmp_path):
         "approved_text_summary": "執行"
     }
 
-    mock_source_data = {
-        "TWSE_OPENAPI": {
-            "observations": [
-                {
-                    "symbol": "2330",
-                    "trade_date": "2026-01-02",
-                    "open": "500.0",
-                    "high": "510.0",
-                    "low": "490.0",
-                    "close": "505.0",
-                    "volume": "1000",
-                    "retrieved_at_utc": "2026-01-02T14:00:00Z"
-                }
-            ],
-            "source_status": "success",
-            "reported_trade_dates": ["2026-01-02"]
-        }
-    }
-    
-    def mock_fetch(groups, security_master):
-        return {
-            "group_results": [
-                {
-                    "source_family": "TWSE_OPENAPI",
-                    "status": "success",
-                    "results": mock_source_data["TWSE_OPENAPI"]
-                }
-            ],
-            "network_calls_performed": True
-        }
-        
-    executors = {"fetch_source_call_groups": mock_fetch}
-
     # Run execution - this will trigger fallback logic because calendar fetch fails
     res = execute_watchlist(
         request_payload,
@@ -202,7 +160,7 @@ def test_production_calendar_fallback_on_network_failure(monkeypatch, tmp_path):
         generated_at_utc=gen_time,
         preview=preview,
         approval=approval,
-        executors=executors,
+        executors={},
         source_capability_registry=PHASE_C_REGISTRY
     )
     
