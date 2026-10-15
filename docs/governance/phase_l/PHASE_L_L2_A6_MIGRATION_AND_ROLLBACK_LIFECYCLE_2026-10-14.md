@@ -55,8 +55,11 @@ directly compatible source; unsupported/newer/unknown A5 outcomes fail closed.
 `MigrationPlan` (`tw_market_migration_plan.v1`) with canonical SHA-256 integrity.
 Apply rechecks the plan hash and independently derives migration ID, versions,
 member sets, A4/A5 hashes, target contract, registry, and checkpoint binding.
-Rehashing a plan cannot authorize another migration or change its target
-version.
+Independent exact-head review additionally requires a valid bounded plan ID,
+UTC `created_at`, the exact three-key resource-limit envelope, and exact
+`compatibility_contract_version` re-derivation from A5. Rehashing a plan cannot
+authorize another migration, change its target contract/version, or launder
+malformed operation metadata.
 
 Plan fields include plan ID/schema, migration ID, source backup ID/manifest
 hash/state identity/selection scope, compatibility contract version/hash,
@@ -113,7 +116,10 @@ A4 bytes to a new isolated rollback candidate. It writes
 receipt and source checkpoint. `verify_rollback()` is read-only and rechecks
 source bytes, receipt hashes, member inventory, explicit scope, and forbidden
 roots. Source package and migrated candidate inventories are compared before
-and after rollback. A rollback candidate is not an A5 restore, activation, or
+and after rollback. Independent exact-head review also re-derives
+`checkpoint_kind=SOURCE_A4_BACKUP` and enforces integer (non-boolean)
+restored-member/byte counts, so a recomputed receipt self-hash cannot relabel
+rollback authority. A rollback candidate is not an A5 restore, activation, or
 active installation.
 
 ## 8. Resource, network, and public boundaries
@@ -128,11 +134,17 @@ interface is added; MCP remains exactly six tools.
 
 ## 9. Tests and limitations
 
-Focused gate covers A6 source and plan binding, A5 direct/migration behavior,
-unknown/unsupported outcomes, test-only copy-on-write apply/verify/rollback,
-receipt rehash resistance, path containment, exact source/checkpoint
-immutability, and offline sentinels, plus A5/A4/A3/A2/MCP/Watchlist regressions.
-Exact gate counts are recorded in the PR body after final execution.
+Codex's original focused gate passed **127 tests, 393 warnings**. Independent
+exact-head review added two bounded mutation tests and repairs: rehashed plan
+operation metadata (`compatibility_contract_version`, UTC creation time, and
+plan ID) must satisfy independently derived/envelope constraints, and a
+rollback receipt cannot relabel `SOURCE_A4_BACKUP` by recomputing its self-hash.
+The reviewer focused gate passed **129 tests, 393 warnings**; the warnings remain
+the existing Watchlist `jsonschema.RefResolver` deprecation. The gate covers A6
+source and plan binding, A5 direct/migration behavior, unknown/unsupported
+outcomes, test-only copy-on-write apply/verify/rollback, receipt rehash
+resistance, path containment, exact source/checkpoint immutability, offline
+sentinels, and A5/A4/A3/A2/MCP/Watchlist regressions.
 
 Known limitation: no authoritative production migration exists. Watchlist
 v0-to-v1 stays `KNOWN_NOT_IMPLEMENTED`; therefore successful production apply,
@@ -142,7 +154,7 @@ network access, or A7. A7 remains not authorized.
 
 ## 10. Stop boundary
 
-Technical acceptance may be recorded as
-`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS` only after the
-focused gates pass and public/source/network boundaries are verified. Owner
-acceptance remains not recorded. No merge or A7 work is authorized here.
+Independent exact-head review is complete. Technical disposition is
+`L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_ACCEPTANCE_REVIEW_PASS`. Owner acceptance
+remains not recorded. PR #351 must remain unmerged until Owner acceptance; no
+A7 work is authorized here.

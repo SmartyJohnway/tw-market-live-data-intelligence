@@ -154,6 +154,35 @@ def test_test_only_transformer_copy_on_write_verify_and_rollback(tmp_path: Path)
     assert package_after == package_before
 
 
+def test_rollback_receipt_checkpoint_kind_cannot_be_laundered(tmp_path: Path):
+    _, package, compatibility, contract, registry = _source(tmp_path)
+    plan = _preview(tmp_path, package, compatibility, contract, registry)
+    migrated = tmp_path / "migrated-checkpoint"
+    migration.apply_migration(
+        plan=plan, backup_path=package, compatibility=compatibility, contract=contract,
+        destination=migrated, forbidden_roots=[], max_total_bytes=LIMIT,
+        max_member_count=10, max_changed_members=2, migration_run_id="run-checkpoint",
+        created_at=UTC, _test_only_registry=registry)
+    rolled_back = tmp_path / "rollback-checkpoint"
+    migration.rollback_migration(
+        migration_root=migrated, destination=rolled_back, plan=plan,
+        backup_path=package, compatibility=compatibility, contract=contract,
+        forbidden_roots=[], max_total_bytes=LIMIT, max_member_count=10,
+        max_changed_members=2, rollback_id="rollback-checkpoint", created_at=UTC,
+        _test_only_registry=registry)
+    receipt_path = rolled_back / migration.ROLLBACK_RECEIPT
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["checkpoint_kind"] = "FAKE_CHECKPOINT"
+    receipt["receipt_integrity"] = migration._integrity(receipt, "receipt_integrity")
+    receipt_path.write_bytes(migration._canonical(receipt) + b"\n")
+    with pytest.raises(migration.MigrationError, match="ROLLBACK_VERIFICATION_FAILED"):
+        migration.verify_rollback(
+            rollback_root=rolled_back, migration_root=migrated, plan=plan,
+            backup_path=package, compatibility=compatibility, contract=contract,
+            max_total_bytes=LIMIT, max_member_count=10, max_changed_members=2,
+            forbidden_roots=[], _test_only_registry=registry)
+
+
 def test_rehashed_tampered_plan_cannot_change_migration_or_checkpoint_binding(tmp_path: Path):
     _, package, compatibility, contract, registry = _source(tmp_path)
     plan = _preview(tmp_path, package, compatibility, contract, registry)
@@ -165,6 +194,25 @@ def test_rehashed_tampered_plan_cannot_change_migration_or_checkpoint_binding(tm
         migration._validate_plan(tampered, backup_path=package, compatibility=compatibility,
                                  contract=contract, max_total_bytes=LIMIT,
                                  max_member_count=10, registry=registry)
+
+
+def test_rehashed_plan_operation_metadata_cannot_be_laundered(tmp_path: Path):
+    _, package, compatibility, contract, registry = _source(tmp_path)
+    plan = _preview(tmp_path, package, compatibility, contract, registry)
+    for field, value in (
+        ("compatibility_contract_version", "fake-contract.v9"),
+        ("created_at", "not-a-timestamp"),
+        ("migration_plan_id", "invalid plan id"),
+    ):
+        payload = plan.to_dict()
+        payload[field] = value
+        payload["plan_integrity"] = migration._integrity(payload, "plan_integrity")
+        tampered = migration._plan_from_payload(payload)
+        with pytest.raises(migration.MigrationError, match="MIGRATION_PLAN_INVALID"):
+            migration._validate_plan(
+                tampered, backup_path=package, compatibility=compatibility,
+                contract=contract, max_total_bytes=LIMIT, max_member_count=10,
+                forbidden_roots=[], registry=registry)
 
 
 def test_migration_receipt_outcome_cannot_be_laundered_by_self_hash(tmp_path: Path):

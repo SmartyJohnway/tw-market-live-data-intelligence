@@ -436,7 +436,16 @@ def _validate_plan(plan: MigrationPlan, *, backup_path: Path,
     if not isinstance(plan, MigrationPlan):
         raise MigrationError("MIGRATION_PLAN_INVALID")
     payload = plan.to_dict()
-    if plan.plan_schema_version != PLAN_SCHEMA:
+    if (plan.plan_schema_version != PLAN_SCHEMA
+            or not isinstance(plan.migration_plan_id, str)
+            or not _ID.fullmatch(plan.migration_plan_id)
+            or not isinstance(plan.migration_id, str)
+            or not _ID.fullmatch(plan.migration_id)):
+        raise MigrationError("MIGRATION_PLAN_INVALID")
+    _require_utc(plan.created_at)
+    resource_limits = payload.get("resource_limits")
+    if (not isinstance(resource_limits, Mapping)
+            or set(resource_limits) != {"max_total_bytes", "max_member_count", "max_changed_members"}):
         raise MigrationError("MIGRATION_PLAN_INVALID")
     body = dict(payload)
     plan_integrity = body.pop("plan_integrity", None)
@@ -454,6 +463,7 @@ def _validate_plan(plan: MigrationPlan, *, backup_path: Path,
             or payload["source_backup_manifest_sha256"] != facts["manifest_sha256"]
             or payload["source_state_identity"] != facts["manifest"]["source_state_identity"]
             or payload["source_selection_scope"] != backup.SELECTION_SCOPE
+            or payload["compatibility_contract_version"] != facts["inspection"]["target_contract_version"]
             or payload["compatibility_contract_sha256"] != facts["inspection"]["target_contract_sha256"]
             or payload["compatibility_attestation_sha256"] != facts["attestation_sha256"]
             or payload["source_versions"] != facts["inspection"]["source_state_family_versions"]
@@ -908,9 +918,15 @@ def verify_rollback(*, rollback_root: Path, migration_root: Path, plan: Migratio
                            max_total_bytes=max_total_bytes)
     expected = {key: (len(value), hashlib.sha256(value).hexdigest()) for key, value in source.items()}
     actual = _inventory(root)
-    if (actual != expected or receipt.get("checkpoint_backup_id") != facts["manifest"]["backup_id"]
+    if (actual != expected
+            or receipt.get("checkpoint_kind") != CHECKPOINT_KIND
+            or receipt.get("checkpoint_backup_id") != facts["manifest"]["backup_id"]
             or receipt.get("members") != _member_records(source)):
         raise MigrationError("ROLLBACK_VERIFICATION_FAILED")
+    for field in ("restored_member_count", "restored_total_bytes"):
+        value = receipt.get(field)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            raise MigrationError("ROLLBACK_VERIFICATION_FAILED")
     if not _has_exact_directories(root, list(source), receipt_name=ROLLBACK_RECEIPT):
         raise MigrationError("ROLLBACK_VERIFICATION_FAILED")
     if (receipt.get("checkpoint_manifest_sha256") != facts["manifest_sha256"]
