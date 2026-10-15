@@ -4,7 +4,8 @@
 **Review base:** `origin/main@a23119a7243627b140c5678911e6e522b94ddda2`
 **Technical disposition:** `PHASE_L_L2_EXIT_REVIEW_PASS`
 **L2 technical exit:** PASS
-**Owner final closure:** NOT RECORDED / PENDING
+**Owner final closure:** `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
+**PR #353 merge status:** PENDING
 **L3-L7:** NOT AUTHORIZED
 
 ## 1. Authority and review scope
@@ -205,11 +206,13 @@ authority. Technical disposition is:
 ```text
 PHASE_L_L2_EXIT_REVIEW_PASS
 L2 technical exit = PASS
-Owner final closure = NOT RECORDED / PENDING
+Owner final closure = PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS
+PR #353 merge status = PENDING
 L3-L7 = NOT AUTHORIZED
 ```
 
-This record is a technical exit candidate only. It does not declare L2 closed,
-record Owner acceptance, authorize activation, or begin L3. The next step is
-independent review of this exact A7 candidate, followed by Owner final closure
-decision. Any later Phase L boundary requires separate explicit authorization.
+Owner final closure is now recorded under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
+Until PR #353 itself is merged, canonical `main` must not yet be described as L2 CLOSED.
+The next step is exact-head merge of this accepted A7 closure candidate, followed by a
+governance-only reconciliation to the merged Git reality. This acceptance does not authorize
+activation or begin L3; any later Phase L boundary still requires separate explicit authorization.
