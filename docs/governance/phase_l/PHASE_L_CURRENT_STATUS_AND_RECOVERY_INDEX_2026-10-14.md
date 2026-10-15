@@ -6,7 +6,7 @@
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
-**L3:** STARTED under explicit Owner L3-A0 entry authorization; A0 inventory candidate COMPLETE; A1 NOT YET AUTHORIZED
+**L3:** STARTED; A0 inventory Owner-accepted and merged through PR #355 at `1983c1d5363fe3253a3c5e556508ba5138163337`; A1 NOT YET AUTHORIZED
 **L4-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -61,6 +61,9 @@ This index must never override L0, an Owner acceptance record, or current Git re
 - L2-A6 Owner acceptance: `L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #351 at `e090ae353cb00d3b1d076cdb40c5a76cf2229d5d`.
 - L2-A7 technical exit review: `PHASE_L_L2_EXIT_REVIEW_PASS` at reviewed base `a23119a7243627b140c5678911e6e522b94ddda2`.
 - L2 final Owner closure: `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; merged through PR #353 at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. See `PHASE_L_L2_EXIT_REVIEW_2026-10-15.md`.
+- L3-A0 inventory: `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`.
+- L3-A0 independent review: `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_ACCEPTANCE_REVIEW_PASS`.
+- L3-A0 Owner acceptance: `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`; merged through PR #355 at `1983c1d5363fe3253a3c5e556508ba5138163337`.
 ## 4. What L1 delivered
 
 Current merged Runtime Operability includes:
@@ -80,7 +83,7 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 ## 5. Remaining Phase L boundaries
 
 - L2 Replay / Retention / Migration: CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
-- L3 Source Drift Hardening: STARTED; A0 inventory candidate COMPLETE under `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`. Confirmed MIS identity gap selected for a bounded A1 recommendation; A1 not yet authorized.
+- L3 Source Drift Hardening: STARTED; A0 inventory is Owner-accepted under `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #355 at `1983c1d5363fe3253a3c5e556508ba5138163337`. Confirmed MIS identity gap remains the bounded A1 recommendation; A1 not yet authorized.
 - L4 Security & Resource Boundaries: localhost/path/input/output/load/concurrency/large-result limits.
 - L5 Extension Architecture: minimum evidence-family extension contract; no new family merely to prove it.
 - L6 Packaging & Portability: Native Windows + Docker Local Service, fresh install, P1-P6 portability, final state/config mapping and product `init` integration.
@@ -95,19 +98,20 @@ Current technical state:
 
 L2 is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` through
 PR #353, with PR #354 reconciliation at `3b8f1532fac1a2d2366d0d38254ebd4a7a7c6b55`.
-L3 entry is explicitly Owner-authorized. The A0 source drift inventory candidate
-is COMPLETE at that base; candidate Owner acceptance is not recorded. It
-identifies 18 current Unified source contracts plus five explicit bootstrap
-members and inventories auxiliary/dormant/historical surfaces separately.
-The confirmed MIS wrong-binding gap is the first bounded A1 recommendation.
-No production behavior is changed and no fresh source acquisition is performed.
-See `PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
+L3 entry is explicitly Owner-authorized. The A0 source drift inventory is COMPLETE,
+independently reviewed, Owner-accepted under
+`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #355 at
+`1983c1d5363fe3253a3c5e556508ba5138163337`. It identifies 18 current Unified source contracts
+plus five explicit bootstrap members and inventories auxiliary/dormant/historical surfaces
+separately. The confirmed MIS wrong-binding gap remains the first bounded A1 recommendation.
+No production behavior was changed and no fresh source acquisition was performed in A0. See
+`PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
 
 Frozen L0 sequencing controls current L3 Source Drift Hardening; old Roadmap
 subject subsection numbers remain unchanged. A1 and L4-L7 remain NOT AUTHORIZED.
 
 A concise future-conversation instruction is sufficient:
 
-> Recover current main and read the L3-A0 source drift inventory. L2 is CLOSED; L3 is STARTED. A0 inventory candidate is complete and awaits independent review. Do not implement A1, probe live sources, or begin L4-L7 without separate explicit authorization.
+> Recover current main and read the L3-A0 source drift inventory. L2 is CLOSED; L3 is STARTED. A0 is Owner-accepted and merged through PR #355. Do not implement A1, probe live sources, or begin L4-L7 without separate explicit authorization.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.

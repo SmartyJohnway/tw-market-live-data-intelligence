@@ -10,9 +10,12 @@
 
 **Owner entry authority:** explicit 2026-10-15 L3-A0 instruction.
 
-**Owner candidate acceptance:** `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE` recorded 2026-10-15. L3 STARTED; A1 NOT YET AUTHORIZED;
-L4-L7 NOT AUTHORIZED. This inventory identifies an unresolved production
-correctness gap; it does not certify all sources as hardened.
+**Owner candidate acceptance:** `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE` recorded 2026-10-15.
+
+**Merge:** PR #355 merged at `1983c1d5363fe3253a3c5e556508ba5138163337`.
+
+L3 STARTED; A1 NOT YET AUTHORIZED; L4-L7 NOT AUTHORIZED. This inventory identifies an unresolved
+production correctness gap; it does not certify all sources as hardened.
 
 ## 1. Entry, authority, and numbering
 
@@ -451,6 +454,6 @@ automatic refresh, permanent poll, new source or new capability is introduced.
 Inventory is complete under
 `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`. G01 remains a blocking
 production correctness gap selected for a separate A1 remediation decision.
-The A0 candidate does not claim L3 completion. Owner acceptance is recorded for
-this A0 inventory/contract candidate only; it does not authorize A1. Stop after
-merge and governance reconciliation. A1 and L4-L7 remain NOT AUTHORIZED.
+A0 does not claim L3 completion. Owner acceptance is recorded for this A0
+inventory/contract boundary only, and PR #355 is merged. This reconciliation records
+that Git reality; it does not authorize A1. A1 and L4-L7 remain NOT AUTHORIZED.

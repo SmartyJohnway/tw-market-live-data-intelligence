@@ -96,10 +96,12 @@ L2 is **CLOSED** under
 `b84ba8a4ac4819d115de33e55cf9adf2a5801e00` and PR #354 reconciled final closure.
 
 **Current stop boundary:** Owner-authorized L3 — Source Drift Hardening is
-STARTED. L3-A0 inventory candidate is COMPLETE under
-`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`; Owner candidate acceptance is
-not recorded. The confirmed TWSE MIS returned-identity gap is selected for a
-bounded A1 recommendation; A1 is NOT YET AUTHORIZED. L4-L7 remain NOT AUTHORIZED.
+STARTED. L3-A0 inventory is COMPLETE under
+`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`, passed independent review under
+`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_ACCEPTANCE_REVIEW_PASS`, and is Owner-accepted under
+`L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`; PR #355 merged at
+`1983c1d5363fe3253a3c5e556508ba5138163337`. The confirmed TWSE MIS returned-identity gap
+remains the bounded A1 recommendation; A1 is NOT YET AUTHORIZED. L4-L7 remain NOT AUTHORIZED.
 No live probe or source acquisition was performed. Recover Phase L from
 `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md`
 and read `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md`.
@@ -405,7 +407,7 @@ acquisition was not required. PR #301 is merged; Phase I exit review passed.
 or I3-A3 live acceptance. Preserve accepted evidence. I3-A4 is closed,
 Owner-accepted, and merged. Phase I exit review is PASS. Phase J is complete
 under the 2026-10-12 closure authority reconciliation; do not run Attempt #7.
-Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Do not repeat the Phase K host matrix for closure. Phase L is started and L0 is frozen under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 - Runtime Operability is CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; L2 - Replay / Retention / Migration is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after `PHASE_L_L2_EXIT_REVIEW_PASS`, with PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. L3 - Source Drift Hardening is STARTED under explicit Owner L3-A0 entry authority; A0 inventory candidate is COMPLETE under `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_COMPLETE`, Owner candidate acceptance is not recorded, and A1 is NOT YET AUTHORIZED. L4-L7 remain unauthorized. Recover current Phase L state from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` before starting a new boundary.**
+Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Do not repeat the Phase K host matrix for closure. Phase L is started and L0 is frozen under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 - Runtime Operability is CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; L2 - Replay / Retention / Migration is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after `PHASE_L_L2_EXIT_REVIEW_PASS`, with PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. L3 - Source Drift Hardening is STARTED; A0 inventory is Owner-accepted under `L3_A0_SOURCE_DRIFT_SURFACE_INVENTORY_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #355 at `1983c1d5363fe3253a3c5e556508ba5138163337`. A1 is NOT YET AUTHORIZED. L4-L7 remain unauthorized. Recover current Phase L state from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` before starting a new boundary.**
 
 Roadmap Phase I is Cross-Market & Optional Context. I0, I1 source contract,
 and I2-A1 source/evidence contract are frozen; I1 is accepted and active. The
