@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 STARTED; L3-A0/A1/A2/A3/A4 Owner-accepted and merged; L3-A5 deterministic G05 candidate complete pending review; live recertification required; A6/A7 and L4-L7 not authorized"
+status_reconciled_through: "Phase J COMPLETE; Phase K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 STARTED; L3-A0/A1/A2/A3/A4/A5 Owner-accepted and merged; G05 deterministic contract complete; live recertification required; A6/A7 and L4-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,7 +1421,7 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L3 source drift hardening after A5 candidate (2026-10-15)
+### Current entry - L3 source drift hardening after A5 merge (2026-10-16)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
@@ -1457,12 +1457,12 @@ negative-fixture candidate passed independent technical review under
 verification reconciled direct missing-required-field coverage across P08/P09/P10
 without production runtime changes. A4 is Owner-accepted under
 `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #363 at
-`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 deterministic G05 observation/adjudication is an implementation candidate pending independent review and Owner acceptance; live recertification remains required. A6/A7 and L4-L7 remain NOT AUTHORIZED. See
+`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 deterministic observation/adjudication is complete; live recertification remains required. A6/A7 and L4-L7 remain NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md` and
 `docs/governance/phase_l/PHASE_L_L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_2026-10-15.md`;
 the A4 record is
 `docs/governance/phase_l/PHASE_L_L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_2026-10-15.md`.
-`docs/governance/phase_l/PHASE_L_L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_2026-10-15.md` records the candidate contract and verification.
+`docs/governance/phase_l/PHASE_L_L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_2026-10-15.md` records the accepted deterministic contract, technical review, Owner authorization, and merge provenance.
 
 Frozen L0 implementation sequencing maps Source Drift Hardening to current L3;
 the older durable subsection label `L.4 Source Drift Management` remains
