@@ -239,8 +239,8 @@ retry behavior, or source-specific semantic policy. No clock is read.
 Updated verification:
 
 ```text
-focused A5 tests: 53 passed
-integrated guarded offline gate: 583 passed, 2 deselected, 0 warnings
+focused A5 tests: 55 passed
+integrated guarded offline gate: 585 passed, 2 deselected, 0 warnings
 external network attempts: 0
 source registry: PASS
 Portable Catalog sync: PASS
@@ -254,6 +254,29 @@ git diff --check: PASS
 The same two existing deselections described above remain; they were not
 hidden. No technical PASS or Owner acceptance is recorded by this repair. The
 candidate is ready for independent re-review only.
+
+## Independent-review repair R2 — successful-response predicate
+
+Review found that R1's `response_is_adjudicable` predicate still allowed
+`transport_outcome="unknown"` with no HTTP status to support
+`not_yet_available` or `currentness_unknown`, because it only excluded
+`transport_failure` and treated a missing status as acceptable. R2 requires an
+actually observed successful response:
+
+```text
+transport_outcome == http_response
+AND http_status is present and 2xx
+AND contract_outcome == valid
+```
+
+The exact unknown-transport/no-status witnesses for both semantic outcomes now
+fail with `semantic_outcome_requires_valid_response`. Existing accepted 200 +
+valid-contract cases remain accepted; 429, 503, explicit transport failure,
+and invalid-contract combinations remain rejected. The `unknown` transport
+value remains available for other coarse/legacy observations. This is a
+bounded coherence correction with no architecture, public-surface, or
+production-runtime scope change. Owner acceptance is not recorded; independent
+technical PASS remains for external review.
 
 Proposed future tranche is `L3-A6 — Bounded Live Source Drift Recertification`,
 which requires separate Owner authorization and explicit source set, endpoints,

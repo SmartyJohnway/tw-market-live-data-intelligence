@@ -164,8 +164,9 @@ def observe_source_attempt(
 
     if semantic_outcome in {"not_yet_available", "currentness_unknown"}:
         response_is_adjudicable = (
-            transport_outcome != "transport_failure"
-            and (http_status is None or 200 <= http_status < 300)
+            transport_outcome == "http_response"
+            and http_status is not None
+            and 200 <= http_status < 300
             and contract_outcome == "valid"
         )
         if not response_is_adjudicable:

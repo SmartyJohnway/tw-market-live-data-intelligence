@@ -271,6 +271,8 @@ def test_contradictory_fact_combinations_fail_closed(overrides, reason):
         ({"http_status": 200, "contract_outcome": "invalid", "semantic_outcome": "not_yet_available"}, "semantic_outcome_requires_valid_response"),
         ({"http_status": 503, "semantic_outcome": "currentness_unknown"}, "semantic_outcome_requires_valid_response"),
         ({"http_status": None, "transport_outcome": "transport_failure", "semantic_outcome": "currentness_unknown"}, "semantic_outcome_requires_valid_response"),
+        ({"http_status": None, "transport_outcome": "unknown", "semantic_outcome": "not_yet_available"}, "semantic_outcome_requires_valid_response"),
+        ({"http_status": None, "transport_outcome": "unknown", "semantic_outcome": "currentness_unknown"}, "semantic_outcome_requires_valid_response"),
     ],
 )
 def test_unadjudicable_response_cannot_emit_publication_or_currentness_conclusions(overrides, reason):
