@@ -1,0 +1,17 @@
+{
+  "closure_event": null,
+  "content_type": "text/html",
+  "effective_url": "https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31",
+  "endpoint": "https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31",
+  "fetched_at": "2026-10-16T06:53:48+00:00",
+  "heading": "行政院人事行政總處 全球資訊網 無停班停課訊息。",
+  "http_status": 200,
+  "page_update_timestamp": "2026/10/16 14:52:18",
+  "response_byte_count": 15037,
+  "response_sha256": "b1bdcdee51ae9513a094c5de4107c05f9fff2025cdd82a4052a7fbfd9c0c156e",
+  "source_attribution_present": true,
+  "status_kind": "explicit_no_notice",
+  "status_semantics": "NO_CLOSURE_NOTICE",
+  "taipei_rows": [],
+  "target_date": "2026-10-16"
+}

@@ -1,0 +1,46 @@
+{
+  "locality_status_row_count": 0,
+  "no_notice_row_count": 1,
+  "row_count": 3,
+  "rows": [
+    {
+      "cell_tags": [
+        "th",
+        "th"
+      ],
+      "classification": "TABLE_SCHEMA_HEADER",
+      "locality": null,
+      "normalized_cell_texts": [
+        "縣市名稱",
+        "是否停止上班上課情形"
+      ],
+      "normalized_status_semantics": null,
+      "row_index": 0
+    },
+    {
+      "cell_tags": [
+        "td"
+      ],
+      "classification": "NO_NOTICE_ROW",
+      "locality": null,
+      "normalized_cell_texts": [
+        "無停班停課訊息。"
+      ],
+      "normalized_status_semantics": "NO_CLOSURE_NOTICE",
+      "row_index": 1
+    },
+    {
+      "cell_tags": [
+        "td"
+      ],
+      "classification": "NON_STATUS_ROW",
+      "locality": null,
+      "normalized_cell_texts": [
+        "1.若欲進入本總處網站首頁版面，請按人事行政總處全球資訊網2.語音查詢電話： ０２０３００１６６3.機關、學校中英文名稱係由各通報機關提供。4.適用範圍為各級政府機關及公、私立學校；至交通運輸、警察、消防、海岸巡防、醫療、關務等業務性質特殊機關（構），為全年無休服務民眾，且應實施輪班、輪休制度，如遇天然災害發生時，其尚無停止上班之適用。 5.民間事業單位及勞工應依勞動部『天然災害發生事業單位勞工出"
+      ],
+      "normalized_status_semantics": null,
+      "row_index": 2
+    }
+  ],
+  "schema_header_row_count": 1
+}

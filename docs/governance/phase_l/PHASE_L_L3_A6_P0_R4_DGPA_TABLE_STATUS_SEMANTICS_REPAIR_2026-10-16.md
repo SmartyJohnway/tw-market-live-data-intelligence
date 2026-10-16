@@ -84,6 +84,46 @@ completeness, resolver result, manifest SHA-256, and mutation checks in its
 separate R4 run directory. If daily adjudication fails, R4 stops without
 archive requests or refetch and retains both subject and table diagnostics.
 
+### R4 one-shot observation
+
+The R4 implementation commit is `95bf03ef983797d4eeffdb0eac4d768355248320`
+(tree `751a57bcf875ff4fd98152dc0f600e194fc2e34e`). The plan/reservation commit
+is `a232f7d9`; preflight passed with the frozen resolver and calendar hashes.
+The single R4 daily request returned HTTP 200 at
+`2026-10-16T06:53:48Z`, with 15,037 bytes and SHA-256
+`b1bdcdee51ae9513a094c5de4107c05f9fff2025cdd82a4052a7fbfd9c0c156e`. It
+adjudicated exact date `2026-10-16`, update date `2026-10-16`, DGPA attribution,
+and explicit `NO_CLOSURE_NOTICE`.
+
+The daily table had three rows: one `TABLE_SCHEMA_HEADER`, one
+`NO_NOTICE_ROW`, zero locality status rows, and one non-status explanatory row.
+The header's `是否停止上班上課情形` text did not become a closure fact. Subject
+diagnostics retained three raw subject matches, two active semantic candidates,
+and one canonical candidate; the same-date/status ancestor presentation was
+excluded, and equivalent status semantics resolved to one canonical fact.
+
+After daily adjudication, one authorized archive page-1 GET returned HTTP 200
+(45,217 bytes; SHA-256
+`ee4df395e15a1b1aa4abfe023f971b993ebef71362e84c8d4791a594dd5cea2d`). The
+existing archive parser stopped with `dgpa_archive_publication_date_missing`;
+no additional page or detail request was made. This does not establish
+historical negative evidence or a provider semantic contradiction. R4
+disposition is therefore `INCOMPLETE_AUTHORITY`: closure completeness is
+false, the I3 resolver was not invoked, and P17 remains unresolved.
+
+Run `l3-a6-p0-r4-20261016T065039Z` consumed R4 authority with two DGPA GETs
+(daily 1, archive index 1, detail 0). The A6 market authority remains
+unconsumed. P01-P18, B01-B05, and T86 counts are zero. No calendar, resolver,
+production source runtime, Security Master, Watchlist, Result/Audit, Catalog,
+Route, or public contract mutation occurred. The run manifest SHA-256 is
+`f46287dbe950e0af0575569862e3dffa8d416d13dc67e4e394ba2a8f8e643e13`; every
+listed artifact hash and byte count verified. No raw HTML was retained.
+
+R4 does not close P17 preflight. The archive publication-date parser gap is
+recorded for independent review; this consumed R4 authority will not be used
+for another request sequence. Independent review and Owner acceptance remain
+pending.
+
 ## Non-goals
 
 No P01-P18 or B01-B05 recertification, T86 request, market-source runtime
