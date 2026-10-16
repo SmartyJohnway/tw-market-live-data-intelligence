@@ -5,7 +5,9 @@
 **Canonical base:** `origin/main@7b3e73b2f3e2c2bec167b6d66f1846846fe4ec4c`\
 **Branch:** `phase-l/l3-a6-bounded-live-source-drift-recertification`\
 **Run:** `l3-a6-p0-r2-20261016T055915Z`\
-**Status:** candidate; live re-observation pending the pre-network commit and independent post-run review.
+**Disposition:** `DGPA_SOURCE_DRIFT_OBSERVED`
+
+**Status:** R2 candidate complete; independent review pending; Owner acceptance not recorded.
 
 ## Chronology and root cause
 
@@ -76,14 +78,36 @@ network dispatch. A byte comparison against the R2 parent showed the resolver
 was unchanged; the runner and plan hash were corrected and all offline gates
 were rerun. No R2 external request occurred during either preflight attempt.
 
-## Pending live observation and disposition
+## R2 bounded live observation
 
-No R2 live response is yet asserted by this pre-network record. The plan and
-authority reservation must be bound to the exact pre-network implementation
-commit before any external DGPA request. After the authorized run, this record
-will be updated with observed request counts, response hashes, bounded daily
-and archive facts, completeness decision, resolver result if justified, and the
-final R2 disposition. P0 and R1 evidence will not be rewritten.
+The corrected preflight passed before the one authorized live run, binding the
+run to the pre-network implementation commit/tree and confirming the existing
+resolver/calendar hashes. Exactly one request was dispatched:
 
-Regardless of R2 result, no P01-P18/B01-B05 recertification or T86 request is
-authorized here; the A6 market live authority must remain unconsumed.
+| Sequence | Purpose | URL | HTTP | Bytes | Response SHA-256 | Parser result |
+|---:|---|---|---:|---:|---|---|
+| 1 | `R2_DAILY_SINGLE_OBSERVATION` | `https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31` | 200 | 15,037 | `1bcaf4cdd7620796e206fbaf0236c6ecbed9d4f7eb0a69c5b33be3d8e6476232` | `dgpa_daily_subject_ambiguous` |
+
+Under the single-daily-request stop rule, R2 made no archive-index or detail
+request. The page response was not retained; only the bounded response metadata
+and hash remain. The parser could not bind one unique visible semantic subject
+region, so the current-day status was not adjudicated. This is recorded as a
+bounded contract ambiguity, not as permanent provider removal or an availability
+claim. Historical 2026-10-15 status was not inspected.
+
+Request totals were daily `1/1`, archive index `0/4`, detail `0/1`, total `1/6`.
+`closure_authority_complete=false`; the resolver was not called; P17 remains
+unresolved. A6 market authority remains unconsumed; P01-P18, B01-B05 and T86
+were not requested. No source payload, Security Master, Watchlist, Result/Audit,
+Catalog or Route mutation occurred.
+
+The R2 `manifest.json` binds the retained run artifacts. R1 and P0 manifests
+were independently rechecked and remain unchanged. R2's final outcome is
+`DGPA_SOURCE_DRIFT_OBSERVED`; no Owner acceptance is recorded. The single R2
+authority is consumed and cannot authorize another daily/archive observation.
+R2 manifest SHA-256 is
+`e7049145bcd13bf484229f2db0c2abb58b1808b60358370b510cf3c03704ed78`.
+
+No P01-P18/B01-B05 recertification or T86 request is authorized here; the A6
+market live authority remains unconsumed. No second R2 observation is authorized
+by the consumed one-shot authority.
