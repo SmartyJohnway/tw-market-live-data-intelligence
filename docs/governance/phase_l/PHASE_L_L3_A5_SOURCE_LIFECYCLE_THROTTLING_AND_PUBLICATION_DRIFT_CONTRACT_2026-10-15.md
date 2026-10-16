@@ -285,8 +285,21 @@ or activation mutation, bounded retained evidence, one bounded run, and a
 mandatory stop. This candidate does not select any provider as healthy. A6 is
 not authorized; A7 and L4-L7 remain unauthorized.
 
-Technical acceptance is pending independent review. Owner acceptance is not
-recorded.
+## Independent technical acceptance and Owner authorization
+
+Independent exact-head review of `b51e0415e456092e6aaa986f4755ec38015004bc` completed on 2026-10-16 with disposition:
+
+`L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`
+
+The review independently re-ran the final A5 focused gate (`55 passed`) and the guarded integrated offline gate (`585 passed, 2 deselected`) with `0` external network attempts, and verified the R2 successful-response coherence witnesses. No additional technical blocker remained.
+
+Owner explicitly accepted L3-A5 and authorized merge in chat on 2026-10-16. Owner disposition:
+
+`L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`
+
+Authority: `USER_CHAT_2026-10-16_L3_A5_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`.
+
+This acceptance closes only the deterministic A5 tranche. G05 live recertification remains required. A6/A7 and L4-L7 remain NOT AUTHORIZED; no live probe or source acquisition is authorized by this acceptance.
 
 ## Stop boundary
 
