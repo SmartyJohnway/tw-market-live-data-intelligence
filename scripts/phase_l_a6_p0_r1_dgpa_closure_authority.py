@@ -17,6 +17,12 @@ TARGET_HISTORICAL = "2026-10-15"
 MAX_DAILY, MAX_INDEX, MAX_DETAIL, MAX_TOTAL = 2, 6, 2, 10
 
 
+class _DailyStatusError(ValueError):
+    def __init__(self, code: str, diagnostics: dict[str, Any] | None = None) -> None:
+        super().__init__(code)
+        self.diagnostics = diagnostics
+
+
 def parse_roc_date(text: str) -> str:
     patterns = [
         (r"(?<!\d)(\d{2,3})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日?", 1911),
@@ -49,13 +55,17 @@ class _Page(HTMLParser):
         self._excluded_depth = 0
         self._block_stack: list[dict[str, Any]] = []
         self._block_sequence = 0
+        self._block_id = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attrs_d = dict(attrs)
         if tag in {"nav", "footer", "script", "style", "noscript"}:
             self._excluded_depth += 1
-        if self._excluded_depth == 0 and tag in {"div", "p", "section", "article", "li", "h1", "h2", "h3", "h4", "h5", "h6", "td", "th"}:
-            self._block_stack.append({"tag": tag, "parts": [], "depth": len(self._block_stack)})
+        if self._excluded_depth == 0 and tag in {"div", "p", "section", "article", "aside", "li", "h1", "h2", "h3", "h4", "h5", "h6", "td", "th"}:
+            ancestors = [item["node_id"] for item in self._block_stack]
+            self._block_stack.append({"tag": tag, "parts": [], "depth": len(self._block_stack),
+                "node_id": self._block_id, "ancestor_ids": ancestors})
+            self._block_id += 1
         if tag in {"h1", "h2", "h3"}:
             self._heading = True
         elif tag == "tr":
@@ -74,7 +84,8 @@ class _Page(HTMLParser):
             block = self._block_stack.pop()
             value = " ".join("".join(block["parts"]).split())
             if value:
-                self.text_blocks.append({"sequence": self._block_sequence, "depth": block["depth"], "tag": tag, "text": value})
+                self.text_blocks.append({"sequence": self._block_sequence, "depth": block["depth"], "tag": tag,
+                    "text": value, "node_id": block["node_id"], "ancestor_ids": block["ancestor_ids"]})
                 self._block_sequence += 1
         if tag in {"h1", "h2", "h3"}:
             self._heading = False
@@ -133,6 +144,53 @@ def parse_html(body: bytes, content_type: str | None = None) -> _Page:
     return parser
 
 
+def daily_candidate_diagnostics(body: bytes, content_type: str | None = None) -> dict[str, Any]:
+    """Return bounded subject-block diagnostics even when adjudication fails."""
+    page = parse_html(body, content_type)
+    pattern = re.compile(r"(?:天然災害\s*)?停止\s*(?:上班及上課|上班上課|辦公及上課|辦公上課)\s*情形")
+    date_pattern = r"(?<!\d)(?:(?:\d{2,3}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日?)|(?:\d{2,3}\s*[/.-]\s*\d{1,2}\s*[/.-]\s*\d{1,2})|(?:20\d{2}[-/.年]\s*\d{1,2}[-/.月]\s*\d{1,2}日?))"
+    blocks = [item for item in page.text_blocks if pattern.search(item["text"])]
+    visible = " ".join(page.semantic_text)
+    signals = []
+    if any(phrase in visible for phrase in ("無停班停課訊息", "目前無停班停課訊息", "無停止上班上課訊息")):
+        signals.append("NO_CLOSURE_NOTICE")
+    for row in page.rows:
+        joined = " ".join(row)
+        if "臺北市" not in joined and "台北市" not in joined:
+            continue
+        if any(word in joined for word in ("停止上班", "停止辦公", "停班停課")):
+            scope = "full_day" if "全天" in joined or "全日" in joined else "morning" if "上午" in joined else "afternoon" if "下午" in joined else None
+            if scope:
+                signals.append({"full_day": "TAIPEI_FULL_DAY_CLOSURE", "morning": "TAIPEI_MORNING_CLOSURE", "afternoon": "TAIPEI_AFTERNOON_CLOSURE"}[scope])
+        elif any(word in joined for word in ("照常上班", "照常辦公", "未停止")):
+            signals.append("TAIPEI_NORMAL")
+    signals = sorted(set(signals))
+    status_signal = signals[0] if len(signals) == 1 else "CONFLICTING_PAGE_STATUS" if len(signals) > 1 else "UNRESOLVED"
+    candidates = []
+    for index, item in enumerate(blocks):
+        date_matches = list(re.finditer(date_pattern, item["text"]))
+        dates = {parse_roc_date(match.group(0)) for match in date_matches}
+        block_index = page.text_blocks.index(item)
+        for neighbor_index in (block_index - 1, block_index + 1):
+            if 0 <= neighbor_index < len(page.text_blocks):
+                neighbor = page.text_blocks[neighbor_index]
+                if abs(neighbor["depth"] - item["depth"]) <= 1 and not re.search(r"更新|資料|時間|行政院|人事行政|停班|上課", neighbor["text"]):
+                    adjacent = list(re.finditer(date_pattern, neighbor["text"]))
+                    if adjacent and not re.sub(date_pattern, "", neighbor["text"]).strip(" \t:：,，。|-"):
+                        dates.update(parse_roc_date(match.group(0)) for match in adjacent)
+        dates = sorted(dates)
+        candidates.append({"candidate_id": f"subject-{index + 1}", "source_block_sequence": item["sequence"],
+            "tag": item["tag"], "depth": item["depth"],
+            "normalized_subject_identity": "natural_disaster_stop_work_school_status",
+            "bound_date_candidates": dates, "normalized_status_semantics": status_signal,
+            "link_content": False, "excluded_container": False,
+            "short_bounded_excerpt": item["text"][:300]})
+    canonical = {(item["normalized_subject_identity"], tuple(item["bound_date_candidates"])) for item in candidates}
+    return {"raw_subject_match_count": sum(len(list(pattern.finditer(text))) for text in page.semantic_text),
+        "semantic_candidate_count": len(candidates), "canonical_candidate_count": len(canonical),
+        "page_status_signals": signals, "candidates": candidates}
+
+
 def parse_daily_status(body: bytes, *, content_type: str | None, fetched_at: str) -> dict[str, Any]:
     fetched = datetime.fromisoformat(fetched_at.replace("Z", "+00:00"))
     cutoff = datetime.fromisoformat("2026-10-16T11:38:22+08:00")
@@ -141,58 +199,109 @@ def parse_daily_status(body: bytes, *, content_type: str | None, fetched_at: str
     page = parse_html(body, content_type)
     visible = " ".join(page.semantic_text)
     subject_pattern = re.compile(r"(?:天然災害\s*)?停止\s*(?:上班及上課|上班上課|辦公及上課|辦公上課)\s*情形")
-    semantic_blocks = [item for item in page.text_blocks if subject_pattern.search(item["text"])]
-    # Nested containers can repeat the same visible subject. Keep the smallest
-    # semantic container(s), rather than searching dates across the whole page.
-    if semantic_blocks:
-        shortest = min(len(item["text"]) for item in semantic_blocks)
-        semantic_blocks = [item for item in semantic_blocks if len(item["text"]) == shortest]
-    if not semantic_blocks:
+    raw_candidates = [item for item in page.text_blocks if subject_pattern.search(item["text"])]
+    if not raw_candidates:
         raise ValueError("dgpa_daily_subject_missing")
-    subject_positions = [m.start() for m in subject_pattern.finditer(visible)]
-    if len(subject_positions) != 1:
-        raise ValueError("dgpa_daily_subject_ambiguous")
-    chosen = semantic_blocks[0]
     blocks = page.text_blocks
-    index = next(i for i, item in enumerate(blocks) if item is chosen)
     date_pattern = r"(?<!\d)(?:(?:\d{2,3}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日?)|(?:\d{2,3}\s*[/.-]\s*\d{1,2}\s*[/.-]\s*\d{1,2})|(?:20\d{2}[-/.年]\s*\d{1,2}[-/.月]\s*\d{1,2}日?))"
-    status_dates = set()
-    for match in re.finditer(date_pattern, chosen["text"]):
-        status_dates.add(parse_roc_date(match.group(0)))
-    for neighbor_index in (index - 1, index + 1):
-        if 0 <= neighbor_index < len(blocks):
-            neighbor = blocks[neighbor_index]
-            if abs(neighbor["depth"] - chosen["depth"]) <= 1 and not re.search(r"更新|資料|時間|行政院|人事行政|停班|上課", neighbor["text"]):
-                adjacent_dates = list(re.finditer(date_pattern, neighbor["text"]))
-                # Only date-only neighboring blocks are semantically adjacent
-                # status-date candidates; timestamp and surrounding page text
-                # cannot leak into this binding.
-                remainder = re.sub(date_pattern, "", neighbor["text"])
-                if adjacent_dates and not remainder.strip(" \t:：,，。|-"):
-                    for match in adjacent_dates:
-                        status_dates.add(parse_roc_date(match.group(0)))
-    if len(status_dates) > 1:
-        raise ValueError("dgpa_daily_date_ambiguous")
-    if not status_dates:
-        raise ValueError("dgpa_daily_displayed_date_mismatch")
-    displayed_date = next(iter(status_dates))
-    if displayed_date != TARGET_DAILY:
-        raise ValueError("dgpa_daily_displayed_date_mismatch")
-    heading = " ".join(page.headings)
-    update_match = re.search(r"(?:更新(?:時間|日期)?|資料更新)\s*[:：]?\s*((?:\d{2,3}年\s*)?\d{1,2}月\s*\d{1,2}日?\s*\d{1,2}[:：]\d{2}(?::\d{2})?)", visible)
-    if not update_match:
-        update_match = re.search(r"(?:更新(?:時間|日期)?|資料更新)\s*[:：]?\s*((?:\d{2,3}|20\d{2})[-/.]\d{1,2}[-/.]\d{1,2}\s+\d{1,2}[:：]\d{2}(?::\d{2})?)", visible)
-    no_notice = any(phrase in visible for phrase in ("無停班停課訊息", "目前無停班停課訊息", "無停止上班上課訊息"))
     taipei = []
     for row in page.rows:
         joined = " ".join(row)
         if "臺北市" in joined or "台北市" in joined:
             taipei.append(joined)
     rows_with_closure = [" ".join(row) for row in page.rows if any(term in " ".join(row) for term in ("停止上班", "停止辦公", "停班停課"))]
+    no_notice = any(phrase in visible for phrase in ("無停班停課訊息", "目前無停班停課訊息", "無停止上班上課訊息"))
     if no_notice and rows_with_closure:
         raise ValueError("dgpa_daily_status_conflict")
-    if not no_notice and len(taipei) != 1:
+    if not no_notice and not taipei:
         raise ValueError("dgpa_daily_status_missing")
+    if no_notice:
+        status_semantics = "NO_CLOSURE_NOTICE"
+    else:
+        row_states = []
+        for row in taipei:
+            if any(word in row for word in ("停止上班", "停止辦公", "停班停課")):
+                scope = "full_day" if "全天" in row or "全日" in row else "morning" if "上午" in row else "afternoon" if "下午" in row else None
+                if scope is None:
+                    raise ValueError("dgpa_daily_taipei_status_unresolved")
+                row_states.append(({"full_day": "TAIPEI_FULL_DAY_CLOSURE", "morning": "TAIPEI_MORNING_CLOSURE", "afternoon": "TAIPEI_AFTERNOON_CLOSURE"}[scope], row, scope))
+            elif any(word in row for word in ("照常上班", "照常辦公", "未停止")):
+                row_states.append(("TAIPEI_NORMAL", row, None))
+            else:
+                raise ValueError("dgpa_daily_taipei_status_unresolved")
+        if len({item[0] for item in row_states}) != 1:
+            raise ValueError("dgpa_daily_semantic_conflict")
+        status_semantics, _, scope = row_states[0]
+
+    candidates: list[dict[str, Any]] = []
+    for candidate_index, candidate in enumerate(raw_candidates):
+        index = blocks.index(candidate)
+        status_dates: set[str] = set()
+        for match in re.finditer(date_pattern, candidate["text"]):
+            status_dates.add(parse_roc_date(match.group(0)))
+        for neighbor_index in (index - 1, index + 1):
+            if 0 <= neighbor_index < len(blocks):
+                neighbor = blocks[neighbor_index]
+                if abs(neighbor["depth"] - candidate["depth"]) <= 1 and not re.search(r"更新|資料|時間|行政院|人事行政|停班|上課", neighbor["text"]):
+                    adjacent_dates = list(re.finditer(date_pattern, neighbor["text"]))
+                    remainder = re.sub(date_pattern, "", neighbor["text"])
+                    if adjacent_dates and not remainder.strip(" \t:：,，。|-"):
+                        status_dates.update(parse_roc_date(match.group(0)) for match in adjacent_dates)
+        if len(status_dates) > 1:
+            raise ValueError("dgpa_daily_date_ambiguous")
+        candidate_date = next(iter(status_dates)) if status_dates else None
+        candidates.append({"candidate_id": f"subject-{candidate_index + 1}", "source_block_sequence": candidate["sequence"],
+            "tag": candidate["tag"], "depth": candidate["depth"],
+            "normalized_subject_identity": "natural_disaster_stop_work_school_status",
+            "bound_status_dates": sorted(status_dates), "status_signal": status_semantics,
+            "taipei_status_if_any": status_semantics if status_semantics.startswith("TAIPEI_") else None,
+            "is_link_content": False, "is_excluded_container": False,
+            "short_bounded_excerpt": candidate["text"][:300], "_date": candidate_date, "_text": candidate["text"],
+            "_node_id": candidate["node_id"], "_ancestor_ids": candidate["ancestor_ids"]})
+    nested_duplicate_ids = {item["candidate_id"] for item in candidates if any(
+        other["_node_id"] in item["_ancestor_ids"]
+        and " ".join(item["_text"].split()) != " ".join(other["_text"].split())
+        and " ".join(item["_text"].split()) in " ".join(other["_text"].split())
+        for other in candidates)}
+    candidates = [item for item in candidates if item["candidate_id"] not in nested_duplicate_ids]
+    def candidate_snapshot() -> dict[str, Any]:
+        safe = [{key: value for key, value in item.items() if not key.startswith("_")} for item in candidates]
+        return {"raw_subject_match_count": sum(len(list(subject_pattern.finditer(text))) for text in page.semantic_text),
+            "semantic_candidate_count": len(candidates),
+            "canonical_candidate_count": len({(item["normalized_subject_identity"], item["_date"], item["status_signal"]) for item in candidates}),
+            "candidates": safe}
+    for item in candidates:
+        if item["_date"] is None:
+            nested_match = any(other["_date"] is not None and item["_node_id"] in other["_ancestor_ids"]
+                and " ".join(item["_text"].split()) != " ".join(other["_text"].split())
+                and " ".join(item["_text"].split()) in " ".join(other["_text"].split())
+                for other in candidates)
+            if any(other["_date"] is not None for other in candidates) and not nested_match:
+                raise _DailyStatusError("dgpa_daily_semantic_ambiguity", candidate_snapshot())
+    bound = {item["_date"] for item in candidates if item["_date"] is not None}
+    if len(bound) > 1:
+        raise _DailyStatusError("dgpa_daily_semantic_conflict", candidate_snapshot())
+    if not bound:
+        raise ValueError("dgpa_daily_displayed_date_mismatch")
+    displayed_date = next(iter(bound))
+    if displayed_date != TARGET_DAILY:
+        raise ValueError("dgpa_daily_displayed_date_mismatch")
+    # Repeated desktop/mobile/accessibility blocks are equivalent when their
+    # independently bound date and normalized status agree. Nested text blocks
+    # are treated as presentations of the same semantic fact, not as separate
+    # provider facts.
+    equivalence = {(item["normalized_subject_identity"], item["_date"], item["status_signal"]) for item in candidates}
+    if len(equivalence) != 1:
+        raise _DailyStatusError("dgpa_daily_semantic_conflict", candidate_snapshot())
+    for item in candidates:
+        item.pop("_date", None)
+        item.pop("_text", None)
+    diagnostics = {"raw_subject_match_count": sum(len(list(subject_pattern.finditer(text))) for text in page.semantic_text),
+        "semantic_candidate_count": len(candidates), "canonical_candidate_count": len(equivalence), "candidates": candidates}
+    heading = " ".join(page.headings)
+    update_match = re.search(r"(?:更新(?:時間|日期)?|資料更新)\s*[:：]?\s*((?:\d{2,3}年\s*)?\d{1,2}月\s*\d{1,2}日?\s*\d{1,2}[:：]\d{2}(?::\d{2})?)", visible)
+    if not update_match:
+        update_match = re.search(r"(?:更新(?:時間|日期)?|資料更新)\s*[:：]?\s*((?:\d{2,3}|20\d{2})[-/.]\d{1,2}[-/.]\d{1,2}\s+\d{1,2}[:：]\d{2}(?::\d{2})?)", visible)
     if not update_match or not ("行政院人事行政總處" in visible or "人事行政總處" in visible):
         raise ValueError("dgpa_daily_provenance_missing")
     if parse_roc_date(update_match.group(1)) != TARGET_DAILY:
@@ -209,7 +318,8 @@ def parse_daily_status(body: bytes, *, content_type: str | None, fetched_at: str
                              "target_date": TARGET_DAILY, "closure_scope": scope}
         elif not any(word in row for word in ("照常上班", "照常辦公", "未停止")):
             raise ValueError("dgpa_daily_taipei_status_unresolved")
-    return {"target_date": TARGET_DAILY, "heading": heading,
+    return {"target_date": TARGET_DAILY, "heading": heading, "status_semantics": status_semantics,
+            "subject_candidate_diagnostics": diagnostics,
             "status_kind": "explicit_no_notice" if no_notice else "county_rows_present",
             "taipei_rows": taipei, "source_attribution_present": "行政院人事行政總處" in visible or "人事行政總處" in visible,
             "page_update_timestamp": update_match.group(1), "closure_event": closure_event,
