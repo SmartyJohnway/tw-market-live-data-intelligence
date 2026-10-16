@@ -98,9 +98,13 @@ def execute_p0() -> dict:
                  "purpose": "INITIAL_AUTHORITY_ACQUISITION", "started_at": _utc_now(),
                  "endpoint_identity": authority, "http_outcome": "pending"}
         if not captures:
+            consumed_at = _utc_now()
             consumed = {"authority_id": plan["authority_id"], "state": "CONSUMED",
-                        "consumed_at": _utc_now(), "first_dispatch_sequence": entry["attempt_sequence"],
+                        "consumed_at": consumed_at, "first_dispatch_sequence": entry["attempt_sequence"],
                         "p0_pre_network_commit": reservation["pre_network_commit_sha"]}
+            reservation.update({"state": "CONSUMED", "consumed": True, "consumed_at": consumed_at,
+                                "first_dispatch_sequence": entry["attempt_sequence"]})
+            (RUN_DIR / "authority_reservation.json").write_text(json.dumps(reservation, indent=2, sort_keys=True)+"\n", encoding="utf-8")
             (RUN_DIR / "authority_consumed.json").write_text(json.dumps(consumed, indent=2, sort_keys=True)+"\n", encoding="utf-8")
         ledger.append(entry)
         started = time.monotonic()
@@ -140,13 +144,24 @@ def execute_p0() -> dict:
         with tempfile.TemporaryDirectory(prefix="tw-market-a6-p0-calendar-") as temp_root:
             calendar, origin = calendar_executor._load_production_calendar(evaluation, Path(temp_root))
         if calendar is None or origin != "network_fetch":
-            raise RuntimeError("p0_calendar_acquisition_or_parse_failed")
+            (RUN_DIR / "acquisition_ledger.json").write_text(json.dumps(ledger, ensure_ascii=False, indent=2, sort_keys=True)+"\n", encoding="utf-8")
+            result = {"run_id": plan["run_id"], "p0_disposition": "INCOMPLETE_AUTHORITY",
+                      "calendar_validation": None, "resolver_candidate_dates": [],
+                      "closure_authority_complete": False, "p17_trade_date": None,
+                      "reason": "TWSE calendar acquisition or normalization did not produce a valid artifact",
+                      "a6_market_live_authority_consumed": False, "p01_p18_executed": False,
+                      "b01_b05_executed": False,
+                      "acquisition_counts": {"calendar": budget.calendar_count, "closure": budget.closure_count, "total": budget.total}}
+            (RUN_DIR / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True)+"\n", encoding="utf-8")
+            _write_manifest()
+            return result
         calendar_stats = validate_2026_calendar(calendar)
         calendar_sha = normalized_calendar_sha256(calendar)
         coverage_dates = derive_resolver_coverage_dates(evaluation, calendar)
         calendar_capture = next(x for x in captures if x["endpoint_identity"] == "TWSE_HOLIDAY_SCHEDULE")
         calendar_entry = next(x for x in ledger if x["source_authority"] == "TWSE_HOLIDAY_SCHEDULE")
         calendar_entry.update({"completed_at": _utc_now(), "http_status": calendar_capture["http_status"],
+                               "retrieved_at": _utc_now(), "content_type": calendar_capture["content_type"],
                                "http_outcome": "success", "response_sha256": calendar_capture["response_sha256"],
                                "response_bytes": calendar_capture["response_bytes"],
                                "normalized_sha256": calendar_sha,
@@ -154,25 +169,38 @@ def execute_p0() -> dict:
                                "decision_after_attempt": "calendar_validated_and_resolver_window_derived"})
         (RUN_DIR / "twse_trading_calendar_2026.json").write_text(json.dumps(calendar, ensure_ascii=False, indent=2, sort_keys=True)+"\n", encoding="utf-8")
 
-        parsed = closure_source.fetch_and_parse_closure_feed(target_date=None, timeout=10)
-        closure_capture = next(x for x in captures if x["endpoint_identity"] == "NCDR_DGPA_CLOSURE_CAP")
+        try:
+            parsed = closure_source.fetch_and_parse_closure_feed(target_date=None, timeout=10)
+        except Exception as exc:
+            parsed = {"source_id": "NCDR_DGPA_CLOSURE_CAP", "parse_status": "transport_or_http_failure",
+                      "closure_query_succeeded": False, "events": [], "failure_class": type(exc).__name__}
+        closure_capture = next((x for x in captures if x["endpoint_identity"] == "NCDR_DGPA_CLOSURE_CAP"), None)
         closure_entry = next(x for x in ledger if x["source_authority"] == "NCDR_DGPA_CLOSURE_CAP")
-        closure_entry.update({"completed_at": _utc_now(), "http_status": closure_capture["http_status"],
-                              "http_outcome": "success", "response_sha256": closure_capture["response_sha256"],
-                              "response_bytes": closure_capture["response_bytes"],
-                              "normalized_sha256": canonical_sha256(parsed),
-                              "decision_after_attempt": "parsed_feed_does_not_attest_historical_window_completeness"})
+        if closure_capture is not None:
+            closure_entry.update({"completed_at": _utc_now(), "retrieved_at": _utc_now(),
+                                  "http_status": closure_capture["http_status"],
+                                  "content_type": closure_capture["content_type"], "http_outcome": "success",
+                                  "response_sha256": closure_capture["response_sha256"],
+                                  "response_bytes": closure_capture["response_bytes"],
+                                  "normalized_sha256": canonical_sha256(parsed),
+                                  "decision_after_attempt": "parsed_feed_does_not_attest_historical_window_completeness"})
         parsed.pop("provenance", None)
         closure_assessment = assess_closure_completeness(parsed, coverage_dates)
+        relevant_events = closure_assessment["events_relevant_to_coverage_dates"]
+        taipei_summary = [{"target_date": e.get("target_date"), "decision_status": e.get("decision_status"),
+                           "work_status": e.get("work_status"), "closure_scope": e.get("closure_scope"),
+                           "status": e.get("status"), "published_at": e.get("published_at")} for e in relevant_events]
         closure_snapshot = {"schema_version": "a6_p0_closure_authority_snapshot.v1",
                             "source_id": parsed.get("source_id"), "source_url": CLOSURE_URL,
-                            "http_status": closure_capture["http_status"], "content_type": closure_capture["content_type"],
-                            "retrieved_at": closure_entry["completed_at"], "response_bytes": closure_capture["response_bytes"],
-                            "response_sha256": closure_capture["response_sha256"],
+                            "http_status": closure_capture["http_status"] if closure_capture else closure_entry.get("http_status"),
+                            "content_type": closure_capture["content_type"] if closure_capture else closure_entry.get("content_type"),
+                            "retrieved_at": closure_entry.get("retrieved_at"), "response_bytes": closure_capture["response_bytes"] if closure_capture else closure_entry.get("response_bytes"),
+                            "response_sha256": closure_capture["response_sha256"] if closure_capture else closure_entry.get("response_sha256"),
                             "parse_status": parsed.get("parse_status"),
                             "closure_query_succeeded": parsed.get("closure_query_succeeded"),
                             "event_count": len(parsed.get("events", [])),
-                            "events": parsed.get("events", []), **closure_assessment}
+                            "taipei_municipality_event_summary": taipei_summary,
+                            "events_relevant_to_coverage_dates": relevant_events, **closure_assessment}
         (RUN_DIR / "closure_authority_snapshot.json").write_text(json.dumps(closure_snapshot, ensure_ascii=False, indent=2, sort_keys=True)+"\n", encoding="utf-8")
         (RUN_DIR / "acquisition_ledger.json").write_text(json.dumps(ledger, ensure_ascii=False, indent=2, sort_keys=True)+"\n", encoding="utf-8")
 
@@ -185,14 +213,18 @@ def execute_p0() -> dict:
                   "p01_p18_executed": False, "b01_b05_executed": False,
                   "acquisition_counts": {"calendar": budget.calendar_count, "closure": budget.closure_count, "total": budget.total}}
         (RUN_DIR / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True)+"\n", encoding="utf-8")
-        files = [p for p in RUN_DIR.iterdir() if p.is_file() and p.name != "manifest.json"]
-        manifest = {"schema_version": "a6_p0_manifest.v1", "run_id": plan["run_id"],
-                    "files": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)}}
-        (RUN_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+"\n", encoding="utf-8")
+        _write_manifest()
         return result
     finally:
         urllib.request.urlopen = original_urlopen
         calendar_executor.atomic_write_text = original_atomic_write
+
+
+def _write_manifest() -> None:
+    files = [p for p in RUN_DIR.iterdir() if p.is_file() and p.name != "manifest.json"]
+    manifest = {"schema_version": "a6_p0_manifest.v1", "run_id": RUN_DIR.name.removeprefix("l3-a6-p0-"),
+                "files": {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)}}
+    (RUN_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)+"\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
