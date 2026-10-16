@@ -1,0 +1,10 @@
+{
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R1_DGPA_HISTORICAL_CLOSURE_COMPLETENESS_AUTHORIZATION",
+  "run_id": "l3-a6-p0-r1-20261016T042447Z",
+  "state": "RESERVED_NOT_CONSUMED",
+  "authority_consumed": false,
+  "market_authority_consumed": false,
+  "plan_sha256": "9ddaf924e0d43febdc4e84cc6bcc07e3d5cd61328124adb99a2c4b93ab60acec",
+  "pre_network_commit_sha": "637d90f5da8365e2730a4b25e94b46099933a05b",
+  "pre_network_commit_tree_sha": "a8b4bfc2a51a260784c58662b26b49f662f2a6e5"
+}
