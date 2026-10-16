@@ -89,3 +89,16 @@ def test_p0_scope_plan_forbids_a6_market_and_bootstrap_dispatch():
     assert plan["calendar_max_acquisitions"] == 3
     assert plan["closure_max_acquisitions"] == 3
     assert plan["total_max_acquisitions"] == 6
+
+
+def test_p0_runner_has_no_retry_sleep_or_non_p0_acquisition_seam():
+    root = Path(__file__).resolve().parents[2]
+    source = (root / "scripts/run_phase_l_l3_a6_p0_authority_materialization.py").read_text(encoding="utf-8")
+    assert "time.sleep(" not in source
+    assert "retry(" not in source.lower()
+    assert "schedule(" not in source.lower()
+    assert "scripts.m5k_common" not in source
+    assert "P01_P18_execution_allowed\"] is not False" in source
+    assert "B01_B05_execution_allowed\"] is not False" in source
+    assert source.count("_load_production_calendar(evaluation") == 1
+    assert source.count("fetch_and_parse_closure_feed(target_date=None, timeout=10)") == 1
