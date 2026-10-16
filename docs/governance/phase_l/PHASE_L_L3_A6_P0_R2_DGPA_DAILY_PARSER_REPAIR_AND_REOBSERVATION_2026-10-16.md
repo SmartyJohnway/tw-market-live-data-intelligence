@@ -40,11 +40,13 @@ evaluation time remains `2026-10-16T11:38:22+08:00`; the only closure dates are
 `2026-10-16` and `2026-10-15`. The existing I3 resolver SHA-256 is
 `075abdbb9a5cb961cb7054583eebbe3f8722bb9c570577037396db85dc0f010`.
 
-The offline implementation, tests, fixture, plan and this governance record
-were committed before the R2 observation at
-`54c6e99da7ff4b52aea8d17d959fe0058434ca63` (tree
-`ff69a5a9bbf993ef197d1622b5c16ca2cdcd1538`). The R2 reservation binds that
-commit and the exact plan hash before any request. The pre-network R2 plan fixes
+The offline implementation, tests, fixture and governance record were first
+committed at `54c6e99da7ff4b52aea8d17d959fe0058434ca63`. The preflight then
+exposed a resolver hash typo in the runner; after correcting and re-running all
+gates, the final pre-network implementation commit is
+`8840a4f53a190a5bce5a7a84ce54c5230ce27cd7` (tree
+`0c12b813983a1da47b85a7bfd6aad8c793e5c309`). The R2 reservation binds this
+corrected commit and exact plan hash before any request. The pre-network R2 plan fixes
 official DGPA daily/archive URLs and limits of one
 daily GET, four sequential archive-index GETs, one discovered-detail GET, and
 six total. A failed single daily observation stops the run without refetch or
