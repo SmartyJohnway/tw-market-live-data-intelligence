@@ -5,7 +5,8 @@ from pathlib import Path
 import pytest
 
 from scripts.phase_l_a6_p0_r1_dgpa_closure_authority import (
-    RequestBudget, adjudicate_archive_window, parse_archive_index, parse_daily_status,
+    RequestBudget, R5RequestBudget, adjudicate_archive_window, archive_window_needs_cross_page_confirmation,
+    parse_archive_index, parse_archive_index_with_diagnostics, parse_daily_status,
     parse_detail_status, resolve_only_with_complete_authority, validate_official_url,
 )
 from scripts.phase_i_i3_execution_date import resolve_i3_twse_source_trade_date
@@ -97,6 +98,62 @@ def test_archive_roc_date_and_detail_url():
     assert items[0]["target_event_date"] == "2026-10-15"
     assert items[0]["archive_publication_date"] == "2026-10-16"
     assert items[0]["detail_url"] == "https://www.dgpa.gov.tw/information?pid=123&uid=374"
+    assert items[0]["event_title"] == "115年10月15日天然災害停止辦公及上課情形"
+    assert items[0]["publication_date_source"] == "same_item_structured_date_cell"
+
+
+@pytest.mark.parametrize(("label", "publication", "event"), [
+    ("115.07.20 115年7月19日天然災害停止辦公及上課情形", "2026-07-20", "2026-07-19"),
+    ("115/07/20 115年7月20日天然災害停止上班及上課情形", "2026-07-20", "2026-07-20"),
+    ("115-07-20 115年7月20日天然災害停止辦公及上課情形", "2026-07-20", "2026-07-20"),
+])
+def test_archive_combined_link_parses_publication_and_event_roles(label, publication, event):
+    body = f'<h1>歷次天然災害停止上班上課訊息</h1><a href="/information?pid=123&uid=374">{label}</a>'.encode()
+    items, diagnostics = parse_archive_index_with_diagnostics(body, content_type="text/html; charset=utf-8",
+        base_url="https://www.dgpa.gov.tw/informationlist?uid=374&page=1")
+    item = items[0]
+    assert item["archive_publication_date"] == publication
+    assert item["target_event_date"] == event
+    assert item["event_title"].startswith("115年")
+    assert item["source_item_text"] == label
+    assert diagnostics["requested_page"] == 1
+    assert diagnostics["items"][0]["parse_status"] == "PASS"
+
+
+def test_archive_publication_prefix_does_not_make_event_title_ambiguous():
+    body = _archive_page('<tr><td><a href="/information?pid=123&uid=374">115.07.20 115年7月19日天然災害停止辦公及上課情形</a></td></tr>')
+    items = parse_archive_index(body, content_type="text/html; charset=utf-8",
+        base_url="https://www.dgpa.gov.tw/informationlist?uid=374&page=1")
+    assert items[0]["archive_publication_date"] == "2026-07-20"
+    assert items[0]["target_event_date"] == "2026-07-19"
+
+
+@pytest.mark.parametrize(("anchor", "row", "reason"), [
+    ("115年7月19日天然災害停止辦公及上課情形", "", "publication_date_missing"),
+    ("115.07.20 115年7月19日及115年7月18日天然災害停止辦公及上課情形", "", "event_date_ambiguous"),
+    ("115.07.20 一般公告連結", "", "item_title_invalid"),
+])
+def test_archive_missing_or_ambiguous_item_roles_fail_closed_with_diagnostics(anchor, row, reason):
+    body = f'<h1>歷次天然災害停止上班上課訊息</h1>{row}<a href="/information?pid=123&uid=374">{anchor}</a>'.encode()
+    with pytest.raises(ValueError, match=reason) as error:
+        parse_archive_index_with_diagnostics(body, content_type="text/html; charset=utf-8",
+            base_url="https://www.dgpa.gov.tw/informationlist?uid=374&page=1")
+    assert error.value.diagnostics["items"][0]["raw_item_excerpt"]
+    assert error.value.diagnostics["items"][0]["parse_status"]
+
+
+def test_archive_unrelated_page_date_does_not_supply_item_publication_date():
+    body = '<h1>115.07.20 歷次天然災害停止上班上課訊息</h1><a href="/information?pid=123&uid=374">115年7月19日天然災害停止辦公及上課情形</a>'.encode()
+    with pytest.raises(ValueError, match="publication_date_missing"):
+        parse_archive_index(body, content_type="text/html; charset=utf-8",
+            base_url="https://www.dgpa.gov.tw/informationlist?uid=374&page=1")
+
+
+def test_archive_page_marker_must_match_requested_page():
+    body = "<h1>歷次天然災害停止上班上課訊息</h1><p>第 2/10 頁</p><a href='/information?pid=123&uid=374'>115.07.20 115年7月19日天然災害停止辦公及上課情形</a>".encode()
+    with pytest.raises(ValueError, match="page_identity_mismatch"):
+        parse_archive_index(body, content_type="text/html; charset=utf-8",
+            base_url="https://www.dgpa.gov.tw/informationlist?uid=374&page=1")
 
 
 def test_archive_window_crossing_target_proves_scoped_negative():
@@ -119,6 +176,13 @@ def test_archive_page_sequence_can_continue_and_target_requires_detail():
     assert result["matching_entries"][0]["detail_url"].endswith("pid=3&uid=374")
     not_crossed = adjudicate_archive_window([{ "page": 1, "items": [item("2026-10-18", 1)] }], "2026-10-15")
     assert not_crossed["historical_negative_evidence"] is False
+
+
+def test_archive_newest_page_older_than_target_requires_cross_page_confirmation():
+    pages = [{"page": 1, "items": [{"target_event_date": "2026-10-14", "detail_url": "https://www.dgpa.gov.tw/information?pid=1&uid=374"}]}]
+    assert archive_window_needs_cross_page_confirmation(pages, "2026-10-15") is True
+    pages.append({"page": 2, "items": [{"target_event_date": "2026-10-13", "detail_url": "https://www.dgpa.gov.tw/information?pid=2&uid=374"}]})
+    assert archive_window_needs_cross_page_confirmation(pages, "2026-10-15") is False
 
 
 def test_archive_order_gap_and_target_duplicate_conflict_fail_closed():
@@ -162,6 +226,18 @@ def test_total_request_budget_is_ten():
     assert budget.total == 10
     with pytest.raises(ValueError, match="budget_exceeded"):
         budget.reserve("detail")
+
+
+def test_r5_budget_prohibits_daily_and_caps_archive_dispatches():
+    budget = R5RequestBudget()
+    with pytest.raises(ValueError, match="budget_exceeded"):
+        budget.reserve("daily")
+    for _ in range(4):
+        budget.reserve("index")
+    budget.reserve("detail")
+    assert budget.counts() == {"daily": 0, "archive_index": 4, "archive_detail": 1, "total": 5}
+    with pytest.raises(ValueError, match="budget_exceeded"):
+        budget.reserve("index")
 
 
 def test_existing_i3_resolver_requires_completeness_and_derives_date_from_calendar():

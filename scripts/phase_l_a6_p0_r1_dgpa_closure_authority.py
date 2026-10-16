@@ -54,7 +54,7 @@ class _Page(HTMLParser):
         self._row: list[str] | None = None
         self._row_cells: list[dict[str, str]] = []
         self._cell_tag: str | None = None
-        self._row_links: list[dict[str, str]] = []
+        self._row_links: list[dict[str, Any]] = []
         self._cell_text: list[str] = []
         self._link: dict[str, str] | None = None
         self._excluded_depth = 0
@@ -109,6 +109,7 @@ class _Page(HTMLParser):
             row_text = " ".join(self._row)
             for link in self._row_links:
                 link["row_text"] = row_text
+                link["row_cells"] = list(self._row_cells)
             self._row = None
         elif tag == "a" and self._link is not None:
             self.links.append(self._link)
@@ -453,36 +454,117 @@ def _detail_url(href: str, base: str) -> str:
     return url
 
 
-def parse_archive_index(body: bytes, *, content_type: str | None, base_url: str) -> list[dict[str, Any]]:
+class _ArchiveIndexError(ValueError):
+    def __init__(self, code: str, diagnostics: dict[str, Any]) -> None:
+        super().__init__(code)
+        self.diagnostics = diagnostics
+
+
+_COMPACT_ROC_PREFIX = re.compile(r"^\s*(\d{2,3})\s*([./-])\s*(\d{1,2})\s*([./-])\s*(\d{1,2})\s*")
+_ROC_EVENT_DATE = re.compile(r"(?<!\d)(\d{2,3})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日?")
+
+
+def _parse_archive_page_number(visible: str) -> int | None:
+    matches = re.findall(r"第\s*(\d+)\s*/\s*(\d+)\s*頁", visible)
+    if len(set(matches)) > 1:
+        raise ValueError("dgpa_archive_page_identity_ambiguous")
+    return int(matches[0][0]) if matches else None
+
+
+def parse_archive_index_with_diagnostics(body: bytes, *, content_type: str | None, base_url: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Parse archive list items with publication and event dates bound by role."""
     p = urlparse(base_url)
     q = parse_qs(p.query)
     if p.hostname != OFFICIAL_HOST or p.path != "/informationlist" or q.get("uid") != ["374"]:
         raise ValueError("dgpa_archive_identity_invalid")
+    requested_pages = q.get("page", [])
+    if len(requested_pages) != 1 or not requested_pages[0].isdigit() or int(requested_pages[0]) < 1:
+        raise ValueError("dgpa_archive_page_identity_invalid")
+    requested_page = int(requested_pages[0])
     page = parse_html(body, content_type)
     visible = " ".join(page.text)
     if "歷次天然災害停止上班上課訊息" not in visible:
         raise ValueError("dgpa_archive_semantic_identity_missing")
+    page_number = _parse_archive_page_number(visible)
+    if page_number is not None and page_number != requested_page:
+        raise ValueError("dgpa_archive_page_identity_mismatch")
     result = []
-    for link in page.links:
-        title = " ".join(link["text"].split())
+    diagnostics: list[dict[str, Any]] = []
+    for sequence, link in enumerate(page.links, start=1):
+        anchor_text = " ".join(link["text"].split())
         parsed_href = urlparse(urljoin(base_url, link["href"]))
         href_query = parse_qs(parsed_href.query)
         is_archive_detail = parsed_href.path == "/information" and href_query.get("uid") == ["374"] and bool(href_query.get("pid"))
         if not is_archive_detail:
             continue
-        if "天然災害停止" not in title or "上課" not in title:
-            raise ValueError("dgpa_archive_item_title_invalid")
-        target = parse_roc_date(title)
-        detail = _detail_url(link["href"], base_url)
+        row_cells = link.get("row_cells", [])
+        row_text = " ".join(str(cell.get("text", "")) for cell in row_cells).strip()
+        source_item_text = " ".join(part for part in (row_text, anchor_text) if part).strip()
+        excerpt = source_item_text[:300]
+        diag: dict[str, Any] = {"item_sequence": len(diagnostics) + 1, "raw_item_excerpt": excerpt,
+            "publication_candidates": [], "selected_publication_date": None, "publication_date_source": None,
+            "event_title": None, "event_date_candidates": [], "selected_target_event_date": None,
+            "detail_url": None, "parse_status": "UNRESOLVED"}
         try:
-            publication_date = parse_roc_date(link.get("row_text", ""))
-        except ValueError as exc:
-            raise ValueError("dgpa_archive_publication_date_missing") from exc
-        result.append({"archive_publication_date": publication_date, "title": title,
-                       "target_event_date": target, "detail_url": detail})
+            detail = _detail_url(link["href"], base_url)
+            diag["detail_url"] = detail
+            compact = _COMPACT_ROC_PREFIX.match(anchor_text)
+            event_title = anchor_text[compact.end():].strip() if compact else anchor_text
+            publication_candidates: list[tuple[str, str]] = []
+            if compact:
+                year, month, day = map(int, compact.group(1, 3, 5))
+                publication_candidates.append((date(year + 1911, month, day).isoformat(), "leading_compact_anchor_date"))
+            # A same-item structured date cell is a second allowed authority.
+            # If it contradicts a compact prefix, retain both candidates and fail closed.
+            for cell in row_cells:
+                cell_value = " ".join(str(cell.get("text", "")).split())
+                if re.fullmatch(r"\d{2,3}\s*[/.-]\s*\d{1,2}\s*[/.-]\s*\d{1,2}", cell_value):
+                    publication_candidates.append((parse_roc_date(cell_value), "same_item_structured_date_cell"))
+            diag["publication_candidates"] = [item[0] for item in publication_candidates]
+            unique_publications = sorted({item[0] for item in publication_candidates})
+            if not unique_publications:
+                raise ValueError("dgpa_archive_publication_date_missing")
+            if len(unique_publications) != 1:
+                raise ValueError("dgpa_archive_publication_date_ambiguous")
+            publication_date = unique_publications[0]
+            diag["selected_publication_date"] = publication_date
+            diag["publication_date_source"] = publication_candidates[0][1]
+            diag["event_title"] = event_title[:300]
+            if not ("天然災害" in event_title and "停止" in event_title and
+                    any(word in event_title for word in ("上班", "辦公")) and "上課" in event_title and "情形" in event_title):
+                raise ValueError("dgpa_archive_item_title_invalid")
+            event_matches = list(_ROC_EVENT_DATE.finditer(event_title))
+            event_dates = sorted({date(int(match.group(1)) + 1911, int(match.group(2)), int(match.group(3))).isoformat()
+                                  for match in event_matches})
+            diag["event_date_candidates"] = event_dates
+            if not event_dates:
+                raise ValueError("dgpa_archive_event_date_missing")
+            if len(event_dates) != 1:
+                raise ValueError("dgpa_archive_event_date_ambiguous")
+            target = event_dates[0]
+            diag["selected_target_event_date"] = target
+            diag["target_event_date_source"] = "event_title_date"
+            diag["parse_status"] = "PASS"
+            result.append({"archive_publication_date": publication_date, "target_event_date": target,
+                "event_title": event_title, "title": event_title, "detail_url": detail,
+                "source_item_text": excerpt,
+                "publication_date_source": diag["publication_date_source"],
+                "target_event_date_source": "event_title_date"})
+        except (ValueError, OverflowError) as exc:
+            diag["parse_status"] = str(exc) or type(exc).__name__
+            diagnostics.append(diag)
+            raise _ArchiveIndexError(diag["parse_status"], {"requested_page": requested_page,
+                "page_number": page_number, "page_identity": "歷次天然災害停止上班上課訊息", "items": diagnostics}) from exc
+        diagnostics.append(diag)
     if not result:
-        raise ValueError("dgpa_archive_items_missing")
-    return result
+        raise _ArchiveIndexError("dgpa_archive_items_missing", {"requested_page": requested_page,
+            "page_number": page_number, "page_identity": "歷次天然災害停止上班上課訊息", "items": diagnostics})
+    return result, {"requested_page": requested_page, "page_number": page_number,
+        "page_identity": "歷次天然災害停止上班上課訊息", "item_count": len(result), "items": diagnostics}
+
+
+def parse_archive_index(body: bytes, *, content_type: str | None, base_url: str) -> list[dict[str, Any]]:
+    return parse_archive_index_with_diagnostics(body, content_type=content_type, base_url=base_url)[0]
 
 
 def adjudicate_archive_window(pages: list[dict[str, Any]], target_date: str) -> dict[str, Any]:
@@ -509,6 +591,19 @@ def adjudicate_archive_window(pages: list[dict[str, Any]], target_date: str) -> 
             "reason": "verified_chronological_window_crossed_target" if negative else "target_entry_requires_detail" if matches else "archive_window_not_crossed",
             "coverage_dates": [dates[0].isoformat(), dates[-1].isoformat()],
             "page_range": [1, pages[-1]["page"]], "matching_entries": matches}
+
+
+def archive_window_needs_cross_page_confirmation(pages: list[dict[str, Any]], target_date: str) -> bool:
+    """Require one adjacent page when page 1's newest event predates the target."""
+    if len(pages) != 1 or not pages[0].get("items"):
+        return False
+    items = pages[0]["items"]
+    if any(item.get("target_event_date") == target_date for item in items):
+        return False
+    try:
+        return date.fromisoformat(items[0]["target_event_date"]) < date.fromisoformat(target_date)
+    except (KeyError, TypeError, ValueError):
+        return False
 
 
 def parse_detail_status(body: bytes, *, content_type: str | None, target_date: str) -> dict[str, Any]:
@@ -597,6 +692,30 @@ class R4RequestBudget:
             raise ValueError("r4_unapproved_request_kind")
         if self.total >= 6 or getattr(self, kind) >= limits[kind]:
             raise ValueError("r4_request_budget_exceeded")
+        setattr(self, kind, getattr(self, kind) + 1)
+        return self.total
+
+    def counts(self) -> dict[str, int]:
+        return {"daily": self.daily, "archive_index": self.index, "archive_detail": self.detail, "total": self.total}
+
+
+@dataclass
+class R5RequestBudget:
+    """R5 archive-only authority; daily requests are never permitted."""
+    daily: int = 0
+    index: int = 0
+    detail: int = 0
+
+    @property
+    def total(self) -> int:
+        return self.daily + self.index + self.detail
+
+    def reserve(self, kind: str) -> int:
+        limits = {"daily": 0, "index": 4, "detail": 1}
+        if kind not in limits:
+            raise ValueError("r5_unapproved_request_kind")
+        if self.total >= 5 or getattr(self, kind) >= limits[kind]:
+            raise ValueError("r5_request_budget_exceeded")
         setattr(self, kind, getattr(self, kind) + 1)
         return self.total
 
