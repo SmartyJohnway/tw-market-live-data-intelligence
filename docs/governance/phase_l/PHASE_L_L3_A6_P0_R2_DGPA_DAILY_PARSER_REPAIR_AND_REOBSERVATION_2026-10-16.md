@@ -69,6 +69,11 @@ the global external socket guard recorded zero attempts. Five validators,
 `py_compile`, and `git diff --check` passed. Detailed machine-readable results
 are in the R2 run's `offline_review.json`.
 
+The first runner preflight attempt exposed a recorded resolver-hash typo before
+network dispatch. A byte comparison against the R2 parent showed the resolver
+was unchanged; the runner and plan hash were corrected and all offline gates
+were rerun. No R2 external request occurred during either preflight attempt.
+
 ## Pending live observation and disposition
 
 No R2 live response is yet asserted by this pre-network record. The plan and

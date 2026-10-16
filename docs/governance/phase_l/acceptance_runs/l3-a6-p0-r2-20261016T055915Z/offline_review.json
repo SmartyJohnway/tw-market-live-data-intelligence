@@ -23,6 +23,10 @@
   "pre_network_commit_sha": "54c6e99da7ff4b52aea8d17d959fe0058434ca63",
   "pre_network_tree_sha": "ff69a5a9bbf993ef197d1622b5c16ca2cdcd1538",
   "parser_sha256": "8b61e74d944a03706a7bd480266183811680f09466910bd99aaaf974b3431297",
-  "resolver_sha256": "075abdbb9a5cb961cb7054583eebbe3f8722bb9c570577037396db85dc0f010",
-  "calendar_normalized_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8"
+  "resolver_sha256": "075abdbb9a5cb961cb7054583aeebbe3f8722bb9c570577037396db85dc0f010",
+  "calendar_normalized_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+  "preflight_history": [
+    {"command": "python scripts/run_phase_l_l3_a6_p0_r2_dgpa_closure_authority.py --preflight-only", "result": "IMPORT_FAILED_BEFORE_NETWORK; reran as module"},
+    {"command": "python -m scripts.run_phase_l_l3_a6_p0_r2_dgpa_closure_authority --preflight-only", "result": "RESOLVER_HASH_RECORD_TYPO_DETECTED_BEFORE_NETWORK; corrected and gates rerun"}
+  ]
 }

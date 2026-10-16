@@ -26,7 +26,7 @@
   "parent_p0_head": "a9986572f6803ea8d56a06586488499ac10a8e1b",
   "parser_sha256": "8b61e74d944a03706a7bd480266183811680f09466910bd99aaaf974b3431297",
   "pre_network_commit_sha": "54c6e99da7ff4b52aea8d17d959fe0058434ca63",
-  "resolver_sha256": "075abdbb9a5cb961cb7054583eebbe3f8722bb9c570577037396db85dc0f010",
+  "resolver_sha256": "075abdbb9a5cb961cb7054583aeebbe3f8722bb9c570577037396db85dc0f010",
   "run_id": "l3-a6-p0-r2-20261016T055915Z",
   "twse_calendar_regeneration_allowed": false
 }
