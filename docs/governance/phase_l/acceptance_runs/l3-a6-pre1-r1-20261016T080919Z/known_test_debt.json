@@ -1,0 +1,15 @@
+{
+  "a0_governance_reference": "docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md",
+  "a5_governance_reference": "docs/governance/phase_l/PHASE_L_L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_2026-10-15.md",
+  "excluded": true,
+  "focused_bootstrap_module_result": {
+    "deselected": 1,
+    "deselected_test": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+    "failed": 0,
+    "passed": 22
+  },
+  "production_runtime_modified_for_test": false,
+  "reason": "rglob first-match may select nested source_probes evidence where bootstrap_failure_code is not top-level",
+  "represented_as_passing": false,
+  "test_id": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority"
+}

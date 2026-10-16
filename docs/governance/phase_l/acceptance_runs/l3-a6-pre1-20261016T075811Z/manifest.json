@@ -1,0 +1,31 @@
+{
+  "files": [
+    {
+      "path": "a6_source_plan.json",
+      "sha256": "f6cfd16e752b8ae6b6e5a0a16f23bba882ce012db439434a3a71daab933c8ee9",
+      "size_bytes": 12304
+    },
+    {
+      "path": "authority_reservation_template.json",
+      "sha256": "e87f861981275baf389f326f539c8932c7c572c164f023f80f2205ed4f2c2418",
+      "size_bytes": 245
+    },
+    {
+      "path": "offline_review.json",
+      "sha256": "e4f2201e738c9a7d1384e5501626e35d2e0e3c24eb7aba9cd7be0dfd4b4b02ff",
+      "size_bytes": 1283
+    },
+    {
+      "path": "preflight_result.json",
+      "sha256": "05953da9b3b1facca44c1c6d254008626b44a6f0d8cfef0234ed48257cfe894f",
+      "size_bytes": 741
+    },
+    {
+      "path": "transport_contract_matrix.json",
+      "sha256": "6bf6b305ca090d271d7c43cb6f60cbe272e4ca4c6021f1a8c6c5d23c2845b163",
+      "size_bytes": 24508
+    }
+  ],
+  "manifest_sha256": "39c5db48552f1ed86f48df7cf9fd756cc8dc56b3ac5dc34e5631a9d68c0e0942",
+  "run_id": "l3-a6-pre1-20261016T075811Z"
+}

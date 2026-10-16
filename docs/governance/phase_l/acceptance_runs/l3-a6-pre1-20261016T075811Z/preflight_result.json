@@ -1,0 +1,19 @@
+{
+  "absolute_physical_ceiling": 27,
+  "baseline_physical_dispatches": 23,
+  "disposition": "A6_PREFLIGHT_DISPATCH_ACCOUNTING_UNRESOLVED",
+  "external_provider_requests": 0,
+  "failed_gates": [
+    "integrated_source_tests"
+  ],
+  "final_live_reservation_created": false,
+  "integrated_test_summary": {
+    "failed": 1,
+    "failing_test": "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py::test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+    "failure": "KeyError: top-level bootstrap_failure_code; test selected a JSON artifact because nested source_probes contained the same key",
+    "passed": 543,
+    "total": 544
+  },
+  "live_authority_consumed": false,
+  "logical_sources": 23
+}

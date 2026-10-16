@@ -1,0 +1,102 @@
+{
+  "branch": "phase-l/l3-a6-bounded-live-source-drift-recertification",
+  "candidate_file_manifest_sha256": "96910c1f97db9d1efef9d458d9ee16f7a8755cb4326cf3d480c5fc043397e601",
+  "candidate_files": [
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l3-a6-pre1-20261016T075811Z/a6_source_plan.json",
+      "sha256": "f6cfd16e752b8ae6b6e5a0a16f23bba882ce012db439434a3a71daab933c8ee9"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l3-a6-pre1-20261016T075811Z/authority_reservation_template.json",
+      "sha256": "e87f861981275baf389f326f539c8932c7c572c164f023f80f2205ed4f2c2418"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l3-a6-pre1-20261016T075811Z/manifest.json",
+      "sha256": "f26c0ec2016e3edcad7a86a8c7d7d84e5c2e903afe52d1aecd6b7c758aa27ecc"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l3-a6-pre1-20261016T075811Z/offline_review.json",
+      "sha256": "e4f2201e738c9a7d1384e5501626e35d2e0e3c24eb7aba9cd7be0dfd4b4b02ff"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l3-a6-pre1-20261016T075811Z/preflight_result.json",
+      "sha256": "05953da9b3b1facca44c1c6d254008626b44a6f0d8cfef0234ed48257cfe894f"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l3-a6-pre1-20261016T075811Z/transport_contract_matrix.json",
+      "sha256": "6bf6b305ca090d271d7c43cb6f60cbe272e4ca4c6021f1a8c6c5d23c2845b163"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L3_A6_PRE1_SAFE_LIVE_RUNNER_PREFLIGHT_2026-10-16.md",
+      "sha256": "1ef17223c88c678efa663d1624081b56e3057e3f3905399e389fe589bc3651bc"
+    },
+    {
+      "path": "scripts/phase_l_a6_live_dispatch_guard.py",
+      "sha256": "b9cb2eb405b55267931a4bc95e886608555beea6e369d962d25521971233ef59"
+    },
+    {
+      "path": "scripts/run_phase_l_a6_pre1_prepare.py",
+      "sha256": "7e80432e67c041f11f49a927f9c289b161c93598a898db7fbb3dc70f87beaaf2"
+    },
+    {
+      "path": "scripts/run_phase_l_a6_pre1_r1_prepare.py",
+      "sha256": "2d244adee5f703c5d0788730727f4ce97efe8ea9081e164b4d1c4c69501d1c9d"
+    },
+    {
+      "path": "tests/helpers/phase_l_a6_pre1_network/sitecustomize.py",
+      "sha256": "1d2228653f23dd7fc3d9e2100189cf27551933d7984ed377a1be82bc3756a1f9"
+    },
+    {
+      "path": "tests/unit/test_phase_l_a6_pre1_dispatch_controller.py",
+      "sha256": "7e9bdfcf6a8ceeabb2ee1fb7ed8661b6e2fe92c17ea8011a8ea29583fd85c218"
+    }
+  ],
+  "entry_head": "d9d8001b66e4c82ff7c8015fa2264c4bc8cf8365",
+  "external_socket_attempts": 0,
+  "final_live_reservation_created": false,
+  "known_debt_excluded_not_passing": true,
+  "market_authority_consumed": false,
+  "offline_results": {
+    "bootstrap_module_summary": {
+      "deselected": 1,
+      "deselected_test": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+      "failed": 0,
+      "passed": 22
+    },
+    "compileall_pass": true,
+    "critical_safety_tests_pass": true,
+    "diff_check_pass": true,
+    "external_socket_attempts": 0,
+    "final_live_reservation_created": false,
+    "focused_test_summary": {
+      "failed": 0,
+      "passed": 31
+    },
+    "focused_tests_pass": true,
+    "hidden_retry_audit_pass": true,
+    "integrated_gate_pass": true,
+    "integrated_test_summary": {
+      "deselected": 1,
+      "deselected_test": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+      "failed": 0,
+      "passed": 543
+    },
+    "nonpersistent_audit_pass": true,
+    "plan_matrix_pass": true,
+    "provider_requests": 0,
+    "py_compile_pass": true,
+    "validator_summary": {
+      "phase_h_v3": "PASS",
+      "portable_catalog_sync": "PASS",
+      "runtime_skill_sync": "PASS; exactly six MCP tools",
+      "source_registry": "PASS",
+      "v1_public_contracts": "PASS; exactly six tools"
+    },
+    "validators_pass": true
+  },
+  "origin_main": "7b3e73b2f3e2c2bec167b6d66f1846846fe4ec4c",
+  "original_pre1_disposition": "A6_PREFLIGHT_DISPATCH_ACCOUNTING_UNRESOLVED",
+  "original_pre1_manifest_sha256": "39c5db48552f1ed86f48df7cf9fd756cc8dc56b3ac5dc34e5631a9d68c0e0942",
+  "original_pre1_run_id": "l3-a6-pre1-20261016T075811Z",
+  "provider_requests": 0
+}

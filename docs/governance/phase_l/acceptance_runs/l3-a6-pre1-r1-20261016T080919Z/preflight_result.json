@@ -1,0 +1,11 @@
+{
+  "absolute_physical_ceiling": 27,
+  "baseline_physical_dispatches": 23,
+  "disposition": "PASS_READY_FOR_FINAL_LIVE_RESERVATION",
+  "external_provider_requests": 0,
+  "final_live_reservation_created": false,
+  "known_test_debt_deselected": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+  "known_test_debt_represented_as_passing": false,
+  "logical_sources": 23,
+  "market_authority_consumed": false
+}

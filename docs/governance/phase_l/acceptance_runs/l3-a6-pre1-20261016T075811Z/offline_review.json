@@ -1,0 +1,37 @@
+{
+  "authority_consumed": false,
+  "entry_head": "d9d8001b66e4c82ff7c8015fa2264c4bc8cf8365",
+  "external_socket_attempts": 0,
+  "final_live_reservation_created": false,
+  "live_source_requests": 0,
+  "offline_gates": {
+    "compileall": true,
+    "diff_check": true,
+    "external_socket_attempts": 0,
+    "final_live_reservation_created": false,
+    "focused_test_summary": {
+      "failed": 0,
+      "passed": 31
+    },
+    "focused_tests": true,
+    "integrated_source_tests": false,
+    "integrated_test_summary": {
+      "failed": 1,
+      "failing_test": "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py::test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+      "failure": "KeyError: top-level bootstrap_failure_code; test selected a JSON artifact because nested source_probes contained the same key",
+      "passed": 543,
+      "total": 544
+    },
+    "provider_requests": 0,
+    "validator_summary": {
+      "phase_h_v3": "PASS",
+      "portable_catalog_sync": "PASS",
+      "runtime_skill_sync": "PASS; exact six",
+      "source_registry": "PASS",
+      "v1_public_contracts": "PASS; exact six"
+    },
+    "validators": true
+  },
+  "p0_r5_provenance_verified": true,
+  "production_state_mutations": 0
+}
