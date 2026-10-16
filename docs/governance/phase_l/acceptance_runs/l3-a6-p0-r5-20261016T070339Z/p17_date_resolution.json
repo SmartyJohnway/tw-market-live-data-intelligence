@@ -1,0 +1,13 @@
+{
+  "calendar_authority_ref": "P0:TWSE_CALENDAR:28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+  "closure_authority_complete": true,
+  "closure_authority_ref": "DGPA_R5:l3-a6-p0-r5-20261016T070339Z:complete_for_i3_resolution_window",
+  "closure_events": [],
+  "coverage_dates": [
+    "2026-10-16",
+    "2026-10-15"
+  ],
+  "evaluation_time": "2026-10-16T11:38:22+08:00",
+  "market": "TWSE",
+  "resolved_source_trade_date": "2026-10-15"
+}

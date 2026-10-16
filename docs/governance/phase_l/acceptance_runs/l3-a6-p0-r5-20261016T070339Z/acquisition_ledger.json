@@ -1,0 +1,51 @@
+{
+  "counts": {
+    "archive_detail": 0,
+    "archive_index": 2,
+    "daily": 0,
+    "total": 2
+  },
+  "entries": [
+    {
+      "completed_at": "2026-10-16T07:09:29Z",
+      "content_type": "text/html; charset=utf-8",
+      "effective_url": "https://www.dgpa.gov.tw/informationlist?uid=374&page=1",
+      "elapsed_ms": 411,
+      "hostname": "www.dgpa.gov.tw",
+      "http_status": 200,
+      "kind": "index",
+      "purpose": "ARCHIVE_INDEX_WINDOW_DISCOVERY",
+      "requested_url": "https://www.dgpa.gov.tw/informationlist?uid=374&page=1",
+      "response_byte_count": 45217,
+      "response_sha256": "b365be26ea9621fb3dae12d19285f34fbaed6998a6061c6493b4e19f7d7db548",
+      "retry_count": 0,
+      "sequence": 1,
+      "started_at": "2026-10-16T07:09:29Z",
+      "transport_outcome": "http_response"
+    },
+    {
+      "completed_at": "2026-10-16T07:09:30Z",
+      "content_type": "text/html; charset=utf-8",
+      "effective_url": "https://www.dgpa.gov.tw/informationlist?uid=374&page=2",
+      "elapsed_ms": 198,
+      "hostname": "www.dgpa.gov.tw",
+      "http_status": 200,
+      "kind": "index",
+      "purpose": "CROSS_PAGE_ORDER_CONFIRMATION",
+      "requested_url": "https://www.dgpa.gov.tw/informationlist?uid=374&page=2",
+      "response_byte_count": 45296,
+      "response_sha256": "1efc7b17c7703ea1a97343f116a0cc52fd9128611cc7b9110aaf0536056a0383",
+      "retry_count": 0,
+      "sequence": 2,
+      "started_at": "2026-10-16T07:09:29Z",
+      "transport_outcome": "http_response"
+    }
+  ],
+  "limits": {
+    "archive_detail_max": 1,
+    "archive_index_max": 4,
+    "daily_max": 0,
+    "total_max": 5
+  },
+  "retry_count": 0
+}

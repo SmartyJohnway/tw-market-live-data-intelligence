@@ -1,0 +1,701 @@
+{
+  "failure": null,
+  "items": [
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13097",
+      "event_date_candidates": [
+        "2026-09-02"
+      ],
+      "event_title": "115年9月2日天然災害停止辦公及上課情形",
+      "item_sequence": 1,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-09-03"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.09.03 115年9月2日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-09-03",
+      "selected_target_event_date": "2026-09-02",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13095",
+      "event_date_candidates": [
+        "2026-09-01"
+      ],
+      "event_title": "115年9月1日天然災害停止辦公及上課情形",
+      "item_sequence": 2,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-09-02"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.09.02 115年9月1日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-09-02",
+      "selected_target_event_date": "2026-09-01",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13093",
+      "event_date_candidates": [
+        "2026-08-31"
+      ],
+      "event_title": "115年8月31日天然災害停止辦公及上課情形",
+      "item_sequence": 3,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-09-01"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.09.01 115年8月31日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-09-01",
+      "selected_target_event_date": "2026-08-31",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13090",
+      "event_date_candidates": [
+        "2026-08-26"
+      ],
+      "event_title": "115年8月26日天然災害停止辦公及上課情形",
+      "item_sequence": 4,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-08-27"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.08.27 115年8月26日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-08-27",
+      "selected_target_event_date": "2026-08-26",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13086",
+      "event_date_candidates": [
+        "2026-08-25"
+      ],
+      "event_title": "115年8月25日天然災害停止辦公及上課情形",
+      "item_sequence": 5,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-08-26"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.08.26 115年8月25日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-08-26",
+      "selected_target_event_date": "2026-08-25",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13085",
+      "event_date_candidates": [
+        "2026-08-24"
+      ],
+      "event_title": "115年8月24日天然災害停止辦公及上課情形",
+      "item_sequence": 6,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-08-25"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.08.25 115年8月24日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-08-25",
+      "selected_target_event_date": "2026-08-24",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13083",
+      "event_date_candidates": [
+        "2026-08-23"
+      ],
+      "event_title": "115年8月23日天然災害停止辦公及上課情形",
+      "item_sequence": 7,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-08-24"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.08.24 115年8月23日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-08-24",
+      "selected_target_event_date": "2026-08-23",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13082",
+      "event_date_candidates": [
+        "2026-08-22"
+      ],
+      "event_title": "115年8月22日天然災害停止辦公及上課情形",
+      "item_sequence": 8,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-08-24"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.08.24 115年8月22日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-08-24",
+      "selected_target_event_date": "2026-08-22",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13074",
+      "event_date_candidates": [
+        "2026-08-09"
+      ],
+      "event_title": "115年8月9日天然災害停止辦公及上課情形",
+      "item_sequence": 9,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-08-10"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.08.10 115年8月9日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-08-10",
+      "selected_target_event_date": "2026-08-09",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13047",
+      "event_date_candidates": [
+        "2026-07-20"
+      ],
+      "event_title": "115年7月20日天然災害停止辦公及上課情形",
+      "item_sequence": 10,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-21"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.21 115年7月20日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-21",
+      "selected_target_event_date": "2026-07-20",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13046",
+      "event_date_candidates": [
+        "2026-07-19"
+      ],
+      "event_title": "115年7月19日天然災害停止辦公及上課情形",
+      "item_sequence": 1,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-20"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.20 115年7月19日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-20",
+      "selected_target_event_date": "2026-07-19",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13045",
+      "event_date_candidates": [
+        "2026-07-18"
+      ],
+      "event_title": "115年7月18日天然災害停止辦公及上課情形",
+      "item_sequence": 2,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-20"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.20 115年7月18日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-20",
+      "selected_target_event_date": "2026-07-18",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13044",
+      "event_date_candidates": [
+        "2026-07-17"
+      ],
+      "event_title": "115年7月17日天然災害停止辦公及上課情形",
+      "item_sequence": 3,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-20"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.20 115年7月17日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-20",
+      "selected_target_event_date": "2026-07-17",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13043",
+      "event_date_candidates": [
+        "2026-07-16"
+      ],
+      "event_title": "115年7月16日天然災害停止辦公及上課情形",
+      "item_sequence": 4,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-17"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.17 115年7月16日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-17",
+      "selected_target_event_date": "2026-07-16",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13041",
+      "event_date_candidates": [
+        "2026-07-14"
+      ],
+      "event_title": "115年7月14日天然災害停止辦公及上課情形",
+      "item_sequence": 5,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-15"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.15 115年7月14日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-15",
+      "selected_target_event_date": "2026-07-14",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13040",
+      "event_date_candidates": [
+        "2026-07-13"
+      ],
+      "event_title": "115年7月13日天然災害停止辦公及上課情形",
+      "item_sequence": 6,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-14"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.14 115年7月13日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-14",
+      "selected_target_event_date": "2026-07-13",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13037",
+      "event_date_candidates": [
+        "2026-07-12"
+      ],
+      "event_title": "115年7月12日天然災害停止辦公及上課情形",
+      "item_sequence": 7,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-13"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.13 115年7月12日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-13",
+      "selected_target_event_date": "2026-07-12",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13036",
+      "event_date_candidates": [
+        "2026-07-11"
+      ],
+      "event_title": "115年7月11日天然災害停止辦公及上課情形",
+      "item_sequence": 8,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-13"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.13 115年7月11日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-13",
+      "selected_target_event_date": "2026-07-11",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13035",
+      "event_date_candidates": [
+        "2026-07-10"
+      ],
+      "event_title": "115年7月10日天然災害停止辦公及上課情形",
+      "item_sequence": 9,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-07-13"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.07.13 115年7月10日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-07-13",
+      "selected_target_event_date": "2026-07-10",
+      "target_event_date_source": "event_title_date"
+    },
+    {
+      "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13022",
+      "event_date_candidates": [
+        "2026-06-28"
+      ],
+      "event_title": "115年6月28日天然災害停止辦公及上課情形",
+      "item_sequence": 10,
+      "parse_status": "PASS",
+      "publication_candidates": [
+        "2026-06-29"
+      ],
+      "publication_date_source": "leading_compact_anchor_date",
+      "raw_item_excerpt": "115.06.29 115年6月28日天然災害停止辦公及上課情形",
+      "selected_publication_date": "2026-06-29",
+      "selected_target_event_date": "2026-06-28",
+      "target_event_date_source": "event_title_date"
+    }
+  ],
+  "pages": [
+    {
+      "item_count": 10,
+      "items": [
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13097",
+          "event_date_candidates": [
+            "2026-09-02"
+          ],
+          "event_title": "115年9月2日天然災害停止辦公及上課情形",
+          "item_sequence": 1,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-09-03"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.09.03 115年9月2日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-09-03",
+          "selected_target_event_date": "2026-09-02",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13095",
+          "event_date_candidates": [
+            "2026-09-01"
+          ],
+          "event_title": "115年9月1日天然災害停止辦公及上課情形",
+          "item_sequence": 2,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-09-02"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.09.02 115年9月1日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-09-02",
+          "selected_target_event_date": "2026-09-01",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13093",
+          "event_date_candidates": [
+            "2026-08-31"
+          ],
+          "event_title": "115年8月31日天然災害停止辦公及上課情形",
+          "item_sequence": 3,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-09-01"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.09.01 115年8月31日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-09-01",
+          "selected_target_event_date": "2026-08-31",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13090",
+          "event_date_candidates": [
+            "2026-08-26"
+          ],
+          "event_title": "115年8月26日天然災害停止辦公及上課情形",
+          "item_sequence": 4,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-08-27"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.08.27 115年8月26日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-08-27",
+          "selected_target_event_date": "2026-08-26",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13086",
+          "event_date_candidates": [
+            "2026-08-25"
+          ],
+          "event_title": "115年8月25日天然災害停止辦公及上課情形",
+          "item_sequence": 5,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-08-26"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.08.26 115年8月25日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-08-26",
+          "selected_target_event_date": "2026-08-25",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13085",
+          "event_date_candidates": [
+            "2026-08-24"
+          ],
+          "event_title": "115年8月24日天然災害停止辦公及上課情形",
+          "item_sequence": 6,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-08-25"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.08.25 115年8月24日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-08-25",
+          "selected_target_event_date": "2026-08-24",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13083",
+          "event_date_candidates": [
+            "2026-08-23"
+          ],
+          "event_title": "115年8月23日天然災害停止辦公及上課情形",
+          "item_sequence": 7,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-08-24"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.08.24 115年8月23日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-08-24",
+          "selected_target_event_date": "2026-08-23",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13082",
+          "event_date_candidates": [
+            "2026-08-22"
+          ],
+          "event_title": "115年8月22日天然災害停止辦公及上課情形",
+          "item_sequence": 8,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-08-24"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.08.24 115年8月22日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-08-24",
+          "selected_target_event_date": "2026-08-22",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13074",
+          "event_date_candidates": [
+            "2026-08-09"
+          ],
+          "event_title": "115年8月9日天然災害停止辦公及上課情形",
+          "item_sequence": 9,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-08-10"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.08.10 115年8月9日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-08-10",
+          "selected_target_event_date": "2026-08-09",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13047",
+          "event_date_candidates": [
+            "2026-07-20"
+          ],
+          "event_title": "115年7月20日天然災害停止辦公及上課情形",
+          "item_sequence": 10,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-21"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.21 115年7月20日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-21",
+          "selected_target_event_date": "2026-07-20",
+          "target_event_date_source": "event_title_date"
+        }
+      ],
+      "page": 1,
+      "page_number_marker": 1
+    },
+    {
+      "item_count": 10,
+      "items": [
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13046",
+          "event_date_candidates": [
+            "2026-07-19"
+          ],
+          "event_title": "115年7月19日天然災害停止辦公及上課情形",
+          "item_sequence": 1,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-20"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.20 115年7月19日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-20",
+          "selected_target_event_date": "2026-07-19",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13045",
+          "event_date_candidates": [
+            "2026-07-18"
+          ],
+          "event_title": "115年7月18日天然災害停止辦公及上課情形",
+          "item_sequence": 2,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-20"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.20 115年7月18日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-20",
+          "selected_target_event_date": "2026-07-18",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13044",
+          "event_date_candidates": [
+            "2026-07-17"
+          ],
+          "event_title": "115年7月17日天然災害停止辦公及上課情形",
+          "item_sequence": 3,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-20"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.20 115年7月17日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-20",
+          "selected_target_event_date": "2026-07-17",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13043",
+          "event_date_candidates": [
+            "2026-07-16"
+          ],
+          "event_title": "115年7月16日天然災害停止辦公及上課情形",
+          "item_sequence": 4,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-17"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.17 115年7月16日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-17",
+          "selected_target_event_date": "2026-07-16",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13041",
+          "event_date_candidates": [
+            "2026-07-14"
+          ],
+          "event_title": "115年7月14日天然災害停止辦公及上課情形",
+          "item_sequence": 5,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-15"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.15 115年7月14日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-15",
+          "selected_target_event_date": "2026-07-14",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13040",
+          "event_date_candidates": [
+            "2026-07-13"
+          ],
+          "event_title": "115年7月13日天然災害停止辦公及上課情形",
+          "item_sequence": 6,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-14"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.14 115年7月13日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-14",
+          "selected_target_event_date": "2026-07-13",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13037",
+          "event_date_candidates": [
+            "2026-07-12"
+          ],
+          "event_title": "115年7月12日天然災害停止辦公及上課情形",
+          "item_sequence": 7,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-13"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.13 115年7月12日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-13",
+          "selected_target_event_date": "2026-07-12",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13036",
+          "event_date_candidates": [
+            "2026-07-11"
+          ],
+          "event_title": "115年7月11日天然災害停止辦公及上課情形",
+          "item_sequence": 8,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-13"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.13 115年7月11日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-13",
+          "selected_target_event_date": "2026-07-11",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13035",
+          "event_date_candidates": [
+            "2026-07-10"
+          ],
+          "event_title": "115年7月10日天然災害停止辦公及上課情形",
+          "item_sequence": 9,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-07-13"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.07.13 115年7月10日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-07-13",
+          "selected_target_event_date": "2026-07-10",
+          "target_event_date_source": "event_title_date"
+        },
+        {
+          "detail_url": "https://www.dgpa.gov.tw/information?uid=374&pid=13022",
+          "event_date_candidates": [
+            "2026-06-28"
+          ],
+          "event_title": "115年6月28日天然災害停止辦公及上課情形",
+          "item_sequence": 10,
+          "parse_status": "PASS",
+          "publication_candidates": [
+            "2026-06-29"
+          ],
+          "publication_date_source": "leading_compact_anchor_date",
+          "raw_item_excerpt": "115.06.29 115年6月28日天然災害停止辦公及上課情形",
+          "selected_publication_date": "2026-06-29",
+          "selected_target_event_date": "2026-06-28",
+          "target_event_date_source": "event_title_date"
+        }
+      ],
+      "page": 2,
+      "page_number_marker": 2
+    }
+  ]
+}

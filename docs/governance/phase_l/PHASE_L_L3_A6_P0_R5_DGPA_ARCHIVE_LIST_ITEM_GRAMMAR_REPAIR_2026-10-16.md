@@ -85,3 +85,52 @@ resolver, or remain `INCOMPLETE_AUTHORITY` / parser-inconclusive. No outcome is
 preselected. No market-source recertification will be performed; the A6 market
 authority remains unconsumed, and A6 market recertification, A7, and L4-L7
 remain unstarted/not authorized.
+
+
+## R5 bounded archive observation result
+
+The implementation was committed before the archive observation at
+`ca45bcd2fb88a416542fb6297c4b0a8dfd1b6b9a` (tree
+`a463f148067d248ed3150204bff4da848e8412f6`). The plan, offline review, and
+`RESERVED_NOT_CONSUMED` authority reservation were then committed at
+`4211d26a3617794967ff754f867f3076ed43a57a`. Runner `--preflight-only` passed
+with zero external requests, and verified the immutable R4 daily artifact,
+P0 calendar, and I3 resolver hashes before the first request.
+
+R5 run `l3-a6-p0-r5-20261016T070339Z` made exactly two sequential archive-index
+GETs, both HTTP 200, and no other request:
+
+| Page | Purpose | Items | Publication dates | Target event dates | Response SHA-256 |
+|---:|---|---:|---|---|---|
+| 1 | `ARCHIVE_INDEX_WINDOW_DISCOVERY` | 10 | 2026-09-03 to 2026-07-21 | 2026-09-02 to 2026-07-20 | `b365be26ea9621fb3dae12d19285f34fbaed6998a6061c6493b4e19f7d7db548` |
+| 2 | `CROSS_PAGE_ORDER_CONFIRMATION` | 10 | 2026-07-20 to 2026-06-29 | 2026-07-19 to 2026-06-28 | `1efc7b17c7703ea1a97343f116a0cc52fd9128611cc7b9110aaf0536056a0383` |
+
+Both effective URLs remained on `www.dgpa.gov.tw`. Each page identified the
+official historical stop-work/stop-school archive; rendered page markers were
+1 and 2 respectively. Target-event dates were non-increasing within each page
+and across the page boundary (`2026-07-20 >= 2026-07-19`). Page 1's newest
+archived event was already older than `2026-10-15`; page 2 supplied the required
+bounded cross-page chronological confirmation. No target-date item was present
+in the verified window, so historical negative evidence is scoped to the
+official archive window and target date only. This does not assert that no
+natural disaster occurred.
+
+R5 reused the unchanged R4 daily fact (`2026-10-16 / NO_CLOSURE_NOTICE`) with
+artifact SHA-256
+`059e9bbc5bc1c31d06a7d182c27c4dce4d0e01deef8a0a9b30b2cdf430b5574c` and R4
+manifest SHA-256
+`f46287dbe950e0af0575569862e3dffa8d416d13dc67e4e394ba2a8f8e643e13`. Together
+with R5's verified historical negative evidence, the exact I3 resolution
+window is complete. The unchanged resolver returned `2026-10-15`; no T86
+request or date override was used.
+
+Disposition: `PASS_CLOSURE_AUTHORITY_COMPLETE`. R5 authority was consumed by
+the first archive GET. R5 made zero daily GETs, zero detail GETs, and no retry.
+P01-P18, B01-B05, and T86 counts are zero. The separate A6 market authority
+remains not consumed. Post-run guarded tests again passed 149/149 with zero
+external socket attempts; all five validators, compileall, exact-six check, and
+`git diff --check` passed. Evidence manifest SHA-256 is
+`fe987d86be99108fe49a70d123040402b477ade3aa19ce179a6a0c4624d820a0`; all
+manifest entries and the manifest self-hash verified. No raw response body was
+retained. This is a technical P0 checkpoint only; independent review and any
+subsequent A6 market execution require their own governance boundary.

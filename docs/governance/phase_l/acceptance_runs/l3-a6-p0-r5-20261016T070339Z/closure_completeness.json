@@ -1,0 +1,13 @@
+{
+  "closure_authority_complete": true,
+  "completeness_reason": "R4 daily authority plus R5 verified archive/detail",
+  "coverage_basis": "complete_for_i3_resolution_window",
+  "coverage_dates": [
+    "2026-10-16",
+    "2026-10-15"
+  ],
+  "daily_status_adjudicated_from_r4": true,
+  "events_relevant_to_coverage_dates": [],
+  "historical_negative_evidence": true,
+  "historical_status_adjudicated": true
+}
