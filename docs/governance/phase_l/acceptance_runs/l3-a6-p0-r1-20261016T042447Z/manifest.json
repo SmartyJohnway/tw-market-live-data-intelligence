@@ -1,0 +1,41 @@
+{
+  "files": [
+    {
+      "path": "acquisition_ledger.json",
+      "sha256": "03d70f8e33a72d4333125377cb3b6aa73b7d2148f4e71acdc5606f735ca02f1f",
+      "size_bytes": 916
+    },
+    {
+      "path": "authority_consumed.json",
+      "sha256": "c69e44ef0be642f256064671bbcf8adc5219f784baa525a4a927759b8eb75c00",
+      "size_bytes": 269
+    },
+    {
+      "path": "authority_reservation.json",
+      "sha256": "b21add429ced8db76f882b4e24c3edd5a2f5118c9be3130cbf95e0a30218df5c",
+      "size_bytes": 495
+    },
+    {
+      "path": "closure_completeness.json",
+      "sha256": "b08393a666d01a9f4a08985e7815db8f3e6f8a4d7bf8a984630070231508c698",
+      "size_bytes": 530
+    },
+    {
+      "path": "daily_adjudication_failure.json",
+      "sha256": "7343f8cbaebc2c5c3150d6809d5363921ad997e5e241b81a5391bae7359053ae",
+      "size_bytes": 593
+    },
+    {
+      "path": "r1_plan.json",
+      "sha256": "b27eae18de0960abbf73da93d816c2ef753d2b3a6963811440917df56e175d50",
+      "size_bytes": 1265
+    },
+    {
+      "path": "result.json",
+      "sha256": "7a71e5dfe03058dd79ea180b1fa53dfad99068c9d34d4fa4419f199df75a6bee",
+      "size_bytes": 624
+    }
+  ],
+  "manifest_sha256": "4ad4d9f66fd5c49187234beea8313077045de656e91a42a44484acb6bb9d71cb",
+  "run_id": "l3-a6-p0-r1-20261016T042447Z"
+}
