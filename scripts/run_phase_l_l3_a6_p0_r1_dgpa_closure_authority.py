@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from hashlib import sha256
+import argparse
 import json
 from pathlib import Path
 import subprocess
@@ -76,6 +77,15 @@ def _validate_preflight(plan: dict, reservation: dict) -> None:
     validate_2026_calendar(calendar)
     if normalized_calendar_sha256(calendar) != EXPECTED_CALENDAR_SHA:
         raise RuntimeError("p0_calendar_hash_mismatch")
+
+
+def preflight_only() -> dict:
+    plan = json.loads((RUN_DIR / "r1_plan.json").read_text(encoding="utf-8"))
+    reservation = json.loads((RUN_DIR / "authority_reservation.json").read_text(encoding="utf-8"))
+    _validate_preflight(plan, reservation)
+    return {"preflight": "PASS", "run_id": RUN_ID, "base_sha": plan["base_sha"],
+            "candidate_pre_network_sha": plan["candidate_pre_network_sha"],
+            "calendar_sha256": EXPECTED_CALENDAR_SHA, "external_requests": 0}
 
 
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -244,4 +254,11 @@ def execute_authorized_r1() -> dict:
 
 
 if __name__ == "__main__":
-    print(json.dumps(execute_authorized_r1(), ensure_ascii=False, indent=2))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument("--execute-authorized-r1", action="store_true")
+    args = parser.parse_args()
+    if args.preflight_only == args.execute_authorized_r1:
+        parser.error("select exactly one of --preflight-only or --execute-authorized-r1")
+    result = preflight_only() if args.preflight_only else execute_authorized_r1()
+    print(json.dumps(result, ensure_ascii=False, indent=2))
