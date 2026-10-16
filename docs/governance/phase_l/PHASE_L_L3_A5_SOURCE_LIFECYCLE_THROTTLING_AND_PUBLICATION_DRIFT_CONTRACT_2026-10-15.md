@@ -1,7 +1,8 @@
 # Phase L L3-A5 — Source Lifecycle, Throttling & Publication Drift Contract
 
 **Date:** 2026-10-15
-**Status:** implementation candidate; independent review pending
+**Status:** Owner-accepted and merged; G05 deterministic contract complete; live recertification required
+**Merge:** PR #365 merged at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`
 **Base SHA:** `ea4697ecddb906b088765e0d32388830aa7baf1b`
 **Branch:** `phase-l/l3-a5-source-lifecycle-publication-drift-contract`
 **Worktree:** `D:\Codex-Workspace\projects\tw-market-live-data-intelligence-phase-l-l3-a5`

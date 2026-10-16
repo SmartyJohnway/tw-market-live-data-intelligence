@@ -91,7 +91,7 @@ exception boundary without changing production runtime. Reviewer verification
 reconciled the direct missing-required-field matrix so P08/P09/P10 are each
 covered. It is Owner-accepted under
 `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #363 at
-`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 G05 source lifecycle/throttling/publication drift contract is an implementation candidate pending independent review and Owner acceptance. G05 deterministic contract work is complete in the candidate; live recertification remains required. A6/A7 and L4-L7 remain NOT AUTHORIZED. See
+`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 deterministic contract work is complete; live recertification remains required. A6/A7 and L4-L7 remain NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_2026-10-15.md`.
 See `docs/governance/phase_l/PHASE_L_L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_2026-10-15.md`.
 See also
@@ -153,7 +153,7 @@ L3-A3 passed independent technical review, is Owner-accepted under
 PR #361 at `ddd023f11a23420c096a5b20022848cfcf900db9`. A4 passed independent technical review under
 `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
 `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #363 at
-`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 is an implementation candidate pending independent review/Owner acceptance; G05 live recertification remains required. A6/A7 and L4-L7 remain not authorized.
+`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 live recertification remains required. A6/A7 and L4-L7 remain not authorized.
 
 ## Current I3 production boundary (2026-10-05)
 
