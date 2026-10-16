@@ -4,7 +4,7 @@
   "state": "RESERVED_NOT_CONSUMED",
   "authority_consumed": false,
   "market_authority_consumed": false,
-  "plan_sha256": "9ddaf924e0d43febdc4e84cc6bcc07e3d5cd61328124adb99a2c4b93ab60acec",
-  "pre_network_commit_sha": "637d90f5da8365e2730a4b25e94b46099933a05b",
-  "pre_network_commit_tree_sha": "a8b4bfc2a51a260784c58662b26b49f662f2a6e5"
+  "plan_sha256": "b27eae18de0960abbf73da93d816c2ef753d2b3a6963811440917df56e175d50",
+  "pre_network_commit_sha": "96fc89efeaad0f36e6cd4716208d54628c327bb9",
+  "pre_network_commit_tree_sha": "7c12102c364c045c6b1b6784c0f5b9fc3fc273d8"
 }
