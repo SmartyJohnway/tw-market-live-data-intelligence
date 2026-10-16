@@ -1,29 +1,32 @@
 {
-  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R2_DGPA_DAILY_PARSER_REPAIR_AND_REOBSERVATION",
-  "run_id": "l3-a6-p0-r2-20261016T055915Z",
-  "base_sha": "7b3e73b2f3e2c2bec167b6d66f1846846fe4ec4c",
-  "parent_p0_head": "a9986572f6803ea8d56a06586488499ac10a8e1b",
-  "created_at": "2026-10-16T05:59:15Z",
-  "pre_network_commit_sha": null,
-  "evaluation_time": "2026-10-16T11:38:22+08:00",
-  "coverage_dates": ["2026-10-16", "2026-10-15"],
-  "daily_status_url": "https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31",
-  "archive_index_base": "https://www.dgpa.gov.tw/informationlist?uid=374&page=",
+  "B01_B05_execution_allowed": false,
+  "P01_P18_execution_allowed": false,
+  "TWSE_T86_execution_allowed": false,
+  "a6_market_live_authority_consumption_allowed": false,
   "archive_detail_policy": "exact same-host URL discovered from official archive index only",
-  "limits": {
-    "daily_max": 1,
-    "archive_index_max": 4,
-    "archive_detail_max": 1,
-    "total_max": 6
-  },
+  "archive_index_base": "https://www.dgpa.gov.tw/informationlist?uid=374&page=",
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R2_DGPA_DAILY_PARSER_REPAIR_AND_REOBSERVATION",
+  "base_sha": "7b3e73b2f3e2c2bec167b6d66f1846846fe4ec4c",
   "calendar_path": "docs/governance/phase_l/acceptance_runs/l3-a6-p0-20261016T033822Z/twse_trading_calendar_2026.json",
   "calendar_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
-  "resolver_sha256": "075abdbb9a5cb961cb7054583eebbe3f8722bb9c570577037396db85dc0f010",
-  "parser_sha256": "8b61e74d944a03706a7bd480266183811680f09466910bd99aaaf974b3431297",
-  "P01_P18_execution_allowed": false,
-  "B01_B05_execution_allowed": false,
-  "TWSE_T86_execution_allowed": false,
+  "coverage_dates": [
+    "2026-10-16",
+    "2026-10-15"
+  ],
+  "created_at": "2026-10-16T05:59:15Z",
+  "daily_status_url": "https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31",
+  "evaluation_time": "2026-10-16T11:38:22+08:00",
   "i3_resolver_modification_allowed": false,
-  "twse_calendar_regeneration_allowed": false,
-  "a6_market_live_authority_consumption_allowed": false
+  "limits": {
+    "archive_detail_max": 1,
+    "archive_index_max": 4,
+    "daily_max": 1,
+    "total_max": 6
+  },
+  "parent_p0_head": "a9986572f6803ea8d56a06586488499ac10a8e1b",
+  "parser_sha256": "8b61e74d944a03706a7bd480266183811680f09466910bd99aaaf974b3431297",
+  "pre_network_commit_sha": "54c6e99da7ff4b52aea8d17d959fe0058434ca63",
+  "resolver_sha256": "075abdbb9a5cb961cb7054583eebbe3f8722bb9c570577037396db85dc0f010",
+  "run_id": "l3-a6-p0-r2-20261016T055915Z",
+  "twse_calendar_regeneration_allowed": false
 }

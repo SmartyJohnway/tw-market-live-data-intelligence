@@ -4,7 +4,7 @@
   "state": "RESERVED_NOT_CONSUMED",
   "authority_consumed": false,
   "market_authority_consumed": false,
-  "pre_network_commit_sha": null,
-  "pre_network_tree_sha": null,
-  "plan_sha256": null
+  "pre_network_commit_sha": "54c6e99da7ff4b52aea8d17d959fe0058434ca63",
+  "pre_network_tree_sha": "ff69a5a9bbf993ef197d1622b5c16ca2cdcd1538",
+  "plan_sha256": "94a211f0d490afd314b2c85afaa6077016776f89e87616694d3cd5824859f6dc"
 }
