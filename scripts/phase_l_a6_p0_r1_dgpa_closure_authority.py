@@ -1,4 +1,4 @@
-"""Bounded, R1-only DGPA closure authority parsing and adjudication."""
+"""Bounded DGPA closure authority parsing and adjudication for P0 R1/R2."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -36,17 +36,26 @@ class _Page(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.headings: list[str] = []
         self.text: list[str] = []
+        self.semantic_text: list[str] = []
         self.rows: list[list[str]] = []
         self.links: list[dict[str, str]] = []
+        self.text_blocks: list[dict[str, Any]] = []
         self._heading = False
         self._cell = False
         self._row: list[str] | None = None
         self._row_links: list[dict[str, str]] = []
         self._cell_text: list[str] = []
         self._link: dict[str, str] | None = None
+        self._excluded_depth = 0
+        self._block_stack: list[dict[str, Any]] = []
+        self._block_sequence = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attrs_d = dict(attrs)
+        if tag in {"nav", "footer", "script", "style", "noscript"}:
+            self._excluded_depth += 1
+        if self._excluded_depth == 0 and tag in {"div", "p", "section", "article", "li", "h1", "h2", "h3", "h4", "h5", "h6", "td", "th"}:
+            self._block_stack.append({"tag": tag, "parts": [], "depth": len(self._block_stack)})
         if tag in {"h1", "h2", "h3"}:
             self._heading = True
         elif tag == "tr":
@@ -61,6 +70,12 @@ class _Page(HTMLParser):
                 self._row_links.append(self._link)
 
     def handle_endtag(self, tag: str) -> None:
+        if self._block_stack and self._block_stack[-1]["tag"] == tag:
+            block = self._block_stack.pop()
+            value = " ".join("".join(block["parts"]).split())
+            if value:
+                self.text_blocks.append({"sequence": self._block_sequence, "depth": block["depth"], "tag": tag, "text": value})
+                self._block_sequence += 1
         if tag in {"h1", "h2", "h3"}:
             self._heading = False
         elif tag in {"td", "th"} and self._cell and self._row is not None:
@@ -76,12 +91,21 @@ class _Page(HTMLParser):
         elif tag == "a" and self._link is not None:
             self.links.append(self._link)
             self._link = None
+        if tag in {"nav", "footer", "script", "style", "noscript"} and self._excluded_depth:
+            self._excluded_depth -= 1
 
     def handle_data(self, data: str) -> None:
+        if self._excluded_depth:
+            return
         value = data.strip()
         if not value:
             return
         self.text.append(value)
+        if self._link is None:
+            self.semantic_text.append(value)
+        if self._link is None:
+            for block in self._block_stack:
+                block["parts"].append(data)
         if self._heading:
             self.headings.append(value)
         if self._cell:
@@ -115,14 +139,46 @@ def parse_daily_status(body: bytes, *, content_type: str | None, fetched_at: str
     if fetched.tzinfo is None or fetched.utcoffset() is None or fetched < cutoff:
         raise ValueError("dgpa_daily_fetch_before_evaluation")
     page = parse_html(body, content_type)
-    heading = " ".join(page.headings)
-    try:
-        heading_date = parse_roc_date(heading)
-    except ValueError as exc:
-        raise ValueError("dgpa_daily_displayed_date_mismatch") from exc
-    if heading_date != TARGET_DAILY:
+    visible = " ".join(page.semantic_text)
+    subject_pattern = re.compile(r"(?:天然災害\s*)?停止\s*(?:上班及上課|上班上課|辦公及上課|辦公上課)\s*情形")
+    semantic_blocks = [item for item in page.text_blocks if subject_pattern.search(item["text"])]
+    # Nested containers can repeat the same visible subject. Keep the smallest
+    # semantic container(s), rather than searching dates across the whole page.
+    if semantic_blocks:
+        shortest = min(len(item["text"]) for item in semantic_blocks)
+        semantic_blocks = [item for item in semantic_blocks if len(item["text"]) == shortest]
+    if not semantic_blocks:
+        raise ValueError("dgpa_daily_subject_missing")
+    subject_positions = [m.start() for m in subject_pattern.finditer(visible)]
+    if len(subject_positions) != 1:
+        raise ValueError("dgpa_daily_subject_ambiguous")
+    chosen = semantic_blocks[0]
+    blocks = page.text_blocks
+    index = next(i for i, item in enumerate(blocks) if item is chosen)
+    date_pattern = r"(?<!\d)(?:(?:\d{2,3}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日?)|(?:\d{2,3}\s*[/.-]\s*\d{1,2}\s*[/.-]\s*\d{1,2})|(?:20\d{2}[-/.年]\s*\d{1,2}[-/.月]\s*\d{1,2}日?))"
+    status_dates = set()
+    for match in re.finditer(date_pattern, chosen["text"]):
+        status_dates.add(parse_roc_date(match.group(0)))
+    for neighbor_index in (index - 1, index + 1):
+        if 0 <= neighbor_index < len(blocks):
+            neighbor = blocks[neighbor_index]
+            if abs(neighbor["depth"] - chosen["depth"]) <= 1 and not re.search(r"更新|資料|時間|行政院|人事行政|停班|上課", neighbor["text"]):
+                adjacent_dates = list(re.finditer(date_pattern, neighbor["text"]))
+                # Only date-only neighboring blocks are semantically adjacent
+                # status-date candidates; timestamp and surrounding page text
+                # cannot leak into this binding.
+                remainder = re.sub(date_pattern, "", neighbor["text"])
+                if adjacent_dates and not remainder.strip(" \t:：,，。|-"):
+                    for match in adjacent_dates:
+                        status_dates.add(parse_roc_date(match.group(0)))
+    if len(status_dates) > 1:
+        raise ValueError("dgpa_daily_date_ambiguous")
+    if not status_dates:
         raise ValueError("dgpa_daily_displayed_date_mismatch")
-    visible = " ".join(page.text)
+    displayed_date = next(iter(status_dates))
+    if displayed_date != TARGET_DAILY:
+        raise ValueError("dgpa_daily_displayed_date_mismatch")
+    heading = " ".join(page.headings)
     update_match = re.search(r"(?:更新(?:時間|日期)?|資料更新)\s*[:：]?\s*((?:\d{2,3}年\s*)?\d{1,2}月\s*\d{1,2}日?\s*\d{1,2}[:：]\d{2}(?::\d{2})?)", visible)
     if not update_match:
         update_match = re.search(r"(?:更新(?:時間|日期)?|資料更新)\s*[:：]?\s*((?:\d{2,3}|20\d{2})[-/.]\d{1,2}[-/.]\d{1,2}\s+\d{1,2}[:：]\d{2}(?::\d{2})?)", visible)
@@ -265,6 +321,30 @@ class RequestBudget:
             raise ValueError("r1_unapproved_request_kind")
         if self.total >= MAX_TOTAL or getattr(self, kind) >= limits[kind]:
             raise ValueError("r1_request_budget_exceeded")
+        setattr(self, kind, getattr(self, kind) + 1)
+        return self.total
+
+    def counts(self) -> dict[str, int]:
+        return {"daily": self.daily, "archive_index": self.index, "archive_detail": self.detail, "total": self.total}
+
+
+@dataclass
+class R2RequestBudget:
+    """Independent R2 ceilings; reserve before every authorized GET."""
+    daily: int = 0
+    index: int = 0
+    detail: int = 0
+
+    @property
+    def total(self) -> int:
+        return self.daily + self.index + self.detail
+
+    def reserve(self, kind: str) -> int:
+        limits = {"daily": 1, "index": 4, "detail": 1}
+        if kind not in limits:
+            raise ValueError("r2_unapproved_request_kind")
+        if self.total >= 6 or getattr(self, kind) >= limits[kind]:
+            raise ValueError("r2_request_budget_exceeded")
         setattr(self, kind, getattr(self, kind) + 1)
         return self.total
 

@@ -25,15 +25,47 @@ def test_daily_exact_date_and_explicit_negative():
     assert fact["closure_event"] is None
 
 
+def test_daily_non_heading_semantic_region_supports_r1_dom_shape():
+    fixture = Path(__file__).resolve().parents[1] / "fixtures/phase_l/dgpa_daily_20261016_non_heading.html"
+    body = fixture.read_bytes()
+    fact = parse_daily_status(body, content_type="text/html; charset=utf-8", fetched_at=FETCHED)
+    assert fact["target_date"] == "2026-10-16"
+    assert fact["status_kind"] == "explicit_no_notice"
+
+
 def test_daily_wrong_date_and_missing_status_fail_closed():
-    wrong = DAILY.replace("10月16日".encode(), "10月15日".encode())
+    wrong = DAILY.replace("10月16日".encode(), "10月15日".encode(), 1)
     with pytest.raises(ValueError, match="displayed_date_mismatch"):
         parse_daily_status(wrong, content_type="text/html", fetched_at=FETCHED)
-    missing = b"<h1>115\xe5\xb9\xb410\xe6\x9c\x8816\xe6\x97\xa5</h1><p>\xe4\xba\xba\xe4\xba\x8b\xe8\xa1\x8c\xe6\x94\xbf\xe7\xb8\xbd\xe8\x99\x95</p>"
+    missing = "<h1>115年10月16日 天然災害停止上班及上課情形</h1><p>更新時間：115年10月16日 11:45</p><p>行政院人事行政總處</p>".encode()
     with pytest.raises(ValueError, match="status_missing"):
         parse_daily_status(missing, content_type="text/html; charset=utf-8", fetched_at=FETCHED)
     with pytest.raises(ValueError, match="fetch_before_evaluation"):
         parse_daily_status(DAILY, content_type="text/html; charset=utf-8", fetched_at="2026-10-16T10:00:00+08:00")
+
+
+@pytest.mark.parametrize(("body", "reason"), [
+    ("<html><p>行政院人事行政總處</p><p>更新時間：115年10月16日 11:45</p><p>無停班停課訊息</p></html>", "subject_missing"),
+    ("<html><footer>115年10月16日</footer><p>天然災害停止上班及上課情形</p><p>更新時間：115年10月16日 11:45</p><p>行政院人事行政總處</p><p>無停班停課訊息</p></html>", "displayed_date_mismatch"),
+    ("<html><div>115年10月15日</div><div>天然災害停止上班及上課情形</div><div>更新時間：115年10月16日 11:45</div><p>行政院人事行政總處</p><p>無停班停課訊息</p></html>", "displayed_date_mismatch"),
+    ("<html><div>115年10月16日</div><div>天然災害停止上班及上課情形</div><div>更新時間：115年10月15日 11:45</div><p>行政院人事行政總處</p><p>無停班停課訊息</p></html>", "update_date_mismatch"),
+    ("<html><h1>115年10月16日 天然災害停止上班及上課情形</h1><p>更新時間：115年10月16日 11:45</p><p>無停班停課訊息</p></html>", "provenance_missing"),
+    ("<html><h1>115年10月16日 天然災害停止上班及上課情形</h1><p>行政院人事行政總處</p><p>無停班停課訊息</p></html>", "provenance_missing"),
+    ("<html><h1>115年10月16日 天然災害停止上班及上課情形</h1><p>更新時間：115年10月16日 11:45</p><p>行政院人事行政總處</p></html>", "status_missing"),
+    ("<html><h1>115年10月16日 天然災害停止上班及上課情形</h1><p>更新時間：115年10月16日 11:45</p><p>行政院人事行政總處</p><p>無停班停課訊息</p><table><tr><td>臺北市</td><td>上午停止上班上課</td></tr></table></html>", "status_conflict"),
+])
+def test_daily_semantic_gaps_and_conflicts_fail_closed(body, reason):
+    with pytest.raises(ValueError, match=reason):
+        parse_daily_status(body.encode(), content_type="text/html; charset=utf-8", fetched_at=FETCHED)
+
+
+def test_daily_conflicting_status_region_dates_fail_closed():
+    body = """<html><div><span>115年10月16日</span><span>115年10月15日</span>
+      <span>天然災害停止上班及上課情形</span></div>
+      <p>更新時間：115年10月16日 11:45</p><p>行政院人事行政總處</p>
+      <p>無停班停課訊息</p></html>""".encode()
+    with pytest.raises(ValueError, match="date_ambiguous"):
+        parse_daily_status(body, content_type="text/html; charset=utf-8", fetched_at=FETCHED)
 
 
 def test_invalid_utf8_fails_closed():
@@ -46,6 +78,13 @@ def test_daily_taipei_closure_is_mapped(status, scope):
     body = f"<h1>115年10月16日 停止上班上課情形</h1><p>更新時間：115年10月16日 11:45</p><p>行政院人事行政總處</p><table><tr><td>臺北市</td><td>{status}</td></tr></table>".encode()
     fact = parse_daily_status(body, content_type="text/html; charset=utf-8", fetched_at=FETCHED)
     assert fact["closure_event"]["closure_scope"] == scope
+
+
+def test_daily_taipei_normal_work_is_explicitly_adjudicated():
+    body = "<h1>115年10月16日 停止上班上課情形</h1><p>更新時間：115年10月16日 11:45</p><p>行政院人事行政總處</p><table><tr><td>臺北市</td><td>照常上班上課</td></tr></table>".encode()
+    fact = parse_daily_status(body, content_type="text/html; charset=utf-8", fetched_at=FETCHED)
+    assert fact["status_kind"] == "county_rows_present"
+    assert fact["closure_event"] is None
 
 
 def _archive_page(rows):
