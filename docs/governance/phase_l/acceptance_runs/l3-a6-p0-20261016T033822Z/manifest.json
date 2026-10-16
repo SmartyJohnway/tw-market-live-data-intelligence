@@ -1,0 +1,13 @@
+{
+  "files": {
+    "acquisition_ledger.json": "05c4d0853b51c74961a0a041b80c50c188d8e2c8d8d5f143c4c42ee1ac5c36ae",
+    "authority_consumed.json": "df16fdb1343431d7015b9b6e5aa876b0d9f06d7778a20beeaf014f34f830c84a",
+    "authority_reservation.json": "61c2f4ed73ab2e977c17412f0e1c5124ab0c5b18489438868a64d6dd8975be01",
+    "closure_authority_snapshot.json": "8d8f77dc8f555ebbba0290b13d489cacba54c249b99c1465ce12f49c8e2edd8d",
+    "p0_plan.json": "903d58fd667be47346319477a8a9c73f5989e1b04a6cd626071d9a5a18dc5683",
+    "result.json": "6ff9d195bbd678dd739e1eb35dc5e1ce8b71d2dbbadaaa5fd10f3cd097e42b5a",
+    "twse_trading_calendar_2026.json": "f8a2e6908cda1595587d29f4eb3c8fd66a11104b9f41558c1d4735243141883a"
+  },
+  "run_id": "20261016T033822Z",
+  "schema_version": "a6_p0_manifest.v1"
+}
