@@ -6,9 +6,11 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 import tempfile
 import time
 import urllib.request
+import urllib.error
 
 from scripts.phase_l_a6_p0_authority import (
     AcquisitionBudget, CALENDAR_URL, CLOSURE_URL, assess_closure_completeness,
@@ -23,6 +25,25 @@ PLAN_PATH = RUN_DIR / "p0_plan.json"
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def _validate_reservation(plan: dict, reservation: dict) -> None:
+    plan_digest = hashlib.sha256(PLAN_PATH.read_bytes()).hexdigest()
+    if reservation.get("plan_sha256") != plan_digest:
+        raise RuntimeError("p0_plan_reservation_hash_mismatch")
+    candidate = plan.get("candidate_pre_network_sha")
+    if candidate != reservation.get("pre_network_commit_sha"):
+        raise RuntimeError("p0_candidate_commit_reservation_mismatch")
+    tree = subprocess.run(["git", "show", "-s", "--format=%T", candidate], cwd=ROOT,
+                          capture_output=True, text=True, check=True).stdout.strip()
+    if tree != reservation.get("pre_network_commit_tree_sha"):
+        raise RuntimeError("p0_candidate_tree_reservation_mismatch")
+    status = subprocess.run(["git", "status", "--porcelain=v1"], cwd=ROOT,
+                            capture_output=True, text=True, check=True).stdout
+    if status.strip():
+        raise RuntimeError("p0_worktree_not_clean_before_dispatch")
+    subprocess.run(["git", "merge-base", "--is-ancestor", candidate, "HEAD"], cwd=ROOT, check=True,
+                   capture_output=True, text=True)
 
 
 class _CapturedResponse:
@@ -58,6 +79,7 @@ def execute_p0() -> dict:
     reservation = json.loads((RUN_DIR / "authority_reservation.json").read_text(encoding="utf-8"))
     if reservation.get("state") != "RESERVED" or reservation.get("consumed") is not False:
         raise RuntimeError("p0_authority_not_reserved")
+    _validate_reservation(plan, reservation)
 
     budget = AcquisitionBudget()
     ledger: list[dict] = []
@@ -95,8 +117,15 @@ def execute_p0() -> dict:
             wrapped._started = started
             return wrapped
         except Exception as exc:
-            entry.update({"http_outcome": "transport_or_http_exception", "failure_class": type(exc).__name__,
-                          "completed_at": _utc_now(), "elapsed_ms": round((time.monotonic()-started)*1000)})
+            failure_facts = {"http_outcome": "transport_or_http_exception", "failure_class": type(exc).__name__}
+            if isinstance(exc, urllib.error.HTTPError):
+                body = exc.read()
+                failure_facts.update({"http_status": exc.code,
+                                      "content_type": exc.headers.get("Content-Type", ""),
+                                      "response_bytes": len(body),
+                                      "response_sha256": hashlib.sha256(body).hexdigest()})
+            entry.update({**failure_facts, "completed_at": _utc_now(),
+                          "elapsed_ms": round((time.monotonic()-started)*1000)})
             raise
 
     # Reuse the current acquisition seams. Only cache writes in the temporary
