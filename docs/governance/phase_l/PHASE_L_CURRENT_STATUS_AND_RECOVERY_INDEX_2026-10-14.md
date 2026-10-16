@@ -6,7 +6,7 @@
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
-**L3:** STARTED; A0/A1/A2/A3/A4 Owner-accepted and merged through PRs #355/#357/#359/#361/#363; A4 merged at `ff330f94049adce93c72a9179b4d7b44d297fb2b`; G05/A5+ NOT AUTHORIZED
+**L3:** STARTED; A0-A4 Owner-accepted and merged through PRs #355/#357/#359/#361/#363; L3-A5 implementation candidate complete, independent review/Owner acceptance pending; G05 live recertification required; A6/A7 and L4-L7 NOT AUTHORIZED
 **L4-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -91,7 +91,7 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 ## 5. Remaining Phase L boundaries
 
 - L2 Replay / Retention / Migration: CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
-- L3 Source Drift Hardening: STARTED; A0/A1/A2/A3/A4 are Owner-accepted and merged through PRs #355/#357/#359/#361/#363. A4 merged at `ff330f94049adce93c72a9179b4d7b44d297fb2b`. G05, A5+, and L4-L7 are not authorized.
+- L3 Source Drift Hardening: STARTED; A0/A1/A2/A3/A4 are Owner-accepted and merged through PRs #355/#357/#359/#361/#363. L3-A5 G05 deterministic contract candidate is complete pending independent review/Owner acceptance; G05 live recertification remains required. A6/A7 and L4-L7 are not authorized.
 - L4 Security & Resource Boundaries: localhost/path/input/output/load/concurrency/large-result limits.
 - L5 Extension Architecture: minimum evidence-family extension contract; no new family merely to prove it.
 - L6 Packaging & Portability: Native Windows + Docker Local Service, fresh install, P1-P6 portability, final state/config mapping and product `init` integration.
@@ -102,7 +102,7 @@ These boundaries must be started explicitly and must not be collapsed into one b
 
 Current technical state:
 
-`L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE` (A4 Owner-accepted and merged through PR #363 at `ff330f94049adce93c72a9179b4d7b44d297fb2b`)
+`L3_A5_G05_DETERMINISTIC_CONTRACT_COMPLETE__LIVE_RECERTIFICATION_REQUIRED` (candidate; independent review/Owner acceptance pending)
 
 L2 is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` through
 PR #353, with PR #354 reconciliation at `3b8f1532fac1a2d2366d0d38254ebd4a7a7c6b55`.
@@ -119,10 +119,11 @@ and `PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
 
 Frozen L0 sequencing controls current L3 Source Drift Hardening; old Roadmap
 subject subsection numbers remain unchanged. A0-A4 are Owner-accepted and merged.
-A4 remains a test/governance tranche only. G05, A5+, and L4-L7 remain NOT AUTHORIZED.
+L3-A5 deterministic G05 observation/adjudication is a candidate pending review;
+live recertification remains required. A6/A7 and L4-L7 remain NOT AUTHORIZED.
 
 A concise future-conversation instruction is sufficient:
 
-> Recover current main, read the L3-A0 inventory and A1/A2/A3/A4 acceptance records. L2 is CLOSED; L3 is STARTED. A0-A4 are Owner-accepted and merged. Do not start G05, A5+, probe live sources, or begin L4-L7 without separate explicit Owner authorization.
+> Recover current main, read the L3-A0 inventory, A1/A2/A3/A4 acceptance records, and A5 candidate record. L2 is CLOSED; L3 is STARTED. A0-A4 are Owner-accepted and merged. A5 completes only the deterministic G05 contract; live recertification remains required. Do not start A6/A7, probe live sources, or begin L4-L7 without separate explicit Owner authorization.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.
