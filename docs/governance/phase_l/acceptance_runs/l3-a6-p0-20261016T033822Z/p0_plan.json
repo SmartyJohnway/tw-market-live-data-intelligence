@@ -1,0 +1,42 @@
+{
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_CALENDAR_AND_CLOSURE_AUTHORITY_ACQUISITION",
+  "run_id": "l3-a6-p0-20261016T033822Z",
+  "base_sha": "7b3e73b2f3e2c2bec167b6d66f1846846fe4ec4c",
+  "candidate_pre_network_sha": "TO_BE_BOUND_TO_OFFLINE_CANDIDATE_COMMIT",
+  "evaluation_time": "2026-10-16T11:38:22+08:00",
+  "calendar_endpoint": "https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule",
+  "closure_endpoint": "https://alerts.ncdr.nat.gov.tw/RssAtomFeed.ashx?AlertType=33",
+  "calendar_max_acquisitions": 3,
+  "closure_max_acquisitions": 3,
+  "total_max_acquisitions": 6,
+  "planned_logical_invocations": 0,
+  "market_source_recertification_authorized_here": false,
+  "P01_P18_execution_allowed": false,
+  "B01_B05_execution_allowed": false,
+  "dispatches": [
+    {
+      "sequence": 1,
+      "source_authority": "TWSE_HOLIDAY_SCHEDULE",
+      "method": "GET",
+      "canonical_endpoint": "https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule",
+      "timeout_seconds": 10,
+      "maximum_acquisitions": 3,
+      "purpose": "INITIAL_AUTHORITY_ACQUISITION",
+      "existing_seam": "scripts.m8r_03d_watchlist_controlled_executor._load_production_calendar"
+    },
+    {
+      "sequence": 2,
+      "source_authority": "NCDR_DGPA_CLOSURE_CAP",
+      "method": "GET",
+      "canonical_endpoint": "https://alerts.ncdr.nat.gov.tw/RssAtomFeed.ashx?AlertType=33",
+      "timeout_seconds": 10,
+      "maximum_acquisitions": 3,
+      "purpose": "INITIAL_AUTHORITY_ACQUISITION",
+      "existing_seam": "scripts.m8a_ncdr_dgpa_closure_cap.fetch_and_parse_closure_feed"
+    }
+  ],
+  "retry_count_per_acquisition": 0,
+  "sleep_or_backoff": false,
+  "scheduler_or_polling": false,
+  "raw_response_body_retention": false
+}
