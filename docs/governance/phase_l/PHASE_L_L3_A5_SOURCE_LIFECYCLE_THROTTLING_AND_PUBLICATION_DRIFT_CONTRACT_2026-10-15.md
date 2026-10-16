@@ -155,7 +155,7 @@ Focused deterministic test:
 
 ```text
 python -X utf8 -m pytest -q tests/unit/test_phase_l_a5_source_drift_contract.py
-38 passed
+53 passed
 ```
 
 Integrated guarded offline regression:
@@ -164,7 +164,7 @@ Integrated guarded offline regression:
 python -X utf8 -m pytest -q -p l3a5_no_external_network \
   -k "not test_lifecycle_drift_failure_report_preserves_code_without_retry_authority and not test_partial_batch_retains_observation_and_diagnostics_without_clean_success" \
   tests/unit/test_phase_l_a5_source_drift_contract.py tests/unit/test_l3_a1_twse_mis_response_contract.py tests/unit/test_l3_a2_eod_diagnostic_propagation.py tests/unit/test_l3_a3_research_source_contract_guard.py tests/unit/test_l3_a4_h1_composite_negative_fixture_matrix.py tests/unit/test_m8r_06_03_production_adapter.py tests/unit/test_m8a_twse_official_eod_adapter.py tests/unit/test_m8a_tpex_official_eod_adapter.py tests/unit/test_phase_g_material_disclosures.py tests/unit/test_phase_g_monthly_revenue.py tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py tests/unit/test_phase_h_h3_i2a1_twse_stock_day_walker.py tests/unit/test_phase_j_b04_a3_h2_executor.py tests/unit/test_phase_i_i1_market_state.py tests/unit/test_phase_i_i1_production_candidate.py tests/unit/test_phase_i_i2_a2_offline.py tests/unit/test_phase_i_i2_production_transport.py tests/unit/test_phase_i_i2_a3_live_transport.py tests/unit/test_phase_i_i3_a2_offline.py tests/unit/test_phase_i_i3_a3_r1_transport_accounting.py tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py tests/unit/test_parse_tpex_delisted_json.py tests/unit/test_parse_twse_etn_expired_json.py tests/unit/test_validate_source_registry.py tests/unit/test_validate_v1_public_contracts.py tests/unit/test_phase_h_v3_contract_freeze.py
-  568 passed, 2 deselected, 0 warnings
+  583 passed, 2 deselected, 0 warnings
 L3_A5_EXTERNAL_NETWORK_ATTEMPTS=0
 ```
 
@@ -207,6 +207,53 @@ was added.
 Candidate disposition: `G05_DETERMINISTIC_CONTRACT_COMPLETE__LIVE_RECERTIFICATION_REQUIRED`.
 This does not close all G05 or L3. Current endpoint health, provider lifecycle,
 and freshness remain unknown from this offline tranche.
+
+## Independent-review repair R1 — fact-contract coherence
+
+Independent review found that the initial candidate validated individual
+fields but accepted contradictory combinations. Reproduced witnesses included
+`HTTP 200 + transport_outcome=transport_failure`,
+`transport_outcome=http_response + http_status=None`,
+`HTTP 429 + semantic_outcome=not_yet_available`,
+`contract_outcome=invalid + semantic_outcome=not_yet_available`,
+`empty_collection + semantic_outcome=available`, and
+`observed_at="not-a-time"`. These inputs could create an internally
+inconsistent private observation.
+
+R1 adds only deterministic cross-field checks in
+`server/services/phase_l_source_drift_contract.py`:
+
+- `observed_at` must parse as ISO-8601 and include an explicit timezone/offset;
+- `transport_failure` requires no HTTP status, and `http_response` requires a
+  status;
+- `not_yet_available` and `currentness_unknown` require a successful 2xx
+  response and `contract_outcome=valid`, so failed transport, non-2xx, or
+  invalid contract cannot emit these semantic-derived observations;
+- `empty_body` / `empty_collection` cannot be paired with `available`;
+- the other source-specific absence/currentness values and valid empty
+  collection outcomes remain unchanged.
+
+R1 does not change source transports, production adapters, public schemas,
+retry behavior, or source-specific semantic policy. No clock is read.
+
+Updated verification:
+
+```text
+focused A5 tests: 53 passed
+integrated guarded offline gate: 583 passed, 2 deselected, 0 warnings
+external network attempts: 0
+source registry: PASS
+Portable Catalog sync: PASS
+runtime/Skill sync: PASS (exactly 6 tools)
+V1 public contracts: PASS (exactly 6 tools)
+Phase H V3 contracts: PASS
+py_compile: PASS
+git diff --check: PASS
+```
+
+The same two existing deselections described above remain; they were not
+hidden. No technical PASS or Owner acceptance is recorded by this repair. The
+candidate is ready for independent re-review only.
 
 Proposed future tranche is `L3-A6 — Bounded Live Source Drift Recertification`,
 which requires separate Owner authorization and explicit source set, endpoints,

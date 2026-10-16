@@ -123,7 +123,7 @@ def test_source_publication_and_currentness_semantics_are_preserved(semantic, ex
     result = observe_source_attempt(
         source_contract_id="P17:I3-TWSE-T86-INSTITUTIONAL-TRADING",
         observed_at="2026-10-15T00:00:00Z", http_status=200,
-        semantic_outcome=semantic,
+        contract_outcome="valid", semantic_outcome=semantic,
     )
     assert result.semantic_outcome == semantic
     assert result.adjudication == "SOURCE_SPECIFIC_SEMANTICS_PRESERVED"
@@ -242,3 +242,66 @@ def test_invalid_facts_fail_closed_and_output_is_deterministic():
         observe_source_attempt(**{**kwargs, "semantic_outcome": "looks_current"})
     with pytest.raises(ValueError, match="http_status_invalid"):
         observe_source_attempt(**{**kwargs, "http_status": 99})
+
+
+@pytest.mark.parametrize(
+    ("overrides", "reason"),
+    [
+        ({"http_status": 200, "transport_outcome": "transport_failure"}, "transport_http_status_conflict"),
+        ({"http_status": None, "transport_outcome": "http_response"}, "http_response_status_required"),
+        ({"http_status": 200, "contract_outcome": "invalid", "semantic_outcome": "not_yet_available"}, "semantic_outcome_requires_valid_response"),
+        ({"http_status": 200, "contract_outcome": "valid", "response_form": "empty_collection", "semantic_outcome": "available"}, "empty_response_available_conflict"),
+        ({"observed_at": "not-a-time"}, "observed_at_invalid"),
+        ({"observed_at": "2026-10-15T00:00:00"}, "observed_at_invalid"),
+    ],
+)
+def test_contradictory_fact_combinations_fail_closed(overrides, reason):
+    facts = dict(
+        source_contract_id="P02:TWSE_OPENAPI", observed_at="2026-10-15T00:00:00Z",
+        http_status=200, transport_outcome="http_response", contract_outcome="valid",
+    )
+    with pytest.raises(ValueError, match=reason):
+        observe_source_attempt(**{**facts, **overrides})
+
+
+@pytest.mark.parametrize(
+    ("overrides", "reason"),
+    [
+        ({"http_status": 429, "semantic_outcome": "not_yet_available"}, "semantic_outcome_requires_valid_response"),
+        ({"http_status": 200, "contract_outcome": "invalid", "semantic_outcome": "not_yet_available"}, "semantic_outcome_requires_valid_response"),
+        ({"http_status": 503, "semantic_outcome": "currentness_unknown"}, "semantic_outcome_requires_valid_response"),
+        ({"http_status": None, "transport_outcome": "transport_failure", "semantic_outcome": "currentness_unknown"}, "semantic_outcome_requires_valid_response"),
+    ],
+)
+def test_unadjudicable_response_cannot_emit_publication_or_currentness_conclusions(overrides, reason):
+    facts = dict(
+        source_contract_id="P02:TWSE_OPENAPI", observed_at="2026-10-15T00:00:00Z",
+        http_status=200, transport_outcome="http_response", contract_outcome="valid",
+    )
+    with pytest.raises(ValueError, match=reason):
+        observe_source_attempt(**{**facts, **overrides})
+
+
+@pytest.mark.parametrize("semantic", ["no_evidence_in_covered_scope", "partial", "missing", "unavailable"])
+def test_empty_collection_preserves_valid_source_specific_absence_semantics(semantic):
+    result = observe_source_attempt(
+        source_contract_id="P04:MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+        observed_at="2026-10-15T08:00:00+08:00", http_status=200,
+        contract_outcome="valid", semantic_outcome=semantic,
+        response_form="empty_collection", empty_response_policy="allowed",
+    )
+    assert result.semantic_outcome == semantic
+    assert result.adjudication == "SOURCE_SPECIFIC_SEMANTICS_PRESERVED"
+
+
+def test_valid_publication_delay_and_currentness_unknown_require_successful_valid_contract():
+    for semantic, expected in (
+        ("not_yet_available", "publication_delay_observed"),
+        ("currentness_unknown", "currentness_unknown"),
+    ):
+        result = observe_source_attempt(
+            source_contract_id="P06:MOPS_MONTHLY_REVENUE_OPEN_DATA",
+            observed_at="2026-10-15T00:00:00Z", http_status=200,
+            contract_outcome="valid", semantic_outcome=semantic,
+        )
+        assert expected in result.drift_observations

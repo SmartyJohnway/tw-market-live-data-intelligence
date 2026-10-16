@@ -9,7 +9,7 @@ that a target universe is invalid.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from datetime import timezone
+from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime, format_datetime
 import re
 from typing import Literal
@@ -84,6 +84,15 @@ def _normalize_http_date(value: str) -> str | None:
     return format_datetime(parsed.astimezone(timezone.utc), usegmt=True)
 
 
+def _has_explicit_timezone(value: str) -> bool:
+    """Accept ISO-8601 timestamps only when they identify an offset."""
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except (TypeError, ValueError, OverflowError):
+        return False
+    return parsed.tzinfo is not None and parsed.utcoffset() is not None
+
+
 def parse_retry_after(value: str | None) -> RetryAfterFact:
     """Parse Retry-After as a fact only; never sleep or schedule a retry."""
     if value is None:
@@ -126,18 +135,24 @@ def observe_source_attempt(
     """
     if not isinstance(source_contract_id, str) or not source_contract_id.strip():
         raise ValueError("source_contract_id_required")
-    if not isinstance(observed_at, str) or not observed_at.strip():
-        raise ValueError("observed_at_required")
+    if not isinstance(observed_at, str) or not _has_explicit_timezone(observed_at):
+        raise ValueError("observed_at_invalid")
     if http_status is not None and (type(http_status) is not int or not 100 <= http_status <= 599):
         raise ValueError("http_status_invalid")
     if transport_outcome not in {"http_response", "transport_failure", "unknown"}:
         raise ValueError("transport_outcome_invalid")
+    if transport_outcome == "transport_failure" and http_status is not None:
+        raise ValueError("transport_http_status_conflict")
+    if transport_outcome == "http_response" and http_status is None:
+        raise ValueError("http_response_status_required")
     if contract_outcome not in _CONTRACT_OUTCOMES:
         raise ValueError("contract_outcome_invalid")
     if semantic_outcome not in _SEMANTIC_OUTCOMES:
         raise ValueError("semantic_outcome_invalid")
     if response_form not in _EMPTY_FORMS or empty_response_policy not in _EMPTY_POLICIES:
         raise ValueError("empty_response_contract_invalid")
+    if response_form in {"empty_body", "empty_collection"} and semantic_outcome == "available":
+        raise ValueError("empty_response_available_conflict")
     if target_binding not in _TARGET_BINDINGS:
         raise ValueError("target_binding_invalid")
     for name, period in (("source_reported_period", source_reported_period), ("requested_period", requested_period)):
@@ -146,6 +161,15 @@ def observe_source_attempt(
     for name, count in (("previous_row_count", previous_row_count), ("current_row_count", current_row_count)):
         if count is not None and (type(count) is not int or count < 0):
             raise ValueError(f"{name}_invalid")
+
+    if semantic_outcome in {"not_yet_available", "currentness_unknown"}:
+        response_is_adjudicable = (
+            transport_outcome != "transport_failure"
+            and (http_status is None or 200 <= http_status < 300)
+            and contract_outcome == "valid"
+        )
+        if not response_is_adjudicable:
+            raise ValueError("semantic_outcome_requires_valid_response")
 
     facts: list[str] = []
     if http_status == 429:
