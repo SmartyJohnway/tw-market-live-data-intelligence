@@ -33,6 +33,25 @@ AUTHORITY_ID = "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R3_SEMANTIC_CANDIDATE_RECO
 LIMITS = {"daily_max": 1, "archive_index_max": 4, "archive_detail_max": 1, "total_max": 6}
 
 
+def classify_daily_failure(failure: str | None, diagnostics: dict) -> str:
+    """Call provider drift only when retained bounded facts prove contradiction."""
+    if not failure:
+        return "INCOMPLETE_AUTHORITY"
+    if "semantic_conflict" in failure or "status_conflict" in failure:
+        signals = set(diagnostics.get("page_status_signals", []))
+        candidate_dates = {tuple(item.get("bound_date_candidates", [])) for item in diagnostics.get("candidates", [])
+                           if item.get("bound_date_candidates")}
+        candidate_statuses = {item.get("normalized_status_semantics") or item.get("status_signal")
+                              for item in diagnostics.get("candidates", [])
+                              if item.get("normalized_status_semantics") not in (None, "UNRESOLVED", "CONFLICTING_PAGE_STATUS")
+                              or item.get("status_signal") not in (None, "UNRESOLVED")}
+        proven_conflict = (len(signals) > 1 or len(candidate_dates) > 1 or len(candidate_statuses) > 1)
+        return "DGPA_SOURCE_DRIFT_OBSERVED" if proven_conflict else "R3_PARSER_CONTRACT_INSUFFICIENT"
+    if "semantic_ambiguity" in failure or "subject_ambiguous" in failure:
+        return "R3_PARSER_CONTRACT_INSUFFICIENT"
+    return "INCOMPLETE_AUTHORITY"
+
+
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
@@ -254,12 +273,8 @@ def execute_authorized_r3() -> dict:
             "closure_authority_complete": True, "coverage_dates": ["2026-10-16", "2026-10-15"]})
     if complete:
         disposition = "PASS_CLOSURE_AUTHORITY_COMPLETE"
-    elif failure and ("semantic_conflict" in failure or "status_conflict" in failure) and (
-            candidate_diagnostics.get("canonical_candidate_count", 0) > 1
-            or len(candidate_diagnostics.get("page_status_signals", [])) > 1):
-        disposition = "DGPA_SOURCE_DRIFT_OBSERVED"
-    elif failure and ("semantic_ambiguity" in failure or "subject_ambiguous" in failure):
-        disposition = "R3_PARSER_CONTRACT_INSUFFICIENT"
+    elif failure:
+        disposition = classify_daily_failure(failure, candidate_diagnostics)
     elif failure or archive_failure:
         disposition = "INCOMPLETE_AUTHORITY"
     else:

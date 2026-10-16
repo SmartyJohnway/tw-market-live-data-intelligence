@@ -1,0 +1,21 @@
+{
+  "B01_B05_performed": false,
+  "P01_P18_performed": false,
+  "TWSE_T86_performed": false,
+  "a6_market_authority_consumed": false,
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R3_SEMANTIC_CANDIDATE_RECONCILIATION",
+  "closure_authority_complete": false,
+  "counts": {
+    "archive_detail": 0,
+    "archive_index": 0,
+    "daily": 1,
+    "total": 1
+  },
+  "disposition": "R3_PARSER_CONTRACT_INSUFFICIENT",
+  "evaluation_time": "2026-10-16T11:38:22+08:00",
+  "failure": "dgpa_daily_status_conflict",
+  "initial_runner_disposition": "DGPA_SOURCE_DRIFT_OBSERVED",
+  "p17_trade_date": null,
+  "post_run_adjudication": "bounded candidate diagnostics do not prove mutually exclusive provider status facts; parser conflict remains unresolved",
+  "run_id": "l3-a6-p0-r3-20261016T062632Z"
+}

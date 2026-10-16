@@ -1,0 +1,66 @@
+{
+  "files": [
+    {
+      "path": "acquisition_ledger.json",
+      "sha256": "f99f772f92dde99d722f2d34415c02b9af48f0f0a33050272fb4702719ebc936",
+      "size_bytes": 933
+    },
+    {
+      "path": "archive_window.json",
+      "sha256": "47f5616db916ef6972ebc6586aa3f1cd79388920358190b17fa4a4f657b5d36e",
+      "size_bytes": 329
+    },
+    {
+      "path": "authority_consumed.json",
+      "sha256": "6a855035920f3ce1108e62fdccf2e0f830d83bbb6ff728a41e393f447f8a621d",
+      "size_bytes": 252
+    },
+    {
+      "path": "authority_reservation.json",
+      "sha256": "0bd104322b71fa9067a166ed93da718c42dee0511b72afdef420c88aa790e4f6",
+      "size_bytes": 485
+    },
+    {
+      "path": "closure_completeness.json",
+      "sha256": "aab285aa7c732c02a380c78972627d46c26e618fac3ec2237dbb83c7b9755b94",
+      "size_bytes": 479
+    },
+    {
+      "path": "daily_status_2026-10-16.json",
+      "sha256": "e68b984662c1f792159cb72de9da19d9a816f8e540322be5f401494c18ad04c3",
+      "size_bytes": 753
+    },
+    {
+      "path": "offline_review.json",
+      "sha256": "71bbb0c92a3c230045abb93f91767b0ec023365fab5a1152bc1605840ee40635",
+      "size_bytes": 1275
+    },
+    {
+      "path": "post_run_review.json",
+      "sha256": "8f80d796fb260c6becc8cb4f189d4424bb46b136a28d4ca6604e82dcb3fec008",
+      "size_bytes": 946
+    },
+    {
+      "path": "r3_plan.json",
+      "sha256": "7efb4737fe96d5dce9602f9143527d6c7f3a2043a5056c1c9491448146413ac5",
+      "size_bytes": 1683
+    },
+    {
+      "path": "result.json",
+      "sha256": "8ac816c7e2c92e77e6b02ceb5b57225a761ef85a9fdf217820e13d5d37e6e3cb",
+      "size_bytes": 817
+    },
+    {
+      "path": "runner_initial_result.json",
+      "sha256": "f87258131d0c9d77689ea997d06296023fb2821194cd5ab6e50ae18b6ddb593e",
+      "size_bytes": 598
+    },
+    {
+      "path": "subject_candidate_diagnostics.json",
+      "sha256": "55ccf9782ca1004f05d79bb0c991f513aea0df28c35a475ae199012029df82e2",
+      "size_bytes": 2890
+    }
+  ],
+  "manifest_sha256": "1491d55fd05cb3d94fdd73c381308a94e19ed145b8b57f5a6b5e1f209501fd7a",
+  "run_id": "l3-a6-p0-r3-20261016T062632Z"
+}

@@ -1,0 +1,21 @@
+{
+  "adjudication": "UNRESOLVED",
+  "failure": "dgpa_daily_status_conflict",
+  "request": {
+    "completed_at": "2026-10-16T06:27:11Z",
+    "content_type": "text/html",
+    "effective_url": "https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31",
+    "elapsed_ms": 124,
+    "hostname": "www.dgpa.gov.tw",
+    "http_status": 200,
+    "kind": "daily",
+    "purpose": "R3_DAILY_SINGLE_OBSERVATION",
+    "requested_url": "https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31",
+    "response_byte_count": 15037,
+    "response_sha256": "c641edde40a491dd439ea353117a0eb95dd8d48edcea2c0000e5dd145c808ca4",
+    "sequence": 1,
+    "started_at": "2026-10-16T06:27:11Z",
+    "transport_outcome": "http_response"
+  },
+  "target_date": "2026-10-16"
+}

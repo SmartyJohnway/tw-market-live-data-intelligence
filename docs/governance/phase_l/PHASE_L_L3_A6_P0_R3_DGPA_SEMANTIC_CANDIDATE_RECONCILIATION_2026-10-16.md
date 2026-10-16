@@ -52,6 +52,34 @@ recorded in the corresponding `acceptance_runs/l3-a6-p0-r3-*` artifacts. This
 candidate does not authorize market-source recertification. A6 market authority
 remains unconsumed; P01-P18, B01-B05 and T86 remain outside this run.
 
+## R3 observation and bounded adjudication
+
+The one authorized daily request returned HTTP 200 with 15,037 bytes and response
+SHA-256 `c641edde40a491dd439ea353117a0eb95dd8d48edcea2c0000e5dd145c808ca4`.
+Candidate diagnostics retained three raw subject matches and four semantic
+blocks. The blocks included the dated status title, a table-header phrase, and a
+large page container with update/provenance/no-notice text. The parser stopped
+with `dgpa_daily_status_conflict`; archive-index/detail requests were therefore
+zero and the I3 resolver was not called.
+
+The bounded diagnostics did not establish mutually exclusive provider status
+facts: they showed only `NO_CLOSURE_NOTICE` among the Taipei/page status signals,
+while also exposing an unbound table-header subject candidate and differing
+presentation scopes. The initial runner assigned `DGPA_SOURCE_DRIFT_OBSERVED`
+from candidate count alone. Post-run review corrected this because repeated or
+unbound candidates alone are not evidence of provider contradiction. The
+adjudicated R3 disposition is `R3_PARSER_CONTRACT_INSUFFICIENT`; this does not
+claim provider drift. The exact initial runner result is retained alongside the
+final bounded adjudication in the run artifacts. No additional source request
+was made after the authority was consumed.
+
+R3 result: one daily GET, zero archive GETs, zero detail GETs; closure authority
+is incomplete and P17 remains unresolved. The existing resolver and P0 calendar
+remain unchanged. P01-P18, B01-B05, and T86 request counts are zero; Security
+Master, Watchlist, Result/Audit, Catalog, and Route mutations are zero. R3
+authority is consumed; A6 market authority remains unconsumed. Independent
+review and Owner acceptance remain pending.
+
 ## Containment
 
 No P0/R1/R2 evidence is rewritten. No TWSE calendar refetch, I3 resolver change,

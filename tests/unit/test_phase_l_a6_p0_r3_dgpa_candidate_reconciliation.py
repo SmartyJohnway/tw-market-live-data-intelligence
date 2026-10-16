@@ -2,6 +2,7 @@ import pytest
 
 from scripts.phase_l_a6_p0_r1_dgpa_closure_authority import daily_candidate_diagnostics, parse_daily_status
 from scripts.phase_l_a6_p0_r1_dgpa_closure_authority import _DailyStatusError
+from scripts.run_phase_l_l3_a6_p0_r3_dgpa_semantic_reobservation import classify_daily_failure
 
 FETCHED = "2026-10-16T13:00:00+08:00"
 
@@ -85,6 +86,18 @@ def test_fallback_diagnostics_expose_mutually_exclusive_status_facts():
     diagnostics = daily_candidate_diagnostics(body, "text/html; charset=utf-8")
     assert diagnostics["page_status_signals"] == ["NO_CLOSURE_NOTICE", "TAIPEI_MORNING_CLOSURE"]
     assert diagnostics["candidates"][0]["normalized_status_semantics"] == "CONFLICTING_PAGE_STATUS"
+
+
+def test_repeated_or_unbound_candidates_alone_are_not_provider_drift():
+    diagnostics = {"canonical_candidate_count": 2, "page_status_signals": ["NO_CLOSURE_NOTICE"],
+        "candidates": [{"bound_date_candidates": ["2026-10-16"], "normalized_status_semantics": "NO_CLOSURE_NOTICE"},
+                       {"bound_date_candidates": [], "normalized_status_semantics": "NO_CLOSURE_NOTICE"}]}
+    assert classify_daily_failure("dgpa_daily_status_conflict", diagnostics) == "R3_PARSER_CONTRACT_INSUFFICIENT"
+
+
+def test_only_mutually_exclusive_retained_facts_prove_source_drift():
+    diagnostics = {"page_status_signals": ["NO_CLOSURE_NOTICE", "TAIPEI_MORNING_CLOSURE"], "candidates": []}
+    assert classify_daily_failure("dgpa_daily_status_conflict", diagnostics) == "DGPA_SOURCE_DRIFT_OBSERVED"
 
 
 def test_r3_runner_is_one_daily_no_retry_and_same_host_bounded():
