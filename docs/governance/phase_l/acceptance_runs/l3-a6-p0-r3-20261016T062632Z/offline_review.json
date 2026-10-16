@@ -1,0 +1,30 @@
+{
+  "A6_market_authority_consumed": false,
+  "B01_B05": 0,
+  "P01_P18": 0,
+  "T86": 0,
+  "calendar_normalized_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+  "external_socket_attempts": 0,
+  "focused_tests": {
+    "command": "python -m pytest tests/unit/test_phase_l_a6_p0_r3_dgpa_candidate_reconciliation.py tests/unit/test_phase_l_a6_p0_r2_dgpa_daily_parser.py tests/unit/test_phase_l_a6_p0_r1_dgpa_closure_authority.py -q",
+    "result": "55 passed"
+  },
+  "git_diff_check": "PASS",
+  "guard": "tests/helpers/phase_j_j2_r1_network/sitecustomize.py",
+  "integrated_tests": {
+    "command": "guarded R3/R2/R1/P0/I3/DGPA/NCDR/A5/L3-A1-A4/runtime/exact-six deterministic subset",
+    "result": "289 passed"
+  },
+  "network_access": false,
+  "parser_sha256": "70202c1e3d4218c21761e40536400a5c7e0a030bc6ba71a28eb4bbae330ce7bd",
+  "py_compile": "PASS",
+  "resolver_sha256": "075abdbb9a5cb961cb7054583aeebbe3f8722bb9c570577037396db85dc0f010",
+  "status": "PASS_PRELIMINARY_OFFLINE_GATE",
+  "validators": {
+    "phase_h_v3_contracts": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_exact_six": "PASS (tool_count=6)",
+    "source_registry": "PASS",
+    "v1_public_contracts": "PASS (tool_count=6)"
+  }
+}
