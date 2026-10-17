@@ -181,4 +181,3 @@ def test_cors_is_not_an_access_control_decision_for_read_routes():
     response = TestClient(app).get("/api/health", headers={"Origin": "https://attacker.example"})
     assert response.status_code == 200
     assert "access-control-allow-origin" not in response.headers
-

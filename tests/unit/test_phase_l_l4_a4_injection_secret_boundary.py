@@ -162,4 +162,3 @@ def test_watchlist_public_error_uses_code_and_safe_details_only():
     assert response.detail["error"]["message"] == "WATCHLIST_STORAGE_CORRUPT"
     assert response.detail["error"]["details"] == {"field": "name"}
     assert "TEST-SECRET-CANARY" not in encoded
-
