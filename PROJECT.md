@@ -2,7 +2,7 @@
 
 ## Current Phase L boundary (2026-10-17)
 
-L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Its technical exit passed under `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6's accepted live disposition remains PARTIAL (17 transport-degraded logical sources, six HTTP-200 sources, zero deterministic contract drift proven); its one-shot authority is consumed and a second run is prohibited. L4 is STARTED. L4-A0 security/resource inventory is COMPLETE under `L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_COMPLETE`. L4-A1+ and L5-L7 are NOT AUTHORIZED.
+L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Its technical exit passed under `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6's accepted live disposition remains PARTIAL (17 transport-degraded logical sources, six HTTP-200 sources, zero deterministic contract drift proven); its one-shot authority is consumed and a second run is prohibited. L4 is STARTED. L4-A0 is OWNER-ACCEPTED FOR MERGE under `L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`. L4-A1 is AUTHORIZED AFTER A0 MERGE; L4-A2+ and L5-L7 are NOT AUTHORIZED.
 
 Roadmap Phase J and Phase K are **COMPLETE**. Phase K closed under
 `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with three evaluated hosts, two

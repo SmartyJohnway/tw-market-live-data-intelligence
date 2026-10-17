@@ -84,3 +84,11 @@ L3 remains Owner-closed. L4 is STARTED and L4-A0 inventory is complete upon this
 ### Offline test limitation recorded
 
 The focused boundary suite completed with 86 passed and 1 skipped. An additional Mode C test module run completed with 92 passed, 1 skipped, and 2 failed: the historical v1 Result/Audit semantic-tamper tests expected v1 outputs that their helper did not materialize under the current preferred Result version. This was not repaired or represented as passing. The result does not change the PARTIAL/GAP classifications for aggregate output and artifact boundaries. Full details are in the run's offline_review.json.
+
+## Owner Acceptance
+
+Disposition: `L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`.
+
+Authority: `USER_CHAT_2026-10-17_PHASE_L_L4_A0_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`.
+
+The Owner accepts the inventory for merge. The reviewed inventory remains exactly 33 items: 7 COVERED, 19 PARTIAL, 3 GAP, 2 DEFERRED_VALUE, and 2 NOT_APPLICABLE; 22 PARTIAL/GAP findings consist of 15 HARDENING_REQUIRED, 7 TEST_COVERAGE_GAP, and 0 BLOCKER. The two historical Mode-C tamper-test failures remain disclosed evidence limitations and are not represented as passing. No implementation, test, schema, or config change was made in this closure.

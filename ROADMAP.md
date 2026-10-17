@@ -1427,9 +1427,9 @@ L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following
 `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6's accepted
 live disposition remains PARTIAL (17 transport-degraded sources, six HTTP-200
 sources, zero deterministic contract drift proven); its one-shot authority is
-consumed and a second run is prohibited. L4 is STARTED. L4-A0 inventory is
-COMPLETE under `L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_COMPLETE`; L4-A1+
-and L5-L7 are NOT AUTHORIZED. See
+consumed and a second run is prohibited. L4 is STARTED. L4-A0 inventory is OWNER-ACCEPTED FOR MERGE under
+`L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`. L4-A1 is
+authorized after A0 merge; L4-A2+ and L5-L7 are NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_2026-10-17.md`.
 
 ### Historical entry - L3 source drift hardening after A7 technical exit review (2026-10-17)
