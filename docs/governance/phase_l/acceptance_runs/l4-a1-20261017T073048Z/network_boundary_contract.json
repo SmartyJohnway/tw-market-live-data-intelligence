@@ -1,0 +1,25 @@
+{
+  "authority": "USER_CHAT_2026-10-17_PHASE_L_L4_A1_NETWORK_EXPOSURE_REQUEST_SURFACE_HARDENING_AUTHORIZATION",
+  "base_head": "6c0759b384516d0a933a341cb8de4b9ef6c2cc2b",
+  "base_tree": "aeee7aaa8848cc5c7e29129991d76e245de43cb2",
+  "classification_rule": "Parse ASGI client and server hosts as IP addresses; reject if any parseable address is not loopback.",
+  "cors_is_network_access_control": false,
+  "forwarded_headers_authority": false,
+  "ignored_for_access_decision": [
+    "Forwarded",
+    "Host",
+    "Origin",
+    "X-Forwarded-For",
+    "X-Real-IP"
+  ],
+  "implementation": "server/local_network_boundary.py::LocalNetworkBoundaryMiddleware",
+  "local_relay_residual": "A local proxy, SSH forward, or relay that presents a genuine loopback peer is not distinguishable by socket-origin enforcement; local-caller trust/auth is deferred to L4-A4.",
+  "rejection": {
+    "cache_control": "no-store",
+    "error": "local_service_loopback_required",
+    "http_status": 403
+  },
+  "run_id": "l4-a1-20261017T073048Z",
+  "scope_limit": "Network-origin hardening only; no authentication, token, TLS, OS identity, or secret mechanism added.",
+  "synthetic_rule": "Non-IP ASGI identities do not themselves represent reachable sockets and may be accepted as in-process ASGI transport."
+}

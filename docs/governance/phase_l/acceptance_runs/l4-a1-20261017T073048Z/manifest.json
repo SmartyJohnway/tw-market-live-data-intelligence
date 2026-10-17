@@ -1,0 +1,31 @@
+{
+  "files": [
+    {
+      "bytes": 1309,
+      "path": "network_boundary_contract.json",
+      "sha256": "44c1d6d3fb397334a7d80994f3895e8279611d3bc7f7e09e4cc1064275c81bd6"
+    },
+    {
+      "bytes": 878,
+      "path": "request_surface_matrix.json",
+      "sha256": "cc8a4f6db9210a018ff57c101d718ac6fc4898467b677677e4c0c51747504015"
+    },
+    {
+      "bytes": 4790,
+      "path": "threat_regression_matrix.json",
+      "sha256": "e879f9dd9b27c94fb9ac67754c95661a7665e0e79ba0c5b0a0fbaee77bdc42f4"
+    },
+    {
+      "bytes": 1906,
+      "path": "offline_review.json",
+      "sha256": "be52fa661f9ddb40299a96d121fd713f58527ff14a55ed3eb15413ffa361e8dc"
+    },
+    {
+      "bytes": 523,
+      "path": "preflight_result.json",
+      "sha256": "693973159675c0684fbd74143748f167914d61c4c7ad81a63f4c089b8afcfe7c"
+    }
+  ],
+  "run_id": "l4-a1-20261017T073048Z",
+  "schema": "phase_l_a1_evidence_manifest.v1"
+}

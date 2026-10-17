@@ -7,6 +7,7 @@ import json
 import time
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
+from server.local_network_boundary import LocalNetworkBoundaryMiddleware
 from server.unified_workbench_router import router as unified_workbench_router
 from server.unified_mcp import LOCAL_SERVICE_CONTRACT_VERSION
 from server.operational_diagnostics import (
@@ -97,6 +98,11 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+
+# CORS is browser policy, not network access control. Enforce socket-origin
+# loopback at the application boundary for every HTTP route, including routes
+# mounted outside the Unified API.
+app.add_middleware(LocalNetworkBoundaryMiddleware)
 
 MANUAL_PROBE_CONFIRMATION_DESCRIPTION = (
     "Set to true to acknowledge this is a manual legacy probe surface. "
