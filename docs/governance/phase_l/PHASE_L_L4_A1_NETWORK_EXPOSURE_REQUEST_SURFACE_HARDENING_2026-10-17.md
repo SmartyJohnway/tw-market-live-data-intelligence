@@ -57,3 +57,11 @@ Source registry, Portable Catalog sync, runtime/Skill exact-six, V1 public contr
 A1 is a technical candidate only; Owner acceptance is pending. L4-A2+ and L5-L7 remain unauthorized. No provider acquisition, external network attempt, authentication system, or broader security/resource change was introduced.
 
 Run artifact directory: `docs/governance/phase_l/acceptance_runs/l4-a1-20261017T073048Z/`.
+
+## Owner Acceptance
+
+Disposition: `L4_A1_NETWORK_EXPOSURE_REQUEST_SURFACE_HARDENING_OWNER_ACCEPTED_FOR_MERGE`.
+
+Authority: `USER_CHAT_2026-10-17_PHASE_L_L4_A1_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`.
+
+Owner accepts the reviewed A1 network-origin hardening for merge. NET-002 network-origin dimension remains `COVERED`; local relay, reverse-proxy caller identity, and local-caller authentication remain `DEFERRED_TO_L4_A4`. External network attempts remain zero. The separately observed MCP safe-surface exploratory failure remains disclosed as `mcp_adapter_internal_error`; it is not represented as passing and is not repaired in this closure.
