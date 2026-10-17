@@ -105,3 +105,28 @@ concurrency architecture, or provider acquisition was introduced.
 Disposition: `L4_A3_INPUT_OUTPUT_ARTIFACT_BOUND_ENFORCEMENT_PASS`. This is a
 technical result only; Owner acceptance is pending. L4-A4+ and L5-L7 remain
 unauthorized.
+
+## 8. Owner acceptance for merge
+
+`L4_A3_INPUT_OUTPUT_ARTIFACT_BOUND_ENFORCEMENT_OWNER_ACCEPTED_FOR_MERGE`
+
+Authority: `USER_CHAT_2026-10-17_PHASE_L_L4_A3_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`
+
+Owner accepts the A3 result for merge with these dispositions preserved:
+
+```text
+IN-001 = COVERED
+IN-003 input = COVERED
+IN-004 = COVERED
+IN-005 = COVERED
+OUT-001 = COVERED
+OUT-002 = COVERED
+OUT-003 = COVERED
+LOAD-002 serialized dimension = COVERED
+LOAD-003 serialized dimension = COVERED
+```
+
+The acceptance does not convert serialized bounds into resource-capacity
+acceptance. Cumulative SQLite/revision growth, peak memory, disk
+capacity/retention, concurrency, and large-load performance remain L4-A6
+residuals.
