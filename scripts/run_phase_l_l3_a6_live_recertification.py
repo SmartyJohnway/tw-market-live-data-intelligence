@@ -400,6 +400,45 @@ def _classify_result(value: Any, *, empty_ok: bool = False) -> str:
     return "CONFORMING"
 
 
+def _apply_transport_precedence(
+    provisional_verdict: str,
+    contract_outcome: str,
+    semantic_outcome: str,
+    bounded_detail: Mapping[str, Any],
+    logical_dispatch_records: list[Mapping[str, Any]],
+) -> tuple[str, str, str, str]:
+    """Prefer observed physical transport facts over adapter error labels.
+
+    This is a pure classification helper: it does not inspect clocks, payloads,
+    or perform acquisition. Contract drift is retained only when a successful
+    HTTP response exists in this logical source's dispatch records.
+    """
+    del bounded_detail  # Kept in the contract for source-specific future evidence.
+    records = logical_dispatch_records
+    all_transport_failed = bool(records) and all(
+        row.get("transport_outcome") == "transport_failure" and row.get("http_status") is None
+        for row in records
+    )
+    if all_transport_failed:
+        return "TRANSPORT_OR_HTTP_DEGRADED", "not_evaluated", "source_failed", "transport_failure"
+
+    successful_response = any(
+        row.get("transport_outcome") == "http_response"
+        and isinstance(row.get("http_status"), int)
+        and 200 <= row["http_status"] < 300
+        for row in records
+    )
+    if provisional_verdict == "CONTRACT_DRIFT_OBSERVED" and not successful_response:
+        projection = "http_response" if any(row.get("http_status") is not None for row in records) else "unknown"
+        return "TRANSPORT_OR_HTTP_DEGRADED", "not_evaluated", "source_failed", projection
+
+    projection = "http_response" if any(row.get("http_status") is not None for row in records) else (
+        "transport_failure" if records and all(row.get("transport_outcome") == "transport_failure" for row in records)
+        else "unknown"
+    )
+    return provisional_verdict, contract_outcome, semantic_outcome, projection
+
+
 def _validate_reservation(path: Path | None, *, repo: Path = ROOT, run_dir: Path | None = None) -> dict[str, Any]:
     if path is None or not path.is_file():
         raise DispatchBlocked("A6_LIVE_RESERVATION_NOT_FINALIZED")
@@ -570,9 +609,12 @@ def run(*, mode: str, run_dir: Path, reservation: Path | None = None,
                         verdict, contract, semantic = "CONTRACT_DRIFT_OBSERVED", "invalid", "source_failed"
                     elif primary_degraded:
                         verdict, contract, semantic = "TRANSPORT_OR_HTTP_DEGRADED", "not_evaluated", "source_failed"
+                records = controller.dispatch_ledger[before:]
+                verdict, contract, semantic, transport_projection = _apply_transport_precedence(
+                    verdict, contract, semantic, detail, records
+                )
                 if verdict not in VERDICTS:
                     raise DispatchBlocked("a6_source_verdict_invalid")
-                records = controller.dispatch_ledger[before:]
                 status = records[-1].get("http_status") if records else None
                 retry_raw = records[-1].get("retry_after_raw") if records else None
                 response_empty = detail.get("row_count") == 0
@@ -580,7 +622,7 @@ def run(*, mode: str, run_dir: Path, reservation: Path | None = None,
                     semantic = "no_evidence_in_covered_scope"
                 try:
                     observation = observe_source_attempt(source_contract_id=item.source_contract_id, observed_at=_now(), http_status=status,
-                        retry_after=retry_raw, transport_outcome="http_response" if status is not None else "unknown",
+                        retry_after=retry_raw, transport_outcome=transport_projection,
                         contract_outcome=contract, semantic_outcome=semantic, response_form="empty_collection" if response_empty else "unknown",
                         empty_response_policy="allowed" if response_empty else "unknown",
                         target_binding="absent" if detail.get("target_rows") == 0 else "unknown",

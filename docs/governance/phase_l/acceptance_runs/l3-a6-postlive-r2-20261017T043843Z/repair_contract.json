@@ -1,0 +1,13 @@
+{
+  "entry_head": "2c0a0cc084fa4dc2169a75c38fbd0fa9ef0e435b",
+  "entry_tree": "45cae02514710a8bdf7a0ad735f48e0e1c5710b8",
+  "pure_helper": "_apply_transport_precedence",
+  "repair_target": "scripts/run_phase_l_l3_a6_live_recertification.py",
+  "rules": [
+    "all null-status transport_failure dispatches force TRANSPORT_OR_HTTP_DEGRADED/not_evaluated/source_failed/transport_failure",
+    "CONTRACT_DRIFT_OBSERVED requires at least one HTTP 2xx dispatch plus existing deterministic source-specific failure",
+    "degraded primary remains degraded after successful governed alternate",
+    "successful primary deterministic drift remains drift after alternate",
+    "no transport, provider, retry, sleep, polling, scheduler, route, or fallback implementation added"
+  ]
+}

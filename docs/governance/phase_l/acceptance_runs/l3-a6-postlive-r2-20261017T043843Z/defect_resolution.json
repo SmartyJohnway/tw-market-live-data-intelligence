@@ -1,0 +1,10 @@
+{
+  "D1": "FIXED: P01 zero observations with two failures resolves to transport degraded",
+  "D2": "FIXED: P12 source_failed:transport_failure cannot become drift absent HTTP 2xx",
+  "D3": "FIXED: P13-P15 transport failures resolve to transport degraded",
+  "D4": "FIXED: P18 AcquisitionError transport_error is overridden by ledger transport fact",
+  "D5": "FIXED: B01-B05 null-status network_error resolves to transport degraded",
+  "D6": "FIXED: all-transport-failure A5 projection passes transport_failure/null/not_evaluated/source_failed",
+  "degraded_primary_alternate_history_preserved": true,
+  "successful_http_200_drift_preserved": true
+}
