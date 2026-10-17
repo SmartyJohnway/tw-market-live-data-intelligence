@@ -36,7 +36,10 @@ def test_bounded_upstream_error_preserves_only_governed_fields():
         payload={"error": "mode_c_execution_not_finalized", "trace_id": "trace", "secret": "do-not-leak", "path": "C:/secret"},
     ))
     assert result.isError is True
-    assert result.structuredContent == {"http_status": 409, "error": "mode_c_execution_not_finalized", "trace_id": "trace"}
+    assert result.structuredContent["http_status"] == 409
+    assert result.structuredContent["error"] == "mode_c_execution_not_finalized"
+    assert result.structuredContent["trace_id"] != "trace"
+    assert len(result.structuredContent["trace_id"]) == 36
     assert "secret" not in result.content[0].text
     assert "C:/" not in result.content[0].text
 

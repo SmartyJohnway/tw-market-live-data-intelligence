@@ -1,0 +1,11 @@
+{
+  "schema": "phase_l_l4_a4_hostile_content_regression_matrix.v1",
+  "cases": [
+    {"surface": "source_and_handoff_text", "hostile_text_remains_data": true, "followup_tool_dispatch": false},
+    {"surface": "tool_arguments", "unrecognized_tool_or_fields_rejected": true},
+    {"surface": "service_destination", "attacker_url_can_change_base_url": false}
+  ],
+  "downstream_model_interpretation_guaranteed": false,
+  "finding_disposition": "COVERED_FOR_TW_MARKET_CONTROL_PLANE_INVARIANT",
+  "downstream_model_cognition_claimed": false
+}

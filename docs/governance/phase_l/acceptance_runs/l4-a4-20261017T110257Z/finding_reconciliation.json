@@ -1,0 +1,10 @@
+{
+  "schema": "phase_l_l4_a4_finding_reconciliation.v1",
+  "findings": [
+    {"id": "INJ-001", "disposition": "COVERED", "reason": "Hostile content cannot become TW-Market control-plane authority; downstream model cognition is not claimed."},
+    {"id": "AUTH-001", "disposition": "COVERED", "reason": "Existing scoped authorization/execute-once and browser-origin controls remain authoritative; same-user local-process trust is explicit and no individual authentication is claimed."},
+    {"id": "AUTH-002", "disposition": "COVERED", "reason": "Identified reachable legacy M5K/M7G acquisition routes return 410 and do not call executors; legacy probe routes remain disabled."},
+    {"id": "SEC-002", "disposition": "COVERED", "reason": "Active inventoried runtime secret-exposure outputs pass deterministic canaries; no claim is made for future or uninspected feature-specific paths."}
+  ],
+  "a1_mcp_safe_surface_debt": "RESOLVED_AS_TEST_HELPER_DRIFT"
+}

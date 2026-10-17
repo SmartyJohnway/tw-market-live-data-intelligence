@@ -1,0 +1,8 @@
+{
+  "schema": "phase_l_l4_a4_legacy_execution_surface_matrix.v1",
+  "routes": [
+    {"route": "/api/m5k/live-observation/execute", "status": 410, "executor_imported_by_app": false, "executor_called": false},
+    {"route": "/api/m7g/controlled-refresh/execute", "status": 410, "executor_imported_by_app": false, "executor_called": false}
+  ],
+  "historical_implementations_retained_outside_app_route": true
+}

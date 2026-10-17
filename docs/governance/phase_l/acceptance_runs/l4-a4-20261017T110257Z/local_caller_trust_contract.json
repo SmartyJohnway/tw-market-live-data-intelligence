@@ -1,0 +1,8 @@
+{
+  "schema": "phase_l_l4_a4_local_caller_trust_contract.v1",
+  "same_user_local_process": "TRUSTED_OPERATOR_BOUNDARY",
+  "per_user_os_principal_binding": "NOT_PROVIDED",
+  "remote_browser_cross_origin_privileged_request": "REJECTED",
+  "local_proxy_or_relay_identity": "NOT_ESTABLISHED_BY_ORIGIN_CHECKS",
+  "future_identity_or_relay_controls": "OUTSIDE_A4_SCOPE"
+}

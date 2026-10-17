@@ -1,0 +1,24 @@
+{
+  "schema": "phase_l_l4_a4_offline_review.v1",
+  "entry_head": "a23c9aeb48c120f1fd5c1d2fc168f86c5ada59d6",
+  "entry_tree": "0f15cd23fd5564a5d9c714cce7847a5a7eaa3acf",
+  "provider_requests": 0,
+  "external_socket_attempts": 0,
+  "focused_gate": {"command_scope": "A4 control-plane, injection/secret, lifecycle, and MCP safe-surface tests", "passed": 45, "failed": 0, "external_socket_attempts": 0},
+  "integrated_gate": {"collected": 321, "passed": 320, "skipped": 1, "failed": 0, "external_socket_attempts": 0, "loopback_socket_attempts": 143},
+  "skip_reason": "Existing integration case requires Git-ignored local candidate; retained as skip and not represented as passing.",
+  "known_prior_test_debt": "A0 Mode-C historical semantic-tamper tests were not represented as passing; they were outside this bounded gate.",
+  "finding_dispositions": {"INJ-001": "COVERED", "AUTH-001": "COVERED", "AUTH-002": "COVERED", "SEC-002": "COVERED"},
+  "validators": {
+    "source_registry": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_exact_six": "PASS",
+    "v1_public_contracts_exact_six": "PASS",
+    "phase_h_v3": "PASS",
+    "compileall": "PASS",
+    "changed_file_py_compile": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "product_surface_changes": {"mcp_tools": 0, "schema": 0, "catalog": 0, "route": 0, "capability": 0, "source_registry": 0, "provider_routes": 0},
+  "disposition": "L4_A4_PROMPT_TOOL_INJECTION_AUTHORIZATION_SECRET_BOUNDARY_PASS"
+}

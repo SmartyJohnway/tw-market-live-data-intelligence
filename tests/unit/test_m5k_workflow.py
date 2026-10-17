@@ -39,12 +39,13 @@ def test_live_observation_invalid_watchlist_fails_closed_without_network():
     assert result["governance"]["promote_to_m5f"] is False
 
 
-def test_fastapi_m5k_endpoints_are_offline_until_execute_confirmation():
+def test_fastapi_m5k_legacy_execution_route_is_disabled():
     r = client.get("/api/m5k/watchlist/default")
     assert r.status_code == 200
     assert r.json()["validation"]["valid"] is True
     no_confirm = client.post("/api/m5k/live-observation/execute", json=r.json()["content"])
-    assert no_confirm.status_code == 400
+    assert no_confirm.status_code == 410
+    assert no_confirm.json()["detail"]["error"] == "legacy_live_observation_execution_disabled"
     handoff = client.post("/api/m5k/conversation/handoff", json=r.json()["content"])
     assert handoff.status_code == 200
     assert handoff.json()["schema_version"] == "m5k_conversation_handoff.v1"

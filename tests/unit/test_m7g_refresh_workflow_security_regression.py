@@ -56,24 +56,16 @@ def test_runner_exception_fail_closed_without_raw_traceback():
     assert 'Traceback' not in dumped
 
 
-def test_endpoint_runner_exception_returns_http_200_safe_structured_result(monkeypatch):
-    def failing_execute(*, request_package, operator_execution_confirmation_phrase):
-        return execute_m7g_controlled_manual_refresh(
-            request_package=request_package,
-            operator_execution_confirmation_phrase=operator_execution_confirmation_phrase,
-            observation_runner=lambda _watchlist: (_ for _ in ()).throw(RuntimeError('simulated network failure')),
-        )
-    monkeypatch.setattr(server_main, '_m7g09_execute_controlled_refresh', failing_execute)
+def test_production_endpoint_never_enters_historical_m7g_executor(monkeypatch):
+    calls = []
+    monkeypatch.setattr(server_main, '_m7g09_execute_controlled_refresh', lambda **kwargs: calls.append(kwargs), raising=False)
     response = TestClient(server_main.app).post('/api/m7g/controlled-refresh/execute', json={
         'request_package': package(),
         'operator_execution_confirmation_phrase': EXECUTION_CONFIRMATION_PHRASE,
     })
-    assert response.status_code == 200
-    data = response.json()
-    assert data['execution_status'] in {'execution_failed_no_safe_artifact', 'execution_failed_safe_artifact_rejected', 'execution_failed_runner_exception'}
-    assert data['safe_artifact_returned'] is False
-    assert 'safe_context_artifact' not in data
-    assert data['raw_payload_exposed'] is False
+    assert response.status_code == 410
+    assert response.json()['detail']['error'] == 'legacy_controlled_refresh_execution_disabled'
+    assert calls == []
 
 
 def test_raw_forbidden_injection_stripped_from_execution_result_and_artifact():

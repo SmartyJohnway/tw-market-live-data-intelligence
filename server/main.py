@@ -1,5 +1,4 @@
 from fastapi import FastAPI, HTTPException, Request
-from scripts.ssl_policy import resolve_ssl_policy
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import sys
@@ -8,6 +7,7 @@ import time
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 from server.local_network_boundary import LocalNetworkBoundaryMiddleware
+from server.local_control_plane_boundary import LocalControlPlaneBoundaryMiddleware
 from server.unified_workbench_router import router as unified_workbench_router
 from server.unified_mcp import LOCAL_SERVICE_CONTRACT_VERSION
 from server.operational_diagnostics import (
@@ -98,6 +98,11 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+
+# Browser-origin checks protect privileged control-plane POSTs. CORS remains
+# browser policy only. The network-origin boundary is added last and stays
+# outermost, so remote socket evidence is rejected before this middleware.
+app.add_middleware(LocalControlPlaneBoundaryMiddleware)
 
 # CORS is browser policy, not network access control. Enforce socket-origin
 # loopback at the application boundary for every HTTP route, including routes
@@ -248,7 +253,7 @@ def _read_m5f_artifact(filename: str, *, text: bool = False):
     try:
         canonical = _load_validated_canonical(M5F_PACKAGE_DIR)
     except Exception as exc:
-        raise HTTPException(status_code=409, detail={"error": "m5f_package_validation_failed", "message": str(exc), "governance": _canonical_governance()})
+        raise HTTPException(status_code=409, detail={"error": "m5f_package_validation_failed", "governance": _canonical_governance()}) from exc
     governance = _canonical_governance(canonical)
     path = M5F_PACKAGE_DIR / filename
     source_path = path.relative_to(REPO_ROOT).as_posix() if path.is_relative_to(REPO_ROOT) else path.as_posix()
@@ -386,12 +391,22 @@ def _persistent_watchlist_error(error: _PersistentWatchlistError) -> HTTPExcepti
     elif error.code == "SECURITY_MASTER_NOT_INITIALIZED": status = 503
     elif error.code in {"WATCHLIST_VERSION_CONFLICT", "WATCHLIST_ENTRY_ALREADY_EXISTS", "WATCHLIST_CONFIRMATION_ALREADY_CONSUMED", "WATCHLIST_CONFIRMATION_MISMATCH", "WATCHLIST_CONFIRMATION_EXPIRED"}: status = 409
     else: status = 422
-    return HTTPException(status_code=status, detail={"error": {"code": error.code, "message": str(error), "details": error.details}})
+    safe_details = {
+        key: value for key, value in error.details.items()
+        if key in {"field", "limit", "current_version", "schema"}
+        and isinstance(value, (str, int, float, bool))
+    }
+    return HTTPException(status_code=status, detail={"error": {"code": error.code, "message": error.code, "details": safe_details}})
 
 
 def _watchlist_composition_error(error: _WatchlistEvidenceCompositionError) -> HTTPException:
     status = 409 if error.code == "WATCHLIST_SELECTION_STALE" else 422
-    return HTTPException(status_code=status, detail={"error": {"code": error.code, "message": str(error), "details": error.details}})
+    safe_details = {
+        key: value for key, value in error.details.items()
+        if key in {"field", "limit", "schema"}
+        and isinstance(value, (str, int, float, bool))
+    }
+    return HTTPException(status_code=status, detail={"error": {"code": error.code, "message": error.code, "details": safe_details}})
 
 
 @app.get("/api/watchlists")
@@ -479,7 +494,6 @@ def commit_persistent_watchlist_mutation(payload: dict):
 from scripts.m5k_common import (
     DEFAULT_WATCHLIST_PATH as M5K_DEFAULT_WATCHLIST_PATH,
     conversation_handoff_from_watchlist as _m5k_conversation_handoff,
-    execute_live_observation as _m5k_execute_live_observation,
     load_json as _m5k_load_json,
     read_latest_observation as _m5k_read_latest_observation,
     validate_watchlist as _m5k_validate_watchlist,
@@ -557,14 +571,11 @@ def post_m5k_plan_live_observation(watchlist: dict):
 
 
 @app.post("/api/m5k/live-observation/execute")
-def post_m5k_execute_live_observation(watchlist: dict, confirm_live_observation: bool = False, ssl_policy: str | None = None):
-    if confirm_live_observation is not True:
-        raise HTTPException(status_code=400, detail={"error": "missing_explicit_confirmation", "required_query": "confirm_live_observation=true"})
-    try:
-        selected_ssl_policy = resolve_ssl_policy(ssl_policy)
-    except ValueError as exc:
-        raise HTTPException(status_code=400, detail={"error": "invalid_ssl_policy", "message": str(exc)}) from exc
-    return _m5k_execute_live_observation(watchlist, write_latest=True, ssl_policy=selected_ssl_policy)
+def post_m5k_execute_live_observation():
+    raise HTTPException(
+        status_code=410,
+        detail={"error": "legacy_live_observation_execution_disabled"},
+    )
 
 # M5Q readonly source-health endpoints. These read local source-health artifacts only; they do not execute probes.
 from scripts.m5q_source_health import read_latest_source_health as _m5q_read_latest_source_health, source_health_schema as _m5q_source_health_schema
@@ -593,15 +604,11 @@ def get_source_health_history():
     rows = _history_summaries(root, "*.json", _source_health_summary)
     return {"content": {"runs": rows, "latest": rows[-1] if rows else None, "previous": rows[-2] if len(rows) > 1 else None}, "governance": _canonical_governance() | {"layer": "M5Q", "canonical": False, "network_calls": False, "raw_endpoint_payload_included": False}}
 
-# M7G-09 controlled manual refresh execution endpoint.
-from scripts.m7g_controlled_refresh_executor import execute_m7g_controlled_manual_refresh as _m7g09_execute_controlled_refresh
-
-
+# M7G-09 historical controlled-refresh implementation is retained for its
+# own tests, but is not reachable through the production FastAPI application.
 @app.post("/api/m7g/controlled-refresh/execute")
-def post_m7g_controlled_refresh_execute(payload: dict):
-    if not isinstance(payload, dict) or "request_package" not in payload:
-        return _m7g09_execute_controlled_refresh(request_package={}, operator_execution_confirmation_phrase="") | {"execution_status": "rejected_invalid_request_package", "errors": ["request_package_missing"]}
-    return _m7g09_execute_controlled_refresh(
-        request_package=payload.get("request_package"),
-        operator_execution_confirmation_phrase=str(payload.get("operator_execution_confirmation_phrase") or ""),
+def post_m7g_controlled_refresh_execute():
+    raise HTTPException(
+        status_code=410,
+        detail={"error": "legacy_controlled_refresh_execution_disabled"},
     )

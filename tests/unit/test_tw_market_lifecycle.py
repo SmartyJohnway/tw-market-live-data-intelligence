@@ -18,6 +18,33 @@ def test_missing_owner_is_not_running_and_stop_is_idempotent(tmp_path):
     assert result == {"status": "NOT_RUNNING", "reason_code": "NOT_RUNNING"}
 
 
+def test_status_and_doctor_never_echo_credentials_from_configured_service_url(tmp_path, monkeypatch):
+    secret_url = "http://user:TEST-PASSWORD-CANARY-44@127.0.0.1:8000/?token=TEST-TOKEN-CANARY-55"
+    monkeypatch.setenv("UNIFIED_MARKET_EVIDENCE_SERVICE_URL", secret_url)
+    monkeypatch.setattr(lifecycle, "_owner_path", lambda _port: tmp_path / "owner.json")
+    monkeypatch.setattr(lifecycle, "_read_owner", lambda _path: (None, None))
+    monkeypatch.setattr(lifecycle, "_owner_state", lambda *_args: "NOT_RUNNING")
+    monkeypatch.setattr(lifecycle, "_port_open", lambda *_args: False)
+    monkeypatch.setattr(lifecycle, "_sm_status", lambda: {"status": "NOT_INITIALIZED", "root": str(tmp_path)})
+    monkeypatch.setattr(lifecycle, "disk_free_bytes", lambda _path: 100)
+    monkeypatch.setattr(lifecycle, "_event_path", lambda _port: tmp_path / "events.jsonl")
+    subprocess_args = []
+
+    def fake_run(args, **_kwargs):
+        subprocess_args.append(list(args))
+        return SimpleNamespace(returncode=0, stdout="{}")
+
+    monkeypatch.setattr(lifecycle.subprocess, "run", fake_run)
+    status = lifecycle._base("127.0.0.1", 8000, {}, None)
+    doctor = lifecycle._doctor("127.0.0.1", 8000, {}, None)
+    encoded = json.dumps({"status": status, "doctor": doctor})
+    assert status["mcp"]["service_url"] == "UNAVAILABLE"
+    assert doctor["mcp"]["service_url"] == "UNAVAILABLE"
+    assert "TEST-PASSWORD-CANARY" not in encoded
+    assert "TEST-TOKEN-CANARY" not in encoded
+    assert all("TEST-" not in " ".join(args) for args in subprocess_args)
+
+
 def test_occupied_unowned_port_is_never_claimed_or_stopped(tmp_path):
     listener = socket.socket()
     listener.bind(("127.0.0.1", 0)); listener.listen()

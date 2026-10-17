@@ -83,24 +83,20 @@ def test_fastapi_live_observation_resolves_ssl_policy_env_and_query(monkeypatch,
 
     calls = []
 
-    def fake_execute(watchlist, write_latest=True, ssl_policy="strict"):
-        calls.append({"watchlist": watchlist, "write_latest": write_latest, "ssl_policy": ssl_policy})
-        return {"status": "ok", "diagnostics": {"ssl_policy": {"selected": ssl_policy}}}
-
     if env_policy is None:
         monkeypatch.delenv("TW_MARKET_SSL_POLICY", raising=False)
     else:
         monkeypatch.setenv("TW_MARKET_SSL_POLICY", env_policy)
-    monkeypatch.setattr(main, "_m5k_execute_live_observation", fake_execute)
+    monkeypatch.setattr(main, "_m5k_execute_live_observation", lambda *a, **k: calls.append((a, k)), raising=False)
 
     url = "/api/m5k/live-observation/execute?confirm_live_observation=true"
     if query_policy is not None:
         url += f"&ssl_policy={query_policy}"
     response = client.post(url, json={"schema_version": "m5n_watchlist.v1", "items": []})
 
-    assert response.status_code == 200
-    assert calls == [{"watchlist": {"schema_version": "m5n_watchlist.v1", "items": []}, "write_latest": True, "ssl_policy": expected}]
-    assert response.json()["diagnostics"]["ssl_policy"]["selected"] == expected
+    assert response.status_code == 410
+    assert response.json()["detail"]["error"] == "legacy_live_observation_execution_disabled"
+    assert calls == []
 
 
 @pytest.mark.parametrize(
@@ -115,15 +111,15 @@ def test_fastapi_live_observation_invalid_ssl_policy_fails_before_execution(monk
 
     calls = []
     monkeypatch.setenv("TW_MARKET_SSL_POLICY", env_policy)
-    monkeypatch.setattr(main, "_m5k_execute_live_observation", lambda *args, **kwargs: calls.append((args, kwargs)))
+    monkeypatch.setattr(main, "_m5k_execute_live_observation", lambda *args, **kwargs: calls.append((args, kwargs)), raising=False)
 
     url = "/api/m5k/live-observation/execute?confirm_live_observation=true"
     if query_policy is not None:
         url += f"&ssl_policy={query_policy}"
     response = client.post(url, json={"schema_version": "m5n_watchlist.v1", "items": []})
 
-    assert response.status_code == 400
-    assert response.json()["detail"]["error"] == "invalid_ssl_policy"
+    assert response.status_code == 410
+    assert response.json()["detail"]["error"] == "legacy_live_observation_execution_disabled"
     assert calls == []
 
 
@@ -188,8 +184,5 @@ def test_m7g_controlled_refresh_execute_endpoint_rejects_missing_confirmation():
         "operator_confirmation":{"required":True,"confirmation_phrase_required":"PREPARE_REFRESH_REQUEST_ONLY","confirmed":True,"confirmation_phrase_matched":True},
     }
     response = client.post('/api/m7g/controlled-refresh/execute', json={'request_package': package, 'operator_execution_confirmation_phrase': ''})
-    assert response.status_code == 200
-    data = response.json()
-    assert data['execution_status'] == 'rejected_missing_execution_confirmation'
-    assert data['execution_performed'] is False
-    assert data['safe_artifact_returned'] is False
+    assert response.status_code == 410
+    assert response.json()['detail']['error'] == 'legacy_controlled_refresh_execution_disabled'

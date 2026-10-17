@@ -1,0 +1,16 @@
+{
+  "schema": "phase_l_l4_a4_browser_origin_boundary_matrix.v1",
+  "checks": [
+    {"case": "cross_origin_privileged_post", "result": "REJECTED_403"},
+    {"case": "same_site_different_origin", "result": "REJECTED_403"},
+    {"case": "different_port_or_scheme", "result": "REJECTED_403"},
+    {"case": "null_origin", "result": "REJECTED_403"},
+    {"case": "cross_site_or_same_site_fetch_metadata", "result": "REJECTED_403"},
+    {"case": "same_local_origin", "result": "CONTINUES_TO_ROUTE_VALIDATION"},
+    {"case": "remote_peer_with_spoofed_forwarded_loopback", "result": "REJECTED_BY_OUTER_NETWORK_BOUNDARY"},
+    {"case": "trusted_local_relay_with_true_loopback_peer", "result": "ORIGINAL_CALLER_NOT_ATTRIBUTED"},
+    {"case": "native_local_no_browser_headers", "result": "EXISTING_AUTHORIZATION_REMAINS_AUTHORITATIVE"}
+  ],
+  "cors_is_authentication": false,
+  "local_caller_individual_authentication": "NOT_PROVIDED_BY_CURRENT_PRODUCT"
+}
