@@ -116,3 +116,24 @@ online vulnerability freshness, or host binary attestation.
 
 Disposition: `L4_A5_DEPENDENCY_SUPPLY_CHAIN_HARDENING_PASS`.
 L4-A5 Owner acceptance is pending. L4-A6+ and L5-L7 remain unauthorized.
+
+
+## 9. Owner acceptance for merge
+
+`L4_A5_DEPENDENCY_SUPPLY_CHAIN_HARDENING_OWNER_ACCEPTED_FOR_MERGE`
+
+Authority: `USER_CHAT_2026-10-17_PHASE_L_L4_A5_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`.
+
+The Owner accepts the A5 technical completion for merge. The original independent
+review `L4_A5_DEPENDENCY_SUPPLY_CHAIN_HARDENING_ACCEPTANCE_REVIEW_PASS` and the
+R1 metadata review `L4_A5_R1_GOVERNANCE_METADATA_REPAIR_ACCEPTANCE_REVIEW_PASS`
+are both preserved. DEP-001 and DEP-002 remain COVERED. The core install authority
+remains `requirements-lock.txt`; browser E2E inherits the core lock. Dependency
+version changes remain 0; active `shell=True` remains 0; caller-selectable
+executables remain 0.
+
+The residuals remain unchanged: package artifact cryptographic provenance is
+`NOT_CLAIMED_IN_L4_A5`, online vulnerability currentness is
+`NOT_EVALUATED_IN_L4_A5`, and host executable binary authenticity is
+`OUTSIDE_REPOSITORY_LEVEL_A5_GUARANTEE`. L7 remains the package artifact/release
+provenance decision point.
