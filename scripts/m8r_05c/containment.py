@@ -16,6 +16,15 @@ import os
 import tempfile
 from pathlib import Path
 
+from scripts.m8r_filesystem_safety import (
+    FilesystemSafetyError,
+    capture_directory_identity,
+    is_reparse_or_symlink,
+    safe_destination,
+    validate_authorized_root,
+    verify_directory_identity,
+)
+
 from .errors import ProjectionError
 
 _FORBIDDEN_PREFIX_PATTERNS = (
@@ -70,7 +79,10 @@ def _validate_output_root(output_root: str) -> Path:
         raise ProjectionError("output_root_not_absolute")
     if not root.exists() or not root.is_dir():
         raise ProjectionError("output_root_missing")
-    return root.resolve(strict=True)
+    try:
+        return validate_authorized_root(root)
+    except FilesystemSafetyError as exc:
+        raise ProjectionError("output_root_unsafe") from exc
 
 
 def _is_relative_to(child: Path, parent: Path) -> bool:
@@ -106,9 +118,9 @@ def materialize_outputs(
     audit_segs = _validate_relative_output_path(audit_relative_path)
     md_segs = _validate_relative_output_path(result_md_relative_path)
 
-    result_dest = root.joinpath(*result_segs)
-    audit_dest = root.joinpath(*audit_segs)
-    md_dest = root.joinpath(*md_segs)
+    result_dest = safe_destination(root, result_relative_path).path
+    audit_dest = safe_destination(root, audit_relative_path).path
+    md_dest = safe_destination(root, result_md_relative_path).path
 
     for dest in [result_dest, audit_dest, md_dest]:
         if not _is_relative_to(dest, root):
@@ -123,9 +135,15 @@ def materialize_outputs(
         if dest.exists():
             raise ProjectionError(f"output_path_already_exists:{rel}")
 
-    # Create parent directories.
-    for dest in [result_dest, audit_dest, md_dest]:
-        dest.parent.mkdir(parents=True, exist_ok=True)
+    # Create and revalidate parent chains through the shared safety contract.
+    result_dest = safe_destination(root, result_relative_path, create_parent=True).path
+    audit_dest = safe_destination(root, audit_relative_path, create_parent=True).path
+    md_dest = safe_destination(root, result_md_relative_path, create_parent=True).path
+    root_identity = capture_directory_identity(root)
+    parent_identities = {
+        dest.parent: capture_directory_identity(dest.parent)
+        for dest in (result_dest, audit_dest, md_dest)
+    }
 
     # Stage all files.
     staged: list[tuple[Path, Path]] = []  # (staged, dest)
@@ -165,7 +183,18 @@ def materialize_outputs(
         # Promote: atomic rename.
         promoted: list[tuple[str, str]] = []
         for staged_path, dest in staged:
+            rel = dest.relative_to(root)
+            verify_directory_identity(root, root_identity)
+            verify_directory_identity(dest.parent, parent_identities[dest.parent])
+            safe_dest = safe_destination(root, rel)
+            if safe_dest.path.exists() or is_reparse_or_symlink(safe_dest.path):
+                raise ProjectionError("output_path_already_exists")
             staged_path.rename(dest)
+            verify_directory_identity(root, root_identity)
+            verify_directory_identity(dest.parent, parent_identities[dest.parent])
+            safe_destination(root, rel)
+            if not dest.is_file() or is_reparse_or_symlink(dest):
+                raise ProjectionError("output_path_unsafe")
             promoted.append((str(dest.relative_to(root)).replace("\\", "/"), str(dest)))
 
         return {rel: abs_path for rel, abs_path in promoted}
@@ -174,7 +203,7 @@ def materialize_outputs(
         # Remove staged files on any failure.
         for staged_path, _dest in staged:
             try:
-                if staged_path.exists():
+                if staged_path.exists() and not is_reparse_or_symlink(staged_path) and staged_path.is_file():
                     staged_path.unlink()
             except OSError:
                 pass
@@ -195,6 +224,6 @@ def validate_output_paths_only(
     root = _validate_output_root(output_root)
     for rel in [result_relative_path, audit_relative_path, result_md_relative_path]:
         segs = _validate_relative_output_path(rel)
-        dest = root.joinpath(*segs)
+        dest = safe_destination(root, rel).path
         if not _is_relative_to(dest, root):
             raise ProjectionError("output_path_outside_root")

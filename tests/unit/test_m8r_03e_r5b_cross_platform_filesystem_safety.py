@@ -184,10 +184,10 @@ def test_destination_symlink(tmp_path):
         safe_destination(root, "link.json", allow_destination_symlink=False)
     assert excinfo.value.code == "output_destination_symlink_forbidden"
     
-    # If we allow destination symlink, it must still fail because it resolves outside root
+    # A reparse destination is rejected even when the legacy compatibility flag is set.
     with pytest.raises(FilesystemSafetyError) as excinfo:
         safe_destination(root, "link.json", allow_destination_symlink=True)
-    assert excinfo.value.code == "output_path_outside_authorized_root"
+    assert excinfo.value.code == "output_destination_symlink_forbidden"
 
 def test_root_symlink(tmp_path):
     real_root = tmp_path / "real_root"
@@ -199,13 +199,9 @@ def test_root_symlink(tmp_path):
     except (OSError, NotImplementedError):
         pytest.skip("Symlinks are not supported on this platform/privilege level")
         
-    # validate_authorized_root should resolve sym_root to real_root
-    resolved = validate_authorized_root(sym_root)
-    assert resolved.resolve() == real_root.resolve()
-    
-    # safe_destination relative to sym_root should be resolved canonical target
-    dest = safe_destination(sym_root, "test.json")
-    assert dest.root == real_root.resolve()
+    with pytest.raises(FilesystemSafetyError) as excinfo:
+        validate_authorized_root(sym_root)
+    assert excinfo.value.code == "path_reparse_component_forbidden"
 
 def test_atomic_write_operations(tmp_path):
     root = tmp_path / "root"

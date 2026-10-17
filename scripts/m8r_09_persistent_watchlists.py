@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 import sqlite3
+import stat
 import uuid
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
@@ -21,6 +22,7 @@ import jsonschema
 
 from scripts.m8r_08g_identity_service import CASH_MARKETS, instrument_id, listing_id, official_successor_migration
 from scripts.m8r_08g_security_master_releases import LocalSecurityMasterError, load_active_identity_service
+from scripts.m8r_filesystem_safety import FilesystemSafetyError, is_reparse_or_symlink, safe_destination, validate_authorized_root
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -48,7 +50,7 @@ def default_root() -> Path:
     root, while command-line and test callers can still pass ``root`` directly.
     """
     configured = os.environ.get("TW_MARKET_WATCHLIST_ROOT")
-    return Path(configured).expanduser().resolve() if configured else DEFAULT_ROOT
+    return Path(configured).expanduser() if configured else DEFAULT_ROOT
 
 
 def default_security_master_root() -> Path:
@@ -119,17 +121,39 @@ class PersistentWatchlistStore:
     """SQLite authority with preview-bound transactional semantic mutations."""
 
     def __init__(self, *, root: Path | None = None, identity_service: Any | None = None, security_master_root: Path | None = None, now: Callable[[], str] = utc_now):
-        self.root = (root or default_root()).resolve()
+        selected_root = root if root is not None else default_root()
+        try:
+            self.root = validate_authorized_root(selected_root)
+        except FilesystemSafetyError as exc:
+            raise WatchlistError("WATCHLIST_STORAGE_PATH_UNSAFE") from exc
         self.identity_service = identity_service
         self.security_master_root = (security_master_root or default_security_master_root()).resolve()
         self.now = now
-        self.root.mkdir(parents=True, exist_ok=True)
         self.path = self.root / DATABASE_NAME
         self._initialize()
 
+    def _validate_storage_path(self) -> Path:
+        try:
+            destination = safe_destination(self.root, DATABASE_NAME)
+            try:
+                info = destination.path.lstat()
+            except FileNotFoundError:
+                return destination.path
+            if is_reparse_or_symlink(destination.path) or not stat.S_ISREG(info.st_mode):
+                raise FilesystemSafetyError("watchlist_storage_leaf_unsafe")
+            return destination.path
+        except FilesystemSafetyError as exc:
+            raise WatchlistError("WATCHLIST_STORAGE_PATH_UNSAFE") from exc
+
     def _connect(self) -> sqlite3.Connection:
         try:
+            self.path = self._validate_storage_path()
             con = sqlite3.connect(self.path, timeout=5, isolation_level=None)
+            try:
+                self._validate_storage_path()
+            except Exception:
+                con.close()
+                raise
             con.row_factory = sqlite3.Row
             con.execute("PRAGMA foreign_keys=ON")
             con.execute("PRAGMA busy_timeout=5000")

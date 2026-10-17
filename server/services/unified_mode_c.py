@@ -16,6 +16,12 @@ from scripts.m8r_05c.lineage_resolver import build_lineage_map
 from scripts.m8r_05c.markdown_renderer import render_result_markdown
 from scripts.m8r_05c.result_builder import build_result
 from scripts.m8r_05c.evidence_projector import CURRENT_PROJECTOR_VERSION, SUPPORTED_PROJECTOR_VERSIONS
+from scripts.m8r_filesystem_safety import (
+    FilesystemSafetyError,
+    atomic_write_text,
+    safe_destination,
+    validate_authorized_root,
+)
 from server.services.unified_contract_versions import PREFERRED_RESULT_SCHEMA_VERSION
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services.unified_mode_b2 import CONTROL_ROOT
@@ -63,29 +69,53 @@ def _read(path: Path) -> dict[str, Any]:
     return value
 
 
+def _safe_path(root: Path, relative: str | Path) -> Path:
+    try:
+        return safe_destination(root, relative).path
+    except FilesystemSafetyError as exc:
+        raise ModeCError("mode_c_control_integrity_failed") from exc
+
+
+def _safe_package_path(package: Path, relative: str | Path) -> Path:
+    return _safe_path(package.parent, Path(package.name) / relative)
+
+
 def _find(directory: Path, id_key: str, value: str) -> Path:
-    matches = [p for p in directory.glob("*.json") if _read(p).get(id_key) == value]
+    package = directory.parent
+    root = package.parent
+    relative_dir = directory.relative_to(root)
+    # Validate directory components before globbing, then validate each leaf
+    # before reading so a link cannot redirect a governed execution artifact.
+    _safe_path(root, relative_dir / ".directory-check")
+    matches = []
+    for candidate in directory.glob("*.json"):
+        path = _safe_path(root, candidate.relative_to(root))
+        if _read(path).get(id_key) == value:
+            matches.append(path)
     if len(matches) != 1:
         raise ModeCError("mode_c_required_execution_artifact_missing")
     return matches[0]
 
 
 def _verify_control(package: Path, control_id: str) -> dict[str, Path]:
-    manifest = _read(package / "control" / "manifest.json")
+    root = package.parent
+    manifest_path = _safe_path(root, f"{control_id}/control/manifest.json")
+    manifest = _read(manifest_path)
     if manifest.get("authorization_id") != control_id:
         raise ModeCError("control_package_id_invalid")
     files = {
-        "request": package / "control" / "request.json", "plan": package / "control" / "plan.json",
-        "authorization": package / "control" / "authorization.json",
-        "consumption_binding": package / "control" / "consumption_binding.json",
-        "preflight": package / "control" / "preflight.json",
-        "unused_consumption_state": package / "control" / "unused_consumption_state.json",
+        "request": _safe_path(root, f"{control_id}/control/request.json"),
+        "plan": _safe_path(root, f"{control_id}/control/plan.json"),
+        "authorization": _safe_path(root, f"{control_id}/control/authorization.json"),
+        "consumption_binding": _safe_path(root, f"{control_id}/control/consumption_binding.json"),
+        "preflight": _safe_path(root, f"{control_id}/control/preflight.json"),
+        "unused_consumption_state": _safe_path(root, f"{control_id}/control/unused_consumption_state.json"),
     }
     expected = manifest.get("artifact_hashes", {})
     if not isinstance(expected, dict):
         raise ModeCError("mode_c_control_integrity_failed")
     if "selection_provenance" in expected:
-        files["selection_provenance"] = package / "control" / "selection_provenance.json"
+        files["selection_provenance"] = _safe_path(root, f"{control_id}/control/selection_provenance.json")
     if set(expected) != set(files):
         raise ModeCError("mode_c_control_integrity_failed")
     for name, path in files.items():
@@ -101,8 +131,18 @@ def _verify_control(package: Path, control_id: str) -> dict[str, Path]:
 def _load_verified(control_id: str) -> tuple[Path, dict[str, Path], Path, Path, Path, Path]:
     if not isinstance(control_id, str) or not control_id.startswith("umea-v1-") or len(control_id) > 128:
         raise ModeCError("control_package_id_invalid")
-    package = (CONTROL_ROOT / control_id).resolve()
-    if package.parent != CONTROL_ROOT.resolve() or not package.is_dir():
+    try:
+        selected_root = Path(CONTROL_ROOT).expanduser()
+        if not selected_root.exists() or not selected_root.is_dir():
+            raise ModeCError("control_package_id_invalid")
+        root = validate_authorized_root(selected_root)
+        manifest_path = _safe_path(root, f"{control_id}/control/manifest.json")
+    except ModeCError:
+        raise
+    except (ValueError, FilesystemSafetyError) as exc:
+        raise ModeCError("control_package_id_invalid") from exc
+    package = manifest_path.parents[1]
+    if package.parent != root or not package.is_dir():
         raise ModeCError("control_package_id_invalid")
     controls = _verify_control(package, control_id)
     claim_path = _find(package / "claims", "authorization_id", control_id)
@@ -111,7 +151,8 @@ def _load_verified(control_id: str) -> tuple[Path, dict[str, Path], Path, Path, 
         raise ModeCError("mode_c_execution_not_finalized")
     receipt_path = _find(package / "receipts", "execution_receipt_id", claim.get("execution_receipt_id"))
     bundle_path = _find(package / "bundles", "claim_id", claim.get("claim_id"))
-    return package, controls, claim_path, receipt_path, bundle_path, package / "mode_c" / "f3_validation.json"
+    f3_path = _safe_package_path(package, Path("mode_c") / "f3_validation.json")
+    return package, controls, claim_path, receipt_path, bundle_path, f3_path
 
 
 def _f3(package: Path, controls: dict[str, Path], f3_path: Path) -> None:
@@ -121,12 +162,17 @@ def _f3(package: Path, controls: dict[str, Path], f3_path: Path) -> None:
     if sha256_json(rebuilt) != plan.get("input_bindings", {}).get("f3_validation_output_hash"):
         raise ModeCError("mode_c_f3_reconstruction_mismatch")
     encoded = json.dumps(rebuilt, ensure_ascii=False, sort_keys=True, indent=2)
-    if f3_path.exists():
-        if f3_path.read_text(encoding="utf-8") != encoded:
+    relative = f3_path.relative_to(package.parent)
+    safe_f3_path = _safe_path(package.parent, relative)
+    if safe_f3_path.exists():
+        if safe_f3_path.read_text(encoding="utf-8") != encoded:
             raise ModeCError("mode_c_existing_output_inconsistent")
     else:
-        f3_path.parent.mkdir(parents=True, exist_ok=True)
-        f3_path.write_text(encoded, encoding="utf-8")
+        try:
+            safe_destination(package.parent, relative, create_parent=True)
+            atomic_write_text(package.parent, relative, encoded, allow_overwrite=False)
+        except FilesystemSafetyError as exc:
+            raise ModeCError("mode_c_control_integrity_failed") from exc
 
 
 def _receipt_calculated_at(receipt_obj: dict[str, Any]) -> tuple[str | None, str]:
@@ -176,7 +222,10 @@ def _persisted_output_version(package: Path) -> str | None:
     complete: list[str] = []
     partial = False
     for version, (result_rel, markdown_rel, audit_rel, _audit_schema) in _OUTPUT_PATHS.items():
-        present = [(package / rel).exists() for rel in (result_rel, markdown_rel, audit_rel)]
+        present = [
+            _safe_package_path(package, rel).exists()
+            for rel in (result_rel, markdown_rel, audit_rel)
+        ]
         if all(present):
             complete.append(version)
         elif any(present):
@@ -191,7 +240,9 @@ def _read_verified_outputs(
     expected_result: dict[str, Any], expected_audit: dict[str, Any], expected_markdown: str,
 ) -> tuple[dict[str, Any], dict[str, Any], str] | None:
     result_rel, markdown_rel, audit_rel, _audit_schema = _OUTPUT_PATHS[output_schema_version]
-    result_path, markdown_path, audit_path = package / result_rel, package / markdown_rel, package / audit_rel
+    result_path = _safe_package_path(package, result_rel)
+    markdown_path = _safe_package_path(package, markdown_rel)
+    audit_path = _safe_package_path(package, audit_rel)
     present = [path.exists() for path in (result_path, markdown_path, audit_path)]
     if not any(present):
         return None
@@ -234,7 +285,7 @@ def build_mode_c_result_package(
         except WatchlistEvidenceCompositionError as exc:
             raise ModeCError("mode_c_control_integrity_failed") from exc
     result_rel, markdown_rel, audit_rel, _audit_schema = _OUTPUT_PATHS[output_schema_version]
-    audit_path = package / audit_rel
+    audit_path = _safe_package_path(package, audit_rel)
     projector_version = CURRENT_PROJECTOR_VERSION
     if audit_path.is_file():
         projector_version = _read(audit_path).get("projector_metadata", {}).get("projector_version", CURRENT_PROJECTOR_VERSION)
@@ -265,7 +316,7 @@ def read_mode_c_audit(control_package_id: str, output_schema_version: str = PREF
         {"control_package_id": control_package_id}, output_schema_version=output_schema_version,
     )
     package, *_ = _load_verified(control_package_id)
-    return _read(package / _OUTPUT_PATHS[package_result["output_schema_version"]][2])
+    return _read(_safe_package_path(package, _OUTPUT_PATHS[package_result["output_schema_version"]][2]))
 
 
 def build_mode_c_ai_handoff(control_package_id: str, output_schema_version: str = PREFERRED_RESULT_SCHEMA_VERSION) -> dict[str, Any]:

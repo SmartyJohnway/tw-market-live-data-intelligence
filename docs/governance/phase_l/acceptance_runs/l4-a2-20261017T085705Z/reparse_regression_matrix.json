@@ -1,0 +1,23 @@
+{
+  "run_id": "l4-a2-20261017T085705Z",
+  "cases": [
+    {"case": "ordinary_explicit_watchlist_root_outside_repository", "result": "PASS"},
+    {"case": "watchlist_root_posix_symlink", "result": "PASS_REJECTED"},
+    {"case": "lexical_symlink_before_parent_component", "result": "PASS_REJECTED"},
+    {"case": "watchlist_root_windows_reparse_attribute_fixture", "result": "PASS_REJECTED"},
+    {"case": "watchlist_database_symlink", "result": "PASS_REJECTED_BEFORE_SQLITE_OPEN"},
+    {"case": "watchlist_database_windows_reparse_attribute_fixture", "result": "PASS_REJECTED"},
+    {"case": "artifact_root_and_intermediate_reparse", "result": "PASS_REJECTED"},
+    {"case": "artifact_destination_reparse", "result": "PASS_REJECTED"},
+    {"case": "mode_c_output_directory_reparse", "result": "PASS_REJECTED"},
+    {"case": "created_parent_chain_revalidation", "result": "PASS"},
+    {"case": "unsafe_operational_event_parent_and_leaf", "result": "PASS_IGNORED_WITHOUT_REDIRECT"},
+    {"case": "lifecycle_runtime_reparse_parent", "result": "PASS_REJECTED"},
+    {"case": "lifecycle_owner_file_symlink", "result": "PASS_REJECTED"},
+    {"case": "synthetic_windows_reparse_attribute_mask", "result": "PASS"},
+    {"case": "real_windows_junction_creation", "result": "NOT_REQUIRED_PORTABLE_ATTRIBUTE_FIXTURE_USED"}
+  ],
+  "legacy_path_rules": ["traversal", "UNC/device namespace", "reserved names", "ADS", "absolute relative-output rejection", "containment", "exclusive create no-replay"],
+  "cross_platform_known_skips": 4,
+  "known_skip_reason": "POSIX-specific Windows drive root check cannot apply on Windows host"
+}

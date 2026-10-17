@@ -105,14 +105,15 @@ def test_destination_symlink_forbidden(tmp_path):
         safe_destination(root, 'dest.json')
     assert code(exc) == 'output_destination_symlink_forbidden'
 
-def test_root_symlink_is_resolved_as_authorized_root(tmp_path):
+def test_root_symlink_is_rejected_as_authority_escape(tmp_path):
     real = tmp_path/'real'; real.mkdir()
     link = tmp_path/'root_link'
     try:
         link.symlink_to(real, target_is_directory=True)
     except (OSError, NotImplementedError):
         pytest.skip('symlink creation unsupported')
-    assert validate_authorized_root(link) == real.resolve()
+    with pytest.raises(FilesystemSafetyError):
+        validate_authorized_root(link)
 
 def test_atomic_write_places_temp_inside_root_and_replaces(tmp_path):
     root = tmp_path/'output'

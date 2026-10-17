@@ -1,0 +1,17 @@
+{
+  "run_id": "l4-a2-20261017T085705Z",
+  "disposition": "L4_A2_PATH_CONTAINMENT_HARDENING_PASS",
+  "path_findings": {
+    "PATH-001": "COVERED",
+    "PATH-003": "COVERED",
+    "PATH-005": "COVERED"
+  },
+  "multiple_authority_roots_preserved": true,
+  "configured_external_watchlist_root_supported": true,
+  "production_runtime_change_scope": "filesystem path containment only",
+  "provider_requests": 0,
+  "external_socket_attempts": 0,
+  "no_watchlist_migration": true,
+  "no_size_resource_auth_or_dependency_work": true,
+  "same_privilege_final_race_residual_documented": true
+}

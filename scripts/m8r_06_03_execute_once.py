@@ -33,7 +33,9 @@ from server.operational_diagnostics import TRACE_ENV, bind_trace_id, reset_trace
 
 # Test harnesses may redirect the server-owned root through process environment;
 # no browser/API request can affect this value.
-CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).resolve()
+# Keep lexical authority visible until the shared filesystem-safety seam has
+# checked its components; resolving here would hide configured reparse paths.
+CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).expanduser()
 REQUIRED_ARTIFACTS = (
     "request", "plan", "authorization", "consumption_binding",
     "unused_consumption_state", "preflight",

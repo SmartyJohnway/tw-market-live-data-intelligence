@@ -31,6 +31,14 @@ from server.operational_diagnostics import (
     new_trace_id,
     process_memory_bytes,
 )
+from scripts.m8r_filesystem_safety import (
+    FilesystemSafetyError,
+    atomic_create_text_exclusive,
+    atomic_write_text,
+    is_reparse_or_symlink,
+    reject_reparse_components,
+    validate_authorized_root,
+)
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
@@ -197,9 +205,12 @@ def _capability_projection(host: str, port: int) -> dict | None:
 
 def _read_owner(path: Path) -> tuple[dict | None, str | None]:
     try:
-        if not path.exists() and not path.is_symlink():
+        reject_reparse_components(path.parent)
+        if not path.parent.exists():
             return None, None
-        if path.is_symlink() or not path.is_file():
+        if is_reparse_or_symlink(path) or not path.is_file():
+            if not path.exists() and not is_reparse_or_symlink(path):
+                return None, None
             return None, "STALE_PROCESS_OWNERSHIP"
         value = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(value, dict) or value.get("root") != str(ROOT.resolve()):
@@ -213,7 +224,8 @@ def _read_owner(path: Path) -> tuple[dict | None, str | None]:
 
 def _safe_unlink(path: Path) -> bool:
     try:
-        if path.is_symlink() or not path.is_file():
+        reject_reparse_components(path.parent)
+        if is_reparse_or_symlink(path) or not path.is_file():
             return False
         path.unlink()
         return True
@@ -372,6 +384,10 @@ def _exit_code(status: str) -> int:
 
 def _start(host: str, port: int) -> dict:
     owner_file = _owner_path(port)
+    try:
+        reject_reparse_components(owner_file.parent)
+    except FilesystemSafetyError:
+        return {"status": "START_FAILED", "reason_code": "RUNTIME_PATH_UNSAFE"}
     owner, err = _read_owner(owner_file)
     owner_state = _owner_state(owner, err)
     if owner_state == "RUNNING":
@@ -383,7 +399,11 @@ def _start(host: str, port: int) -> dict:
             return {"status": "STALE_PROCESS_OWNERSHIP", "reason_code": "STALE_PROCESS_OWNERSHIP"}
     if _port_open(host, port):
         return {"status": "PORT_OCCUPIED_NOT_OWNED", "reason_code": "PORT_OCCUPIED_NOT_OWNED"}
-    owner_file.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        validate_authorized_root(owner_file.parent)
+        reject_reparse_components(owner_file.parent)
+    except FilesystemSafetyError:
+        return {"status": "START_FAILED", "reason_code": "RUNTIME_PATH_UNSAFE"}
     instance = str(uuid.uuid4())
     creator_pid = os.getpid()
     creator_start_token = _process_start_token(creator_pid)
@@ -395,10 +415,12 @@ def _start(host: str, port: int) -> dict:
                    "creator_start_token": creator_start_token, "creator_executable": creator_executable,
                    "created_at": dt.datetime.now(dt.timezone.utc).isoformat()}
     try:
-        fd = os.open(owner_file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-        with os.fdopen(fd, "w", encoding="utf-8") as stream: json.dump(reservation, stream, sort_keys=True)
-    except FileExistsError:
-        return {"status": "START_IN_PROGRESS", "reason_code": "START_IN_PROGRESS"}
+        reject_reparse_components(owner_file.parent)
+        atomic_create_text_exclusive(owner_file.parent, owner_file.name, json.dumps(reservation, sort_keys=True))
+    except FilesystemSafetyError as exc:
+        if exc.code == "already_consumed_or_replayed":
+            return {"status": "START_IN_PROGRESS", "reason_code": "START_IN_PROGRESS"}
+        return {"status": "START_FAILED", "reason_code": "RUNTIME_PATH_UNSAFE"}
     env = os.environ.copy(); env[_INSTANCE] = instance
     env[EVENT_PATH_ENV] = str(_event_path(port))
     creationflags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0) if os.name == "nt" else 0
@@ -425,9 +447,12 @@ def _start(host: str, port: int) -> dict:
     record = {"schema": 1, "root": str(ROOT.resolve()), "pid": process.pid, "process_start_token": token,
               "executable": str(Path(sys.executable).resolve()), "instance_id": instance,
               "host": host, "port": port, "started_at": dt.datetime.now(dt.timezone.utc).isoformat()}
-    temp_record = owner_file.with_name(owner_file.name + f".{instance}.tmp")
-    temp_record.write_text(json.dumps(record, sort_keys=True), encoding="utf-8")
-    os.replace(temp_record, owner_file)
+    try:
+        reject_reparse_components(owner_file.parent)
+        atomic_write_text(owner_file.parent, owner_file.name, json.dumps(record, sort_keys=True))
+    except FilesystemSafetyError:
+        _safe_unlink(owner_file)
+        return {"status": "START_FAILED", "reason_code": "RUNTIME_PATH_UNSAFE"}
     while time.monotonic() < deadline:
         if process.poll() is not None:
             _safe_unlink(owner_file)

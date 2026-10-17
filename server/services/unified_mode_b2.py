@@ -26,7 +26,7 @@ from server.services.unified_mode_b1 import ModeB1PlanningUnavailable, build_mod
 ROOT = Path(__file__).resolve().parents[2]
 # This is process configuration only.  It permits an isolated local test/server
 # run without allowing any API payload to select an output location.
-CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).resolve()
+CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).expanduser()
 DEFAULT_TTL_SECONDS = 900
 _LOCAL_ACTION_ISSUANCE_LOCK = threading.Lock()
 _last_local_action_issued_at: datetime | None = None

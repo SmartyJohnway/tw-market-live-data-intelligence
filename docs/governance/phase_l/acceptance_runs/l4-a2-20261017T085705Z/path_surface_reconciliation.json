@@ -1,0 +1,31 @@
+{
+  "run_id": "l4-a2-20261017T085705Z",
+  "findings": [
+    {
+      "boundary_id": "PATH-001",
+      "surface": "Persistent Watchlist SQLite authority root and database leaf",
+      "before": "PARTIAL / HARDENING_REQUIRED; selected roots were resolved before lexical reparse validation and the SQLite leaf was not guarded as a regular non-reparse object.",
+      "after": "COVERED",
+      "evidence": ["validate_authorized_root before assigning store authority", "safe_destination and lstat regular-file validation before SQLite open", "post-connect path revalidation", "external-root and symlink/reparse fixture tests"],
+      "user_data_migration": false
+    },
+    {
+      "boundary_id": "PATH-003",
+      "surface": "Control package, Result/Audit and related 05C artifacts",
+      "before": "PARTIAL / HARDENING_REQUIRED; shared output validation lacked complete lexical reparse and detectable root/parent identity continuity checks.",
+      "after": "COVERED",
+      "evidence": ["shared scripts/m8r_filesystem_safety.py seam", "safe Mode C control/output reads and F3 materialization", "05C parent/root identity checks around staged publication", "symlink/reparse and identity-change tests"],
+      "same_privilege_final_race_immunity_claimed": false
+    },
+    {
+      "boundary_id": "PATH-005",
+      "surface": "Operational event path, lifecycle runtime/owner files, and selected control root",
+      "before": "PARTIAL / TEST_COVERAGE_GAP; concrete configurable operational/runtime paths lacked consistent lexical reparse validation.",
+      "after": "COVERED",
+      "evidence": ["event target parent/leaf validation", "lifecycle runtime chain validation and shared atomic owner writes", "lexical CONTROL_ROOT retained until Mode B2/Mode C validation", "temporary-root and unsafe-target tests"]
+    }
+  ],
+  "independent_root_authority_preserved": true,
+  "security_master_root_policy_changed": false,
+  "fixed_repository_owned_paths_refactored": false
+}
