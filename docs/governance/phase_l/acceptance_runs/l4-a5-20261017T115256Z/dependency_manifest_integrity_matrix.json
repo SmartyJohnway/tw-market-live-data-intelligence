@@ -1,0 +1,36 @@
+{
+  "browser_core_include": "requirements-lock.txt",
+  "direct_policy_covered_by_lock": true,
+  "direct_requirements_parsed": true,
+  "direct_specifiers_satisfied": true,
+  "duplicate_normalized_lock_names": 0,
+  "files": [
+    {
+      "bytes": 185,
+      "path": "requirements.txt",
+      "sha256": "c4725a39857153c9d6ea14e26fb97515f25f1c0cd9bf18660d09c85cdca67ee7"
+    },
+    {
+      "bytes": 1062,
+      "path": "requirements-lock.txt",
+      "sha256": "57a4ffbb17095e5f5108b229cce781ab9d0f64b2ea1642ed3c93822b7fdfb85a"
+    },
+    {
+      "bytes": 183,
+      "path": "requirements-browser-e2e.txt",
+      "sha256": "7b4017c4cb0f7a6b14e5c0a691a8796bcef78088d663b3cd75c65d22f3188f06"
+    },
+    {
+      "bytes": 4841,
+      "path": "scripts/verify_dependency_supply_chain.py",
+      "sha256": "00c7c7cab9f4d332c227030262366022258ce1ed8a25012d39817f996df69306"
+    }
+  ],
+  "lock_exact_pins": true,
+  "mcp_pin_consistent": true,
+  "package_artifact_hashes_claimed": false,
+  "pep508_markers_parse": true,
+  "playwright_pin": "1.55.0",
+  "schema": "phase_l_l4_a5_dependency_manifest_integrity.v1",
+  "url_vcs_editable_custom_index_dependencies": 0
+}

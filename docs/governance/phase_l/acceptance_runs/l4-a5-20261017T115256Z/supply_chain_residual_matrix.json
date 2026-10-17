@@ -1,0 +1,29 @@
+{
+  "residuals": [
+    {
+      "destination": "L7 release / reproducibility decision",
+      "id": "PACKAGE_ARTIFACT_CRYPTOGRAPHIC_PROVENANCE",
+      "reason": "repository records versions but not downloaded wheel/sdist hashes or signatures",
+      "status": "NOT_CLAIMED_IN_L4_A5"
+    },
+    {
+      "destination": "L7 release review",
+      "id": "ONLINE_VULNERABILITY_CURRENTNESS",
+      "reason": "offline-only scope; no vulnerability service/database acquired",
+      "status": "NOT_EVALUATED_IN_L4_A5"
+    },
+    {
+      "destination": "L7 environment integrity review",
+      "id": "HOST_EXECUTABLE_BINARY_AUTHENTICITY",
+      "reason": "Python and Git selection is bounded but OS binary signatures are not verified",
+      "status": "OUTSIDE_REPOSITORY_LEVEL_A5_GUARANTEE"
+    },
+    {
+      "destination": "L6/L7 only if packaging is introduced",
+      "id": "CONTAINER_BASE_IMAGE_SUPPLY_CHAIN",
+      "reason": "no Dockerfile or compose manifest in current repository inventory",
+      "status": "NOT_APPLICABLE"
+    }
+  ],
+  "schema": "phase_l_l4_a5_supply_chain_residuals.v1"
+}

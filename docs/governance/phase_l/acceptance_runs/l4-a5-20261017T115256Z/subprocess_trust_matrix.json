@@ -1,0 +1,87 @@
+{
+  "caller_input_can_select_executable_or_entrypoint": false,
+  "external_executable_residual": "OS/operator-provisioned git; narrow read-only allowlist; binary signature not verified",
+  "fixed_argument_arrays": true,
+  "operations": [
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "server/services/unified_mode_b2_execution.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Mode B2 execute-once child",
+      "shell": false,
+      "target": "repo-local scripts/m8r_06_03_execute_once.py",
+      "test_coverage": "Mode B2 authorization/execution and execute-once tests",
+      "timeout": "bounded from fixed route budget, max 130 seconds",
+      "trust": "internal Python child; privileged selector fields rejected"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Security Master status",
+      "shell": false,
+      "target": "repo-local scripts/manage_security_master.py status",
+      "timeout": "10 seconds",
+      "trust": "internal Python child; selected root is a data argument"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Workbench preload / startup checks",
+      "shell": false,
+      "target": "repo-local scripts/run_unified_workbench.py --startup-check",
+      "timeout": "15 seconds each",
+      "trust": "internal Python child; fixed entrypoint"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Environment verification",
+      "shell": false,
+      "target": "repo-local scripts/verify_environment.py",
+      "timeout": "15 seconds",
+      "trust": "internal Python child; read-only verifier"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "MCP startup verification",
+      "shell": false,
+      "target": "repo-local scripts/run_unified_market_evidence_mcp.py --startup-check",
+      "timeout": "15 seconds",
+      "trust": "internal Python child; service URL occupies governed argument only"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Lifecycle service launch",
+      "shell": false,
+      "target": "fixed module scripts.tw_market_lifecycle _serve",
+      "timeout": "15-second startup deadline; bounded terminate/wait cleanup",
+      "trust": "internal Python child; host/port validated and cannot select executable"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/operator_workbench.py",
+      "executable_source": "OS-provisioned git",
+      "fixed_or_dynamic": "FIXED_ALLOWLIST",
+      "operation": "Repository branch/commit metadata (two fixed queries)",
+      "shell": false,
+      "target": "branch --show-current; rev-parse --short HEAD",
+      "timeout": "3 seconds",
+      "trust": "OS/operator-provisioned external executable; binary authenticity not verified"
+    }
+  ],
+  "schema": "phase_l_l4_a5_subprocess_trust.v1",
+  "shell_execution": false
+}

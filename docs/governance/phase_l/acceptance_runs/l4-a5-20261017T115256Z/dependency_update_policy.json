@@ -1,0 +1,11 @@
+{
+  "direct_policy": "requirements.txt changes require explicit review",
+  "lock": "regenerate only in clean disposable environment; review with direct policy",
+  "mcp": "exact 1.29.0 remains until separately validated",
+  "package_manager_migration": "NOT_IN_SCOPE",
+  "playwright": "update only with browser acceptance evidence",
+  "runtime_auto_update": "PROHIBITED",
+  "scheduled_updates": "NONE",
+  "schema": "phase_l_l4_a5_dependency_update_policy.v1",
+  "transitive_updates": "only through explicit lock regeneration"
+}

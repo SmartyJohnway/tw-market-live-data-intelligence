@@ -7,7 +7,7 @@
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
 **L3:** CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`; A0-A6 Owner-accepted and merged (A0-A5 PRs #355/#357/#359/#361/#363/#365; A6 PR #367); A6 remains PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven), one-shot authority consumed, second run prohibited
-**L4:** STARTED; L4-A0 through A3 Owner-accepted and merged; L4-A4 Owner-accepted for merge; L4-A5 authorized after A4 merge; L4-A6+ and L5-L7 NOT AUTHORIZED
+**L4:** STARTED; L4-A0 through A4 Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 OWNER-ACCEPTED FOR MERGE; L4-A6 AUTHORIZED AFTER A5 MERGE; L4-A7 and L5-L7 NOT AUTHORIZED
 **L5-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -92,7 +92,7 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 ## 5. Remaining Phase L boundaries
 
 - L2 Replay / Retention / Migration: CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
-- L3 Source Drift Hardening: CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged (A6 PR #367). A6 remains PARTIAL: 17 transport-degraded logical sources, six HTTP-200 sources, and zero deterministic contract drift proven; its one-shot authority is consumed and a second run is prohibited. L4-A0 through A3 are Owner-accepted and merged; L4-A4 is Owner-accepted for merge; L4-A5 is authorized after A4 merge; L4-A6+ and L5-L7 are not authorized.
+- L3 Source Drift Hardening: CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged (A6 PR #367). A6 remains PARTIAL: 17 transport-degraded logical sources, six HTTP-200 sources, and zero deterministic contract drift proven; its one-shot authority is consumed and a second run is prohibited. L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is OWNER-ACCEPTED FOR MERGE; L4-A6 is AUTHORIZED AFTER A5 MERGE; L4-A7 and L5-L7 are NOT AUTHORIZED.
 - L4 Security & Resource Boundaries: localhost/path/input/output/load/concurrency/large-result limits.
 - L5 Extension Architecture: minimum evidence-family extension contract; no new family merely to prove it.
 - L6 Packaging & Portability: Native Windows + Docker Local Service, fresh install, P1-P6 portability, final state/config mapping and product `init` integration.
@@ -121,10 +121,10 @@ and `PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
 Frozen L0 sequencing controls current L3 Source Drift Hardening; old Roadmap
 subject subsection numbers remain unchanged. A0-A6 are Owner-accepted and merged.
 L3-A5 deterministic G05 observation/adjudication is Owner-accepted and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`;
-A6 bounded live recertification is recorded as PARTIAL and Owner-accepted/merged. L3 is closed under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit PASS. L4 is STARTED; L4-A0 through A3 are Owner-accepted and merged; L4-A4 is Owner-accepted for merge; L4-A5 is authorized after A4 merge; L4-A6+ and L5-L7 remain unauthorized.
+A6 bounded live recertification is recorded as PARTIAL and Owner-accepted/merged. L3 is closed under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit PASS. L4 is STARTED; L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is OWNER-ACCEPTED FOR MERGE; L4-A6 is AUTHORIZED AFTER A5 MERGE; L4-A7 and L5-L7 are NOT AUTHORIZED.
 
 A concise future-conversation instruction is sufficient:
 
-> Recover current main and read the frozen L0 contract, L3-A0 inventory, A1-A6 acceptance/governance records, A7 exit review, and current recovery index. A0-A6 are Owner-accepted and merged; A6 is PARTIAL with consumed one-shot authority and no repeat acquisition. L3 is Owner-closed after A7 technical exit PASS. L4 is STARTED; L4-A0 through A3 are Owner-accepted and merged; L4-A4 is Owner-accepted for merge; L4-A5 is authorized after A4 merge; L4-A6+ and L5-L7 are not authorized.
+> Recover current main and read the frozen L0 contract, L3-A0 inventory, A1-A6 acceptance/governance records, A7 exit review, and current recovery index. A0-A6 are Owner-accepted and merged; A6 is PARTIAL with consumed one-shot authority and no repeat acquisition. L3 is Owner-closed after A7 technical exit PASS. L4 is STARTED; L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is OWNER-ACCEPTED FOR MERGE; L4-A6 is AUTHORIZED AFTER A5 MERGE; L4-A7 and L5-L7 are NOT AUTHORIZED.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.

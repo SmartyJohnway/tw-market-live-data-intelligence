@@ -1,0 +1,93 @@
+{
+  "A4_merge_commit": "a2dfd7ff7c062257a7c7c8f193fced4f9c707a29",
+  "A4_merge_pr": 373,
+  "dependency_versions_changed": 0,
+  "entry_head": "a2dfd7ff7c062257a7c7c8f193fced4f9c707a29",
+  "entry_tree": "f8184a9c7fb5b001774890eaf8905799642839c0",
+  "local_environment": {
+    "environment_mutated": false,
+    "installed_versions_match_lock": "NO",
+    "pip_check": "No broken requirements found",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.7",
+    "verify_environment": "PASS"
+  },
+  "online_cve_queries": 0,
+  "package_downloads": 0,
+  "package_installs": 0,
+  "provider_requests": 0,
+  "reviewed_candidate_files": [
+    {
+      "bytes": 183,
+      "path": "requirements-browser-e2e.txt",
+      "sha256": "7b4017c4cb0f7a6b14e5c0a691a8796bcef78088d663b3cd75c65d22f3188f06"
+    },
+    {
+      "bytes": 10337,
+      "path": "scripts/operator_workbench.py",
+      "sha256": "8cb6df721c0c803784e9e3a58efca5b6ac3d4110d242b4894ab8765788064747"
+    },
+    {
+      "bytes": 4841,
+      "path": "scripts/verify_dependency_supply_chain.py",
+      "sha256": "00c7c7cab9f4d332c227030262366022258ce1ed8a25012d39817f996df69306"
+    },
+    {
+      "bytes": 9250,
+      "path": "tests/unit/test_phase_l_l4_a5_dependency_supply_chain.py",
+      "sha256": "6a949ee3f107eee70ec6154aabe4a4eb11cfd66aeb39a150bd179e175d41b7ee"
+    },
+    {
+      "bytes": 1350,
+      "path": "tests/helpers/phase_l_a5_network/sitecustomize.py",
+      "sha256": "b315736fd161e8dcb7b3740b2cff589ce4ccbcfa1ed537ad9b9b043f3c44a8d4"
+    },
+    {
+      "bytes": 1085,
+      "path": "docs/runbooks/DEVELOPER_ONBOARDING_LOCAL_FIRST.md",
+      "sha256": "55a8cb0f57e82cc8f405a78d2c4348c15ca79319f2821e981c2ff29ff7b21be7"
+    },
+    {
+      "bytes": 29290,
+      "path": "PROJECT.md",
+      "sha256": "a365633f6921d0bfca9a8fb83861f3775de5ec50d27314e3b879baab76bb9327"
+    },
+    {
+      "bytes": 26267,
+      "path": "HANDOFF.md",
+      "sha256": "ac24a35dd134f1f1f027c966fe87a6a45f1e80e47c1183fa04663df491916218"
+    },
+    {
+      "bytes": 50088,
+      "path": "ROADMAP.md",
+      "sha256": "8d4a4f584b91e8213eea5592cb001606ecc7e552d5d6fef2c8caedd91aa747bb"
+    },
+    {
+      "bytes": 11638,
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "sha256": "9153abe2dcfbfd442901de6cc1aa7bf3b5b10db0f9d3df753b06e6818cfebbca"
+    }
+  ],
+  "schema": "phase_l_l4_a5_offline_review.v1",
+  "tests": {
+    "external_socket_attempts": 0,
+    "focused": "222 passed, 1 skipped",
+    "focused_a5_module": "38 passed, 0 failed",
+    "integrated_scoped_gate": "223 passed, 1 skipped, 0 failed",
+    "known_skip": "tests/integration/test_unified_workbench_api.py: governed local candidate is Git-ignored"
+  },
+  "validators": {
+    "changed_py_compile": "PASS",
+    "compileall": "PASS",
+    "dependency_supply_chain": "PASS",
+    "git_diff_check": "PASS",
+    "phase_h_v3": "PASS",
+    "pip_check": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_exact_six": "PASS",
+    "source_registry": "PASS",
+    "v1_public_contracts_exact_six": "PASS",
+    "verify_environment": "PASS"
+  },
+  "final_manifest_verification": "PASS"
+}

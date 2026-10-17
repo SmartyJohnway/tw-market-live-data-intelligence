@@ -1,0 +1,131 @@
+{
+  "active_files": [
+    "server/services/unified_mode_b2_execution.py",
+    "scripts/tw_market_lifecycle.py",
+    "scripts/operator_workbench.py",
+    "scripts/run_unified_market_evidence_mcp.py",
+    "scripts/run_unified_workbench.py",
+    "scripts/verify_environment.py"
+  ],
+  "active_subprocess_operation_count": 9,
+  "caller_selectable_executable_count": 0,
+  "generic_user_selected_plugin_loader": false,
+  "operation_count": 10,
+  "operations": [
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "server/services/unified_mode_b2_execution.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Mode B2 execute-once child",
+      "shell": false,
+      "target": "repo-local scripts/m8r_06_03_execute_once.py",
+      "test_coverage": "Mode B2 authorization/execution and execute-once tests",
+      "timeout": "bounded from fixed route budget, max 130 seconds",
+      "trust": "internal Python child; privileged selector fields rejected"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Security Master status",
+      "shell": false,
+      "target": "repo-local scripts/manage_security_master.py status",
+      "timeout": "10 seconds",
+      "trust": "internal Python child; selected root is a data argument"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Workbench preload / startup checks",
+      "shell": false,
+      "target": "repo-local scripts/run_unified_workbench.py --startup-check",
+      "timeout": "15 seconds each",
+      "trust": "internal Python child; fixed entrypoint"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Environment verification",
+      "shell": false,
+      "target": "repo-local scripts/verify_environment.py",
+      "timeout": "15 seconds",
+      "trust": "internal Python child; read-only verifier"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "MCP startup verification",
+      "shell": false,
+      "target": "repo-local scripts/run_unified_market_evidence_mcp.py --startup-check",
+      "timeout": "15 seconds",
+      "trust": "internal Python child; service URL occupies governed argument only"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/tw_market_lifecycle.py",
+      "executable_source": "sys.executable",
+      "fixed_or_dynamic": "FIXED",
+      "operation": "Lifecycle service launch",
+      "shell": false,
+      "target": "fixed module scripts.tw_market_lifecycle _serve",
+      "timeout": "15-second startup deadline; bounded terminate/wait cleanup",
+      "trust": "internal Python child; host/port validated and cannot select executable"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/operator_workbench.py",
+      "executable_source": "OS-provisioned git",
+      "fixed_or_dynamic": "FIXED_ALLOWLIST",
+      "operation": "Repository branch/commit metadata (two fixed queries)",
+      "shell": false,
+      "target": "branch --show-current; rev-parse --short HEAD",
+      "timeout": "3 seconds",
+      "trust": "OS/operator-provisioned external executable; binary authenticity not verified"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/run_unified_market_evidence_mcp.py",
+      "executable_source": "none",
+      "fixed_or_dynamic": "NO_CHILD_PROCESS",
+      "operation": "Unified MCP stdio runtime",
+      "shell": false,
+      "target": "current in-process stdio adapter",
+      "timeout": "not applicable at subprocess boundary",
+      "trust": "in-process MCP; SDK version asserted exact"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/run_unified_workbench.py",
+      "executable_source": "none",
+      "fixed_or_dynamic": "NO_CHILD_PROCESS",
+      "operation": "Unified Workbench server startup",
+      "shell": false,
+      "target": "in-process uvicorn.run fixed server.main:app",
+      "timeout": "not applicable at subprocess boundary",
+      "trust": "Python entrypoint; loopback host validation"
+    },
+    {
+      "caller_controlled_executable": false,
+      "caller_file": "scripts/verify_environment.py",
+      "executable_source": "in-process Python",
+      "fixed_or_dynamic": "FIXED_PACKAGE_ALLOWLIST",
+      "operation": "Installed dependency import/version checks",
+      "shell": false,
+      "target": "hard-coded REQUIRED package names",
+      "timeout": "not applicable at subprocess boundary",
+      "trust": "fixed introspection/import list; no user-selected plugin loader"
+    }
+  ],
+  "os_git_binary_authenticity": "not verified by product",
+  "runtime_package_install_or_download": false,
+  "schema": "phase_l_l4_a5_active_executable_inventory.v1",
+  "shell_true_occurrences": 0
+}

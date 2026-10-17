@@ -1,0 +1,167 @@
+{
+  "active_core_install_command": "python -m pip install -r requirements-lock.txt",
+  "active_current": [
+    {
+      "classification": "ACTIVE_CURRENT",
+      "finding": "Core installation already uses requirements-lock.txt.",
+      "path": "README.md"
+    },
+    {
+      "classification": "ACTIVE_CURRENT",
+      "finding": "Core installation already uses requirements-lock.txt.",
+      "path": "README.zh-TW.md"
+    },
+    {
+      "classification": "ACTIVE_CURRENT",
+      "finding": "Core installation uses requirements-lock.txt; current Unified MCP command.",
+      "path": "docs/operator/QUICK_START.md"
+    },
+    {
+      "classification": "ACTIVE_CURRENT",
+      "finding": "Current Workbench guidance; links users to the current operator workflow.",
+      "path": "docs/operator/LOCAL_WORKBENCH.md"
+    },
+    {
+      "classification": "ACTIVE_CURRENT",
+      "finding": "Core/browser installation uses lock-based manifests; Unified MCP entrypoint.",
+      "path": "docs/operator/TROUBLESHOOTING.md"
+    },
+    {
+      "classification": "ACTIVE_CURRENT",
+      "finding": "Updated to CPython 3.11/3.13 and lock-based core installation.",
+      "path": "docs/runbooks/DEVELOPER_ONBOARDING_LOCAL_FIRST.md"
+    }
+  ],
+  "archived_or_governance_evidence": {
+    "archived_references": 3,
+    "current_docs_modified": true,
+    "governance_evidence_references": 0,
+    "historical_bytes_modified": false,
+    "historical_review_references": 12
+  },
+  "browser_install_command": "python -m pip install -r requirements-browser-e2e.txt",
+  "historical_records": [
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/RELEASE_READINESS.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    },
+    {
+      "classification": "ARCHIVED",
+      "path": "docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md",
+      "reason": "archived historical README"
+    },
+    {
+      "classification": "ARCHIVED",
+      "path": "docs/archive/readme/README_PRE_M5R_20260630_PRODUCT_RELEASE_HARDENING.md",
+      "reason": "archived pre-M5 README"
+    },
+    {
+      "classification": "ARCHIVED",
+      "path": "docs/archive/v1_release_readiness/FINAL_DELIVERY_REPORT.md",
+      "reason": "archived release-readiness record"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/m5ij_final_local_product_release.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/mcp_usage_guide.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/operations_runbook.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/operator/OPERATOR_GUIDE.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/release/M5_LOCAL_RELEASE_CANDIDATE.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/release/RELEASE_CHECKLIST.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/release_checklist.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M1_REVIEW_REPORT.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M2A_COMPLETION_REPORT.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M2B_01_COMPLETION_REPORT.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M2B_02_COMPLETION_REPORT.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M2C_01_COMPLETION_REPORT.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M2C_02_COMPLETION_REPORT.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M2D_01_COMPLETION_REPORT.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M2E_01_COMPLETION_REPORT.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M3A_02_LATEST_MARKET_SNAPSHOT_GENERATOR.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M6A_OBSERVATION_UX_AND_LOCAL_FRONTEND_COMPATIBILITY.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M6B_TEST_STRATEGY_AND_SOURCE_CONTRACT_HARDENING.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/reviews/M6F_HOTFIX_FRONTEND_WATCHLIST_ID_AND_FASTAPI_SSL_POLICY_RESOLUTION.md",
+      "reason": "frozen M1-M6 review/completion evidence; old command records its historical environment"
+    },
+    {
+      "classification": "HISTORICAL_RECORD",
+      "path": "docs/source_failure_playbook.md",
+      "reason": "retained M5/M6-era product/runbook/release instructions; not current Unified installation authority"
+    }
+  ],
+  "historical_requirements_txt_references_rewritten": false,
+  "schema": "phase_l_l4_a5_install_guidance.v1"
+}

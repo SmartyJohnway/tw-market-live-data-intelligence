@@ -1,0 +1,23 @@
+{
+  "authorities": {
+    "requirements-browser-e2e.txt": "browser acceptance extra layered over the core lock",
+    "requirements-lock.txt": "supported deterministic CORE installation graph",
+    "requirements.txt": "human-maintained direct dependency / compatibility policy input"
+  },
+  "browser_inherits_core_lock": true,
+  "core_install_authority": "REQUIREMENTS_LOCK",
+  "dependency_version_changes": 0,
+  "direct_requirement_count": 11,
+  "lock_entry_count": 49,
+  "lock_generation_performed": false,
+  "lock_provenance": {
+    "pip": "26.2.1",
+    "platform": "Windows 11 x86_64",
+    "python": "CPython 3.11.15",
+    "source": "retained requirements-lock.txt header"
+  },
+  "mcp_exact_pin": "1.29.0",
+  "playwright_exact_pin": "1.55.0",
+  "run_id": "l4-a5-20261017T115256Z",
+  "schema": "phase_l_l4_a5_dependency_authority.v1"
+}
