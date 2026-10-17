@@ -1,0 +1,18 @@
+{
+  "run_id": "l4-a2-20261017T085705Z",
+  "authority": "USER_CHAT_2026-10-17_PHASE_L_L4_A2_PATH_CONTAINMENT_HARDENING_AUTHORIZATION",
+  "entry_head": "2ef46379d6ca81ecff134192116cedfb5215dc8f",
+  "entry_tree": "00d8571a5876ce77db19a48fc31a3b626e63858e",
+  "policy": {
+    "root_model": "multiple subsystem-owned authority roots remain intentional",
+    "universal_root_introduced": false,
+    "external_explicit_watchlist_root_supported": true,
+    "lexical_chain_checked_before_resolution": true,
+    "reparse_detection": ["POSIX symbolic link", "Windows symbolic link", "Windows FILE_ATTRIBUTE_REPARSE_POINT including junctions"],
+    "destination_leaf_must_be_regular_non_reparse_object": true,
+    "atomic_write_identity": ["authority root st_dev/st_ino", "destination parent st_dev/st_ino", "pre-publication revalidation", "post-publication destination validation"],
+    "exclusive_create_uses_os_excl": true,
+    "same_user_final_race_immunity_claimed": false
+  },
+  "residual_race_statement": "Python-level validation substantially closes traversal, reparse, and detectable parent-substitution windows. It cannot prove immunity against a same-privilege hostile process replacing objects in the final OS-level race window without stronger handle-based primitives."
+}

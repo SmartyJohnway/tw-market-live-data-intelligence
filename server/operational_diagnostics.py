@@ -13,6 +13,13 @@ import time
 from typing import Any, Callable, TextIO
 import uuid
 
+from scripts.m8r_filesystem_safety import (
+    FilesystemSafetyError,
+    is_reparse_or_symlink,
+    reject_reparse_components,
+    safe_destination,
+)
+
 TRACE_HEADER = "X-TW-Market-Trace-ID"
 TRACE_ENV = "TW_MARKET_OPERATIONAL_TRACE_ID"
 EVENT_PATH_ENV = "TW_MARKET_OPERATIONAL_EVENT_PATH"
@@ -205,8 +212,15 @@ def event_path_from_env() -> Path | None:
     if not raw:
         return None
     try:
-        return Path(raw).expanduser().resolve()
-    except (OSError, ValueError):
+        target = Path(raw).expanduser()
+        parent = reject_reparse_components(target.parent)
+        if not parent.is_dir():
+            return None
+        safe = safe_destination(parent, target.name).path
+        if is_reparse_or_symlink(safe):
+            return None
+        return safe
+    except (OSError, ValueError, FilesystemSafetyError):
         return None
 
 
@@ -215,17 +229,24 @@ def emit_jsonl(event: dict[str, Any], path: Path | None = None) -> bool:
     if target is None:
         return False
     try:
-        if not target.parent.is_dir():
+        parent = reject_reparse_components(target.parent)
+        if not parent.is_dir():
+            return False
+        safe = safe_destination(parent, target.name).path
+        if is_reparse_or_symlink(safe):
             return False
         line = serialize_event(event) + "\n"
         encoded = line.encode("utf-8")
-        existing = target.stat().st_size if target.exists() else 0
+        existing = safe.stat().st_size if safe.exists() else 0
         if existing + len(encoded) > MAX_EVENT_FILE_BYTES:
-            target.write_text("", encoding="utf-8")
-        with target.open("a", encoding="utf-8", newline="\n") as stream:
+            safe.write_text("", encoding="utf-8")
+        reject_reparse_components(parent)
+        if is_reparse_or_symlink(safe):
+            return False
+        with safe.open("a", encoding="utf-8", newline="\n") as stream:
             stream.write(line)
         return True
-    except (OSError, ValueError):
+    except (OSError, ValueError, FilesystemSafetyError):
         return False
 
 

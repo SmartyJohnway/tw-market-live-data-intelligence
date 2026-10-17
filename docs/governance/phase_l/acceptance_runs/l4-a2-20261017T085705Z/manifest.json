@@ -1,0 +1,36 @@
+{
+  "schema": "phase_l_a2_evidence_manifest.v1",
+  "run_id": "l4-a2-20261017T085705Z",
+  "files": [
+    {
+      "path": "path_policy_contract.json",
+      "bytes": 1273,
+      "sha256": "130c9f9bbe5af16a2ed977d98a4429b78bd0168ab622a81a3312eee0238fa96e"
+    },
+    {
+      "path": "path_surface_reconciliation.json",
+      "bytes": 1966,
+      "sha256": "504675fecff1d73d36dcd583cd4745c43b1ea5ee0ac129a3af81b3fd482d1f9e"
+    },
+    {
+      "path": "reparse_regression_matrix.json",
+      "bytes": 1616,
+      "sha256": "b1b95b23b21b668dea1cfd2dda188c66ba83f4f6f3e8f4b1c84998a48874387d"
+    },
+    {
+      "path": "atomic_write_identity_matrix.json",
+      "bytes": 1682,
+      "sha256": "55771773746774a3d3a152129f4dc5e3a22ccd79fb5e532e1ebf564613c59750"
+    },
+    {
+      "path": "offline_review.json",
+      "bytes": 2272,
+      "sha256": "6adf90650ca33cb0ff75dd76ca10b81400e953b643452d90dc285b176b38bd49"
+    },
+    {
+      "path": "preflight_result.json",
+      "bytes": 582,
+      "sha256": "0ef556042b012e36bae2dd3f92d330e7adfd8242f8ccc33fef7a04e3c408e435"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "run_id": "l4-a2-20261017T085705Z",
+  "operations": [
+    {
+      "operation": "atomic_write_bytes/text",
+      "preconditions": ["safe authorized root", "safe destination parent", "non-reparse destination"],
+      "identity": ["root st_dev/st_ino", "parent st_dev/st_ino"],
+      "before_publish": "revalidate lexical reparse chains and root/parent identities before os.replace",
+      "after_publish": "revalidate chains, identities, destination regularity, and containment",
+      "failure_cleanup": "remove only the owned temporary file when it remains a regular non-reparse child of the validated parent"
+    },
+    {
+      "operation": "atomic_create_text_exclusive",
+      "preconditions": ["safe authorized root", "safe parent", "destination absent"],
+      "identity": ["root st_dev/st_ino", "parent st_dev/st_ino", "opened leaf fstat st_dev/st_ino"],
+      "before_create": "revalidate chains and directory identities",
+      "creation": "O_CREAT | O_EXCL | O_WRONLY; existing no-replay semantics retained",
+      "after_create": "verify leaf identity, regularity, and non-reparse status",
+      "failure_cleanup": "remove only the leaf whose identity matches the file created by this invocation"
+    },
+    {
+      "operation": "05C stage_then_promote",
+      "identity": ["output root st_dev/st_ino", "each destination parent st_dev/st_ino"],
+      "before_promote": "recheck root/parent identity and safe destination",
+      "after_promote": "recheck identity, regular non-reparse destination, and containment"
+    }
+  ],
+  "guarantee_limit": "These checks reduce detectable substitution windows but do not claim elimination of the final same-privilege OS race."
+}

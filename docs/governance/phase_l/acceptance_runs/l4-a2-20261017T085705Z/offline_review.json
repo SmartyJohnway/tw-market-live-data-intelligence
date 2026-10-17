@@ -1,0 +1,53 @@
+{
+  "run_id": "l4-a2-20261017T085705Z",
+  "branch": "phase-l/l4-a2-path-containment-hardening",
+  "entry_head": "2ef46379d6ca81ecff134192116cedfb5215dc8f",
+  "entry_tree": "00d8571a5876ce77db19a48fc31a3b626e63858e",
+  "provider_requests": 0,
+  "external_socket_attempts": 0,
+  "destructive_load_tests": 0,
+  "focused_suite": {
+    "command_scope": "A2 path containment, filesystem safety, Watchlist, Mode B2/Mode C, 05C, execute-once, backup/restore/migration, lifecycle, diagnostics, and related Watchlist tests under external-network sentinel",
+    "passed": 281,
+    "skipped": 4,
+    "deselected": 2,
+    "failed": 0,
+    "deselected_tests": [
+      "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+      "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected"
+    ],
+    "deselection_authority": "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/offline_review.json",
+    "known_failures_represented_as_passing": false,
+    "known_skip_reason": "4 parameter cases are POSIX-specific Windows-drive checks and are inapplicable on this Windows host"
+  },
+  "post_final_source_edit_focused_suite": {
+    "scope": "A2 path-containment tests plus Mode C and 05C containment/determinism/lineage",
+    "passed": 45,
+    "deselected": 2,
+    "failed": 0,
+    "external_socket_attempts": 0
+  },
+  "prior_a0_mode_c_failure_record": {
+    "attempted": "92 passed, 1 skipped, 2 failed",
+    "classification": "pre-existing historical test-helper mismatch: helper expected v1 outputs while current preferred output version was not v1",
+    "changed_by_a2": false,
+    "called_passing": false
+  },
+  "validators": {
+    "source_registry": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_exact_six": "PASS",
+    "v1_public_contracts_exact_six": "PASS",
+    "phase_h_v3": "PASS",
+    "compileall": "PASS",
+    "py_compile_changed_python": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "public_product_compatibility": {
+    "mcp_tools": 6,
+    "catalog_route_schema_capabilities_changed": false,
+    "security_master_authority_changed": false,
+    "financial_statements_support_added": false,
+    "trading_or_order_boundary_changed": false
+  }
+}
