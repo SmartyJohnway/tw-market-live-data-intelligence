@@ -1,0 +1,12 @@
+{
+  "alternate_policy": "P04-P07 exact governed route only; no alternate after primary 429",
+  "contract_drift_preserved": true,
+  "dispatch_guard": "scripts/phase_l_a6_live_dispatch_guard.py",
+  "families": 10,
+  "mode": "PRE2_OFFLINE_CANDIDATE",
+  "ordinary_degraded_primary_preserved": true,
+  "raw_provider_bodies_persisted": false,
+  "reservation_creator": "scripts/phase_l_a6_final_live_reservation.py",
+  "runner": "scripts/run_phase_l_l3_a6_live_recertification.py",
+  "source_contracts": 23
+}

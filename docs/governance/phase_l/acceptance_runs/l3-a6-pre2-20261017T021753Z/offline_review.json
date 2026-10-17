@@ -1,0 +1,24 @@
+{
+  "PRE1_R1_head": "9b8739f4035d32e1b844bed10fb4ee7fcf9edffd",
+  "PRE1_R1_tree": "628499ff82edd0e76406d8cf3cee3f874574cf0f",
+  "PRE1_R2_head": "693deac848f0228cfa6a7e73e4f79e68612d8506",
+  "PRE1_R2_tree": "f7de3c4623a677ed01f2646d0af8b62f38a9f6ec",
+  "a6_authority_consumed": false,
+  "entry_head": "693deac848f0228cfa6a7e73e4f79e68612d8506",
+  "entry_tree": "f7de3c4623a677ed01f2646d0af8b62f38a9f6ec",
+  "external_provider_requests": 0,
+  "external_socket_attempts": 0,
+  "final_live_reservation_created": false,
+  "focused_tests": {
+    "failed": 0,
+    "passed": 75
+  },
+  "integrated_tests": {
+    "deselected": 1,
+    "deselected_test": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+    "failed": 0,
+    "passed": 611
+  },
+  "next_step_requires_source_code_change": false,
+  "production_runtime_changes": 0
+}

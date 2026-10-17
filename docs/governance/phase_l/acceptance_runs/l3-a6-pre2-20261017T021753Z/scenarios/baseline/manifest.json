@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "path": "dispatch_ledger.json",
+      "sha256": "ef3ad270a6bb3a0936d13bc75f741d28f0861528d91c33b6634999ffb2ffd6d2"
+    },
+    {
+      "path": "result.json",
+      "sha256": "122d11b03e2956ad065e54012dc5d70e2cddb3a97a36aa4e6eb693b7195c6357"
+    },
+    {
+      "path": "source_results.json",
+      "sha256": "2357f45bf1c54e0f88e92d34231494c863efa96a1b9eef7a6c38961b13641704"
+    }
+  ],
+  "manifest_sha256": "f4036cb47b414ecf5de666ae1cedd3b12b88fb080d635d4a313b63a98cf27714",
+  "mode": "SIMULATED_OFFLINE"
+}

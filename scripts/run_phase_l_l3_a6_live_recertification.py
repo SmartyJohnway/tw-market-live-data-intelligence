@@ -29,7 +29,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.phase_l_a6_live_dispatch_guard import (  # noqa: E402
     A6BootstrapBudgetAdapter, A6DispatchController, DispatchBlocked,
-    build_plan, contract_matrix,
+    build_plan, contract_matrix, plan_json,
 )
 from server.services.phase_l_source_drift_contract import observe_source_attempt  # noqa: E402
 
@@ -48,6 +48,10 @@ def _sha_bytes(value: bytes) -> str:
 
 def _sha_file(path: Path) -> str:
     return _sha_bytes(path.read_bytes())
+
+
+def _canonical_sha(value: Mapping[str, Any]) -> str:
+    return _sha_bytes(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8"))
 
 
 def _now() -> str:
@@ -403,16 +407,63 @@ def _validate_reservation(path: Path | None, *, repo: Path = ROOT, run_dir: Path
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise DispatchBlocked("A6_LIVE_RESERVATION_NOT_FINALIZED") from exc
+    execution_dir = (run_dir or path.parent).resolve()
+    if path.parent.resolve() != execution_dir or path.name != "authority_reservation.json":
+        raise DispatchBlocked("a6_authority_reservation_path_invalid")
     expected = {"authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_AUTHORIZATION",
                 "state": "RESERVED_NOT_CONSUMED", "pre_network_head": _git("rev-parse", "HEAD"),
                 "pre_network_tree": _git("rev-parse", "HEAD^{tree}"), "logical_count": 23,
                 "physical_ceiling": 27, "P17_trade_date": "2026-10-15"}
     if any(value.get(k) != v for k, v in expected.items()):
         raise DispatchBlocked("a6_authority_reservation_binding_invalid")
+    if value.get("live_authority_consumed") is not False or value.get("planned_run_id") != execution_dir.name:
+        raise DispatchBlocked("a6_authority_reservation_binding_invalid")
+    try:
+        plan_path = Path(value["source_plan_path"]).resolve()
+        matrix_path = Path(value["transport_matrix_path"]).resolve()
+        manifest_path = Path(value["pre2_manifest_path"]).resolve()
+        plan_path.relative_to(repo.resolve())
+        matrix_path.relative_to(repo.resolve())
+        manifest_path.relative_to(repo.resolve())
+        if (_sha_file(plan_path) != value.get("source_plan_sha256")
+                or _sha_file(matrix_path) != value.get("transport_matrix_sha256")
+                or _sha_file(manifest_path) != value.get("pre2_manifest_sha256")):
+            raise ValueError("reservation_digest_mismatch")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest_base = {key: item for key, item in manifest.items() if key != "manifest_sha256"}
+        if (manifest.get("manifest_sha256") != _canonical_sha(manifest_base)
+                or manifest.get("manifest_sha256") != value.get("pre2_manifest_canonical_sha256")):
+            raise ValueError("reservation_manifest_mismatch")
+        for row in manifest.get("files", []):
+            artifact = (manifest_path.parent / row["path"]).resolve()
+            artifact.relative_to(manifest_path.parent.resolve())
+            if not artifact.is_file() or _sha_file(artifact) != row.get("sha256"):
+                raise ValueError("reservation_manifest_file_changed")
+        expected_ids = [f"P{i:02d}" for i in range(1, 19)] + [f"B{i:02d}" for i in range(1, 6)]
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+        sources = plan.get("sources")
+        entries = matrix.get("entries")
+        if (not isinstance(sources, list) or [item.get("source_contract_id") for item in sources] != expected_ids
+                or [item.get("logical_sequence", item.get("sequence")) for item in sources] != list(range(1, 24))
+                or plan.get("logical_count", plan.get("logical_plan_count")) != 23
+                or plan.get("physical_ceiling", plan.get("absolute_physical_ceiling")) != 27
+                or plan.get("P17_trade_date", plan.get("p17_trade_date")) != "2026-10-15"
+                or not isinstance(entries, list) or len(entries) != 23
+                or {item.get("source_contract_id") for item in entries} != set(expected_ids)
+                or _canonical_sha(sources) != _canonical_sha(plan_json())
+                or _canonical_sha(entries) != _canonical_sha(contract_matrix())):
+            raise ValueError("reservation_plan_invalid")
+        manifest_files = {row.get("path"): row.get("sha256") for row in manifest.get("files", [])}
+        for artifact in (plan_path, matrix_path):
+            if manifest_files.get(artifact.relative_to(manifest_path.parent).as_posix()) != _sha_file(artifact):
+                raise ValueError("reservation_artifact_not_manifest_bound")
+    except (KeyError, OSError, ValueError, json.JSONDecodeError) as exc:
+        raise DispatchBlocked("a6_authority_reservation_artifact_binding_invalid") from exc
     tracked = subprocess.run(["git", "diff", "--quiet", "HEAD", "--"], cwd=repo).returncode
     if tracked != 0:
         raise DispatchBlocked("a6_worktree_tracked_changes_before_live")
-    allowed_root = (run_dir or path.parent).resolve()
+    allowed_root = execution_dir
     for line in _git("status", "--porcelain", "--untracked-files=all").splitlines():
         rel = line[3:].strip().strip('"')
         candidate = (repo / rel).resolve()
@@ -482,7 +533,7 @@ def run(*, mode: str, run_dir: Path, reservation: Path | None = None,
                     semantic = "no_evidence_in_covered_scope" if verdict == "CONFORMING_WITH_UNCERTAINTY" else "available"
                 except DispatchBlocked:
                     raise
-                except BaseException as exc:
+                except Exception as exc:
                     records = controller.dispatch_ledger[before:]
                     last = records[-1] if records else None
                     if last and last.get("http_status") is not None and not 200 <= last["http_status"] < 300:
@@ -552,7 +603,9 @@ def run(*, mode: str, run_dir: Path, reservation: Path | None = None,
     _atomic_json(run_dir / "source_results.json", {"mode": result["mode"], "entries": results})
     _atomic_json(run_dir / "result.json", result)
     manifest_files = [p for p in sorted(run_dir.glob("*.json")) if p.name != "manifest.json"]
-    _atomic_json(run_dir / "manifest.json", {"mode": result["mode"], "files": [{"path": p.name, "sha256": _sha_file(p)} for p in manifest_files]})
+    manifest = {"mode": result["mode"], "files": [{"path": p.name, "sha256": _sha_file(p)} for p in manifest_files]}
+    manifest["manifest_sha256"] = _canonical_sha(manifest)
+    _atomic_json(run_dir / "manifest.json", manifest)
     return result
 
 

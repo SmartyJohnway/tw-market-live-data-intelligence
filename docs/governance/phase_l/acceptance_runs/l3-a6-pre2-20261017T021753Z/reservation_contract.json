@@ -1,0 +1,22 @@
+{
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_AUTHORIZATION",
+  "binding_fields": [
+    "pre_network_head",
+    "pre_network_tree",
+    "source_plan_sha256",
+    "transport_matrix_sha256",
+    "pre2_manifest_path",
+    "pre2_manifest_sha256",
+    "pre2_manifest_canonical_sha256",
+    "planned_run_id",
+    "logical_count",
+    "physical_ceiling",
+    "P17_trade_date"
+  ],
+  "consumed_receipt_precedes_transport": true,
+  "creator_reads_git_head_and_tree": true,
+  "mode": "PRE2_CONTRACT_ONLY_NO_RESERVATION_CREATED",
+  "no_final_reservation_created": true,
+  "required_state": "RESERVED_NOT_CONSUMED",
+  "runner_checks_manifest_and_artifact_hashes": true
+}

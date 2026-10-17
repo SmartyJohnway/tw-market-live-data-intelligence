@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import socket
+import subprocess
 from email.message import Message
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -9,6 +11,7 @@ from urllib.parse import urlsplit
 import pytest
 
 from scripts import run_phase_l_l3_a6_live_recertification as runner
+from scripts import phase_l_a6_final_live_reservation as reservation_tool
 from scripts.phase_l_a6_live_dispatch_guard import build_plan, contract_matrix, plan_json
 
 
@@ -42,6 +45,20 @@ def test_offline_baseline_uses_all_23_production_seams_without_sockets(tmp_path,
     assert result["authority_consumed"] is False
     assert result["simulation_latch_exercised"] is True
     assert attempts == []
+
+
+def test_p01_batch_failure_is_one_physical_dispatch_without_symbol_fallback(tmp_path):
+    p01 = build_plan()[0]
+    def factory(url, method):
+        if url.startswith(p01.route):
+            raise OSError("offline batch transport failure")
+        return runner._default_offline_response(url, method)
+    result = _run(tmp_path, factory, "p01-batch-failure")
+    ledger = json.loads((tmp_path / "p01-batch-failure" / "dispatch_ledger.json").read_text())["entries"]
+    p01_entries = [entry for entry in ledger if entry["source_contract_id"] == "P01"]
+    assert len(p01_entries) == 1
+    assert result["physical_dispatches"] == 23
+    assert all(entry["source_contract_id"] != "P01" or "individual" not in entry["route_identity"] for entry in ledger)
 
 
 def test_all_four_governed_research_alternates_reach_exact_27(tmp_path):
@@ -232,3 +249,173 @@ def test_source_plan_and_matrix_are_exactly_frozen():
     assert all(row["timeout_seconds"] > 0 and row["retry_supported"] is False and row["a6_retry_allowed"] is False for row in matrix)
     assert sum(item.maximum_physical_dispatches for item in build_plan()) == 27
     assert len(plan_json()) == 23
+
+
+def _canonical_sha(value):
+    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def _reservation_bundle(tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.email", "a6-test@example.invalid"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.name", "A6 Offline Test"], cwd=repo, check=True)
+    bundle = repo / "governance" / "pre2"
+    bundle.mkdir(parents=True)
+    source_rows = [item.__dict__.copy() for item in build_plan()]
+    plan = {"sources": source_rows, "logical_count": 23, "physical_ceiling": 27, "P17_trade_date": "2026-10-15"}
+    matrix = {"entries": contract_matrix()}
+    plan_path = bundle / "a6_source_plan.json"
+    matrix_path = bundle / "transport_contract_matrix.json"
+    plan_path.write_text(json.dumps(plan, sort_keys=True), encoding="utf-8")
+    matrix_path.write_text(json.dumps(matrix, sort_keys=True), encoding="utf-8")
+    orchestration = bundle / "orchestration_contract.json"
+    orchestration.write_text('{"mode":"PRE2_TEST"}\n', encoding="utf-8")
+    files = []
+    for artifact in (plan_path, matrix_path, orchestration):
+        files.append({"path": artifact.name, "sha256": hashlib.sha256(artifact.read_bytes()).hexdigest()})
+    manifest_value = {"files": files}
+    manifest_value["manifest_sha256"] = _canonical_sha(manifest_value)
+    manifest_path = bundle / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest_value, sort_keys=True), encoding="utf-8")
+    subprocess.run(["git", "add", "."], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-qm", "offline reservation fixture"], cwd=repo, check=True)
+    live_dir = repo / "acceptance_runs" / "l3-a6-offline-live-test"
+    reservation_path = live_dir / "authority_reservation.json"
+    reservation = reservation_tool.create_reservation(repo=repo, plan_path=plan_path, matrix_path=matrix_path,
+        pre2_manifest_path=manifest_path, output_path=reservation_path, planned_run_id=live_dir.name)
+    return repo, bundle, live_dir, reservation_path, reservation
+
+
+def test_reservation_creator_binds_actual_git_plan_matrix_manifest_and_run_id(tmp_path):
+    repo, bundle, live_dir, path, reservation = _reservation_bundle(tmp_path)
+    assert reservation["pre_network_head"] == subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+    assert reservation["pre_network_tree"] == subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=repo, text=True).strip()
+    assert reservation["source_plan_sha256"] == hashlib.sha256((bundle / "a6_source_plan.json").read_bytes()).hexdigest()
+    assert reservation["transport_matrix_sha256"] == hashlib.sha256((bundle / "transport_contract_matrix.json").read_bytes()).hexdigest()
+    assert reservation["planned_run_id"] == live_dir.name
+    assert reservation["live_authority_consumed"] is False
+    assert path.is_file()
+
+
+def test_live_runner_validates_creator_reservation_without_dispatch(tmp_path, monkeypatch):
+    repo, _bundle, live_dir, path, _reservation = _reservation_bundle(tmp_path)
+    monkeypatch.setattr(runner, "_git", lambda *args: subprocess.check_output(["git", *args], cwd=repo, text=True).strip())
+    transport_calls = []
+    monkeypatch.setattr(runner.OpenerDirector, "open", lambda *a, **k: transport_calls.append(1))
+    validated = runner._validate_reservation(path, repo=repo, run_dir=live_dir)
+    assert validated["state"] == "RESERVED_NOT_CONSUMED"
+    assert validated["planned_run_id"] == live_dir.name
+    assert transport_calls == []
+
+
+@pytest.mark.parametrize("field,value,error", [
+    ("authority_id", "wrong", "a6_authority_reservation_binding_invalid"),
+    ("pre_network_head", "wrong", "a6_authority_reservation_binding_invalid"),
+    ("pre_network_tree", "wrong", "a6_authority_reservation_binding_invalid"),
+    ("source_plan_sha256", "wrong", "a6_authority_reservation_artifact_binding_invalid"),
+    ("transport_matrix_sha256", "wrong", "a6_authority_reservation_artifact_binding_invalid"),
+    ("pre2_manifest_sha256", "wrong", "a6_authority_reservation_artifact_binding_invalid"),
+    ("pre2_manifest_canonical_sha256", "wrong", "a6_authority_reservation_artifact_binding_invalid"),
+    ("planned_run_id", "other-run", "a6_authority_reservation_binding_invalid"),
+])
+def test_invalid_reservation_binding_refuses_before_transport(tmp_path, monkeypatch, field, value, error):
+    repo, _bundle, live_dir, path, reservation = _reservation_bundle(tmp_path)
+    reservation[field] = value
+    path.write_text(json.dumps(reservation), encoding="utf-8")
+    monkeypatch.setattr(runner, "_git", lambda *args: subprocess.check_output(["git", *args], cwd=repo, text=True).strip())
+    transport_calls = []
+    monkeypatch.setattr(runner.OpenerDirector, "open", lambda *a, **k: transport_calls.append(1))
+    with pytest.raises(runner.DispatchBlocked, match=error):
+        runner._validate_reservation(path, repo=repo, run_dir=live_dir)
+    assert transport_calls == []
+
+
+def test_missing_or_consumed_reservation_refuses_before_transport(tmp_path, monkeypatch):
+    repo, _bundle, live_dir, path, _reservation = _reservation_bundle(tmp_path)
+    monkeypatch.setattr(runner, "_git", lambda *args: subprocess.check_output(["git", *args], cwd=repo, text=True).strip())
+    transport_calls = []
+    monkeypatch.setattr(runner.OpenerDirector, "open", lambda *a, **k: transport_calls.append(1))
+    with pytest.raises(runner.DispatchBlocked, match="A6_LIVE_RESERVATION_NOT_FINALIZED"):
+        runner._validate_reservation(None, repo=repo, run_dir=live_dir)
+    (live_dir / "authority_consumed.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(runner.DispatchBlocked, match="a6_authority_already_consumed"):
+        runner._validate_reservation(path, repo=repo, run_dir=live_dir)
+    assert transport_calls == []
+
+
+def test_pre2_orchestrator_crash_after_latch_rejects_second_execution(tmp_path, monkeypatch):
+    run_dir = tmp_path / "l3-a6-crash-reuse"
+    run_dir.mkdir()
+    reservation_path = run_dir / "authority_reservation.json"
+    head, tree = "offline-committed-head", "offline-committed-tree"
+    reservation_path.write_text(json.dumps({
+        "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_AUTHORIZATION",
+        "state": "RESERVED_NOT_CONSUMED", "pre_network_head": head, "pre_network_tree": tree,
+    }), encoding="utf-8")
+    monkeypatch.setattr(runner, "_git", lambda *_args: head if _args[-1] == "HEAD" else tree)
+
+    def validate(path, *, run_dir):
+        consumed = run_dir / "authority_consumed.json"
+        if consumed.exists():
+            raise runner.DispatchBlocked("a6_authority_already_consumed")
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    monkeypatch.setattr(runner, "_validate_reservation", validate)
+    def dispatch_first_source(sequence, controller, _run_dir):
+        from urllib.request import Request, urlopen
+        url = build_plan()[sequence - 1].route + "?ex_ch=tse_2330.tw|otc_6488.tw&json=1&delay=0"
+        with urlopen(Request(url), timeout=15):
+            pass
+        return "CONFORMING", {}
+    monkeypatch.setattr(runner, "_invoke_source", dispatch_first_source)
+    underlying_calls = []
+    def crash_after_latch(*_args, **_kwargs):
+        underlying_calls.append("entered_transport")
+        raise SystemExit("simulated process crash after authority latch")
+    monkeypatch.setattr(runner.OpenerDirector, "open", crash_after_latch)
+    with pytest.raises(SystemExit, match="simulated process crash"):
+        runner.run(mode="live", run_dir=run_dir, reservation=reservation_path)
+    receipt = json.loads((run_dir / "authority_consumed.json").read_text(encoding="utf-8"))
+    assert receipt["state"] == "CONSUMED"
+    assert underlying_calls == ["entered_transport"]
+    with pytest.raises(runner.DispatchBlocked, match="a6_authority_already_consumed"):
+        runner.run(mode="live", run_dir=run_dir, reservation=reservation_path)
+    assert underlying_calls == ["entered_transport"]
+
+
+@pytest.mark.parametrize("rate_limited_id,skipped_ids", [
+    ("P08", ("P09", "P10")),
+    ("P09", ("P10",)),
+])
+def test_h1_component_429_suppresses_only_later_same_host_components(tmp_path, rate_limited_id, skipped_ids):
+    target = next(item for item in build_plan() if item.source_contract_id == rate_limited_id)
+    def factory(url, method):
+        if url == target.route:
+            return 429, b"", {"Content-Type": "application/json", "Retry-After": "60"}
+        return runner._default_offline_response(url, method)
+    result = _run(tmp_path, factory, f"h1-429-{rate_limited_id}")
+    by_id = {row["source_contract_id"]: row for row in result["source_results"]}
+    ledger = json.loads((tmp_path / f"h1-429-{rate_limited_id}" / "dispatch_ledger.json").read_text())["entries"]
+    for source_id in skipped_ids:
+        assert by_id[source_id]["verdict"] == "SKIPPED_AFTER_RATE_LIMIT"
+        assert not [entry for entry in ledger if entry["source_contract_id"] == source_id]
+    assert len([entry for entry in ledger if entry["source_contract_id"] == rate_limited_id]) == 1
+    assert result["overall_disposition"] == "INCONCLUSIVE"
+
+
+def test_www_twse_rate_limit_suppresses_only_exact_host_not_twse_siblings(tmp_path):
+    p12 = next(item for item in build_plan() if item.source_contract_id == "P12")
+    def factory(url, method):
+        if url.startswith(p12.route + "?"):
+            return 429, b"", {"Content-Type": "text/html", "Retry-After": "60"}
+        return runner._default_offline_response(url, method)
+    result = _run(tmp_path, factory, "twse-host-429")
+    by_id = {row["source_contract_id"]: row for row in result["source_results"]}
+    assert by_id["P17"]["verdict"] == "SKIPPED_AFTER_RATE_LIMIT"
+    for source_id in ("P11", "P13", "P14"):
+        assert by_id[source_id]["verdict"] != "SKIPPED_AFTER_RATE_LIMIT"
+    assert by_id["B03"]["verdict"] == "SKIPPED_AFTER_RATE_LIMIT"
+    assert by_id["B05"]["verdict"] == "SKIPPED_AFTER_RATE_LIMIT"
+    assert result["overall_disposition"] == "INCONCLUSIVE"
