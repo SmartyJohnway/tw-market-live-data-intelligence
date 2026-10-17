@@ -383,13 +383,15 @@ class A6DispatchController:
         _controller, anchor, allowed = active
         candidates: list[tuple[PlannedSource, str]] = []
         for item in self.sequence_map.values():
-            if item.logical_sequence not in allowed or item.method != method or item.hostname != parsed.hostname:
+            if item.logical_sequence not in allowed or item.method != method:
                 continue
-            role = "PRIMARY"
-            route = item.route
             if item.alternate_route and url == item.alternate_route:
-                role, route = "GOVERNED_ALTERNATE", item.alternate_route
-            elif item.source_contract_id in {"P01", "P12"}:
+                role = "GOVERNED_ALTERNATE"
+                expected_host = urlsplit(item.alternate_route).hostname
+            else:
+                role = "PRIMARY"
+                expected_host = item.hostname
+            if role == "PRIMARY" and item.source_contract_id in {"P01", "P12"}:
                 expected = urlsplit(item.route)
                 if parsed.path != expected.path:
                     continue
@@ -401,7 +403,9 @@ class A6DispatchController:
                 else:
                     if query.get("stockNo") != ["2330"] or query.get("date") != ["20261001"] or query.get("response") != ["html"]:
                         continue
-            elif url != item.route:
+            elif role == "PRIMARY" and url != item.route:
+                continue
+            if parsed.hostname != expected_host:
                 continue
             candidates.append((item, role))
         if len(candidates) != 1:

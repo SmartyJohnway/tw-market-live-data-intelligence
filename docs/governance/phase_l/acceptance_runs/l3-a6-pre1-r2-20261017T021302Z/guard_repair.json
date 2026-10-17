@@ -1,0 +1,21 @@
+{
+  "route_resolution_order": [
+    "validate allowed logical source and method",
+    "exact URL match against governed alternate route, otherwise primary contract",
+    "derive expected hostname from the selected route role",
+    "require parsed hostname to equal expected hostname",
+    "append exactly one source/role candidate"
+  ],
+  "alternate_url_match": "exact equality for P04-P07 only",
+  "primary_url_match": "unchanged exact primary route; P01/P12 retain path and query binding",
+  "reserve_before_dispatch_alternate_host_check": "retained",
+  "a6_research_429_alternate_behavior": "JSON callback refuses before dispatch after primary 429",
+  "degraded_primary_outcome_preserved": true,
+  "primary_csv_contract_drift_preserved": true,
+  "files": [
+    "scripts/phase_l_a6_live_dispatch_guard.py",
+    "scripts/run_phase_l_l3_a6_live_recertification.py",
+    "tests/unit/test_phase_l_a6_pre1_r2_alternate_route_matching.py",
+    "tests/unit/test_phase_l_a6_pre2_orchestrator.py"
+  ]
+}
