@@ -15,6 +15,7 @@ if str(ROOT) not in sys.path:
 from mcp.server.stdio import stdio_server
 
 from server.unified_mcp import ADAPTER_VERSION
+from server.unified_mcp.bounded_stdio import BoundedStdin
 from server.unified_mcp.local_service_client import DEFAULT_SERVICE_URL, LocalServiceClientError, UnifiedLocalServiceClient
 from server.unified_mcp.server import build_unified_market_evidence_mcp_server
 from server.unified_mcp.tool_contracts import ToolContractError, build_tool_contract_snapshot
@@ -38,6 +39,13 @@ async def _serve(service_url: str) -> int:
         return EXIT_DEPENDENCY
     try:
         tool_contract_snapshot = build_tool_contract_snapshot()
+    except ToolContractError as exc:
+        _stderr(f"MCP tool-contract startup check failed: {exc}")
+        return EXIT_CONFIGURATION
+    bounded_stdin = BoundedStdin(sys.stdin.buffer)
+    if not await bounded_stdin.prefetch_first_frame():
+        return 0
+    try:
         client = UnifiedLocalServiceClient(service_url)
         await client.verify_service_contract()
     except ToolContractError as exc:
@@ -50,7 +58,7 @@ async def _serve(service_url: str) -> int:
         client=client, tool_contract_snapshot=tool_contract_snapshot
     )
     _stderr(f"Starting {ADAPTER_VERSION} over stdio")
-    async with stdio_server() as (read_stream, write_stream):
+    async with stdio_server(stdin=bounded_stdin) as (read_stream, write_stream):
         await app.run(read_stream, write_stream, app.create_initialization_options())
     return 0
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +24,8 @@ from scripts.m8r_filesystem_safety import (
     validate_authorized_root,
 )
 from server.services.unified_contract_versions import PREFERRED_RESULT_SCHEMA_VERSION
+from server.unified_bounded_io import measure_json_utf8, measure_text_utf8
+from server.unified_payload_bounds import MAX_UNIFIED_RESPONSE_BYTES
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services.unified_mode_b2 import CONTROL_ROOT
 from server.services.watchlist_evidence_composer import (
@@ -67,6 +70,34 @@ def _read(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ModeCError("mode_c_artifact_invalid")
     return value
+
+
+def _bounded_file_bytes(path: Path, remaining: int) -> bytes:
+    """Read no more than the remaining public projection budget plus one byte."""
+    with path.open("rb") as handle:
+        data = handle.read(max(0, remaining) + 1)
+    if len(data) > remaining:
+        raise ModeCError("mode_c_public_projection_too_large")
+    return data
+
+
+def _enforce_public_projection_bound(result: dict[str, Any], audit: dict[str, Any], markdown: str) -> None:
+    # Match the deterministic bytes written by m8r_05c.containment.
+    remaining = MAX_UNIFIED_RESPONSE_BYTES
+    for value in (result, audit):
+        size = measure_json_utf8(
+            value, max_bytes=remaining, ensure_ascii=False, allow_nan=True,
+            sort_keys=True, indent=2, newline_translation=os.linesep == "\r\n",
+        )
+        if size > remaining:
+            raise ModeCError("mode_c_public_projection_too_large")
+        remaining -= size
+    total_markdown = 0
+    total_markdown = measure_text_utf8(
+        markdown, max_bytes=remaining, newline_translation=os.linesep == "\r\n",
+    )
+    if total_markdown > remaining:
+        raise ModeCError("mode_c_public_projection_too_large")
 
 
 def _safe_path(root: Path, relative: str | Path) -> Path:
@@ -249,9 +280,18 @@ def _read_verified_outputs(
     if not all(path.is_file() for path in (result_path, markdown_path, audit_path)):
         raise ModeCError("mode_c_existing_output_inconsistent")
     try:
-        result, audit = _read(result_path), _read(audit_path)
-        markdown = markdown_path.read_text(encoding="utf-8")
-    except OSError as exc:
+        total = 0
+        result_raw = _bounded_file_bytes(result_path, MAX_UNIFIED_RESPONSE_BYTES - total)
+        total += len(result_raw)
+        audit_raw = _bounded_file_bytes(audit_path, MAX_UNIFIED_RESPONSE_BYTES - total)
+        total += len(audit_raw)
+        markdown_raw = _bounded_file_bytes(markdown_path, MAX_UNIFIED_RESPONSE_BYTES - total)
+        result, audit = json.loads(result_raw.decode("utf-8")), json.loads(audit_raw.decode("utf-8"))
+        # Match Path.read_text(newline=None)'s platform-independent universal-newline view.
+        markdown = markdown_raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    except ModeCError:
+        raise
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ModeCError("mode_c_existing_output_inconsistent") from exc
     if result != expected_result or audit != expected_audit or markdown != expected_markdown:
         raise ModeCError("mode_c_existing_output_inconsistent")
@@ -294,6 +334,7 @@ def build_mode_c_result_package(
     expected_result, expected_audit, expected_markdown = _expected_outputs(
         inputs, projector_version, selection_provenance, output_schema_version
     )
+    _enforce_public_projection_bound(expected_result, expected_audit, expected_markdown)
     existing = _read_verified_outputs(
         package, output_schema_version, expected_result, expected_audit, expected_markdown,
     )
@@ -342,7 +383,7 @@ def build_mode_c_ai_handoff(control_package_id: str, output_schema_version: str 
         raise ModeCError("mode_c_existing_output_inconsistent")
     canonical_result = result_package["canonical_result"]
     request_summary = canonical_result.get("request_summary", {})
-    return {
+    handoff = {
         "service_contract_version": "unified_market_evidence_local_service.v2",
         "control_package_id": control_package_id,
         "result_id": result_package["result_id"],
@@ -361,3 +402,6 @@ def build_mode_c_ai_handoff(control_package_id: str, output_schema_version: str 
         "materialization": result_package["materialization"],
         "additional_market_network_executed": False,
     }
+    if measure_json_utf8(handoff, max_bytes=MAX_UNIFIED_RESPONSE_BYTES) > MAX_UNIFIED_RESPONSE_BYTES:
+        raise ModeCError("mode_c_public_projection_too_large")
+    return handoff

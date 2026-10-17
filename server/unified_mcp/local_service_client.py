@@ -8,13 +8,14 @@ from urllib.parse import urlsplit, urlunsplit
 import httpx
 
 from server.operational_diagnostics import TRACE_HEADER, normalize_trace_id
+from server.unified_payload_bounds import MAX_UNIFIED_REQUEST_BYTES, MAX_UNIFIED_RESPONSE_BYTES
 from . import LOCAL_SERVICE_CONTRACT_VERSION
 from .tool_contracts import CONTROL_PACKAGE_PATTERN
 import re
 
 DEFAULT_SERVICE_URL = "http://127.0.0.1:8000"
-MAX_REQUEST_BYTES = 1 * 1024 * 1024
-MAX_RESPONSE_BYTES = 8 * 1024 * 1024
+MAX_REQUEST_BYTES = MAX_UNIFIED_REQUEST_BYTES
+MAX_RESPONSE_BYTES = MAX_UNIFIED_RESPONSE_BYTES
 TIMEOUT_SECONDS = 15.0
 # Existing execution children are bounded at 130 seconds; this adds only bounded
 # request/planning/Mode C overhead for the one action route.
@@ -101,9 +102,9 @@ class UnifiedLocalServiceClient:
                         raise LocalServiceClientError("local_service_protocol_invalid")
                     received = bytearray()
                     async for chunk in response.aiter_bytes():
-                        received.extend(chunk)
-                        if len(received) > self.max_response_bytes:
+                        if len(chunk) > self.max_response_bytes - len(received):
                             raise LocalServiceClientError("local_service_response_too_large")
+                        received.extend(chunk)
         except LocalServiceClientError:
             raise
         except httpx.TimeoutException as exc:

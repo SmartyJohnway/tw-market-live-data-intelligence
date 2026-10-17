@@ -1,0 +1,45 @@
+{
+  "authority": "USER_CHAT_2026-10-17_PHASE_L_L4_A3_INPUT_OUTPUT_ARTIFACT_BOUND_ENFORCEMENT_AUTHORIZATION",
+  "base_head": "6f896c124918c9b340358f7010f4c3403e862335",
+  "base_tree": "c9131977fbcbea32873617bd7d8db9572cc101bb",
+  "files": [
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/bound_authority_matrix.json",
+      "sha256": "709c38b86668eb0052124be0adca248c73625dc0502e3b75059e826e82795d7a"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/finding_reconciliation.json",
+      "sha256": "ad6251977088b09c462f39925ec1234e169dc1dcfafb28b171c5696737085358"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/http_request_bound_matrix.json",
+      "sha256": "3ff57bef15cd4ee0b43be8abf1c05a3b0a12520527b9926242d547897c35f62c"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/large_projection_regression_matrix.json",
+      "sha256": "d149bcaa37e4d0045101788b793415b0a92ba458950f5bfe9c7be47145502f1a"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/mcp_stdio_bound_matrix.json",
+      "sha256": "ef12a863b34dcac13956ae0ffec01fb00857338232869700450b04c390d5c4b2"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/offline_review.json",
+      "sha256": "b38225708fce23ffc6cc6d1c367537f304b8f514b013649c72401a4a24cc7056"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/preflight_result.json",
+      "sha256": "8794fa45a38f0d5e2a562c04f2ffe2403d0c4722143b934762b2a1331f941ea6"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/producer_output_bound_matrix.json",
+      "sha256": "f41134abeecc96bcb8353fb332c4fb223174e8e770ab498ed7d0b07d93eca135"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/watchlist_bound_reconciliation.json",
+      "sha256": "18a1f2560346126fe0cd0eae7d9fa7ac90960447de2df01d08c666a26eba24ee"
+    }
+  ],
+  "mode": "OFFLINE_ONLY",
+  "run_id": "l4-a3-20261017T102100Z"
+}

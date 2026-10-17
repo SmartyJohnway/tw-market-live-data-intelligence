@@ -1,0 +1,19 @@
+{
+  "cumulative_sqlite_revision_storage": "RESOURCE_RETENTION_RESIDUAL_DEFERRED_TO_L4_A6",
+  "existing_limits": {
+    "entries_per_watchlist": 500,
+    "import_bytes": 1048576,
+    "json_depth": 20,
+    "name_length": 120,
+    "notes_length": 4096,
+    "tag_length": 64,
+    "tags": 20,
+    "watchlists": 32
+  },
+  "input_mutation_dimension": "COVERED",
+  "migration_performed": false,
+  "production_watchlist_state_touched": false,
+  "revision_chain_truncated": false,
+  "run_id": "l4-a3-20261017T102100Z",
+  "test": "tests/unit/test_m8r_09_persistent_watchlists.py::test_import_bounds_are_preserved_and_revision_history_is_not_truncated"
+}

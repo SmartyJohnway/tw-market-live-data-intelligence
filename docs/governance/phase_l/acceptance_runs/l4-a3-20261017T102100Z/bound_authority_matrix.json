@@ -1,0 +1,212 @@
+{
+  "bounds": [
+    {
+      "authority_source": "existing Unified HTTP body authority; A0 IN-001",
+      "bound_id": "HTTP-REQUEST",
+      "enforcement_locations": [
+        "server/unified_payload_bounds.py",
+        "server/unified_bounded_io.py",
+        "server/unified_workbench_router.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+      ],
+      "unit": "bytes",
+      "value": 1048576,
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "existing MCP Local Service client authority",
+      "bound_id": "LOCAL-SERVICE-REQUEST",
+      "enforcement_locations": [
+        "server/unified_mcp/local_service_client.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_m8r_08b_mcp_error_mapping.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+      ],
+      "unit": "bytes",
+      "value": 1048576,
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "reuse of established Unified request transport authority; A3 directive",
+      "bound_id": "MCP-STDIO-FRAME",
+      "enforcement_locations": [
+        "server/unified_mcp/bounded_stdio.py",
+        "scripts/run_unified_market_evidence_mcp.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_phase_l_l4_a3_bounded_stdio.py"
+      ],
+      "unit": "bytes",
+      "value": 1048576,
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "existing Local Service MCP client response authority",
+      "bound_id": "PUBLIC-RESPONSE",
+      "enforcement_locations": [
+        "server/unified_payload_bounds.py",
+        "server/unified_bounded_io.py",
+        "server/unified_workbench_router.py",
+        "server/unified_mcp/server.py",
+        "server/services/unified_mode_c.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_m8r_06_04_mode_c.py"
+      ],
+      "unit": "bytes",
+      "value": 8388608,
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "Capability Catalog v3 bounds",
+      "bound_id": "CATALOG-DEFAULT-TARGETS",
+      "enforcement_locations": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "server/services/unified_mode_a.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_m8r_05a_capability_catalog.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+      ],
+      "unit": "targets",
+      "value": 10,
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "Capability Catalog v3 bounds",
+      "bound_id": "CATALOG-HARD-TARGETS",
+      "enforcement_locations": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/validate_unified_market_evidence_contracts.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_m8r_05a_capability_catalog.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+      ],
+      "unit": "targets",
+      "value": 50,
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "Capability Catalog v3 bounds",
+      "bound_id": "CATALOG-HARD-OPERATIONS",
+      "enforcement_locations": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/m8r_05b_01/planner.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_m8r_05b_01_planner.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+      ],
+      "unit": "operations",
+      "value": 100,
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "Unified Request v3 schema and Capability Catalog v3",
+      "bound_id": "RECENT-PERFORMANCE-LOOKBACK",
+      "enforcement_locations": [
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+      ],
+      "test_locations": [
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_m8r_06_02_mode_b1_preview.py"
+      ],
+      "unit": "trading days",
+      "value": "1..20",
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "Unified execution request v1-v3 schemas",
+      "bound_id": "EXECUTION-RECORDS",
+      "enforcement_locations": [
+        "schemas/unified_market_evidence_execution_request.v1.schema.json",
+        "schemas/unified_market_evidence_execution_request.v2.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json"
+      ],
+      "test_locations": [
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+      ],
+      "unit": "records",
+      "value": "1..500",
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "Unified execution request v1-v3 schemas",
+      "bound_id": "EXECUTION-TIMEOUT",
+      "enforcement_locations": [
+        "schemas/unified_market_evidence_execution_request.v1.schema.json",
+        "schemas/unified_market_evidence_execution_request.v2.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json"
+      ],
+      "test_locations": [
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+      ],
+      "unit": "seconds",
+      "value": "1..60",
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "existing material disclosure evidence schema",
+      "bound_id": "MATERIAL-DISCLOSURE-ROWS",
+      "enforcement_locations": [
+        "schemas/material_disclosure_evidence.v1.schema.json"
+      ],
+      "test_locations": [
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+      ],
+      "unit": "items",
+      "value": 50,
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "Persistent Watchlist LIMITS contract",
+      "bound_id": "WATCHLIST-LIMITS",
+      "enforcement_locations": [
+        "scripts/m8r_09_persistent_watchlists.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_m8r_09_persistent_watchlists.py"
+      ],
+      "unit": "existing units",
+      "value": {
+        "entries_per_watchlist": 500,
+        "import_bytes": 1048576,
+        "json_depth": 20,
+        "name_length": 120,
+        "notes_length": 4096,
+        "tag_length": 64,
+        "tags": 20,
+        "watchlists": 32
+      },
+      "value_pre_existed_a3": true
+    },
+    {
+      "authority_source": "existing M8R-05C staging sanity check; not public transport authority",
+      "bound_id": "INTERNAL-STAGING-SANITY",
+      "enforcement_locations": [
+        "scripts/m8r_05c/containment.py"
+      ],
+      "test_locations": [
+        "tests/unit/test_m8r_05c_containment.py"
+      ],
+      "unit": "bytes per staged file",
+      "value": 52428800,
+      "value_pre_existed_a3": true
+    }
+  ],
+  "deferred_numeric_values": [
+    "cumulative SQLite/revision storage",
+    "peak memory",
+    "disk capacity/retention",
+    "concurrency",
+    "performance under large load"
+  ],
+  "no_new_arbitrary_numeric_ceilings": true,
+  "run_id": "l4-a3-20261017T102100Z"
+}

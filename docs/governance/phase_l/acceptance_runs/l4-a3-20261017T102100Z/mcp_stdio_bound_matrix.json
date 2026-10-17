@@ -1,0 +1,16 @@
+{
+  "compatibility": "custom async text-line iterator passed to SDK stdio_server(stdin=...)",
+  "oversized_behavior": "terminate before yielding truncated frame; bounded stderr diagnostic; first frame is prefetched before Local Service check; no tool dispatch",
+  "raw_line_limit_bytes": 1048576,
+  "read_chunk_max_bytes": 65536,
+  "reader": "server/unified_mcp/bounded_stdio.py::BoundedStdin",
+  "run_id": "l4-a3-20261017T102100Z",
+  "sdk": "mcp==1.29.0",
+  "sdk_forked": false,
+  "stdout_line_backstop": "not implemented; producer MCP result bound is primary",
+  "tests": [
+    "tests/unit/test_phase_l_l4_a3_bounded_stdio.py",
+    "tests/integration/test_m8r_08b_mcp_stdio_local_service.py",
+    "tests/unit/test_m8r_08b_mcp_tool_contracts.py"
+  ]
+}

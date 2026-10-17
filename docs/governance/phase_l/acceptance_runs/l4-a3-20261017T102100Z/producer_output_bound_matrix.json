@@ -1,0 +1,29 @@
+{
+  "50_mib_staging_rule": "retained as internal per-file staging sanity check; distinct from 8 MiB public envelope",
+  "max_bytes": 8388608,
+  "peak_memory_performance_disk_capacity": "not asserted; deferred to L4-A6",
+  "run_id": "l4-a3-20261017T102100Z",
+  "surfaces": [
+    {
+      "implementation": "bounded_json_response serializes once and emits pre-encoded bytes; stable response_too_large error with HTTP 500",
+      "routes": "capabilities, all Unified POST responses, audit download, AI handoff",
+      "surface": "FastAPI Unified JSON responses"
+    },
+    {
+      "implementation": "request body capped at 1 MiB; streamed response chunks checked before bytearray extension; response capped at 8 MiB",
+      "surface": "Local Service MCP client"
+    },
+    {
+      "implementation": "aggregate deterministic UTF-8 serialized size checked before output materialization; existing persisted trio bounded before parse/public return; no partial generated publication on oversize",
+      "surface": "Mode-C Result/Audit/Markdown projection"
+    },
+    {
+      "implementation": "final serialized handoff object checked, including structured canonical result, Markdown, citations, metadata",
+      "surface": "Mode-C AI handoff"
+    },
+    {
+      "implementation": "UTF-8 text bytes plus serialized structuredContent bytes checked; oversized result replaced by deterministic mcp_result_too_large",
+      "surface": "MCP CallToolResult"
+    }
+  ]
+}

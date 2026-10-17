@@ -194,6 +194,28 @@ def test_limits_and_integrity_tamper_fail_closed(store, monkeypatch):
         store.verify_integrity()
 
 
+def test_import_bounds_are_preserved_and_revision_history_is_not_truncated(store):
+    from scripts.m8r_09_persistent_watchlists import LIMITS
+    assert LIMITS == {
+        "watchlists": 32, "entries": 500, "tags": 20, "tag_length": 64,
+        "notes_length": 4096, "name_length": 120,
+        "import_bytes": 1024 * 1024, "json_depth": 20,
+    }
+    too_large = {"schema_version": "m5k_watchlist.v1", "items": [], "description": "x" * LIMITS["import_bytes"]}
+    with pytest.raises(WatchlistError, match="WATCHLIST_IMPORT_TOO_LARGE"):
+        store._legacy_items(too_large)
+
+    watchlist = create(store)
+    for name in ("Revision 2", "Revision 3", "Revision 4"):
+        current = store.get_watchlist(watchlist["watchlist_id"])
+        commit(store, store.preview(command(
+            "rename_watchlist", watchlist_id=watchlist["watchlist_id"],
+            expected_version=current["current_version"], name=name,
+        )))
+    history = store.revisions(watchlist["watchlist_id"])
+    assert [revision["version"] for revision in history] == [1, 2, 3, 4]
+
+
 def test_successor_migration_is_explicit(store):
     watchlist = add(store, create(store), "8888")
     entry = watchlist["entries"][0]

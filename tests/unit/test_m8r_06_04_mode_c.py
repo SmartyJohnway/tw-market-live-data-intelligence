@@ -83,6 +83,37 @@ def test_mode_c_materializes_and_reuses_sanitized_finalized_lineage(mode_c_root)
     assert _build(mode_c_root)["materialization"] == "existing_verified"
 
 
+def test_mode_c_oversized_public_projection_is_rejected_before_any_output_publication(mode_c_root, monkeypatch):
+    monkeypatch.setattr(unified_mode_c, "MAX_UNIFIED_RESPONSE_BYTES", 1)
+    with pytest.raises(ModeCError, match="mode_c_public_projection_too_large"):
+        _build(mode_c_root)
+    assert not (mode_c_root / "ai_context" / "unified_market_evidence_result.v3.json").exists()
+    assert not (mode_c_root / "ai_context" / "unified_market_evidence_result.v3.md").exists()
+    assert not (mode_c_root / "audit" / "unified_market_evidence_audit_package.v3.json").exists()
+
+
+def test_mode_c_persisted_public_projection_is_bounded_before_read(mode_c_root, monkeypatch):
+    _build(mode_c_root)
+    outputs = (
+        mode_c_root / "ai_context" / "unified_market_evidence_result.v3.json",
+        mode_c_root / "audit" / "unified_market_evidence_audit_package.v3.json",
+        mode_c_root / "ai_context" / "unified_market_evidence_result.v3.md",
+    )
+    baseline_size = sum(path.stat().st_size for path in outputs)
+    monkeypatch.setattr(unified_mode_c, "MAX_UNIFIED_RESPONSE_BYTES", baseline_size + 8)
+    outputs[2].write_bytes(outputs[2].read_bytes() + b"x" * 32)
+    with pytest.raises(ModeCError, match="mode_c_public_projection_too_large"):
+        _build(mode_c_root)
+
+
+def test_mode_c_final_handoff_serialized_bound_includes_structured_payload(mode_c_root, monkeypatch):
+    handoff = unified_mode_c.build_mode_c_ai_handoff(PACKAGE_ID)
+    size = unified_mode_c.measure_json_utf8(handoff)
+    monkeypatch.setattr(unified_mode_c, "MAX_UNIFIED_RESPONSE_BYTES", size - 1)
+    with pytest.raises(ModeCError, match="mode_c_public_projection_too_large"):
+        unified_mode_c.build_mode_c_ai_handoff(PACKAGE_ID)
+
+
 @pytest.mark.parametrize("relative", ["claims", "receipts", "bundles"])
 def test_mode_c_rejects_missing_final_execution_artifacts(mode_c_root, relative):
     shutil.rmtree(mode_c_root / relative)

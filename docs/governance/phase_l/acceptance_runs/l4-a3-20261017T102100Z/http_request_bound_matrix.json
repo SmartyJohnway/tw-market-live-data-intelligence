@@ -1,0 +1,25 @@
+{
+  "algorithm": [
+    "reject trustworthy oversized Content-Length before read",
+    "consume Request.stream incrementally regardless of Content-Length",
+    "stop before accumulating beyond limit",
+    "preserve malformed JSON behavior"
+  ],
+  "limit_bytes": 1048576,
+  "pre_materialization": true,
+  "routes": [
+    "/api/unified/validate-request",
+    "/api/unified/preview-request",
+    "/api/unified/authorizations",
+    "/api/unified/executions",
+    "/api/unified/fetch-evidence",
+    "/api/unified/result-package"
+  ],
+  "run_id": "l4-a3-20261017T102100Z",
+  "tests": [
+    "Content-Length pre-read rejection",
+    "chunked/missing-length overflow stops at overflowing chunk",
+    "limit-1 and exact limit accepted",
+    "all six POST endpoints use shared reader"
+  ]
+}
