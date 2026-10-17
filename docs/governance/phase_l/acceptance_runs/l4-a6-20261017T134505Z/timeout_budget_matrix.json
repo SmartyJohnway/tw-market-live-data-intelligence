@@ -1,0 +1,37 @@
+{
+  "budgets": [
+    {
+      "enforcement": "httpx.Timeout in server/unified_mcp/local_service_client.py",
+      "scope": "client HTTP operation",
+      "seconds": 15,
+      "surface": "MCP Local Service ordinary request"
+    },
+    {
+      "enforcement": "httpx.Timeout in Local Service client action call",
+      "scope": "client action request",
+      "seconds": 145,
+      "surface": "MCP Local Service action"
+    },
+    {
+      "enforcement": "subprocess.run(timeout=...) in server/services/unified_mode_b2_execution.py",
+      "scope": "child process",
+      "seconds": 130,
+      "surface": "Mode B2 execute-once child"
+    },
+    {
+      "enforcement": "actual transport calls in existing adapter/source seams",
+      "scope": "individual source transport",
+      "seconds": "source-specific, finite; normally 15; bounded H1 60; I2/I3 30",
+      "surface": "Registered production adapters"
+    },
+    {
+      "enforcement": "none",
+      "scope": "residual; not represented as globally bounded",
+      "seconds": null,
+      "surface": "Whole server route including all local materialization"
+    }
+  ],
+  "result": "PARTIAL",
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_timeout_budget_matrix.v1"
+}

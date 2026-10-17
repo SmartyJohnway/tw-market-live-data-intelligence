@@ -1,0 +1,105 @@
+# Phase L4-A6 — Resource / Load / Concurrency Acceptance
+
+## Authority and base
+
+This bounded, offline-only technical candidate was prepared on branch
+`phase-l/l4-a6-resource-load-concurrency-numeric-ceiling-freeze` from the
+merged L4-A5 main commit `c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2`, tree
+`536190b51d1374763ed4eaf70d6b670626fb2d50`. The authorized scope is L4-A6:
+resource/load/concurrency acceptance and numeric ceiling reconciliation. No
+provider acquisition, external socket attempt, destructive disk fill, OOM test,
+real-user Watchlist mutation, or A7 work was performed.
+
+## Frozen inputs and findings
+
+L4-A0 assigned `RES-001`, `RES-002`, `RES-003`, `LOAD-001`, and `LOAD-004` to
+this tranche. L4-A3 separately left cumulative SQLite/revision growth, peak
+serialization memory, aggregate evidence, and long-handoff performance as
+resource residuals. A3's serialized contracts remain unchanged.
+
+The numeric ledger retains existing product limits: 1 MiB Unified request,
+8 MiB bounded response, 50 targets, 100 operations, 500 records, a 20-day
+recent-performance window, 32 Watchlists with 500 entries per list, 1 MiB
+Watchlist import, 50 material-disclosure items, source-specific finite
+transport timeouts, a 130-second Mode B2 child timeout, and a 145-second
+Local Service client action timeout. No new target, response, or revision
+truncation behavior was introduced.
+
+## Implemented controls
+
+`server/resource_boundaries.py` adds a process-local, fail-fast resource
+admission ceiling of one in-flight resource-intensive request. It does not
+queue work. Concurrent resource actions, projections, persistent mutations,
+offline planning, and unknown write routes receive HTTP 503 with the stable
+reason `resource_concurrency_limit`; light reads and health remain available.
+The limit is process-local. The normal launcher uses one Uvicorn worker; custom
+multi-process hosting is not covered by a shared cross-process coordinator.
+
+Dynamic disk admission now precedes Watchlist SQLite schema initialization,
+preview insertion, and commit writes; Mode B2 control-package publication; and
+Mode C's three-file Result/Audit/Markdown publication. SQLite estimates use
+measured current database size and exact serialized entry/revision payloads,
+with a rollback/growth envelope. Mode B2 and Mode C use the UTF-8 byte sum of
+the materialized members. Unobservable or insufficient free space fails closed
+with stable reason codes. This is per-write admission, not a quota or a
+reservation against other processes.
+
+Persistent Watchlist revision history remains append-only. No automatic
+revision truncation, cleanup, database migration, or user-state mutation was
+added.
+
+## Timeout and memory boundaries
+
+Current finite source transport boundaries and the 130-second child / 145-second
+client action limits are recorded without changing their values. A single
+server-wide deadline covering all synchronous work and filesystem publication
+is not present. An ASGI cancellation wrapper cannot safely terminate the
+synchronous source/serialization work in its thread, so this tranche does not
+claim a global request deadline.
+
+No process RSS ceiling is frozen. Existing request/response, target, operation,
+source-response, and concurrency bounds reduce load, but they do not establish
+a machine-independent process memory maximum. No OOM or pressure test was run.
+Selecting an RSS number without a supported host-memory floor or representative
+calibration would invent an operational constant. This remains an explicit
+deferred value.
+
+## Acceptance evidence
+
+Run `l4-a6-20261017T134505Z` contains the numeric ledger, resource and A3
+reconciliations, timeout/concurrency/disk/memory/load matrices, retention rule,
+offline review, preflight result, and a canonical SHA-256 manifest. The scoped
+offline gate completed with 348 passed, 4 platform-specific skips, 2 previously
+known A0/A2 Mode C historical tamper-helper tests deselected, and 0 failures.
+Those two tests are not represented as passing. The external socket sentinel
+recorded 0 attempts. Validators, compileall, py_compile, and `git diff --check`
+passed.
+
+No validator changed the six-tool MCP surface, Unified public schemas, Catalog,
+Route, capabilities, provider routes, Security Master authority, or trading
+boundary. No production Result/Audit or real Watchlist state was mutated.
+
+## Finding reconciliation
+
+| Finding | A6 result | Rationale |
+|---|---|---|
+| RES-001 | PARTIAL | Individual transports and child/client boundaries are finite; no enforceable whole-server deadline covers all synchronous and filesystem work. |
+| RES-002 | PARTIAL | Disk admission is enforced at identified writers; process RSS ceiling and fixed cumulative storage policy remain deferred. |
+| RES-003 | COVERED | One in-flight resource request per app process; fail-fast, no queue. |
+| LOAD-001 | COVERED | Existing hard limits retained and maximum synthetic target/Watchlist fixtures accepted at limit and rejected above it. |
+| LOAD-004 | PARTIAL | Concurrency and disk admission are enforced; no RSS cap or destructive pressure test. |
+
+The A3 residual reconciliation keeps `IN-003`, `OUT-002`, `OUT-003`,
+`LOAD-002`, and `LOAD-003` PARTIAL for cumulative history or peak-memory/
+whole-route resource behavior. A3's serialized bounds remain covered.
+
+## Disposition and stop boundary
+
+Technical disposition: `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_HOLD`.
+The bounded controls and evidence pass, but the frozen A0 scope still has the
+unresolved whole-request deadline and machine-independent process-memory
+ceiling questions above, and cumulative Watchlist history remains uncapped.
+This record does not claim the full A6 numeric ceiling freeze is complete.
+
+L4-A7 remains unauthorized. No A7 technical exit review was started. L5-L7
+remain unauthorized.

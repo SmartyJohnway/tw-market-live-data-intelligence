@@ -1,0 +1,65 @@
+{
+  "artifact_count": 11,
+  "artifacts": [
+    {
+      "bytes": 1341,
+      "path": "a3_residual_reconciliation.json",
+      "sha256": "df85c46fb705bf669244b49e92615fccea2d6a571ef0527ec051617e652f61e7"
+    },
+    {
+      "bytes": 976,
+      "path": "concurrency_admission_matrix.json",
+      "sha256": "9658fef954de075cc11c7b23ee4df26bee9e579ae125c616a91e631873253a54"
+    },
+    {
+      "bytes": 1497,
+      "path": "disk_admission_matrix.json",
+      "sha256": "a208a6b482eebe460a8bdfd5a5ff82bc93eecb429f1ff4ea5914910b1e29f491"
+    },
+    {
+      "bytes": 1505,
+      "path": "load_acceptance_matrix.json",
+      "sha256": "b35abeb6d0532cae61c97e84ab2b005f5bb99ea62a09867ad58cffe6efd98516"
+    },
+    {
+      "bytes": 765,
+      "path": "memory_acceptance_matrix.json",
+      "sha256": "730c975ac760cc4ef9dbfc2063b9acfde050c6b9760c161f931fc67b9e576c06"
+    },
+    {
+      "bytes": 3489,
+      "path": "numeric_ceiling_ledger.json",
+      "sha256": "31e184db4c57cfdf3fa6e84e5fd3ecbcfd7d0753e5552028f6690b266b3a8e34"
+    },
+    {
+      "bytes": 2477,
+      "path": "offline_review.json",
+      "sha256": "8c78b29d7cc20792895b8efab11c9ad08987cd8871e6b4f23184bd627c2e3aef"
+    },
+    {
+      "bytes": 517,
+      "path": "preflight_result.json",
+      "sha256": "d08f4894e1dc833a9364ddd54a2f6769078364c0cfdbfcfad8226a729bb9e6de"
+    },
+    {
+      "bytes": 2119,
+      "path": "resource_surface_reconciliation.json",
+      "sha256": "e9653cc15cca6a651f50b77a532d7a1ad3e3c29fc14bebe6aae2a5a073948e21"
+    },
+    {
+      "bytes": 454,
+      "path": "retention_resource_boundary.json",
+      "sha256": "6dcf18f74a8db5bd059e13ea4765c97bea205791d3dbfe018c20537020b67d7a"
+    },
+    {
+      "bytes": 1229,
+      "path": "timeout_budget_matrix.json",
+      "sha256": "da480f7fd15bd490ad50091d3b18e08d134a6fb1a562c93b011f34cba0895c4f"
+    }
+  ],
+  "canonical_sha256": "d4518432361831d5755d767b3e664bdad180184e40c6657d3201c266ffe79a3f",
+  "entry_head": "c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2",
+  "entry_tree": "536190b51d1374763ed4eaf70d6b670626fb2d50",
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_manifest.v1"
+}

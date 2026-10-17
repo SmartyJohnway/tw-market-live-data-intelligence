@@ -1,0 +1,38 @@
+{
+  "algorithm": {
+    "insufficient_capacity": "fail closed with resource_disk_admission_failed",
+    "mode_b2": "free_bytes >= exact UTF-8 byte sum of all serialized package members and manifest",
+    "mode_c": "free_bytes >= exact UTF-8 byte sum of staged Result, Audit, and Markdown members",
+    "unavailable_observation": "fail closed with resource_disk_admission_unavailable",
+    "watchlist": "free_bytes >= 2 * (current_sqlite_file_bytes + estimated_serialized_growth_bytes)"
+  },
+  "limitations": [
+    "best-effort free-space observation is not a reservation against other processes",
+    "no fixed disk quota or retention policy",
+    "SQLite retains all revisions"
+  ],
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_disk_admission_matrix.v1",
+  "surfaces": [
+    {
+      "preflight": "in-memory SQLite schema/page footprint measured before database file creation",
+      "surface": "SQLite schema initialization"
+    },
+    {
+      "preflight": "preview payload serialized before INSERT",
+      "surface": "Watchlist preview"
+    },
+    {
+      "preflight": "entry and revision rows estimated from hash-verified preview before BEGIN IMMEDIATE",
+      "surface": "Watchlist commit"
+    },
+    {
+      "preflight": "all members plus manifest serialized before first artifact write",
+      "surface": "Mode B2 control package"
+    },
+    {
+      "preflight": "all three staged members serialized before materializer",
+      "surface": "Mode C publication"
+    }
+  ]
+}

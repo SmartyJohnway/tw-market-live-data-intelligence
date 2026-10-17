@@ -92,6 +92,23 @@ def test_mode_c_oversized_public_projection_is_rejected_before_any_output_public
     assert not (mode_c_root / "audit" / "unified_market_evidence_audit_package.v3.json").exists()
 
 
+def test_mode_c_disk_admission_precedes_three_output_materialization(mode_c_root, monkeypatch):
+    from server import resource_boundaries
+
+    monkeypatch.setattr(
+        unified_mode_c,
+        "require_disk_capacity",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            resource_boundaries.ResourceDiskAdmissionError(resource_boundaries.RESOURCE_DISK_REASON)
+        ),
+    )
+    with pytest.raises(ModeCError, match=resource_boundaries.RESOURCE_DISK_REASON):
+        _build(mode_c_root)
+    assert not (mode_c_root / "ai_context" / "unified_market_evidence_result.v3.json").exists()
+    assert not (mode_c_root / "ai_context" / "unified_market_evidence_result.v3.md").exists()
+    assert not (mode_c_root / "audit" / "unified_market_evidence_audit_package.v3.json").exists()
+
+
 def test_mode_c_persisted_public_projection_is_bounded_before_read(mode_c_root, monkeypatch):
     _build(mode_c_root)
     outputs = (

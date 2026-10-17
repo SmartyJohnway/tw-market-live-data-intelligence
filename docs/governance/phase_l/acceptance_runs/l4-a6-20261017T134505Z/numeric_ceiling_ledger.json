@@ -1,0 +1,118 @@
+{
+  "ceilings": [
+    {
+      "boundary": "Local Service resource-intensive concurrency",
+      "enforcement": "fail-fast ASGI admission; no queue; 503 resource_concurrency_limit",
+      "status": "FROZEN",
+      "unit": "in-flight request per application process",
+      "value": 1
+    },
+    {
+      "boundary": "Unified HTTP request body",
+      "enforcement": "existing bounded request reader",
+      "status": "RETAINED",
+      "unit": "bytes",
+      "value": 1048576
+    },
+    {
+      "boundary": "Unified response and MCP response",
+      "enforcement": "existing producer/server/client bounds",
+      "status": "RETAINED",
+      "unit": "bytes",
+      "value": 8388608
+    },
+    {
+      "boundary": "Unified hard targets",
+      "enforcement": "existing Catalog/request planner",
+      "status": "RETAINED",
+      "unit": "targets",
+      "value": 50
+    },
+    {
+      "boundary": "Unified hard operations",
+      "enforcement": "existing Catalog/planner",
+      "status": "RETAINED",
+      "unit": "operations",
+      "value": 100
+    },
+    {
+      "boundary": "Persistent Watchlist",
+      "enforcement": "existing LIMITS and snapshot schema",
+      "status": "RETAINED",
+      "unit": "entries per list",
+      "value": 500
+    },
+    {
+      "boundary": "Persistent Watchlists",
+      "enforcement": "existing LIMITS",
+      "status": "RETAINED",
+      "unit": "lists",
+      "value": 32
+    },
+    {
+      "boundary": "Watchlist import",
+      "enforcement": "existing import parser",
+      "status": "RETAINED",
+      "unit": "bytes",
+      "value": 1048576
+    },
+    {
+      "boundary": "Execution result records",
+      "enforcement": "existing request schemas",
+      "status": "RETAINED",
+      "unit": "records",
+      "value": 500
+    },
+    {
+      "boundary": "Recent performance lookback",
+      "enforcement": "existing request schema",
+      "status": "RETAINED",
+      "unit": "trading days",
+      "value": 20
+    },
+    {
+      "boundary": "Material disclosure rows",
+      "enforcement": "existing source evidence schema",
+      "status": "RETAINED",
+      "unit": "items",
+      "value": 50
+    },
+    {
+      "boundary": "Mode B2 execute-once child",
+      "enforcement": "subprocess.run timeout",
+      "status": "RETAINED",
+      "unit": "seconds",
+      "value": 130
+    },
+    {
+      "boundary": "Local Service client action",
+      "enforcement": "existing MCP Local Service client timeout",
+      "status": "RETAINED",
+      "unit": "seconds",
+      "value": 145
+    },
+    {
+      "boundary": "Process RSS ceiling",
+      "enforcement": "none; L0-deferred value; no machine-independent calibration evidence",
+      "status": "DEFERRED_VALUE",
+      "unit": "bytes",
+      "value": null
+    },
+    {
+      "boundary": "SQLite storage capacity",
+      "enforcement": "dynamic free-space admission using measured database/page and serialized growth envelope; no fixed quota",
+      "status": "DYNAMIC_ADMISSION",
+      "unit": "bytes",
+      "value": null
+    }
+  ],
+  "entry": {
+    "branch": "phase-l/l4-a6-resource-load-concurrency-numeric-ceiling-freeze",
+    "head": "c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2",
+    "origin_main": "c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2",
+    "tree": "536190b51d1374763ed4eaf70d6b670626fb2d50"
+  },
+  "policy": "No revision truncation, automatic cleanup, disk filling, OOM stress, or newly invented numeric cap.",
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_numeric_ceiling_ledger.v1"
+}

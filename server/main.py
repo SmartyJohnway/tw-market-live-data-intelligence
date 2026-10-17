@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 from server.local_network_boundary import LocalNetworkBoundaryMiddleware
 from server.local_control_plane_boundary import LocalControlPlaneBoundaryMiddleware
+from server.resource_boundaries import ResourceAdmissionMiddleware
 from server.unified_workbench_router import router as unified_workbench_router
 from server.unified_mcp import LOCAL_SERVICE_CONTRACT_VERSION
 from server.operational_diagnostics import (
@@ -103,6 +104,7 @@ app.add_middleware(
 # browser policy only. The network-origin boundary is added last and stays
 # outermost, so remote socket evidence is rejected before this middleware.
 app.add_middleware(LocalControlPlaneBoundaryMiddleware)
+app.add_middleware(ResourceAdmissionMiddleware)
 
 # CORS is browser policy, not network access control. Enforce socket-origin
 # loopback at the application boundary for every HTTP route, including routes

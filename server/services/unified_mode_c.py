@@ -28,6 +28,12 @@ from server.unified_bounded_io import measure_json_utf8, measure_text_utf8
 from server.unified_payload_bounds import MAX_UNIFIED_RESPONSE_BYTES
 from server.services.unified_mode_a import validate_mode_a_request
 from server.services.unified_mode_b2 import CONTROL_ROOT
+from server.resource_boundaries import (
+    ResourceDiskAdmissionError,
+    require_disk_capacity,
+    serialized_json_bytes,
+    serialized_text_bytes,
+)
 from server.services.watchlist_evidence_composer import (
     WatchlistEvidenceCompositionError,
     validate_selection_provenance,
@@ -343,7 +349,18 @@ def build_mode_c_result_package(
         materialization = "existing_verified"
     else:
         try:
+            # 05C stages all three exact serialized members before promoting
+            # any destination, so their combined bytes are the peak additional
+            # disk requirement for this publication operation.
+            required_disk_bytes = (
+                serialized_json_bytes(expected_result, indent=2)
+                + serialized_json_bytes(expected_audit, indent=2)
+                + serialized_text_bytes(expected_markdown)
+            )
+            require_disk_capacity(package, required_disk_bytes)
             materialize_outputs(output_root=str(package), result_json=expected_result, audit_package_json=expected_audit, result_markdown=expected_markdown, result_relative_path=result_rel, audit_relative_path=audit_rel, result_md_relative_path=markdown_rel)
+        except ResourceDiskAdmissionError as exc:
+            raise ModeCError(exc.code) from exc
         except ProjectionError as exc:
             raise ModeCError("mode_c_materialization_failed") from exc
         result, audit, markdown = expected_result, expected_audit, expected_markdown

@@ -23,6 +23,11 @@ import jsonschema
 from scripts.m8r_08g_identity_service import CASH_MARKETS, instrument_id, listing_id, official_successor_migration
 from scripts.m8r_08g_security_master_releases import LocalSecurityMasterError, load_active_identity_service
 from scripts.m8r_filesystem_safety import FilesystemSafetyError, is_reparse_or_symlink, safe_destination, validate_authorized_root
+from server.resource_boundaries import (
+    ResourceDiskAdmissionError,
+    require_disk_capacity,
+    sqlite_write_requirement,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -34,6 +39,13 @@ LIMITS = {"watchlists": 32, "entries": 500, "tags": 20, "tag_length": 64, "notes
 ACTORS = {"human", "ai_assisted", "import", "migration", "rollback", "system_metadata_reconcile"}
 SCHEMA_ROOT = REPO_ROOT / "docs" / "contracts" / "schemas"
 _SCHEMA_CACHE: dict[str, dict[str, Any]] = {}
+_INITIAL_SCHEMA_SQL = """
+CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY);
+CREATE TABLE watchlists (watchlist_id TEXT PRIMARY KEY, name TEXT NOT NULL, current_version INTEGER NOT NULL, is_default INTEGER NOT NULL, deleted INTEGER NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE TABLE entries (watchlist_entry_id TEXT PRIMARY KEY, watchlist_id TEXT NOT NULL REFERENCES watchlists(watchlist_id), instrument_id TEXT NOT NULL, payload_json TEXT NOT NULL, UNIQUE(watchlist_id, instrument_id));
+CREATE TABLE revisions (watchlist_id TEXT NOT NULL REFERENCES watchlists(watchlist_id), version INTEGER NOT NULL, payload_json TEXT NOT NULL, content_sha256 TEXT NOT NULL, PRIMARY KEY(watchlist_id, version));
+CREATE TABLE mutation_previews (preview_id TEXT PRIMARY KEY, payload_json TEXT NOT NULL, content_sha256 TEXT NOT NULL, expires_at TEXT NOT NULL, consumed_at TEXT);
+"""
 
 
 class WatchlistError(Exception):
@@ -161,7 +173,72 @@ class PersistentWatchlistStore:
         except sqlite3.DatabaseError as exc:
             raise WatchlistError("WATCHLIST_STORAGE_CORRUPT", str(exc)) from exc
 
+    def _admit_sqlite_write(self, serialized_growth_bytes: int) -> None:
+        try:
+            require_disk_capacity(
+                self.path,
+                sqlite_write_requirement(self.path, serialized_growth_bytes),
+            )
+        except ResourceDiskAdmissionError as exc:
+            raise WatchlistError(exc.code) from exc
+
+    @staticmethod
+    def _initial_schema_growth_bytes() -> int:
+        """Measure the actual SQLite page footprint of a fresh authority schema."""
+        con = sqlite3.connect(":memory:")
+        try:
+            con.executescript(_INITIAL_SCHEMA_SQL)
+            con.execute("INSERT INTO schema_migrations(version) VALUES (?)", (SCHEMA_VERSION,))
+            con.execute("CREATE UNIQUE INDEX watchlists_one_active_default ON watchlists(is_default) WHERE is_default=1 AND deleted=0")
+            page_size = int(con.execute("PRAGMA page_size").fetchone()[0])
+            page_count = int(con.execute("PRAGMA page_count").fetchone()[0])
+            return page_size * page_count
+        finally:
+            con.close()
+
+    def _estimate_commit_growth(self, preview: dict[str, Any], preview_text: str) -> int:
+        """Size the actual entry/revision rows before opening a write transaction."""
+        snapshot = preview["after"]
+        command = preview["command"]
+        actor = command["actor_source"]
+        typ = command["command_type"]
+        confirmation = {
+            "preview_id": preview["preview_id"],
+            "preview_hash": preview["content_sha256"],
+            "actor_source": actor,
+            "confirmed_at": self.now(),
+        }
+        affected, instruments = self._affected_ids(preview.get("before"), snapshot)
+        write_snapshots = [
+            (other, "set_default_watchlist", [], [])
+            for other in preview["additional_after"]
+        ] + [(snapshot, typ, affected, instruments)]
+        con = self._connect()
+        try:
+            growth = len(preview_text.encode("utf-8"))
+            for current, mutation_type, entry_ids, instrument_ids in write_snapshots:
+                for entry in current["entries"]:
+                    growth += len(canonical_json(entry).encode("utf-8"))
+                prior = con.execute(
+                    "SELECT content_sha256 FROM revisions WHERE watchlist_id=? AND version=?",
+                    (current["watchlist_id"], current["current_version"] - 1),
+                ).fetchone()
+                revision = self._revision(
+                    snapshot=current,
+                    mutation_type=mutation_type,
+                    actor=actor,
+                    affected_entries=entry_ids,
+                    affected_instruments=instrument_ids,
+                    confirmation=confirmation,
+                    previous_hash=prior[0] if prior else None,
+                )
+                growth += len(canonical_json(revision).encode("utf-8"))
+            return growth
+        finally:
+            con.close()
+
     def _initialize(self) -> None:
+        self._admit_sqlite_write(self._initial_schema_growth_bytes())
         con = self._connect()
         try:
             integrity = con.execute("PRAGMA integrity_check").fetchone()[0]
@@ -171,12 +248,7 @@ class PersistentWatchlistStore:
             if any(v > SCHEMA_VERSION for v in rows): raise WatchlistError("WATCHLIST_STORAGE_SCHEMA_UNSUPPORTED")
             if not rows:
                 try:
-                    con.executescript("""
-                    CREATE TABLE watchlists (watchlist_id TEXT PRIMARY KEY, name TEXT NOT NULL, current_version INTEGER NOT NULL, is_default INTEGER NOT NULL, deleted INTEGER NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
-                    CREATE TABLE entries (watchlist_entry_id TEXT PRIMARY KEY, watchlist_id TEXT NOT NULL REFERENCES watchlists(watchlist_id), instrument_id TEXT NOT NULL, payload_json TEXT NOT NULL, UNIQUE(watchlist_id, instrument_id));
-                    CREATE TABLE revisions (watchlist_id TEXT NOT NULL REFERENCES watchlists(watchlist_id), version INTEGER NOT NULL, payload_json TEXT NOT NULL, content_sha256 TEXT NOT NULL, PRIMARY KEY(watchlist_id, version));
-                    CREATE TABLE mutation_previews (preview_id TEXT PRIMARY KEY, payload_json TEXT NOT NULL, content_sha256 TEXT NOT NULL, expires_at TEXT NOT NULL, consumed_at TEXT);
-                    """)
+                    con.executescript(_INITIAL_SCHEMA_SQL)
                     con.execute("INSERT INTO schema_migrations(version) VALUES (?)", (SCHEMA_VERSION,))
                 except Exception:
                     raise
@@ -476,11 +548,38 @@ class PersistentWatchlistStore:
         preview = {"schema_version": "persistent_watchlist_mutation_preview.v1", "preview_id": str(uuid.uuid4()), "command": command, "watchlist_id": watchlist_id, "expected_versions": expected, "before": before, "after": after, "additional_after": additional_after, "warnings": warnings, "deferred_items": deferred, "security_master_release_id": self._release_id(service) if service else None, "created_at": now, "expires_at": (datetime.fromisoformat(now.replace("Z", "+00:00")) + PREVIEW_TTL).isoformat(timespec="seconds").replace("+00:00", "Z")}
         preview["content_sha256"] = _hash_without_content_sha256(preview)
         validate_contract(preview, "persistent_watchlist_mutation_preview.v1.schema.json")
-        with self._write() as con: con.execute("INSERT INTO mutation_previews VALUES (?,?,?,?,NULL)", (preview["preview_id"], canonical_json(preview), preview["content_sha256"], preview["expires_at"]))
+        preview_text = canonical_json(preview)
+        self._admit_sqlite_write(len(preview_text.encode("utf-8")))
+        with self._write() as con: con.execute("INSERT INTO mutation_previews VALUES (?,?,?,?,NULL)", (preview["preview_id"], preview_text, preview["content_sha256"], preview["expires_at"]))
         return preview
 
     def commit(self, *, preview_id: str, preview_hash: str, confirmed: bool) -> dict[str, Any]:
         if confirmed is not True: raise WatchlistError("WATCHLIST_CONFIRMATION_REQUIRED")
+        preflight = self._connect()
+        try:
+            preflight_row = preflight.execute(
+                "SELECT payload_json, content_sha256, consumed_at FROM mutation_previews WHERE preview_id=?",
+                (preview_id,),
+            ).fetchone()
+            if preflight_row is None:
+                raise WatchlistError("WATCHLIST_CONFIRMATION_MISMATCH")
+            if preflight_row["consumed_at"]:
+                raise WatchlistError("WATCHLIST_CONFIRMATION_ALREADY_CONSUMED")
+            try:
+                preflight_preview = json.loads(preflight_row["payload_json"])
+                validate_contract(preflight_preview, "persistent_watchlist_mutation_preview.v1.schema.json")
+            except (TypeError, ValueError, json.JSONDecodeError, WatchlistError) as exc:
+                raise WatchlistError("WATCHLIST_PREVIEW_INTEGRITY_FAILED") from exc
+            if (
+                preflight_preview.get("content_sha256") != _hash_without_content_sha256(preflight_preview)
+                or preflight_preview.get("content_sha256") != preflight_row["content_sha256"]
+                or preflight_preview.get("content_sha256") != preview_hash
+            ):
+                raise WatchlistError("WATCHLIST_PREVIEW_INTEGRITY_FAILED")
+            growth = self._estimate_commit_growth(preflight_preview, preflight_row["payload_json"])
+        finally:
+            preflight.close()
+        self._admit_sqlite_write(growth)
         try:
             with self._write() as con:
                 row = con.execute("SELECT * FROM mutation_previews WHERE preview_id=?", (preview_id,)).fetchone()

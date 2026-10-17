@@ -1,0 +1,57 @@
+{
+  "candidate_file_sha256": {
+    "scripts/m8r_09_persistent_watchlists.py": "0397b0f759abb848464ec92c7b7201ee0df3156f024e040596571c62b1c44157",
+    "server/main.py": "21ae421e4b9e1bdae0c0e110bca9a12c89bd2ceb69b7326f6394ea1523b10f89",
+    "server/resource_boundaries.py": "c42d43a3e038e47eeb584222132351838ada69a3395f59fed05f73d665c2e124",
+    "server/services/unified_mode_b2.py": "448d7f918d058b39b67c25f87dc6f0a294c35f4f24e18472595fb078c4a91b8a",
+    "server/services/unified_mode_c.py": "1138808a7f57f005c037bc30a00e730c8815086a09ff576dfd6268384fc681b8",
+    "tests/unit/test_m8r_06_04_mode_c.py": "298e56b2d7d61d34a9c2c9ae02ac63b017e871d6b39c1e8c394332fb44fbaa8d",
+    "tests/unit/test_phase_l_l4_a6_resource_boundaries.py": "bc96700eb8018e05b998af630e1e49f0858984aecc7b0f6f2e2549fe0923fa50"
+  },
+  "deselected_tests": [
+    {
+      "reason": "pre-existing A0/A2 Mode C historical tamper-helper mismatch; output fixture remains historical v1 while preferred result is v3; not changed or represented as passing",
+      "test_id": "test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected"
+    },
+    {
+      "reason": "same pre-existing A0/A2 Mode C historical tamper-helper mismatch; not changed or represented as passing",
+      "test_id": "test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected"
+    }
+  ],
+  "destructive_disk_fill": false,
+  "entry": {
+    "branch": "phase-l/l4-a6-resource-load-concurrency-numeric-ceiling-freeze",
+    "head": "c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2",
+    "origin_main": "c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2",
+    "tree": "536190b51d1374763ed4eaf70d6b670626fb2d50"
+  },
+  "external_socket_attempts": 0,
+  "integrated_gate": {
+    "deselected": 2,
+    "external_socket_attempts": 0,
+    "failed": 0,
+    "passed": 348,
+    "skipped": 4
+  },
+  "oom_stress": false,
+  "production_state_mutations": 0,
+  "provider_requests": 0,
+  "revision_truncation_added": false,
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_offline_review.v1",
+  "skips": {
+    "count": 4,
+    "reason": "POSIX-specific Windows drive-root checks on this Windows host"
+  },
+  "validators": {
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "phase_h_v3": "PASS",
+    "portable_catalog_sync": "PASS",
+    "py_compile_changed_python": "PASS",
+    "runtime_skill_guide_sync_exact_six": "PASS",
+    "source_registry": "PASS",
+    "unified_contracts": "PASS",
+    "v1_public_contracts_exact_six": "PASS"
+  }
+}

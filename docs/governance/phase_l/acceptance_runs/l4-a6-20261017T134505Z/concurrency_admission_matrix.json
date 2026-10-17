@@ -1,0 +1,29 @@
+{
+  "admission": "try-enter, fail fast; no wait queue",
+  "busy_response": {
+    "error": "resource_concurrency_limit",
+    "http_status": 503
+  },
+  "cross_process": "not coordinated; custom multi-worker hosting is outside this process-local ceiling",
+  "gated_classes": [
+    "resource-intensive action",
+    "result/audit/handoff projection",
+    "persistent mutations",
+    "bounded offline planning",
+    "unknown write methods"
+  ],
+  "limit_per_process": 1,
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_concurrency_admission_matrix.v1",
+  "single_worker_basis": "standard scripts/run_unified_workbench.py invocation omits workers and Uvicorn default is one worker",
+  "tests": [
+    "gate release on success/exception",
+    "simultaneous second resource request rejected",
+    "light health request remains independent",
+    "route class matrix"
+  ],
+  "ungated_classes": [
+    "health/status and ordinary light reads",
+    "static workbench"
+  ]
+}

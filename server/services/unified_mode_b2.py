@@ -16,6 +16,7 @@ from scripts.m8r_05b_02.validator import validate_execution_authorization
 from scripts.m8r_05b_03.preflight import build_orchestrator_preflight, validate_preflight_hashes
 from scripts.m8r_06_03_production_adapter import PHASE_H_H1_EXECUTOR_ID, load_production_executor_metadata
 from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination
+from server.resource_boundaries import ResourceDiskAdmissionError, require_disk_capacity
 from server.services.watchlist_evidence_composer import (
     WatchlistEvidenceCompositionError,
     load_selection_provenance_for_request,
@@ -85,9 +86,10 @@ def _write_control_package(package_root: Path, artifacts: dict[str, dict[str, An
     if any(control_root.iterdir()):
         raise ModeB2Error("control_package_partial_conflict")
     hashes: dict[str, str] = {}
+    artifact_texts: dict[str, str] = {}
     for name, artifact in artifacts.items():
         text = _json_text(artifact)
-        atomic_write_text(package_root, f"control/{name}.json", text, allow_overwrite=False)
+        artifact_texts[name] = text
         hashes[name] = hashlib.sha256(text.encode("utf-8")).hexdigest()
     manifest = {
         "schema_version": "m8r_06_03_control_package.v1",
@@ -100,6 +102,16 @@ def _write_control_package(package_root: Path, artifacts: dict[str, dict[str, An
         "artifact_hashes": hashes,
     }
     text = _json_text(manifest)
+    try:
+        require_disk_capacity(
+            package_root,
+            sum(len(value.encode("utf-8")) for value in artifact_texts.values())
+            + len(text.encode("utf-8")),
+        )
+    except ResourceDiskAdmissionError as exc:
+        raise ModeB2Error(exc.code) from exc
+    for name, artifact_text in artifact_texts.items():
+        atomic_write_text(package_root, f"control/{name}.json", artifact_text, allow_overwrite=False)
     atomic_write_text(package_root, "control/manifest.json", text, allow_overwrite=False)
     return manifest | {"manifest_hash": hashlib.sha256(text.encode("utf-8")).hexdigest()}
 

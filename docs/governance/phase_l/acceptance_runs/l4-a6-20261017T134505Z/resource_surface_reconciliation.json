@@ -1,0 +1,60 @@
+{
+  "findings": [
+    {
+      "a0_status": "PARTIAL",
+      "a6_status": "PARTIAL",
+      "evidence": [
+        "transport-specific finite timeouts retained",
+        "Mode B2 child max 130 seconds",
+        "Local Service client action 145 seconds"
+      ],
+      "finding_id": "RES-001",
+      "residual": "No enforceable server-wide deadline covers all filesystem and serialization work; synchronous route work cannot be safely force-cancelled by an ASGI timeout."
+    },
+    {
+      "a0_status": "DEFERRED_VALUE",
+      "a6_status": "PARTIAL",
+      "evidence": [
+        "disk-free admission before Watchlist SQLite writes",
+        "disk-free admission before Mode B2 and Mode C publication"
+      ],
+      "finding_id": "RES-002",
+      "residual": "No machine-independent process RSS ceiling; fixed disk quota/retention not introduced."
+    },
+    {
+      "a0_status": "GAP",
+      "a6_status": "COVERED",
+      "evidence": [
+        "single-process gate ceiling 1",
+        "fail-fast with no queue",
+        "ASGI deterministic overlap regression"
+      ],
+      "finding_id": "RES-003",
+      "residual": "Gate is process-local; normal launcher is one worker. Multi-process custom hosting has no shared admission coordinator."
+    },
+    {
+      "a0_status": "PARTIAL",
+      "a6_status": "COVERED",
+      "evidence": [
+        "50-target acceptance / 51 rejection fixture",
+        "500-entry Watchlist snapshot acceptance / 501 rejection",
+        "existing 32-list, 100-operation contracts"
+      ],
+      "finding_id": "LOAD-001",
+      "residual": "These are contract ceilings, not claims of empirical latency/SLA."
+    },
+    {
+      "a0_status": "DEFERRED_VALUE",
+      "a6_status": "PARTIAL",
+      "evidence": [
+        "single in-flight resource request",
+        "dynamic disk admission"
+      ],
+      "finding_id": "LOAD-004",
+      "residual": "No RSS kill threshold and no destructive pressure test."
+    }
+  ],
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_resource_surface_reconciliation.v1",
+  "technical_disposition": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_HOLD"
+}
