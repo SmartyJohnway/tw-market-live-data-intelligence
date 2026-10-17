@@ -1,0 +1,25 @@
+{
+  "B01_B05": 0,
+  "P01_P18": 0,
+  "TWSE_T86": 0,
+  "a6_market_authority_consumed": false,
+  "additional_external_requests": 0,
+  "archive_detail_get": 0,
+  "archive_index_get": 0,
+  "authority_consumed": true,
+  "canonical_candidate_count": 2,
+  "closure_authority_complete": false,
+  "daily_get": 1,
+  "final_disposition": "R3_PARSER_CONTRACT_INSUFFICIENT",
+  "finding": "DGPA_SEMANTIC_PRESENTATION_DUPLICATION_NOT_ADJUDICATED",
+  "page_status_signals": [
+    "NO_CLOSURE_NOTICE"
+  ],
+  "provider_conflict_proven": false,
+  "raw_subject_match_count": 3,
+  "reason": "candidate count alone is not provider drift; bounded diagnostics include unbound/header/container presentations and do not establish contradictory facts",
+  "resolver_called": false,
+  "response_sha256": "c641edde40a491dd439ea353117a0eb95dd8d48edcea2c0000e5dd145c808ca4",
+  "semantic_candidate_count": 4,
+  "status": "POST_RUN_BOUNDED_ADJUDICATION"
+}

@@ -1,0 +1,22 @@
+{
+  "a6_market_authority_consumed": false,
+  "absolute_physical_ceiling": 27,
+  "baseline_physical_dispatches": 23,
+  "disposition": "PASS_READY_FOR_ONE_SHOT_LIVE_EXECUTION",
+  "external_provider_requests": 0,
+  "external_socket_attempts": 0,
+  "final_live_reservation_created": false,
+  "focused_tests": {
+    "failed": 0,
+    "passed": 75
+  },
+  "integrated_tests": {
+    "deselected": 1,
+    "deselected_test": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+    "failed": 0,
+    "passed": 611
+  },
+  "logical_source_plan": 23,
+  "next_step_requires_source_code_change": false,
+  "production_runtime_changes": 0
+}

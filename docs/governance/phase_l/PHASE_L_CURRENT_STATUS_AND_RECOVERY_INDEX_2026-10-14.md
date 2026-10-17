@@ -1,12 +1,12 @@
 # Phase L — Current Status & Recovery Index
 
-**Date:** 2026-10-15
+**Date:** 2026-10-17
 **Role:** conversation/worktree recovery index only; it does not replace frozen architecture or acceptance authority.
 **Phase L status:** STARTED
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
-**L3:** STARTED; A0-A5 Owner-accepted and merged through PRs #355/#357/#359/#361/#363/#365; A5 merged at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`; G05 deterministic contract complete; live recertification required; A6/A7 and L4-L7 NOT AUTHORIZED
+**L3:** STARTED / NOT CLOSED; A0-A5 Owner-accepted and merged through PRs #355/#357/#359/#361/#363/#365; A6 Owner-accepted for merge with technical disposition PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven); one-shot authority consumed, second run prohibited; A7 technical exit review AUTHORIZED / NOT YET COMPLETE; L4-L7 NOT STARTED / NOT AUTHORIZED
 **L4-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -91,7 +91,7 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 ## 5. Remaining Phase L boundaries
 
 - L2 Replay / Retention / Migration: CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
-- L3 Source Drift Hardening: STARTED; A0/A1/A2/A3/A4/A5 are Owner-accepted and merged through PRs #355/#357/#359/#361/#363/#365. A5 merged at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 deterministic contract is complete; live recertification remains required. A6/A7 and L4-L7 are not authorized.
+- L3 Source Drift Hardening: STARTED / NOT CLOSED. A0-A5 are Owner-accepted and merged through PRs #355/#357/#359/#361/#363/#365. A6 is Owner-accepted for merge with technical disposition PARTIAL: 17 transport-degraded logical sources, six HTTP-200 sources, and zero deterministic contract drift proven. The one-shot authority is consumed and a second run is prohibited. A7 technical exit review is AUTHORIZED / NOT YET COMPLETE. L4-L7 are NOT STARTED / NOT AUTHORIZED.
 - L4 Security & Resource Boundaries: localhost/path/input/output/load/concurrency/large-result limits.
 - L5 Extension Architecture: minimum evidence-family extension contract; no new family merely to prove it.
 - L6 Packaging & Portability: Native Windows + Docker Local Service, fresh install, P1-P6 portability, final state/config mapping and product `init` integration.
@@ -120,10 +120,10 @@ and `PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
 Frozen L0 sequencing controls current L3 Source Drift Hardening; old Roadmap
 subject subsection numbers remain unchanged. A0-A5 are Owner-accepted and merged.
 L3-A5 deterministic G05 observation/adjudication is Owner-accepted and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`;
-live recertification remains required. A6/A7 and L4-L7 remain NOT AUTHORIZED.
+A6 bounded live recertification is recorded as PARTIAL. A7 technical exit review is authorized / pending; L3 remains started / not closed; L4-L7 remain not started / not authorized.
 
 A concise future-conversation instruction is sufficient:
 
-> Recover current main, read the L3-A0 inventory and A1-A5 acceptance records. L2 is CLOSED; L3 is STARTED. A0-A5 are Owner-accepted and merged. A5 closes only the deterministic G05 contract; live recertification remains required. Do not start A6/A7, probe live sources, or begin L4-L7 without separate explicit Owner authorization.
+> Recover current main and read the frozen L0 contract, L3-A0 inventory, A1-A6 acceptance/governance records, and current recovery index. A0-A6 are Owner-accepted; A0-A5 are merged and A6 is accepted for merge with technical disposition PARTIAL. A6 authority is consumed; do not repeat live acquisition. A7 technical exit review is authorized but must not perform provider acquisition. L3 remains started / not closed; L4-L7 are not authorized.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.

@@ -1,0 +1,35 @@
+[
+  {
+    "attempt_sequence": 1,
+    "completed_at": "2026-10-16T03:47:10Z",
+    "content_type": "application/json",
+    "decision_after_attempt": "calendar_validated_and_resolver_window_derived",
+    "elapsed_ms": 392,
+    "endpoint_identity": "TWSE_HOLIDAY_SCHEDULE",
+    "http_outcome": "success",
+    "http_status": 200,
+    "normalized_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+    "purpose": "INITIAL_AUTHORITY_ACQUISITION",
+    "response_bytes": 3774,
+    "response_sha256": "7644c1a8af784c09f54670fd7413f536b13eb76c54d658058e8873d1aee32117",
+    "retrieved_at": "2026-10-16T03:47:10Z",
+    "source_authority": "TWSE_HOLIDAY_SCHEDULE",
+    "started_at": "2026-10-16T03:47:10Z"
+  },
+  {
+    "attempt_sequence": 2,
+    "completed_at": "2026-10-16T03:47:11Z",
+    "content_type": "application/xml; charset=utf-8",
+    "decision_after_attempt": "parsed_feed_does_not_attest_historical_window_completeness",
+    "endpoint_identity": "NCDR_DGPA_CLOSURE_CAP",
+    "http_outcome": "success",
+    "http_status": 200,
+    "normalized_sha256": "4dfc5ef02b2530531b2275c0a1e5d13ae7f7a10e4a761eb8d90ae1c15fc06ab1",
+    "purpose": "INITIAL_AUTHORITY_ACQUISITION",
+    "response_bytes": 73,
+    "response_sha256": "db96f13b8fc6d00cc7738f9ceff385d4ebba9a9dd4ce85f7e5f975df5e35e9b7",
+    "retrieved_at": "2026-10-16T03:47:11Z",
+    "source_authority": "NCDR_DGPA_CLOSURE_CAP",
+    "started_at": "2026-10-16T03:47:10Z"
+  }
+]

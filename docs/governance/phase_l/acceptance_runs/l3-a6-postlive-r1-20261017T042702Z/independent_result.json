@@ -1,0 +1,27 @@
+{
+  "authority_consumed": true,
+  "deterministic_contract_drift_count": 0,
+  "http_200_logical_sources": 6,
+  "http_200_source_contract_ids": [
+    "P08",
+    "P09",
+    "P10",
+    "P11",
+    "P16",
+    "P17"
+  ],
+  "independent_disposition": "PARTIAL",
+  "logical_adjudicated": 23,
+  "logical_planned": 23,
+  "not_executed": 0,
+  "physical_ceiling": 27,
+  "physical_dispatches": 27,
+  "rate_limit_suppressions": 0,
+  "reason": "All 23 logical sources were attempted with complete bounded accounting; 17 had transport failures, six had HTTP 200 evidence. No rate-limit suppression, unresolved target, safety stop, or proven deterministic contract drift.",
+  "runner_reported_disposition": "SOURCE_CHANGED",
+  "runner_source_changed_supported": false,
+  "safety_stops": 0,
+  "second_live_run_permitted": false,
+  "transport_degraded_logical_sources": 17,
+  "unresolved_targets": 0
+}

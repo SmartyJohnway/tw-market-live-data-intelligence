@@ -1,0 +1,10 @@
+{
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R2_DGPA_DAILY_PARSER_REPAIR_AND_REOBSERVATION",
+  "run_id": "l3-a6-p0-r2-20261016T055915Z",
+  "state": "RESERVED_NOT_CONSUMED",
+  "authority_consumed": false,
+  "market_authority_consumed": false,
+  "pre_network_commit_sha": "8840a4f53a190a5bce5a7a84ce54c5230ce27cd7",
+  "pre_network_tree_sha": "0c12b813983a1da47b85a7bfd6aad8c793e5c309",
+  "plan_sha256": "87ef32327a7922ec43eb8ec647d61285f3ae29d89ab7de0e773b653f752cd0f7"
+}

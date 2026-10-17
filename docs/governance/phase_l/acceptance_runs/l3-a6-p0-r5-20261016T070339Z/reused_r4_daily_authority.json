@@ -1,0 +1,8 @@
+{
+  "artifact_sha256": "059e9bbc5bc1c31d06a7d182c27c4dce4d0e01deef8a0a9b30b2cdf430b5574c",
+  "manifest_sha256": "f46287dbe950e0af0575569862e3dffa8d416d13dc67e4e394ba2a8f8e643e13",
+  "response_sha256": "b1bdcdee51ae9513a094c5de4107c05f9fff2025cdd82a4052a7fbfd9c0c156e",
+  "source_artifact": "l3-a6-p0-r4-20261016T065039Z/daily_status_2026-10-16.json",
+  "status_semantics": "NO_CLOSURE_NOTICE",
+  "target_date": "2026-10-16"
+}

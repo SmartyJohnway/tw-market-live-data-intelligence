@@ -1,0 +1,21 @@
+{
+  "a6_market_authority_consumed": false,
+  "archive_detail_max": 1,
+  "archive_index_max": 4,
+  "archive_parser_sha256": "8e1a9ddd18b9c2b65e419f06c0d9956826b5cc3a6a31adb6ee69abf641f34d8b",
+  "authority_consumed": false,
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R5_DGPA_ARCHIVE_LIST_ITEM_GRAMMAR_AUTHORIZATION",
+  "calendar_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+  "daily_gets_allowed": 0,
+  "offline_review_sha256": "05d59db061e2bea096ce86b3d033cbd51d627cbae979275b55f1c051aa6bf504",
+  "plan_sha256": "a09fdd2bdf63fa2477967a86845dabd1c0d86cf4172fad25a59a445a3d25e32a",
+  "pre_network_sha": "ca45bcd2fb88a416542fb6297c4b0a8dfd1b6b9a",
+  "r4_daily_artifact_sha256": "059e9bbc5bc1c31d06a7d182c27c4dce4d0e01deef8a0a9b30b2cdf430b5574c",
+  "r4_manifest_sha256": "f46287dbe950e0af0575569862e3dffa8d416d13dc67e4e394ba2a8f8e643e13",
+  "reserved_at": "2026-10-16T07:09:14Z",
+  "resolver_sha256": "075abdbb9a5cb961cb7054583aeebbe3f8722bb9c570577037396db85dc0f010",
+  "run_id": "l3-a6-p0-r5-20261016T070339Z",
+  "state": "RESERVED_NOT_CONSUMED",
+  "total_max": 5,
+  "tree_sha": "a463f148067d248ed3150204bff4da848e8412f6"
+}

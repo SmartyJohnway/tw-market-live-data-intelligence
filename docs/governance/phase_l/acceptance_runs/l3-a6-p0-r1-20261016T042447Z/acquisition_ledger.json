@@ -1,0 +1,30 @@
+{
+  "archive_detail_get_count": 0,
+  "archive_index_get_count": 0,
+  "daily_get_count": 1,
+  "entries": [
+    {
+      "attempt_sequence": 1,
+      "completed_at": "2026-10-16T04:30:26Z",
+      "content_type": "text/html",
+      "effective_url": "https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31",
+      "elapsed_ms": 125,
+      "endpoint": "https://www.dgpa.gov.tw/typh/daily/nds.html?uid=31",
+      "hostname": "www.dgpa.gov.tw",
+      "http_outcome": "http_response",
+      "http_status": 200,
+      "kind": "daily",
+      "purpose": "INITIAL_DAILY_STATUS",
+      "response_byte_count": 15037,
+      "response_sha256": "db8fc2c63a0334069400d9532402b31d0f5cc8d87c17e51ef35887fbf256f879",
+      "started_at": "2026-10-16T04:30:26Z"
+    }
+  ],
+  "limits": {
+    "archive_detail_max": 2,
+    "archive_index_max": 6,
+    "daily_max": 2,
+    "total_max": 10
+  },
+  "total_get_count": 1
+}

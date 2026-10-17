@@ -1,0 +1,18 @@
+{
+  "live_run_id": "l3-a6-live-20261017T040030Z",
+  "manifest_bad_hashes": 0,
+  "manifest_listed_files": 5,
+  "original_evidence_hashes": {
+    "authority_consumed.json": "cd216a0f5173e4a619c8244ac8b6cc540ecf6bc6a2b5e5180a95fd454ddf2208",
+    "authority_reservation.json": "87e858756f7903b93398334f2bc2ae6cbe01d570ae0180c67512a789ef0c7800",
+    "dispatch_ledger.json": "b1b86a07d5b0e892abc5f6fd1e46551a50c754bd56943807e3a2d0592939b786",
+    "result.json": "622c5982f20fd3d88a513d1a8cb0b1cda1cf4e744a53476364c37530a704621f",
+    "source_results.json": "e739e6bb7adc0691c07fa3cef6fca0bdc310281fd4ac1a0ee828a6f420e552cf"
+  },
+  "original_evidence_path": "docs/governance/phase_l/acceptance_runs/l3-a6-live-20261017T040030Z",
+  "original_live_manifest_canonical_sha256": "4c6ed08ef6453fb79944faac49c813f1d89d04bc9aea7cffc5df43995968d19d",
+  "original_live_runner_disposition": "SOURCE_CHANGED",
+  "reverified_at": "2026-10-17T04:27:02Z",
+  "reviewed_pre_network_head": "f2f5ede78ff39b9c4b5bc693f9474a2d0b11f75c",
+  "reviewed_pre_network_tree": "93335f1f1b56c65ee8e93c722d3e9a6ee70cabcb"
+}

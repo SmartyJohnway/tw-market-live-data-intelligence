@@ -1,0 +1,19 @@
+{
+  "B01_B05_performed": false,
+  "P01_P18_performed": false,
+  "TWSE_T86_performed": false,
+  "a6_market_authority_consumed": false,
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R1_DGPA_HISTORICAL_CLOSURE_COMPLETENESS_AUTHORIZATION",
+  "closure_authority_complete": false,
+  "counts": {
+    "archive_detail": 0,
+    "archive_index": 0,
+    "daily": 1,
+    "total": 1
+  },
+  "disposition": "INCOMPLETE_AUTHORITY",
+  "evaluation_time": "2026-10-16T11:38:22+08:00",
+  "failure_reason": "dgpa_daily_displayed_date_mismatch",
+  "p17_trade_date": null,
+  "run_id": "l3-a6-p0-r1-20261016T042447Z"
+}

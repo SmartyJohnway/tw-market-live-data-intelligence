@@ -1,0 +1,51 @@
+{
+  "status": "PASS_PRELIMINARY_OFFLINE_GATE",
+  "market_source_access": false,
+  "external_socket_attempts": 0,
+  "external_network_guard": "tests/helpers/phase_j_j2_r1_network/sitecustomize.py loaded through PYTHONPATH for integrated guarded test command",
+  "focused_tests": {
+    "command": "python -m pytest tests/unit/test_phase_l_a6_p0_r2_dgpa_daily_parser.py tests/unit/test_phase_l_a6_p0_r1_dgpa_closure_authority.py -q",
+    "result": "44 passed"
+  },
+  "integrated_guarded_tests": {
+    "command": "python -m pytest tests/unit/test_phase_l_a6_p0_r2_dgpa_daily_parser.py tests/unit/test_phase_l_a6_p0_r1_dgpa_closure_authority.py tests/unit/test_phase_l_a6_p0_authority_materialization.py tests/unit/test_phase_i_i3_execution_date.py tests/unit/test_m8a_ncdr_dgpa_closure_cap.py tests/unit/test_phase_l_a5_source_drift_contract.py tests/unit/test_l3_a1_twse_mis_response_contract.py tests/unit/test_l3_a2_eod_diagnostic_propagation.py tests/unit/test_l3_a3_research_source_contract_guard.py tests/unit/test_l3_a4_h1_composite_negative_fixture_matrix.py -q",
+    "result": "266 passed"
+  },
+  "validators": {
+    "source_registry": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_exact_six": "PASS",
+    "v1_public_contracts": "PASS",
+    "phase_h_v3_contracts": "PASS"
+  },
+  "py_compile": "PASS",
+  "git_diff_check": "PASS",
+  "pre_network_commit_sha": "8840a4f53a190a5bce5a7a84ce54c5230ce27cd7",
+  "pre_network_tree_sha": "0c12b813983a1da47b85a7bfd6aad8c793e5c309",
+  "parser_sha256": "8b61e74d944a03706a7bd480266183811680f09466910bd99aaaf974b3431297",
+  "resolver_sha256": "075abdbb9a5cb961cb7054583aeebbe3f8722bb9c570577037396db85dc0f010",
+  "calendar_normalized_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+  "preflight_history": [
+    {"command": "python scripts/run_phase_l_l3_a6_p0_r2_dgpa_closure_authority.py --preflight-only", "result": "IMPORT_FAILED_BEFORE_NETWORK; reran as module"},
+    {"command": "python -m scripts.run_phase_l_l3_a6_p0_r2_dgpa_closure_authority --preflight-only", "result": "RESOLVER_HASH_RECORD_TYPO_DETECTED_BEFORE_NETWORK; corrected and gates rerun"}
+  ],
+  "corrected_pre_network_preflight": "PASS; zero external requests",
+  "one_shot_live_observation": {
+    "authority_consumed": true,
+    "a6_market_authority_consumed": false,
+    "daily_get": 1,
+    "archive_index_get": 0,
+    "archive_detail_get": 0,
+    "total_get": 1,
+    "http_status": 200,
+    "response_bytes": 15037,
+    "response_sha256": "1bcaf4cdd7620796e206fbaf0236c6ecbed9d4f7eb0a69c5b33be3d8e6476232",
+    "parser_failure": "dgpa_daily_subject_ambiguous",
+    "closure_authority_complete": false,
+    "p17_trade_date": null,
+    "disposition": "DGPA_SOURCE_DRIFT_OBSERVED",
+    "P01_P18": false,
+    "B01_B05": false,
+    "TWSE_T86": false
+  }
+}

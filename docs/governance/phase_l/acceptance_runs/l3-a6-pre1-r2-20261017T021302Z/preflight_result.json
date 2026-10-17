@@ -1,0 +1,16 @@
+{
+  "disposition": "PASS_GUARD_REPAIRED_FOR_PRE2_RESUME",
+  "logical_plan_count": 23,
+  "baseline_physical_dispatches": 23,
+  "absolute_physical_ceiling": 27,
+  "P04_P07_governed_alternates": "verified",
+  "429_cross_host_alternate_evasion": "blocked",
+  "maximum_dispatch_scenario": {"logical_adjudicated": 23, "physical_dispatches": 27, "attempt_28": "blocked_before_transport", "overall": "PARTIAL"},
+  "focused_tests": {"passed": 59, "failed": 0},
+  "normalized_integrated_tests": {"passed": 595, "failed": 0, "deselected": 1},
+  "external_provider_requests": 0,
+  "external_socket_attempts": 0,
+  "production_runtime_changes": 0,
+  "live_authority_consumed": false,
+  "final_live_reservation_created": false
+}

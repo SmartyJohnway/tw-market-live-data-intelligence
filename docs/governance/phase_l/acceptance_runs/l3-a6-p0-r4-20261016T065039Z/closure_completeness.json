@@ -1,0 +1,13 @@
+{
+  "closure_authority_complete": false,
+  "completeness_reason": "dgpa_archive_publication_date_missing",
+  "coverage_basis": "resolver_window_only_incomplete",
+  "coverage_dates": [
+    "2026-10-16",
+    "2026-10-15"
+  ],
+  "daily_status_adjudicated": true,
+  "events_relevant_to_coverage_dates": [],
+  "historical_negative_evidence": false,
+  "historical_status_adjudicated": false
+}

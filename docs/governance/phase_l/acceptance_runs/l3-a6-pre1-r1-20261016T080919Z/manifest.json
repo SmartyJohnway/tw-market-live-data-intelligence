@@ -1,0 +1,32 @@
+{
+  "candidate_file_manifest_sha256": "96910c1f97db9d1efef9d458d9ee16f7a8755cb4326cf3d480c5fc043397e601",
+  "files": [
+    {
+      "path": "a6_source_plan.json",
+      "sha256": "8b5a51b63a1c608c77328703587c96aaa124d27c6c468c36dd7330529bd9c2d1",
+      "size_bytes": 12472
+    },
+    {
+      "path": "known_test_debt.json",
+      "sha256": "12feefba4f63353c2d8fb40aeae2848f4671dd4b344261ed8c9dbca0dd05203b",
+      "size_bytes": 793
+    },
+    {
+      "path": "offline_review.json",
+      "sha256": "fe4713a09a80432cdfee535f2a0401645425321d96c32ee68bd0b4534cdfb8e0",
+      "size_bytes": 4268
+    },
+    {
+      "path": "preflight_result.json",
+      "sha256": "074b1a68994850023814df8ae784a5069505ae025c94c9dcb6b617fe9eeb9e3e",
+      "size_bytes": 447
+    },
+    {
+      "path": "transport_contract_matrix.json",
+      "sha256": "13b439467080947a53abadc510f318619d88cb7b78022c62b09ee8ad30cd6ae5",
+      "size_bytes": 24676
+    }
+  ],
+  "manifest_sha256": "d92b11d4403ea9b6b5240e07bd05f0bfbfaeb5c392b4cfbc2ba6c7aeba0f9936",
+  "run_id": "l3-a6-pre1-r1-20261016T080919Z"
+}

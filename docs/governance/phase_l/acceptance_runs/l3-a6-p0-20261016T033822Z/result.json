@@ -1,0 +1,26 @@
+{
+  "a6_market_live_authority_consumed": false,
+  "acquisition_counts": {
+    "calendar": 1,
+    "closure": 1,
+    "total": 2
+  },
+  "b01_b05_executed": false,
+  "calendar_validation": {
+    "date_count": 365,
+    "invalid_record_count": 0,
+    "non_trading_day_count": 122,
+    "trading_day_count": 243
+  },
+  "closure_authority_complete": false,
+  "closure_completeness_reason": "current NCDR dynamic-event source contract does not attest exhaustive historical coverage for requested dates",
+  "normalized_calendar_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+  "p01_p18_executed": false,
+  "p0_disposition": "INCOMPLETE_AUTHORITY",
+  "p17_trade_date": null,
+  "resolver_candidate_dates": [
+    "2026-10-16",
+    "2026-10-15"
+  ],
+  "run_id": "l3-a6-p0-20261016T033822Z"
+}

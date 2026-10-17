@@ -1,0 +1,10 @@
+{
+  "authority_consumed": false,
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R3_SEMANTIC_CANDIDATE_RECONCILIATION",
+  "market_authority_consumed": false,
+  "plan_sha256": "7efb4737fe96d5dce9602f9143527d6c7f3a2043a5056c1c9491448146413ac5",
+  "pre_network_commit_sha": "f2060a511cd1fde9415a0e7f7375ae139b89cdf4",
+  "pre_network_tree_sha": "ae92965d87a524d270399dda911e261d9a21b6a8",
+  "run_id": "l3-a6-p0-r3-20261016T062632Z",
+  "state": "RESERVED_NOT_CONSUMED"
+}

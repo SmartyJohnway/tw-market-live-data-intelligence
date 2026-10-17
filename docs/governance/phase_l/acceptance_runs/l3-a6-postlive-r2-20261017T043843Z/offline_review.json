@@ -1,0 +1,63 @@
+{
+  "broad_exploration": {
+    "acceptance_gate": false,
+    "failing_module": "tests/unit/test_phase_i_i2_a4_activation.py",
+    "new_pytest_deselection_added": false,
+    "reason": "worktree has no initialized local Security Master; these activation tests require installation-local state",
+    "result": "28 failed, 734 passed, 1 deselected"
+  },
+  "config_changes": 0,
+  "disposition": "PASS_RUNNER_ADJUDICATION_REPAIRED_NO_LIVE_RERUN",
+  "external_socket_attempts": 0,
+  "focused_suite": {
+    "deselected": 1,
+    "deselected_test": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+    "failed": 0,
+    "passed": 162
+  },
+  "initial_attempts": {
+    "broad_source_document_extraction": {
+      "acceptance_gate": false,
+      "external_socket_attempts": 0,
+      "failure": "all 28 failures in local-state-dependent test_phase_i_i2_a4_activation.py due absent initialized local Security Master",
+      "result": "28 failed, 734 passed, 1 deselected"
+    },
+    "focused_without_python_utf8": {
+      "external_socket_attempts": 0,
+      "failure": "UnicodeDecodeError from Windows cp950 default when test read UTF-8 source without encoding",
+      "result": "161 passed, 1 failed, 1 deselected"
+    },
+    "full_tests_collection": {
+      "external_socket_attempts": 0,
+      "failure": "tests/unit/test_phase_j_b04_a6_integrated_acceptance.py imports unavailable fcntl on Windows",
+      "result": "collection error"
+    }
+  },
+  "live_runner_executions": 0,
+  "normalized_gate_scope_note": "A0/A5 source and offline regression files plus A6 guard/orchestrator and POSTLIVE-R2 tests; local-installation-state I2-A4 activation module is not part of this source/offline adjudication gate and is recorded separately as a failed broad exploration, consistent with prior PRE1-R2 governance that unscoped local-state-dependent exploration is not acceptance evidence.",
+  "normalized_integrated_suite": {
+    "deselected": 1,
+    "deselected_test": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+    "external_socket_attempts": 0,
+    "failed": 0,
+    "files_selected": 35,
+    "passed": 732
+  },
+  "provider_requests": 0,
+  "python_files_changed": [
+    "scripts/run_phase_l_l3_a6_live_recertification.py"
+  ],
+  "test_files_changed": [
+    "tests/unit/test_phase_l_a6_postlive_r2_classification.py"
+  ],
+  "validators": {
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "phase_h_v3": "PASS",
+    "portable_catalog_sync": "PASS",
+    "py_compile": "PASS",
+    "runtime_skill_exact_six": "PASS",
+    "source_registry": "PASS",
+    "v1_public_contracts": "PASS"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "closure_authority_complete": false,
+  "closure_query_succeeded": true,
+  "completeness_reason": "current NCDR dynamic-event source contract does not attest exhaustive historical coverage for requested dates",
+  "content_type": "application/xml; charset=utf-8",
+  "coverage_basis": "resolver_inspection_window_only",
+  "coverage_dates": [
+    "2026-10-16",
+    "2026-10-15"
+  ],
+  "event_count": 0,
+  "events_relevant_to_coverage_dates": [],
+  "http_status": 200,
+  "parse_status": "ok",
+  "response_bytes": 73,
+  "response_sha256": "db96f13b8fc6d00cc7738f9ceff385d4ebba9a9dd4ce85f7e5f975df5e35e9b7",
+  "retrieved_at": "2026-10-16T03:47:11Z",
+  "schema_version": "a6_p0_closure_authority_snapshot.v1",
+  "source_id": "NCDR_DGPA_CLOSURE_CAP",
+  "source_query_succeeded": true,
+  "source_url": "https://alerts.ncdr.nat.gov.tw/RssAtomFeed.ashx?AlertType=33",
+  "taipei_municipality_event_summary": []
+}

@@ -1,0 +1,26 @@
+{
+  "files": [
+    {
+      "path": "defect_record.json",
+      "sha256": "596ec3280dc8884ba7f24fc187679887cda54f8fdeab1e4819dc0535afc990a9",
+      "size_bytes": 523
+    },
+    {
+      "path": "guard_repair.json",
+      "sha256": "79d7002e2cecc22b31d0ffdacb32c9d544b25f296fb2514722e89248a32b45c8",
+      "size_bytes": 996
+    },
+    {
+      "path": "offline_review.json",
+      "sha256": "c4a955cd81afbdef651324f7861f1fe77c2a0307123c993837f9d3ea343b22c6",
+      "size_bytes": 1868
+    },
+    {
+      "path": "preflight_result.json",
+      "sha256": "962c2febd6415d283793f28c2ab4870ce4f1f219039c0e805f4c67fd94861691",
+      "size_bytes": 715
+    }
+  ],
+  "manifest_sha256": "9743b0db1d22fca9d7740a3642533d9cf62671669ecb146f07adeaeb10fa0e0f",
+  "run_id": "l3-a6-pre1-r2-20261017T021302Z"
+}

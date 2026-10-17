@@ -1,0 +1,51 @@
+{
+  "files": [
+    {
+      "path": "acquisition_ledger.json",
+      "sha256": "62b539bef58e11bac15f10057634f24e12c29c95014a4ccdd24dcfff00c4041f",
+      "size_bytes": 934
+    },
+    {
+      "path": "archive_window.json",
+      "sha256": "c870f699c7831b09d881911617686db88afb14888cfb823cf3d3c94cd90546cc",
+      "size_bytes": 331
+    },
+    {
+      "path": "authority_consumed.json",
+      "sha256": "68b34a5483f03d13aa8effbf738efe66ca8f8d5949c09ab9d4fe8fc5fea8ae64",
+      "size_bytes": 261
+    },
+    {
+      "path": "authority_reservation.json",
+      "sha256": "2fef875ad7677d787e53136db2830674e7d29816d63a2f2ccc644d6edc87484f",
+      "size_bytes": 484
+    },
+    {
+      "path": "closure_completeness.json",
+      "sha256": "1b9296521d9238ec91c86c5a3209882d1ac509ebf2f910ced1a2ee6a900d8b64",
+      "size_bytes": 392
+    },
+    {
+      "path": "daily_status_2026-10-16.json",
+      "sha256": "827443ac2eb584d4a611462bdb2cee475efd9ac1ef8d5a1f3f7bd21f9f77bd77",
+      "size_bytes": 756
+    },
+    {
+      "path": "offline_review.json",
+      "sha256": "faa3fd42fbf189dbb512ac783f401e3cafae43bc1847ec0f15bd1f80180c3f75",
+      "size_bytes": 2814
+    },
+    {
+      "path": "r2_plan.json",
+      "sha256": "87ef32327a7922ec43eb8ec647d61285f3ae29d89ab7de0e773b653f752cd0f7",
+      "size_bytes": 1513
+    },
+    {
+      "path": "result.json",
+      "sha256": "46297ebf68572b39933424f0f63ee1d5cc5490f0a3a3c01d748f6e67b546a91a",
+      "size_bytes": 609
+    }
+  ],
+  "manifest_sha256": "e7049145bcd13bf484229f2db0c2abb58b1808b60358370b510cf3c03704ed78",
+  "run_id": "l3-a6-p0-r2-20261016T055915Z"
+}

@@ -1,0 +1,883 @@
+{
+  "authority_consumed": false,
+  "logical_adjudicated": 23,
+  "logical_planned": 23,
+  "mode": "SIMULATED_OFFLINE",
+  "overall_disposition": "PARTIAL",
+  "physical_ceiling": 27,
+  "physical_dispatches": 27,
+  "raw_provider_bodies_persisted": false,
+  "run_id": "maximum-27",
+  "simulation_latch_exercised": true,
+  "source_results": [
+    {
+      "bounded_detail": {
+        "batch_status": "accepted",
+        "failure_count": 0,
+        "observation_count": 2,
+        "status": "ok"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.474Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "P01",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 1,
+      "source_contract_id": "P01",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "batch_status": "empty_non_trading_day",
+        "content_type": "application/json",
+        "row_count": 0
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [
+          "empty_response_observed"
+        ],
+        "empty_response_policy": "allowed",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.474Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "empty_collection",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "no_evidence_in_covered_scope",
+        "source_contract_id": "P02",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 2,
+      "source_contract_id": "P02",
+      "verdict": "CONFORMING_WITH_UNCERTAINTY"
+    },
+    {
+      "bounded_detail": {
+        "batch_status": "empty_non_trading_day",
+        "content_type": "application/json",
+        "row_count": 0
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [
+          "empty_response_observed"
+        ],
+        "empty_response_policy": "allowed",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.474Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "empty_collection",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "no_evidence_in_covered_scope",
+        "source_contract_id": "P03",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 3,
+      "source_contract_id": "P03",
+      "verdict": "CONFORMING_WITH_UNCERTAINTY"
+    },
+    {
+      "bounded_detail": {
+        "alternate_dispatch_attempted": true,
+        "alternate_http_status": 200,
+        "alternate_outcome": "valid",
+        "capability": "material_disclosures",
+        "fallback_attempted": true,
+        "market": "TWSE",
+        "primary_contract_drift": false,
+        "primary_failure_reasons": [
+          {
+            "failure": "HTTPError",
+            "transport": "official_csv"
+          }
+        ],
+        "primary_http_status": 500,
+        "primary_outcome": "http_degraded",
+        "row_count": 1,
+        "transport": "official_json_openapi"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "not_evaluated",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.475Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "source_failed",
+        "source_contract_id": "P04",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 4,
+      "source_contract_id": "P04",
+      "verdict": "TRANSPORT_OR_HTTP_DEGRADED"
+    },
+    {
+      "bounded_detail": {
+        "alternate_dispatch_attempted": true,
+        "alternate_http_status": 200,
+        "alternate_outcome": "valid",
+        "attempt_failures": [
+          {
+            "failure": "HTTPError",
+            "transport": "official_csv"
+          },
+          {
+            "failure": "empty_or_unverifiable_source",
+            "transport": "official_json_openapi"
+          }
+        ],
+        "failure_class": "SourceFailure",
+        "failure_code": "all_governed_transports_failed",
+        "primary_http_status": 500,
+        "primary_outcome": "http_degraded"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "not_evaluated",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.475Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "source_failed",
+        "source_contract_id": "P05",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 5,
+      "source_contract_id": "P05",
+      "verdict": "TRANSPORT_OR_HTTP_DEGRADED"
+    },
+    {
+      "bounded_detail": {
+        "alternate_dispatch_attempted": true,
+        "alternate_http_status": 200,
+        "alternate_outcome": "valid",
+        "capability": "monthly_revenue",
+        "fallback_attempted": true,
+        "market": "TWSE",
+        "primary_contract_drift": false,
+        "primary_failure_reasons": [
+          {
+            "failure": "HTTPError",
+            "transport": "official_csv"
+          }
+        ],
+        "primary_http_status": 500,
+        "primary_outcome": "http_degraded",
+        "row_count": 1,
+        "transport": "official_json_openapi"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "not_evaluated",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.475Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "source_failed",
+        "source_contract_id": "P06",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 6,
+      "source_contract_id": "P06",
+      "verdict": "TRANSPORT_OR_HTTP_DEGRADED"
+    },
+    {
+      "bounded_detail": {
+        "alternate_dispatch_attempted": true,
+        "alternate_http_status": 200,
+        "alternate_outcome": "valid",
+        "attempt_failures": [
+          {
+            "failure": "HTTPError",
+            "transport": "official_csv"
+          },
+          {
+            "failure": "empty_or_unverifiable_source",
+            "transport": "official_json_openapi"
+          }
+        ],
+        "failure_class": "SourceFailure",
+        "failure_code": "all_governed_transports_failed",
+        "primary_http_status": 500,
+        "primary_outcome": "http_degraded"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "not_evaluated",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.475Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "source_failed",
+        "source_contract_id": "P07",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 7,
+      "source_contract_id": "P07",
+      "verdict": "TRANSPORT_OR_HTTP_DEGRADED"
+    },
+    {
+      "bounded_detail": {
+        "normalized_status": "partial",
+        "row_count": 0,
+        "source_id": "H1-TPEX-ATTENTION-OPENAPI"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [
+          "empty_response_observed"
+        ],
+        "empty_response_policy": "allowed",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.519Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "empty_collection",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "no_evidence_in_covered_scope",
+        "source_contract_id": "P08",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 8,
+      "source_contract_id": "P08",
+      "verdict": "CONFORMING_WITH_UNCERTAINTY"
+    },
+    {
+      "bounded_detail": {
+        "normalized_status": "partial",
+        "row_count": 0,
+        "source_id": "H1-TPEX-DISPOSITION-OPENAPI"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [
+          "empty_response_observed"
+        ],
+        "empty_response_policy": "allowed",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.563Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "empty_collection",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "no_evidence_in_covered_scope",
+        "source_contract_id": "P09",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 9,
+      "source_contract_id": "P09",
+      "verdict": "CONFORMING_WITH_UNCERTAINTY"
+    },
+    {
+      "bounded_detail": {
+        "normalized_status": "partial",
+        "row_count": 0,
+        "source_id": "H1-TPEX-CHANGED-TRADING-OPENAPI"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [
+          "empty_response_observed"
+        ],
+        "empty_response_policy": "allowed",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.606Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "empty_collection",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "no_evidence_in_covered_scope",
+        "source_contract_id": "P10",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 10,
+      "source_contract_id": "P10",
+      "verdict": "CONFORMING_WITH_UNCERTAINTY"
+    },
+    {
+      "bounded_detail": {
+        "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",
+        "row_count": 0,
+        "status": "no_evidence_in_covered_scope"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [
+          "empty_response_observed"
+        ],
+        "empty_response_policy": "allowed",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.649Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "empty_collection",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "no_evidence_in_covered_scope",
+        "source_contract_id": "P11",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 11,
+      "source_contract_id": "P11",
+      "verdict": "CONFORMING_WITH_UNCERTAINTY"
+    },
+    {
+      "bounded_detail": {
+        "error_code": null,
+        "month": "2026-10",
+        "status": "available"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.649Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": "2026-10",
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "P12",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 12,
+      "source_contract_id": "P12",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "endpoint": "https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK",
+        "row_count": 1,
+        "source_id": "I1-TWSE-FMTQIK-OPENAPI"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.649Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "P13",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 13,
+      "source_contract_id": "P13",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "endpoint": "https://openapi.twse.com.tw/v1/opendata/twtazu_od",
+        "row_count": 1,
+        "source_id": "I1-TWSE-BREADTH-TWTAZU-OPENAPI"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.650Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "P14",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 14,
+      "source_contract_id": "P14",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "endpoint": "https://www.tpex.org.tw/openapi/v1/tpex_mainborad_highlight",
+        "row_count": 1,
+        "source_id": "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.650Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "P15",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 15,
+      "source_contract_id": "P15",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "content_type": "application/octet-stream",
+        "http_status": 200,
+        "response_bytes": 289,
+        "retry_count": 0,
+        "selected_period": "202611",
+        "selected_status": "complete"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.663Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "P16",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 16,
+      "source_contract_id": "P16",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "reported_date": "2026-10-15",
+        "row_count": 2,
+        "target_rows": 1
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.706Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "P17",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 17,
+      "source_contract_id": "P17",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "reported_date": "2026-10-15",
+        "row_count": 2,
+        "target_rows": 1
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.748Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "P18",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 18,
+      "source_contract_id": "P18",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "acquisition_status": "data",
+        "dispatch_reservations": 1,
+        "http_status": 200,
+        "raw_saved": false,
+        "redirect_count": 0,
+        "source_id": "twse_isin_mode2_zh"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.789Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "B01",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 19,
+      "source_contract_id": "B01",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "acquisition_status": "data",
+        "dispatch_reservations": 1,
+        "http_status": 200,
+        "raw_saved": false,
+        "redirect_count": 0,
+        "source_id": "twse_isin_mode4_zh"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.830Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "B02",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 20,
+      "source_contract_id": "B02",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "acquisition_status": "data",
+        "dispatch_reservations": 1,
+        "http_status": 200,
+        "raw_saved": false,
+        "redirect_count": 0,
+        "source_id": "twse_delisted"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.872Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "B03",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 21,
+      "source_contract_id": "B03",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "acquisition_status": "data",
+        "dispatch_reservations": 1,
+        "http_status": 200,
+        "raw_saved": false,
+        "redirect_count": 0,
+        "source_id": "tpex_delisted"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.914Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "B04",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 22,
+      "source_contract_id": "B04",
+      "verdict": "CONFORMING"
+    },
+    {
+      "bounded_detail": {
+        "acquisition_status": "data",
+        "dispatch_reservations": 1,
+        "http_status": 200,
+        "raw_saved": false,
+        "redirect_count": 0,
+        "source_id": "twse_etn_expired"
+      },
+      "drift_observation": {
+        "adjudication": "SOURCE_SPECIFIC_SEMANTICS_PRESERVED",
+        "contract_outcome": "valid",
+        "current_row_count": null,
+        "drift_observations": [],
+        "empty_response_policy": "unknown",
+        "http_status": 200,
+        "observed_at": "2026-10-17T02:18:49.955Z",
+        "observed_row_delta": null,
+        "previous_row_count": null,
+        "requested_period": null,
+        "response_form": "unknown",
+        "retry_after": {
+          "delta_seconds": null,
+          "http_date": null,
+          "kind": "absent",
+          "present": false
+        },
+        "semantic_outcome": "available",
+        "source_contract_id": "B05",
+        "source_reported_period": null,
+        "target_binding": "unknown",
+        "transport_outcome": "http_response"
+      },
+      "sequence": 23,
+      "source_contract_id": "B05",
+      "verdict": "CONFORMING"
+    }
+  ]
+}

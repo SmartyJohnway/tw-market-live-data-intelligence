@@ -1,0 +1,11 @@
+{
+  "disposition": "PASS_RUNNER_ADJUDICATION_REPAIRED_NO_LIVE_RERUN",
+  "external_provider_requests": 0,
+  "independent_accepted_live_disposition": "PARTIAL",
+  "live_runner_executions": 0,
+  "original_live_evidence_modified": false,
+  "postlive_r1_evidence_modified": false,
+  "second_live_run_permitted": false,
+  "source_code_changes": 1,
+  "test_changes": 1
+}

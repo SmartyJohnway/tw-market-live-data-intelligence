@@ -1,0 +1,14 @@
+{
+  "authority_consumed": false,
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_P0_R4_DGPA_TABLE_STATUS_SEMANTICS_REPAIR",
+  "calendar_sha256": "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+  "market_authority_consumed": false,
+  "parser_sha256": "5d96814bdef7747fc910386d792999bb74dffb686b1df9bc9b89cd8965641519",
+  "plan_sha256": "fccbe275876d311fb05a28ca5c6230aad9c7e4a8d58e7f0f639f36e6589aa8db",
+  "pre_network_commit_sha": "95bf03ef983797d4eeffdb0eac4d768355248320",
+  "pre_network_tree_sha": "751a57bcf875ff4fd98152dc0f600e194fc2e34e",
+  "reserved_at": "2026-10-16T06:53:25Z",
+  "resolver_sha256": "075abdbb9a5cb961cb7054583aeebbe3f8722bb9c570577037396db85dc0f010",
+  "run_id": "l3-a6-p0-r4-20261016T065039Z",
+  "state": "RESERVED_NOT_CONSUMED"
+}

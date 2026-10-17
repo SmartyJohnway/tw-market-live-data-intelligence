@@ -1,0 +1,35 @@
+{
+  "actual_reservation_created": false,
+  "authority_consumed": false,
+  "canonical_origin_main": "7b3e73b2f3e2c2bec167b6d66f1846846fe4ec4c",
+  "dispatch_guard_modified": false,
+  "entry_head": "c8261ddc7cab12de6b465a55f3156efc64d4dd6c",
+  "entry_tree": "d52a262e17c86f49eb9efeae09dba83c22633204",
+  "external_provider_requests": 0,
+  "external_socket_attempts": 0,
+  "focused_tests": {
+    "failed": 0,
+    "passed": 79
+  },
+  "i3_resolver_modified": false,
+  "live_runner_modified": false,
+  "normalized_integrated_tests": {
+    "deselected": 1,
+    "deselected_test": "test_lifecycle_drift_failure_report_preserves_code_without_retry_authority",
+    "failed": 0,
+    "passed": 594
+  },
+  "pre2_manifest_files_verified": 68,
+  "pre2_manifest_sha256": "74de7917887f180c2f5c1b083c693bbc4c3b57da37c88a1feca0968020fd3ca6",
+  "reservation_creator_source_sha256": "5f1efb01a17d76f05792790bd101f0131db32d03233417223480f87ee4396fb9",
+  "validators": {
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "phase_h_v3": "PASS",
+    "portable_catalog_sync": "PASS",
+    "py_compile_reservation_creator": "PASS",
+    "runtime_skill_exact_six": "PASS",
+    "source_registry": "PASS",
+    "v1_public_contracts_exact_six": "PASS"
+  }
+}

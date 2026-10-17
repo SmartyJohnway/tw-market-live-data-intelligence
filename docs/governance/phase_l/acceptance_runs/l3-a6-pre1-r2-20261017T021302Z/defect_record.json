@@ -1,0 +1,14 @@
+{
+  "defect": "primary-host prefilter occurred before alternate-role resolution",
+  "affected_sources": ["P04", "P05", "P06", "P07"],
+  "observed_primary_hosts": ["mopsfin.twse.com.tw"],
+  "governed_alternate_hosts": {
+    "P04": "openapi.twse.com.tw",
+    "P05": "www.tpex.org.tw",
+    "P06": "openapi.twse.com.tw",
+    "P07": "www.tpex.org.tw"
+  },
+  "prior_pre1_r1_disposition_preserved": "PASS_READY_FOR_FINAL_LIVE_RESERVATION",
+  "pre1_r1_superseded_for_live_readiness": true,
+  "production_runtime_modified": false
+}

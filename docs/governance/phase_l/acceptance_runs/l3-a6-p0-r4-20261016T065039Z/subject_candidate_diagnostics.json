@@ -1,0 +1,53 @@
+{
+  "candidates": [
+    {
+      "bound_status_dates": [
+        "2026-10-16"
+      ],
+      "candidate_id": "subject-1",
+      "depth": 1,
+      "is_excluded_container": false,
+      "is_link_content": false,
+      "normalized_subject_identity": "natural_disaster_stop_work_school_status",
+      "short_bounded_excerpt": "115年 10月 16日 天然災害停止上班及上課情形",
+      "source_block_sequence": 2,
+      "status_signal": "NO_CLOSURE_NOTICE",
+      "tag": "div",
+      "taipei_status_if_any": null
+    },
+    {
+      "bound_status_dates": [
+        "2026-10-16"
+      ],
+      "candidate_id": "subject-2",
+      "depth": 0,
+      "excluded_container_reason": "ANCESTOR_PRESENTATION_CONTAINER",
+      "is_excluded_container": true,
+      "is_link_content": false,
+      "normalized_subject_identity": "natural_disaster_stop_work_school_status",
+      "short_bounded_excerpt": "行政院人事行政總處 全球資訊網 115年 10月 16日 天然災害停止上班及上課情形",
+      "source_block_sequence": 3,
+      "status_signal": "NO_CLOSURE_NOTICE",
+      "tag": "div",
+      "taipei_status_if_any": null
+    },
+    {
+      "bound_status_dates": [
+        "2026-10-16"
+      ],
+      "candidate_id": "subject-3",
+      "depth": 0,
+      "is_excluded_container": false,
+      "is_link_content": false,
+      "normalized_subject_identity": "natural_disaster_stop_work_school_status",
+      "short_bounded_excerpt": "更新時間：2026/10/16 14:52:18 資料來源：各縣市政府 縣市名稱是否停止上班上課情形 無停班停課訊息。1.若欲進入本總處網站首頁版面，請按2.語音查詢電話： ０２０３００１６６3.機關、學校中英文名稱係由各通報機關提供。4.適用範圍為各級政府機關及公、私立學校；至交通運輸、警察、消防、海岸巡防、醫療、關務等業務性質特殊機關（構），為全年無休服務民眾，且應實施輪班、輪休制度，如遇天然災害發生時，其尚無停止上班之適用。 5.民間事業單位及勞工應依勞動部『天然災害發生事業單位勞工出勤管理及工資給付要點』處理， 如有疑義，請按 查詢，或電洽該部免付費電話專線：0800-085-151。",
+      "source_block_sequence": 30,
+      "status_signal": "NO_CLOSURE_NOTICE",
+      "tag": "div",
+      "taipei_status_if_any": null
+    }
+  ],
+  "canonical_candidate_count": 1,
+  "raw_subject_match_count": 3,
+  "semantic_candidate_count": 2
+}

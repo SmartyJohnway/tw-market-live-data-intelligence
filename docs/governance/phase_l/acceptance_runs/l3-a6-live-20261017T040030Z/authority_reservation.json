@@ -1,0 +1,18 @@
+{
+  "P17_trade_date": "2026-10-15",
+  "authority_id": "USER_CHAT_2026-10-16_PHASE_L_L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_AUTHORIZATION",
+  "live_authority_consumed": false,
+  "logical_count": 23,
+  "physical_ceiling": 27,
+  "planned_run_id": "l3-a6-live-20261017T040030Z",
+  "pre2_manifest_canonical_sha256": "74de7917887f180c2f5c1b083c693bbc4c3b57da37c88a1feca0968020fd3ca6",
+  "pre2_manifest_path": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l-l3-a6\\docs\\governance\\phase_l\\acceptance_runs\\l3-a6-pre2-20261017T021753Z\\manifest.json",
+  "pre2_manifest_sha256": "67c11eef93be777b5ec67d1a56310b0da6bc3b59638264a0301934d1deca024f",
+  "pre_network_head": "f2f5ede78ff39b9c4b5bc693f9474a2d0b11f75c",
+  "pre_network_tree": "93335f1f1b56c65ee8e93c722d3e9a6ee70cabcb",
+  "source_plan_path": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l-l3-a6\\docs\\governance\\phase_l\\acceptance_runs\\l3-a6-pre2-20261017T021753Z\\a6_source_plan.json",
+  "source_plan_sha256": "2878e854b827e47c48f05e256e465f43ba5f7d56d392d085bd2d4985ad1e407f",
+  "state": "RESERVED_NOT_CONSUMED",
+  "transport_matrix_path": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l-l3-a6\\docs\\governance\\phase_l\\acceptance_runs\\l3-a6-pre2-20261017T021753Z\\transport_contract_matrix.json",
+  "transport_matrix_sha256": "b29ae367f4630612a1c6575e11ff73138162e7e322e5477b90c68949924566ae"
+}

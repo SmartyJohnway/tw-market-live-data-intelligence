@@ -1,0 +1,11 @@
+{
+  "archive_error": "dgpa_archive_publication_date_missing",
+  "archive_identity": "歷次天然災害停止上班上課訊息",
+  "assessment": {
+    "coverage_dates": [],
+    "historical_archive_target_entry_present": false,
+    "historical_negative_evidence": false,
+    "reason": "archive_window_empty"
+  },
+  "pages": []
+}
