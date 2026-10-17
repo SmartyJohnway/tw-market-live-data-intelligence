@@ -1,0 +1,25 @@
+{
+  "files": [
+    {
+      "path": "independent_result.json",
+      "sha256": "7dcf22224e22961617344ca1a4473f58f6070f9186bc4c850da92b698ca6f93b"
+    },
+    {
+      "path": "offline_review.json",
+      "sha256": "8bd51bf1f5acdaeb755765b58a3cd03400f9679441ce6a990f16aa1596a1fc3e"
+    },
+    {
+      "path": "original_live_evidence_binding.json",
+      "sha256": "e9a051e727f47fec3caba338a20791b935474eabbc0d684acded40148bec2e7d"
+    },
+    {
+      "path": "runner_adjudication_defects.json",
+      "sha256": "85386bf2f034e61a4e422c17cc3d4d66f34ac0aff0d0836b8fe8aa3b37c8d71b"
+    },
+    {
+      "path": "source_reconciliation.json",
+      "sha256": "9c4a5659ea789c9ba96c8b3f5868da481d905a6c0aa9618bd95d14d238720235"
+    }
+  ],
+  "manifest_sha256": "413bcc785e2ce2e1ae5c08e880e645ca5b00d9996b4f2a56f75367582cb49e7d"
+}

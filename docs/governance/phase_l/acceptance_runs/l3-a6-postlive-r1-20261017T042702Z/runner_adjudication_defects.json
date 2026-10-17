@@ -1,0 +1,57 @@
+{
+  "defects": [
+    {
+      "finding": "completed_with_no_observations with failures passes through _classify_result() and falls to CONFORMING; evidence is transport failure, not conformity.",
+      "id": "D1",
+      "source_contract_ids": [
+        "P01"
+      ]
+    },
+    {
+      "finding": "status=source_failed is mapped to CONTRACT_DRIFT_OBSERVED without distinguishing source_failed:transport_failure.",
+      "id": "D2",
+      "source_contract_ids": [
+        "P12"
+      ]
+    },
+    {
+      "finding": "generic source errors other than unavailable:no_rows map to contract drift, including source_failed:transport_failure.",
+      "id": "D3",
+      "source_contract_ids": [
+        "P13",
+        "P14",
+        "P15"
+      ]
+    },
+    {
+      "finding": "AcquisitionError(code=transport_error) misses the outer transport-error classifier and falls into generic contract drift.",
+      "id": "D4",
+      "source_contract_ids": [
+        "P18"
+      ]
+    },
+    {
+      "finding": "bootstrap network_error with null HTTP status is classified as CONFORMING_WITH_UNCERTAINTY; acquisition failure is not a valid no-evidence response.",
+      "id": "D5",
+      "source_contract_ids": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05"
+      ]
+    },
+    {
+      "finding": "for ledger-confirmed no-status transport failures, the drift projection reports transport_outcome=unknown rather than transport_failure.",
+      "id": "D6",
+      "source_contract_ids": [
+        "P12",
+        "P13",
+        "P14",
+        "P15",
+        "P18"
+      ]
+    }
+  ],
+  "python_repairs_performed": false
+}

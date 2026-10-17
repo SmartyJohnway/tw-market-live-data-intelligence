@@ -1,0 +1,600 @@
+{
+  "logical_adjudicated": 23,
+  "logical_planned": 23,
+  "physical_ceiling": 27,
+  "physical_dispatches": 27,
+  "sources": [
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "mis.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status; bounded batch result has zero observations and two failures, so no source conformity was established.",
+      "runner_verdict": "CONFORMING",
+      "source_contract_id": "P01"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "openapi.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "source_contract_id": "P02"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "www.tpex.org.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "source_contract_id": "P03"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "mopsfin.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        },
+        {
+          "dispatch_role": "GOVERNED_ALTERNATE",
+          "failure_class": "URLError",
+          "hostname": "openapi.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null,
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 2,
+      "physical_transport_outcomes": [
+        "transport_failure",
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "source_contract_id": "P04"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "mopsfin.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        },
+        {
+          "dispatch_role": "GOVERNED_ALTERNATE",
+          "failure_class": "URLError",
+          "hostname": "www.tpex.org.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null,
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 2,
+      "physical_transport_outcomes": [
+        "transport_failure",
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "source_contract_id": "P05"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "mopsfin.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        },
+        {
+          "dispatch_role": "GOVERNED_ALTERNATE",
+          "failure_class": "URLError",
+          "hostname": "openapi.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null,
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 2,
+      "physical_transport_outcomes": [
+        "transport_failure",
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "source_contract_id": "P06"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "mopsfin.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        },
+        {
+          "dispatch_role": "GOVERNED_ALTERNATE",
+          "failure_class": "URLError",
+          "hostname": "www.tpex.org.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null,
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 2,
+      "physical_transport_outcomes": [
+        "transport_failure",
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "source_contract_id": "P07"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": null,
+          "hostname": "www.tpex.org.tw",
+          "http_status": 200,
+          "retry_count": 0,
+          "transport_outcome": "http_response"
+        }
+      ],
+      "http_statuses": [
+        200
+      ],
+      "independent_verdict": "CONFORMING",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "http_response"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "CONFORMING",
+      "source_contract_id": "P08"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": null,
+          "hostname": "www.tpex.org.tw",
+          "http_status": 200,
+          "retry_count": 0,
+          "transport_outcome": "http_response"
+        }
+      ],
+      "http_statuses": [
+        200
+      ],
+      "independent_verdict": "CONFORMING",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "http_response"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "CONFORMING",
+      "source_contract_id": "P09"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": null,
+          "hostname": "www.tpex.org.tw",
+          "http_status": 200,
+          "retry_count": 0,
+          "transport_outcome": "http_response"
+        }
+      ],
+      "http_statuses": [
+        200
+      ],
+      "independent_verdict": "CONFORMING",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "http_response"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "CONFORMING",
+      "source_contract_id": "P10"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": null,
+          "hostname": "openapi.twse.com.tw",
+          "http_status": 200,
+          "retry_count": 0,
+          "transport_outcome": "http_response"
+        }
+      ],
+      "http_statuses": [
+        200
+      ],
+      "independent_verdict": "CONFORMING_WITH_UNCERTAINTY",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "http_response"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "CONFORMING_WITH_UNCERTAINTY",
+      "source_contract_id": "P11"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "www.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status; adapter source_failed:transport_failure is not provider contract drift.",
+      "runner_verdict": "CONTRACT_DRIFT_OBSERVED",
+      "source_contract_id": "P12"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "openapi.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status; generic source_failed:transport_failure is not provider contract drift.",
+      "runner_verdict": "CONTRACT_DRIFT_OBSERVED",
+      "source_contract_id": "P13"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "openapi.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status; generic source_failed:transport_failure is not provider contract drift.",
+      "runner_verdict": "CONTRACT_DRIFT_OBSERVED",
+      "source_contract_id": "P14"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "www.tpex.org.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status; generic source_failed:transport_failure is not provider contract drift.",
+      "runner_verdict": "CONTRACT_DRIFT_OBSERVED",
+      "source_contract_id": "P15"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": null,
+          "hostname": "openapi.taifex.com.tw",
+          "http_status": 200,
+          "retry_count": 0,
+          "transport_outcome": "http_response"
+        }
+      ],
+      "http_statuses": [
+        200
+      ],
+      "independent_verdict": "CONFORMING",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "http_response"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "CONFORMING",
+      "source_contract_id": "P16"
+    },
+    {
+      "changed": false,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": null,
+          "hostname": "www.twse.com.tw",
+          "http_status": 200,
+          "retry_count": 0,
+          "transport_outcome": "http_response"
+        }
+      ],
+      "http_statuses": [
+        200
+      ],
+      "independent_verdict": "CONFORMING",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "http_response"
+      ],
+      "reconciliation_reason": "Runner and independent verdict agree under ledger response facts and frozen source semantics.",
+      "runner_verdict": "CONFORMING",
+      "source_contract_id": "P17"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "www.tpex.org.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status; AcquisitionError transport_error is not provider contract drift.",
+      "runner_verdict": "CONTRACT_DRIFT_OBSERVED",
+      "source_contract_id": "P18"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "isin.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status and bounded acquisition_status network_error; no evidence of a valid empty/no-evidence provider response.",
+      "runner_verdict": "CONFORMING_WITH_UNCERTAINTY",
+      "source_contract_id": "B01"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "isin.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status and bounded acquisition_status network_error; no evidence of a valid empty/no-evidence provider response.",
+      "runner_verdict": "CONFORMING_WITH_UNCERTAINTY",
+      "source_contract_id": "B02"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "www.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status and bounded acquisition_status network_error; no evidence of a valid empty/no-evidence provider response.",
+      "runner_verdict": "CONFORMING_WITH_UNCERTAINTY",
+      "source_contract_id": "B03"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "www.tpex.org.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status and bounded acquisition_status network_error; no evidence of a valid empty/no-evidence provider response.",
+      "runner_verdict": "CONFORMING_WITH_UNCERTAINTY",
+      "source_contract_id": "B04"
+    },
+    {
+      "changed": true,
+      "dispatches": [
+        {
+          "dispatch_role": "PRIMARY",
+          "failure_class": "URLError",
+          "hostname": "www.twse.com.tw",
+          "http_status": null,
+          "retry_count": 0,
+          "transport_outcome": "transport_failure"
+        }
+      ],
+      "http_statuses": [
+        null
+      ],
+      "independent_verdict": "TRANSPORT_OR_HTTP_DEGRADED",
+      "physical_dispatch_count": 1,
+      "physical_transport_outcomes": [
+        "transport_failure"
+      ],
+      "reconciliation_reason": "Ledger confirms URLError transport_failure with null HTTP status and bounded acquisition_status network_error; no evidence of a valid empty/no-evidence provider response.",
+      "runner_verdict": "CONFORMING_WITH_UNCERTAINTY",
+      "source_contract_id": "B05"
+    }
+  ]
+}

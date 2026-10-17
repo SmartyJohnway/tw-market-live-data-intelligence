@@ -53,3 +53,13 @@ All five manifest-listed artifact hashes match their files, and recomputed canon
 No source code, tests, config, registry, Catalog, Route, or activation file was changed. Git reported only the governed live-run evidence directory before this governance record was added. The runner reports `raw_provider_bodies_persisted = false`. No Security Master, Watchlist, production Result/Audit, or user-configuration mutation was performed by this evidence-recording step.
 
 A6 Owner acceptance is not asserted. A7 and later phases remain outside this record.
+
+## Independent Post-Live Review
+
+The immutable runner-produced result remains `SOURCE_CHANGED`. Its original evidence under `acceptance_runs/l3-a6-live-20261017T040030Z/` was not modified. Reservation, consumed receipt, dispatch ledger, source results, result and all five manifest-listed artifact hashes were reverified against their previously recorded SHA-256 values; the canonical live manifest SHA-256 remains `4c6ed08ef6453fb79944faac49c813f1d89d04bc9aea7cffc5df43995968d19d`.
+
+Independent evidence re-adjudication is `PARTIAL`. The dispatch ledger is primary for physical transport facts. P12–P15 and P18 have only `transport_failure`, `URLError`, and null HTTP status; those facts do not prove deterministic provider contract drift. P01 has a transport failure, null status, zero observations and two failures, so its generated `CONFORMING` verdict is not supported. B01–B05 have transport failures and `network_error` with null status, not valid empty/no-evidence responses. These verdict corrections are recorded separately in `acceptance_runs/l3-a6-postlive-r1-20261017T042702Z/source_reconciliation.json`.
+
+Accordingly, `SOURCE_CHANGED` was rejected because every runner-labeled `CONTRACT_DRIFT_OBSERVED` member had only transport-failure evidence and no adjudicable provider response. Independent counts are 0 deterministic contract drift proven, 17 transport-degraded logical sources, and 6 logical sources with HTTP 200 responses (P08, P09, P10, P11, P16, P17). All 23 logical slots were adjudicated; 27 physical dispatches were within the ceiling; there were no 429 suppressions, NOT_EXECUTED sources, unresolved targets, or safety stops. Under the frozen A6 disposition rules the independent result is `PARTIAL`, not `INCONCLUSIVE`.
+
+The POSTLIVE-R1 record identifies six runner adjudication/projection defects (D1–D6). No Python, test, configuration, production, or original live-evidence file was changed, and no provider request or live-runner execution occurred in POSTLIVE-R1. This independent disposition is a technical evidence re-adjudication only; it does not constitute Owner acceptance.
