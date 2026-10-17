@@ -6,8 +6,9 @@
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
-**L3:** CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`; A0-A6 Owner-accepted and merged (A0-A5 PRs #355/#357/#359/#361/#363/#365; A6 PR #367); A6 remains PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven), one-shot authority consumed, second run prohibited; L4 and L4-A0 inventory AUTHORIZED TO START; L4-A1+ and L5-L7 NOT AUTHORIZED
-**L4-L7:** NOT STARTED / NOT AUTHORIZED
+**L3:** CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`; A0-A6 Owner-accepted and merged (A0-A5 PRs #355/#357/#359/#361/#363/#365; A6 PR #367); A6 remains PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven), one-shot authority consumed, second run prohibited; L4 STARTED; L4-A0 inventory COMPLETE under L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_COMPLETE; L4-A1+ and L5-L7 NOT AUTHORIZED
+**L4:** STARTED; L4-A0 security/resource boundary inventory COMPLETE under `L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_COMPLETE`; L4-A1+ NOT AUTHORIZED
+**L5-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
 

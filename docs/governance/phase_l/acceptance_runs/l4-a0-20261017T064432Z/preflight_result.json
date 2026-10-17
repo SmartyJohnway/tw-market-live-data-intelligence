@@ -1,0 +1,31 @@
+{
+  "run_id": "l4-a0-20261017T064432Z",
+  "disposition": "L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_COMPLETE",
+  "implementation_changes": 0,
+  "provider_requests": 0,
+  "external_socket_attempts": 0,
+  "destructive_load_tests": 0,
+  "dependency_install_or_download": 0,
+  "inventory_row_count": 33,
+  "threat_scenario_count": 14,
+  "gap_count": 22,
+  "deferred_numeric_values_not_selected": true,
+  "all_partial_and_gap_have_exactly_one_next_tranche": true,
+  "front_door_update_required": true,
+  "inventory_status_counts": {
+    "PARTIAL": 19,
+    "GAP": 3,
+    "DEFERRED_VALUE": 2,
+    "NOT_APPLICABLE": 2,
+    "COVERED": 7
+  },
+  "severity_counts": {
+    "DOCUMENTATION_GAP": 0,
+    "HARDENING_REQUIRED": 15,
+    "BLOCKER": 0,
+    "TEST_COVERAGE_GAP": 7
+  },
+  "partial_or_gap_items_mapped": 22,
+  "focused_boundary_suite": "86 passed, 1 skipped",
+  "additional_mode_c_historical_tests": "2 failed; explicitly retained in offline_review; no test or runtime changes"
+}

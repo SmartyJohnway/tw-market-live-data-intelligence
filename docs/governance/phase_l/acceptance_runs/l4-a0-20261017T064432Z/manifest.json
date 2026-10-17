@@ -1,0 +1,47 @@
+{
+  "artifacts": [
+    {
+      "bytes": 10207,
+      "path": "docs/governance/phase_l/PHASE_L_L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_2026-10-17.md",
+      "sha256": "7c311d3bff915c6640af37e72daad50ca8aaa5bc2c9162106b2f72da01fe28ea"
+    },
+    {
+      "bytes": 2207,
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/dependency_supply_chain_inventory.json",
+      "sha256": "c059327cddb5fd94f3af9786358b83ed6a663abd2b0d332bdc680cc3a6ab5776"
+    },
+    {
+      "bytes": 4311,
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/l4_gap_register.json",
+      "sha256": "11402bb997b8d9ea8db32dfce612a16577f7453fd47cd6d1676a058274a1e6c1"
+    },
+    {
+      "bytes": 2138,
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/offline_review.json",
+      "sha256": "4879713cdb303b11edb07e8e23a2eea088efc270b51ba6e4e98e5dfc357e2a55"
+    },
+    {
+      "bytes": 1005,
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/preflight_result.json",
+      "sha256": "98991062819b6d2712b7f198f0755dc68d925f2a204416c3a5135c8bffb34c6a"
+    },
+    {
+      "bytes": 3377,
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/resource_load_test_inventory.json",
+      "sha256": "6fd645ca68462f0dcaa6a7743d02213c9fed84aaac1e0b6f82fc8c1490279b59"
+    },
+    {
+      "bytes": 35291,
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/security_resource_surface_inventory.json",
+      "sha256": "a2d9b23d61a448b5e2997606224a1f4f6fc7ca538fa8abb410014a6c227a833d"
+    },
+    {
+      "bytes": 5544,
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/threat_boundary_matrix.json",
+      "sha256": "fba2635dbb50cedc27a0931cc70f4fa62513f24767d1452bd9557476259ab830"
+    }
+  ],
+  "canonicalization": "UTF-8 JSON, sorted keys, compact separators, no trailing newline",
+  "run_id": "l4-a0-20261017T064432Z",
+  "schema_version": "phase_l_l4_a0_manifest.v1"
+}

@@ -1,0 +1,159 @@
+{
+  "run_id": "l4-a0-20261017T064432Z",
+  "items": [
+    {
+      "boundary_id": "NET-002",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A1",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "PATH-001",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A2",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "PATH-003",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A2",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "PATH-005",
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A2",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "IN-001",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "IN-003",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "IN-004",
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "IN-005",
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "OUT-001",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "OUT-002",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "OUT-003",
+      "status": "GAP",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "INJ-001",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A4",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "AUTH-001",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A4",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "AUTH-002",
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A4",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "SEC-002",
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A4",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "DEP-001",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A5",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "DEP-002",
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A5",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "RES-001",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A6",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "RES-003",
+      "status": "GAP",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A6",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "LOAD-001",
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A6",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "LOAD-002",
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    },
+    {
+      "boundary_id": "LOAD-003",
+      "status": "GAP",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3",
+      "owner": "Phase L tranche owner"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "run_id": "l4-a0-20261017T064432Z",
+  "destructive_load_tests_run": false,
+  "items": [
+    {
+      "scenario": "large_watchlist",
+      "existing_bound": "LIMITS: 500 entries/list, 32 lists; no destructive stress run",
+      "existing_test": "tests/unit/test_m8r_09_persistent_watchlists.py",
+      "safe_future_test_design": "Bounded synthetic 500-entry fixture; verify read/preview/result timing and size without persistent production state",
+      "real_provider_access_unnecessary": "No"
+    },
+    {
+      "scenario": "multi_target",
+      "existing_bound": "catalog hard target 50 / operation 100",
+      "existing_test": "Unified Mode A/B1 validation tests",
+      "safe_future_test_design": "Synthetic max-bound request at 50 targets and operation expansion; no provider adapters",
+      "real_provider_access_unnecessary": "No"
+    },
+    {
+      "scenario": "large_disclosure_result",
+      "existing_bound": "schema example maxItems 50; source-specific byte limits",
+      "existing_test": "Phase G source/schema tests",
+      "safe_future_test_design": "Synthetic maximum rows plus over-limit and aggregate output measurement",
+      "real_provider_access_unnecessary": "No"
+    },
+    {
+      "scenario": "large_supported_evidence_result",
+      "existing_bound": "per-source rows/bytes; MCP response cap 8 MiB",
+      "existing_test": "V3 schema and MCP client tests",
+      "safe_future_test_design": "Fixture-backed maximum evidence package; independently measure serialization and persisted bytes",
+      "real_provider_access_unnecessary": "No"
+    },
+    {
+      "scenario": "long_ai_handoff",
+      "existing_bound": "No producer-side global byte bound; downstream MCP response cap 8 MiB",
+      "existing_test": "Mode C handoff tests",
+      "safe_future_test_design": "Synthetic large citations/text and assert measured bytes at each producer/transport boundary",
+      "real_provider_access_unnecessary": "No"
+    },
+    {
+      "scenario": "bounded_concurrent_local_calls",
+      "existing_bound": "No app semaphore identified",
+      "existing_test": "No acceptance matrix located",
+      "safe_future_test_design": "Use local deterministic fake executors and bounded worker count; assert concurrency and cleanup",
+      "real_provider_access_unnecessary": "No"
+    },
+    {
+      "scenario": "timeout",
+      "existing_bound": "source-specific timeouts and child 130 sec max",
+      "existing_test": "Source transport tests; Mode B child timeout tests",
+      "safe_future_test_design": "Fake hanging transport/child; assert transport timeout boundary and bounded cleanup",
+      "real_provider_access_unnecessary": "No"
+    },
+    {
+      "scenario": "memory_pressure",
+      "existing_bound": "L1 process memory snapshot is observational",
+      "existing_test": "Telemetry tests only",
+      "safe_future_test_design": "Synthetic allocation in isolated subprocess with OS-level test guard; avoid machine exhaustion",
+      "real_provider_access_unnecessary": "No"
+    },
+    {
+      "scenario": "disk_pressure",
+      "existing_bound": "Disk-free telemetry; no universal admission control",
+      "existing_test": "Backup/resource and operational diagnostic tests",
+      "safe_future_test_design": "Temporary filesystem or injected capacity abstraction; no production disk filling",
+      "real_provider_access_unnecessary": "No"
+    }
+  ]
+}
