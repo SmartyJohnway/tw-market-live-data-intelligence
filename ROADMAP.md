@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "2026-10-17: Phase J/K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 STARTED / NOT CLOSED; L3-A0-A5 Owner-accepted and merged; L3-A6 Owner-accepted for merge with technical disposition PARTIAL; one-shot authority consumed; L3-A7 technical exit review authorized / pending; L4-L7 not started / not authorized"
+status_reconciled_through: "2026-10-17: Phase J/K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 CLOSED under PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after PHASE_L_L3_EXIT_REVIEW_PASS; A0-A6 Owner-accepted and merged; A6 technical disposition PARTIAL; L4/L4-A0 authorized to start; L4-A1+ and L5-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1421,7 +1421,7 @@ TW-Market 可以被描述為：
 
 # [ ] Phase L — Production Hardening & Extension Architecture
 
-### Current entry - L3 source drift hardening after A5 merge (2026-10-16)
+### Current entry - L3 source drift hardening after A7 technical exit review (2026-10-17)
 
 Phase L is **STARTED**. L0 - Production Boundary & Architecture Contract remains frozen
 under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 Runtime Operability is CLOSED under
@@ -1457,7 +1457,7 @@ negative-fixture candidate passed independent technical review under
 verification reconciled direct missing-required-field coverage across P08/P09/P10
 without production runtime changes. A4 is Owner-accepted under
 `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #363 at
-`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. A0-A5 are Owner-accepted and merged. A6 is Owner-accepted for merge under `L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_OWNER_ACCEPTED_FOR_MERGE`; its technical live disposition is PARTIAL (17 transport-degraded sources, six HTTP-200 sources, zero deterministic contract drift proven), with its one-shot authority consumed and no second run permitted. A7 technical exit review is AUTHORIZED / NOT YET COMPLETE. L3 remains STARTED / NOT CLOSED; L4-L7 are NOT STARTED / NOT AUTHORIZED. See
+`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. A0-A6 are Owner-accepted and merged. A6 is Owner-accepted and merged under `L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_OWNER_ACCEPTED_FOR_MERGE`; its technical live disposition is PARTIAL (17 transport-degraded sources, six HTTP-200 sources, zero deterministic contract drift proven), with its one-shot authority consumed and no second run permitted. A7 technical exit review passed under `PHASE_L_L3_EXIT_REVIEW_PASS`; L3 Owner-closed under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L4 and L4-A0 inventory are authorized to start; L4-A1+ and L5-L7 are not authorized. See
 `docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md` and
 `docs/governance/phase_l/PHASE_L_L3_A3_RESEARCH_SOURCE_STRUCTURE_AND_PROVENANCE_GUARD_2026-10-15.md`;
 the A4 record is
