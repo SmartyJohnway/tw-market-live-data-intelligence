@@ -1,0 +1,47 @@
+{
+  "cases": [
+    {
+      "case": "HTTP exact byte boundary",
+      "result": "PASS",
+      "test": "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+    },
+    {
+      "case": "chunked HTTP overflow",
+      "result": "PASS",
+      "test": "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+    },
+    {
+      "case": "oversized MCP first frame before Local Service",
+      "result": "PASS",
+      "test": "tests/unit/test_phase_l_l4_a3_bounded_stdio.py"
+    },
+    {
+      "case": "MCP structuredContent plus text amplification",
+      "result": "PASS",
+      "test": "tests/unit/test_phase_l_l4_a3_input_output_bounds.py"
+    },
+    {
+      "case": "Mode-C aggregate over-bound before any output publication",
+      "result": "PASS",
+      "test": "tests/unit/test_m8r_06_04_mode_c.py"
+    },
+    {
+      "case": "persisted Mode-C output over bound",
+      "result": "PASS",
+      "test": "tests/unit/test_m8r_06_04_mode_c.py"
+    },
+    {
+      "case": "final serialized AI handoff over bound",
+      "result": "PASS",
+      "test": "tests/unit/test_m8r_06_04_mode_c.py"
+    },
+    {
+      "case": "Watchlist import limit and non-truncated revisions",
+      "result": "PASS",
+      "test": "tests/unit/test_m8r_09_persistent_watchlists.py"
+    }
+  ],
+  "destructive_load_tests": 0,
+  "provider_calls": 0,
+  "run_id": "l4-a3-20261017T102100Z"
+}

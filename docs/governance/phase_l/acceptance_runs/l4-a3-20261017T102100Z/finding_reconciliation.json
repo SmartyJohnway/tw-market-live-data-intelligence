@@ -1,0 +1,72 @@
+{
+  "a0_evidence_modified": false,
+  "a4_a7_authorized": false,
+  "a6_residuals_preserved": true,
+  "findings": [
+    {
+      "a0": "PARTIAL / HARDENING_REQUIRED",
+      "a3": "COVERED",
+      "finding": "IN-001",
+      "next_tranche": null,
+      "residual": "none within bounded HTTP ingress"
+    },
+    {
+      "a0": "PARTIAL / HARDENING_REQUIRED",
+      "a3_input_mutation": "COVERED",
+      "finding": "IN-003",
+      "next_tranche": "L4-A6",
+      "residual": "cumulative SQLite/revision growth deferred to L4-A6",
+      "split_reason": "input payload limits are distinct from cumulative durable-storage/resource capacity"
+    },
+    {
+      "a0": "PARTIAL / TEST_COVERAGE_GAP",
+      "a3": "COVERED",
+      "finding": "IN-004",
+      "next_tranche": null,
+      "residual": "none for bounded inbound stdio frames before SDK parsing"
+    },
+    {
+      "a0": "PARTIAL / TEST_COVERAGE_GAP",
+      "a3": "COVERED",
+      "finding": "IN-005",
+      "next_tranche": null,
+      "residual": "existing Catalog/schema/executor bounds consolidated; no generic pagination added"
+    },
+    {
+      "a0": "PARTIAL / HARDENING_REQUIRED",
+      "a3": "COVERED",
+      "finding": "OUT-001",
+      "next_tranche": null,
+      "residual": "no SDK stdout line cap; server and producer bounds are primary; no stdout backstop claimed"
+    },
+    {
+      "a0": "PARTIAL / HARDENING_REQUIRED",
+      "a3": "COVERED",
+      "finding": "OUT-002",
+      "next_tranche": "L4-A6",
+      "residual": "in-memory/peak serialization capacity is a separate L4-A6 question"
+    },
+    {
+      "a0": "GAP / HARDENING_REQUIRED",
+      "a3": "COVERED",
+      "finding": "OUT-003",
+      "next_tranche": "L4-A6",
+      "residual": "peak memory/performance remains L4-A6"
+    },
+    {
+      "a0": "PARTIAL / HARDENING_REQUIRED",
+      "a3_serialized": "COVERED",
+      "finding": "LOAD-002",
+      "next_tranche": "L4-A6",
+      "residual": "memory/performance/disk-pressure behavior deferred to L4-A6"
+    },
+    {
+      "a0": "GAP / HARDENING_REQUIRED",
+      "a3_serialized": "COVERED",
+      "finding": "LOAD-003",
+      "next_tranche": "L4-A6",
+      "residual": "long-handoff capacity/performance deferred to L4-A6"
+    }
+  ],
+  "run_id": "l4-a3-20261017T102100Z"
+}

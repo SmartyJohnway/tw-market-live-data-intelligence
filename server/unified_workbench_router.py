@@ -1,6 +1,7 @@
 import json
 from fastapi import APIRouter, Request, HTTPException
-from fastapi.responses import JSONResponse
+from .unified_bounded_io import bounded_json_response as JSONResponse, read_bounded_request_body
+from .unified_payload_bounds import MAX_UNIFIED_REQUEST_BYTES
 from .services.unified_mode_a import validate_mode_a_request
 from scripts.m8r_06_01c2_mode_a_security_master_loader import ModeASecurityMasterUnavailable
 from .services.unified_mode_b1 import (
@@ -19,7 +20,7 @@ router = APIRouter(
     tags=["unified-workbench-mode-a"]
 )
 
-MAX_BODY_SIZE = 1 * 1024 * 1024  # 1 MiB
+MAX_BODY_SIZE = MAX_UNIFIED_REQUEST_BYTES
 
 
 @router.get("/capabilities")
@@ -37,9 +38,7 @@ async def validate_request(request: Request):
     Canonical F3 validation endpoint for Mode A.
     """
     # 1. Limit body size
-    body = await request.body()
-    if len(body) > MAX_BODY_SIZE:
-        raise HTTPException(status_code=413, detail="request_too_large")
+    body = await read_bounded_request_body(request, MAX_BODY_SIZE)
 
     # 2. Parse JSON
     try:
@@ -77,9 +76,7 @@ async def validate_request(request: Request):
 @router.post("/preview-request")
 async def preview_request(request: Request):
     """Offline Mode B1 planning endpoint; never authorizes or executes."""
-    body = await request.body()
-    if len(body) > MAX_BODY_SIZE:
-        raise HTTPException(status_code=413, detail="request_too_large")
+    body = await read_bounded_request_body(request, MAX_BODY_SIZE)
     try:
         payload = json.loads(body)
     except json.JSONDecodeError:
@@ -122,9 +119,7 @@ async def preview_request(request: Request):
 @router.post("/authorizations")
 async def create_authorization(request: Request):
     """Create an offline, server-owned canonical 05B authorization."""
-    body = await request.body()
-    if len(body) > MAX_BODY_SIZE:
-        raise HTTPException(status_code=413, detail="request_too_large")
+    body = await read_bounded_request_body(request, MAX_BODY_SIZE)
     try:
         payload = json.loads(body)
     except json.JSONDecodeError:
@@ -148,9 +143,7 @@ async def create_authorization(request: Request):
 @router.post("/executions")
 async def execute_authorization(request: Request):
     """Execute exactly one server-owned package through the fixed child protocol."""
-    body = await request.body()
-    if len(body) > MAX_BODY_SIZE:
-        raise HTTPException(status_code=413, detail="request_too_large")
+    body = await read_bounded_request_body(request, MAX_BODY_SIZE)
     try:
         payload = json.loads(body)
     except json.JSONDecodeError:
@@ -172,9 +165,7 @@ async def execute_authorization(request: Request):
 @router.post("/fetch-evidence")
 async def fetch_evidence(request: Request):
     """One bounded local-operator action; MCP cannot select execution mechanics."""
-    body = await request.body()
-    if len(body) > MAX_BODY_SIZE:
-        raise HTTPException(status_code=413, detail="request_too_large")
+    body = await read_bounded_request_body(request, MAX_BODY_SIZE)
     try:
         payload = json.loads(body)
     except json.JSONDecodeError:
@@ -192,9 +183,7 @@ async def fetch_evidence(request: Request):
 @router.post("/result-package")
 async def build_result_package(request: Request):
     """Build or verify server-owned Mode C outputs for a final execution."""
-    body = await request.body()
-    if len(body) > MAX_BODY_SIZE:
-        raise HTTPException(status_code=413, detail="request_too_large")
+    body = await read_bounded_request_body(request, MAX_BODY_SIZE)
     try:
         payload = json.loads(body)
     except json.JSONDecodeError:

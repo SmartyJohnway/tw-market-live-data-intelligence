@@ -14,6 +14,8 @@ from . import ADAPTER_VERSION
 from .error_mapping import map_internal_error, map_local_service_error
 from .local_service_client import LocalServiceClientError, UnifiedLocalServiceClient
 from .tool_contracts import ToolContractSnapshot
+from server.unified_bounded_io import measure_json_utf8, measure_text_utf8
+from server.unified_payload_bounds import MAX_UNIFIED_RESPONSE_BYTES
 
 SERVER_INSTRUCTIONS = (
     "Local read/preflight adapter for unified_market_evidence_local_service.v2. "
@@ -40,10 +42,33 @@ def _text_for_success(name: str, payload: dict[str, Any]) -> str:
 
 
 def _success(name: str, payload: dict[str, Any]) -> CallToolResult:
+    try:
+        structured_size = measure_json_utf8(
+            payload, ensure_ascii=False, allow_nan=False, sort_keys=True,
+            separators=(",", ":"), max_bytes=MAX_UNIFIED_RESPONSE_BYTES,
+        )
+        if structured_size > MAX_UNIFIED_RESPONSE_BYTES:
+            return _mcp_result_too_large()
+        text = _text_for_success(name, payload)
+        text_size = measure_text_utf8(text, max_bytes=MAX_UNIFIED_RESPONSE_BYTES - structured_size)
+        total = structured_size + text_size
+    except (TypeError, ValueError, UnicodeEncodeError):
+        return _mcp_result_too_large()
+    if total > MAX_UNIFIED_RESPONSE_BYTES:
+        return _mcp_result_too_large()
     return CallToolResult(
-        content=[TextContent(type="text", text=_text_for_success(name, payload))],
+        content=[TextContent(type="text", text=text)],
         structuredContent=payload,
         isError=False,
+    )
+
+
+def _mcp_result_too_large() -> CallToolResult:
+    payload = {"error": "mcp_result_too_large"}
+    return CallToolResult(
+        content=[TextContent(type="text", text='{"error":"mcp_result_too_large"}')],
+        structuredContent=payload,
+        isError=True,
     )
 
 
