@@ -1,0 +1,57 @@
+{
+  "run_id": "l4-a0-20261017T064432Z",
+  "inventory_scope": "Offline repository inspection only; no install, download, upgrade, or vulnerability scan performed.",
+  "python_manifests": [
+    {
+      "path": "requirements.txt",
+      "finding": "Ranges for requests, pandas, python-dotenv, FastAPI, uvicorn, httpx, pytest and responses; jsonschema constrained <5; MCP exact ==1.29.0.",
+      "status": "PARTIAL",
+      "next_tranche": "L4-A5"
+    },
+    {
+      "path": "requirements-lock.txt",
+      "finding": "Exact resolved graph documented for CPython 3.11.15 / Windows 11 x86_64 with platform markers.",
+      "status": "COVERED",
+      "next_tranche": null
+    },
+    {
+      "path": "requirements-browser-e2e.txt",
+      "finding": "Separate Playwright exact pin 1.55.0 and includes requirements.txt.",
+      "status": "COVERED",
+      "next_tranche": null
+    }
+  ],
+  "other_manifests": [],
+  "trust_surfaces": [
+    {
+      "surface": "MCP SDK",
+      "finding": "Runtime startup checks installed version equals 1.29.0.",
+      "evidence": [
+        "scripts/run_unified_market_evidence_mcp.py"
+      ]
+    },
+    {
+      "surface": "subprocess",
+      "finding": "Current Local Service and Unified execution use fixed Python/script commands; no generic provider plugin loader found in active unified path.",
+      "evidence": [
+        "scripts/tw_market_lifecycle.py",
+        "server/services/unified_mode_b2_execution.py"
+      ]
+    },
+    {
+      "surface": "runtime downloads",
+      "finding": "No download-at-runtime dependency bootstrap found in active runtime path; operator/install tooling documents explicit pip install.",
+      "evidence": [
+        "scripts/operator_workbench.py"
+      ]
+    },
+    {
+      "surface": "frontend",
+      "finding": "No package.json/package-lock/Dockerfile/compose manifest found in current repository scan; frontend assets are checked-in static files.",
+      "evidence": [
+        "frontend/unified-workbench"
+      ]
+    }
+  ],
+  "deferred_review": "L4-A5 should establish supported lock/install provenance, dependency update policy, executable inventory, and offline integrity validation. No online CVE scan or dependency modification in A0."
+}

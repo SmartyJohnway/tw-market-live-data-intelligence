@@ -2,7 +2,7 @@
 
 ## Current Phase L handoff (2026-10-17)
 
-L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6 remains PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven); its one-shot authority is consumed and a second run is prohibited. L4 and L4-A0 inventory are AUTHORIZED TO START. L4-A1+ and L5-L7 are NOT AUTHORIZED.
+L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6 remains PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven); its one-shot authority is consumed and a second run is prohibited. L4 is STARTED; L4-A0 is OWNER-ACCEPTED FOR MERGE under `L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`. L4-A1 is AUTHORIZED AFTER A0 MERGE; L4-A2+ and L5-L7 are NOT AUTHORIZED.
 
 Phase J and Phase K are **COMPLETE**; do not reopen their acceptance work. Phase K
 closed under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with no product

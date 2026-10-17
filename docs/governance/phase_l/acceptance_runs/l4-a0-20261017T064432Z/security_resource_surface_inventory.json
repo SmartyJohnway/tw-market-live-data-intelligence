@@ -1,0 +1,687 @@
+{
+  "authority": "USER_CHAT_2026-10-17_PHASE_L_L4_ENTRY_AND_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_AUTHORIZATION",
+  "run_id": "l4-a0-20261017T064432Z",
+  "base_head": "cd5883d0089f3baaa7d9fc41fedad906953cbb78",
+  "base_tree": "ffb176bd2f22babbce590dfddc8b0b19b596d95b",
+  "status_vocabulary": [
+    "COVERED",
+    "PARTIAL",
+    "GAP",
+    "DEFERRED_VALUE",
+    "NOT_APPLICABLE"
+  ],
+  "severity_vocabulary": [
+    "BLOCKER",
+    "HARDENING_REQUIRED",
+    "TEST_COVERAGE_GAP",
+    "DOCUMENTATION_GAP"
+  ],
+  "items": [
+    {
+      "boundary_id": "NET-001",
+      "category": "network_exposure",
+      "surface": "Unified Local Service HTTP listener",
+      "entrypoint": "scripts/run_unified_workbench.py::main; scripts/tw_market_lifecycle.py::_effective/_serve",
+      "authority_source_files": [
+        "scripts/run_unified_workbench.py",
+        "scripts/tw_market_lifecycle.py"
+      ],
+      "current_behavior": "Default 127.0.0.1:8000; CLI/env host and port precedence; host allow-list is 127.0.0.1, localhost, ::1; invalid non-loopback rejected before uvicorn.",
+      "current_bound": "port 1..65535; host allow-list",
+      "enforcement_location": "launcher argument validation and lifecycle _effective",
+      "bypass_or_failure_mode": "Direct alternate ASGI server invocation is outside launcher enforcement; local process can select a different server.",
+      "test_coverage": [
+        "tests for launcher host rejection",
+        "lifecycle endpoint tests"
+      ],
+      "status": "COVERED",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "NET-002",
+      "category": "network_exposure",
+      "surface": "HTTP endpoint surface and health/status",
+      "entrypoint": "server/main.py::app",
+      "authority_source_files": [
+        "server/main.py",
+        "server/unified_workbench_router.py"
+      ],
+      "current_behavior": "FastAPI exposes Unified routes plus retained legacy/read-only/status routes; /api/health is unauthenticated; CORS permits null and localhost/127.0.0.1 origins; it is intended to run on loopback through launcher.",
+      "current_bound": "No independent route-level remote caller authentication; exposure inherits listener bind.",
+      "enforcement_location": "listener host gate; CORS middleware is browser-origin control, not network access control",
+      "bypass_or_failure_mode": "Running app under an alternate ASGI host can expose routes; CORS does not prevent direct HTTP clients.",
+      "test_coverage": [
+        "local service API tests",
+        "launcher host tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A1"
+    },
+    {
+      "boundary_id": "NET-003",
+      "category": "network_exposure",
+      "surface": "Unified MCP transport",
+      "entrypoint": "scripts/run_unified_market_evidence_mcp.py; server/unified_mcp/server.py",
+      "authority_source_files": [
+        "scripts/run_unified_market_evidence_mcp.py",
+        "server/unified_mcp/server.py",
+        "server/unified_mcp/tool_contracts.py"
+      ],
+      "current_behavior": "MCP adapter uses stdio; delegates to fixed validated loopback URL; exact six static tools, no generic REST proxy; HTTP client disables redirects and trust_env.",
+      "current_bound": "6 tools; request 1 MiB; response 8 MiB; timeouts 15 sec and bounded action timeout 145 sec",
+      "enforcement_location": "tool snapshot schemas and UnifiedLocalServiceClient",
+      "bypass_or_failure_mode": "Host process controls stdio and configured service URL, which must pass loopback URL validation.",
+      "test_coverage": [
+        "tests/integration/test_m8r_08b_mcp_stdio_local_service.py",
+        "exact-six MCP validators"
+      ],
+      "status": "COVERED",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "NET-004",
+      "category": "network_exposure",
+      "surface": "Docker-facing bind/deployment",
+      "entrypoint": "No current Dockerfile or compose manifest found",
+      "authority_source_files": [
+        "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md"
+      ],
+      "current_behavior": "No active container listener configuration in current repository inventory; L0 carries Docker Local Service as portability target.",
+      "current_bound": "Not applicable to current checked-in runtime",
+      "enforcement_location": "No current container deployment layer",
+      "bypass_or_failure_mode": "Future container mapping can expose the service independently of in-process loopback bind.",
+      "test_coverage": [
+        "No current Docker deployment fixture"
+      ],
+      "status": "NOT_APPLICABLE",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "PATH-001",
+      "category": "filesystem_path",
+      "surface": "Persistent Watchlist SQLite authority",
+      "entrypoint": "scripts/m8r_09_persistent_watchlists.py::default_root/PersistentWatchlistStore",
+      "authority_source_files": [
+        "scripts/m8r_09_persistent_watchlists.py"
+      ],
+      "current_behavior": "Default repository data/watchlists; TW_MARKET_WATCHLIST_ROOT can select an arbitrary resolved root; store creates SQLite DB and writes transactionally.",
+      "current_bound": "32 watchlists; 500 entries per list; bounded names/tags/notes/import/depth",
+      "enforcement_location": "LIMITS and schema validation; SQLite transaction",
+      "bypass_or_failure_mode": "Configured root is an authority choice rather than a contained relative child; DB path reparse/symlink hardening is not equivalent to backup helper checks.",
+      "test_coverage": [
+        "tests/unit/test_m8r_09_persistent_watchlists.py"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A2"
+    },
+    {
+      "boundary_id": "PATH-002",
+      "category": "filesystem_path",
+      "surface": "Security Master pointer-selected runtime index",
+      "entrypoint": "scripts/m8r_06_01c2_mode_a_security_master_loader.py::_resolve_governed_path",
+      "authority_source_files": [
+        "scripts/m8r_06_01c2_mode_a_security_master_loader.py"
+      ],
+      "current_behavior": "Pointer paths must be relative and remain under repo/runtime identity-index roots after resolution; no arbitrary fallback when pointer is invalid.",
+      "current_bound": "Path must resolve under governed root",
+      "enforcement_location": "_resolve_governed_path and pointer/seal binding validation",
+      "bypass_or_failure_mode": "Filesystem race/reparse behavior warrants continued Windows review, but resolved containment is enforced.",
+      "test_coverage": [
+        "Security Master loader and pointer path tests"
+      ],
+      "status": "COVERED",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "PATH-003",
+      "category": "filesystem_path",
+      "surface": "Control package, Result/Audit materialization",
+      "entrypoint": "server/services/unified_mode_b2.py; server/services/unified_mode_c.py; scripts/m8r_filesystem_safety.py",
+      "authority_source_files": [
+        "server/services/unified_mode_b2.py",
+        "server/services/unified_mode_c.py",
+        "scripts/m8r_filesystem_safety.py"
+      ],
+      "current_behavior": "Server-owned control root; relative artifact path classification rejects traversal/absolute/UNC/device/ADS forms; safe_destination checks containment and symlink escape; writes use temp+fsync+replace or exclusive create.",
+      "current_bound": "Per-file containment; no global artifact-size ceiling found",
+      "enforcement_location": "safe_destination/atomic_write_text/atomic_create_text_exclusive",
+      "bypass_or_failure_mode": "Destination component races and aggregate disk use are not fully controlled by per-path containment.",
+      "test_coverage": [
+        "filesystem safety tests",
+        "Unified Mode B/C tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A2"
+    },
+    {
+      "boundary_id": "PATH-004",
+      "category": "filesystem_path",
+      "surface": "Backup/restore and migration paths",
+      "entrypoint": "server/services/unified_backup.py and retention/migration services",
+      "authority_source_files": [
+        "server/services/unified_backup.py",
+        "scripts/m8r_filesystem_safety.py"
+      ],
+      "current_behavior": "Backup root/member validation rejects symlink/reparse components, checks strict resolution and file membership; backup snapshot logic uses bounded/read-only SQLite handling.",
+      "current_bound": "Backup-specific resource ceilings and manifest member limits",
+      "enforcement_location": "_validate_roots/_contained_file and backup validators",
+      "bypass_or_failure_mode": "Coverage is specific to backup path types; does not establish common protections for Watchlist/config/log roots.",
+      "test_coverage": [
+        "backup manifest/path/reparse tests"
+      ],
+      "status": "COVERED",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "PATH-005",
+      "category": "filesystem_path",
+      "surface": "Config/log/temp and CLI path selection",
+      "entrypoint": "environment variables, CLI flags, operational diagnostics",
+      "authority_source_files": [
+        "server/operational_diagnostics.py",
+        "scripts/tw_market_lifecycle.py",
+        "scripts/operator_workbench.py"
+      ],
+      "current_behavior": "Several installation roots/log paths are configurable through environment/CLI; normalized/resolved individually; temp files use OS temp locations.",
+      "current_bound": "Per-feature validation varies",
+      "enforcement_location": "Each owning service/utility",
+      "bypass_or_failure_mode": "No single universal root; symlink/reparse and overwrite semantics are inconsistent across subsystems.",
+      "test_coverage": [
+        "feature-specific tests; no consolidated path matrix"
+      ],
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A2"
+    },
+    {
+      "boundary_id": "IN-001",
+      "category": "input_bounds",
+      "surface": "Unified HTTP request body",
+      "entrypoint": "server/unified_workbench_router.py POST handlers",
+      "authority_source_files": [
+        "server/unified_workbench_router.py"
+      ],
+      "current_behavior": "Handlers read request.body() then reject bodies above MAX_BODY_SIZE=1 MiB.",
+      "current_bound": "1 MiB checked after body materialization",
+      "enforcement_location": "validate/preview/authorization/execution/fetch/result-package handlers",
+      "bypass_or_failure_mode": "Application check limits accepted body but not pre-buffer memory consumed to read it; request decompression/server buffering interaction is not capped here.",
+      "test_coverage": [
+        "router oversize request tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "IN-002",
+      "category": "input_bounds",
+      "surface": "Unified target/operation count",
+      "entrypoint": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json and Mode A/B1",
+      "authority_source_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "server/services/unified_mode_a.py",
+        "server/services/unified_mode_b1.py"
+      ],
+      "current_behavior": "Catalog bounds default targets 10, hard targets 50, default operations 30, hard operations 100; validation/plan applies catalog limits.",
+      "current_bound": "10/50 targets and 30/100 operations",
+      "enforcement_location": "canonical catalog and request validation/planning",
+      "bypass_or_failure_mode": "Counts are contract limits; aggregate response/result bytes remain separately unbounded.",
+      "test_coverage": [
+        "test_m8_05a_f3 target/operation bound tests"
+      ],
+      "status": "COVERED",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "IN-003",
+      "category": "input_bounds",
+      "surface": "Watchlist mutation/import",
+      "entrypoint": "PersistentWatchlistStore",
+      "authority_source_files": [
+        "scripts/m8r_09_persistent_watchlists.py",
+        "docs/contracts/schemas/persistent_watchlist_mutation_command.v1.schema.json"
+      ],
+      "current_behavior": "Limits watchlists=32, entries=500, tags=20, tag length=64, notes=4096, name=120, import=1 MiB, JSON depth=20.",
+      "current_bound": "Explicit LIMITS values",
+      "enforcement_location": "preview/import validation and schema",
+      "bypass_or_failure_mode": "No global cap on cumulative SQLite file growth/history revisions identified.",
+      "test_coverage": [
+        "Watchlist resource-limit/schema tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "IN-004",
+      "category": "input_bounds",
+      "surface": "MCP tool argument schemas",
+      "entrypoint": "server/unified_mcp/tool_contracts.py",
+      "authority_source_files": [
+        "server/unified_mcp/tool_contracts.py",
+        "schemas/unified_market_evidence_request.v3.schema.json"
+      ],
+      "current_behavior": "Static exact-six tool schemas validate tool arguments; canonical request schema constrains contract fields and some string lengths.",
+      "current_bound": "Request body bytes capped by local client at 1 MiB; selected IDs constrained to 28 characters",
+      "enforcement_location": "ToolContractSnapshot and local client serialization",
+      "bypass_or_failure_mode": "No independent stdio frame/message byte cap observed before SDK parsing; untrusted caller can present pathological JSON volume to local MCP process.",
+      "test_coverage": [
+        "MCP contract and exact-six tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "IN-005",
+      "category": "input_bounds",
+      "surface": "Date/window/pagination/source batch parameters",
+      "entrypoint": "capability schemas and source-specific executors",
+      "authority_source_files": [
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "server/services/phase_h_h3_twse_stock_day_walker.py",
+        "server/services/phase_i_i2_production_candidate.py"
+      ],
+      "current_behavior": "Some capability fields, enumerations and source-specific walkers/batches are bounded; limits vary by source and capability.",
+      "current_bound": "Examples: H3 result schema maxItems=20; I2 batch targets max=50; capability catalog hard target limit=50",
+      "enforcement_location": "canonical request schemas and source adapters",
+      "bypass_or_failure_mode": "No single cross-capability date-window/page ceiling; user-facing limit provenance needs clearer consolidated inventory.",
+      "test_coverage": [
+        "capability-specific schema/adapter tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "OUT-001",
+      "category": "output_bounds",
+      "surface": "MCP request/response projection",
+      "entrypoint": "server/unified_mcp/local_service_client.py",
+      "authority_source_files": [
+        "server/unified_mcp/local_service_client.py"
+      ],
+      "current_behavior": "Client caps serialized requests at 1 MiB, streamed response at 8 MiB, uses fixed timeout and rejects redirects.",
+      "current_bound": "1 MiB request; 8 MiB response",
+      "enforcement_location": "_request byte length and streaming accumulator",
+      "bypass_or_failure_mode": "The FastAPI endpoint response may already be constructed in memory before client cap; client cap is not server-side serialization bound.",
+      "test_coverage": [
+        "MCP client oversized request/response tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "OUT-002",
+      "category": "output_bounds",
+      "surface": "Result/Audit row/schema limits",
+      "entrypoint": "Result/Audit v3 contracts and projectors",
+      "authority_source_files": [
+        "schemas/unified_market_evidence_result.v3.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json"
+      ],
+      "current_behavior": "Schemas constrain selected evidence collections/strings (including known maxItems values), and source adapters impose some response/row caps.",
+      "current_bound": "Per-schema/per-source; examples maxItems=50 and H3 rows=20",
+      "enforcement_location": "source adapter parsing plus Result/Audit schema validation",
+      "bypass_or_failure_mode": "No uniform total serialized Result/Audit or citation byte ceiling; schema validation does not itself cap process memory.",
+      "test_coverage": [
+        "V1/V3 schema contract tests and source parser tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "OUT-003",
+      "category": "output_bounds",
+      "surface": "AI handoff/export",
+      "entrypoint": "server/services/unified_mode_c.py::build_mode_c_ai_handoff; MCP _text_for_success",
+      "authority_source_files": [
+        "server/services/unified_mode_c.py",
+        "server/unified_mcp/server.py"
+      ],
+      "current_behavior": "Handoff deterministically projects Result/Audit/citations and text; no explicit handoff character/byte ceiling found; MCP response cap is downstream.",
+      "current_bound": "No independent handoff byte bound found",
+      "enforcement_location": "Projection only; transport client later enforces 8 MiB",
+      "bypass_or_failure_mode": "Large input/result can form large in-memory Markdown/JSON before transport rejection.",
+      "test_coverage": [
+        "handoff semantic/contract tests; no explicit size threshold"
+      ],
+      "status": "GAP",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "OUT-004",
+      "category": "output_bounds",
+      "surface": "Operational logs/diagnostics",
+      "entrypoint": "server/operational_diagnostics.py",
+      "authority_source_files": [
+        "server/operational_diagnostics.py"
+      ],
+      "current_behavior": "Strings truncate at 256 chars; event line 4096 bytes; event file limit 256 KiB; append is bounded and drops if full.",
+      "current_bound": "256 chars / 4 KiB per event / 256 KiB file",
+      "enforcement_location": "sanitize/event encoding/emit_jsonl",
+      "bypass_or_failure_mode": "File-level policy is for diagnostics only, not application artifacts.",
+      "test_coverage": [
+        "operational diagnostics bounded-write tests"
+      ],
+      "status": "COVERED",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "INJ-001",
+      "category": "prompt_tool_injection",
+      "surface": "Provider/source/evidence text entering Agent handoff",
+      "entrypoint": "Result citation projection and MCP tool responses",
+      "authority_source_files": [
+        "server/services/unified_mode_c.py",
+        "server/unified_mcp/server.py",
+        "server/unified_mcp/tool_contracts.py"
+      ],
+      "current_behavior": "Handoff marks source content as evidence, MCP server instructions explicitly say returned market/source content is data not instructions; fixed tool dispatcher offers no generic REST/execute proxy.",
+      "current_bound": "No universal evidence text length cap; output size is downstream capped at MCP client",
+      "enforcement_location": "static instructions, schema/provenance, fixed tool dispatch",
+      "bypass_or_failure_mode": "Downstream model may still interpret malicious quoted content as instructions; content-only cue is not a general sanitization or isolation boundary.",
+      "test_coverage": [
+        "MCP fixed tool and handoff contract tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A4"
+    },
+    {
+      "boundary_id": "INJ-002",
+      "category": "prompt_tool_injection",
+      "surface": "Agent/source content attempts control-plane change",
+      "entrypoint": "Unified schemas and fixed operation selection",
+      "authority_source_files": [
+        "server/unified_mcp/tool_contracts.py",
+        "server/services/unified_mode_b2.py",
+        "server/services/unified_mode_b2_execution.py"
+      ],
+      "current_behavior": "No tool lets source text select a route or mutate config; execution requires separately created server-owned authorization and explicit confirmation; privileged fields rejected.",
+      "current_bound": "Fixed six tools; one authorization/package execution flow",
+      "enforcement_location": "static tool contracts and Mode B2 confirmation/execute-once checks",
+      "bypass_or_failure_mode": "Trust in local process/operator remains an implicit authority boundary.",
+      "test_coverage": [
+        "privileged field rejection, confirmation, and execute-once tests"
+      ],
+      "status": "COVERED",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "AUTH-001",
+      "category": "authorization",
+      "surface": "Validate/preview/authorize/execute/fetch",
+      "entrypoint": "Unified endpoints and Mode B1/B2 execution",
+      "authority_source_files": [
+        "server/unified_workbench_router.py",
+        "server/services/unified_mode_b1.py",
+        "server/services/unified_mode_b2.py",
+        "server/services/unified_mode_b2_execution.py"
+      ],
+      "current_behavior": "Validation/preview are non-executing; authorization is server-owned, scoped, expiring and confirmation-bound; execution is fixed child protocol and execute-once; Fetch Evidence requires execution mode.",
+      "current_bound": "Authorization TTL max 900 seconds; child timeout max 130 seconds; one invocation semantics",
+      "enforcement_location": "Mode B2 authorization builder and execution service",
+      "bypass_or_failure_mode": "Local Service has no separate user authentication/OS principal authorization layer; local caller is trusted as operator.",
+      "test_coverage": [
+        "Mode B2 authorization/execute-once tests",
+        "MCP fetch mode tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A4"
+    },
+    {
+      "boundary_id": "AUTH-002",
+      "category": "authorization",
+      "surface": "Legacy/disabled acquisition endpoints",
+      "entrypoint": "server/main.py legacy probe and controlled-refresh routes",
+      "authority_source_files": [
+        "server/main.py"
+      ],
+      "current_behavior": "Legacy probe surface is explicitly disabled/pending governance; read-only source-health endpoints project local files.",
+      "current_bound": "Disabled routes reject execution",
+      "enforcement_location": "route-level disabled flags and no production probe imports in app bootstrap",
+      "bypass_or_failure_mode": "Legacy route surface increases maintenance ambiguity; actual route map should remain tested against inactive state.",
+      "test_coverage": [
+        "server route tests and policy validators"
+      ],
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A4"
+    },
+    {
+      "boundary_id": "SEC-001",
+      "category": "secret_handling",
+      "surface": "Provider/broker credentials",
+      "entrypoint": "Current source/runtime inventory",
+      "authority_source_files": [
+        "server/main.py",
+        "requirements.txt",
+        "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md"
+      ],
+      "current_behavior": "Current accepted market-source routes use public/official data; no broker credential, trading credential, or order path is part of product boundary.",
+      "current_bound": "Not applicable to current product flow",
+      "enforcement_location": "No broker credential subsystem/secret reader in current A0 runtime surface",
+      "bypass_or_failure_mode": "Future authenticated provider work would add a new secret boundary and must be separately authorized.",
+      "test_coverage": [
+        "MCP six-tool and product boundary checks"
+      ],
+      "status": "NOT_APPLICABLE",
+      "recommended_next_tranche": null
+    },
+    {
+      "boundary_id": "SEC-002",
+      "category": "secret_handling",
+      "surface": "Environment/configuration and diagnostic output",
+      "entrypoint": "configuration/environment readers and operational diagnostics",
+      "authority_source_files": [
+        "scripts/tw_market_lifecycle.py",
+        "server/operational_diagnostics.py",
+        "scripts/m8r_09_persistent_watchlists.py"
+      ],
+      "current_behavior": "Environment variables currently select local roots, host/port, service URL and diagnostic path; diagnostics sanitize/truncate fields and do not intentionally export credentials.",
+      "current_bound": "Diagnostic values 256 chars/event 4 KiB/file 256 KiB",
+      "enforcement_location": "diagnostics allowlist/sanitizer and local config readers",
+      "bypass_or_failure_mode": "No centralized secret classification/redaction test across all exception/config paths.",
+      "test_coverage": [
+        "operational diagnostics tests; no exhaustive secret canary matrix"
+      ],
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A4"
+    },
+    {
+      "boundary_id": "DEP-001",
+      "category": "dependency_supply_chain",
+      "surface": "Python dependency declarations",
+      "entrypoint": "requirements.txt / requirements-lock.txt / requirements-browser-e2e.txt",
+      "authority_source_files": [
+        "requirements.txt",
+        "requirements-lock.txt",
+        "requirements-browser-e2e.txt"
+      ],
+      "current_behavior": "Top-level requirements use ranges for common packages and exact mcp==1.29.0; lock file records an exact CPython/Windows-tested graph; browser E2E has a separately pinned Playwright extra.",
+      "current_bound": "Exact lock supplied; application requirements are not all exact pins",
+      "enforcement_location": "install docs/lock file and runtime MCP version check",
+      "bypass_or_failure_mode": "No offline A0 provenance/signature or vulnerability assessment; range-based install can vary if lock is not used.",
+      "test_coverage": [
+        "runtime compatibility/exact-six validators"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A5"
+    },
+    {
+      "boundary_id": "DEP-002",
+      "category": "dependency_supply_chain",
+      "surface": "Dynamic loading/subprocess/external executables",
+      "entrypoint": "Fixed imports and explicit CLI/service child processes",
+      "authority_source_files": [
+        "server/services/unified_mode_b2_execution.py",
+        "scripts/tw_market_lifecycle.py",
+        "scripts/operator_workbench.py"
+      ],
+      "current_behavior": "No generic plugin loader identified in current Unified MCP path; subprocess calls use fixed scripts/executables and bounded timeouts in reviewed paths; operator workbench checks installed tools.",
+      "current_bound": "Feature-specific executable and timeout checks",
+      "enforcement_location": "fixed command construction and subprocess.run/Popen call sites",
+      "bypass_or_failure_mode": "Repository has broad historical scripts with subprocess use; inventory is scoped to current product paths, and dependency/executable allowlisting is not centralized.",
+      "test_coverage": [
+        "launch-contract and controlled execution tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A5"
+    },
+    {
+      "boundary_id": "RES-001",
+      "category": "resource",
+      "surface": "Source/request timeouts",
+      "entrypoint": "provider adapters and LocalServiceClient",
+      "authority_source_files": [
+        "server/unified_mcp/local_service_client.py",
+        "server/services/phase_i_i1_production_candidate.py",
+        "server/services/phase_h_h1_tpex_composite.py",
+        "server/services/phase_i_i2_production_transport.py",
+        "server/services/phase_i_i3_production_transport.py"
+      ],
+      "current_behavior": "Timeouts are enforced at multiple transport calls; examples local client 15s/action 145s, I1 15s, H1 60s, I2/I3 30s; Mode B child max 130s.",
+      "current_bound": "Source-specific, not one global timeout",
+      "enforcement_location": "actual HTTP transport boundary and child subprocess timeout",
+      "bypass_or_failure_mode": "No whole-request/global deadline covers every HTTP route and serialization work.",
+      "test_coverage": [
+        "source-specific bounded transport tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A6"
+    },
+    {
+      "boundary_id": "RES-002",
+      "category": "resource",
+      "surface": "Memory/disk ceilings",
+      "entrypoint": "server/operational_diagnostics.py and persistent data writers",
+      "authority_source_files": [
+        "server/operational_diagnostics.py",
+        "server/services/unified_mode_c.py",
+        "scripts/m8r_09_persistent_watchlists.py"
+      ],
+      "current_behavior": "L1 captures process memory/disk-free telemetry; diagnostic file is capped; application Result/Audit/Watchlist aggregate storage has no common disk-free threshold or retention cap at each write boundary.",
+      "current_bound": "Telemetry only plus 256 KiB diagnostic file",
+      "enforcement_location": "operational diagnostics observation; no enforcement for app data",
+      "bypass_or_failure_mode": "Disk-near-full or memory pressure may cause failed/partial writes or process exhaustion.",
+      "test_coverage": [
+        "telemetry bounded snapshot tests; no safe disk/memory enforcement tests"
+      ],
+      "status": "DEFERRED_VALUE",
+      "recommended_next_tranche": "L4-A6"
+    },
+    {
+      "boundary_id": "RES-003",
+      "category": "resource",
+      "surface": "Concurrent local requests",
+      "entrypoint": "Uvicorn/FastAPI request handling",
+      "authority_source_files": [
+        "scripts/run_unified_workbench.py",
+        "server/main.py"
+      ],
+      "current_behavior": "No explicit app-level semaphore/concurrency ceiling identified; request concurrency follows server/runtime defaults.",
+      "current_bound": "No configured hard cap",
+      "enforcement_location": "No explicit product-level control",
+      "bypass_or_failure_mode": "Concurrent expensive calls may multiply source, memory, subprocess, and serialization consumption.",
+      "test_coverage": [
+        "No bounded concurrent-call acceptance matrix"
+      ],
+      "status": "GAP",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A6"
+    },
+    {
+      "boundary_id": "LOAD-001",
+      "category": "large_input_load",
+      "surface": "Large Watchlist and multi-target",
+      "entrypoint": "Watchlist store and Unified planner",
+      "authority_source_files": [
+        "scripts/m8r_09_persistent_watchlists.py",
+        "server/services/unified_mode_a.py",
+        "server/services/unified_mode_b1.py"
+      ],
+      "current_behavior": "Watchlist limit 500 entries/list and 32 lists; Unified catalog hard cap 50 targets/100 operations; no aggregate cost model across capabilities.",
+      "current_bound": "Feature-specific item counts",
+      "enforcement_location": "Watchlist LIMITS and capability catalog validation",
+      "bypass_or_failure_mode": "Maximum dimensions can multiply operations and response volume; accepted numbers are not empirical performance ceilings.",
+      "test_coverage": [
+        "limit unit tests; limited representative deterministic load fixtures"
+      ],
+      "status": "PARTIAL",
+      "severity": "TEST_COVERAGE_GAP",
+      "recommended_next_tranche": "L4-A6"
+    },
+    {
+      "boundary_id": "LOAD-002",
+      "category": "large_input_load",
+      "surface": "Large disclosure/evidence result",
+      "entrypoint": "source adapters, result projectors and schemas",
+      "authority_source_files": [
+        "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "current_behavior": "Some source schemas constrain rows (e.g. disclosure maxItems 50) and adapters impose family-specific response limits; aggregate evidence result and citation projection lacks one global byte cap.",
+      "current_bound": "Per-source/per-schema only",
+      "enforcement_location": "source validators/projectors",
+      "bypass_or_failure_mode": "Many valid per-source result rows can create a larger aggregate package/handoff.",
+      "test_coverage": [
+        "source schema and result projection tests"
+      ],
+      "status": "PARTIAL",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "LOAD-003",
+      "category": "large_input_load",
+      "surface": "Long AI handoff",
+      "entrypoint": "build_mode_c_ai_handoff and MCP text response",
+      "authority_source_files": [
+        "server/services/unified_mode_c.py",
+        "server/unified_mcp/server.py"
+      ],
+      "current_behavior": "Handoff generated from full canonical result plus markdown; transport client later caps response at 8 MiB; producer-side generation has no independent size ceiling.",
+      "current_bound": "Downstream MCP cap only",
+      "enforcement_location": "client stream accumulation after server response generation",
+      "bypass_or_failure_mode": "Server can allocate a large handoff before client rejects it.",
+      "test_coverage": [
+        "handoff semantics tests; no size-bound matrix"
+      ],
+      "status": "GAP",
+      "severity": "HARDENING_REQUIRED",
+      "recommended_next_tranche": "L4-A3"
+    },
+    {
+      "boundary_id": "LOAD-004",
+      "category": "large_input_load",
+      "surface": "Concurrent and pathological runtime pressure",
+      "entrypoint": "Local Service worker/runtime and persistent storage",
+      "authority_source_files": [
+        "server/main.py",
+        "scripts/run_unified_workbench.py",
+        "server/operational_diagnostics.py"
+      ],
+      "current_behavior": "Telemetry can observe process memory and disk free; no app-level concurrency semaphore, process memory kill threshold or disk admission threshold identified.",
+      "current_bound": "No enforcement; L0 numeric ceiling deferred",
+      "enforcement_location": "Telemetry only",
+      "bypass_or_failure_mode": "Many simultaneous requests or low-disk state can exceed installation capacity.",
+      "test_coverage": [
+        "No destructive stress test; synthetic acceptance deferred"
+      ],
+      "status": "DEFERRED_VALUE",
+      "recommended_next_tranche": "L4-A6"
+    }
+  ]
+}

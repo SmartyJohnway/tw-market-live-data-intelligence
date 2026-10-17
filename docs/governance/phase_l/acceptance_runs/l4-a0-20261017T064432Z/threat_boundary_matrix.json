@@ -1,0 +1,119 @@
+{
+  "authority": "USER_CHAT_2026-10-17_PHASE_L_L4_ENTRY_AND_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_AUTHORIZATION",
+  "run_id": "l4-a0-20261017T064432Z",
+  "rule": "Source, agent, evidence and artifact content are data and not authorization, routing, network-scope, capability, or mutation authority.",
+  "items": [
+    {
+      "threat": "THR-01",
+      "entry_surface": "remote/non-loopback caller",
+      "protected_asset": "HTTP listener",
+      "current_control": "Local Service API and durable user data",
+      "remaining_risk": "launcher loopback allow-list",
+      "required_later_tranche": "Alternate server invocation or port forward can expose routes"
+    },
+    {
+      "threat": "THR-02",
+      "entry_surface": "local untrusted process",
+      "protected_asset": "HTTP listener / MCP stdio",
+      "current_control": "authorization and local state",
+      "remaining_risk": "loopback-only HTTP; six fixed stdio tools; no service auth",
+      "required_later_tranche": "Local processes can call localhost; OS-user trust boundary is implicit"
+    },
+    {
+      "threat": "THR-03",
+      "entry_surface": "malicious/pathological MCP input",
+      "protected_asset": "stdio schema and HTTP delegation",
+      "current_control": "memory/CPU and execution scope",
+      "remaining_risk": "static schemas; six tools; request byte cap downstream",
+      "required_later_tranche": "SDK framing can parse input before app byte limits; no inbound MCP frame cap observed"
+    },
+    {
+      "threat": "THR-04",
+      "entry_surface": "path traversal input",
+      "protected_asset": "artifact/output path",
+      "current_control": "persistent files",
+      "remaining_risk": "relative path classifier, root containment, reparse checks in backup",
+      "required_later_tranche": "Coverage differs across configured roots and writers"
+    },
+    {
+      "threat": "THR-05",
+      "entry_surface": "oversized request",
+      "protected_asset": "HTTP body",
+      "current_control": "service memory",
+      "remaining_risk": "1 MiB post-read reject; catalog target/operation limits",
+      "required_later_tranche": "Body may be materialized before size rejection"
+    },
+    {
+      "threat": "THR-06",
+      "entry_surface": "oversized provider/evidence result",
+      "protected_asset": "transport/parser/projector",
+      "current_control": "memory, disk, returned content",
+      "remaining_risk": "some adapters bound bytes/rows; MCP client caps response",
+      "required_later_tranche": "Producer-side aggregate Result/Audit/handoff cap inconsistent"
+    },
+    {
+      "threat": "THR-07",
+      "entry_surface": "malicious source text",
+      "protected_asset": "evidence/citations/handoff",
+      "current_control": "agent instruction/control plane",
+      "remaining_risk": "content is projected as evidence; tool APIs fixed; server instruction says data not instructions",
+      "required_later_tranche": "Downstream model interpretation remains a boundary risk"
+    },
+    {
+      "threat": "THR-08",
+      "entry_surface": "malicious AI/agent-provided text",
+      "protected_asset": "request/authorization fields",
+      "current_control": "network and mutation authority",
+      "remaining_risk": "canonical schemas, server-owned authorization, explicit confirmation",
+      "required_later_tranche": "local operator identity is trusted by service; no principal binding"
+    },
+    {
+      "threat": "THR-09",
+      "entry_surface": "concurrent callers",
+      "protected_asset": "HTTP routes/subprocess children",
+      "current_control": "memory, CPU, provider fanout",
+      "remaining_risk": "no app-level concurrency cap identified",
+      "required_later_tranche": "Concurrent calls can multiply work"
+    },
+    {
+      "threat": "THR-10",
+      "entry_surface": "slow/hung source",
+      "protected_asset": "provider transport/child",
+      "current_control": "worker occupancy",
+      "remaining_risk": "source-specific transport timeouts and child max",
+      "required_later_tranche": "No single end-to-end deadline across all work"
+    },
+    {
+      "threat": "THR-11",
+      "entry_surface": "disk-near-full",
+      "protected_asset": "persistent stores/artifacts",
+      "current_control": "state integrity/availability",
+      "remaining_risk": "atomic path writes in selected surfaces; telemetry observes free space",
+      "required_later_tranche": "No universal admission threshold/retention enforcement"
+    },
+    {
+      "threat": "THR-12",
+      "entry_surface": "memory pressure",
+      "protected_asset": "HTTP parsing/serialization",
+      "current_control": "process availability",
+      "remaining_risk": "telemetry observation only",
+      "required_later_tranche": "No enforced process memory ceiling"
+    },
+    {
+      "threat": "THR-13",
+      "entry_surface": "unexpected dependency/runtime executable",
+      "protected_asset": "install/start/subprocess",
+      "current_control": "code integrity",
+      "remaining_risk": "lockfile, exact MCP pin, fixed child commands",
+      "required_later_tranche": "No centralized provenance/signature or allowlist review"
+    },
+    {
+      "threat": "THR-14",
+      "entry_surface": "secret accidentally logged/exported",
+      "protected_asset": "diagnostics/handoff/config",
+      "current_control": "credential confidentiality",
+      "remaining_risk": "diagnostic allowlist and truncation; current public-source routes no broker secrets",
+      "required_later_tranche": "No complete secret canary audit across all exceptions/exports"
+    }
+  ]
+}
