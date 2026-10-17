@@ -271,5 +271,3 @@ def test_mode_b2_disk_admission_precedes_control_artifact_publication(monkeypatc
     with pytest.raises(unified_mode_b2.ModeB2Error, match=rb.RESOURCE_DISK_REASON):
         unified_mode_b2._write_control_package(tmp_path, package)
     assert not list((tmp_path / "control").glob("*.json"))
-
-
