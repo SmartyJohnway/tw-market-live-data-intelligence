@@ -1,0 +1,21 @@
+{
+  "A5_owner_acceptance": "PENDING",
+  "DEP-001": "COVERED",
+  "DEP-002": "COVERED",
+  "active_subprocess_inventory": "PASS",
+  "browser_e2e_inherits_core_lock": true,
+  "caller_selectable_executables": 0,
+  "core_install_authority": "REQUIREMENTS_LOCK",
+  "disposition": "L4_A5_DEPENDENCY_SUPPLY_CHAIN_HARDENING_PASS",
+  "external_network_attempts": 0,
+  "external_socket_attempts": 0,
+  "manifest_contract": "PASS",
+  "normalized_integrated_gate": "223 passed, 1 skipped, 0 failed",
+  "online_vulnerability_currentness": "NOT_EVALUATED_IN_L4_A5",
+  "package_artifact_cryptographic_provenance": "NOT_CLAIMED_IN_L4_A5",
+  "provider_requests": 0,
+  "runtime_install_download": 0,
+  "schema": "phase_l_l4_a5_preflight.v1",
+  "shell_true_active": 0,
+  "validators": "PASS"
+}

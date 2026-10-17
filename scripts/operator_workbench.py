@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from scripts.ssl_policy import platform_ssl_diagnostics, resolve_ssl_policy
+from scripts.verify_environment import SUPPORTED as SUPPORTED_PYTHON
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 M5F_DIR = REPO_ROOT / "research/staging/m5f/m5f_canonical_market_context_01"
@@ -52,8 +53,15 @@ def load_json(path: Path) -> dict[str, Any] | None:
 
 
 def git_value(args: list[str], default: str = "unknown") -> str:
+    allowed = {
+        ("branch", "--show-current"),
+        ("rev-parse", "--short", "HEAD"),
+    }
+    operation = tuple(args)
+    if operation not in allowed:
+        return default
     try:
-        return subprocess.check_output(["git", *args], cwd=REPO_ROOT, text=True, stderr=subprocess.DEVNULL).strip() or default
+        return subprocess.check_output(["git", *operation], cwd=REPO_ROOT, text=True, stderr=subprocess.DEVNULL, timeout=3).strip() or default
     except Exception:
         return default
 
@@ -98,8 +106,9 @@ def latest_artifact_time(path: Path) -> str:
 
 def environment_checks() -> list[Check]:
     checks: list[Check] = []
-    py_ok = sys.version_info >= (3, 10)
-    checks.append(Check("Python version", "PASS" if py_ok else "FAIL", platform.python_version(), "Use Python 3.10 or newer."))
+    py_ok = sys.version_info[:2] in SUPPORTED_PYTHON
+    supported_text = " or ".join(f"CPython {major}.{minor}" for major, minor in sorted(SUPPORTED_PYTHON))
+    checks.append(Check("Python version", "PASS" if py_ok else "FAIL", platform.python_version(), f"Use {supported_text}."))
     ssl_diag = platform_ssl_diagnostics()
     checks.append(Check("OS platform", "PASS", ssl_diag["os_platform"]))
     checks.append(Check("Python 3.13 detection", "CAVEAT" if ssl_diag["python_313_detected"] else "PASS", str(ssl_diag["python_313_detected"]), ssl_diag["operator_hint"] if ssl_diag["python_313_detected"] and ssl_diag["windows_detected"] else ""))
@@ -110,8 +119,8 @@ def environment_checks() -> list[Check]:
     checks.append(Check("Virtual environment", "PASS" if sys.prefix != sys.base_prefix or os.environ.get("VIRTUAL_ENV") else "CAVEAT", os.environ.get("VIRTUAL_ENV") or "not detected", "Create and activate a virtual environment if dependency imports fail."))
     required = ["fastapi", "pytest", "pydantic"]
     missing = [pkg for pkg in required if importlib.util.find_spec(pkg) is None]
-    checks.append(Check("Installed dependencies", "PASS" if not missing else "FAIL", "available" if not missing else "missing: " + ", ".join(missing), "Run: python -m pip install -r requirements.txt"))
-    checks.append(Check("FastAPI import", "PASS" if importlib.util.find_spec("fastapi") else "FAIL", "fastapi importable" if importlib.util.find_spec("fastapi") else "fastapi unavailable", "Run: python -m pip install -r requirements.txt"))
+    checks.append(Check("Installed dependencies", "PASS" if not missing else "FAIL", "available" if not missing else "missing: " + ", ".join(missing), "Run: python -m pip install -r requirements-lock.txt"))
+    checks.append(Check("FastAPI import", "PASS" if importlib.util.find_spec("fastapi") else "FAIL", "fastapi importable" if importlib.util.find_spec("fastapi") else "fastapi unavailable", "Run: python -m pip install -r requirements-lock.txt"))
     for label, path, suggestion in [
         ("M5F package", M5F_DIR / "canonical_market_context.json", "Run the M5F validator against research/staging/m5f/m5f_canonical_market_context_01."),
         ("Latest observation", OBS_PATH, "Observation not found. Suggested command: python scripts/run_m5k_live_observation.py --watchlist config/m5k_default_watchlist.json --execute-live-observation"),
@@ -138,7 +147,7 @@ def status_report() -> dict[str, Any]:
         action = "Run source-health probe if preparing release diagnostics."
     else:
         action = "Conversation package already available; review it and send to ChatGPT."
-    return {"repository": repository_version(), "watchlist": watchlist_symbols(), "ssl_diagnostics": platform_ssl_diagnostics(), "checks": checks, "latest_observation": latest_artifact_time(OBS_PATH) if obs_exists else "missing", "latest_source_health": latest_artifact_time(SOURCE_HEALTH_JSON) if SOURCE_HEALTH_JSON.exists() else file_summary(SOURCE_HEALTH_MD), "latest_conversation_package": file_summary(CONVERSATION_DIR / "conversation_context.md"), "fastapi_command": "uvicorn server.main:app --host 127.0.0.1 --port 8000", "frontend_location": rel(FRONTEND_WORKBENCH), "mcp_command": "python server/mcp_server.py --startup-check", "recommended_next_action": action}
+    return {"repository": repository_version(), "watchlist": watchlist_symbols(), "ssl_diagnostics": platform_ssl_diagnostics(), "checks": checks, "latest_observation": latest_artifact_time(OBS_PATH) if obs_exists else "missing", "latest_source_health": latest_artifact_time(SOURCE_HEALTH_JSON) if SOURCE_HEALTH_JSON.exists() else file_summary(SOURCE_HEALTH_MD), "latest_conversation_package": file_summary(CONVERSATION_DIR / "conversation_context.md"), "fastapi_command": "uvicorn server.main:app --host 127.0.0.1 --port 8000", "frontend_location": rel(FRONTEND_WORKBENCH), "mcp_command": "python scripts/run_unified_market_evidence_mcp.py --startup-check", "recommended_next_action": action}
 
 
 def print_dashboard(report: dict[str, Any]) -> None:

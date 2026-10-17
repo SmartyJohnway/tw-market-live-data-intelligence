@@ -1,0 +1,53 @@
+{
+  "artifact_count": 9,
+  "artifacts": [
+    {
+      "bytes": 5500,
+      "path": "active_executable_inventory.json",
+      "sha256": "d60174f72a0b7663e6180ac3f171f013b782311bc2c6657197f2d6f97ad62191"
+    },
+    {
+      "bytes": 860,
+      "path": "dependency_authority_contract.json",
+      "sha256": "9d7b6bd11cf46aededf7a404027f34f8e28115ffd9450490523e7db8c0233c47"
+    },
+    {
+      "bytes": 1185,
+      "path": "dependency_manifest_integrity_matrix.json",
+      "sha256": "41570044f57eec3a22d6ee5377bf0ad8f754982876ae56602fe329d82d6ff1e7"
+    },
+    {
+      "bytes": 538,
+      "path": "dependency_update_policy.json",
+      "sha256": "6deedf6f1f347a2da0922789b81f6cef7a5890d83feb47be5bede2ef79e650e8"
+    },
+    {
+      "bytes": 7168,
+      "path": "install_guidance_matrix.json",
+      "sha256": "a8c0a8973bb347e806180007a8450864e33e403a0e20989b78602a5ea3af1f75"
+    },
+    {
+      "bytes": 3247,
+      "path": "offline_review.json",
+      "sha256": "7031939f24ebcf8e2f672c2e8ab7740ba2a74df88507abb0d13d5478a428216e"
+    },
+    {
+      "bytes": 794,
+      "path": "preflight_result.json",
+      "sha256": "249e3b7a89532b989a5ba4ae0f4154876a3dd8f8b4ae4cf666bd00d5146bce32"
+    },
+    {
+      "bytes": 3723,
+      "path": "subprocess_trust_matrix.json",
+      "sha256": "d02649b29c4146e54ffaa79d15d299880272412415c7475c83046e6de68ee1b0"
+    },
+    {
+      "bytes": 1119,
+      "path": "supply_chain_residual_matrix.json",
+      "sha256": "a887cb408dabe1fafc3b232474f4f4d46f7e548b9a99885a8b9898c838a8d196"
+    }
+  ],
+  "canonical_sha256": "05dd8d9fc74f736c3418c3e601c4ac801bd25238f25026e91d7713d8d0f28db1",
+  "run_id": "l4-a5-20261017T115256Z",
+  "schema": "phase_l_l4_a5_manifest.v1"
+}

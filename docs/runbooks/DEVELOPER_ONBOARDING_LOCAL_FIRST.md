@@ -1,6 +1,13 @@
 # Developer Onboarding: Local-First
 
-Assumptions: Python 3.10+, dependencies installed, and no credentials committed.
+Assumptions: supported CPython 3.11 or 3.13, dependencies installed from the
+repository lock, and no credentials committed.
+
+Install the supported core graph in a disposable virtual environment:
+
+```bash
+python -m pip install -r requirements-lock.txt
+```
 
 Safe commands: `python -m compileall scripts tests`, `pytest -m "not network"`, `python scripts/run_local_delivery_acceptance.py --check-only`.
 
