@@ -2,13 +2,7 @@
 
 ## Current Phase L boundary (2026-10-17)
 
-L3-A0 through A5 are Owner-accepted and merged. L3-A6 is Owner-accepted for
-merge under `L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_OWNER_ACCEPTED_FOR_MERGE`;
-its technical live disposition is `PARTIAL` (17 transport-degraded logical
-sources, six HTTP-200 sources, and zero deterministic contract drift proven).
-The one-shot A6 authority is consumed and a second live run is prohibited.
-L3-A7 technical exit review is authorized but not yet complete. L3 remains
-STARTED / NOT CLOSED; L4-L7 are NOT STARTED / NOT AUTHORIZED.
+L3-A0 through A6 are Owner-accepted and merged. L3-A7 technical exit review is `PHASE_L_L3_EXIT_REVIEW_PASS`. L3 is TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED; Owner final closure is PENDING. A6 technical live disposition remains PARTIAL (17 transport-degraded logical sources, six HTTP-200 sources, zero deterministic contract drift proven); the one-shot authority is consumed and a second A6 run is prohibited. L4-L7 are NOT STARTED / NOT AUTHORIZED.
 
 Roadmap Phase J and Phase K are **COMPLETE**. Phase K closed under
 `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with three evaluated hosts, two
@@ -99,7 +93,7 @@ exception boundary without changing production runtime. Reviewer verification
 reconciled the direct missing-required-field matrix so P08/P09/P10 are each
 covered. It is Owner-accepted under
 `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE` and merged through PR #363 at
-`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 deterministic contract and A6 bounded live recertification are complete. A6 is Owner-accepted for merge with technical disposition PARTIAL; 17 sources were transport-degraded, six returned HTTP 200, and zero deterministic contract drift was proven. The one-shot authority is consumed and a second run is prohibited. A7 technical exit review is AUTHORIZED / NOT YET COMPLETE; L3 is STARTED / NOT CLOSED; L4-L7 are NOT STARTED / NOT AUTHORIZED. See
+`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 deterministic contract and A6 bounded live recertification are complete. A6 is Owner-accepted and merged with technical disposition PARTIAL; 17 sources were transport-degraded, six returned HTTP 200, and zero deterministic contract drift was proven. The one-shot authority is consumed and a second run is prohibited. A7 technical exit review passed under `PHASE_L_L3_EXIT_REVIEW_PASS`; L3 is TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED and Owner final closure is PENDING; L4-L7 are NOT STARTED / NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_2026-10-15.md`.
 See `docs/governance/phase_l/PHASE_L_L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_2026-10-15.md`.
 See also
@@ -161,7 +155,7 @@ L3-A3 passed independent technical review, is Owner-accepted under
 PR #361 at `ddd023f11a23420c096a5b20022848cfcf900db9`. A4 passed independent technical review under
 `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under
 `L3_A4_H1_COMPOSITE_NEGATIVE_FIXTURE_MATRIX_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #363 at
-`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 live recertification is recorded in A6. A6 is Owner-accepted for merge with technical disposition PARTIAL. A7 technical exit review is authorized / not yet complete; L3 remains started / not closed; L4-L7 remain not started / not authorized.
+`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 live recertification is recorded in A6. A6 is Owner-accepted and merged with technical disposition PARTIAL. A7 technical exit review is `PHASE_L_L3_EXIT_REVIEW_PASS`; L3 is technical exit pass / not yet Owner-closed; Owner final closure is pending; L4-L7 remain not started / not authorized.
 
 ## Current I3 production boundary (2026-10-05)
 

@@ -6,7 +6,7 @@
 **L0:** FROZEN under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
-**L3:** STARTED / NOT CLOSED; A0-A5 Owner-accepted and merged through PRs #355/#357/#359/#361/#363/#365; A6 Owner-accepted for merge with technical disposition PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven); one-shot authority consumed, second run prohibited; A7 technical exit review AUTHORIZED / NOT YET COMPLETE; L4-L7 NOT STARTED / NOT AUTHORIZED
+**L3:** TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED; A0-A6 Owner-accepted and merged (A0-A5 PRs #355/#357/#359/#361/#363/#365; A6 PR #367); A6 technical live disposition PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven), one-shot authority consumed, second run prohibited; A7 `PHASE_L_L3_EXIT_REVIEW_PASS`; Owner final closure PENDING; L4-L7 NOT STARTED / NOT AUTHORIZED
 **L4-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -91,7 +91,7 @@ L1 does not add a final product `init` command. L0 still requires Phase L eventu
 ## 5. Remaining Phase L boundaries
 
 - L2 Replay / Retention / Migration: CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`.
-- L3 Source Drift Hardening: STARTED / NOT CLOSED. A0-A5 are Owner-accepted and merged through PRs #355/#357/#359/#361/#363/#365. A6 is Owner-accepted for merge with technical disposition PARTIAL: 17 transport-degraded logical sources, six HTTP-200 sources, and zero deterministic contract drift proven. The one-shot authority is consumed and a second run is prohibited. A7 technical exit review is AUTHORIZED / NOT YET COMPLETE. L4-L7 are NOT STARTED / NOT AUTHORIZED.
+- L3 Source Drift Hardening: TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED. A0-A6 are Owner-accepted and merged (A6 PR #367). A6 technical disposition is PARTIAL: 17 transport-degraded logical sources, six HTTP-200 sources, and zero deterministic contract drift proven; its one-shot authority is consumed and a second run is prohibited. A7 passed under `PHASE_L_L3_EXIT_REVIEW_PASS`; Owner final closure is PENDING. L4-L7 are NOT STARTED / NOT AUTHORIZED.
 - L4 Security & Resource Boundaries: localhost/path/input/output/load/concurrency/large-result limits.
 - L5 Extension Architecture: minimum evidence-family extension contract; no new family merely to prove it.
 - L6 Packaging & Portability: Native Windows + Docker Local Service, fresh install, P1-P6 portability, final state/config mapping and product `init` integration.
@@ -102,7 +102,7 @@ These boundaries must be started explicitly and must not be collapsed into one b
 
 Current technical state:
 
-`L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` (technical review `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`; merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`; G05 live recertification required)
+`L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` (technical review `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`; merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`; G05 live recertification was required at that checkpoint and was subsequently performed under A6)
 
 L2 is CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` through
 PR #353, with PR #354 reconciliation at `3b8f1532fac1a2d2366d0d38254ebd4a7a7c6b55`.
@@ -118,12 +118,12 @@ performed in A0 or A1. See `PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-
 and `PHASE_L_L3_A1_TWSE_MIS_RESPONSE_CONTRACT_GUARD_2026-10-15.md`.
 
 Frozen L0 sequencing controls current L3 Source Drift Hardening; old Roadmap
-subject subsection numbers remain unchanged. A0-A5 are Owner-accepted and merged.
+subject subsection numbers remain unchanged. A0-A6 are Owner-accepted and merged.
 L3-A5 deterministic G05 observation/adjudication is Owner-accepted and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`;
-A6 bounded live recertification is recorded as PARTIAL. A7 technical exit review is authorized / pending; L3 remains started / not closed; L4-L7 remain not started / not authorized.
+A6 bounded live recertification is recorded as PARTIAL and Owner-accepted/merged. A7 passed under `PHASE_L_L3_EXIT_REVIEW_PASS`; L3 is technical exit pass / not yet Owner-closed and final Owner closure is pending. L4-L7 remain not started / not authorized.
 
 A concise future-conversation instruction is sufficient:
 
-> Recover current main and read the frozen L0 contract, L3-A0 inventory, A1-A6 acceptance/governance records, and current recovery index. A0-A6 are Owner-accepted; A0-A5 are merged and A6 is accepted for merge with technical disposition PARTIAL. A6 authority is consumed; do not repeat live acquisition. A7 technical exit review is authorized but must not perform provider acquisition. L3 remains started / not closed; L4-L7 are not authorized.
+> Recover current main and read the frozen L0 contract, L3-A0 inventory, A1-A6 acceptance/governance records, A7 exit review, and current recovery index. A0-A6 are Owner-accepted and merged; A6 is PARTIAL with consumed one-shot authority and no repeat acquisition. A7 has technical exit PASS, while L3 Owner final closure remains pending. L4-L7 are not authorized.
 
 If Git reality and this index ever disagree, Git plus higher-order governance authority win.
