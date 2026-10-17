@@ -77,3 +77,11 @@ Focused tests passed (162 passed, 1 previously governed test deselected). The no
 This runner repair does not retroactively create live evidence or change the accepted `PARTIAL` result. No provider request, live-runner execution, retry, sleep, polling, scheduler, or new route was introduced. The consumed A6 authority remains consumed and a second live run remains forbidden.
 
 POSTLIVE-R2 evidence is retained at `acceptance_runs/l3-a6-postlive-r2-20261017T043843Z/`; its canonical manifest SHA-256 is `bd79f9885cdb7c0cf1b6363fe18b311993511f79898bd00abcf1442149ed787b` and binds the repair contract, immutable replay, defect resolution, offline review, preflight result, and reviewed runner/test hashes.
+
+## Owner Acceptance
+
+Disposition: `L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_OWNER_ACCEPTED_FOR_MERGE`.
+
+Owner authority: `USER_CHAT_2026-10-17_L3_A6_PARTIAL_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`.
+
+The Owner accepts A6 completion with technical live disposition `PARTIAL`. The 17 transport-degraded logical sources remain an explicit limitation and are not represented as healthy; six logical sources returned HTTP 200, and no deterministic provider contract drift was proven. The runner-generated historical `SOURCE_CHANGED` remains immutable and is superseded for technical interpretation by the accepted immutable-evidence re-adjudication `PARTIAL`. The one-shot authority is consumed; no second A6 live run is authorized. This bounded observation does not establish continuous or future provider health. A7 technical exit review is separately authorized. A6 is accepted for merge; this does not close L3 or establish A7 PASS.
