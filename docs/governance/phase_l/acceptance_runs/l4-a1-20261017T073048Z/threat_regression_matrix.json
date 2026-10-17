@@ -1,0 +1,105 @@
+{
+  "cases": [
+    {
+      "client_host": "192.168.20.3",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "REJECT_403",
+      "server_host": "127.0.0.1",
+      "threat": "remote IPv4 client"
+    },
+    {
+      "client_host": "2001:db8::12",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "REJECT_BY_PURE_CLASSIFIER",
+      "server_host": "::1",
+      "threat": "remote IPv6 client"
+    },
+    {
+      "client_host": "127.0.0.1",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "REJECT_403",
+      "server_host": "192.0.2.20",
+      "threat": "remote server address"
+    },
+    {
+      "client_host": "2001:db8::12",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "REJECT_BY_PURE_CLASSIFIER",
+      "server_host": "198.51.100.9",
+      "threat": "both endpoints remote"
+    },
+    {
+      "client_host": "192.0.2.44",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "REJECT_403_HEADERS_IGNORED",
+      "server_host": "127.0.0.1",
+      "threat": "spoofed forwarding headers"
+    },
+    {
+      "client_host": "127.0.0.1",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "ALLOW",
+      "server_host": "127.0.0.1",
+      "threat": "IPv4 loopback"
+    },
+    {
+      "client_host": "::1",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "ALLOW",
+      "server_host": "::1",
+      "threat": "IPv6 loopback"
+    },
+    {
+      "client_host": "in-process-peer",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "ALLOW_NOT_NETWORK_AUTH",
+      "server_host": "asgi-server",
+      "threat": "synthetic in-process ASGI"
+    },
+    {
+      "client_host": "192.0.2.44",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": null,
+      "result": "REJECT_403",
+      "server_host": "127.0.0.1",
+      "threat": "host/origin/CORS spoof"
+    },
+    {
+      "client_host": "127.0.0.1",
+      "current_control": "ipaddress.ip_address(host).is_loopback for parseable client/server hosts; forwarding/browser headers are not consulted",
+      "entry_surface": "FastAPI HTTP ASGI scope",
+      "protected_asset": "entire Local Service HTTP request surface",
+      "required_later_tranche": "L4-A4",
+      "result": "RESIDUAL_DEFERRED_L4_A4",
+      "server_host": "127.0.0.1",
+      "threat": "local reverse proxy/SSH forward"
+    }
+  ],
+  "run_id": "l4-a1-20261017T073048Z"
+}

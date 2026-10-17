@@ -1,0 +1,36 @@
+{
+  "covered_surface": [
+    {
+      "family": "health/status",
+      "path": "/api/health",
+      "remote_result": "403"
+    },
+    {
+      "family": "Unified API",
+      "path": "/api/unified/capabilities",
+      "remote_result": "403"
+    },
+    {
+      "family": "retained legacy API",
+      "path": "/api/governance",
+      "remote_result": "403"
+    },
+    {
+      "family": "workbench/static",
+      "path": "/workbench/",
+      "remote_result": "403"
+    },
+    {
+      "family": "OpenAPI",
+      "path": "/openapi.json",
+      "remote_result": "403"
+    },
+    {
+      "family": "interactive API docs",
+      "path": "/docs",
+      "remote_result": "403"
+    }
+  ],
+  "enforcement": "ASGI middleware installed on the FastAPI application; all HTTP routes and mounts pass through the boundary.",
+  "run_id": "l4-a1-20261017T073048Z"
+}
