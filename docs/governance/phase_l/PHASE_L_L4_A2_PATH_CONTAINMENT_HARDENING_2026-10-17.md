@@ -78,3 +78,27 @@ controls.
 L4-A2 technical disposition is `L4_A2_PATH_CONTAINMENT_HARDENING_PASS`.
 Owner acceptance is pending. L4-A3+ and L5-L7 remain unauthorized; no A3 work
 was started.
+
+## 7. Owner acceptance for merge
+
+`L4_A2_PATH_CONTAINMENT_HARDENING_OWNER_ACCEPTED_FOR_MERGE`
+
+Authority: `USER_CHAT_2026-10-17_PHASE_L_L4_A2_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`
+
+Owner accepts the A2 result for merge with the following findings preserved:
+
+```text
+PATH-001 = COVERED
+PATH-003 = COVERED
+PATH-005 = COVERED
+
+universal root introduced = NO
+explicit external Watchlist authority root support = PRESERVED
+```
+
+The same-privilege final OS-level filesystem race remains a documented
+limitation. This acceptance does not claim immunity to a hostile local process
+replacing filesystem objects in that final race window. The A0 Mode-C
+historical semantic-tamper test debt and A1 pre-existing MCP
+`mcp_adapter_internal_error` exploratory failure remain disclosed and are not
+represented as passing or repaired by A2.

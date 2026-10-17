@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "2026-10-17: Phase J/K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 CLOSED under PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after PHASE_L_L3_EXIT_REVIEW_PASS; A0-A6 Owner-accepted and merged; A6 technical disposition PARTIAL; L4-A0/A1 Owner-accepted and merged; L4-A2 technical PASS with Owner acceptance pending; L4-A3+ and L5-L7 not authorized"
+status_reconciled_through: "2026-10-17: Phase J/K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2 CLOSED; L3 CLOSED under PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after PHASE_L_L3_EXIT_REVIEW_PASS; A0-A6 Owner-accepted and merged; A6 technical disposition PARTIAL; L4-A0/A1/A2 Owner-accepted and merged; L4-A3 authorized to start; L4-A4+ and L5-L7 not authorized"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1430,7 +1430,7 @@ sources, zero deterministic contract drift proven); its one-shot authority is
 consumed and a second run is prohibited. L4 is STARTED. L4-A0 inventory is Owner-accepted and merged under
 `L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`. L4-A1 is Owner-accepted for merge under
 `L4_A1_NETWORK_EXPOSURE_REQUEST_SURFACE_HARDENING_OWNER_ACCEPTED_FOR_MERGE`.
-L4-A2 has technical disposition `L4_A2_PATH_CONTAINMENT_HARDENING_PASS` with Owner acceptance pending; L4-A3+ and L5-L7 are NOT AUTHORIZED. See
+L4-A2 is Owner-accepted and merged under `L4_A2_PATH_CONTAINMENT_HARDENING_OWNER_ACCEPTED_FOR_MERGE`; L4-A3 is authorized to start; L4-A4+ and L5-L7 are NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_2026-10-17.md`,
 `docs/governance/phase_l/PHASE_L_L4_A1_NETWORK_EXPOSURE_REQUEST_SURFACE_HARDENING_2026-10-17.md`,
 and `docs/governance/phase_l/PHASE_L_L4_A2_PATH_CONTAINMENT_HARDENING_2026-10-17.md`.
