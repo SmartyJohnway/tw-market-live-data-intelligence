@@ -89,5 +89,5 @@
     "v1_public_contracts_exact_six": "PASS",
     "verify_environment": "PASS"
   },
-  "validators_pending_final_manifest": true
+  "final_manifest_verification": "PASS"
 }

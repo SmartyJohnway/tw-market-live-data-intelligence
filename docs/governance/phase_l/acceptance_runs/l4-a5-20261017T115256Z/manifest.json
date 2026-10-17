@@ -27,9 +27,9 @@
       "sha256": "a8c0a8973bb347e806180007a8450864e33e403a0e20989b78602a5ea3af1f75"
     },
     {
-      "bytes": 3247,
+      "bytes": 3243,
       "path": "offline_review.json",
-      "sha256": "7031939f24ebcf8e2f672c2e8ab7740ba2a74df88507abb0d13d5478a428216e"
+      "sha256": "d253e06eaee2d552cfb29f5329b940c11b56c4897b46d2268a4b960bd37c46a0"
     },
     {
       "bytes": 794,
@@ -47,7 +47,7 @@
       "sha256": "a887cb408dabe1fafc3b232474f4f4d46f7e548b9a99885a8b9898c838a8d196"
     }
   ],
-  "canonical_sha256": "05dd8d9fc74f736c3418c3e601c4ac801bd25238f25026e91d7713d8d0f28db1",
+  "canonical_sha256": "eb13920b0cde8e7c6fd99993d88d03ed7cdf12504521f3068ff21e2f19c8c683",
   "run_id": "l4-a5-20261017T115256Z",
   "schema": "phase_l_l4_a5_manifest.v1"
 }
