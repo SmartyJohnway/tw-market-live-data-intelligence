@@ -76,3 +76,12 @@ No unresolved blocker remains against the frozen L3 Source Drift Hardening contr
 ## 11. Next boundary
 
 L3 is `TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED`. L3 Owner final closure is `PENDING`. L4-L7 are `NOT STARTED / NOT AUTHORIZED`. A7 did not authorize another A6 acquisition or any provider/network check.
+
+
+## Owner Final Closure
+
+Disposition: `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
+
+Owner authority: `USER_CHAT_2026-10-17_PHASE_L_L3_OWNER_FINAL_CLOSURE_AND_A7_MERGE_AUTHORIZATION`.
+
+The Owner accepts the technical exit review and closes L3. This closure preserves A6's accepted technical live disposition as `PARTIAL`: 17 logical sources were transport-degraded, six logical sources returned HTTP 200, and zero deterministic contract drift was proven. A6's one-shot authority is `CONSUMED`; a second A6 live run is `PROHIBITED`. Owner closure does not reinterpret A6 as an all-source PASS or establish continuous/future provider health. L4 entry and L4-A0 inventory are authorized after this A7 merge; L4-A1+ implementation is not authorized by this closure.
