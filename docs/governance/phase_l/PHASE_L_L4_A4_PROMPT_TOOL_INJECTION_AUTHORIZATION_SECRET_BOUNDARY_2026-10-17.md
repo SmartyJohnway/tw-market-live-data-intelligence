@@ -109,3 +109,31 @@ support, or trading/order boundary changed. No provider acquisition occurred.
 Disposition: `L4_A4_PROMPT_TOOL_INJECTION_AUTHORIZATION_SECRET_BOUNDARY_PASS`.
 This is a technical result only; Owner acceptance is pending. L4-A5+ and
 L5-L7 remain unauthorized.
+
+## 9. Owner acceptance for merge
+
+`L4_A4_PROMPT_TOOL_INJECTION_AUTHORIZATION_SECRET_BOUNDARY_OWNER_ACCEPTED_FOR_MERGE`
+
+Authority: `USER_CHAT_2026-10-17_PHASE_L_L4_A4_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`
+
+Owner accepts the A4 technical result for merge with the reviewed finding
+dispositions preserved:
+
+```text
+INJ-001 = COVERED
+AUTH-001 = COVERED
+AUTH-002 = COVERED
+SEC-002 = COVERED
+
+LOCAL SAME-USER PROCESS TRUST = EXPLICIT_TRUST_BOUNDARY
+LOCAL CALLER INDIVIDUAL AUTHENTICATION = NOT_PROVIDED_BY_CURRENT_PRODUCT
+
+legacy M5K network execution = DISABLED
+legacy M7G network execution = DISABLED
+A1 MCP safe-surface debt = RESOLVED_AS_TEST_HELPER_DRIFT
+```
+
+The local trust model is not an authentication claim. No authentication
+subsystem or secret store was introduced. Provider requests and external
+network attempts were zero. L4-A5 is authorized only after this A4 merge;
+L4-A6+ and L5-L7 remain unauthorized.
