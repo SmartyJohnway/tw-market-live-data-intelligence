@@ -1,0 +1,58 @@
+{
+  "artifact_count": 10,
+  "artifacts": [
+    {
+      "bytes": 696,
+      "path": "authorization_boundary_matrix.json",
+      "sha256": "16c0bbc1c6fee672e3da7465d52424d36d1ee9c62b16feafff3df4945ee59c31"
+    },
+    {
+      "bytes": 944,
+      "path": "browser_origin_boundary_matrix.json",
+      "sha256": "0e022fe82928e62c834f5a7b35ed37432b130576e23c7f09760ab377f4686fc9"
+    },
+    {
+      "bytes": 745,
+      "path": "control_plane_route_matrix.json",
+      "sha256": "b84fcc4eed91b9b95d3f8659ec77863b5fb628d771cf7f49b38a923dd1bb42cd"
+    },
+    {
+      "bytes": 956,
+      "path": "finding_reconciliation.json",
+      "sha256": "d41e24bacc5b4de5a34d90b875f48575ac2f848156a1a85a60363eed27fd0606"
+    },
+    {
+      "bytes": 538,
+      "path": "hostile_content_regression_matrix.json",
+      "sha256": "72c88bc20599724ef13f02892ca9fcc8b52219f60b15bffbf154672434c594d1"
+    },
+    {
+      "bytes": 408,
+      "path": "legacy_execution_surface_matrix.json",
+      "sha256": "5da800978fe841d365a694d09a581af3e142570c5e09c4af4715ec5dd4c9e267"
+    },
+    {
+      "bytes": 366,
+      "path": "local_caller_trust_contract.json",
+      "sha256": "afa27a41d6e3c2996f831e42bdce11ad2c70ec466b37c3756c65166602fbb713"
+    },
+    {
+      "bytes": 1467,
+      "path": "offline_review.json",
+      "sha256": "974edffec70d47b44ebfc042c8e3cf92abd70a18d6fb793d7fc32e4f9c494add"
+    },
+    {
+      "bytes": 497,
+      "path": "preflight_result.json",
+      "sha256": "c958acde61d9252b9973ec950fdb21b80a7c26382645cc0cd0dcb3a042ce4817"
+    },
+    {
+      "bytes": 554,
+      "path": "secret_canary_matrix.json",
+      "sha256": "8e131c1d803f81e0254365fdfca63789f28c96699cefe5d28da1b699d2efa75b"
+    }
+  ],
+  "canonical_sha256": "34e0829bbbbb93439c99304bfd0c70514d6f645f727ce768d7372a45be02e556",
+  "run_id": "l4-a4-20261017T110257Z",
+  "schema": "phase_l_l4_a4_manifest.v1"
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "phase_l_l4_a4_control_plane_route_matrix.v1",
+  "route_count": 15,
+  "all_post_routes_explicitly_classified": true,
+  "outer_a1_network_boundary_covers_entire_fastapi_surface": ["health/status", "unified_api", "retained_legacy_routes", "workbench_and_static", "docs_and_openapi_when_enabled"],
+  "privileged_classes_require_json_and_same_local_origin_for_browser_requests": true,
+  "native_local_callers_without_browser_origin_metadata": "continue_to_existing_authorization_and_validation",
+  "forwarded_headers_are_authority": false,
+  "legacy_m5k_live_observation_execution": "HTTP_410_DISABLED",
+  "legacy_m7g_controlled_refresh_execution": "HTTP_410_DISABLED",
+  "mcp_tool_count": 6,
+  "new_authentication_subsystem": false
+}

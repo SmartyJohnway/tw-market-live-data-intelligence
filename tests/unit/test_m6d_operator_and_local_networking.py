@@ -54,38 +54,20 @@ def _minimal_watchlist():
     }
 
 
-def test_fastapi_ssl_policy_fail_closed_and_valid_values(monkeypatch):
-    executed = False
-    def fake_execute(*args, **kwargs):
-        nonlocal executed
-        executed = True
-        return {"status": "should_not_execute"}
-    monkeypatch.setattr(server_main, "_m5k_execute_live_observation", fake_execute)
-    client = TestClient(server_main.app)
-
-    response = client.post(
-        "/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy=invalid",
-        json=_minimal_watchlist(),
-    )
-
-    assert response.status_code == 400
-    assert response.json()["detail"]["error"] == "invalid_ssl_policy"
-    assert executed is False
+def test_fastapi_m5k_legacy_execution_route_is_disabled(monkeypatch):
     calls = []
-    def fake_execute(watchlist, write_latest=True, ssl_policy=None):
-        calls.append(ssl_policy)
-        return {"status": "ok", "ssl_policy": ssl_policy}
-    monkeypatch.setattr(server_main, "_m5k_execute_live_observation", fake_execute)
+    monkeypatch.setattr(server_main, "_m5k_execute_live_observation", lambda *a, **k: calls.append("called"), raising=False)
     client = TestClient(server_main.app)
-
-    for policy in ["strict", "compatibility", "unsafe-explicit"]:
-        response = client.post(
-            f"/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy={policy}",
-            json=_minimal_watchlist(),
-        )
-        assert response.status_code == 200
-        assert response.json()["ssl_policy"] == policy
-    assert calls == ["strict", "compatibility", "unsafe-explicit"]
+    for query in (
+        "confirm_live_observation=true&ssl_policy=invalid",
+        "confirm_live_observation=true&ssl_policy=strict",
+        "confirm_live_observation=true&ssl_policy=compatibility",
+        "confirm_live_observation=true&ssl_policy=unsafe-explicit",
+    ):
+        response = client.post(f"/api/m5k/live-observation/execute?{query}", json=_minimal_watchlist())
+        assert response.status_code == 410
+        assert response.json()["detail"]["error"] == "legacy_live_observation_execution_disabled"
+    assert calls == []
 
 
 def test_mcp_ssl_policy_fail_closed_and_valid_values(monkeypatch):

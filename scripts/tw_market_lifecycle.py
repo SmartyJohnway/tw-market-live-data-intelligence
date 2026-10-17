@@ -248,6 +248,15 @@ def _sm_status() -> dict:
     return {"status": "UNAVAILABLE", "root": str(root), "reason_code": payload.get("reason_code", "SECURITY_MASTER_STATE_UNREADABLE")}
 
 
+def _safe_service_url_for_diagnostics(value: str) -> str:
+    """Return only a validated loopback URL; never echo arbitrary env/CLI text."""
+    try:
+        from server.unified_mcp.local_service_client import validate_loopback_service_url
+        return validate_loopback_service_url(value)
+    except Exception:
+        return "UNAVAILABLE"
+
+
 def _base(host: str, port: int, sources: dict[str, str], service_url: str | None = None) -> dict:
     path = _owner_path(port)
     owner, owner_error = _read_owner(path)
@@ -272,6 +281,7 @@ def _base(host: str, port: int, sources: dict[str, str], service_url: str | None
         "application_root_disk_free_bytes": disk_free_bytes(ROOT),
         "runtime_root_disk_free_bytes": disk_free_bytes(_owner_path(port).parent),
     }
+    selected_service_url = service_url or os.environ.get("UNIFIED_MARKET_EVIDENCE_SERVICE_URL", f"http://{host}:{port}")
     return {
         "status": "SERVICE_ALIVE" if alive and sm["status"] == "ACTIVE" else "SERVICE_ALIVE / IDENTITY_NOT_INITIALIZED" if alive else process,
         "service": {"process": process, "alive": alive, "health": health, "host": host, "port": port,
@@ -280,7 +290,7 @@ def _base(host: str, port: int, sources: dict[str, str], service_url: str | None
         "readiness": {"preload": "READY" if preload_run.returncode == 0 else "BLOCKED",
                       "schema_catalog": "READY" if preload.get("canonical_schema_loaded") and preload.get("capability_catalog_loaded") else "BLOCKED",
                       "routes": capability_projection or ({"projection": "UNKNOWN_SERVICE_UNAVAILABLE"} if not alive else {"projection": "BLOCKED", "reason_code": "CAPABILITY_PROJECTION_UNAVAILABLE"})},
-        "mcp": {"status": "SERVICE_UNREACHABLE" if not alive else "READY" if mcp_ok else "MCP_RUNTIME_MISMATCH", "service_url": service_url or os.environ.get("UNIFIED_MARKET_EVIDENCE_SERVICE_URL", f"http://{host}:{port}"),
+        "mcp": {"status": "SERVICE_UNREACHABLE" if not alive else "READY" if mcp_ok else "MCP_RUNTIME_MISMATCH", "service_url": _safe_service_url_for_diagnostics(selected_service_url),
                 "sdk_compatible": mcp_ok, "local_service_reachable": alive},
         "paths": {"security_master_root": sm["root"],
                   "watchlist_root": str(Path(os.environ.get("TW_MARKET_WATCHLIST_ROOT", ROOT / "data" / "watchlists")).expanduser().resolve()),

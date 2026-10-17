@@ -1,0 +1,19 @@
+{
+  "schema": "phase_l_l4_a4_authorization_boundary_matrix.v1",
+  "existing_controls_preserved": [
+    "validate_and_preview_are_non_executing",
+    "server_owned_scoped_expiring_authorization",
+    "explicit_execution_confirmation",
+    "execute_once",
+    "fetch_evidence_requires_execution_mode"
+  ],
+  "legacy_routes": {
+    "m5k_live_observation": "DISABLED_HTTP_410",
+    "m7g_controlled_refresh": "DISABLED_HTTP_410",
+    "legacy_probe_routes": "DISABLED"
+  },
+  "all_post_routes_classified": true,
+  "same_user_local_process_trust": "EXPLICIT_TRUST_BOUNDARY",
+  "individual_local_caller_authentication": false,
+  "auth_001_disposition": "COVERED_FOR_LOCAL_FIRST_AUTHORIZATION_CONTRACT"
+}

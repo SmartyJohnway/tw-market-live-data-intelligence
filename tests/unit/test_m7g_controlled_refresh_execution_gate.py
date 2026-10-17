@@ -135,8 +135,8 @@ def test_successful_fake_execution_returns_valid_safe_artifact():
     assert result['level1_mutated'] is False
 
 
-def test_api_endpoint_uses_executor_gate_with_fake_free_rejection():
+def test_api_endpoint_is_fail_closed_and_does_not_enter_legacy_executor():
     client = TestClient(app)
     response = client.post('/api/m7g/controlled-refresh/execute', json={'request_package': package(), 'operator_execution_confirmation_phrase': ''})
-    assert response.status_code == 200
-    assert response.json()['execution_status'] == 'rejected_missing_execution_confirmation'
+    assert response.status_code == 410
+    assert response.json()['detail']['error'] == 'legacy_controlled_refresh_execution_disabled'

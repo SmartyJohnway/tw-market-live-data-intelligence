@@ -12,23 +12,23 @@ class NoNetworkClient:
     def __init__(self):
         self.calls = []
 
-    async def describe_capabilities(self):
+    async def describe_capabilities(self, *, trace_id=None):
         self.calls.append("capabilities")
         return {"service_contract_version": "unified_market_evidence_local_service.v1", "capabilities": []}
 
-    async def validate_request(self, payload):
+    async def validate_request(self, payload, *, trace_id=None):
         self.calls.append(("validate", payload))
         return {"validation_status": "valid"}
 
-    async def preview_request(self, payload):
+    async def preview_request(self, payload, *, trace_id=None):
         self.calls.append(("preview", payload))
         return {"status": "ready_for_confirmation", "execution_authorized": False}
 
-    async def read_result(self, identifier):
+    async def read_result(self, identifier, *, trace_id=None):
         self.calls.append(("read", identifier))
         return {"canonical_result": {"targets": []}, "external_market_network_executed": False}
 
-    async def export_ai_handoff(self, identifier):
+    async def export_ai_handoff(self, identifier, *, trace_id=None):
         self.calls.append(("handoff", identifier))
         return {
             "canonical_result": {"targets": []}, "ai_ready_markdown": "# governed",
