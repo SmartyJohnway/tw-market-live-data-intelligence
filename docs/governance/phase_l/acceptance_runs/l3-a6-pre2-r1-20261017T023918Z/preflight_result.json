@@ -1,0 +1,11 @@
+{
+  "arbitrary_cwd_launch": "PASS",
+  "authority_consumed": false,
+  "direct_script_launch": "PASS",
+  "disposition": "PASS_LAUNCH_CONTRACT_REPAIRED_READY_FOR_FINAL_LIVE_REVIEW",
+  "external_provider_requests": 0,
+  "final_live_reservation_created": false,
+  "live_runner_direct_launch": "PASS",
+  "module_launch": "PASS",
+  "next_step_requires_source_code_change": false
+}

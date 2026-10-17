@@ -1,0 +1,12 @@
+{
+  "actual_reservation_created": false,
+  "changes_directory": false,
+  "cwd_independent": true,
+  "depends_on_pythonpath": false,
+  "direct_script_arbitrary_cwd": "PASS",
+  "direct_script_repo_root": "PASS",
+  "live_runner_direct_arbitrary_cwd": "PASS",
+  "module_invocation_repo_root": "PASS",
+  "repair": "reservation creator now inserts repository ROOT in sys.path before importing scripts package",
+  "reservation_semantics_changed": false
+}

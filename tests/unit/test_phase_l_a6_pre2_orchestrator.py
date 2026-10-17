@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import json
 import hashlib
+import os
 import socket
 import subprocess
+import sys
 from email.message import Message
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -13,6 +15,48 @@ import pytest
 from scripts import run_phase_l_l3_a6_live_recertification as runner
 from scripts import phase_l_a6_final_live_reservation as reservation_tool
 from scripts.phase_l_a6_live_dispatch_guard import build_plan, contract_matrix, plan_json
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _run_help(args, *, cwd):
+    env = dict(os.environ)
+    env.pop("PYTHONPATH", None)
+    return subprocess.run(
+        [sys.executable, *map(str, args), "--help"], cwd=cwd, env=env,
+        capture_output=True, text=True, timeout=20,
+    )
+
+
+def test_reservation_creator_direct_script_help_from_repo_root():
+    result = _run_help(["scripts/phase_l_a6_final_live_reservation.py"], cwd=REPO_ROOT)
+    assert result.returncode == 0, result.stderr
+    assert "usage:" in result.stdout.lower()
+    assert "ModuleNotFoundError" not in result.stderr
+
+
+def test_reservation_creator_direct_script_help_from_arbitrary_cwd(tmp_path):
+    script = REPO_ROOT / "scripts/phase_l_a6_final_live_reservation.py"
+    result = _run_help([script], cwd=tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "usage:" in result.stdout.lower()
+    assert "ModuleNotFoundError" not in result.stderr
+
+
+def test_reservation_creator_module_help_from_repo_root():
+    result = _run_help(["-m", "scripts.phase_l_a6_final_live_reservation"], cwd=REPO_ROOT)
+    assert result.returncode == 0, result.stderr
+    assert "usage:" in result.stdout.lower()
+    assert "ModuleNotFoundError" not in result.stderr
+
+
+def test_live_runner_direct_script_help_from_arbitrary_cwd(tmp_path):
+    script = REPO_ROOT / "scripts/run_phase_l_l3_a6_live_recertification.py"
+    result = _run_help([script], cwd=tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "usage:" in result.stdout.lower()
+    assert "ModuleNotFoundError" not in result.stderr
 
 
 def _run(tmp_path: Path, factory=None, name="run"):

@@ -1,0 +1,15 @@
+{
+  "attempted_command": "python scripts/phase_l_a6_final_live_reservation.py ...",
+  "attempted_run_id": "l3-a6-live-20261017T023403Z",
+  "authority_consumed": false,
+  "error_class": "ModuleNotFoundError",
+  "event": "A6_PRELIVE_RESERVATION_CREATOR_IMPORT_FAILURE",
+  "failed_pre_live_head": "c8261ddc7cab12de6b465a55f3156efc64d4dd6c",
+  "failed_pre_live_tree": "d52a262e17c86f49eb9efeae09dba83c22633204",
+  "live_run_directory_exists": false,
+  "live_runner_started": false,
+  "missing_module": "scripts.phase_l_a6_live_dispatch_guard",
+  "provider_requests": 0,
+  "reservation_creation_started": false,
+  "reservation_written": false
+}

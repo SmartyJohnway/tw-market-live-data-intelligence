@@ -1,0 +1,28 @@
+{
+  "entry_head": "c8261ddc7cab12de6b465a55f3156efc64d4dd6c",
+  "entry_tree": "d52a262e17c86f49eb9efeae09dba83c22633204",
+  "files": [
+    {
+      "path": "launch_contract.json",
+      "sha256": "42f995d207e7fc2edaa3f68a8262cdc663a87d160a8cdce85d522b8861cf13aa",
+      "size_bytes": 460
+    },
+    {
+      "path": "launch_failure_record.json",
+      "sha256": "5bace48c314690996c22ee824eb0b8bc3c835307ceb4f2907be8df3a3604bfaa",
+      "size_bytes": 655
+    },
+    {
+      "path": "offline_review.json",
+      "sha256": "c08c2a8399dc7c566e0d29c3a50e33d8d4d40f2834127243bb5455be1b86f6c4",
+      "size_bytes": 1267
+    },
+    {
+      "path": "preflight_result.json",
+      "sha256": "fe504c15daadb14fbe5f8d69a422d8ffcbca20731a513df46cf92e98e90ad128",
+      "size_bytes": 385
+    }
+  ],
+  "manifest_sha256": "84a34f16688a5a4d61262d3e7f1441816b9e17d9449d69b21789a807982dc238",
+  "run_id": "l3-a6-pre2-r1-20261017T023918Z"
+}
