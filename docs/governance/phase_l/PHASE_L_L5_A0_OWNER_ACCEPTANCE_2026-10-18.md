@@ -25,3 +25,13 @@ L5-A1+ is NOT AUTHORIZED. L6-L7 and Phase M remain NOT AUTHORIZED. This Owner ac
 ## Pre-Merge State
 
 L5-A0 is Owner-accepted for merge but must not be described as merged until PR/merge verification succeeds.
+
+## Post-Merge Verification
+
+- PR: #380
+- PR base: `4e8aa0557644ac76cca22e67c824ffd0eab7b6c1`
+- PR head: `cde4ca54f98eec8eac8a925540fa1ff5cc3ea9a0`
+- Merge commit: `241a5249987c008a28d959677704eee483a1c216`
+- Merged at: `2026-10-18T13:47:27Z`
+- Final A0 state: OWNER-ACCEPTED AND MERGED.
+- L5-A1+ remains NOT AUTHORIZED.
