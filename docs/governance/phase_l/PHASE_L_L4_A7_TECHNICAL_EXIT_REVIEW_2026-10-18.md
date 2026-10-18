@@ -169,3 +169,10 @@ Owner authority: `USER_CHAT_2026-10-18_PHASE_L_L4_OWNER_FINAL_CLOSURE_AND_A7_MER
 The Owner accepts `PHASE_L_L4_EXIT_REVIEW_PASS`, authorizes the A7 technical-exit-review candidate for merge, and accepts final closure of L4 once that merge is verified on canonical `origin/main`. All 33 A0 inventory rows retain the A7 reconciliation of 31 `COVERED` plus 2 `NOT_APPLICABLE`, with zero unresolved blocker. The two TG4 historical Mode C replay nodes remain governed debt and are not represented as passing. The seven immutable evidence EOF format exceptions remain byte-preserved and do not establish a generic whitespace waiver.
 
 This Owner closure does not authorize L5, L6, or L7 work. Until the A7 merge is verified, canonical state is `OWNER FINAL CLOSURE ACCEPTED FOR MERGE`; after verified merge, L4 may be recorded as `CLOSED` under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
+
+
+## Post-Merge Final Closure Verification
+
+PR #378 merged the A7 technical exit review and Owner final closure with history-preserving merge commit `e184e2b5abfabc4656943d9734e4dc68230a8bbd` at `2026-10-18T06:39:35Z`. Technical-review commit `8de3c418127c7a3486c46de59bd8246998d5d6d7` and Owner-closure commit `5c5105ccc9607bb141f83a35b3ba1e91f1b318ec` are ancestors of the merged main.
+
+Final L4 state: `CLOSED` under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following technical exit `PHASE_L_L4_EXIT_REVIEW_PASS`. All retained limitations remain visible and unchanged. L5-L7 remain `NOT AUTHORIZED`; this closure does not start any later Phase L boundary.
