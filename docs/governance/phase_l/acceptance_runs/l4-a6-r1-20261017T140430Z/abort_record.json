@@ -1,0 +1,13 @@
+{
+  "schema": "phase_l_l4_a6_r1_abort_record.v1",
+  "r1_run_id": "l4-a6-r1-20261017T140430Z",
+  "initial_hold": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_HOLD",
+  "r1_01": "PASS",
+  "r1_02": "PASS",
+  "r1_03": "HOLD_RUNAWAY_GROWTH",
+  "r1_04": "NOT_RUN",
+  "integration_gate": "NOT_RUN",
+  "sentinel": "NOT_RUN",
+  "commit": "NONE",
+  "original_memory_matrix_sha256": "a9ef54629c28de13132310ff0afe9eaa982eeb7c8678f70996bf854d4b84ac01"
+}

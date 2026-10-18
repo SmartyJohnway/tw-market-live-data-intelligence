@@ -103,3 +103,25 @@ This record does not claim the full A6 numeric ceiling freeze is complete.
 
 L4-A7 remains unauthorized. No A7 technical exit review was started. L5-L7
 remain unauthorized.
+
+
+## R3 continuation reference
+
+The initial candidate disposition above remains historical and unchanged. R1 and R2 memory observations also remain immutable HOLD evidence. R3 recorded long-horizon memory stabilization and a complete timeout matrix, but the integrated bounded regression gate reproduced two historical Mode C tamper-helper failures; therefore the A6 technical disposition remains HOLD. See `PHASE_L_L4_A6_R3_MEMORY_STABILIZATION_ACCEPTANCE_2026-10-17.md` and the hash-bound R3 run `l4-a6-r3-20261017T150419Z`. No A7 work was started.
+
+
+## R3-R1 acceptance-gate correction (2026-10-18)
+
+The initial A6 candidate, R1, R2, and R3 HOLD outcomes remain historical and
+unchanged. R3 correctly stopped for the exact test invocation it ran: 308 passed,
+2 failed, 1 skipped, and 0 deselected. Subsequent authority reconciliation found
+that invocation omitted the two already-governed TG4 historical Mode C replay
+deselections. R3-R1 reran the same bounded scope with exactly those two nodes
+deselected and no other selection change: 308 passed, 1 skipped, 2 governed
+deselected, 0 failed. The nodes remain failing historical debt, are not repaired,
+and are not represented as passing. The corrected gate, unchanged R3 resource
+findings, and final technical disposition are bound by
+`l4-a6-r3-r1-20261018T004303Z`.
+
+Final technical disposition: `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS`.
+L4-A6 remains pending Owner acceptance. L4-A7 remains unauthorized.

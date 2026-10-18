@@ -1,0 +1,1028 @@
+{
+  "limitations": [
+    "RSS is an observed process working set, not a hard cap.",
+    "tracemalloc observes Python-managed allocations and excludes native allocations.",
+    "No OOM test or allocate-until-failure test was run."
+  ],
+  "memory_hard_runtime_kill_threshold": "NOT_USED",
+  "policy_class": "EXPLICIT_NO_HARD_RUNTIME_LIMIT_WITH_STRUCTURAL_BOUND",
+  "rss_observation_is_not_tracemalloc_peak": true,
+  "scenario_count": 8,
+  "scenarios": [
+    {
+      "details": {
+        "network_acquisition": false,
+        "route_count": 58
+      },
+      "rss_baseline_bytes": 21770240,
+      "rss_delta_bytes": 54378496,
+      "rss_post_bytes": 76148736,
+      "rss_pre_bytes": 21770240,
+      "scenario": "M1_baseline_local_service",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 0,
+      "serialized_output_bytes": 46,
+      "tracemalloc_current_bytes": 22349418,
+      "tracemalloc_peak_bytes": 22367880,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "network_acquisition": false,
+        "preview_status": "target_not_plannable",
+        "target_count": 50
+      },
+      "rss_baseline_bytes": 21770240,
+      "rss_delta_bytes": 13078528,
+      "rss_post_bytes": 71913472,
+      "rss_pre_bytes": 58834944,
+      "scenario": "M2_max_target_offline_planning_50",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 8212366,
+      "tracemalloc_peak_bytes": 8618810,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "entry_count": 500,
+        "persistent_state": false
+      },
+      "rss_baseline_bytes": 21770240,
+      "rss_delta_bytes": 802816,
+      "rss_post_bytes": 68091904,
+      "rss_pre_bytes": 67289088,
+      "scenario": "M3_max_watchlist_shape_500",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 147666,
+      "serialized_output_bytes": 25,
+      "tracemalloc_current_bytes": 112798,
+      "tracemalloc_peak_bytes": 665836,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "item_count": 50,
+        "provider_request": false,
+        "supported_family": "material_disclosure_evidence.v1"
+      },
+      "rss_baseline_bytes": 21770240,
+      "rss_delta_bytes": 24576,
+      "rss_post_bytes": 68116480,
+      "rss_pre_bytes": 68091904,
+      "scenario": "M4_supported_material_disclosure_50",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 19157,
+      "serialized_output_bytes": 19157,
+      "tracemalloc_current_bytes": 7013,
+      "tracemalloc_peak_bytes": 181995,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "envelope_bytes": 8388608,
+        "observed_projection_bytes": 7300055,
+        "temp_only": true
+      },
+      "rss_baseline_bytes": 21770240,
+      "rss_delta_bytes": 0,
+      "rss_post_bytes": 68116480,
+      "rss_pre_bytes": 68116480,
+      "scenario": "M5_near_bound_mode_c_projection",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 0,
+      "serialized_output_bytes": 7300055,
+      "tracemalloc_current_bytes": 216,
+      "tracemalloc_peak_bytes": 13307432,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "envelope_bytes": 8388608,
+        "network_acquisition": false,
+        "structured_bytes": 3900064,
+        "text_bytes": 3900000
+      },
+      "rss_baseline_bytes": 21770240,
+      "rss_delta_bytes": 27389952,
+      "rss_post_bytes": 95506432,
+      "rss_pre_bytes": 68116480,
+      "scenario": "M6_near_bound_ai_handoff",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 0,
+      "serialized_output_bytes": 7800064,
+      "tracemalloc_current_bytes": 14525308,
+      "tracemalloc_peak_bytes": 28199611,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "concurrent_light_reads": 8,
+        "in_process_transport": true,
+        "max_workers": 8
+      },
+      "rss_baseline_bytes": 21770240,
+      "rss_delta_bytes": 2125824,
+      "rss_post_bytes": 91181056,
+      "rss_pre_bytes": 89055232,
+      "scenario": "M7_concurrent_light_read",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 0,
+      "serialized_output_bytes": 160,
+      "tracemalloc_current_bytes": 620798,
+      "tracemalloc_peak_bytes": 1662705,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "checkpoints": [
+        {
+          "cycle": 100,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94027776,
+          "tracemalloc_current_bytes": 49566,
+          "tracemalloc_peak_bytes": 447014
+        },
+        {
+          "cycle": 200,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94044160,
+          "tracemalloc_current_bytes": 59584,
+          "tracemalloc_peak_bytes": 457126
+        },
+        {
+          "cycle": 250,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94044160,
+          "tracemalloc_current_bytes": 62321,
+          "tracemalloc_peak_bytes": 460063
+        },
+        {
+          "cycle": 300,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 95109120,
+          "tracemalloc_current_bytes": 65426,
+          "tracemalloc_peak_bytes": 1012030
+        },
+        {
+          "cycle": 400,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 95117312,
+          "tracemalloc_current_bytes": 67764,
+          "tracemalloc_peak_bytes": 1012030
+        },
+        {
+          "cycle": 500,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 95096832,
+          "tracemalloc_current_bytes": 69560,
+          "tracemalloc_peak_bytes": 1012030
+        },
+        {
+          "cycle": 600,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94527488,
+          "tracemalloc_current_bytes": 72353,
+          "tracemalloc_peak_bytes": 1019028
+        },
+        {
+          "cycle": 700,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94539776,
+          "tracemalloc_current_bytes": 73243,
+          "tracemalloc_peak_bytes": 1019028
+        },
+        {
+          "cycle": 750,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94539776,
+          "tracemalloc_current_bytes": 73745,
+          "tracemalloc_peak_bytes": 1019028
+        },
+        {
+          "cycle": 800,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 95531008,
+          "tracemalloc_current_bytes": 75639,
+          "tracemalloc_peak_bytes": 1023526
+        },
+        {
+          "cycle": 900,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 95531008,
+          "tracemalloc_current_bytes": 76750,
+          "tracemalloc_peak_bytes": 1023526
+        },
+        {
+          "cycle": 1000,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 95531008,
+          "tracemalloc_current_bytes": 77343,
+          "tracemalloc_peak_bytes": 1023526
+        }
+      ],
+      "equal_windows": [
+        {
+          "end_cycle": 250,
+          "retained_growth_bytes": 62321,
+          "retained_growth_bytes_per_cycle": 249.284,
+          "start_cycle": 1,
+          "window": "W1"
+        },
+        {
+          "end_cycle": 500,
+          "retained_growth_bytes": 7239,
+          "retained_growth_bytes_per_cycle": 28.956,
+          "start_cycle": 251,
+          "window": "W2"
+        },
+        {
+          "end_cycle": 750,
+          "retained_growth_bytes": 4185,
+          "retained_growth_bytes_per_cycle": 16.74,
+          "start_cycle": 501,
+          "window": "W3"
+        },
+        {
+          "end_cycle": 1000,
+          "retained_growth_bytes": 3598,
+          "retained_growth_bytes_per_cycle": 14.392,
+          "start_cycle": 751,
+          "window": "W4"
+        }
+      ],
+      "functional_output_deterministic": true,
+      "late_half_slope_lower_than_early_half": true,
+      "measured_cycles": 1000,
+      "object_count_deltas": [
+        {
+          "all_type_count_delta_count": 5,
+          "builtin_dict_count_delta": 1,
+          "cycle": 250,
+          "focused_type_count_deltas_from_warmup": {
+            "tracemalloc.Snapshot": 1,
+            "tracemalloc._Traces": 1
+          },
+          "largest_positive_type_deltas": [
+            [
+              "builtins.tuple",
+              1262
+            ],
+            [
+              "builtins.list",
+              3
+            ],
+            [
+              "builtins.dict",
+              1
+            ],
+            [
+              "tracemalloc.Snapshot",
+              1
+            ],
+            [
+              "tracemalloc._Traces",
+              1
+            ]
+          ]
+        },
+        {
+          "all_type_count_delta_count": 5,
+          "builtin_dict_count_delta": 2,
+          "cycle": 500,
+          "focused_type_count_deltas_from_warmup": {
+            "tracemalloc.Snapshot": 2,
+            "tracemalloc._Traces": 2
+          },
+          "largest_positive_type_deltas": [
+            [
+              "builtins.tuple",
+              1384
+            ],
+            [
+              "builtins.list",
+              5
+            ],
+            [
+              "builtins.dict",
+              2
+            ],
+            [
+              "tracemalloc.Snapshot",
+              2
+            ],
+            [
+              "tracemalloc._Traces",
+              2
+            ]
+          ]
+        },
+        {
+          "all_type_count_delta_count": 5,
+          "builtin_dict_count_delta": 3,
+          "cycle": 750,
+          "focused_type_count_deltas_from_warmup": {
+            "tracemalloc.Snapshot": 3,
+            "tracemalloc._Traces": 3
+          },
+          "largest_positive_type_deltas": [
+            [
+              "builtins.tuple",
+              1440
+            ],
+            [
+              "builtins.list",
+              7
+            ],
+            [
+              "builtins.dict",
+              3
+            ],
+            [
+              "tracemalloc.Snapshot",
+              3
+            ],
+            [
+              "tracemalloc._Traces",
+              3
+            ]
+          ]
+        },
+        {
+          "all_type_count_delta_count": 5,
+          "builtin_dict_count_delta": 4,
+          "cycle": 1000,
+          "focused_type_count_deltas_from_warmup": {
+            "tracemalloc.Snapshot": 4,
+            "tracemalloc._Traces": 4
+          },
+          "largest_positive_type_deltas": [
+            [
+              "builtins.tuple",
+              1495
+            ],
+            [
+              "builtins.list",
+              9
+            ],
+            [
+              "builtins.dict",
+              4
+            ],
+            [
+              "tracemalloc.Snapshot",
+              4
+            ],
+            [
+              "tracemalloc._Traces",
+              4
+            ]
+          ]
+        }
+      ],
+      "positive_product_traceback_growth_detected": false,
+      "product_defined_type_growth_detected": false,
+      "product_traceback_allocation_rates_per_window": [
+        {
+          "counts_per_cycle": [
+            0.168,
+            0.056,
+            0.044,
+            0.036,
+            0.04
+          ],
+          "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+        }
+      ],
+      "rss_baseline_bytes": 21770240,
+      "rss_delta_bytes": 1589248,
+      "rss_independent_linear_growth_pattern": false,
+      "rss_post_bytes": 94777344,
+      "rss_pre_bytes": 93188096,
+      "rss_window_slopes_bytes_per_cycle": [
+        3424.256,
+        4210.688,
+        -2228.224,
+        3964.928
+      ],
+      "scenario": "M8_long_horizon_identical_bounded_workload",
+      "scenario_status": "PASS_BOUNDED_CACHE_STABILIZATION",
+      "serialized_input_bytes_total": 1440000,
+      "serialized_output_bytes_total": 19306000,
+      "slopes_decline_across_equal_windows": true,
+      "strict_monotonic_5_cycle_result": "HISTORICAL_SHORT_HORIZON_FALSE_POSITIVE_FOR_FINAL_CLASSIFICATION",
+      "traceback_classification_review_required": true,
+      "traceback_window_diffs": [
+        {
+          "from_cycle": 250,
+          "to_cycle": 500,
+          "top_retained_diffs": [
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 42,
+              "size_diff_bytes": 2100,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 23,
+              "size_diff_bytes": 1081,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 848,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": -14,
+              "size_diff_bytes": -826,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 12,
+              "size_diff_bytes": 708,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 14,
+              "size_diff_bytes": 700,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 9,
+              "size_diff_bytes": 531,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -9,
+              "size_diff_bytes": -423,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -9,
+              "size_diff_bytes": -423,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 328,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 328,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 315,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 5,
+              "size_diff_bytes": 295,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 5,
+              "size_diff_bytes": 284,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 6,
+              "size_diff_bytes": 282,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -6,
+              "size_diff_bytes": -282,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 5,
+              "size_diff_bytes": 280,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 216,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -4,
+              "size_diff_bytes": -188,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 4,
+              "size_diff_bytes": 188,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -4,
+              "size_diff_bytes": -188,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 3,
+              "size_diff_bytes": 177,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": -3,
+              "size_diff_bytes": -177,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 168,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 1,
+              "size_diff_bytes": 160,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 1,
+              "size_diff_bytes": 120,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 2,
+              "size_diff_bytes": 112,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            }
+          ]
+        },
+        {
+          "from_cycle": 500,
+          "to_cycle": 750,
+          "top_retained_diffs": [
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -23,
+              "size_diff_bytes": -1081,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 20,
+              "size_diff_bytes": 940,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 880,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -15,
+              "size_diff_bytes": -705,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 11,
+              "size_diff_bytes": 550,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 9,
+              "size_diff_bytes": 450,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 9,
+              "size_diff_bytes": 423,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 6,
+              "size_diff_bytes": 354,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 6,
+              "size_diff_bytes": 354,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 320,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 320,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 315,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": -5,
+              "size_diff_bytes": -295,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": -5,
+              "size_diff_bytes": -295,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": -5,
+              "size_diff_bytes": -295,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 5,
+              "size_diff_bytes": 284,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 6,
+              "size_diff_bytes": 282,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 6,
+              "size_diff_bytes": 282,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 6,
+              "size_diff_bytes": 282,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 5,
+              "size_diff_bytes": 280,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 5,
+              "size_diff_bytes": 235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -5,
+              "size_diff_bytes": -235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -4,
+              "size_diff_bytes": -188,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 2,
+              "size_diff_bytes": 184,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 3,
+              "size_diff_bytes": 177,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 168,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -3,
+              "size_diff_bytes": -141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -3,
+              "size_diff_bytes": -141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -3,
+              "size_diff_bytes": -141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            }
+          ]
+        },
+        {
+          "from_cycle": 750,
+          "to_cycle": 1000,
+          "top_retained_diffs": [
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -23,
+              "size_diff_bytes": -1081,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 816,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 10,
+              "size_diff_bytes": 500,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -8,
+              "size_diff_bytes": -376,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": -6,
+              "size_diff_bytes": -354,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 315,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 312,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 312,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": -6,
+              "size_diff_bytes": -300,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 5,
+              "size_diff_bytes": 295,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 5,
+              "size_diff_bytes": 284,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 6,
+              "size_diff_bytes": 282,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 5,
+              "size_diff_bytes": 280,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 5,
+              "size_diff_bytes": 235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -5,
+              "size_diff_bytes": -235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -5,
+              "size_diff_bytes": -235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 5,
+              "size_diff_bytes": 235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 5,
+              "size_diff_bytes": 235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 5,
+              "size_diff_bytes": 235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -5,
+              "size_diff_bytes": -235,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 2,
+              "size_diff_bytes": 184,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 3,
+              "size_diff_bytes": 177,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": -3,
+              "size_diff_bytes": -177,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 168,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:428"
+            }
+          ]
+        }
+      ],
+      "tracemalloc_current_bytes": 179891,
+      "tracemalloc_peak_bytes": 1027135,
+      "warmup_cycles": 30,
+      "warmup_statuses": [
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable"
+      ]
+    }
+  ],
+  "schema": "phase_l_l4_a6_memory_acceptance_matrix.v3",
+  "status": "PASS_REPRESENTATIVE_BOUNDED_WORKLOADS",
+  "strict_monotonic_5_cycle_result": "HISTORICAL_SHORT_HORIZON_FALSE_POSITIVE_FOR_FINAL_CLASSIFICATION",
+  "strict_monotonic_retained_growth_detected": false
+}

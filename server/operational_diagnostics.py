@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import shutil
 import sys
+import threading
 import time
 from typing import Any, Callable, TextIO
 import uuid
@@ -41,6 +42,61 @@ _METRIC_FIELDS = frozenset({
     "duration_ms", "http_status", "request_bytes", "response_bytes",
     "child_returncode", "process_memory_bytes", "operation_count",
 })
+
+# Windows ctypes metadata is process-global and must not be recreated for each
+# sample. Keep the structure and pointer type stable, and initialize DLL
+# handles/prototypes through a single lazy, thread-safe authority.
+_WINDOWS_MEMORY_API_LOCK = threading.Lock()
+_WINDOWS_MEMORY_API: tuple[Any, Any] | None = None
+_WINDOWS_MEMORY_API_FAILED = False
+if os.name == "nt":
+    from ctypes import wintypes
+
+    class _WindowsProcessMemoryCounters(ctypes.Structure):
+        _fields_ = [
+            ("cb", wintypes.DWORD), ("PageFaultCount", wintypes.DWORD),
+            ("PeakWorkingSetSize", ctypes.c_size_t), ("WorkingSetSize", ctypes.c_size_t),
+            ("QuotaPeakPagedPoolUsage", ctypes.c_size_t), ("QuotaPagedPoolUsage", ctypes.c_size_t),
+            ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t), ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+            ("PagefileUsage", ctypes.c_size_t), ("PeakPagefileUsage", ctypes.c_size_t),
+        ]
+
+    _WINDOWS_MEMORY_COUNTERS_POINTER = ctypes.POINTER(_WindowsProcessMemoryCounters)
+else:
+    _WindowsProcessMemoryCounters = None
+    _WINDOWS_MEMORY_COUNTERS_POINTER = None
+
+
+def _windows_memory_api() -> tuple[Any, Any] | None:
+    global _WINDOWS_MEMORY_API, _WINDOWS_MEMORY_API_FAILED
+    if os.name != "nt" or _WINDOWS_MEMORY_API_FAILED:
+        return None
+    if _WINDOWS_MEMORY_API is not None:
+        return _WINDOWS_MEMORY_API
+    with _WINDOWS_MEMORY_API_LOCK:
+        if _WINDOWS_MEMORY_API is not None:
+            return _WINDOWS_MEMORY_API
+        if _WINDOWS_MEMORY_API_FAILED:
+            return None
+        try:
+            from ctypes import wintypes
+
+            kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+            psapi = ctypes.WinDLL("psapi", use_last_error=True)
+            kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+            kernel.OpenProcess.restype = wintypes.HANDLE
+            kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+            kernel.CloseHandle.restype = wintypes.BOOL
+            psapi.GetProcessMemoryInfo.argtypes = [
+                wintypes.HANDLE,
+                _WINDOWS_MEMORY_COUNTERS_POINTER,
+                wintypes.DWORD,
+            ]
+            psapi.GetProcessMemoryInfo.restype = wintypes.BOOL
+            _WINDOWS_MEMORY_API = (kernel, psapi)
+        except (OSError, AttributeError, TypeError):
+            _WINDOWS_MEMORY_API_FAILED = True
+        return _WINDOWS_MEMORY_API
 
 
 def normalize_trace_id(value: object) -> str | None:
@@ -81,30 +137,15 @@ def process_memory_bytes(pid: int | None = None) -> int | None:
         return None
     try:
         if os.name == "nt":
-            from ctypes import wintypes
-
-            class ProcessMemoryCounters(ctypes.Structure):
-                _fields_ = [
-                    ("cb", wintypes.DWORD), ("PageFaultCount", wintypes.DWORD),
-                    ("PeakWorkingSetSize", ctypes.c_size_t), ("WorkingSetSize", ctypes.c_size_t),
-                    ("QuotaPeakPagedPoolUsage", ctypes.c_size_t), ("QuotaPagedPoolUsage", ctypes.c_size_t),
-                    ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t), ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
-                    ("PagefileUsage", ctypes.c_size_t), ("PeakPagefileUsage", ctypes.c_size_t),
-                ]
-
-            kernel = ctypes.WinDLL("kernel32", use_last_error=True)
-            psapi = ctypes.WinDLL("psapi", use_last_error=True)
-            kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
-            kernel.OpenProcess.restype = wintypes.HANDLE
-            kernel.CloseHandle.argtypes = [wintypes.HANDLE]
-            kernel.CloseHandle.restype = wintypes.BOOL
-            psapi.GetProcessMemoryInfo.argtypes = [wintypes.HANDLE, ctypes.POINTER(ProcessMemoryCounters), wintypes.DWORD]
-            psapi.GetProcessMemoryInfo.restype = wintypes.BOOL
+            api = _windows_memory_api()
+            if api is None or _WindowsProcessMemoryCounters is None:
+                return None
+            kernel, psapi = api
             handle = kernel.OpenProcess(0x1000, False, target)
             if not handle:
                 return None
             try:
-                counters = ProcessMemoryCounters()
+                counters = _WindowsProcessMemoryCounters()
                 counters.cb = ctypes.sizeof(counters)
                 if not psapi.GetProcessMemoryInfo(handle, ctypes.byref(counters), counters.cb):
                     return None

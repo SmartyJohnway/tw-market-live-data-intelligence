@@ -1,0 +1,135 @@
+{
+  "checkpoints": [
+    {
+      "all_type_count_delta_count": 3,
+      "builtin_dict_count_delta": 0,
+      "cycle": 250,
+      "focused_type_count_deltas_from_warmup": {
+        "tracemalloc.Snapshot": 1,
+        "tracemalloc._Traces": 1
+      },
+      "largest_positive_type_deltas": [
+        [
+          "builtins.list",
+          4
+        ],
+        [
+          "tracemalloc._Traces",
+          1
+        ],
+        [
+          "tracemalloc.Snapshot",
+          1
+        ]
+      ]
+    },
+    {
+      "all_type_count_delta_count": 5,
+      "builtin_dict_count_delta": 33,
+      "cycle": 500,
+      "focused_type_count_deltas_from_warmup": {
+        "tracemalloc.Snapshot": 1,
+        "tracemalloc.Traceback": 1,
+        "tracemalloc._Traces": 1
+      },
+      "largest_positive_type_deltas": [
+        [
+          "builtins.list",
+          37
+        ],
+        [
+          "builtins.dict",
+          33
+        ],
+        [
+          "tracemalloc.Traceback",
+          1
+        ],
+        [
+          "tracemalloc._Traces",
+          1
+        ],
+        [
+          "tracemalloc.Snapshot",
+          1
+        ]
+      ]
+    },
+    {
+      "all_type_count_delta_count": 5,
+      "builtin_dict_count_delta": 65,
+      "cycle": 750,
+      "focused_type_count_deltas_from_warmup": {
+        "tracemalloc.Snapshot": 1,
+        "tracemalloc.Traceback": 1,
+        "tracemalloc._Traces": 1
+      },
+      "largest_positive_type_deltas": [
+        [
+          "builtins.list",
+          69
+        ],
+        [
+          "builtins.dict",
+          65
+        ],
+        [
+          "tracemalloc.Traceback",
+          1
+        ],
+        [
+          "tracemalloc._Traces",
+          1
+        ],
+        [
+          "tracemalloc.Snapshot",
+          1
+        ]
+      ]
+    },
+    {
+      "all_type_count_delta_count": 5,
+      "builtin_dict_count_delta": 97,
+      "cycle": 1000,
+      "focused_type_count_deltas_from_warmup": {
+        "tracemalloc.Snapshot": 1,
+        "tracemalloc.Traceback": 1,
+        "tracemalloc._Traces": 1
+      },
+      "largest_positive_type_deltas": [
+        [
+          "builtins.list",
+          101
+        ],
+        [
+          "builtins.dict",
+          97
+        ],
+        [
+          "tracemalloc.Traceback",
+          1
+        ],
+        [
+          "tracemalloc._Traces",
+          1
+        ],
+        [
+          "tracemalloc.Snapshot",
+          1
+        ]
+      ]
+    }
+  ],
+  "interpretation": {
+    "builtin_dict_count_deltas": [
+      0,
+      33,
+      65,
+      97
+    ],
+    "generic_builtin_dict_count_increase_observed": true,
+    "note": "Generic builtin dict growth is reported without attributing ownership by type alone; full retained allocation tracebacks show product-frame growth decelerating across equal windows. No request/result/schema domain class showed proportional growth.",
+    "product_defined_type_growth_detected": false
+  },
+  "schema": "phase_l_l4_a6_r3_memory_object_count_matrix.v1"
+}

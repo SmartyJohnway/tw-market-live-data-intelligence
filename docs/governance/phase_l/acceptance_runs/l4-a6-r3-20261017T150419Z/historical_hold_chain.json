@@ -1,0 +1,43 @@
+{
+  "schema": "phase_l_l4_a6_r3_historical_hold_chain.v1",
+  "sequence": [
+    {
+      "disposition": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_HOLD",
+      "manifest_canonical_sha256": "c8fb561b2f82a05e764010ca79871fb4b9cc75f60ee1b59dee599fd2afda6b37",
+      "manifest_file_sha256": "bf74ae7b27f4f7a57552d7ff26aa424c134e083f959c71e521fd3808196d9523",
+      "run_id": "l4-a6-20261017T134505Z",
+      "stage": "initial_A6"
+    },
+    {
+      "expected_sha256": "a9ef54629c28de13132310ff0afe9eaa982eeb7c8678f70996bf854d4b84ac01",
+      "file": "memory_acceptance_matrix.json",
+      "run_id": "l4-a6-r1-20261017T140430Z",
+      "sha256": "a9ef54629c28de13132310ff0afe9eaa982eeb7c8678f70996bf854d4b84ac01",
+      "stage": "R1_memory_hold",
+      "status": "HOLD_RUNAWAY_GROWTH"
+    },
+    {
+      "file": "sampler_retention_repair.json",
+      "run_id": "l4-a6-r2-20261017T141119Z",
+      "sha256": "7307326bbc6dd6d53921a6499768965f91c494f8bee2869798a908d8ffc5db0e",
+      "stage": "R2_sampler_repair",
+      "status": "PASS"
+    },
+    {
+      "expected_sha256": "ce55533ea845db477d586410eabedb77023c520922c2caffe08893e11d221e5a",
+      "file": "memory_acceptance_matrix.json",
+      "run_id": "l4-a6-r2-20261017T141119Z",
+      "sha256": "ce55533ea845db477d586410eabedb77023c520922c2caffe08893e11d221e5a",
+      "stage": "R2_memory_hold",
+      "status": "HOLD_RUNAWAY_GROWTH"
+    },
+    {
+      "expected_sha256": "83fba3cc5c8d4bcb0a1bd8868d0ee0bf2484e51303e1baf9506cca07a51f533f",
+      "file": "m8_30_cycle_diagnostic.json",
+      "run_id": "l4-a6-r2-20261017T141119Z",
+      "sha256": "83fba3cc5c8d4bcb0a1bd8868d0ee0bf2484e51303e1baf9506cca07a51f533f",
+      "stage": "R2_30_cycle_diagnostic",
+      "status": "INSUFFICIENT_TO_DEMONSTRATE_STABILIZATION"
+    }
+  ]
+}

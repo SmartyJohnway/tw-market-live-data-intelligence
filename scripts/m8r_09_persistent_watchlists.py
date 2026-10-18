@@ -237,7 +237,81 @@ class PersistentWatchlistStore:
         finally:
             con.close()
 
+    def _inspect_schema_readonly(self) -> tuple[bool, list[int], set[str], set[str]]:
+        """Inspect an existing authority without opening it for mutation."""
+        self.path = self._validate_storage_path()
+        if not self.path.exists():
+            return False, [], set(), set()
+        uri = self.path.as_uri() + "?mode=ro"
+        try:
+            con = sqlite3.connect(uri, uri=True, timeout=5, isolation_level=None)
+            try:
+                tables = {
+                    row[0]
+                    for row in con.execute(
+                        "SELECT name FROM sqlite_master WHERE type='table'"
+                    )
+                }
+                indexes = {
+                    row[0]
+                    for row in con.execute(
+                        "SELECT name FROM sqlite_master WHERE type='index'"
+                    )
+                }
+                if "schema_migrations" not in tables:
+                    return True, [], tables, indexes
+                versions = [
+                    row[0]
+                    for row in con.execute(
+                        "SELECT version FROM schema_migrations ORDER BY version"
+                    )
+                ]
+                integrity = con.execute("PRAGMA integrity_check").fetchone()[0]
+                if integrity != "ok":
+                    raise WatchlistError("WATCHLIST_STORAGE_CORRUPT")
+                if any(version > SCHEMA_VERSION for version in versions):
+                    raise WatchlistError("WATCHLIST_STORAGE_SCHEMA_UNSUPPORTED")
+                if versions not in ([], [SCHEMA_VERSION]):
+                    raise WatchlistError("WATCHLIST_STORAGE_SCHEMA_UNSUPPORTED")
+                return True, versions, tables, indexes
+            finally:
+                con.close()
+        except sqlite3.DatabaseError as exc:
+            raise WatchlistError("WATCHLIST_STORAGE_CORRUPT") from exc
+
     def _initialize(self) -> None:
+        exists, versions, tables, indexes = self._inspect_schema_readonly()
+        required_tables = {
+            "schema_migrations", "watchlists", "entries", "revisions",
+            "mutation_previews",
+        }
+        required_index = "watchlists_one_active_default"
+        if exists and versions == [SCHEMA_VERSION] and required_tables <= tables:
+            if required_index in indexes:
+                return
+            # The only supported current-schema repair is restoring the
+            # required index, and it must be admitted before opening writable.
+            self._admit_sqlite_write(self._initial_schema_growth_bytes())
+            con = self._connect()
+            try:
+                con.execute(
+                    "CREATE UNIQUE INDEX watchlists_one_active_default "
+                    "ON watchlists(is_default) WHERE is_default=1 AND deleted=0"
+                )
+            except sqlite3.DatabaseError as exc:
+                raise WatchlistError("WATCHLIST_STORAGE_CORRUPT") from exc
+            finally:
+                con.close()
+            return
+        if exists and versions == [SCHEMA_VERSION] and not required_tables <= tables:
+            raise WatchlistError("WATCHLIST_STORAGE_CORRUPT")
+        if exists and versions and versions != [SCHEMA_VERSION]:
+            raise WatchlistError("WATCHLIST_STORAGE_SCHEMA_UNSUPPORTED")
+        if exists and not versions and (tables - {"schema_migrations"}):
+            raise WatchlistError("WATCHLIST_STORAGE_CORRUPT")
+
+        # A new authority or genuinely incomplete, unversioned schema may
+        # write. Admission occurs before sqlite3.connect can create the file.
         self._admit_sqlite_write(self._initial_schema_growth_bytes())
         con = self._connect()
         try:

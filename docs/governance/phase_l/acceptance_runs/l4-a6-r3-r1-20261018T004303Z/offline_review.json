@@ -1,0 +1,41 @@
+{
+  "schema": "phase_l_l4_a6_r3_r1_offline_review.v1",
+  "run_id": "l4-a6-r3-r1-20261018T004303Z",
+  "provider_requests": 0,
+  "external_socket_attempts": 0,
+  "production_user_state_mutations": 0,
+  "production_code_changes_in_r3_r1": 0,
+  "test_semantic_changes_in_r3_r1": 0,
+  "dependency_schema_config_changes_in_r3_r1": 0,
+  "integrated_gate": {
+    "passed": 308,
+    "failed": 0,
+    "skipped": 1,
+    "deselected": 2,
+    "new_deselections": 0,
+    "unexpected_failures": 0,
+    "command_file": "integrated_gate_command.txt"
+  },
+  "governed_historical_nodes": {
+    "count": 2,
+    "passing": false,
+    "repaired": false,
+    "current_regression": false
+  },
+  "r3_memory_timeout_disk_middleware_findings_reused_unchanged": true,
+  "validators": {
+    "verify_dependency_supply_chain": "PASS",
+    "verify_environment": "PASS",
+    "pip_check": "PASS",
+    "source_registry": "PASS",
+    "portable_catalog_sync": "PASS",
+    "runtime_skill_exact_six": "PASS",
+    "v1_exact_six": "PASS",
+    "unified_contracts": "PASS",
+    "phase_h_v3": "PASS",
+    "compileall": "PASS",
+    "changed_file_py_compile": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "disposition": "PASS_GOVERNED_GATE_CORRECTION"
+}

@@ -1,0 +1,381 @@
+{
+  "cycles": [
+    {
+      "cycle": 1,
+      "rss_post_bytes": 54849536,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16441130,
+      "tracemalloc_peak_bytes": 16556156
+    },
+    {
+      "cycle": 2,
+      "rss_post_bytes": 71196672,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16429268,
+      "tracemalloc_peak_bytes": 16831315
+    },
+    {
+      "cycle": 3,
+      "rss_post_bytes": 71278592,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16430411,
+      "tracemalloc_peak_bytes": 16831315
+    },
+    {
+      "cycle": 4,
+      "rss_post_bytes": 71319552,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16432161,
+      "tracemalloc_peak_bytes": 16831315
+    },
+    {
+      "cycle": 5,
+      "rss_post_bytes": 71409664,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16433484,
+      "tracemalloc_peak_bytes": 16831315
+    },
+    {
+      "cycle": 6,
+      "rss_post_bytes": 85118976,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16435903,
+      "tracemalloc_peak_bytes": 16832787
+    },
+    {
+      "cycle": 7,
+      "rss_post_bytes": 85172224,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16438206,
+      "tracemalloc_peak_bytes": 16835074
+    },
+    {
+      "cycle": 8,
+      "rss_post_bytes": 85196800,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16439343,
+      "tracemalloc_peak_bytes": 16836673
+    },
+    {
+      "cycle": 9,
+      "rss_post_bytes": 85225472,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16440847,
+      "tracemalloc_peak_bytes": 16838075
+    },
+    {
+      "cycle": 10,
+      "rss_post_bytes": 85225472,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16442338,
+      "tracemalloc_peak_bytes": 16839558
+    },
+    {
+      "cycle": 11,
+      "rss_post_bytes": 98091008,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16444056,
+      "tracemalloc_peak_bytes": 16841268
+    },
+    {
+      "cycle": 12,
+      "rss_post_bytes": 98197504,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16445608,
+      "tracemalloc_peak_bytes": 16842718
+    },
+    {
+      "cycle": 13,
+      "rss_post_bytes": 98209792,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16446683,
+      "tracemalloc_peak_bytes": 16843879
+    },
+    {
+      "cycle": 14,
+      "rss_post_bytes": 98287616,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16448437,
+      "tracemalloc_peak_bytes": 16845625
+    },
+    {
+      "cycle": 15,
+      "rss_post_bytes": 98287616,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16449449,
+      "tracemalloc_peak_bytes": 16846680
+    },
+    {
+      "cycle": 16,
+      "rss_post_bytes": 98287616,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16450409,
+      "tracemalloc_peak_bytes": 16847526
+    },
+    {
+      "cycle": 17,
+      "rss_post_bytes": 98287616,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16451277,
+      "tracemalloc_peak_bytes": 16848433
+    },
+    {
+      "cycle": 18,
+      "rss_post_bytes": 98287616,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16452404,
+      "tracemalloc_peak_bytes": 16849505
+    },
+    {
+      "cycle": 19,
+      "rss_post_bytes": 98287616,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16453259,
+      "tracemalloc_peak_bytes": 16850399
+    },
+    {
+      "cycle": 20,
+      "rss_post_bytes": 98287616,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16454004,
+      "tracemalloc_peak_bytes": 16851136
+    },
+    {
+      "cycle": 21,
+      "rss_post_bytes": 112189440,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16456293,
+      "tracemalloc_peak_bytes": 16852665
+    },
+    {
+      "cycle": 22,
+      "rss_post_bytes": 112242688,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16457085,
+      "tracemalloc_peak_bytes": 16854248
+    },
+    {
+      "cycle": 23,
+      "rss_post_bytes": 112328704,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16458292,
+      "tracemalloc_peak_bytes": 16855392
+    },
+    {
+      "cycle": 24,
+      "rss_post_bytes": 112345088,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16458808,
+      "tracemalloc_peak_bytes": 16855900
+    },
+    {
+      "cycle": 25,
+      "rss_post_bytes": 112377856,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16459388,
+      "tracemalloc_peak_bytes": 16856472
+    },
+    {
+      "cycle": 26,
+      "rss_post_bytes": 112394240,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16460330,
+      "tracemalloc_peak_bytes": 16857406
+    },
+    {
+      "cycle": 27,
+      "rss_post_bytes": 112402432,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16461038,
+      "tracemalloc_peak_bytes": 16858106
+    },
+    {
+      "cycle": 28,
+      "rss_post_bytes": 112406528,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16461917,
+      "tracemalloc_peak_bytes": 16859036
+    },
+    {
+      "cycle": 29,
+      "rss_post_bytes": 112406528,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16462662,
+      "tracemalloc_peak_bytes": 16859717
+    },
+    {
+      "cycle": 30,
+      "rss_post_bytes": 112406528,
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 16463552,
+      "tracemalloc_peak_bytes": 16860596
+    }
+  ],
+  "rss_series_strictly_monotonic": false,
+  "schema": "phase_l_l4_a6_m8_30_cycle_diagnostic.v1",
+  "snapshot_1_to_30_top_retained_diffs": [
+    {
+      "count_diff": 176,
+      "size_diff_bytes": 10384,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\pathlib\\_local.py:537"
+    },
+    {
+      "count_diff": 58,
+      "size_diff_bytes": 8112,
+      "traceback": "<stdin>:13"
+    },
+    {
+      "count_diff": 165,
+      "size_diff_bytes": 7755,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\jsonschema\\_types.py:116"
+    },
+    {
+      "count_diff": 112,
+      "size_diff_bytes": 5600,
+      "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\m8r_03d_f1_security_master_snapshot_exporter.py:34"
+    },
+    {
+      "count_diff": -34,
+      "size_diff_bytes": -3424,
+      "traceback": "<frozen importlib._bootstrap_external>:784"
+    },
+    {
+      "count_diff": -12,
+      "size_diff_bytes": -2667,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\ctypes\\__init__.py:203"
+    },
+    {
+      "count_diff": -29,
+      "size_diff_bytes": -2464,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\dataclasses.py:498"
+    },
+    {
+      "count_diff": 58,
+      "size_diff_bytes": 1624,
+      "traceback": "<stdin>:12"
+    },
+    {
+      "count_diff": 58,
+      "size_diff_bytes": 1624,
+      "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:28"
+    },
+    {
+      "count_diff": 1,
+      "size_diff_bytes": 1520,
+      "traceback": "<stdin>:8"
+    },
+    {
+      "count_diff": 4,
+      "size_diff_bytes": 1264,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:560"
+    },
+    {
+      "count_diff": 4,
+      "size_diff_bytes": 1264,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:423"
+    },
+    {
+      "count_diff": -24,
+      "size_diff_bytes": -1128,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\referencing\\_core.py:496"
+    },
+    {
+      "count_diff": 29,
+      "size_diff_bytes": 812,
+      "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:152"
+    },
+    {
+      "count_diff": -1,
+      "size_diff_bytes": -768,
+      "traceback": "<stdin>:11"
+    },
+    {
+      "count_diff": -14,
+      "size_diff_bytes": -658,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\referencing\\_core.py:503"
+    },
+    {
+      "count_diff": 12,
+      "size_diff_bytes": 640,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:558"
+    },
+    {
+      "count_diff": -6,
+      "size_diff_bytes": -345,
+      "traceback": "<frozen importlib._bootstrap_external>:1217"
+    },
+    {
+      "count_diff": -5,
+      "size_diff_bytes": -275,
+      "traceback": "<frozen abc>:123"
+    },
+    {
+      "count_diff": 5,
+      "size_diff_bytes": 256,
+      "traceback": "<stdin>:14"
+    },
+    {
+      "count_diff": -2,
+      "size_diff_bytes": -240,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\ctypes\\__init__.py:166"
+    },
+    {
+      "count_diff": -2,
+      "size_diff_bytes": -240,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\ctypes\\__init__.py:217"
+    },
+    {
+      "count_diff": -2,
+      "size_diff_bytes": -240,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\ctypes\\__init__.py:213"
+    },
+    {
+      "count_diff": -2,
+      "size_diff_bytes": -240,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\ctypes\\__init__.py:199"
+    },
+    {
+      "count_diff": -2,
+      "size_diff_bytes": -240,
+      "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\ctypes\\__init__.py:170"
+    }
+  ],
+  "snapshot_cycle_labels": [
+    1,
+    5,
+    10,
+    20,
+    30
+  ],
+  "tracemalloc_series_strictly_monotonic": false
+}

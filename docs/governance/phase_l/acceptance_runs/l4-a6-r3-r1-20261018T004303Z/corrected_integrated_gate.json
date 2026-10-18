@@ -1,0 +1,19 @@
+{
+  "schema": "phase_l_l4_a6_r3_r1_integrated_gate.v1",
+  "run_id": "l4-a6-r3-r1-20261018T004303Z",
+  "scope": "same bounded integrated regression scope as R3; only two TG4-governed Mode C historical nodes deselected",
+  "command_file": "integrated_gate_command.txt",
+  "exit_code": 0,
+  "passed": 308,
+  "failed": 0,
+  "skipped": 1,
+  "deselected": 2,
+  "governed_deselection_nodes": [
+    "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected"
+  ],
+  "new_deselections": 0,
+  "unexpected_failures": 0,
+  "warnings": 600,
+  "result": "PASS"
+}

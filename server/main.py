@@ -100,11 +100,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Browser-origin checks protect privileged control-plane POSTs. CORS remains
-# browser policy only. The network-origin boundary is added last and stays
-# outermost, so remote socket evidence is rejected before this middleware.
-app.add_middleware(LocalControlPlaneBoundaryMiddleware)
+# Last-added middleware is outermost. This order rejects remote socket scope,
+# then cross-origin privileged browser requests, before consuming the resource
+# admission slot; CORS remains the inner browser policy layer.
 app.add_middleware(ResourceAdmissionMiddleware)
+app.add_middleware(LocalControlPlaneBoundaryMiddleware)
 
 # CORS is browser policy, not network access control. Enforce socket-origin
 # loopback at the application boundary for every HTTP route, including routes

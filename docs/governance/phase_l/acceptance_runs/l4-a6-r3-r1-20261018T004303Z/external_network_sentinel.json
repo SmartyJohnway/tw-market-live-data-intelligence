@@ -1,0 +1,10 @@
+{
+  "schema": "phase_l_l4_a6_r3_r1_network_sentinel.v1",
+  "sentinel": "tests/helpers/phase_l_a6_pre1_network/sitecustomize.py",
+  "external_socket_attempts": 0,
+  "provider_requests": 0,
+  "live_acquisition": 0,
+  "production_user_state_mutations": 0,
+  "loopback_allowed_by_policy": true,
+  "result": "PASS"
+}
