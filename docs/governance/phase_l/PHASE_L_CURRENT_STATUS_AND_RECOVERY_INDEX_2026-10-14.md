@@ -7,7 +7,7 @@
 **L1:** CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`
 **L2:** CLOSED under `PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L2_EXIT_REVIEW_PASS`; PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`
 **L3:** CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`; A0-A6 Owner-accepted and merged (A0-A5 PRs #355/#357/#359/#361/#363/#365; A6 PR #367); A6 remains PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven), one-shot authority consumed, second run prohibited
-**L4:** STARTED; L4-A0 through A4 Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 Owner-accepted and merged at c8c23e2; L4-A6 technical candidate TECHNICAL PASS / OWNER ACCEPTANCE PENDING under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS`; L4-A7 and L5-L7 NOT AUTHORIZED.
+**L4:** STARTED; L4-A0 through A4 Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 Owner-accepted and merged at c8c23e2; L4-A6 OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS`, PR #375, merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`; L4-A7 and L5-L7 NOT AUTHORIZED.
 **L5-L7:** NOT STARTED / NOT AUTHORIZED
 
 ## 1. Read this first in a new conversation
@@ -132,4 +132,4 @@ If Git reality and this index ever disagree, Git plus higher-order governance au
 
 ## L4-A6 R3 continuation status (2026-10-18)
 
-L4-A6 is `TECHNICAL PASS / OWNER ACCEPTANCE PENDING` under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS`. R3 remains historical: its exact invocation correctly reported 308 passed, 2 failures, 1 skipped, and 0 deselected. R3-R1 restored the two TG4-governed historical Mode C deselections; the corrected gate reported 308 passed, 1 skipped, 2 governed deselected, and 0 failed. Those nodes remain unrepaired and are not represented as passing. L4-A7 remains NOT AUTHORIZED. See `PHASE_L_L4_A6_R3_R1_GOVERNED_HISTORICAL_GATE_CORRECTION_2026-10-18.md`.
+L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with final technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`). R3 remains historical: its exact invocation correctly reported 308 passed, 2 failures, 1 skipped, and 0 deselected. R3-R1 restored the two TG4-governed historical Mode C deselections; the corrected gate reported 308 passed, 1 skipped, 2 governed deselected, and 0 failed. Those nodes remain unrepaired and are not represented as passing. L4-A7 remains NOT AUTHORIZED. See `PHASE_L_L4_A6_R3_R1_GOVERNED_HISTORICAL_GATE_CORRECTION_2026-10-18.md`.
