@@ -1,6 +1,6 @@
 # Phase L5-A0 — Evidence-Family Extension Surface Inventory & Minimum Contract Preflight
 
-Date: 2026-10-18 (Asia/Taipei). Status: OWNER-ACCEPTED FOR MERGE.
+Date: 2026-10-18 (Asia/Taipei). Status: OWNER-ACCEPTED AND MERGED (PR #380; merge commit `241a5249987c008a28d959677704eee483a1c216`).
 
 Disposition: `L5_A0_EVIDENCE_FAMILY_EXTENSION_SURFACE_INVENTORY_COMPLETE`.
 
@@ -237,7 +237,7 @@ a future family, certify all current regression tests, or constitute Owner accep
 ## Stop boundary
 
 L4 remains CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
-L5 is STARTED; L5-A0 is OWNER-ACCEPTED FOR MERGE.
+L5 is STARTED; L5-A0 is OWNER-ACCEPTED AND MERGED via PR #380 at `241a5249987c008a28d959677704eee483a1c216`.
 L5-A1+, L6/L7, Phase M, live acquisition, activation, product/schema/dependency changes and new
 evidence families remain unauthorized. No financial_statements, plugin framework or seventh MCP
-tool is introduced. Owner has accepted L5-A0 for merge. L5-A1+ remains NOT AUTHORIZED; merge does not authorize A1.
+tool is introduced. L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1+ remains NOT AUTHORIZED.
