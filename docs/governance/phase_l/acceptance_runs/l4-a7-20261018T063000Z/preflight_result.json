@@ -1,0 +1,15 @@
+{
+  "schema": "phase_l_l4_a7_preflight.v1",
+  "run_id": "l4-a7-20261018T063000Z",
+  "authority": "USER_CHAT_2026-10-18_L4_A7_TECHNICAL_EXIT_REVIEW_AUTHORIZATION",
+  "entry_head": "1884f9e9be2430d8d18cfaa13641c67a8ab9e6ae",
+  "entry_tree": "1df1b86a748ae30487781aca36bad7a90d64bc3e",
+  "branch": "phase-l/l4-a7-technical-exit-review",
+  "governance_only": true,
+  "provider_requests": 0,
+  "live_market_acquisition": 0,
+  "production_user_state_mutations": 0,
+  "a6_memory_1000_cycle_rerun": false,
+  "a7_scope": "technical exit review only",
+  "l5_l7_authorized": false
+}

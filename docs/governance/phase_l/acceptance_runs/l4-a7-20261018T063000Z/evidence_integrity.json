@@ -1,0 +1,121 @@
+[
+  {
+    "run": "l4-a0-20261017T064432Z",
+    "entries": 8,
+    "path_modes": [
+      "repo_relative"
+    ],
+    "status": "PASS_WITH_EXPECTED_POST_MANIFEST_GOVERNANCE_APPEND",
+    "manifest_file_sha256": "8bcf09ed13e2ef0c6c4dcbd279cc5cb7d79456d79feeac3b8d3fb81654d5ba86",
+    "a0_governance_manifest_hash_match_commit": "83f47b4b12874b3ce31cbfc38085ee27b9056c4b",
+    "a0_governance_manifest_hash": "7c311d3bff915c6640af37e72daad50ca8aaa5bc2c9162106b2f72da01fe28ea",
+    "current_governance_hash": "4a6bbc88056fd8ac6c33136caa66848a77ab91df805b84b55a115b6e64e0afbd",
+    "interpretation": "A0 manifest correctly binds technical-candidate governance bytes; Owner-acceptance commit 047f90cf later appended governance text. Seven non-governance A0 manifest artifacts remain byte/hash valid.",
+    "observed_current_governance_difference": [
+      {
+        "path": "docs/governance/phase_l/PHASE_L_L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_2026-10-17.md",
+        "reason": "hash",
+        "expected": "7c311d3bff915c6640af37e72daad50ca8aaa5bc2c9162106b2f72da01fe28ea",
+        "actual": "4a6bbc88056fd8ac6c33136caa66848a77ab91df805b84b55a115b6e64e0afbd"
+      },
+      {
+        "path": "docs/governance/phase_l/PHASE_L_L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_2026-10-17.md",
+        "reason": "size",
+        "expected": 10207,
+        "actual": 10859
+      }
+    ],
+    "bad": [],
+    "non_governance_manifest_artifacts_verified": 7
+  },
+  {
+    "run": "l4-a1-20261017T073048Z",
+    "entries": 5,
+    "path_modes": [
+      "run_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "ac8c2584bba387bf8f984f953ac93c985022af8980e047a6382d41736ba97841"
+  },
+  {
+    "run": "l4-a2-20261017T085705Z",
+    "entries": 6,
+    "path_modes": [
+      "run_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "ca1211aadc709455a091191246b19a15ee24b20d744f010942ea86b582d06f43"
+  },
+  {
+    "run": "l4-a3-20261017T102100Z",
+    "entries": 9,
+    "path_modes": [
+      "repo_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "98dd14fa77e8982f1cad528ed84219f928146e17d5cb16be9e76bc5e6cde1762"
+  },
+  {
+    "run": "l4-a4-20261017T110257Z",
+    "entries": 10,
+    "path_modes": [
+      "run_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "ead94bc61d140682ff6bb5ef40d775c18306f7849e683731db68094ea996325c"
+  },
+  {
+    "run": "l4-a5-20261017T115256Z",
+    "entries": 9,
+    "path_modes": [
+      "run_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "df33dcfd1d0f5453984342785e3d2da496ffbb19bd303e9f85db38bedcc63bdc"
+  },
+  {
+    "run": "l4-a6-20261017T134505Z",
+    "entries": 11,
+    "path_modes": [
+      "run_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "bf74ae7b27f4f7a57552d7ff26aa424c134e083f959c71e521fd3808196d9523"
+  },
+  {
+    "run": "l4-a6-r3-20261017T150419Z",
+    "entries": 16,
+    "path_modes": [
+      "run_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "c6136263fa66bbdf62e4feb86f634268fa703a29ab3befc5e92c0eabd0f90983"
+  },
+  {
+    "run": "l4-a6-r3-r1-20261018T004303Z",
+    "entries": 11,
+    "path_modes": [
+      "run_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "fbfdb44a7d043fe84ebc37a8fce8eb5bb8aa068cbf40c6e757554432da3eee78"
+  },
+  {
+    "run": "l4-a6-r3-r2-20261018T005100Z",
+    "entries": 13,
+    "path_modes": [
+      "run_relative"
+    ],
+    "bad": [],
+    "status": "PASS",
+    "manifest_file_sha256": "8937c720b360a05a0f8e38343ce4a9336f3cd0d56ad2bcef7e679e5f791b0c7e"
+  }
+]

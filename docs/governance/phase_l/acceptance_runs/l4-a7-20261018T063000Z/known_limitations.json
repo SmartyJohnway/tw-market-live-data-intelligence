@@ -1,0 +1,56 @@
+{
+  "schema": "phase_l_l4_a7_known_limitations.v1",
+  "run_id": "l4-a7-20261018T063000Z",
+  "limitations": [
+    {
+      "id": "LOCAL_CALLER_TRUST",
+      "status": "NON_BLOCKING",
+      "detail": "A4 freezes same-user local-process trust; no individual caller authentication or hostile same-user-process isolation is claimed."
+    },
+    {
+      "id": "PATH_FINAL_OS_RACE",
+      "status": "NON_BLOCKING",
+      "detail": "A2 does not claim immunity to a hostile same-user process changing filesystem state after checks."
+    },
+    {
+      "id": "PROMPT_MODEL_COGNITION",
+      "status": "NON_BLOCKING",
+      "detail": "A4 governs TW-Market control-plane authority; it does not claim to control downstream model cognition."
+    },
+    {
+      "id": "SUPPLY_CHAIN_EXTERNAL_BINARY_AUTHENTICITY",
+      "status": "NON_BLOCKING",
+      "detail": "A5 does not claim cryptographic provenance of OS/Python/Git binaries or online vulnerability freshness."
+    },
+    {
+      "id": "RESOURCE_NO_HARD_RSS_CAP",
+      "status": "NON_BLOCKING",
+      "detail": "A6 freezes memory hard runtime kill threshold as NOT_USED and relies on structural bounds plus long-horizon acceptance."
+    },
+    {
+      "id": "RESOURCE_NO_GLOBAL_ASGI_DEADLINE",
+      "status": "NON_BLOCKING",
+      "detail": "A6 freezes whole-server global hard deadline as NOT_USED_BY_DESIGN; active network/action execution envelopes are finite."
+    },
+    {
+      "id": "RESOURCE_SINGLE_PROCESS_CONCURRENCY",
+      "status": "NON_BLOCKING",
+      "detail": "A6 resource-intensive concurrency ceiling 1 is per app process; no cross-process coordinator is claimed."
+    },
+    {
+      "id": "RETENTION_NO_AUTO_TRUNCATION",
+      "status": "NON_BLOCKING",
+      "detail": "Governed Watchlist/evidence history is not automatically truncated; each new persistent write is subject to dynamic disk admission."
+    },
+    {
+      "id": "MODE_C_HISTORICAL_REPLAY_GAP",
+      "status": "NON_BLOCKING_GOVERNED_DEBT",
+      "detail": "Two TG4 historical Mode C nodes remain KNOWN_HISTORICAL_REPLAY_GAP_NOT_CURRENT_PROTECTION; governed deselected, unrepaired, not represented as passing."
+    },
+    {
+      "id": "IMMUTABLE_EVIDENCE_FORMAT_EXCEPTIONS",
+      "status": "NON_BLOCKING_GOVERNED_EVIDENCE",
+      "detail": "Seven hash-bound historical memory-evidence JSON artifacts retain one EOF CRCRLF each; exception-aware candidate diff check is clean and no generic whitespace waiver exists."
+    }
+  ]
+}
