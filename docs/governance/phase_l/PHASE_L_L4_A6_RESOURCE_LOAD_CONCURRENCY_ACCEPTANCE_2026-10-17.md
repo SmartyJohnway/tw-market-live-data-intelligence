@@ -125,3 +125,18 @@ findings, and final technical disposition are bound by
 
 Final technical disposition: `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS`.
 L4-A6 remains pending Owner acceptance. L4-A7 remains unauthorized.
+
+
+## Owner acceptance for merge (2026-10-18)
+
+Owner authority: `USER_CHAT_2026-10-18_PHASE_L_L4_A6_OWNER_ACCEPTANCE_AND_MERGE_AUTHORIZATION`.
+
+Owner acceptance token: `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`. The Owner accepts the completed A6 tranche for merge with final technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS`.
+
+The complete history remains intact: initial A6 HOLD; R1 memory HOLD; R2 sampler repair PASS and memory HOLD; R3 memory stabilization PASS and original integrated invocation HOLD; R3-R1 governed historical gate correction PASS; and R3-R2 immutable-evidence reconciliation PASS. None of the historical HOLD outcomes is erased or rewritten.
+
+Accepted findings: RES-001/002/003 and LOAD-001/004 are COVERED; A3 resource residuals are RESOLVED. Frozen policy remains resource-intensive concurrency ceiling 1, whole-server global hard deadline NOT_USED_BY_DESIGN, memory hard runtime kill threshold NOT_USED, persistent write disk admission DYNAMIC_FAIL_CLOSED, and automatic governed revision truncation NO.
+
+Limitations remain explicit: Mode C historical debt is unresolved; the two TG4 nodes remain `KNOWN_HISTORICAL_REPLAY_GAP_NOT_CURRENT_PROTECTION`, governed-deselected rather than passed, with zero new deselections. The full candidate-range diff-check retains exactly seven byte-preserved immutable evidence EOF formatting exceptions; no general whitespace waiver is created.
+
+At this pre-merge closure point, L4-A6 is Owner-accepted for merge but is not yet described as merged. L4-A7 and L5-L7 remain NOT AUTHORIZED.
