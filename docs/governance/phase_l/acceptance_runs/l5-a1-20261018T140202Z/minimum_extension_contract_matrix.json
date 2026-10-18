@@ -1,0 +1,851 @@
+{
+  "classification_counts": {
+    "DECISION_REQUIRED": 0,
+    "DERIVED": 2,
+    "FAMILY_SPECIFIC": 4,
+    "OPTIONAL": 2,
+    "PLATFORM_PROVIDED": 6,
+    "REQUIRED": 22
+  },
+  "dimensions": [
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "server/services/unified_contract_versions.py",
+      "canonical_owner_role": "Existing typed evidence contract/schema authority; source versions remain distinct.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-01",
+      "evidence_files": [
+        "server/services/unified_contract_versions.py",
+        "schemas/monthly_revenue_evidence.v1.schema.json"
+      ],
+      "name": "contract/version identity",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "schemas/monthly_revenue_evidence.v1.schema.json",
+        "server/services/unified_contract_versions.py"
+      ],
+      "source_finding_id": "DIM-01",
+      "version_owner": "Typed evidence schema/family contract owner."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "canonical_owner_role": "Unified Capability Catalog authority.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-02",
+      "evidence_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+      ],
+      "name": "supported markets",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+      ],
+      "source_finding_id": "DIM-02",
+      "version_owner": "Unified Capability Catalog version authority."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "canonical_owner_role": "Unified Capability Catalog and installation-local identity validator.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-03",
+      "evidence_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "scripts/m8r_05a_f3/target_validator.py"
+      ],
+      "name": "supported target types",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/m8r_05a_f3/target_validator.py"
+      ],
+      "source_finding_id": "DIM-03",
+      "version_owner": "Catalog and routing authority as applicable."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "schemas/unified_market_evidence_request.v3.schema.json",
+      "canonical_owner_role": "Frozen Unified Request schema/version authority.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-04",
+      "evidence_files": [
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/m8r_05a_f3/capability_validator.py"
+      ],
+      "name": "parameter schema",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "scripts/m8r_05a_f3/capability_validator.py"
+      ],
+      "source_finding_id": "DIM-04",
+      "version_owner": "Unified Request resolver and preferred request-version authority."
+    },
+    {
+      "acceptance_evidence": "Request validator tests accepted limits and fail-closed over-bound inputs.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "canonical_owner_role": "Unified Capability Catalog bounds and request validator.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-05",
+      "evidence_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/m8r_05a_f3/capability_validator.py"
+      ],
+      "name": "parameter bounds",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/m8r_05a_f3/capability_validator.py"
+      ],
+      "source_finding_id": "DIM-05",
+      "version_owner": "Catalog and request validator authority."
+    },
+    {
+      "acceptance_evidence": "Source-contract validation, bounded fixtures, provenance, and applicable source-drift cases.",
+      "applicability_rule": "Declare APPLICABLE for source-backed acquisition; local/derived families may declare NOT_APPLICABLE only with evidence that no source acquisition occurs.",
+      "canonical_owner": "scripts/phase_g/research_executor.py",
+      "canonical_owner_role": "Existing source authority and family source contracts.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-06",
+      "evidence_files": [
+        "scripts/phase_g/research_executor.py",
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json"
+      ],
+      "name": "source authority",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+        "scripts/phase_g/research_executor.py"
+      ],
+      "source_finding_id": "DIM-06",
+      "version_owner": "Family source contract/source authority owner."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "canonical_owner_role": "Routing matrix, executor metadata, and trusted callable binding.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-07",
+      "evidence_files": [
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "name": "routing/executor authority",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "source_finding_id": "DIM-07",
+      "version_owner": "Routing matrix and executor registry authorities."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Declare APPLICABLE for source-backed acquisition; local/derived families may declare NOT_APPLICABLE only with evidence that no source acquisition occurs.",
+      "canonical_owner": "config/m8r_06_03_executor_registry_metadata.json",
+      "canonical_owner_role": "Routing matrix and executor metadata; network boundary is platform-owned.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-08",
+      "evidence_files": [
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "scripts/m8r_05b_03/dispatch.py"
+      ],
+      "name": "network-required flag",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "scripts/m8r_05b_03/dispatch.py"
+      ],
+      "source_finding_id": "DIM-08",
+      "version_owner": "Routing/executor metadata and L4 platform policy."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Declare APPLICABLE for source-backed acquisition; local/derived families may declare NOT_APPLICABLE only with evidence that no source acquisition occurs.",
+      "canonical_owner": "scripts/phase_g/mops_monthly_revenue.py",
+      "canonical_owner_role": "Typed family evidence contract and source semantic validator.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-09",
+      "evidence_files": [
+        "scripts/phase_g/mops_monthly_revenue.py",
+        "scripts/phase_g/mops_material_disclosures.py",
+        "server/services/phase_i_i3_cash_institutional_flow_adapters.py"
+      ],
+      "name": "source timestamp semantics",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/phase_g/mops_material_disclosures.py",
+        "scripts/phase_g/mops_monthly_revenue.py",
+        "server/services/phase_i_i3_cash_institutional_flow_adapters.py"
+      ],
+      "source_finding_id": "DIM-09",
+      "version_owner": "Typed evidence schema owner; source contract separately versioned."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/m8r_06_03_production_adapter.py",
+      "canonical_owner_role": "Existing adapter timing and operation/Result semantics.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-10",
+      "evidence_files": [
+        "scripts/m8r_06_03_production_adapter.py",
+        "scripts/phase_g/research_executor.py"
+      ],
+      "name": "retrieved-at semantics",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_06_03_production_adapter.py",
+        "scripts/phase_g/research_executor.py"
+      ],
+      "source_finding_id": "DIM-10",
+      "version_owner": "Result/operation evidence version owner; timing is governed by L1."
+    },
+    {
+      "acceptance_evidence": "Fixtures keep source, publication, retrieval, and observed time distinct.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/m8r_06_03_production_adapter.py",
+      "canonical_owner_role": "Existing currentness contract/resolver and Catalog timing classes.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-11",
+      "evidence_files": [
+        "scripts/m8r_06_03_production_adapter.py",
+        "scripts/m8_source_freshness_evaluator.py"
+      ],
+      "name": "freshness/currentness semantics",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8_source_freshness_evaluator.py",
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "source_finding_id": "DIM-11",
+      "version_owner": "Family/currentness contract; Catalog only when advertised behavior changes."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/phase_g/mops_monthly_revenue.py",
+      "canonical_owner_role": "Typed family evidence semantics and Result projection.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-12",
+      "evidence_files": [
+        "scripts/phase_g/mops_monthly_revenue.py",
+        "scripts/m8r_05c/evidence_projector.py"
+      ],
+      "name": "missing semantics",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05c/evidence_projector.py",
+        "scripts/phase_g/mops_monthly_revenue.py"
+      ],
+      "source_finding_id": "DIM-12",
+      "version_owner": "Typed family evidence and Result owners as public shape requires."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/m8r_05a_f3/capability_validator.py",
+      "canonical_owner_role": "Unified capability/request validator and unsupported reason mapping.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-13",
+      "evidence_files": [
+        "scripts/m8r_05a_f3/capability_validator.py",
+        "scripts/m8r_05b_01/planner.py"
+      ],
+      "name": "unsupported semantics",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05a_f3/capability_validator.py",
+        "scripts/m8r_05b_01/planner.py"
+      ],
+      "source_finding_id": "DIM-13",
+      "version_owner": "Unified Request/Catalog compatibility owner."
+    },
+    {
+      "acceptance_evidence": "Failure matrix preserves source-failed vs missing/unsupported/stale distinctions.",
+      "applicability_rule": "Declare APPLICABLE for source-backed acquisition; local/derived families may declare NOT_APPLICABLE only with evidence that no source acquisition occurs.",
+      "canonical_owner": "scripts/phase_g/research_executor.py",
+      "canonical_owner_role": "Source contract and bounded adapter failure mapping.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-14",
+      "evidence_files": [
+        "scripts/phase_g/research_executor.py",
+        "scripts/m8r_05b_03/dispatch.py"
+      ],
+      "name": "source failure semantics",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05b_03/dispatch.py",
+        "scripts/phase_g/research_executor.py"
+      ],
+      "source_finding_id": "DIM-14",
+      "version_owner": "Source contract and existing Result/Audit owners."
+    },
+    {
+      "acceptance_evidence": "Operation/artifact lineage and canonical Audit construction validation.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/m8r_05b_03/receipt.py",
+      "canonical_owner_role": "Canonical receipt, lineage, and Audit authority.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-15",
+      "evidence_files": [
+        "scripts/m8r_05b_03/receipt.py",
+        "scripts/m8r_05c/lineage_resolver.py",
+        "scripts/m8r_05c/audit_package_builder.py"
+      ],
+      "name": "provenance requirements",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05b_03/receipt.py",
+        "scripts/m8r_05c/audit_package_builder.py",
+        "scripts/m8r_05c/lineage_resolver.py"
+      ],
+      "source_finding_id": "DIM-15",
+      "version_owner": "Audit package schema/version owner."
+    },
+    {
+      "acceptance_evidence": "Citation index resolves to exact retained operation/evidence lineage.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/m8r_05c/citation_builder.py",
+      "canonical_owner_role": "Canonical citation builder and governed lineage identity.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-16",
+      "evidence_files": [
+        "scripts/m8r_05c/citation_builder.py",
+        "scripts/m8r_05c/evidence_projector.py"
+      ],
+      "name": "citation requirements",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05c/citation_builder.py",
+        "scripts/m8r_05c/evidence_projector.py"
+      ],
+      "source_finding_id": "DIM-16",
+      "version_owner": "Citation/provenance owner; handoff owner only if public envelope changes."
+    },
+    {
+      "acceptance_evidence": "Deterministic unit/contract tests and required offline validators, with evidence for declared semantics.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "config/test_execution_profiles.json",
+      "canonical_owner_role": "Existing test files and explicit execution profile registration.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-17",
+      "evidence_files": [
+        "config/test_execution_profiles.json",
+        "scripts/validate_phase_h_v3_contracts.py",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "name": "tests",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "config/test_execution_profiles.json",
+        "scripts/validate_phase_h_v3_contracts.py",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "source_finding_id": "DIM-17",
+      "version_owner": "Test profile/config and conformance acceptance authority."
+    },
+    {
+      "acceptance_evidence": "Catalog contract validation and portable Catalog synchronization checks.",
+      "applicability_rule": "Applicable when public support/usage changes; NOT_APPLICABLE requires proof that no public behavior or user guidance changes.",
+      "canonical_owner": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "canonical_owner_role": "Unified Capability Catalog and synchronized portable output checks.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-18",
+      "evidence_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/generate_portable_catalog.py",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "name": "Catalog publication",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/generate_portable_catalog.py",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "source_finding_id": "DIM-18",
+      "version_owner": "Catalog version authority."
+    },
+    {
+      "acceptance_evidence": "Runtime Skill/guide synchronization check and bounded user guidance.",
+      "applicability_rule": "Applicable when public support/usage changes; NOT_APPLICABLE requires proof that no public behavior or user guidance changes.",
+      "canonical_owner": "skills/tw-market-evidence-agent/SKILL.md",
+      "canonical_owner_role": "Current runtime Skill/guide and synchronization validator.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-19",
+      "evidence_files": [
+        "skills/tw-market-evidence-agent/SKILL.md",
+        "docs/agent_usage_guide.md",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "name": "Skill/guide publication",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/agent_usage_guide.md",
+        "scripts/validate_runtime_skill_guide_sync.py",
+        "skills/tw-market-evidence-agent/SKILL.md"
+      ],
+      "source_finding_id": "DIM-19",
+      "version_owner": "Current Skill/guide publication owner."
+    },
+    {
+      "acceptance_evidence": "Owner acceptance ledger binds contract versions, registrations, and evidence hashes.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "docs/acceptance_runs/phase_g_pr_d_closure.json",
+      "canonical_owner_role": "Owner-controlled family acceptance ledger.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-20",
+      "evidence_files": [
+        "docs/acceptance_runs/phase_g_pr_d_closure.json",
+        "docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json",
+        "AGENTS.md"
+      ],
+      "name": "acceptance authority",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "AGENTS.md",
+        "docs/acceptance_runs/phase_g_pr_d_closure.json",
+        "docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json"
+      ],
+      "source_finding_id": "DIM-20",
+      "version_owner": "Owner acceptance authority."
+    },
+    {
+      "acceptance_evidence": "Strict subordinate schema validation and L2 role/retention classification when retained.",
+      "applicability_rule": "OPTIONAL: declare a schema or explicitly declare none. NOT_APPLICABLE only when no raw/operation artifact is emitted or retained.",
+      "canonical_owner": "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+      "canonical_owner_role": "Subordinate operation-evidence schema and applicable retention policy.",
+      "classification": "OPTIONAL",
+      "classification_before_a1": "OPTIONAL",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-21",
+      "evidence_files": [
+        "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+        "scripts/phase_g/mops_monthly_revenue.py",
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "name": "raw evidence schema",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+        "scripts/m8r_06_03_production_adapter.py",
+        "scripts/phase_g/mops_monthly_revenue.py"
+      ],
+      "source_finding_id": "DIM-21",
+      "version_owner": "Subordinate evidence schema owner; L2 retention authority."
+    },
+    {
+      "acceptance_evidence": "Replay inspector fixtures distinguish READ_EXISTING, REFETCH, and unsupported replay.",
+      "applicability_rule": "OPTIONAL: declare supported or unsupported. Unsupported is not NOT_APPLICABLE and never implies refetch.",
+      "canonical_owner": "server/services/unified_replay_inspector.py",
+      "canonical_owner_role": "Existing replay inspector and explicit artifact compatibility declarations.",
+      "classification": "OPTIONAL",
+      "classification_before_a1": "OPTIONAL",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-22",
+      "evidence_files": [
+        "server/services/unified_replay_inspector.py",
+        "server/services/unified_mode_c.py"
+      ],
+      "name": "replay support",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "server/services/unified_mode_c.py",
+        "server/services/unified_replay_inspector.py"
+      ],
+      "source_finding_id": "DIM-22",
+      "version_owner": "Existing replay contract and L2 compatibility authority."
+    },
+    {
+      "acceptance_evidence": "Canonical Audit schema and lineage checks; no parallel audit path.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/m8r_05c/audit_package_builder.py",
+      "canonical_owner_role": "Existing canonical Audit package builder; derived projection.",
+      "classification": "DERIVED",
+      "classification_before_a1": "DERIVED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-23",
+      "evidence_files": [
+        "scripts/m8r_05c/audit_package_builder.py",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json"
+      ],
+      "name": "Audit projection",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "scripts/m8r_05c/audit_package_builder.py"
+      ],
+      "source_finding_id": "DIM-23",
+      "version_owner": "Audit schema/version owner."
+    },
+    {
+      "acceptance_evidence": "Existing handoff validation/render checks and cited Result/Audit compatibility.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "server/services/unified_mode_c.py",
+      "canonical_owner_role": "Existing canonical Unified Mode C handoff builder; derived projection.",
+      "classification": "DERIVED",
+      "classification_before_a1": "DERIVED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-24",
+      "evidence_files": [
+        "server/services/unified_mode_c.py",
+        "scripts/m8r_05c/markdown_renderer.py"
+      ],
+      "name": "AI handoff projection",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05c/markdown_renderer.py",
+        "server/services/unified_mode_c.py"
+      ],
+      "source_finding_id": "DIM-24",
+      "version_owner": "AI handoff/service envelope owner."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Declare APPLICABLE for source-backed acquisition; local/derived families may declare NOT_APPLICABLE only with evidence that no source acquisition occurs.",
+      "canonical_owner": "scripts/phase_g/research_executor.py",
+      "canonical_owner_role": "Accepted family/source contract and trusted source adapter.",
+      "classification": "FAMILY_SPECIFIC",
+      "classification_before_a1": "FAMILY_SPECIFIC",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-25",
+      "evidence_files": [
+        "scripts/phase_g/research_executor.py",
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json"
+      ],
+      "name": "source request contract",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+        "scripts/phase_g/research_executor.py"
+      ],
+      "source_finding_id": "DIM-25",
+      "version_owner": "Family/source contract owner."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/phase_g/mops_monthly_revenue.py",
+      "canonical_owner_role": "Accepted typed family contract and deterministic normalizer.",
+      "classification": "FAMILY_SPECIFIC",
+      "classification_before_a1": "FAMILY_SPECIFIC",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-26",
+      "evidence_files": [
+        "scripts/phase_g/mops_monthly_revenue.py",
+        "server/services/phase_i_market_state_adapters.py"
+      ],
+      "name": "normalization contract",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/phase_g/mops_monthly_revenue.py",
+        "server/services/phase_i_market_state_adapters.py"
+      ],
+      "source_finding_id": "DIM-26",
+      "version_owner": "Typed evidence schema/family contract owner."
+    },
+    {
+      "acceptance_evidence": "Canonical ISIN/MARKET:CODE target tests and proof there is no alternate identity authority.",
+      "applicability_rule": "Applicable for target-bound evidence. Otherwise NOT_APPLICABLE requires explicit no-target scope and identity-independent contract proof.",
+      "canonical_owner": "scripts/m8r_05a_f3/target_validator.py",
+      "canonical_owner_role": "Installation-local Taiwan Market Identity Service.",
+      "classification": "FAMILY_SPECIFIC",
+      "classification_before_a1": "FAMILY_SPECIFIC",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-27",
+      "evidence_files": [
+        "scripts/m8r_05a_f3/target_validator.py",
+        "scripts/m8r_05a_f3/security_master_loader.py",
+        "scripts/m8r_05c/lineage_resolver.py"
+      ],
+      "name": "identity binding",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05a_f3/security_master_loader.py",
+        "scripts/m8r_05a_f3/target_validator.py",
+        "scripts/m8r_05c/lineage_resolver.py"
+      ],
+      "source_finding_id": "DIM-27",
+      "version_owner": "Installation-local identity authority; no family version fork."
+    },
+    {
+      "acceptance_evidence": "Unified Result schema validation and compatibility checks for its declared version.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/m8r_05c/result_builder.py",
+      "canonical_owner_role": "Existing Unified Result projection and frozen schema authority.",
+      "classification": "FAMILY_SPECIFIC",
+      "classification_before_a1": "FAMILY_SPECIFIC",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-28",
+      "evidence_files": [
+        "scripts/m8r_05c/result_builder.py",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "name": "Result projection",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "schemas/unified_market_evidence_result.v3.schema.json",
+        "scripts/m8r_05c/result_builder.py"
+      ],
+      "source_finding_id": "DIM-28",
+      "version_owner": "Unified Result schema/version owner."
+    },
+    {
+      "acceptance_evidence": "Mode B preview/authorization/execute-once tests; preview never implies approval.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "server/services/unified_mode_b2.py",
+      "canonical_owner_role": "Platform Mode B authorization and execute-once controls.",
+      "classification": "PLATFORM_PROVIDED",
+      "classification_before_a1": "PLATFORM_PROVIDED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-29",
+      "evidence_files": [
+        "server/services/unified_mode_b2.py",
+        "scripts/m8r_05b_03/authorization_gate.py",
+        "scripts/m8r_05b_03/consumption_claim.py"
+      ],
+      "name": "authorization class",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05b_03/authorization_gate.py",
+        "scripts/m8r_05b_03/consumption_claim.py",
+        "server/services/unified_mode_b2.py"
+      ],
+      "source_finding_id": "DIM-29",
+      "version_owner": "Platform authorization authority."
+    },
+    {
+      "acceptance_evidence": "Finite timeout authority and bounded-call tests in platform executor metadata.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "config/m8r_06_03_executor_registry_metadata.json",
+      "canonical_owner_role": "Platform executor metadata and finite timeout policy.",
+      "classification": "PLATFORM_PROVIDED",
+      "classification_before_a1": "PLATFORM_PROVIDED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-30",
+      "evidence_files": [
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "server/services/unified_mode_b2_execution.py"
+      ],
+      "name": "timeout authority",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "server/services/unified_mode_b2_execution.py"
+      ],
+      "source_finding_id": "DIM-30",
+      "version_owner": "Executor metadata/platform timeout authority."
+    },
+    {
+      "acceptance_evidence": "L2 classification and backup/restore/compatibility evidence; no family policy.",
+      "applicability_rule": "Mandatory for persistent artifacts; NOT_APPLICABLE only when no persistent artifact exists and this is proven.",
+      "canonical_owner": "server/services/unified_retention_inventory.py",
+      "canonical_owner_role": "Platform L2 retention inventory and accepted policy.",
+      "classification": "PLATFORM_PROVIDED",
+      "classification_before_a1": "PLATFORM_PROVIDED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-31",
+      "evidence_files": [
+        "server/services/unified_retention_inventory.py",
+        "server/services/unified_backup.py",
+        "server/services/unified_restore.py",
+        "server/services/unified_migration.py"
+      ],
+      "name": "retention classification",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "server/services/unified_backup.py",
+        "server/services/unified_migration.py",
+        "server/services/unified_restore.py",
+        "server/services/unified_retention_inventory.py"
+      ],
+      "source_finding_id": "DIM-31",
+      "version_owner": "Platform L2 retention authority."
+    },
+    {
+      "acceptance_evidence": "L4 input/output/artifact/memory/disk/concurrency boundary tests.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "server/resource_boundaries.py",
+      "canonical_owner_role": "Shared platform resource-boundary authorities.",
+      "classification": "PLATFORM_PROVIDED",
+      "classification_before_a1": "PLATFORM_PROVIDED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-32",
+      "evidence_files": [
+        "server/resource_boundaries.py",
+        "server/unified_payload_bounds.py",
+        "config/m8r_06_03_executor_registry_metadata.json"
+      ],
+      "name": "resource bounds",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "server/resource_boundaries.py",
+        "server/unified_payload_bounds.py"
+      ],
+      "source_finding_id": "DIM-32",
+      "version_owner": "Platform resource policy owner."
+    },
+    {
+      "acceptance_evidence": "Credential-free configuration and secret/log redaction boundary review.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "server/local_control_plane_boundary.py",
+      "canonical_owner_role": "Platform local network/control-plane secret boundary.",
+      "classification": "PLATFORM_PROVIDED",
+      "classification_before_a1": "PLATFORM_PROVIDED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-33",
+      "evidence_files": [
+        "server/local_control_plane_boundary.py",
+        "scripts/m8r_05c/markdown_renderer.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md"
+      ],
+      "name": "secret boundary",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+        "scripts/m8r_05c/markdown_renderer.py",
+        "server/local_control_plane_boundary.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py"
+      ],
+      "source_finding_id": "DIM-33",
+      "version_owner": "Platform security/network-boundary owner."
+    },
+    {
+      "acceptance_evidence": "Contained output tests for traversal, links/reparse, atomic output, and quota cases.",
+      "applicability_rule": "Every family states APPLICABLE or NOT_APPLICABLE with rationale and evidence; omission is invalid. Default to APPLICABLE when the corresponding boundary exists.",
+      "canonical_owner": "scripts/m8r_filesystem_safety.py",
+      "canonical_owner_role": "Platform filesystem/output containment utilities.",
+      "classification": "PLATFORM_PROVIDED",
+      "classification_before_a1": "PLATFORM_PROVIDED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-34",
+      "evidence_files": [
+        "scripts/m8r_filesystem_safety.py",
+        "scripts/m8r_05b_03/containment.py",
+        "server/unified_bounded_io.py"
+      ],
+      "name": "path/output containment",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "scripts/m8r_05b_03/containment.py",
+        "scripts/m8r_filesystem_safety.py",
+        "server/unified_bounded_io.py"
+      ],
+      "source_finding_id": "DIM-34",
+      "version_owner": "Platform filesystem-safety policy owner."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Always applicable as a governance mapping; declare each existing identity namespace separately.",
+      "canonical_owner": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "canonical_owner_role": "Explicit mappings across current namespaces; no family registry.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "DECISION_REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-35",
+      "evidence_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "scripts/m8r_05c/lineage_resolver.py"
+      ],
+      "name": "family_id / capability relationship",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/m8r_05c/lineage_resolver.py"
+      ],
+      "source_finding_id": "DIM-35",
+      "version_owner": "No new version boundary; existing typed and public authorities own transitions."
+    },
+    {
+      "acceptance_evidence": "Accepted contract/schema conformance tests with deterministic evidence at the owning authority seam.",
+      "applicability_rule": "Always applicable; classify every affected boundary for each change.",
+      "canonical_owner": "server/services/unified_contract_versions.py",
+      "canonical_owner_role": "Existing version authority for each affected boundary.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "DECISION_REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-36",
+      "evidence_files": [
+        "server/services/unified_contract_versions.py",
+        "scripts/validate_phase_h_v3_contracts.py",
+        "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md"
+      ],
+      "name": "version upgrade/deprecation path",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+        "scripts/validate_phase_h_v3_contracts.py",
+        "server/services/unified_contract_versions.py"
+      ],
+      "source_finding_id": "DIM-36",
+      "version_owner": "Existing boundary owners in T1-T12; no new versioning system."
+    }
+  ],
+  "dropped_dimension_count": 0,
+  "frozen_dimension_count": 36,
+  "input_dimension_count": 36,
+  "remaining_decision_required": 0,
+  "unexplained_new_dimension_count": 0
+}

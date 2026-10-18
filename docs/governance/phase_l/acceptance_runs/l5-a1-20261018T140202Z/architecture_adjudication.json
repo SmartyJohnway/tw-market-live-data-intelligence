@@ -1,0 +1,11 @@
+{
+  "DIM-35": "Evidence family is a conformance concept; no universal family_id registry. Existing namespaces remain distinct.",
+  "DIM-36": "T1-T12 and VER-01..VER-08 can be resolved from accepted authority; no remaining Owner architecture decision.",
+  "architecture_conflicts": 0,
+  "cardinality": "Capability/evidence and evidence/source mappings explicitly permit N:M; resolved route selects exactly one trusted executor; blocked/contract-only can select zero.",
+  "review_mode": "read-only",
+  "reviewer_role": "sol_architect",
+  "status": "PASS_NO_STOP_CONDITION",
+  "stop_conditions": 0,
+  "version_review": "No frozen V3 mutation; new public capability/version and evidence field transitions are explicit; deprecation preserves old identity and historical read/fail-closed behavior."
+}

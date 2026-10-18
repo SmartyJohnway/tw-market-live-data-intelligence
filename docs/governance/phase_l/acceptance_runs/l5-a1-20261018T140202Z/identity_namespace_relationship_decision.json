@@ -1,0 +1,105 @@
+{
+  "cardinality_rules": {
+    "capability_to_executor": "N:M across product; each resolved context selects exactly one trusted executor; blocked/contract-only contexts may select zero.",
+    "capability_to_typed_evidence_contract": "N:M explicitly permitted; one contract may support multiple capabilities and one capability may compose multiple contracts.",
+    "mapping_rule": "No mapping inferred from names or 1:1 assumptions; never collapse namespaces or add a second registry.",
+    "source_to_executor": "N:M across product; actual bounded binding is explicit.",
+    "typed_evidence_to_source_contract": "N:M explicitly permitted; multiple source contracts can normalize to one stable typed contract and one source may feed multiple projections."
+  },
+  "decision": "EVIDENCE_FAMILY_IS_A_CONFORMANCE_CONCEPT_NO_UNIVERSAL_ID",
+  "examples": [
+    {
+      "authority_files": [
+        "schemas/monthly_revenue_evidence.v1.schema.json",
+        "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+        "scripts/phase_g/research_executor.py",
+        "scripts/phase_g/mops_monthly_revenue.py",
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "config/m8r_06_03_executor_registry_metadata.json"
+      ],
+      "capability_id": "monthly_revenue",
+      "cardinality": {
+        "capability_to_typed_evidence": "1:1 in this example; N:M permitted",
+        "executor_to_capabilities": "1:N",
+        "source_contracts_to_typed_evidence": "N:1"
+      },
+      "executor_id": "phase_g_official_research_executor",
+      "operation_evidence_contract_id": "phase_g_monthly_revenue_operation_evidence.v1",
+      "public_request_data_need": "data_needs[].capability_id = monthly_revenue",
+      "routing_identity": [
+        "Unified Request V3 / monthly_revenue / TWSE / phase_g_official_research_executor",
+        "Unified Request V3 / monthly_revenue / TPEX / phase_g_official_research_executor"
+      ],
+      "source_authority_identity": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+      "source_contract_ids": [
+        "t187ap05_L",
+        "t187ap05_O"
+      ],
+      "typed_evidence_contract_id": "monthly_revenue_evidence.v1"
+    },
+    {
+      "authority_files": [
+        "schemas/material_disclosure_evidence.v1.schema.json",
+        "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+        "scripts/phase_g/research_executor.py",
+        "scripts/phase_g/mops_material_disclosures.py",
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "config/m8r_06_03_executor_registry_metadata.json"
+      ],
+      "capability_id": "material_disclosures",
+      "cardinality": {
+        "capability_to_typed_evidence": "1:1 in this example; N:M permitted",
+        "executor_to_capabilities": "1:N",
+        "source_contracts_to_typed_evidence": "N:1"
+      },
+      "executor_id": "phase_g_official_research_executor",
+      "operation_evidence_contract_id": "phase_g_material_disclosure_operation_evidence.v1",
+      "public_request_data_need": "data_needs[].capability_id = material_disclosures",
+      "routing_identity": [
+        "Unified Request V3 / material_disclosures / TWSE / phase_g_official_research_executor",
+        "Unified Request V3 / material_disclosures / TPEX / phase_g_official_research_executor"
+      ],
+      "source_authority_identity": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+      "source_contract_ids": [
+        "t187ap04_L",
+        "t187ap04_O"
+      ],
+      "typed_evidence_contract_id": "material_disclosure_evidence.v1"
+    },
+    {
+      "authority_files": [
+        "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "capability_id": "market_state_context",
+      "cardinality": {
+        "capability_to_typed_evidence": "1:1 in this composite example",
+        "executor_to_capabilities": "1:1 for current selected route",
+        "source_contracts_to_typed_evidence": "N:1"
+      },
+      "executor_id": "phase_i_i1_market_state_executor",
+      "public_request_data_need": "data_needs[].capability_id = market_state_context",
+      "routing_identity": "Unified Request V3 / market_state_context / selected phase_i_i1_market_state_executor",
+      "source_authority_identity": "phase_i_i1_source_authority.v1.json: I1-TWSE-FMTQIK-OPENAPI, I1-TWSE-BREADTH-TWTAZU-OPENAPI, I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI",
+      "source_contract_ids": [
+        "TWSE_FMTQIK_OPENAPI_V1",
+        "TWSE_TWTAZU_OD_OPENAPI_V1",
+        "TPEX_MAINBORAD_HIGHLIGHT_OPENAPI_V1"
+      ],
+      "typed_evidence_contract_id": "market_state_context_evidence.v1"
+    }
+  ],
+  "mapping_rule": "Mappings are explicit in existing authorities; H4 discontinuity_safety is derived and is not a request capability.",
+  "namespaces": {
+    "capability_id": "Public request/data_need intent and parameters; Unified Request and canonical Capability Catalog.",
+    "executor_id": "Trusted implementation identity; current executor metadata and closed callable binding.",
+    "routing_identity": "Existing Request planning authority plus capability/market/target route and output binding; current routing matrix/resolver.",
+    "source_authority_identity": "Approved source identity and activation; existing source authority.",
+    "source_contract_id": "Provider/dataset/request-response acquisition semantics; existing source contract/authority.",
+    "typed_evidence_contract_id": "Normalized evidence semantics/version; existing typed schema and accepted family contract."
+  },
+  "universal_family_id_required": "NO"
+}

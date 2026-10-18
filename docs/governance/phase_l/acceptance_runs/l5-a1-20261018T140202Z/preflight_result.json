@@ -1,0 +1,15 @@
+{
+  "a0_merge": "241a5249987c008a28d959677704eee483a1c216",
+  "a0_owner_accepted_merged": true,
+  "a1_authorized": true,
+  "a2_plus_authorized": false,
+  "branch": "phase-l/l5-a1-minimum-extension-contract-freeze",
+  "entry_clean": true,
+  "l6_l7_authorized": false,
+  "live_acquisition": false,
+  "new_family_implementation": false,
+  "origin_main_head": "0a1b3bf3b18b009cc8f54c6207a468612d337f9f",
+  "origin_main_tree": "efacdd6ac413bce4f2238be61344171f7639780e",
+  "owner_authority": "USER_CHAT_2026-10-18_PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_FREEZE_AUTHORIZATION",
+  "run_id": "l5-a1-20261018T140202Z"
+}

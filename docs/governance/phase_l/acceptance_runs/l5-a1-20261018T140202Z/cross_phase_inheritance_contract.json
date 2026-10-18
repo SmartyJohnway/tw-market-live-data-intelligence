@@ -1,0 +1,40 @@
+{
+  "L1": {
+    "proof": "One request-to-operation lineage, canonical reason codes, and existing timing/attempt instrumentation.",
+    "requirements": [
+      "Reuse request/operation correlation and execution identity.",
+      "Reuse diagnostics, failure codes, source/adapter timing and network-attempt accounting.",
+      "No second operational truth."
+    ],
+    "status": "INHERITED_REQUIRED"
+  },
+  "L2": {
+    "policy_owner": "Platform L2; no family deletion/retention policy.",
+    "proof": "Artifact-role/retention evidence and compatibility fixtures or explicit fail-closed result.",
+    "requirements": [
+      "Declare artifact roles and READ_EXISTING/replay/refetch distinction.",
+      "Declare replay supported or unsupported; replay is not refetch.",
+      "Classify retention, backup relevance, restore compatibility and migration compatibility."
+    ],
+    "status": "INHERITED_REQUIRED"
+  },
+  "L3": {
+    "proof": "Bounded offline negative fixtures for each applicable drift class and distinct failure/currentness states.",
+    "requirements": [
+      "Network source: transport/status, encoding, parse, schema/field drift, semantic validation, empty response, publication delay, rate limit, removal and contract drift.",
+      "Local/derived: mark transport-only dimensions N/A with proof; semantic validation and provenance remain required."
+    ],
+    "status": "INHERITED_REQUIRED_WHERE_APPLICABLE"
+  },
+  "L4": {
+    "policy_owner": "Platform L4, not family.",
+    "proof": "Existing L4 controls/tests at each exercised seam; family-specific bypass is prohibited.",
+    "requirements": [
+      "Loopback/control-plane boundary; path containment; bounded request/output/artifacts.",
+      "Hostile source content remains data; secret and dependency boundaries.",
+      "Finite external timeout, concurrency, dynamic disk admission and memory policy."
+    ],
+    "status": "INHERITED_REQUIRED"
+  },
+  "overall": "Compatibility/conformance requirement only; no future implementation is accepted by A1."
+}

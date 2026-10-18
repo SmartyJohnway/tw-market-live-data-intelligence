@@ -1,6 +1,6 @@
 # PROJECT.md — Current Project Authority
 
-## Current L5 entry and A0 candidate boundary (2026-10-18)
+## Current L5 state — A1 technical contract freeze (2026-10-18)
 
 L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical
 exit `PHASE_L_L4_EXIT_REVIEW_PASS`. L5 is STARTED under
@@ -8,18 +8,19 @@ exit `PHASE_L_L4_EXIT_REVIEW_PASS`. L5 is STARTED under
 L5-A0 is **OWNER-ACCEPTED AND MERGED** via PR #380 at `241a5249987c008a28d959677704eee483a1c216`, with disposition
 `L5_A0_EVIDENCE_FAMILY_EXTENSION_SURFACE_INVENTORY_COMPLETE`.
 The 14-capability inventory maps 12 descriptive archetypes plus non-capability H4;
-13 representative traces cover all 14 capabilities. The minimum contract is a candidate,
-not frozen. Assessment: `PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW`; no new family or runtime change.
+13 representative traces cover all 14 capabilities. The minimum evidence-family extension contract is technically frozen by L5-A1; Owner acceptance is pending. Assessment: `PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW`; no new family or runtime change.
 Required offline baseline checks pass; extra default-ci baseline remains non-green
 (1,248 passed, 41 failed, four skipped, five deselected), explicitly preserved for review.
 See `docs/governance/phase_l/PHASE_L_L5_A0_EVIDENCE_FAMILY_EXTENSION_SURFACE_INVENTORY_2026-10-18.md`
 and `docs/governance/phase_l/acceptance_runs/l5-a0-20261018T110810Z/offline_review.json`.
-L5-A1+ is NOT AUTHORIZED. L6-L7 is NOT AUTHORIZED. Phase M remains NOT AUTHORIZED.
-L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1+ remains NOT AUTHORIZED.
+See `docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_2026-10-18.md` and `docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/offline_validation.json`.
+L5-A1: TECHNICAL CONTRACT FREEZE COMPLETE / OWNER ACCEPTANCE PENDING.
+L5-A2+ is NOT AUTHORIZED. L6-L7 is NOT AUTHORIZED. Phase M remains NOT AUTHORIZED.
+L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1 technical freeze is complete / Owner acceptance pending; L5-A2+ remains NOT AUTHORIZED.
 
 ## Current Phase L boundary (2026-10-17)
 
-L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Its technical exit passed under `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6's accepted live disposition remains PARTIAL (17 transport-degraded logical sources, six HTTP-200 sources, zero deterministic contract drift proven); its one-shot authority is consumed and a second run is prohibited. L4-A0 through A4 are Owner-accepted and merged. L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1+ and L6-L7 remain NOT AUTHORIZED.
+L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Its technical exit passed under `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6's accepted live disposition remains PARTIAL (17 transport-degraded logical sources, six HTTP-200 sources, zero deterministic contract drift proven); its one-shot authority is consumed and a second run is prohibited. L4-A0 through A4 are Owner-accepted and merged. L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 technical freeze complete / Owner acceptance pending; L5-A2+ and L6-L7 remain NOT AUTHORIZED.
 
 Roadmap Phase J and Phase K are **COMPLETE**. Phase K closed under
 `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` with three evaluated hosts, two

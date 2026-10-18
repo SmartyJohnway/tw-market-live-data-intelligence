@@ -1,0 +1,527 @@
+{
+  "classification_counts": {
+    "CANONICAL_AUTHORITY": 2,
+    "DERIVED_SYNCHRONIZED_VIEW": 1,
+    "GUIDE_DOCUMENTATION": 1,
+    "HISTORICAL_DUPLICATION": 2,
+    "NOT_AN_EXTENSION_POINT": 9,
+    "RUNTIME_ROUTING_AUTHORITY": 5,
+    "SCHEMA_AUTHORITY": 12,
+    "SOURCE_AUTHORITY": 4,
+    "TEST_AUTHORITY": 3
+  },
+  "identity_authorities": [
+    "Catalog for capability",
+    "typed schema/family contract for evidence",
+    "source authority for source",
+    "routing matrix/resolver for route",
+    "executor metadata and trusted callable binding for executor"
+  ],
+  "input_surface_count": 39,
+  "intentional_cross_checks_preserved": true,
+  "no_new_registry": true,
+  "registration_surfaces": [
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "classification": "CANONICAL_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Capability identity, parameters, bounds, support and publication",
+      "exact_source_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+      ],
+      "finding_id": "REG-catalog",
+      "registration_id": "catalog"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Selected executor, markets, target and batch/network policy",
+      "exact_source_files": [
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+      ],
+      "finding_id": "REG-routing",
+      "registration_id": "routing"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "config/m8r_06_03_executor_registry_metadata.json",
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Route tuple contract, timeout and maximum result items",
+      "exact_source_files": [
+        "config/m8r_06_03_executor_registry_metadata.json"
+      ],
+      "finding_id": "REG-executor_metadata",
+      "registration_id": "executor_metadata"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_06_03_production_adapter.py",
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Trusted callable binding; no dynamic discovery",
+      "exact_source_files": [
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "finding_id": "REG-runtime_adapter_binding",
+      "registration_id": "runtime_adapter_binding"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Planner selected executor reuse disposition",
+      "exact_source_files": [
+        "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+      ],
+      "finding_id": "REG-executor_inventory",
+      "registration_id": "executor_inventory"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/source_registry/source_authority_registry.json",
+      "classification": "HISTORICAL_DUPLICATION",
+      "classification_preserved": true,
+      "current_behavior": "M4 design-stage taxonomy inventory; not current Unified acquisition authority. Preserve historical validator.",
+      "exact_source_files": [
+        "docs/source_registry/source_authority_registry.json",
+        "docs/source_registry/source_contract_schema.json",
+        "docs/source_registry/source_family_coverage_matrix.json"
+      ],
+      "finding_id": "REG-source_registry",
+      "registration_id": "source_registry"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/phase_g/research_executor.py",
+      "classification": "SOURCE_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Explicit Phase G capability/market source contracts and fallback routes",
+      "exact_source_files": [
+        "scripts/phase_g/research_executor.py"
+      ],
+      "finding_id": "REG-research_source_routes",
+      "registration_id": "research_source_routes"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
+      "classification": "SOURCE_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Official EOD endpoint and instrument source contracts; target eligibility remains installation identity authority",
+      "exact_source_files": [
+        "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
+        "config/m8a_official_eod_security_master.json"
+      ],
+      "finding_id": "REG-eod_source_contracts",
+      "registration_id": "eod_source_contracts"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "config/phase_h_h1_dormant_source_descriptors.json",
+      "classification": "SOURCE_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Descriptors alone do not activate routes; current selected executors own request/normalization contracts",
+      "exact_source_files": [
+        "config/phase_h_h1_dormant_source_descriptors.json",
+        "config/phase_h_h2_dormant_source_descriptors.json",
+        "server/services/phase_h_h1_tpex_composite.py",
+        "server/services/phase_h_h2_twse_exright_executor.py",
+        "server/services/phase_h_h3_twse_stock_day_adapter.py"
+      ],
+      "finding_id": "REG-phase_h_sources",
+      "registration_id": "phase_h_sources"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+      "classification": "SOURCE_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Family-specific approved source selection, subordinate to canonical route authority",
+      "exact_source_files": [
+        "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+        "docs/data_capabilities/phase_i_i2_source_authority.v1.json",
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json"
+      ],
+      "finding_id": "REG-phase_i_sources",
+      "registration_id": "phase_i_sources"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "schemas/unified_market_evidence_request.v3.schema.json",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Closed public data_need vocabulary",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_request.v3.schema.json"
+      ],
+      "finding_id": "REG-request_schema",
+      "registration_id": "request_schema"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "schemas/unified_market_evidence_execution_request.v3.schema.json",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Governed execution projection vocabulary",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_execution_request.v3.schema.json"
+      ],
+      "finding_id": "REG-execution_schema",
+      "registration_id": "execution_schema"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "schemas/unified_market_evidence_result.v3.schema.json",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Typed family result fields and refs",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "finding_id": "REG-result_schema",
+      "registration_id": "result_schema"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Audit lineage fields",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_audit_package.v3.schema.json"
+      ],
+      "finding_id": "REG-audit_schema",
+      "registration_id": "audit_schema"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Operation evidence envelope compatibility",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_operation_result.v2.schema.json"
+      ],
+      "finding_id": "REG-operation_schema",
+      "registration_id": "operation_schema"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Versioned subordinate raw/normalized contracts, not a second protocol",
+      "exact_source_files": [
+        "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+        "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json"
+      ],
+      "finding_id": "REG-family_schemas",
+      "registration_id": "family_schemas"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05a_f3/capability_validator.py",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "Generic Catalog-driven parameter validation should normally need no family branch",
+      "exact_source_files": [
+        "scripts/m8r_05a_f3/capability_validator.py"
+      ],
+      "finding_id": "REG-validator",
+      "registration_id": "validator"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "server/services/unified_contract_versions.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Frozen Request version to Catalog/Route mapping",
+      "exact_source_files": [
+        "server/services/unified_contract_versions.py"
+      ],
+      "finding_id": "REG-version_pairs",
+      "registration_id": "version_pairs"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05b_01/planner.py",
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Generic plan plus explicit derived dependencies, H2/H3 and I3 date prerequisites",
+      "exact_source_files": [
+        "scripts/m8r_05b_01/planner.py"
+      ],
+      "finding_id": "REG-planner",
+      "registration_id": "planner"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05c/artifact_loader.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Explicit schema allowlist and artifact semantic checks",
+      "exact_source_files": [
+        "scripts/m8r_05c/artifact_loader.py"
+      ],
+      "finding_id": "REG-loader",
+      "registration_id": "loader"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05c/lineage_resolver.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Closed mapping and typed-contract binding; fail closed",
+      "exact_source_files": [
+        "scripts/m8r_05c/lineage_resolver.py"
+      ],
+      "finding_id": "REG-lineage",
+      "registration_id": "lineage"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05c/models.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Typed fields, missing/coverage semantics, existing Result construction",
+      "exact_source_files": [
+        "scripts/m8r_05c/models.py",
+        "scripts/m8r_05c/evidence_projector.py",
+        "scripts/m8r_05c/result_builder.py"
+      ],
+      "finding_id": "REG-projection",
+      "registration_id": "projection"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05c/audit_package_builder.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Typed family provenance and attempt projection",
+      "exact_source_files": [
+        "scripts/m8r_05c/audit_package_builder.py"
+      ],
+      "finding_id": "REG-audit_projection",
+      "registration_id": "audit_projection"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05c/markdown_renderer.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Runtime family Result/handoff projection and caveats; no independent authorization",
+      "exact_source_files": [
+        "scripts/m8r_05c/markdown_renderer.py"
+      ],
+      "finding_id": "REG-handoff",
+      "registration_id": "handoff"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05c/citation_builder.py",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "Generic operation/artifact lineage identity; preserve citation proof",
+      "exact_source_files": [
+        "scripts/m8r_05c/citation_builder.py"
+      ],
+      "finding_id": "REG-citation",
+      "registration_id": "citation"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+      "classification": "DERIVED_SYNCHRONIZED_VIEW",
+      "classification_preserved": true,
+      "current_behavior": "Generated Catalog copy and quick guide with canonical hash and Git lineage",
+      "exact_source_files": [
+        "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+        "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+        "scripts/generate_portable_catalog.py"
+      ],
+      "finding_id": "REG-portable",
+      "registration_id": "portable"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "skills/tw-market-evidence-agent/SKILL.md",
+      "classification": "GUIDE_DOCUMENTATION",
+      "classification_preserved": true,
+      "current_behavior": "Human/AI usage and bounded limitations",
+      "exact_source_files": [
+        "skills/tw-market-evidence-agent/SKILL.md",
+        "docs/agent_usage_guide.md",
+        "skills/tw-market-evidence-agent/references/current_limitations.md"
+      ],
+      "finding_id": "REG-runtime_guides",
+      "registration_id": "runtime_guides"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+      "classification": "HISTORICAL_DUPLICATION",
+      "classification_preserved": true,
+      "current_behavior": "Earlier guide/source-capability narrative is not a second current Unified Catalog",
+      "exact_source_files": [
+        "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+        "docs/data_capabilities/m8_source_capability_registry.json"
+      ],
+      "finding_id": "REG-ai_guide_legacy",
+      "registration_id": "ai_guide_legacy"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/validate_portable_catalog_sync.py",
+      "classification": "TEST_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Intentional independent cross-checks; do not replace all with dynamic equality",
+      "exact_source_files": [
+        "scripts/validate_portable_catalog_sync.py",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "finding_id": "REG-sync_gates",
+      "registration_id": "sync_gates"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/validate_v1_public_contracts.py",
+      "classification": "TEST_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Compatibility and current contract assertions",
+      "exact_source_files": [
+        "scripts/validate_v1_public_contracts.py",
+        "scripts/validate_unified_market_evidence_contracts.py",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "finding_id": "REG-contract_gates",
+      "registration_id": "contract_gates"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "config/test_execution_profiles.json",
+      "classification": "TEST_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Explicit current/historical classification and registration",
+      "exact_source_files": [
+        "config/test_execution_profiles.json",
+        "config/test_governance_semantic_profiles.json",
+        "tests/conftest.py"
+      ],
+      "finding_id": "REG-test_profiles",
+      "registration_id": "test_profiles"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "Frozen governing constraints; a future family must conform and must not modify L0 merely to register",
+      "exact_source_files": [
+        "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+        "AGENTS.md"
+      ],
+      "finding_id": "REG-governance",
+      "registration_id": "governance"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "docs/acceptance_runs/phase_g_pr_d_closure.json",
+      "classification": "CANONICAL_AUTHORITY",
+      "classification_preserved": true,
+      "current_behavior": "Family-specific accepted contract/activation ledgers; separate explicit Owner promotion, never a modification to frozen L0",
+      "exact_source_files": [
+        "docs/acceptance_runs/phase_g_pr_d_closure.json",
+        "docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json"
+      ],
+      "finding_id": "REG-family_acceptance",
+      "registration_id": "family_acceptance"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05a_f3/security_master_loader.py",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "Installation-local Security Master; no family identity service fork",
+      "exact_source_files": [
+        "scripts/m8r_05a_f3/security_master_loader.py",
+        "scripts/m8r_05a_f3/target_validator.py"
+      ],
+      "finding_id": "REG-identity",
+      "registration_id": "identity"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "scripts/m8r_05b_02/validator.py",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "Existing authorization / atomic execute-once platform control",
+      "exact_source_files": [
+        "scripts/m8r_05b_02/validator.py",
+        "scripts/m8r_05b_03/authorization_gate.py",
+        "scripts/m8r_05b_03/consumption_claim.py"
+      ],
+      "finding_id": "REG-authorization",
+      "registration_id": "authorization"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "server/local_network_boundary.py",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "No family-owned control plane or startup acquisition",
+      "exact_source_files": [
+        "server/local_network_boundary.py",
+        "server/services/unified_mode_b2_execution.py"
+      ],
+      "finding_id": "REG-network_policy",
+      "registration_id": "network_policy"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "server/resource_boundaries.py",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "Shared resource and payload ceilings; adapters remain bounded beneath them",
+      "exact_source_files": [
+        "server/resource_boundaries.py",
+        "server/unified_payload_bounds.py",
+        "server/unified_bounded_io.py"
+      ],
+      "finding_id": "REG-resources",
+      "registration_id": "resources"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "server/services/unified_retention_inventory.py",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "Classify through L2; no family-specific automatic migration/GC",
+      "exact_source_files": [
+        "server/services/unified_retention_inventory.py",
+        "server/services/unified_replay_inspector.py",
+        "server/services/unified_backup.py",
+        "server/services/unified_restore.py",
+        "server/services/unified_migration.py"
+      ],
+      "finding_id": "REG-retention",
+      "registration_id": "retention"
+    },
+    {
+      "a1_rule": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "canonical_authority": "server/unified_mcp/tool_contracts.py",
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "classification_preserved": true,
+      "current_behavior": "Exactly six existing tools",
+      "exact_source_files": [
+        "server/unified_mcp/tool_contracts.py"
+      ],
+      "finding_id": "REG-mcp",
+      "registration_id": "mcp"
+    }
+  ]
+}

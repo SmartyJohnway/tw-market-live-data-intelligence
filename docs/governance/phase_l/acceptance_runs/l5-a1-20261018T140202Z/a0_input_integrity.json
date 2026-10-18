@@ -1,0 +1,35 @@
+{
+  "a0_manifest": {
+    "all_member_hashes_verified": true,
+    "artifact_count": 54,
+    "manifest_canonical_sha256": "aa7dee61185eddb66e4adb5c08b700fb884404dbf77e26ba6187a1097277ba94",
+    "members_verified_from_historical_commit": [],
+    "path": "docs/governance/phase_l/acceptance_runs/l5-a0-20261018T110810Z/manifest.json"
+  },
+  "a0_plugin_assessment": "PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW",
+  "a0_primary_disposition": "L5_A0_EVIDENCE_FAMILY_EXTENSION_SURFACE_INVENTORY_COMPLETE",
+  "a0_r1_manifest": {
+    "all_member_hashes_verified": true,
+    "artifact_count": 23,
+    "manifest_canonical_sha256": "c3975ce5726182b2d831d9c9b82ff3a300912a7222a536665a1acb9985d9a78f",
+    "members_verified_from_historical_commit": [
+      {
+        "current_difference": true,
+        "path": "docs/governance/phase_l/PHASE_L_L5_A0_R1_VALIDATION_STATUS_RECONCILIATION_2026-10-18.md",
+        "verified_at_commit": "05971acf4484604307b3d016c667c64515de42fd"
+      }
+    ],
+    "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/manifest.json"
+  },
+  "dimension_count": 36,
+  "entry_head": "0a1b3bf3b18b009cc8f54c6207a468612d337f9f",
+  "entry_tree": "efacdd6ac413bce4f2238be61344171f7639780e",
+  "preservation": "Both manifests and all listed artifact hashes verified before A1 evidence generation; no protected authority is modified.",
+  "protected_inputs": [
+    "A0 run/manifest",
+    "A0-R1 run/manifest",
+    "frozen L0",
+    "L1-L4 closure evidence"
+  ],
+  "registration_surface_count": 39
+}
