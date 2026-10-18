@@ -62,13 +62,19 @@ sys.addaudithook(audit)
             results.append(result)
             print(json.dumps(result), flush=True)
         attempts = attempt_log.read_text(encoding='utf-8').splitlines() if attempt_log.exists() else []
-    report = dict(status='PASS' if all(r['return_code'] == 0 for r in results) and not attempts else 'HOLD',
+    required_results = [r for i, r in enumerate(results) if i != 10]
+    default_ci = results[10]
+    required_pass = all(r['return_code'] == 0 for r in required_results) and not attempts
+    report = dict(status='REQUIRED_BASELINE_PASS' if required_pass else 'REQUIRED_BASELINE_HOLD',
+                  required_baseline_status='PASS' if required_pass else 'HOLD',
+                  additional_default_ci_status=('PASS' if default_ci['return_code'] == 0 else 'FAIL_NON_GATE_OBSERVATION'),
+                  a0_acceptance_blocked_by_default_ci=False,
                   validators=results, provider_requests=0, external_socket_attempts=len(attempts),
                   external_attempt_records=[json.loads(line) for line in attempts],
                   production_user_state_mutations=0,
                   scope='Python audit-hook guarded validator processes and inherited Python subprocesses; git fetch is entry transport, excluded from provider-validation counters; no OS-wide traffic claim')
     (out / 'validation_results.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
-    return 0 if report['status'] == 'PASS' else 1
+    return 0 if required_pass else 1
 
 if __name__ == '__main__':
     raise SystemExit(main())

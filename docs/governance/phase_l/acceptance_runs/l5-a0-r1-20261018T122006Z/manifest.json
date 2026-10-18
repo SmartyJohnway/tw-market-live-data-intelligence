@@ -1,0 +1,133 @@
+{
+  "artifact_count": 23,
+  "artifacts": [
+    {
+      "canonical_bytes": 10597,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/default_ci_candidate_result.json",
+      "sha256": "61ced7e485b16f5661d7cf11bf8e32ea941a9d940c4b3d392e211ad720537cf3"
+    },
+    {
+      "canonical_bytes": 10597,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/default_ci_entry_base_result.json",
+      "sha256": "abf12f940190463373a2b4b26e9764ce8add2897159b86b36f47aa25ab23b4c7"
+    },
+    {
+      "canonical_bytes": 10343,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/default_ci_failed_node_comparison.json",
+      "sha256": "22b788dee56c82219208bbafb50a6637650b0d7653e05f3df38cba026d2ce101"
+    },
+    {
+      "canonical_bytes": 835,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/offline_review.json",
+      "sha256": "8bd3efb087d01780b7038e8093af6f53334a2583b58a6896f078d55cbe714526"
+    },
+    {
+      "canonical_bytes": 2699,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/original_a0_evidence_verification.json",
+      "sha256": "47b5f0d21cb4412153f86fc0d82da5269dd1b046c427b1cf9db0a509de97da6f"
+    },
+    {
+      "canonical_bytes": 772,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/preflight_result.json",
+      "sha256": "ddd6aebfdf0046d33ccb7c1615f30027b5700f5d8322387f8f245c80d1472220"
+    },
+    {
+      "canonical_bytes": 3194,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/required_baseline_reverification.json",
+      "sha256": "4d7ef406825ca9ca677b37d5a901a836ca90bf6ec49ffdf7f9502e8a420842ca"
+    },
+    {
+      "canonical_bytes": 3633,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validation_results.json",
+      "sha256": "78742db699974bbec39c24532d664967b948ba2b623e9244a01df1cfde033418"
+    },
+    {
+      "canonical_bytes": 687,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validation_status_reconciliation.json",
+      "sha256": "ae076103b59fff4854cf8d6b4a532a48daabf20768535d70e731f4b49b821f71"
+    },
+    {
+      "canonical_bytes": 155,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_01.txt",
+      "sha256": "ad2addf806dee586a5f3e060d7414a1efcd6759556df5b9ecabe2fedbadca5bd"
+    },
+    {
+      "canonical_bytes": 298,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_02.txt",
+      "sha256": "78cdf5ed41b6b3e8ffcac848ce1408165aa49589c25989acd5ec8058707db293"
+    },
+    {
+      "canonical_bytes": 33,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_03.txt",
+      "sha256": "a7607909c829734fdf16bb46074ac7fc4b5070e5e9e6bf64c9a4be0cc2d3b7cf"
+    },
+    {
+      "canonical_bytes": 104,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_04.txt",
+      "sha256": "d90b26c5867f44aa6dd08ab58e4053e6f3287a73d5c3fad1ca6cc464deff2812"
+    },
+    {
+      "canonical_bytes": 207,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_05.txt",
+      "sha256": "f5b84ea71b3ff5857c8b40cc6e597cb7330f77acc406dc707d16abe40e135664"
+    },
+    {
+      "canonical_bytes": 64,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_06.txt",
+      "sha256": "6ee8f0011bcfe59bd032eff756d27677b0e529267b6d8e2e4b95e999a5a8f052"
+    },
+    {
+      "canonical_bytes": 0,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_07.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "canonical_bytes": 27,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_08.txt",
+      "sha256": "073732646f7b8916cf871e04753ae0e27b6b3da0c02f7a578cf3819ed63c3cfa"
+    },
+    {
+      "canonical_bytes": 30,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_09.txt",
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "canonical_bytes": 0,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_10.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "canonical_bytes": 44817,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_11.txt",
+      "sha256": "1b2a251fab6a1f3a1d95d5df909381dcd12872a038f5c7a14774b60fbd17d8aa"
+    },
+    {
+      "canonical_bytes": 0,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a0-r1-20261018T122006Z/validator_12.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "canonical_bytes": 1851,
+      "path": "docs/governance/phase_l/PHASE_L_L5_A0_R1_VALIDATION_STATUS_RECONCILIATION_2026-10-18.md",
+      "sha256": "9ff799bd04918e1e1ee2759e4867476a6e07be57147a16c0a0a355388254617c"
+    },
+    {
+      "canonical_bytes": 4303,
+      "path": "scripts/l5_a0_offline_validation.py",
+      "sha256": "c5df6d1919fe39e17bbb7940f3e62b4aa15d0124d8b76590d64ad6487f353d99"
+    }
+  ],
+  "authorized_origin_main": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+  "entry_head": "f9fe59535ead66f54422c1badffc358e8b812f09",
+  "entry_tree": "32d12d472716c5a32c7810b9e1b94dfc0da97ff2",
+  "external_socket_attempts": 0,
+  "external_socket_scope": "Python audit-hook guarded validator processes and inherited Python subprocesses only; no OS-wide traffic claim.",
+  "hash_policy": "UTF-8 text; CRLF and CR normalized to LF before byte count and SHA-256. Manifest canonical digest is SHA-256 of compact sorted-key UTF-8 JSON excluding manifest_canonical_sha256.",
+  "manifest_canonical_sha256": "c3975ce5726182b2d831d9c9b82ff3a300912a7222a536665a1acb9985d9a78f",
+  "original_a0_manifest_canonical_sha256": "aa7dee61185eddb66e4adb5c08b700fb884404dbf77e26ba6187a1097277ba94",
+  "production_state_mutations": 0,
+  "provider_requests": 0,
+  "purpose": "L5-A0-R1 validation status semantics reconciliation",
+  "run_id": "l5-a0-r1-20261018T122006Z",
+  "status": "L5_A0_VALIDATION_STATUS_RECONCILIATION_PASS"
+}

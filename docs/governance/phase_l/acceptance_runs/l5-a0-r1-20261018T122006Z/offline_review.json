@@ -1,0 +1,22 @@
+{
+  "checks": {
+    "candidate_counts_exact": true,
+    "candidate_only_failures_zero": true,
+    "entry_base_counts_exact": true,
+    "entry_identity_exact": true,
+    "exact_failed_node_set_equal": true,
+    "external_socket_attempts_zero": true,
+    "original_evidence_preserved": true,
+    "original_manifest_hash_verified": true,
+    "production_state_mutations_zero": true,
+    "provider_requests_zero": true,
+    "required_baseline_pass": true
+  },
+  "failed_check_names": [],
+  "limitations": [
+    "The exact failure-set match establishes no L5-A0 regression only.",
+    "No claim is made that the failures are harmless, obsolete, or formally governed deselections.",
+    "Network count covers Python audit-hook guarded validator processes and inherited subprocesses only; no OS-wide traffic claim."
+  ],
+  "status": "PASS"
+}

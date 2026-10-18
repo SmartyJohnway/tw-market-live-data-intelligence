@@ -1,0 +1,15 @@
+{
+  "a0_acceptance_blocked_by_default_ci": false,
+  "additional_default_ci_status": "FAIL_PREEXISTING_ENTRY_BASELINE",
+  "candidate_only_failures": 0,
+  "does_not_authorize_a1": true,
+  "does_not_convert_failures_to_pass": true,
+  "does_not_declare_failures_fixed": true,
+  "entry_base_only_failures": 0,
+  "exact_failed_node_set_equality": true,
+  "required_baseline_status": "PASS",
+  "status": "L5_A0_VALIDATION_STATUS_RECONCILIATION_PASS",
+  "status_after": "REQUIRED_BASELINE_PASS",
+  "status_before": "HOLD",
+  "status_before_explanation": "Original aggregate included additional default-ci failure despite required baseline PASS; preserved as immutable historical A0 evidence."
+}
