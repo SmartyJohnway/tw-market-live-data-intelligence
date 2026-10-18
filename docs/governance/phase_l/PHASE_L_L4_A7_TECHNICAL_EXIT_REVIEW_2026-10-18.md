@@ -158,3 +158,14 @@ This technical pass does **not** constitute Owner-final closure of L4.
 L4 is `TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED`. Owner final closure is `PENDING`.
 
 L5-L7 remain `NOT AUTHORIZED`. This A7 authorization does not start Extension Architecture, Packaging/Portability, or Release Governance work.
+
+
+## Owner Final Closure
+
+Disposition: `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
+
+Owner authority: `USER_CHAT_2026-10-18_PHASE_L_L4_OWNER_FINAL_CLOSURE_AND_A7_MERGE_AUTHORIZATION`.
+
+The Owner accepts `PHASE_L_L4_EXIT_REVIEW_PASS`, authorizes the A7 technical-exit-review candidate for merge, and accepts final closure of L4 once that merge is verified on canonical `origin/main`. All 33 A0 inventory rows retain the A7 reconciliation of 31 `COVERED` plus 2 `NOT_APPLICABLE`, with zero unresolved blocker. The two TG4 historical Mode C replay nodes remain governed debt and are not represented as passing. The seven immutable evidence EOF format exceptions remain byte-preserved and do not establish a generic whitespace waiver.
+
+This Owner closure does not authorize L5, L6, or L7 work. Until the A7 merge is verified, canonical state is `OWNER FINAL CLOSURE ACCEPTED FOR MERGE`; after verified merge, L4 may be recorded as `CLOSED` under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
