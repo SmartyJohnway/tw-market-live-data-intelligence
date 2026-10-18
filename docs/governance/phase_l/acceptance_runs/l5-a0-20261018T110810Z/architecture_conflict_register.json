@@ -1,0 +1,1248 @@
+{
+  "architecture_conflict_count": 0,
+  "findings": [
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose second Capability Catalog.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-01",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose second source registry.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-02",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose second executor registry.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-03",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose second identity authority.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-04",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose second request protocol.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-05",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose second Result/Audit system.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-06",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose family-owned authorization semantics.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-07",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose family-owned network policy.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-08",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose family-owned retention authority.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-09",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose family-owned generic resource policy.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-10",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    },
+    {
+      "classification": "PASS_NOT_PROPOSED",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "A0 candidate does not propose family-specific MCP tools.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Reject as ARCHITECTURE_CONFLICT if proposed later; reuse the named current authority.",
+      "finding_id": "NEG-11",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "negative_architecture_check"
+    }
+  ]
+}

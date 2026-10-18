@@ -1,0 +1,2670 @@
+{
+  "classification_counts": {
+    "CANONICAL_AUTHORITY": 2,
+    "DERIVED_SYNCHRONIZED_VIEW": 1,
+    "GUIDE_DOCUMENTATION": 1,
+    "HISTORICAL_DUPLICATION": 2,
+    "NOT_AN_EXTENSION_POINT": 9,
+    "RUNTIME_ROUTING_AUTHORITY": 5,
+    "SCHEMA_AUTHORITY": 12,
+    "SOURCE_AUTHORITY": 4,
+    "TEST_AUTHORITY": 3
+  },
+  "dangerous_multi_authority": "No duplicate active canonical capability registry proven. Catalog embedded I3 routing fields, metadata/callable tuples and separate typed schema maps require coordinated checks; their roles are distinct, not independent capability identity.",
+  "findings": [
+    {
+      "classification": "CANONICAL_AUTHORITY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Capability identity, parameters, bounds, support and publication",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-catalog",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "catalog",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "current_authority": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "current_behavior": "Selected executor, markets, target and batch/network policy",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-routing",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "routing",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "current_authority": "config/m8r_06_03_executor_registry_metadata.json",
+      "current_behavior": "Route tuple contract, timeout and maximum result items",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-executor_metadata",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "executor_metadata",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "current_authority": "scripts/m8r_06_03_production_adapter.py",
+      "current_behavior": "Trusted callable binding; no dynamic discovery",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-runtime_adapter_binding",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "runtime_adapter_binding",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "current_authority": "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+      "current_behavior": "Planner selected executor reuse disposition",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-executor_inventory",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "executor_inventory",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "HISTORICAL_DUPLICATION",
+      "current_authority": "docs/source_registry/source_authority_registry.json",
+      "current_behavior": "M4 design-stage taxonomy inventory; not current Unified acquisition authority. Preserve historical validator.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/source_registry/source_authority_registry.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/source_registry/source_contract_schema.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/source_registry/source_family_coverage_matrix.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-source_registry",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "source_registry",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SOURCE_AUTHORITY",
+      "current_authority": "scripts/phase_g/research_executor.py",
+      "current_behavior": "Explicit Phase G capability/market source contracts and fallback routes",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 21,
+              "name": "SourceFailure"
+            },
+            {
+              "line": 26,
+              "name": "TransportResult"
+            },
+            {
+              "line": 32,
+              "name": "parse_csv"
+            },
+            {
+              "line": 64,
+              "name": "_failure_reason"
+            },
+            {
+              "line": 70,
+              "name": "parse_json"
+            },
+            {
+              "line": 78,
+              "name": "fetch_once"
+            },
+            {
+              "line": 88,
+              "name": "failed_provenance"
+            },
+            {
+              "line": 124,
+              "name": "normalize_source_rows"
+            },
+            {
+              "line": 145,
+              "name": "field"
+            },
+            {
+              "line": 151,
+              "name": "bind_rows"
+            },
+            {
+              "line": 22,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/phase_g/research_executor.py",
+          "symbol": "ROUTES",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-research_source_routes",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "research_source_routes",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SOURCE_AUTHORITY",
+      "current_authority": "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
+      "current_behavior": "Official EOD endpoint and instrument source contracts; target eligibility remains installation identity authority",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/m8a_official_eod_security_master.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-eod_source_contracts",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "eod_source_contracts",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SOURCE_AUTHORITY",
+      "current_authority": "config/phase_h_h1_dormant_source_descriptors.json",
+      "current_behavior": "Descriptors alone do not activate routes; current selected executors own request/normalization contracts",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/phase_h_h1_dormant_source_descriptors.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/phase_h_h2_dormant_source_descriptors.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 59,
+              "name": "H1CompositeSourceAttemptError"
+            },
+            {
+              "line": 77,
+              "name": "_expected_normalization_failure_code"
+            },
+            {
+              "line": 85,
+              "name": "_sha256"
+            },
+            {
+              "line": 89,
+              "name": "_now"
+            },
+            {
+              "line": 93,
+              "name": "_NoRedirect"
+            },
+            {
+              "line": 98,
+              "name": "official_get"
+            },
+            {
+              "line": 128,
+              "name": "_decode_payload"
+            },
+            {
+              "line": 140,
+              "name": "_validate_source_rows"
+            },
+            {
+              "line": 162,
+              "name": "_write_json"
+            },
+            {
+              "line": 168,
+              "name": "_source_failure"
+            },
+            {
+              "line": 187,
+              "name": "execute_composite_operation"
+            },
+            {
+              "line": 288,
+              "name": "production_composite_adapter"
+            },
+            {
+              "line": 94,
+              "name": "redirect_request"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 59,
+          "path": "server/services/phase_h_h1_tpex_composite.py",
+          "symbol": "H1CompositeSourceAttemptError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 46,
+              "name": "H2SourceAttemptError"
+            },
+            {
+              "line": 50,
+              "name": "_NoRedirect"
+            },
+            {
+              "line": 55,
+              "name": "_now"
+            },
+            {
+              "line": 59,
+              "name": "official_get_once"
+            },
+            {
+              "line": 82,
+              "name": "_decode_rows"
+            },
+            {
+              "line": 98,
+              "name": "_target_from_request"
+            },
+            {
+              "line": 111,
+              "name": "_h3_dependency"
+            },
+            {
+              "line": 184,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 198,
+              "name": "_result_base"
+            },
+            {
+              "line": 205,
+              "name": "_materialize"
+            },
+            {
+              "line": 226,
+              "name": "execute_h2_twse_exright_pre"
+            },
+            {
+              "line": 292,
+              "name": "derive_h4_for_completed_plan"
+            },
+            {
+              "line": 51,
+              "name": "redirect_request"
+            },
+            {
+              "line": 305,
+              "name": "load_primary"
+            },
+            {
+              "line": 317,
+              "name": "derive_one"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 46,
+          "path": "server/services/phase_h_h2_twse_exright_executor.py",
+          "symbol": "H2SourceAttemptError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 51,
+              "name": "TWSEStockDayFormatError"
+            },
+            {
+              "line": 56,
+              "name": "TWSEStockDayResult"
+            },
+            {
+              "line": 73,
+              "name": "_Response"
+            },
+            {
+              "line": 84,
+              "name": "_NoRedirectHandler"
+            },
+            {
+              "line": 91,
+              "name": "_default_http_get"
+            },
+            {
+              "line": 108,
+              "name": "_fail"
+            },
+            {
+              "line": 112,
+              "name": "_target_identity"
+            },
+            {
+              "line": 135,
+              "name": "_normalize_month"
+            },
+            {
+              "line": 144,
+              "name": "_validate_timestamp"
+            },
+            {
+              "line": 155,
+              "name": "_validate_bounds"
+            },
+            {
+              "line": 175,
+              "name": "_content_type"
+            },
+            {
+              "line": 184,
+              "name": "_html_charset"
+            },
+            {
+              "line": 197,
+              "name": "_cell_text"
+            },
+            {
+              "line": 202,
+              "name": "_ReportHTMLParser"
+            },
+            {
+              "line": 251,
+              "name": "_normalize_header_label"
+            },
+            {
+              "line": 256,
+              "name": "_normalize_title_text"
+            },
+            {
+              "line": 261,
+              "name": "_row_data_cells"
+            },
+            {
+              "line": 266,
+              "name": "_parse_roc_date"
+            },
+            {
+              "line": 276,
+              "name": "_parse_volume"
+            },
+            {
+              "line": 282,
+              "name": "_close_lexical_class"
+            },
+            {
+              "line": 293,
+              "name": "_parse_close"
+            },
+            {
+              "line": 315,
+              "name": "_normalize_html"
+            },
+            {
+              "line": 463,
+              "name": "fetch_twse_stock_day_month"
+            },
+            {
+              "line": 77,
+              "name": "read"
+            },
+            {
+              "line": 78,
+              "name": "close"
+            },
+            {
+              "line": 87,
+              "name": "redirect_request"
+            },
+            {
+              "line": 205,
+              "name": "__init__"
+            },
+            {
+              "line": 213,
+              "name": "handle_starttag"
+            },
+            {
+              "line": 228,
+              "name": "handle_endtag"
+            },
+            {
+              "line": 246,
+              "name": "handle_data"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 51,
+          "path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+          "symbol": "TWSEStockDayFormatError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-phase_h_sources",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "phase_h_sources",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SOURCE_AUTHORITY",
+      "current_authority": "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+      "current_behavior": "Family-specific approved source selection, subordinate to canonical route authority",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/phase_i_i2_source_authority.v1.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-phase_i_sources",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "phase_i_sources",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "schemas/unified_market_evidence_request.v3.schema.json",
+      "current_behavior": "Closed public data_need vocabulary",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "schemas/unified_market_evidence_request.v3.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-request_schema",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "request_schema",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "schemas/unified_market_evidence_execution_request.v3.schema.json",
+      "current_behavior": "Governed execution projection vocabulary",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 4,
+          "path": "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "symbol": "\"type\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-execution_schema",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "execution_schema",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "schemas/unified_market_evidence_result.v3.schema.json",
+      "current_behavior": "Typed family result fields and refs",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "schemas/unified_market_evidence_result.v3.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-result_schema",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "result_schema",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+      "current_behavior": "Audit lineage fields",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-audit_schema",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "audit_schema",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+      "current_behavior": "Operation evidence envelope compatibility",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 4,
+          "path": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+          "symbol": "\"type\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-operation_schema",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "operation_schema",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+      "current_behavior": "Versioned subordinate raw/normalized contracts, not a second protocol",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 188,
+          "path": "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 188,
+          "path": "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-family_schemas",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "family_schemas",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "scripts/m8r_05a_f3/capability_validator.py",
+      "current_behavior": "Generic Catalog-driven parameter validation should normally need no family branch",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 2,
+              "name": "validate_capability"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 2,
+          "path": "scripts/m8r_05a_f3/capability_validator.py",
+          "symbol": "validate_capability",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-validator",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "validator",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "server/services/unified_contract_versions.py",
+      "current_behavior": "Frozen Request version to Catalog/Route mapping",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 53,
+              "name": "UnsupportedRequestSchemaVersion"
+            },
+            {
+              "line": 57,
+              "name": "resolve_request_schema"
+            },
+            {
+              "line": 71,
+              "name": "resolve_planning_authority_paths"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 71,
+          "path": "server/services/unified_contract_versions.py",
+          "symbol": "resolve_planning_authority_paths",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-version_pairs",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "version_pairs",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "current_authority": "scripts/m8r_05b_01/planner.py",
+      "current_behavior": "Generic plan plus explicit derived dependencies, H2/H3 and I3 date prerequisites",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 26,
+              "name": "_pairs"
+            },
+            {
+              "line": 34,
+              "name": "routing_security_type"
+            },
+            {
+              "line": 41,
+              "name": "_targets"
+            },
+            {
+              "line": 50,
+              "name": "_validate_inputs"
+            },
+            {
+              "line": 66,
+              "name": "_warning"
+            },
+            {
+              "line": 69,
+              "name": "_refresh_operation_id"
+            },
+            {
+              "line": 79,
+              "name": "validate_batch_integrity"
+            },
+            {
+              "line": 100,
+              "name": "plan_identity_scope"
+            },
+            {
+              "line": 110,
+              "name": "build_plan"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 110,
+          "path": "scripts/m8r_05b_01/planner.py",
+          "symbol": "build_plan",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-planner",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "planner",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "scripts/m8r_05c/artifact_loader.py",
+      "current_behavior": "Explicit schema allowlist and artifact semantic checks",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 75,
+              "name": "_load_schema"
+            },
+            {
+              "line": 83,
+              "name": "_validate_schema"
+            },
+            {
+              "line": 94,
+              "name": "_validate_request_schema"
+            },
+            {
+              "line": 104,
+              "name": "_load_json"
+            },
+            {
+              "line": 115,
+              "name": "_sha256_file"
+            },
+            {
+              "line": 122,
+              "name": "_check_containment"
+            },
+            {
+              "line": 138,
+              "name": "_load_phase_h_source_attempts"
+            },
+            {
+              "line": 202,
+              "name": "load_projection_inputs"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 47,
+          "path": "scripts/m8r_05c/artifact_loader.py",
+          "symbol": "_RESEARCH_EVIDENCE_CONTRACTS",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-loader",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "loader",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "scripts/m8r_05c/lineage_resolver.py",
+      "current_behavior": "Closed mapping and typed-contract binding; fail closed",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 74,
+              "name": "_expected_typed_contract"
+            },
+            {
+              "line": 79,
+              "name": "_allowed_typed_contracts"
+            },
+            {
+              "line": 87,
+              "name": "TargetResolution"
+            },
+            {
+              "line": 98,
+              "name": "OperationBinding"
+            },
+            {
+              "line": 118,
+              "name": "LineageMap"
+            },
+            {
+              "line": 130,
+              "name": "build_lineage_map"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 23,
+          "path": "scripts/m8r_05c/lineage_resolver.py",
+          "symbol": "_CAPABILITY_TO_DATA_NEED",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-lineage",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "lineage",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "scripts/m8r_05c/models.py",
+      "current_behavior": "Typed fields, missing/coverage semantics, existing Result construction",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 12,
+              "name": "EvidenceEnvelopeProjection"
+            },
+            {
+              "line": 25,
+              "name": "DerivedMetricProjection"
+            },
+            {
+              "line": 43,
+              "name": "CitationProjection"
+            },
+            {
+              "line": 55,
+              "name": "ResolutionProjection"
+            },
+            {
+              "line": 65,
+              "name": "TargetEvidenceProjection"
+            },
+            {
+              "line": 85,
+              "name": "TargetProjection"
+            },
+            {
+              "line": 97,
+              "name": "PartialFailureProjection"
+            },
+            {
+              "line": 105,
+              "name": "RequestSummaryProjection"
+            },
+            {
+              "line": 115,
+              "name": "ProjectionInputs"
+            },
+            {
+              "line": 141,
+              "name": "ProjectionResult"
+            },
+            {
+              "line": 158,
+              "name": "CitationToOperationEntry"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/m8r_05c/models.py",
+          "symbol": "EvidenceEnvelopeProjection",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 47,
+              "name": "project_typed_research_evidence"
+            },
+            {
+              "line": 73,
+              "name": "project_phase_h_typed_evidence"
+            },
+            {
+              "line": 89,
+              "name": "project_trading_status_context_evidence"
+            },
+            {
+              "line": 115,
+              "name": "_research_artifact"
+            },
+            {
+              "line": 124,
+              "name": "_project_material_disclosures"
+            },
+            {
+              "line": 163,
+              "name": "_project_monthly_revenue"
+            },
+            {
+              "line": 178,
+              "name": "_project_envelope"
+            },
+            {
+              "line": 265,
+              "name": "_project_current_observation"
+            },
+            {
+              "line": 309,
+              "name": "_project_envelope_legacy"
+            },
+            {
+              "line": 334,
+              "name": "_project_envelope_v1_1"
+            },
+            {
+              "line": 343,
+              "name": "_project_official_eod_legacy"
+            },
+            {
+              "line": 359,
+              "name": "_project_official_eod_pre_v1_3"
+            },
+            {
+              "line": 426,
+              "name": "_project_official_eod"
+            },
+            {
+              "line": 440,
+              "name": "project_target_evidence"
+            },
+            {
+              "line": 463,
+              "name": "_cite"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 440,
+          "path": "scripts/m8r_05c/evidence_projector.py",
+          "symbol": "project_target_evidence",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 63,
+              "name": "_load_result_schema"
+            },
+            {
+              "line": 70,
+              "name": "_build_request_summary"
+            },
+            {
+              "line": 91,
+              "name": "_build_resolution"
+            },
+            {
+              "line": 116,
+              "name": "_compute_result_status"
+            },
+            {
+              "line": 157,
+              "name": "_envelope_to_dict"
+            },
+            {
+              "line": 180,
+              "name": "_citation_to_dict"
+            },
+            {
+              "line": 196,
+              "name": "_canonical_identity_v2"
+            },
+            {
+              "line": 213,
+              "name": "_derived_metric_to_dict"
+            },
+            {
+              "line": 235,
+              "name": "_research_status"
+            },
+            {
+              "line": 240,
+              "name": "_not_applicable_research"
+            },
+            {
+              "line": 265,
+              "name": "_derived_h4_artifact"
+            },
+            {
+              "line": 290,
+              "name": "build_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 24,
+          "path": "scripts/m8r_05c/result_builder.py",
+          "symbol": "build_result",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-projection",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "projection",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "scripts/m8r_05c/audit_package_builder.py",
+      "current_behavior": "Typed family provenance and attempt projection",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "_load_audit_schema"
+            },
+            {
+              "line": 65,
+              "name": "_phase_h_attempt_metadata"
+            },
+            {
+              "line": 73,
+              "name": "_audit_attempt"
+            },
+            {
+              "line": 111,
+              "name": "_phase_h_governance"
+            },
+            {
+              "line": 189,
+              "name": "_phase_i_evidence"
+            },
+            {
+              "line": 212,
+              "name": "build_audit_package"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 21,
+          "path": "scripts/m8r_05c/audit_package_builder.py",
+          "symbol": "build_audit_package",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-audit_projection",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "audit_projection",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "current_authority": "scripts/m8r_05c/markdown_renderer.py",
+      "current_behavior": "Runtime family Result/handoff projection and caveats; no independent authorization",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 57,
+              "name": "_section"
+            },
+            {
+              "line": 62,
+              "name": "_fmt_timing"
+            },
+            {
+              "line": 68,
+              "name": "_fmt_evidence_envelope"
+            },
+            {
+              "line": 117,
+              "name": "_fmt_eod_reference"
+            },
+            {
+              "line": 168,
+              "name": "_data_need_label"
+            },
+            {
+              "line": 181,
+              "name": "_fmt_typed_research_evidence"
+            },
+            {
+              "line": 238,
+              "name": "_fmt_phase_h_evidence"
+            },
+            {
+              "line": 334,
+              "name": "render_result_markdown"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 334,
+          "path": "scripts/m8r_05c/markdown_renderer.py",
+          "symbol": "render_result_markdown",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-handoff",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "handoff",
+      "risk_severity": "MEDIUM",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "scripts/m8r_05c/citation_builder.py",
+      "current_behavior": "Generic operation/artifact lineage identity; preserve citation proof",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 25,
+              "name": "_build_citation_id"
+            },
+            {
+              "line": 33,
+              "name": "CitationIndex"
+            },
+            {
+              "line": 46,
+              "name": "build_citation_index"
+            },
+            {
+              "line": 166,
+              "name": "get_citations_for_target"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 46,
+          "path": "scripts/m8r_05c/citation_builder.py",
+          "symbol": "build_citation_index",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-citation",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "citation",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "DERIVED_SYNCHRONIZED_VIEW",
+      "current_authority": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+      "current_behavior": "Generated Catalog copy and quick guide with canonical hash and Git lineage",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 15,
+              "name": "get_file_sha256"
+            },
+            {
+              "line": 26,
+              "name": "get_canonical_source_lineage"
+            },
+            {
+              "line": 49,
+              "name": "generate_portable_json_obj"
+            },
+            {
+              "line": 69,
+              "name": "generate_portable_markdown_text"
+            },
+            {
+              "line": 134,
+              "name": "generate_portable_catalog"
+            },
+            {
+              "line": 164,
+              "name": "main"
+            },
+            {
+              "line": 33,
+              "name": "git_stdout"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 15,
+          "path": "scripts/generate_portable_catalog.py",
+          "symbol": "get_file_sha256",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-portable",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "portable",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "GUIDE_DOCUMENTATION",
+      "current_authority": "skills/tw-market-evidence-agent/SKILL.md",
+      "current_behavior": "Human/AI usage and bounded limitations",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "skills/tw-market-evidence-agent/SKILL.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/agent_usage_guide.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "skills/tw-market-evidence-agent/references/current_limitations.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-runtime_guides",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "runtime_guides",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "HISTORICAL_DUPLICATION",
+      "current_authority": "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+      "current_behavior": "Earlier guide/source-capability narrative is not a second current Unified Catalog",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/m8_source_capability_registry.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-ai_guide_legacy",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "ai_guide_legacy",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "TEST_AUTHORITY",
+      "current_authority": "scripts/validate_portable_catalog_sync.py",
+      "current_behavior": "Intentional independent cross-checks; do not replace all with dynamic equality",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 19,
+              "name": "validate"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 19,
+          "path": "scripts/validate_portable_catalog_sync.py",
+          "symbol": "validate",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 35,
+              "name": "fail"
+            },
+            {
+              "line": 45,
+              "name": "main"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 35,
+          "path": "scripts/validate_runtime_skill_guide_sync.py",
+          "symbol": "fail",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-sync_gates",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "sync_gates",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "TEST_AUTHORITY",
+      "current_authority": "scripts/validate_v1_public_contracts.py",
+      "current_behavior": "Compatibility and current contract assertions",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 27,
+              "name": "readme_current_product_truth_failures"
+            },
+            {
+              "line": 93,
+              "name": "_fail"
+            },
+            {
+              "line": 98,
+              "name": "main"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 27,
+          "path": "scripts/validate_v1_public_contracts.py",
+          "symbol": "readme_current_product_truth_failures",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 7,
+              "name": "load_schema"
+            },
+            {
+              "line": 12,
+              "name": "validate_request"
+            },
+            {
+              "line": 16,
+              "name": "validate_preview"
+            },
+            {
+              "line": 20,
+              "name": "validate_result"
+            },
+            {
+              "line": 25,
+              "name": "validate_audit_package"
+            },
+            {
+              "line": 29,
+              "name": "validate_catalog"
+            },
+            {
+              "line": 34,
+              "name": "check_forbidden_fields"
+            },
+            {
+              "line": 50,
+              "name": "validate_cross_contract"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 7,
+          "path": "scripts/validate_unified_market_evidence_contracts.py",
+          "symbol": "load_schema",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 27,
+              "name": "PhaseHV3ContractValidationError"
+            },
+            {
+              "line": 31,
+              "name": "_fail"
+            },
+            {
+              "line": 35,
+              "name": "_unique_object_pairs"
+            },
+            {
+              "line": 45,
+              "name": "strict_json_loads"
+            },
+            {
+              "line": 53,
+              "name": "_load_current_authority_json"
+            },
+            {
+              "line": 60,
+              "name": "_matches_frozen_bytes"
+            },
+            {
+              "line": 79,
+              "name": "_validate_declared_scope"
+            },
+            {
+              "line": 92,
+              "name": "validate_trading_status_context_semantics"
+            },
+            {
+              "line": 100,
+              "name": "validate_corporate_action_context_semantics"
+            },
+            {
+              "line": 121,
+              "name": "validate_recent_performance_semantics"
+            },
+            {
+              "line": 222,
+              "name": "validate_discontinuity_safety_semantics"
+            },
+            {
+              "line": 261,
+              "name": "validate_h2_h3_h4_cross_evidence"
+            },
+            {
+              "line": 284,
+              "name": "main"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 27,
+          "path": "scripts/validate_phase_h_v3_contracts.py",
+          "symbol": "PhaseHV3ContractValidationError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-contract_gates",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "contract_gates",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "TEST_AUTHORITY",
+      "current_authority": "config/test_execution_profiles.json",
+      "current_behavior": "Explicit current/historical classification and registration",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/test_execution_profiles.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/test_governance_semantic_profiles.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 28,
+              "name": "_v1_historical_replay_nodes"
+            },
+            {
+              "line": 49,
+              "name": "pytest_collection_modifyitems"
+            },
+            {
+              "line": 57,
+              "name": "_loopback_destination"
+            },
+            {
+              "line": 70,
+              "name": "_m8r_08b_non_loopback_network_guard"
+            },
+            {
+              "line": 78,
+              "name": "guarded_connect"
+            },
+            {
+              "line": 83,
+              "name": "guarded_connect_ex"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 28,
+          "path": "tests/conftest.py",
+          "symbol": "_v1_historical_replay_nodes",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-test_profiles",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "test_profiles",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "current_behavior": "Frozen governing constraints; a future family must conform and must not modify L0 merely to register",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-governance",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "governance",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "CANONICAL_AUTHORITY",
+      "current_authority": "docs/acceptance_runs/phase_g_pr_d_closure.json",
+      "current_behavior": "Family-specific accepted contract/activation ledgers; separate explicit Owner promotion, never a modification to frozen L0",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/acceptance_runs/phase_g_pr_d_closure.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-family_acceptance",
+      "recommended_next_tranche": "L5-A2",
+      "registration_id": "family_acceptance",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "scripts/m8r_05a_f3/security_master_loader.py",
+      "current_behavior": "Installation-local Security Master; no family identity service fork",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 4,
+              "name": "load_f3_verified_security_master"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 4,
+          "path": "scripts/m8r_05a_f3/security_master_loader.py",
+          "symbol": "load_f3_verified_security_master",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 5,
+              "name": "_identity"
+            },
+            {
+              "line": 9,
+              "name": "validate_target"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 9,
+          "path": "scripts/m8r_05a_f3/target_validator.py",
+          "symbol": "validate_target",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-identity",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "identity",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "scripts/m8r_05b_02/validator.py",
+      "current_behavior": "Existing authorization / atomic execute-once platform control",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 11,
+              "name": "_schema"
+            },
+            {
+              "line": 12,
+              "name": "_validate_plan"
+            },
+            {
+              "line": 25,
+              "name": "validate_execution_authorization"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 11,
+          "path": "scripts/m8r_05b_02/validator.py",
+          "symbol": "_schema",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 10,
+              "name": "authorize"
+            },
+            {
+              "line": 17,
+              "name": "approved_operation_map"
+            },
+            {
+              "line": 39,
+              "name": "approved_operations"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 10,
+          "path": "scripts/m8r_05b_03/authorization_gate.py",
+          "symbol": "authorize",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 27,
+              "name": "claim_relative_path"
+            },
+            {
+              "line": 31,
+              "name": "_validate_timestamp"
+            },
+            {
+              "line": 42,
+              "name": "validate_operator_confirmation_reference"
+            },
+            {
+              "line": 53,
+              "name": "_validate_supplied_unused_state"
+            },
+            {
+              "line": 86,
+              "name": "build_claim_record"
+            },
+            {
+              "line": 156,
+              "name": "validate_claim_destination"
+            },
+            {
+              "line": 165,
+              "name": "atomic_claim_authorization"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 165,
+          "path": "scripts/m8r_05b_03/consumption_claim.py",
+          "symbol": "atomic_claim_authorization",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-authorization",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "authorization",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "server/local_network_boundary.py",
+      "current_behavior": "No family-owned control plane or startup acquisition",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_host_from_address"
+            },
+            {
+              "line": 21,
+              "name": "is_loopback_network_scope"
+            },
+            {
+              "line": 42,
+              "name": "LocalNetworkBoundaryMiddleware"
+            },
+            {
+              "line": 45,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 42,
+          "path": "server/local_network_boundary.py",
+          "symbol": "LocalNetworkBoundaryMiddleware",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 22,
+              "name": "_timeout_seconds"
+            },
+            {
+              "line": 28,
+              "name": "_emit_child_event"
+            },
+            {
+              "line": 48,
+              "name": "execute_mode_b2_once"
+            },
+            {
+              "line": 132,
+              "name": "execute_local_operator_ticket"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 48,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "symbol": "execute_mode_b2_once",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-network_policy",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "network_policy",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "server/resource_boundaries.py",
+      "current_behavior": "Shared resource and payload ceilings; adapters remain bounded beneath them",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 26,
+              "name": "classify_request"
+            },
+            {
+              "line": 63,
+              "name": "ResourceAdmissionGate"
+            },
+            {
+              "line": 104,
+              "name": "ResourceAdmissionMiddleware"
+            },
+            {
+              "line": 139,
+              "name": "ResourceDiskAdmissionError"
+            },
+            {
+              "line": 145,
+              "name": "_existing_directory"
+            },
+            {
+              "line": 156,
+              "name": "available_disk_bytes"
+            },
+            {
+              "line": 164,
+              "name": "require_disk_capacity"
+            },
+            {
+              "line": 174,
+              "name": "sqlite_write_requirement"
+            },
+            {
+              "line": 193,
+              "name": "serialized_json_bytes"
+            },
+            {
+              "line": 202,
+              "name": "serialized_text_bytes"
+            },
+            {
+              "line": 66,
+              "name": "__init__"
+            },
+            {
+              "line": 73,
+              "name": "try_enter"
+            },
+            {
+              "line": 80,
+              "name": "leave"
+            },
+            {
+              "line": 87,
+              "name": "active"
+            },
+            {
+              "line": 92,
+              "name": "admitted"
+            },
+            {
+              "line": 107,
+              "name": "__init__"
+            },
+            {
+              "line": 140,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 104,
+          "path": "server/resource_boundaries.py",
+          "symbol": "ResourceAdmissionMiddleware",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "server/unified_payload_bounds.py",
+          "symbol": null,
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 37,
+              "name": "measure_json_utf8"
+            },
+            {
+              "line": 58,
+              "name": "measure_text_utf8"
+            },
+            {
+              "line": 72,
+              "name": "serialize_bounded_json"
+            },
+            {
+              "line": 85,
+              "name": "encode_json_response"
+            },
+            {
+              "line": 93,
+              "name": "bounded_json_response"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 37,
+          "path": "server/unified_bounded_io.py",
+          "symbol": "measure_json_utf8",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-resources",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "resources",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "server/services/unified_retention_inventory.py",
+      "current_behavior": "Classify through L2; no family-specific automatic migration/GC",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 15,
+              "name": "_entry"
+            },
+            {
+              "line": 77,
+              "name": "retention_inventory"
+            },
+            {
+              "line": 82,
+              "name": "classify_artifact_family"
+            },
+            {
+              "line": 95,
+              "name": "classify_artifact"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 82,
+          "path": "server/services/unified_retention_inventory.py",
+          "symbol": "classify_artifact_family",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 19,
+              "name": "_InspectionFailure"
+            },
+            {
+              "line": 24,
+              "name": "_version"
+            },
+            {
+              "line": 29,
+              "name": "_contained_file"
+            },
+            {
+              "line": 36,
+              "name": "_find_retained"
+            },
+            {
+              "line": 47,
+              "name": "inspect_finalized_package"
+            },
+            {
+              "line": 20,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 47,
+          "path": "server/services/unified_replay_inspector.py",
+          "symbol": "inspect_finalized_package",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 49,
+              "name": "BackupError"
+            },
+            {
+              "line": 58,
+              "name": "BackupRoot"
+            },
+            {
+              "line": 64,
+              "name": "BackupMember"
+            },
+            {
+              "line": 77,
+              "name": "_canonical_bytes"
+            },
+            {
+              "line": 81,
+              "name": "_reject_json_constant"
+            },
+            {
+              "line": 85,
+              "name": "_strict_object"
+            },
+            {
+              "line": 94,
+              "name": "_manifest_hash"
+            },
+            {
+              "line": 100,
+              "name": "_is_reparse_or_symlink"
+            },
+            {
+              "line": 108,
+              "name": "_reject_reparse_components"
+            },
+            {
+              "line": 122,
+              "name": "_relative"
+            },
+            {
+              "line": 142,
+              "name": "_contained_file"
+            },
+            {
+              "line": 160,
+              "name": "_source_signature"
+            },
+            {
+              "line": 167,
+              "name": "_verify_binding"
+            },
+            {
+              "line": 184,
+              "name": "_validate_roots"
+            },
+            {
+              "line": 208,
+              "name": "_selected_for_tier"
+            },
+            {
+              "line": 220,
+              "name": "_verify_watchlist_database"
+            },
+            {
+              "line": 243,
+              "name": "_sqlite_logical_fingerprint"
+            },
+            {
+              "line": 265,
+              "name": "_sqlite_snapshot_fingerprint"
+            },
+            {
+              "line": 299,
+              "name": "plan_backup"
+            },
+            {
+              "line": 414,
+              "name": "_read_source_bytes"
+            },
+            {
+              "line": 441,
+              "name": "_sqlite_snapshot"
+            },
+            {
+              "line": 480,
+              "name": "_hash_file"
+            },
+            {
+              "line": 508,
+              "name": "_write_json"
+            },
+            {
+              "line": 516,
+              "name": "_manifest_for"
+            },
+            {
+              "line": 539,
+              "name": "create_backup"
+            },
+            {
+              "line": 649,
+              "name": "_validate_manifest_plan"
+            },
+            {
+              "line": 711,
+              "name": "verify_backup"
+            },
+            {
+              "line": 716,
+              "name": "_verify_backup"
+            },
+            {
+              "line": 52,
+              "name": "__init__"
+            },
+            {
+              "line": 227,
+              "name": "connect_read_only"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 299,
+          "path": "server/services/unified_backup.py",
+          "symbol": "plan_backup",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 51,
+              "name": "RestoreError"
+            },
+            {
+              "line": 60,
+              "name": "RestoreCompatibilityContract"
+            },
+            {
+              "line": 70,
+              "name": "CompatibilityAttestation"
+            },
+            {
+              "line": 93,
+              "name": "_canonical_bytes"
+            },
+            {
+              "line": 97,
+              "name": "_receipt_hash"
+            },
+            {
+              "line": 103,
+              "name": "_contract_hash"
+            },
+            {
+              "line": 120,
+              "name": "_reject_json_constant"
+            },
+            {
+              "line": 124,
+              "name": "_strict_object"
+            },
+            {
+              "line": 133,
+              "name": "_load_manifest"
+            },
+            {
+              "line": 151,
+              "name": "_verify_source"
+            },
+            {
+              "line": 186,
+              "name": "_validate_contract"
+            },
+            {
+              "line": 197,
+              "name": "_watchlist_schema_version"
+            },
+            {
+              "line": 213,
+              "name": "_classify"
+            },
+            {
+              "line": 269,
+              "name": "inspect_restore"
+            },
+            {
+              "line": 296,
+              "name": "_unsafe_path"
+            },
+            {
+              "line": 308,
+              "name": "_safe_relative"
+            },
+            {
+              "line": 315,
+              "name": "_resolve_destination"
+            },
+            {
+              "line": 353,
+              "name": "_source_inventory"
+            },
+            {
+              "line": 364,
+              "name": "_verify_watchlist"
+            },
+            {
+              "line": 380,
+              "name": "_verify_member_path"
+            },
+            {
+              "line": 398,
+              "name": "_make_receipt"
+            },
+            {
+              "line": 424,
+              "name": "_validate_receipt_envelope"
+            },
+            {
+              "line": 470,
+              "name": "restore_backup"
+            },
+            {
+              "line": 564,
+              "name": "verify_restored_state"
+            },
+            {
+              "line": 54,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 269,
+          "path": "server/services/unified_restore.py",
+          "symbol": "inspect_restore",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 35,
+              "name": "MigrationError"
+            },
+            {
+              "line": 44,
+              "name": "MigrationDefinition"
+            },
+            {
+              "line": 71,
+              "name": "_canonical"
+            },
+            {
+              "line": 76,
+              "name": "_require_utc"
+            },
+            {
+              "line": 85,
+              "name": "_digest"
+            },
+            {
+              "line": 89,
+              "name": "_integrity"
+            },
+            {
+              "line": 96,
+              "name": "_registry_rows"
+            },
+            {
+              "line": 100,
+              "name": "_attestation_hash"
+            },
+            {
+              "line": 105,
+              "name": "_manifest"
+            },
+            {
+              "line": 123,
+              "name": "_ensure_source_location"
+            },
+            {
+              "line": 139,
+              "name": "_inventory"
+            },
+            {
+              "line": 153,
+              "name": "_inventory_sha"
+            },
+            {
+              "line": 158,
+              "name": "_has_exact_directories"
+            },
+            {
+              "line": 179,
+              "name": "_safe_root"
+            },
+            {
+              "line": 198,
+              "name": "_derive"
+            },
+            {
+              "line": 259,
+              "name": "inspect_migration"
+            },
+            {
+              "line": 287,
+              "name": "MigrationPlan"
+            },
+            {
+              "line": 339,
+              "name": "_plan_from_payload"
+            },
+            {
+              "line": 360,
+              "name": "preview_migration"
+            },
+            {
+              "line": 430,
+              "name": "_validate_plan"
+            },
+            {
+              "line": 494,
+              "name": "_read_members"
+            },
+            {
+              "line": 513,
+              "name": "_destination"
+            },
+            {
+              "line": 539,
+              "name": "_check_existing_isolated"
+            },
+            {
+              "line": 558,
+              "name": "_write_members"
+            },
+            {
+              "line": 573,
+              "name": "_member_records"
+            },
+            {
+              "line": 578,
+              "name": "_verify_watchlist_members"
+            },
+            {
+              "line": 596,
+              "name": "_receipt_body"
+            },
+            {
+              "line": 630,
+              "name": "apply_migration"
+            },
+            {
+              "line": 723,
+              "name": "verify_migrated_state"
+            },
+            {
+              "line": 819,
+              "name": "rollback_migration"
+            },
+            {
+              "line": 882,
+              "name": "verify_rollback"
+            },
+            {
+              "line": 38,
+              "name": "__init__"
+            },
+            {
+              "line": 54,
+              "name": "authority_record"
+            },
+            {
+              "line": 312,
+              "name": "to_dict"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 259,
+          "path": "server/services/unified_migration.py",
+          "symbol": "inspect_migration",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-retention",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "retention",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    },
+    {
+      "classification": "NOT_AN_EXTENSION_POINT",
+      "current_authority": "server/unified_mcp/tool_contracts.py",
+      "current_behavior": "Exactly six existing tools",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "ToolContractError"
+            },
+            {
+              "line": 45,
+              "name": "_load_json"
+            },
+            {
+              "line": 57,
+              "name": "load_unified_request_schema"
+            },
+            {
+              "line": 77,
+              "name": "load_canonical_unified_request_schema"
+            },
+            {
+              "line": 82,
+              "name": "canonical_request_schema_sha256"
+            },
+            {
+              "line": 90,
+              "name": "build_request_envelope_schema"
+            },
+            {
+              "line": 114,
+              "name": "build_control_package_schema"
+            },
+            {
+              "line": 131,
+              "name": "_annotations"
+            },
+            {
+              "line": 140,
+              "name": "_action_annotations"
+            },
+            {
+              "line": 145,
+              "name": "ToolContractSnapshot"
+            },
+            {
+              "line": 163,
+              "name": "build_tool_contract_snapshot"
+            },
+            {
+              "line": 190,
+              "name": "build_tool_specs"
+            },
+            {
+              "line": 195,
+              "name": "tool_schema_by_name"
+            },
+            {
+              "line": 199,
+              "name": "adapter_identity"
+            },
+            {
+              "line": 152,
+              "name": "validate_arguments"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 41,
+          "path": "server/unified_mcp/tool_contracts.py",
+          "symbol": "ToolContractError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "finding_id": "REG-mcp",
+      "recommended_next_tranche": "PRESERVE",
+      "registration_id": "mcp",
+      "risk_severity": "LOW",
+      "surface_category": "registration"
+    }
+  ],
+  "rule": "Every row has exactly one registration classification. Source-specific contracts are subordinate authorities, not a proposed second source registry."
+}

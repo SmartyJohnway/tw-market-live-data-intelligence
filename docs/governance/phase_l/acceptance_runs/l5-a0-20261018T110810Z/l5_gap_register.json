@@ -1,0 +1,797 @@
+{
+  "findings": [
+    {
+      "classification": "DECISION_REQUIRED",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Uniform family/capability/source namespace obligations are not frozen; current individual IDs are determinate.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 74,
+              "name": "_expected_typed_contract"
+            },
+            {
+              "line": 79,
+              "name": "_allowed_typed_contracts"
+            },
+            {
+              "line": 87,
+              "name": "TargetResolution"
+            },
+            {
+              "line": 98,
+              "name": "OperationBinding"
+            },
+            {
+              "line": 118,
+              "name": "LineageMap"
+            },
+            {
+              "line": 130,
+              "name": "build_lineage_map"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 130,
+          "path": "scripts/m8r_05c/lineage_resolver.py",
+          "symbol": "build_lineage_map",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Record only; no A0 runtime/schema/source change.",
+      "finding_id": "GAP-01",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "MEDIUM",
+      "surface_category": "gap"
+    },
+    {
+      "classification": "GAP",
+      "current_authority": "scripts/m8r_06_03_production_adapter.py",
+      "current_behavior": "Multiple deliberate typed allowlists need one audited conformance checklist, not another registry.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 75,
+              "name": "_load_schema"
+            },
+            {
+              "line": 83,
+              "name": "_validate_schema"
+            },
+            {
+              "line": 94,
+              "name": "_validate_request_schema"
+            },
+            {
+              "line": 104,
+              "name": "_load_json"
+            },
+            {
+              "line": 115,
+              "name": "_sha256_file"
+            },
+            {
+              "line": 122,
+              "name": "_check_containment"
+            },
+            {
+              "line": 138,
+              "name": "_load_phase_h_source_attempts"
+            },
+            {
+              "line": 202,
+              "name": "load_projection_inputs"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 202,
+          "path": "scripts/m8r_05c/artifact_loader.py",
+          "symbol": "load_projection_inputs",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 74,
+              "name": "_expected_typed_contract"
+            },
+            {
+              "line": 79,
+              "name": "_allowed_typed_contracts"
+            },
+            {
+              "line": 87,
+              "name": "TargetResolution"
+            },
+            {
+              "line": 98,
+              "name": "OperationBinding"
+            },
+            {
+              "line": 118,
+              "name": "LineageMap"
+            },
+            {
+              "line": 130,
+              "name": "build_lineage_map"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 130,
+          "path": "scripts/m8r_05c/lineage_resolver.py",
+          "symbol": "build_lineage_map",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Record only; no A0 runtime/schema/source change.",
+      "finding_id": "GAP-02",
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "surface_category": "gap"
+    },
+    {
+      "classification": "GAP",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "I2 prose retains Owner-pending wording while accepted activation and runtime booleans are current; historical phrasing is not a second active authority.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Record only; no A0 runtime/schema/source change.",
+      "finding_id": "GAP-03",
+      "recommended_next_tranche": "L5-A4",
+      "risk_severity": "MEDIUM",
+      "surface_category": "gap"
+    },
+    {
+      "classification": "DECISION_REQUIRED",
+      "current_authority": "server/services/unified_contract_versions.py",
+      "current_behavior": "No single family transition matrix specifies optional-field, incompatible-semantic and source-only changes.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 53,
+              "name": "UnsupportedRequestSchemaVersion"
+            },
+            {
+              "line": 57,
+              "name": "resolve_request_schema"
+            },
+            {
+              "line": 71,
+              "name": "resolve_planning_authority_paths"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 71,
+          "path": "server/services/unified_contract_versions.py",
+          "symbol": "resolve_planning_authority_paths",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Record only; no A0 runtime/schema/source change.",
+      "finding_id": "GAP-04",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "MEDIUM",
+      "surface_category": "gap"
+    },
+    {
+      "classification": "GAP",
+      "current_authority": "server/services/unified_retention_inventory.py",
+      "current_behavior": "New evidence must reuse role-based retention and attested explicit member backup; do not assume every raw response is retained/replayable.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 15,
+              "name": "_entry"
+            },
+            {
+              "line": 77,
+              "name": "retention_inventory"
+            },
+            {
+              "line": 82,
+              "name": "classify_artifact_family"
+            },
+            {
+              "line": 95,
+              "name": "classify_artifact"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 82,
+          "path": "server/services/unified_retention_inventory.py",
+          "symbol": "classify_artifact_family",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 49,
+              "name": "BackupError"
+            },
+            {
+              "line": 58,
+              "name": "BackupRoot"
+            },
+            {
+              "line": 64,
+              "name": "BackupMember"
+            },
+            {
+              "line": 77,
+              "name": "_canonical_bytes"
+            },
+            {
+              "line": 81,
+              "name": "_reject_json_constant"
+            },
+            {
+              "line": 85,
+              "name": "_strict_object"
+            },
+            {
+              "line": 94,
+              "name": "_manifest_hash"
+            },
+            {
+              "line": 100,
+              "name": "_is_reparse_or_symlink"
+            },
+            {
+              "line": 108,
+              "name": "_reject_reparse_components"
+            },
+            {
+              "line": 122,
+              "name": "_relative"
+            },
+            {
+              "line": 142,
+              "name": "_contained_file"
+            },
+            {
+              "line": 160,
+              "name": "_source_signature"
+            },
+            {
+              "line": 167,
+              "name": "_verify_binding"
+            },
+            {
+              "line": 184,
+              "name": "_validate_roots"
+            },
+            {
+              "line": 208,
+              "name": "_selected_for_tier"
+            },
+            {
+              "line": 220,
+              "name": "_verify_watchlist_database"
+            },
+            {
+              "line": 243,
+              "name": "_sqlite_logical_fingerprint"
+            },
+            {
+              "line": 265,
+              "name": "_sqlite_snapshot_fingerprint"
+            },
+            {
+              "line": 299,
+              "name": "plan_backup"
+            },
+            {
+              "line": 414,
+              "name": "_read_source_bytes"
+            },
+            {
+              "line": 441,
+              "name": "_sqlite_snapshot"
+            },
+            {
+              "line": 480,
+              "name": "_hash_file"
+            },
+            {
+              "line": 508,
+              "name": "_write_json"
+            },
+            {
+              "line": 516,
+              "name": "_manifest_for"
+            },
+            {
+              "line": 539,
+              "name": "create_backup"
+            },
+            {
+              "line": 649,
+              "name": "_validate_manifest_plan"
+            },
+            {
+              "line": 711,
+              "name": "verify_backup"
+            },
+            {
+              "line": 716,
+              "name": "_verify_backup"
+            },
+            {
+              "line": 52,
+              "name": "__init__"
+            },
+            {
+              "line": 227,
+              "name": "connect_read_only"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 299,
+          "path": "server/services/unified_backup.py",
+          "symbol": "plan_backup",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 51,
+              "name": "RestoreError"
+            },
+            {
+              "line": 60,
+              "name": "RestoreCompatibilityContract"
+            },
+            {
+              "line": 70,
+              "name": "CompatibilityAttestation"
+            },
+            {
+              "line": 93,
+              "name": "_canonical_bytes"
+            },
+            {
+              "line": 97,
+              "name": "_receipt_hash"
+            },
+            {
+              "line": 103,
+              "name": "_contract_hash"
+            },
+            {
+              "line": 120,
+              "name": "_reject_json_constant"
+            },
+            {
+              "line": 124,
+              "name": "_strict_object"
+            },
+            {
+              "line": 133,
+              "name": "_load_manifest"
+            },
+            {
+              "line": 151,
+              "name": "_verify_source"
+            },
+            {
+              "line": 186,
+              "name": "_validate_contract"
+            },
+            {
+              "line": 197,
+              "name": "_watchlist_schema_version"
+            },
+            {
+              "line": 213,
+              "name": "_classify"
+            },
+            {
+              "line": 269,
+              "name": "inspect_restore"
+            },
+            {
+              "line": 296,
+              "name": "_unsafe_path"
+            },
+            {
+              "line": 308,
+              "name": "_safe_relative"
+            },
+            {
+              "line": 315,
+              "name": "_resolve_destination"
+            },
+            {
+              "line": 353,
+              "name": "_source_inventory"
+            },
+            {
+              "line": 364,
+              "name": "_verify_watchlist"
+            },
+            {
+              "line": 380,
+              "name": "_verify_member_path"
+            },
+            {
+              "line": 398,
+              "name": "_make_receipt"
+            },
+            {
+              "line": 424,
+              "name": "_validate_receipt_envelope"
+            },
+            {
+              "line": 470,
+              "name": "restore_backup"
+            },
+            {
+              "line": 564,
+              "name": "verify_restored_state"
+            },
+            {
+              "line": 54,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 269,
+          "path": "server/services/unified_restore.py",
+          "symbol": "inspect_restore",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Record only; no A0 runtime/schema/source change.",
+      "finding_id": "GAP-05",
+      "recommended_next_tranche": "L5-A3",
+      "risk_severity": "MEDIUM",
+      "surface_category": "gap"
+    },
+    {
+      "classification": "GAP",
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py",
+      "current_behavior": "Existing-family obligation proof should be explicit before integrated exit; no new family necessary.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_roc_date"
+            },
+            {
+              "line": 20,
+              "name": "_report_date"
+            },
+            {
+              "line": 28,
+              "name": "_integer"
+            },
+            {
+              "line": 34,
+              "name": "_number"
+            },
+            {
+              "line": 40,
+              "name": "_value"
+            },
+            {
+              "line": 52,
+              "name": "execute"
+            },
+            {
+              "line": 81,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 83,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 52,
+          "path": "scripts/phase_g/mops_monthly_revenue.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 63,
+              "name": "_load_result_schema"
+            },
+            {
+              "line": 70,
+              "name": "_build_request_summary"
+            },
+            {
+              "line": 91,
+              "name": "_build_resolution"
+            },
+            {
+              "line": 116,
+              "name": "_compute_result_status"
+            },
+            {
+              "line": 157,
+              "name": "_envelope_to_dict"
+            },
+            {
+              "line": 180,
+              "name": "_citation_to_dict"
+            },
+            {
+              "line": 196,
+              "name": "_canonical_identity_v2"
+            },
+            {
+              "line": 213,
+              "name": "_derived_metric_to_dict"
+            },
+            {
+              "line": 235,
+              "name": "_research_status"
+            },
+            {
+              "line": 240,
+              "name": "_not_applicable_research"
+            },
+            {
+              "line": 265,
+              "name": "_derived_h4_artifact"
+            },
+            {
+              "line": 290,
+              "name": "build_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 24,
+          "path": "scripts/m8r_05c/result_builder.py",
+          "symbol": "build_result",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Record only; no A0 runtime/schema/source change.",
+      "finding_id": "GAP-06",
+      "recommended_next_tranche": "L5-A5",
+      "risk_severity": "MEDIUM",
+      "surface_category": "gap"
+    },
+    {
+      "classification": "GAP",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "session_status Catalog runtime_executable versus blocked/network_required=true/no selected executor; standalone source acquisition remains unapproved.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Record only; no A0 runtime/schema/source change.",
+      "finding_id": "GAP-07",
+      "recommended_next_tranche": "L5-A4",
+      "risk_severity": "MEDIUM",
+      "surface_category": "gap"
+    },
+    {
+      "classification": "GAP",
+      "current_authority": "config/test_execution_profiles.json",
+      "current_behavior": "Before front-door edits and with tracked product/test/schema bytes equal to exact entry base, corrected guarded default-ci reports 1248 passed / 41 failed / 4 skipped / 5 deselected; required baseline checks pass. No A0 test/product repair authorized.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/test_execution_profiles.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Record only; no A0 runtime/schema/source change.",
+      "finding_id": "GAP-08",
+      "recommended_next_tranche": "L5-A4",
+      "risk_severity": "MEDIUM",
+      "surface_category": "gap"
+    }
+  ],
+  "future_authorized": false,
+  "proposed_tranches": [
+    "A1 minimum obligation and version-transition freeze",
+    "A2 explicit registration conformance hardening",
+    "A3 schema/normalization/projection and L1-L4 inheritance conformance",
+    "A4 tests/Catalog/Skill/guide publication integration",
+    "A5 existing monthly_revenue and composite-family conformance acceptance",
+    "A6 integrated extension-contract acceptance",
+    "A7 technical exit review"
+  ],
+  "stop_conditions_triggered": []
+}

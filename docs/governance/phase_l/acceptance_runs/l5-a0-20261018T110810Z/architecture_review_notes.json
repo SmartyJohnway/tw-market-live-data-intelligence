@@ -1,0 +1,679 @@
+{
+  "accidental_or_historical_extension_friction": [
+    {
+      "files": [
+        "schemas/unified_market_evidence_request.v3.schema.json"
+      ],
+      "risk": "Every new capability/parameter shape requires a schema authority change.",
+      "surface": "Request data-need enum and one recent_performance-only parameter branch"
+    },
+    {
+      "files": [
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "risk": "New registrations require coordinated code and metadata edits; explicitness is desirable, but mappings are spread across several constructs.",
+      "surface": "Production route list and executor dispatch switches",
+      "symbols": [
+        "EVIDENCE_CONTRACTS",
+        "RESEARCH_CAPABILITIES",
+        "production_operation_adapter",
+        "production_batch_operation_adapter",
+        "build_production_runtime_adapter_registry"
+      ]
+    },
+    {
+      "files": [
+        "scripts/m8r_05c/lineage_resolver.py",
+        "scripts/m8r_05c/artifact_loader.py",
+        "scripts/m8r_05c/result_builder.py",
+        "scripts/m8r_05c/audit_package_builder.py",
+        "scripts/m8r_05c/markdown_renderer.py",
+        "scripts/m8r_05c/citation_builder.py"
+      ],
+      "risk": "Family knowledge is duplicated in several projection modules; drift can yield unknown_capability, missing evidence contract, or omitted Audit/handoff exposure.",
+      "surface": "Projection and lineage maps",
+      "symbols": [
+        "_CAPABILITY_TO_DATA_NEED",
+        "_PHASE_H_TYPED_CONTRACT_BY_DATA_NEED",
+        "_PHASE_I_TYPED_CONTRACT_BY_DATA_NEED",
+        "build_lineage_map",
+        "load_projection_inputs",
+        "build_result",
+        "_phase_h_governance",
+        "_phase_i_evidence"
+      ]
+    },
+    {
+      "files": [
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "risk": "Evidence properties are closed with additionalProperties=false; a projected new family cannot appear without changing public Result authority.",
+      "surface": "Result V3 evidence object"
+    },
+    {
+      "files": [
+        "scripts/m8r_05c/audit_package_builder.py",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json"
+      ],
+      "risk": "Phase H and Phase I family mappings are explicit phase-era maps rather than one normalized family projection contract.",
+      "surface": "Audit family sections"
+    },
+    {
+      "files": [
+        "scripts/m8r_05c/artifact_loader.py",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "risk": "Some family invariants require imperative validators; L5 needs a declared validator hook/requirement without dynamic discovery.",
+      "surface": "Family-specific semantic validator selection"
+    }
+  ],
+  "candidate_minimum_contract_dimensions": [
+    {
+      "classification": "DECISION_REQUIRED",
+      "dimension": "family_id / capability relationship",
+      "note": "Existing capability_id is canonical, but evidence family is implicit across evidence schema/source family/projector maps. A1 must define a stable relationship without assuming one capability equals one family."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "contract/version identity",
+      "note": "Every schema-addressable family artifact and source contract needs explicit immutable identity/version."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "supported markets",
+      "note": "Catalog and route compatibility must fail closed."
+    },
+    {
+      "classification": "FAMILY_SPECIFIC",
+      "dimension": "supported target types",
+      "note": "Required for target-scoped families; NOT_APPLICABLE must be explicit for market-level or contract-only projections."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "parameter schema",
+      "note": "An explicit empty parameter object is valid; free-form parameters are not."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "parameter bounds",
+      "note": "Bounds must exist before planning/execution and be testable offline."
+    },
+    {
+      "classification": "FAMILY_SPECIFIC",
+      "dimension": "source authority",
+      "note": "Required for source-backed families; NOT_APPLICABLE for purely derived/contract-only capabilities."
+    },
+    {
+      "classification": "FAMILY_SPECIFIC",
+      "dimension": "routing/executor authority",
+      "note": "Required only for runtime-executable capability routes; contract-supported projections may remain plan-only/non-executable."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "network-required flag",
+      "note": "Declared per executor route; false must not be inferred from missing metadata."
+    },
+    {
+      "classification": "PLATFORM_PROVIDED",
+      "dimension": "authorization class",
+      "note": "Existing validation/preview/server-owned authorization/execute-once semantics remain authoritative; a family may declare requirements but cannot own authorization semantics."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "timeout authority",
+      "note": "Finite at external/network action seams and bound in executor metadata; no family-owned whole-server deadline."
+    },
+    {
+      "classification": "FAMILY_SPECIFIC",
+      "dimension": "source request contract",
+      "note": "Endpoint, method, binding, request count, redirect/retry, response cap and publication contract are source specific."
+    },
+    {
+      "classification": "FAMILY_SPECIFIC",
+      "dimension": "raw evidence schema",
+      "note": "Normalized retained evidence schema is required for typed family artifacts; raw provider payload persistence remains policy-controlled and may be prohibited."
+    },
+    {
+      "classification": "FAMILY_SPECIFIC",
+      "dimension": "normalization contract",
+      "note": "Must preserve source units and missing/semantic distinctions."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "identity binding",
+      "note": "Must bind through installation-local Security Master and MARKET:CODE/ISIN rules; no family identity authority."
+    },
+    {
+      "classification": "FAMILY_SPECIFIC",
+      "dimension": "source timestamp semantics",
+      "note": "Effective/report/trade/publication time meaning is source-specific."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "retrieved-at semantics",
+      "note": "Source-backed observations need explicit observed/retrieved time with timezone."
+    },
+    {
+      "classification": "FAMILY_SPECIFIC",
+      "dimension": "freshness/currentness semantics",
+      "note": "No generic age rule; family/source contract supplies the semantic adjudication."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "missing semantics",
+      "note": "Must remain distinct from zero, unsupported, failed and stale."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "unsupported semantics",
+      "note": "Must fail closed at target/capability/route/schema boundaries."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "source failure semantics",
+      "note": "Transport, HTTP, contract, semantic and binding failures remain distinct."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "provenance requirements",
+      "note": "Operation, executor, source contract, artifact hash, target and timestamps must be lineage-bound."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "citation requirements",
+      "note": "Source-backed evidence and derived evidence must resolve to governed artifact citations."
+    },
+    {
+      "classification": "PLATFORM_PROVIDED",
+      "dimension": "Result projection",
+      "note": "Family registers a typed projection contract; canonical Result construction stays shared."
+    },
+    {
+      "classification": "PLATFORM_PROVIDED",
+      "dimension": "Audit projection",
+      "note": "Family metadata feeds shared Audit; no family-owned audit format."
+    },
+    {
+      "classification": "DERIVED",
+      "dimension": "AI handoff projection",
+      "note": "Derived only from verified Result/Audit/citation output through build_mode_c_ai_handoff."
+    },
+    {
+      "classification": "PLATFORM_PROVIDED",
+      "dimension": "replay support",
+      "note": "Retained evidence must remain locally replayable under supported schema/projector versions; refetch is always a new authorized execution."
+    },
+    {
+      "classification": "PLATFORM_PROVIDED",
+      "dimension": "retention classification",
+      "note": "A family must be assigned existing L2 classes; unknown remains UNCLASSIFIED_REQUIRES_POLICY and cannot be auto-deleted."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "resource bounds",
+      "note": "Request count, response/artifact bytes, item counts, target counts and applicable batch/concurrency bounds must be explicit."
+    },
+    {
+      "classification": "PLATFORM_PROVIDED",
+      "dimension": "secret boundary",
+      "note": "No secrets in Result/Audit/handoff/artifacts; active new output surfaces require canary coverage."
+    },
+    {
+      "classification": "PLATFORM_PROVIDED",
+      "dimension": "path/output containment",
+      "note": "Server-owned roots, contained relative paths, reparse checks and atomic writes; caller-selected module/path/output is forbidden."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "tests",
+      "note": "Schema, semantic, negative, route/registry sync, projection/lineage/citation, replay and L1-L4 conformance tests are required."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "Catalog publication",
+      "note": "One current Catalog authority; Portable Catalog is derived."
+    },
+    {
+      "classification": "DERIVED",
+      "dimension": "Skill/guide publication",
+      "note": "Must synchronize from accepted current authority and preserve exact-six tools."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "acceptance authority",
+      "note": "Contract freeze, implementation, activation and bounded-live authority remain separate gates."
+    },
+    {
+      "classification": "REQUIRED",
+      "dimension": "version upgrade/deprecation path",
+      "note": "Must identify compatible readers, retained historical bytes, rollback and source-contract-only changes before activation."
+    }
+  ],
+  "canonical_registration_authorities": [
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "files": [
+        "schemas/unified_market_evidence_request.v3.schema.json"
+      ],
+      "finding": "Capability/data-need IDs and parameter shape are closed in the declared Request schema version.",
+      "role": "AI-facing request vocabulary and parameter shape",
+      "symbols": [
+        "properties.data_needs.items.properties.type.enum",
+        "properties.data_needs.items.allOf"
+      ]
+    },
+    {
+      "classification": "CANONICAL_AUTHORITY",
+      "files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+      ],
+      "finding": "Catalog is canonical for supported markets, support status, bounds, approval need, timing/fallback and limitations; it is not execution activation by itself.",
+      "role": "Capability support and product publication",
+      "symbols": [
+        "data_need_capabilities"
+      ]
+    },
+    {
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "files": [
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+      ],
+      "finding": "The version-bound route matrix decides resolved, plan-only or blocked execution and selected executor; it does not supply callable code.",
+      "role": "Capability-to-executor selection",
+      "symbols": [
+        "routes"
+      ]
+    },
+    {
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "files": [
+        "config/m8r_06_03_executor_registry_metadata.json",
+        "scripts/m8r_05b_03/registry.py"
+      ],
+      "finding": "The route key is executor_id + capability_id + market and binds evidence contract, network_required, timeout_seconds, maximum_result_items and output_policy.",
+      "role": "Executor route metadata and resource/network contract",
+      "symbols": [
+        "ExecutorMetadataRegistry.from_json",
+        "validate_executor_for_operation",
+        "executor_route_key"
+      ]
+    },
+    {
+      "classification": "RUNTIME_ROUTING_AUTHORITY",
+      "files": [
+        "scripts/m8r_06_03_production_adapter.py",
+        "scripts/m8r_05b_03/dispatch.py"
+      ],
+      "finding": "Callable registrations are closed, explicit and cross-checked against executor metadata; metadata and callable registry are complementary planes, not two independent canonical activators.",
+      "role": "Callable runtime registration",
+      "symbols": [
+        "build_production_runtime_adapter_registry",
+        "RuntimeAdapterRegistry.resolve",
+        "prepare_dispatch",
+        "dispatch_prepared"
+      ]
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "files": [
+        "schemas/*_evidence.v*.schema.json",
+        "scripts/m8r_05c/artifact_loader.py"
+      ],
+      "finding": "Schema-addressable evidence is loaded by the declared evidence_contract; family-specific cross-field semantic validators remain explicit where JSON Schema is insufficient.",
+      "role": "Evidence schema and family-specific semantics",
+      "symbols": [
+        "load_projection_inputs"
+      ]
+    },
+    {
+      "classification": "SCHEMA_AUTHORITY",
+      "files": [
+        "schemas/unified_market_evidence_result.v3.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "scripts/m8r_05c/result_builder.py",
+        "scripts/m8r_05c/lineage_resolver.py",
+        "scripts/m8r_05c/audit_package_builder.py",
+        "server/services/unified_mode_c.py"
+      ],
+      "finding": "Projection is shared but currently contains explicit capability/evidence-contract maps and family branches; those are extension friction, not a second Result/Audit authority.",
+      "role": "Unified Result, Audit and AI handoff projection",
+      "symbols": [
+        "build_result",
+        "build_lineage_map",
+        "build_audit_package",
+        "build_mode_c_result_package",
+        "build_mode_c_ai_handoff"
+      ]
+    },
+    {
+      "classification": "SOURCE_AUTHORITY",
+      "files": [
+        "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+        "docs/data_capabilities/phase_i_i2_source_authority.v1.json",
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+        "config/phase_h_h1_dormant_source_descriptors.json",
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "finding": "Current source authority is route/family specific and must be interpreted with selected routes and callable runtime. General legacy registries do not independently activate Unified routes.",
+      "role": "Current active source authority",
+      "symbols": [
+        "build_production_runtime_adapter_registry"
+      ]
+    }
+  ],
+  "cross_phase_invariants": {
+    "L1": {
+      "obligations": [
+        "Reuse trace_id and canonical request/execution/governed-operation IDs; do not invent a second correlation system.",
+        "Adapter timing is inherited by existing controlled dispatch; network/source calls must use the accepted source timing seam or an explicitly equivalent governed seam.",
+        "Expose bounded stable failure reason codes.",
+        "Keep governed network attempt counts in transport/operation/receipt/Audit artifacts; operational JSONL may reference behavior but is not a second accounting truth."
+      ],
+      "platform_seams": [
+        "server/operational_diagnostics.py::bind_trace_id/current_trace_id/timed_source_call/build_event/emit_jsonl",
+        "scripts/m8r_05b_03/dispatch.py::_invoke_adapter/_invoke_batch_adapter/_emit_adapter_invocation_event",
+        "server/services/unified_mode_b2_execution.py::_emit_child_event"
+      ],
+      "result": "COMPATIBLE_WITH_REQUIRED_CONFORMANCE"
+    },
+    "L2": {
+      "obligations": [
+        "Read/replay retained evidence locally without network or write; missing/incompatible evidence fails typed and never refetches.",
+        "A refetch remains a new validation-preview-authorization-execute-once action.",
+        "Declare retention class; unknown is UNCLASSIFIED_REQUIRES_POLICY and not deletion authority.",
+        "Evidence-family schema evolution must preserve historical Result/Audit/artifact readability or provide an explicit compatible transition; installation-state migration policy is not inferred from evidence schema changes.",
+        "Backup/restore remains explicit declared-member scope and does not automatically promote all new artifacts into core backup."
+      ],
+      "platform_seams": [
+        "server/services/unified_replay_inspector.py::inspect_finalized_package",
+        "server/services/unified_retention_inventory.py::classify_artifact/classify_artifact_family",
+        "server/services/unified_backup.py::plan_backup/create_backup/verify_backup",
+        "server/services/unified_restore.py::inspect_restore/restore_backup/verify_restored_state",
+        "server/services/unified_migration.py::inspect_migration/preview_migration/apply_migration/rollback_migration"
+      ],
+      "result": "COMPATIBLE_WITH_REQUIRED_CONFORMANCE"
+    },
+    "L3": {
+      "obligations": [
+        "Network-backed families require transport -> contract -> semantic validation and explicit encoding, empty response, publication delay, rate-limit, removal and target/universe rules.",
+        "The generic observation helper preserves supplied facts only; it is acceptance/observation infrastructure and is not a universal production semantic validator or retry policy.",
+        "Derived/non-network families mark transport/rate-limit/removal dimensions NOT_APPLICABLE but still require semantic validation, provenance and typed failure semantics.",
+        "No bounded probe becomes polling, scheduling or an automatic provider-health claim."
+      ],
+      "platform_seams": [
+        "server/services/phase_l_source_drift_contract.py::observe_source_attempt/parse_retry_after",
+        "source-specific adapters, normalizers and semantic validators listed by docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md"
+      ],
+      "result": "COMPATIBLE_WITH_REQUIRED_SOURCE_SPECIFIC_CONFORMANCE"
+    },
+    "L4": {
+      "obligations": [
+        "Existing Unified HTTP routes inherit loopback-only exposure, 1 MiB ingress, 8 MiB public projection and per-process fail-fast concurrency ceiling 1.",
+        "Family routes must declare finite timeout, request/result bounds, network_required and output_policy in executor metadata and match callable registration exactly.",
+        "Use server-owned authorization and contained roots; payload fields cannot choose command, module, adapter, registry, source URL, executable or output root.",
+        "Persistent writes require dynamic fail-closed disk admission and atomic/contained publication.",
+        "Source/agent/evidence content remains data, never control-plane authority; new output surfaces require hostile-content and secret-canary review.",
+        "No family-owned generic network, retention, resource, secret or authorization policy."
+      ],
+      "platform_seams": [
+        "server/local_network_boundary.py::LocalNetworkBoundaryMiddleware",
+        "server/unified_payload_bounds.py::MAX_UNIFIED_REQUEST_BYTES/MAX_UNIFIED_RESPONSE_BYTES",
+        "server/unified_bounded_io.py::bounded_json_response/serialize_bounded_json",
+        "server/resource_boundaries.py::ResourceAdmissionMiddleware/require_disk_capacity",
+        "scripts/m8r_filesystem_safety.py::safe_destination/atomic_write_bytes/atomic_write_text",
+        "server/services/unified_mode_b2.py::build_mode_b2_authorization",
+        "scripts/m8r_05b_03/dispatch.py::prepare_dispatch/dispatch_prepared"
+      ],
+      "result": "COMPATIBLE_WITH_REQUIRED_CONFORMANCE"
+    }
+  },
+  "decision": {
+    "a0_architecture_disposition": "SUFFICIENTLY_MAPPED_FOR_NEXT_MINIMUM_CONTRACT_TRANCHE",
+    "architecture_conflicts": [],
+    "plugin_framework_assessment": "PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW",
+    "rationale": [
+      "Existing Unified Request, version-bound Catalog and routing pairs, typed executor metadata, closed callable registry, evidence schemas, Mode C projection, Audit, citation and handoff seams already form an explicit extension path.",
+      "No evidence shows a need for runtime discovery, dynamic code loading, entry-point scanning, hot loading, third-party execution, or a marketplace.",
+      "A plugin framework would create new L4 code-execution, dependency, path, authorization and secret boundaries and would prematurely force L6 packaging decisions.",
+      "The smallest next step is a typed/declarative minimum contract plus explicit registrations and sync/conformance validators, without a second Catalog, source registry, executor registry, request language, Result/Audit system or MCP tool."
+    ],
+    "recommended_a0_vocabulary": "L5_A0_EVIDENCE_FAMILY_EXTENSION_SURFACE_INVENTORY_COMPLETE",
+    "stop_rule_triggered": false
+  },
+  "entry": {
+    "branch": "phase-l/l5-a0-extension-surface-inventory",
+    "clean_at_inspection": true,
+    "head": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+    "origin_main": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+    "origin_main_tree": "bc116c15e54502c2bbb62392dd769c3442cd3732",
+    "tree": "bc116c15e54502c2bbb62392dd769c3442cd3732"
+  },
+  "frozen_authority": {
+    "closed_phases": {
+      "L1": "PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS",
+      "L2": "PHASE_L_L2_OWNER_ACCEPTED_FINAL_CLOSURE_PASS",
+      "L3": "PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS",
+      "L4": "PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS"
+    },
+    "l0": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+    "l0_disposition": "PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN",
+    "l5_obligation": "Define the minimum evidence-family extension contract before considering any plugin framework; do not add a new family merely to prove the architecture."
+  },
+  "gaps_for_next_tranche": [
+    {
+      "category": "identity",
+      "finding": "No first-class canonical evidence_family_id or declared capability-to-family cardinality exists; family identity is reconstructed from capability IDs, evidence schema versions, source families and projector maps.",
+      "id": "L5-GAP-ARCH-001",
+      "next_tranche": "A1 minimum contract freeze",
+      "severity": "HIGH",
+      "stop_blocker": false
+    },
+    {
+      "category": "versioning",
+      "finding": "Request/Result/Audit V3 schemas are exact-hash protected and closed; adding a projected family requires an explicit version transition rule that current authority has not yet frozen.",
+      "id": "L5-GAP-ARCH-002",
+      "next_tranche": "A1 minimum contract freeze",
+      "severity": "HIGH",
+      "stop_blocker": false
+    },
+    {
+      "category": "projection",
+      "finding": "Capability/evidence-contract knowledge is repeated across lineage, loader, result, audit, markdown and citation modules. A typed explicit registration model or authoritative mapping plus validators is needed; dynamic discovery is not needed.",
+      "id": "L5-GAP-ARCH-003",
+      "next_tranche": "A2 registration authority hardening and A3 projection conformance",
+      "severity": "HIGH",
+      "stop_blocker": false
+    },
+    {
+      "category": "source authority",
+      "finding": "Source authority is intentionally family/phase-specific; L5 must define the minimum fields and registration proof without turning broad legacy source registries into activation authority.",
+      "id": "L5-GAP-ARCH-004",
+      "next_tranche": "A1 source-contract dimension freeze and A2 sync validation",
+      "severity": "MEDIUM",
+      "stop_blocker": false
+    },
+    {
+      "category": "L3 conformance",
+      "finding": "phase_l_source_drift_contract is a pure observation helper used by acceptance tooling, not a universal runtime wrapper. New families need source-specific transport/contract/semantic conformance tests and an explicit applicability declaration.",
+      "id": "L5-GAP-ARCH-005",
+      "next_tranche": "A4 cross-phase conformance integration",
+      "severity": "MEDIUM",
+      "stop_blocker": false
+    },
+    {
+      "category": "L2 conformance",
+      "finding": "A new family needs explicit replay/projector support and retention classification; unknown family state correctly fails closed today but no extension checklist currently proves these registrations are complete.",
+      "id": "L5-GAP-ARCH-006",
+      "next_tranche": "A4 cross-phase conformance integration",
+      "severity": "MEDIUM",
+      "stop_blocker": false
+    },
+    {
+      "category": "L4 conformance",
+      "finding": "Generic route bounds exist, but each new output/source seam must prove response/artifact bounds, disk admission, containment, hostile-content treatment and secret-canary coverage.",
+      "id": "L5-GAP-ARCH-007",
+      "next_tranche": "A4 cross-phase conformance integration",
+      "severity": "MEDIUM",
+      "stop_blocker": false
+    }
+  ],
+  "generated_at_utc": "2026-10-18T11:03:02Z",
+  "intentional_cross_checks": [
+    "Catalog route selection, executor metadata and callable registration are distinct roles and dispatch fails closed on disagreement.",
+    "Mode C independently verifies operation, artifact, schema, hash, lineage and citation bindings before public projection.",
+    "Exact schema hash checks in scripts/validate_phase_h_v3_contracts.py protect frozen V3 bytes and are intentional, not accidental duplication."
+  ],
+  "negative_architecture_checks": {
+    "family_owned_authorization": "NO",
+    "family_owned_generic_resource_policy": "NO",
+    "family_owned_network_policy": "NO",
+    "family_owned_retention_policy": "NO",
+    "family_specific_mcp_tools": "NO",
+    "second_capability_catalog": "NO",
+    "second_executor_registry": "NO",
+    "second_identity_authority": "NO",
+    "second_request_protocol": "NO",
+    "second_result_audit_system": "NO",
+    "second_source_registry": "NO"
+  },
+  "noncanonical_or_derived_surfaces": [
+    {
+      "classification": "HISTORICAL_DUPLICATION",
+      "files": [
+        "docs/source_registry/source_authority_registry.json",
+        "docs/data_capabilities/m8_source_capability_registry.json"
+      ],
+      "finding": "General risk/coverage and older aggregate family registries; L3-A0 already adjudicated that neither independently promotes entries to current Unified execution."
+    },
+    {
+      "classification": "DERIVED_SYNCHRONIZED_VIEW",
+      "files": [
+        "scripts/generate_portable_catalog.py"
+      ],
+      "finding": "Portable Catalog is generated from current catalog authority and should remain derived."
+    },
+    {
+      "classification": "GUIDE_DOCUMENTATION",
+      "files": [
+        "scripts/validate_runtime_skill_guide_sync.py",
+        "skills/tw-market-evidence-agent/SKILL.md"
+      ],
+      "finding": "Runtime Skill/guide exposure is synchronized publication, not capability authority."
+    }
+  ],
+  "note_schema": "phase_l_l5_a0_architecture_adjudication_note.v1",
+  "proposed_tranche_sequence": [
+    "A1 - freeze minimum extension contract, family/capability relationship, applicability rules and version transitions",
+    "A2 - harden explicit registration authorities and synchronization validators without runtime discovery",
+    "A3 - schema, normalization, lineage, Result/Audit/citation/handoff projection conformance",
+    "A4 - integrate L1 operability, L2 replay/retention, L3 drift and L4 security/resource conformance plus Skill/guide sync",
+    "A5 - accept conformance of representative existing families; no new family",
+    "A6 - integrated deterministic extension-contract acceptance",
+    "A7 - technical exit review"
+  ],
+  "scope": "Read-only architecture adjudication for L5-A0; no repository mutation and no network work.",
+  "stop_rule_assessment": [
+    {
+      "reason": "All 14 existing capabilities can be mapped to current evidence/projection archetypes. Lack of first-class family_id is a next-contract gap, not inability to inventory current reality.",
+      "result": "NOT_TRIGGERED",
+      "rule": "canonical capability/family identity cannot be determined"
+    },
+    {
+      "reason": "Catalog, Route, executor metadata and callable registry have distinct roles and fail-closed cross-checks. Broad legacy source registries do not activate Unified routes.",
+      "result": "NOT_TRIGGERED",
+      "rule": "two active runtime authorities independently claim same canonical registration"
+    },
+    {
+      "reason": "All family behavior fits existing Unified Request/Result/Audit and six tools.",
+      "result": "NOT_TRIGGERED",
+      "rule": "minimum contract requires changing six-tool MCP surface"
+    },
+    {
+      "reason": "Existing accepted families provide sufficient conformance examples.",
+      "result": "NOT_TRIGGERED",
+      "rule": "new family required merely to demonstrate architecture"
+    },
+    {
+      "reason": "Explicit registrations and server-owned roots can be specified without dynamic plugin packaging.",
+      "result": "NOT_TRIGGERED",
+      "rule": "L6 packaging decision required prematurely"
+    },
+    {
+      "reason": "Current code, contracts and retained evidence are sufficient for A0 inventory/preflight.",
+      "result": "NOT_TRIGGERED",
+      "rule": "new external/live source acquisition required"
+    },
+    {
+      "reason": "HEAD and origin/main match exact authorized commit and tree.",
+      "result": "NOT_TRIGGERED",
+      "rule": "authorized main differs"
+    }
+  ],
+  "version_authority_matrix": [
+    {
+      "boundary": "Evidence-family schema",
+      "current_owner": "schemas/<family>_evidence.vN.schema.json plus frozen family/source contract and semantic validator",
+      "incompatible_semantics": "New evidence contract version required; retained old readers/bytes remain supported or explicitly fail closed.",
+      "new_family": "New versioned subordinate schema required for typed retained evidence.",
+      "optional_fields": "DECISION_REQUIRED; current schemas commonly use additionalProperties=false and exact-hash guards, so same-version mutation is not presumed compatible.",
+      "source_change_without_normalized_change": "Source contract/adapter/source-authority version may move while normalized evidence schema remains stable if semantic equivalence is proven."
+    },
+    {
+      "boundary": "Capability Catalog",
+      "current_owner": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json and server/services/unified_contract_versions.py::REQUEST_CAPABILITY_CATALOG_PATHS",
+      "incompatible_semantics": "New catalog/request planning pair required; historical pairs remain bound to their declared Request version.",
+      "new_family": "Catalog changes only if public capability support/semantics/market/bounds are added or changed; family-only source changes do not inherently require a Catalog version.",
+      "optional_fields": "Catalog-version decision required when public catalog shape/semantics changes.",
+      "source_change_without_normalized_change": "No Catalog version movement required unless advertised capability behavior changes."
+    },
+    {
+      "boundary": "Routing matrix",
+      "current_owner": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json and server/services/unified_contract_versions.py::REQUEST_ROUTING_MATRIX_PATHS",
+      "incompatible_semantics": "New version-bound planning pair or separately governed activation transition.",
+      "new_family": "Move only when a capability receives a new plan-only/blocked/resolved route or executor binding.",
+      "optional_fields": "Route metadata changes require explicit authority; not inferred from Catalog existence.",
+      "source_change_without_normalized_change": "May remain stable if selected executor/route semantics are unchanged."
+    },
+    {
+      "boundary": "Unified Request",
+      "current_owner": "schemas/unified_market_evidence_request.v1/v2/v3.schema.json and server/services/unified_contract_versions.py::REQUEST_SCHEMA_PATHS/PREFERRED_REQUEST_SCHEMA_VERSION",
+      "incompatible_semantics": "New Request version with preserved V1-V3 compatibility unless explicit major-break authority exists.",
+      "new_family": "A new capability/data need cannot enter V3 without changing the closed enum and exact V3 hash; A1 must decide a new version versus a separately authorized additive V3 transition. Current evidence does not authorize either.",
+      "optional_fields": "Additive compatibility is a governed schema decision, not assumed.",
+      "source_change_without_normalized_change": "No Request version movement."
+    },
+    {
+      "boundary": "Unified Result",
+      "current_owner": "schemas/unified_market_evidence_result.v1/v2/v3.schema.json, server/services/unified_contract_versions.py::PREFERRED_RESULT_SCHEMA_VERSION, server/services/unified_mode_c.py::_OUTPUT_PATHS",
+      "incompatible_semantics": "New Result version and projector compatibility/rollback plan; historical Result bytes remain readable.",
+      "new_family": "V3 evidence properties are closed and exact-hash protected; a new projected family requires an explicit Result version decision.",
+      "optional_fields": "DECISION_REQUIRED; do not silently patch frozen V3 bytes.",
+      "source_change_without_normalized_change": "No Result version movement."
+    },
+    {
+      "boundary": "Audit",
+      "current_owner": "schemas/unified_market_evidence_audit_package.v1/v2/v3.schema.json, server/services/unified_contract_versions.py::PREFERRED_AUDIT_SCHEMA_VERSION, scripts/m8r_05c/audit_package_builder.py",
+      "incompatible_semantics": "New Audit version with replay support for historical packages.",
+      "new_family": "If existing generic lineage/citation fields suffice, family registration may be internal; if new public Audit fields are required, an explicit Audit version decision is required.",
+      "optional_fields": "DECISION_REQUIRED under exact V3 hash protection.",
+      "source_change_without_normalized_change": "No Audit version movement if lineage remains representable."
+    },
+    {
+      "boundary": "AI handoff",
+      "current_owner": "server/services/unified_mode_c.py::build_mode_c_ai_handoff; service_contract_version unified_market_evidence_local_service.v2",
+      "incompatible_semantics": "Public service contract version decision required.",
+      "new_family": "No independent family handoff version; handoff derives verified Result/Audit/citations.",
+      "optional_fields": "Move only if the public handoff envelope changes.",
+      "source_change_without_normalized_change": "No handoff version movement."
+    },
+    {
+      "boundary": "Source contract",
+      "current_owner": "Family/source-specific frozen contracts, phase_i source authority files, Phase H descriptors and current adapter constants/tests",
+      "incompatible_semantics": "New source contract version and re-acceptance; normalized family schema may or may not move.",
+      "new_family": "Explicit source contract identity/version required for source-backed families.",
+      "optional_fields": "Version according to source request/response/semantic compatibility; no new global versioning system.",
+      "source_change_without_normalized_change": "This is the primary boundary that moves."
+    }
+  ],
+  "worktree": "D:/Codex-Workspace/projects/tw-market-live-data-intelligence-phase-l5-a0"
+}

@@ -1,0 +1,4204 @@
+{
+  "classification_counts": {
+    "DECISION_REQUIRED": 2,
+    "DERIVED": 2,
+    "FAMILY_SPECIFIC": 4,
+    "OPTIONAL": 2,
+    "PLATFORM_PROVIDED": 6,
+    "REQUIRED": 20
+  },
+  "findings": [
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "server/services/unified_contract_versions.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "contract/version identity",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 53,
+              "name": "UnsupportedRequestSchemaVersion"
+            },
+            {
+              "line": 57,
+              "name": "resolve_request_schema"
+            },
+            {
+              "line": 71,
+              "name": "resolve_planning_authority_paths"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 71,
+          "path": "server/services/unified_contract_versions.py",
+          "symbol": "resolve_planning_authority_paths",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "schemas/monthly_revenue_evidence.v1.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-01",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "supported markets",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-02",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "supported target types",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 5,
+              "name": "_identity"
+            },
+            {
+              "line": 9,
+              "name": "validate_target"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 9,
+          "path": "scripts/m8r_05a_f3/target_validator.py",
+          "symbol": "validate_target",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-03",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "schemas/unified_market_evidence_request.v3.schema.json",
+      "current_behavior": "Catalog allowed_parameters may be empty; Unified Request remains sole AI-facing protocol.",
+      "dimension": "parameter schema",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "schemas/unified_market_evidence_request.v3.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 2,
+              "name": "validate_capability"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 2,
+          "path": "scripts/m8r_05a_f3/capability_validator.py",
+          "symbol": "validate_capability",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-04",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "parameter bounds",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 2,
+              "name": "validate_capability"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 2,
+          "path": "scripts/m8r_05a_f3/capability_validator.py",
+          "symbol": "validate_capability",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-05",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/phase_g/research_executor.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "source authority",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 21,
+              "name": "SourceFailure"
+            },
+            {
+              "line": 26,
+              "name": "TransportResult"
+            },
+            {
+              "line": 32,
+              "name": "parse_csv"
+            },
+            {
+              "line": 64,
+              "name": "_failure_reason"
+            },
+            {
+              "line": 70,
+              "name": "parse_json"
+            },
+            {
+              "line": 78,
+              "name": "fetch_once"
+            },
+            {
+              "line": 88,
+              "name": "failed_provenance"
+            },
+            {
+              "line": 124,
+              "name": "normalize_source_rows"
+            },
+            {
+              "line": 145,
+              "name": "field"
+            },
+            {
+              "line": 151,
+              "name": "bind_rows"
+            },
+            {
+              "line": 22,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/phase_g/research_executor.py",
+          "symbol": "ROUTES",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-06",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "routing/executor authority",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-07",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "config/m8r_06_03_executor_registry_metadata.json",
+      "current_behavior": "Explicitly declared and cross-checked in governed route and executor metadata; false for local/derived capabilities, never inferred from absence.",
+      "dimension": "network-required flag",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 44,
+              "name": "DispatchRuntimeContext"
+            },
+            {
+              "line": 55,
+              "name": "RuntimeAdapterRegistration"
+            },
+            {
+              "line": 71,
+              "name": "RuntimeAdapterRegistry"
+            },
+            {
+              "line": 154,
+              "name": "PreparedDispatch"
+            },
+            {
+              "line": 160,
+              "name": "_validate_request_against_metadata"
+            },
+            {
+              "line": 177,
+              "name": "prepare_dispatch"
+            },
+            {
+              "line": 221,
+              "name": "_verify_evidence_artifacts"
+            },
+            {
+              "line": 244,
+              "name": "request_identity"
+            },
+            {
+              "line": 248,
+              "name": "_emit_adapter_invocation_event"
+            },
+            {
+              "line": 279,
+              "name": "_invoke_adapter"
+            },
+            {
+              "line": 296,
+              "name": "_invoke_batch_adapter"
+            },
+            {
+              "line": 316,
+              "name": "dispatch_prepared"
+            },
+            {
+              "line": 72,
+              "name": "__init__"
+            },
+            {
+              "line": 84,
+              "name": "get"
+            },
+            {
+              "line": 90,
+              "name": "get_route"
+            },
+            {
+              "line": 95,
+              "name": "routes_for_executor"
+            },
+            {
+              "line": 98,
+              "name": "resolve"
+            },
+            {
+              "line": 392,
+              "name": "validate_result"
+            },
+            {
+              "line": 439,
+              "name": "normalized_failure"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 177,
+          "path": "scripts/m8r_05b_03/dispatch.py",
+          "symbol": "prepare_dispatch",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-08",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "source timestamp semantics",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_roc_date"
+            },
+            {
+              "line": 20,
+              "name": "_report_date"
+            },
+            {
+              "line": 28,
+              "name": "_integer"
+            },
+            {
+              "line": 34,
+              "name": "_number"
+            },
+            {
+              "line": 40,
+              "name": "_value"
+            },
+            {
+              "line": 52,
+              "name": "execute"
+            },
+            {
+              "line": 81,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 83,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 52,
+          "path": "scripts/phase_g/mops_monthly_revenue.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 10,
+              "name": "_date"
+            },
+            {
+              "line": 19,
+              "name": "_published"
+            },
+            {
+              "line": 26,
+              "name": "execute"
+            },
+            {
+              "line": 78,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 80,
+              "name": "_conflict_diagnostic"
+            },
+            {
+              "line": 82,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 26,
+          "path": "scripts/phase_g/mops_material_disclosures.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 26,
+              "name": "load_frozen_contract"
+            },
+            {
+              "line": 39,
+              "name": "validate_frozen_contract_object"
+            },
+            {
+              "line": 46,
+              "name": "_unique_pairs"
+            },
+            {
+              "line": 55,
+              "name": "_source_date"
+            },
+            {
+              "line": 65,
+              "name": "_integer"
+            },
+            {
+              "line": 74,
+              "name": "_expression"
+            },
+            {
+              "line": 78,
+              "name": "_flow"
+            },
+            {
+              "line": 88,
+              "name": "PreparedRow"
+            },
+            {
+              "line": 93,
+              "name": "_normalized_row"
+            },
+            {
+              "line": 132,
+              "name": "PreparedSource"
+            },
+            {
+              "line": 141,
+              "name": "prepare_market_source"
+            },
+            {
+              "line": 207,
+              "name": "validate_evidence"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 26,
+          "path": "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+          "symbol": "load_frozen_contract",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-09",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_06_03_production_adapter.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "retrieved-at semantics",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 21,
+              "name": "SourceFailure"
+            },
+            {
+              "line": 26,
+              "name": "TransportResult"
+            },
+            {
+              "line": 32,
+              "name": "parse_csv"
+            },
+            {
+              "line": 64,
+              "name": "_failure_reason"
+            },
+            {
+              "line": 70,
+              "name": "parse_json"
+            },
+            {
+              "line": 78,
+              "name": "fetch_once"
+            },
+            {
+              "line": 88,
+              "name": "failed_provenance"
+            },
+            {
+              "line": 124,
+              "name": "normalize_source_rows"
+            },
+            {
+              "line": 145,
+              "name": "field"
+            },
+            {
+              "line": 151,
+              "name": "bind_rows"
+            },
+            {
+              "line": 22,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/phase_g/research_executor.py",
+          "symbol": "ROUTES",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-10",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_06_03_production_adapter.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "freshness/currentness semantics",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 29,
+              "name": "_as_list"
+            },
+            {
+              "line": 37,
+              "name": "_append_unique"
+            },
+            {
+              "line": 42,
+              "name": "_parse_utc"
+            },
+            {
+              "line": 57,
+              "name": "_base_assessment"
+            },
+            {
+              "line": 98,
+              "name": "_unknown"
+            },
+            {
+              "line": 108,
+              "name": "build_source_freshness_assessment"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 29,
+          "path": "scripts/m8_source_freshness_evaluator.py",
+          "symbol": "_as_list",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-11",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "missing semantics",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_roc_date"
+            },
+            {
+              "line": 20,
+              "name": "_report_date"
+            },
+            {
+              "line": 28,
+              "name": "_integer"
+            },
+            {
+              "line": 34,
+              "name": "_number"
+            },
+            {
+              "line": 40,
+              "name": "_value"
+            },
+            {
+              "line": 52,
+              "name": "execute"
+            },
+            {
+              "line": 81,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 83,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 52,
+          "path": "scripts/phase_g/mops_monthly_revenue.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 47,
+              "name": "project_typed_research_evidence"
+            },
+            {
+              "line": 73,
+              "name": "project_phase_h_typed_evidence"
+            },
+            {
+              "line": 89,
+              "name": "project_trading_status_context_evidence"
+            },
+            {
+              "line": 115,
+              "name": "_research_artifact"
+            },
+            {
+              "line": 124,
+              "name": "_project_material_disclosures"
+            },
+            {
+              "line": 163,
+              "name": "_project_monthly_revenue"
+            },
+            {
+              "line": 178,
+              "name": "_project_envelope"
+            },
+            {
+              "line": 265,
+              "name": "_project_current_observation"
+            },
+            {
+              "line": 309,
+              "name": "_project_envelope_legacy"
+            },
+            {
+              "line": 334,
+              "name": "_project_envelope_v1_1"
+            },
+            {
+              "line": 343,
+              "name": "_project_official_eod_legacy"
+            },
+            {
+              "line": 359,
+              "name": "_project_official_eod_pre_v1_3"
+            },
+            {
+              "line": 426,
+              "name": "_project_official_eod"
+            },
+            {
+              "line": 440,
+              "name": "project_target_evidence"
+            },
+            {
+              "line": 463,
+              "name": "_cite"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 440,
+          "path": "scripts/m8r_05c/evidence_projector.py",
+          "symbol": "project_target_evidence",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-12",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_05a_f3/capability_validator.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "unsupported semantics",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 2,
+              "name": "validate_capability"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 2,
+          "path": "scripts/m8r_05a_f3/capability_validator.py",
+          "symbol": "validate_capability",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 26,
+              "name": "_pairs"
+            },
+            {
+              "line": 34,
+              "name": "routing_security_type"
+            },
+            {
+              "line": 41,
+              "name": "_targets"
+            },
+            {
+              "line": 50,
+              "name": "_validate_inputs"
+            },
+            {
+              "line": 66,
+              "name": "_warning"
+            },
+            {
+              "line": 69,
+              "name": "_refresh_operation_id"
+            },
+            {
+              "line": 79,
+              "name": "validate_batch_integrity"
+            },
+            {
+              "line": 100,
+              "name": "plan_identity_scope"
+            },
+            {
+              "line": 110,
+              "name": "build_plan"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 110,
+          "path": "scripts/m8r_05b_01/planner.py",
+          "symbol": "build_plan",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-13",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/phase_g/research_executor.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "source failure semantics",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 21,
+              "name": "SourceFailure"
+            },
+            {
+              "line": 26,
+              "name": "TransportResult"
+            },
+            {
+              "line": 32,
+              "name": "parse_csv"
+            },
+            {
+              "line": 64,
+              "name": "_failure_reason"
+            },
+            {
+              "line": 70,
+              "name": "parse_json"
+            },
+            {
+              "line": 78,
+              "name": "fetch_once"
+            },
+            {
+              "line": 88,
+              "name": "failed_provenance"
+            },
+            {
+              "line": 124,
+              "name": "normalize_source_rows"
+            },
+            {
+              "line": 145,
+              "name": "field"
+            },
+            {
+              "line": 151,
+              "name": "bind_rows"
+            },
+            {
+              "line": 22,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/phase_g/research_executor.py",
+          "symbol": "ROUTES",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 44,
+              "name": "DispatchRuntimeContext"
+            },
+            {
+              "line": 55,
+              "name": "RuntimeAdapterRegistration"
+            },
+            {
+              "line": 71,
+              "name": "RuntimeAdapterRegistry"
+            },
+            {
+              "line": 154,
+              "name": "PreparedDispatch"
+            },
+            {
+              "line": 160,
+              "name": "_validate_request_against_metadata"
+            },
+            {
+              "line": 177,
+              "name": "prepare_dispatch"
+            },
+            {
+              "line": 221,
+              "name": "_verify_evidence_artifacts"
+            },
+            {
+              "line": 244,
+              "name": "request_identity"
+            },
+            {
+              "line": 248,
+              "name": "_emit_adapter_invocation_event"
+            },
+            {
+              "line": 279,
+              "name": "_invoke_adapter"
+            },
+            {
+              "line": 296,
+              "name": "_invoke_batch_adapter"
+            },
+            {
+              "line": 316,
+              "name": "dispatch_prepared"
+            },
+            {
+              "line": 72,
+              "name": "__init__"
+            },
+            {
+              "line": 84,
+              "name": "get"
+            },
+            {
+              "line": 90,
+              "name": "get_route"
+            },
+            {
+              "line": 95,
+              "name": "routes_for_executor"
+            },
+            {
+              "line": 98,
+              "name": "resolve"
+            },
+            {
+              "line": 392,
+              "name": "validate_result"
+            },
+            {
+              "line": 439,
+              "name": "normalized_failure"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 177,
+          "path": "scripts/m8r_05b_03/dispatch.py",
+          "symbol": "prepare_dispatch",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-14",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_05b_03/receipt.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "provenance requirements",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 46,
+              "name": "FinalizationPhaseHook"
+            },
+            {
+              "line": 86,
+              "name": "receipt_relative_path"
+            },
+            {
+              "line": 90,
+              "name": "bundle_relative_path"
+            },
+            {
+              "line": 94,
+              "name": "journal_relative_path"
+            },
+            {
+              "line": 98,
+              "name": "generate_owner_id"
+            },
+            {
+              "line": 102,
+              "name": "validate_owner_id"
+            },
+            {
+              "line": 108,
+              "name": "validate_finalization_timestamps"
+            },
+            {
+              "line": 120,
+              "name": "initial_claim_hash"
+            },
+            {
+              "line": 131,
+              "name": "_load_schema"
+            },
+            {
+              "line": 135,
+              "name": "_validate_schema"
+            },
+            {
+              "line": 150,
+              "name": "build_execution_receipt"
+            },
+            {
+              "line": 187,
+              "name": "build_evidence_bundle"
+            },
+            {
+              "line": 231,
+              "name": "_read_and_validate_disk_claim"
+            },
+            {
+              "line": 270,
+              "name": "_execute_finalization_transaction"
+            },
+            {
+              "line": 459,
+              "name": "_atomic_replace_json"
+            },
+            {
+              "line": 468,
+              "name": "_verify_durable_cross_links"
+            },
+            {
+              "line": 531,
+              "name": "finalize_consumption_and_write_receipt"
+            },
+            {
+              "line": 565,
+              "name": "recover_controlled_finalization"
+            },
+            {
+              "line": 53,
+              "name": "__init__"
+            },
+            {
+              "line": 56,
+              "name": "__call__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 187,
+          "path": "scripts/m8r_05b_03/receipt.py",
+          "symbol": "build_evidence_bundle",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 74,
+              "name": "_expected_typed_contract"
+            },
+            {
+              "line": 79,
+              "name": "_allowed_typed_contracts"
+            },
+            {
+              "line": 87,
+              "name": "TargetResolution"
+            },
+            {
+              "line": 98,
+              "name": "OperationBinding"
+            },
+            {
+              "line": 118,
+              "name": "LineageMap"
+            },
+            {
+              "line": 130,
+              "name": "build_lineage_map"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 130,
+          "path": "scripts/m8r_05c/lineage_resolver.py",
+          "symbol": "build_lineage_map",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "_load_audit_schema"
+            },
+            {
+              "line": 65,
+              "name": "_phase_h_attempt_metadata"
+            },
+            {
+              "line": 73,
+              "name": "_audit_attempt"
+            },
+            {
+              "line": 111,
+              "name": "_phase_h_governance"
+            },
+            {
+              "line": 189,
+              "name": "_phase_i_evidence"
+            },
+            {
+              "line": 212,
+              "name": "build_audit_package"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 21,
+          "path": "scripts/m8r_05c/audit_package_builder.py",
+          "symbol": "build_audit_package",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-15",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_05c/citation_builder.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "citation requirements",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 25,
+              "name": "_build_citation_id"
+            },
+            {
+              "line": 33,
+              "name": "CitationIndex"
+            },
+            {
+              "line": 46,
+              "name": "build_citation_index"
+            },
+            {
+              "line": 166,
+              "name": "get_citations_for_target"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 46,
+          "path": "scripts/m8r_05c/citation_builder.py",
+          "symbol": "build_citation_index",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 47,
+              "name": "project_typed_research_evidence"
+            },
+            {
+              "line": 73,
+              "name": "project_phase_h_typed_evidence"
+            },
+            {
+              "line": 89,
+              "name": "project_trading_status_context_evidence"
+            },
+            {
+              "line": 115,
+              "name": "_research_artifact"
+            },
+            {
+              "line": 124,
+              "name": "_project_material_disclosures"
+            },
+            {
+              "line": 163,
+              "name": "_project_monthly_revenue"
+            },
+            {
+              "line": 178,
+              "name": "_project_envelope"
+            },
+            {
+              "line": 265,
+              "name": "_project_current_observation"
+            },
+            {
+              "line": 309,
+              "name": "_project_envelope_legacy"
+            },
+            {
+              "line": 334,
+              "name": "_project_envelope_v1_1"
+            },
+            {
+              "line": 343,
+              "name": "_project_official_eod_legacy"
+            },
+            {
+              "line": 359,
+              "name": "_project_official_eod_pre_v1_3"
+            },
+            {
+              "line": 426,
+              "name": "_project_official_eod"
+            },
+            {
+              "line": 440,
+              "name": "project_target_evidence"
+            },
+            {
+              "line": 463,
+              "name": "_cite"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 440,
+          "path": "scripts/m8r_05c/evidence_projector.py",
+          "symbol": "project_target_evidence",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-16",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "config/test_execution_profiles.json",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "tests",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/test_execution_profiles.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 27,
+              "name": "PhaseHV3ContractValidationError"
+            },
+            {
+              "line": 31,
+              "name": "_fail"
+            },
+            {
+              "line": 35,
+              "name": "_unique_object_pairs"
+            },
+            {
+              "line": 45,
+              "name": "strict_json_loads"
+            },
+            {
+              "line": 53,
+              "name": "_load_current_authority_json"
+            },
+            {
+              "line": 60,
+              "name": "_matches_frozen_bytes"
+            },
+            {
+              "line": 79,
+              "name": "_validate_declared_scope"
+            },
+            {
+              "line": 92,
+              "name": "validate_trading_status_context_semantics"
+            },
+            {
+              "line": 100,
+              "name": "validate_corporate_action_context_semantics"
+            },
+            {
+              "line": 121,
+              "name": "validate_recent_performance_semantics"
+            },
+            {
+              "line": 222,
+              "name": "validate_discontinuity_safety_semantics"
+            },
+            {
+              "line": 261,
+              "name": "validate_h2_h3_h4_cross_evidence"
+            },
+            {
+              "line": 284,
+              "name": "main"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 27,
+          "path": "scripts/validate_phase_h_v3_contracts.py",
+          "symbol": "PhaseHV3ContractValidationError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 35,
+              "name": "fail"
+            },
+            {
+              "line": 45,
+              "name": "main"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 35,
+          "path": "scripts/validate_runtime_skill_guide_sync.py",
+          "symbol": "fail",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-17",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "Catalog publication",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 15,
+              "name": "get_file_sha256"
+            },
+            {
+              "line": 26,
+              "name": "get_canonical_source_lineage"
+            },
+            {
+              "line": 49,
+              "name": "generate_portable_json_obj"
+            },
+            {
+              "line": 69,
+              "name": "generate_portable_markdown_text"
+            },
+            {
+              "line": 134,
+              "name": "generate_portable_catalog"
+            },
+            {
+              "line": 164,
+              "name": "main"
+            },
+            {
+              "line": 33,
+              "name": "git_stdout"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 15,
+          "path": "scripts/generate_portable_catalog.py",
+          "symbol": "get_file_sha256",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 19,
+              "name": "validate"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 19,
+          "path": "scripts/validate_portable_catalog_sync.py",
+          "symbol": "validate",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-18",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "skills/tw-market-evidence-agent/SKILL.md",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "Skill/guide publication",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "skills/tw-market-evidence-agent/SKILL.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/agent_usage_guide.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 35,
+              "name": "fail"
+            },
+            {
+              "line": 45,
+              "name": "main"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 35,
+          "path": "scripts/validate_runtime_skill_guide_sync.py",
+          "symbol": "fail",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-19",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "docs/acceptance_runs/phase_g_pr_d_closure.json",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "acceptance authority",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/acceptance_runs/phase_g_pr_d_closure.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "AGENTS.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-20",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "OPTIONAL",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+      "current_behavior": "Typed operation artifacts exist; response bytes may be transient/hash-only. No universal raw-body retention requirement.",
+      "dimension": "raw evidence schema",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 188,
+          "path": "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_roc_date"
+            },
+            {
+              "line": 20,
+              "name": "_report_date"
+            },
+            {
+              "line": 28,
+              "name": "_integer"
+            },
+            {
+              "line": 34,
+              "name": "_number"
+            },
+            {
+              "line": 40,
+              "name": "_value"
+            },
+            {
+              "line": 52,
+              "name": "execute"
+            },
+            {
+              "line": 81,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 83,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 52,
+          "path": "scripts/phase_g/mops_monthly_revenue.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-21",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "OPTIONAL",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "server/services/unified_replay_inspector.py",
+      "current_behavior": "Classify supported retained artifacts; inability to recompute is explicit, never refetch disguised as replay.",
+      "dimension": "replay support",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 19,
+              "name": "_InspectionFailure"
+            },
+            {
+              "line": 24,
+              "name": "_version"
+            },
+            {
+              "line": 29,
+              "name": "_contained_file"
+            },
+            {
+              "line": 36,
+              "name": "_find_retained"
+            },
+            {
+              "line": 47,
+              "name": "inspect_finalized_package"
+            },
+            {
+              "line": 20,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 47,
+          "path": "server/services/unified_replay_inspector.py",
+          "symbol": "inspect_finalized_package",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 65,
+              "name": "ModeCError"
+            },
+            {
+              "line": 71,
+              "name": "_read"
+            },
+            {
+              "line": 81,
+              "name": "_bounded_file_bytes"
+            },
+            {
+              "line": 90,
+              "name": "_enforce_public_projection_bound"
+            },
+            {
+              "line": 109,
+              "name": "_safe_path"
+            },
+            {
+              "line": 116,
+              "name": "_safe_package_path"
+            },
+            {
+              "line": 120,
+              "name": "_find"
+            },
+            {
+              "line": 137,
+              "name": "_verify_control"
+            },
+            {
+              "line": 168,
+              "name": "_load_verified"
+            },
+            {
+              "line": 195,
+              "name": "_f3"
+            },
+            {
+              "line": 215,
+              "name": "_receipt_calculated_at"
+            },
+            {
+              "line": 223,
+              "name": "_inputs"
+            },
+            {
+              "line": 231,
+              "name": "_expected_outputs"
+            },
+            {
+              "line": 258,
+              "name": "_persisted_output_version"
+            },
+            {
+              "line": 275,
+              "name": "_read_verified_outputs"
+            },
+            {
+              "line": 307,
+              "name": "build_mode_c_result_package"
+            },
+            {
+              "line": 371,
+              "name": "read_mode_c_audit"
+            },
+            {
+              "line": 380,
+              "name": "build_mode_c_ai_handoff"
+            },
+            {
+              "line": 66,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 380,
+          "path": "server/services/unified_mode_c.py",
+          "symbol": "build_mode_c_ai_handoff",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-22",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "DERIVED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_05c/audit_package_builder.py",
+      "current_behavior": "Derived from canonical receipt/bundle/artifact lineage with typed validation.",
+      "dimension": "Audit projection",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "_load_audit_schema"
+            },
+            {
+              "line": 65,
+              "name": "_phase_h_attempt_metadata"
+            },
+            {
+              "line": 73,
+              "name": "_audit_attempt"
+            },
+            {
+              "line": 111,
+              "name": "_phase_h_governance"
+            },
+            {
+              "line": 189,
+              "name": "_phase_i_evidence"
+            },
+            {
+              "line": 212,
+              "name": "build_audit_package"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 21,
+          "path": "scripts/m8r_05c/audit_package_builder.py",
+          "symbol": "build_audit_package",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-23",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "DERIVED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "server/services/unified_mode_c.py",
+      "current_behavior": "Derived Result rendering and citations; not a new family request or handoff protocol.",
+      "dimension": "AI handoff projection",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 65,
+              "name": "ModeCError"
+            },
+            {
+              "line": 71,
+              "name": "_read"
+            },
+            {
+              "line": 81,
+              "name": "_bounded_file_bytes"
+            },
+            {
+              "line": 90,
+              "name": "_enforce_public_projection_bound"
+            },
+            {
+              "line": 109,
+              "name": "_safe_path"
+            },
+            {
+              "line": 116,
+              "name": "_safe_package_path"
+            },
+            {
+              "line": 120,
+              "name": "_find"
+            },
+            {
+              "line": 137,
+              "name": "_verify_control"
+            },
+            {
+              "line": 168,
+              "name": "_load_verified"
+            },
+            {
+              "line": 195,
+              "name": "_f3"
+            },
+            {
+              "line": 215,
+              "name": "_receipt_calculated_at"
+            },
+            {
+              "line": 223,
+              "name": "_inputs"
+            },
+            {
+              "line": 231,
+              "name": "_expected_outputs"
+            },
+            {
+              "line": 258,
+              "name": "_persisted_output_version"
+            },
+            {
+              "line": 275,
+              "name": "_read_verified_outputs"
+            },
+            {
+              "line": 307,
+              "name": "build_mode_c_result_package"
+            },
+            {
+              "line": 371,
+              "name": "read_mode_c_audit"
+            },
+            {
+              "line": 380,
+              "name": "build_mode_c_ai_handoff"
+            },
+            {
+              "line": 66,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 380,
+          "path": "server/services/unified_mode_c.py",
+          "symbol": "build_mode_c_ai_handoff",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 57,
+              "name": "_section"
+            },
+            {
+              "line": 62,
+              "name": "_fmt_timing"
+            },
+            {
+              "line": 68,
+              "name": "_fmt_evidence_envelope"
+            },
+            {
+              "line": 117,
+              "name": "_fmt_eod_reference"
+            },
+            {
+              "line": 168,
+              "name": "_data_need_label"
+            },
+            {
+              "line": 181,
+              "name": "_fmt_typed_research_evidence"
+            },
+            {
+              "line": 238,
+              "name": "_fmt_phase_h_evidence"
+            },
+            {
+              "line": 334,
+              "name": "render_result_markdown"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 334,
+          "path": "scripts/m8r_05c/markdown_renderer.py",
+          "symbol": "render_result_markdown",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-24",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "FAMILY_SPECIFIC",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/phase_g/research_executor.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "source request contract",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 21,
+              "name": "SourceFailure"
+            },
+            {
+              "line": 26,
+              "name": "TransportResult"
+            },
+            {
+              "line": 32,
+              "name": "parse_csv"
+            },
+            {
+              "line": 64,
+              "name": "_failure_reason"
+            },
+            {
+              "line": 70,
+              "name": "parse_json"
+            },
+            {
+              "line": 78,
+              "name": "fetch_once"
+            },
+            {
+              "line": 88,
+              "name": "failed_provenance"
+            },
+            {
+              "line": 124,
+              "name": "normalize_source_rows"
+            },
+            {
+              "line": 145,
+              "name": "field"
+            },
+            {
+              "line": 151,
+              "name": "bind_rows"
+            },
+            {
+              "line": 22,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/phase_g/research_executor.py",
+          "symbol": "ROUTES",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-25",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "FAMILY_SPECIFIC",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "normalization contract",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_roc_date"
+            },
+            {
+              "line": 20,
+              "name": "_report_date"
+            },
+            {
+              "line": 28,
+              "name": "_integer"
+            },
+            {
+              "line": 34,
+              "name": "_number"
+            },
+            {
+              "line": 40,
+              "name": "_value"
+            },
+            {
+              "line": 52,
+              "name": "execute"
+            },
+            {
+              "line": 81,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 83,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 52,
+          "path": "scripts/phase_g/mops_monthly_revenue.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 14,
+              "name": "MarketStateNormalizationError"
+            },
+            {
+              "line": 38,
+              "name": "_date"
+            },
+            {
+              "line": 47,
+              "name": "_number"
+            },
+            {
+              "line": 59,
+              "name": "_one_row"
+            },
+            {
+              "line": 67,
+              "name": "_component"
+            },
+            {
+              "line": 79,
+              "name": "normalize_twse_breadth_observation"
+            },
+            {
+              "line": 105,
+              "name": "normalize_twse_market_state"
+            },
+            {
+              "line": 170,
+              "name": "normalize_tpex_market_state"
+            },
+            {
+              "line": 203,
+              "name": "assemble_market_state_context"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 14,
+          "path": "server/services/phase_i_market_state_adapters.py",
+          "symbol": "MarketStateNormalizationError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-26",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "FAMILY_SPECIFIC",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_05a_f3/target_validator.py",
+      "current_behavior": "Reuse resolved installation-local identity; market-level and cross-market context preserve target association without target-specific causation.",
+      "dimension": "identity binding",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 5,
+              "name": "_identity"
+            },
+            {
+              "line": 9,
+              "name": "validate_target"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 9,
+          "path": "scripts/m8r_05a_f3/target_validator.py",
+          "symbol": "validate_target",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 4,
+              "name": "load_f3_verified_security_master"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 4,
+          "path": "scripts/m8r_05a_f3/security_master_loader.py",
+          "symbol": "load_f3_verified_security_master",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 74,
+              "name": "_expected_typed_contract"
+            },
+            {
+              "line": 79,
+              "name": "_allowed_typed_contracts"
+            },
+            {
+              "line": 87,
+              "name": "TargetResolution"
+            },
+            {
+              "line": 98,
+              "name": "OperationBinding"
+            },
+            {
+              "line": 118,
+              "name": "LineageMap"
+            },
+            {
+              "line": 130,
+              "name": "build_lineage_map"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 130,
+          "path": "scripts/m8r_05c/lineage_resolver.py",
+          "symbol": "build_lineage_map",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-27",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "FAMILY_SPECIFIC",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_05c/result_builder.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "Result projection",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 63,
+              "name": "_load_result_schema"
+            },
+            {
+              "line": 70,
+              "name": "_build_request_summary"
+            },
+            {
+              "line": 91,
+              "name": "_build_resolution"
+            },
+            {
+              "line": 116,
+              "name": "_compute_result_status"
+            },
+            {
+              "line": 157,
+              "name": "_envelope_to_dict"
+            },
+            {
+              "line": 180,
+              "name": "_citation_to_dict"
+            },
+            {
+              "line": 196,
+              "name": "_canonical_identity_v2"
+            },
+            {
+              "line": 213,
+              "name": "_derived_metric_to_dict"
+            },
+            {
+              "line": 235,
+              "name": "_research_status"
+            },
+            {
+              "line": 240,
+              "name": "_not_applicable_research"
+            },
+            {
+              "line": 265,
+              "name": "_derived_h4_artifact"
+            },
+            {
+              "line": 290,
+              "name": "build_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 24,
+          "path": "scripts/m8r_05c/result_builder.py",
+          "symbol": "build_result",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "schemas/unified_market_evidence_result.v3.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-28",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "PLATFORM_PROVIDED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "server/services/unified_mode_b2.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "authorization class",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 36,
+              "name": "ModeB2Error"
+            },
+            {
+              "line": 42,
+              "name": "_utc_now"
+            },
+            {
+              "line": 46,
+              "name": "_zulu"
+            },
+            {
+              "line": 50,
+              "name": "_next_local_action_issuance_time"
+            },
+            {
+              "line": 66,
+              "name": "_unused_state"
+            },
+            {
+              "line": 77,
+              "name": "_json_text"
+            },
+            {
+              "line": 81,
+              "name": "_write_control_package"
+            },
+            {
+              "line": 119,
+              "name": "_materialize_execution_ticket"
+            },
+            {
+              "line": 169,
+              "name": "_authorizable_preview"
+            },
+            {
+              "line": 186,
+              "name": "_non_actionable_preview_code"
+            },
+            {
+              "line": 252,
+              "name": "build_mode_b2_authorization"
+            },
+            {
+              "line": 313,
+              "name": "build_local_operator_execution_ticket"
+            },
+            {
+              "line": 37,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 252,
+          "path": "server/services/unified_mode_b2.py",
+          "symbol": "build_mode_b2_authorization",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 10,
+              "name": "authorize"
+            },
+            {
+              "line": 17,
+              "name": "approved_operation_map"
+            },
+            {
+              "line": 39,
+              "name": "approved_operations"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 10,
+          "path": "scripts/m8r_05b_03/authorization_gate.py",
+          "symbol": "authorize",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 27,
+              "name": "claim_relative_path"
+            },
+            {
+              "line": 31,
+              "name": "_validate_timestamp"
+            },
+            {
+              "line": 42,
+              "name": "validate_operator_confirmation_reference"
+            },
+            {
+              "line": 53,
+              "name": "_validate_supplied_unused_state"
+            },
+            {
+              "line": 86,
+              "name": "build_claim_record"
+            },
+            {
+              "line": 156,
+              "name": "validate_claim_destination"
+            },
+            {
+              "line": 165,
+              "name": "atomic_claim_authorization"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 165,
+          "path": "scripts/m8r_05b_03/consumption_claim.py",
+          "symbol": "atomic_claim_authorization",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-29",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "PLATFORM_PROVIDED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "config/m8r_06_03_executor_registry_metadata.json",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "timeout authority",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 22,
+              "name": "_timeout_seconds"
+            },
+            {
+              "line": 28,
+              "name": "_emit_child_event"
+            },
+            {
+              "line": 48,
+              "name": "execute_mode_b2_once"
+            },
+            {
+              "line": 132,
+              "name": "execute_local_operator_ticket"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 48,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "symbol": "execute_mode_b2_once",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-30",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "PLATFORM_PROVIDED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "server/services/unified_retention_inventory.py",
+      "current_behavior": "L2 classification is platform-owned; family proposes artifact role, never duration or deletion authority.",
+      "dimension": "retention classification",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 15,
+              "name": "_entry"
+            },
+            {
+              "line": 77,
+              "name": "retention_inventory"
+            },
+            {
+              "line": 82,
+              "name": "classify_artifact_family"
+            },
+            {
+              "line": 95,
+              "name": "classify_artifact"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 82,
+          "path": "server/services/unified_retention_inventory.py",
+          "symbol": "classify_artifact_family",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 49,
+              "name": "BackupError"
+            },
+            {
+              "line": 58,
+              "name": "BackupRoot"
+            },
+            {
+              "line": 64,
+              "name": "BackupMember"
+            },
+            {
+              "line": 77,
+              "name": "_canonical_bytes"
+            },
+            {
+              "line": 81,
+              "name": "_reject_json_constant"
+            },
+            {
+              "line": 85,
+              "name": "_strict_object"
+            },
+            {
+              "line": 94,
+              "name": "_manifest_hash"
+            },
+            {
+              "line": 100,
+              "name": "_is_reparse_or_symlink"
+            },
+            {
+              "line": 108,
+              "name": "_reject_reparse_components"
+            },
+            {
+              "line": 122,
+              "name": "_relative"
+            },
+            {
+              "line": 142,
+              "name": "_contained_file"
+            },
+            {
+              "line": 160,
+              "name": "_source_signature"
+            },
+            {
+              "line": 167,
+              "name": "_verify_binding"
+            },
+            {
+              "line": 184,
+              "name": "_validate_roots"
+            },
+            {
+              "line": 208,
+              "name": "_selected_for_tier"
+            },
+            {
+              "line": 220,
+              "name": "_verify_watchlist_database"
+            },
+            {
+              "line": 243,
+              "name": "_sqlite_logical_fingerprint"
+            },
+            {
+              "line": 265,
+              "name": "_sqlite_snapshot_fingerprint"
+            },
+            {
+              "line": 299,
+              "name": "plan_backup"
+            },
+            {
+              "line": 414,
+              "name": "_read_source_bytes"
+            },
+            {
+              "line": 441,
+              "name": "_sqlite_snapshot"
+            },
+            {
+              "line": 480,
+              "name": "_hash_file"
+            },
+            {
+              "line": 508,
+              "name": "_write_json"
+            },
+            {
+              "line": 516,
+              "name": "_manifest_for"
+            },
+            {
+              "line": 539,
+              "name": "create_backup"
+            },
+            {
+              "line": 649,
+              "name": "_validate_manifest_plan"
+            },
+            {
+              "line": 711,
+              "name": "verify_backup"
+            },
+            {
+              "line": 716,
+              "name": "_verify_backup"
+            },
+            {
+              "line": 52,
+              "name": "__init__"
+            },
+            {
+              "line": 227,
+              "name": "connect_read_only"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 299,
+          "path": "server/services/unified_backup.py",
+          "symbol": "plan_backup",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 51,
+              "name": "RestoreError"
+            },
+            {
+              "line": 60,
+              "name": "RestoreCompatibilityContract"
+            },
+            {
+              "line": 70,
+              "name": "CompatibilityAttestation"
+            },
+            {
+              "line": 93,
+              "name": "_canonical_bytes"
+            },
+            {
+              "line": 97,
+              "name": "_receipt_hash"
+            },
+            {
+              "line": 103,
+              "name": "_contract_hash"
+            },
+            {
+              "line": 120,
+              "name": "_reject_json_constant"
+            },
+            {
+              "line": 124,
+              "name": "_strict_object"
+            },
+            {
+              "line": 133,
+              "name": "_load_manifest"
+            },
+            {
+              "line": 151,
+              "name": "_verify_source"
+            },
+            {
+              "line": 186,
+              "name": "_validate_contract"
+            },
+            {
+              "line": 197,
+              "name": "_watchlist_schema_version"
+            },
+            {
+              "line": 213,
+              "name": "_classify"
+            },
+            {
+              "line": 269,
+              "name": "inspect_restore"
+            },
+            {
+              "line": 296,
+              "name": "_unsafe_path"
+            },
+            {
+              "line": 308,
+              "name": "_safe_relative"
+            },
+            {
+              "line": 315,
+              "name": "_resolve_destination"
+            },
+            {
+              "line": 353,
+              "name": "_source_inventory"
+            },
+            {
+              "line": 364,
+              "name": "_verify_watchlist"
+            },
+            {
+              "line": 380,
+              "name": "_verify_member_path"
+            },
+            {
+              "line": 398,
+              "name": "_make_receipt"
+            },
+            {
+              "line": 424,
+              "name": "_validate_receipt_envelope"
+            },
+            {
+              "line": 470,
+              "name": "restore_backup"
+            },
+            {
+              "line": 564,
+              "name": "verify_restored_state"
+            },
+            {
+              "line": 54,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 269,
+          "path": "server/services/unified_restore.py",
+          "symbol": "inspect_restore",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 35,
+              "name": "MigrationError"
+            },
+            {
+              "line": 44,
+              "name": "MigrationDefinition"
+            },
+            {
+              "line": 71,
+              "name": "_canonical"
+            },
+            {
+              "line": 76,
+              "name": "_require_utc"
+            },
+            {
+              "line": 85,
+              "name": "_digest"
+            },
+            {
+              "line": 89,
+              "name": "_integrity"
+            },
+            {
+              "line": 96,
+              "name": "_registry_rows"
+            },
+            {
+              "line": 100,
+              "name": "_attestation_hash"
+            },
+            {
+              "line": 105,
+              "name": "_manifest"
+            },
+            {
+              "line": 123,
+              "name": "_ensure_source_location"
+            },
+            {
+              "line": 139,
+              "name": "_inventory"
+            },
+            {
+              "line": 153,
+              "name": "_inventory_sha"
+            },
+            {
+              "line": 158,
+              "name": "_has_exact_directories"
+            },
+            {
+              "line": 179,
+              "name": "_safe_root"
+            },
+            {
+              "line": 198,
+              "name": "_derive"
+            },
+            {
+              "line": 259,
+              "name": "inspect_migration"
+            },
+            {
+              "line": 287,
+              "name": "MigrationPlan"
+            },
+            {
+              "line": 339,
+              "name": "_plan_from_payload"
+            },
+            {
+              "line": 360,
+              "name": "preview_migration"
+            },
+            {
+              "line": 430,
+              "name": "_validate_plan"
+            },
+            {
+              "line": 494,
+              "name": "_read_members"
+            },
+            {
+              "line": 513,
+              "name": "_destination"
+            },
+            {
+              "line": 539,
+              "name": "_check_existing_isolated"
+            },
+            {
+              "line": 558,
+              "name": "_write_members"
+            },
+            {
+              "line": 573,
+              "name": "_member_records"
+            },
+            {
+              "line": 578,
+              "name": "_verify_watchlist_members"
+            },
+            {
+              "line": 596,
+              "name": "_receipt_body"
+            },
+            {
+              "line": 630,
+              "name": "apply_migration"
+            },
+            {
+              "line": 723,
+              "name": "verify_migrated_state"
+            },
+            {
+              "line": 819,
+              "name": "rollback_migration"
+            },
+            {
+              "line": 882,
+              "name": "verify_rollback"
+            },
+            {
+              "line": 38,
+              "name": "__init__"
+            },
+            {
+              "line": 54,
+              "name": "authority_record"
+            },
+            {
+              "line": 312,
+              "name": "to_dict"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 259,
+          "path": "server/services/unified_migration.py",
+          "symbol": "inspect_migration",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-31",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "PLATFORM_PROVIDED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "server/resource_boundaries.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "resource bounds",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 26,
+              "name": "classify_request"
+            },
+            {
+              "line": 63,
+              "name": "ResourceAdmissionGate"
+            },
+            {
+              "line": 104,
+              "name": "ResourceAdmissionMiddleware"
+            },
+            {
+              "line": 139,
+              "name": "ResourceDiskAdmissionError"
+            },
+            {
+              "line": 145,
+              "name": "_existing_directory"
+            },
+            {
+              "line": 156,
+              "name": "available_disk_bytes"
+            },
+            {
+              "line": 164,
+              "name": "require_disk_capacity"
+            },
+            {
+              "line": 174,
+              "name": "sqlite_write_requirement"
+            },
+            {
+              "line": 193,
+              "name": "serialized_json_bytes"
+            },
+            {
+              "line": 202,
+              "name": "serialized_text_bytes"
+            },
+            {
+              "line": 66,
+              "name": "__init__"
+            },
+            {
+              "line": 73,
+              "name": "try_enter"
+            },
+            {
+              "line": 80,
+              "name": "leave"
+            },
+            {
+              "line": 87,
+              "name": "active"
+            },
+            {
+              "line": 92,
+              "name": "admitted"
+            },
+            {
+              "line": 107,
+              "name": "__init__"
+            },
+            {
+              "line": 140,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 104,
+          "path": "server/resource_boundaries.py",
+          "symbol": "ResourceAdmissionMiddleware",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "server/unified_payload_bounds.py",
+          "symbol": null,
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-32",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "PLATFORM_PROVIDED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "server/local_control_plane_boundary.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "secret boundary",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 47,
+              "name": "classify_post_path"
+            },
+            {
+              "line": 54,
+              "name": "_host_port"
+            },
+            {
+              "line": 70,
+              "name": "_is_local_host"
+            },
+            {
+              "line": 79,
+              "name": "is_same_local_service_origin"
+            },
+            {
+              "line": 129,
+              "name": "_header"
+            },
+            {
+              "line": 139,
+              "name": "control_plane_rejection"
+            },
+            {
+              "line": 162,
+              "name": "LocalControlPlaneBoundaryMiddleware"
+            },
+            {
+              "line": 165,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 139,
+          "path": "server/local_control_plane_boundary.py",
+          "symbol": "control_plane_rejection",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 57,
+              "name": "_section"
+            },
+            {
+              "line": 62,
+              "name": "_fmt_timing"
+            },
+            {
+              "line": 68,
+              "name": "_fmt_evidence_envelope"
+            },
+            {
+              "line": 117,
+              "name": "_fmt_eod_reference"
+            },
+            {
+              "line": 168,
+              "name": "_data_need_label"
+            },
+            {
+              "line": 181,
+              "name": "_fmt_typed_research_evidence"
+            },
+            {
+              "line": 238,
+              "name": "_fmt_phase_h_evidence"
+            },
+            {
+              "line": 334,
+              "name": "render_result_markdown"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 334,
+          "path": "scripts/m8r_05c/markdown_renderer.py",
+          "symbol": "render_result_markdown",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 24,
+              "name": "HostileEvidenceClient"
+            },
+            {
+              "line": 38,
+              "name": "test_hostile_evidence_remains_data_and_does_not_dispatch_a_followup_tool"
+            },
+            {
+              "line": 69,
+              "name": "test_mcp_fetch_evidence_requires_explicit_execute_mode_and_fixed_fields"
+            },
+            {
+              "line": 86,
+              "name": "test_m5f_http_error_uses_stable_reason_without_exception_url"
+            },
+            {
+              "line": 98,
+              "name": "test_operational_diagnostics_and_stderr_do_not_project_environment_secrets"
+            },
+            {
+              "line": 115,
+              "name": "test_operational_jsonl_and_exception_diagnostics_do_not_echo_secret_canaries"
+            },
+            {
+              "line": 138,
+              "name": "test_mcp_error_projection_drops_uncontrolled_detail_and_exception_url"
+            },
+            {
+              "line": 151,
+              "name": "test_watchlist_public_error_uses_code_and_safe_details_only"
+            },
+            {
+              "line": 25,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 24,
+          "path": "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+          "symbol": "HostileEvidenceClient",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-33",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "PLATFORM_PROVIDED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "scripts/m8r_filesystem_safety.py",
+      "current_behavior": "Current explicit authorities already govern this dimension; family declares applicable semantics within the existing platform boundary.",
+      "dimension": "path/output containment",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 8,
+              "name": "FilesystemSafetyError"
+            },
+            {
+              "line": 14,
+              "name": "SafeDestination"
+            },
+            {
+              "line": 20,
+              "name": "PathClassification"
+            },
+            {
+              "line": 29,
+              "name": "_looks_device_namespace"
+            },
+            {
+              "line": 36,
+              "name": "_looks_unc"
+            },
+            {
+              "line": 41,
+              "name": "_looks_drive_relative"
+            },
+            {
+              "line": 44,
+              "name": "_looks_windows_absolute"
+            },
+            {
+              "line": 47,
+              "name": "classify_artifact_relative_path"
+            },
+            {
+              "line": 153,
+              "name": "validate_relative_artifact_path"
+            },
+            {
+              "line": 161,
+              "name": "reject_uri_like_root"
+            },
+            {
+              "line": 169,
+              "name": "is_reparse_or_symlink"
+            },
+            {
+              "line": 184,
+              "name": "_lexical_absolute"
+            },
+            {
+              "line": 191,
+              "name": "reject_reparse_components"
+            },
+            {
+              "line": 212,
+              "name": "_path_identity"
+            },
+            {
+              "line": 224,
+              "name": "_assert_identity"
+            },
+            {
+              "line": 230,
+              "name": "capture_directory_identity"
+            },
+            {
+              "line": 239,
+              "name": "verify_directory_identity"
+            },
+            {
+              "line": 249,
+              "name": "validate_authorized_root"
+            },
+            {
+              "line": 293,
+              "name": "_is_relative_to"
+            },
+            {
+              "line": 302,
+              "name": "safe_destination"
+            },
+            {
+              "line": 350,
+              "name": "atomic_write_bytes"
+            },
+            {
+              "line": 418,
+              "name": "atomic_write_text"
+            },
+            {
+              "line": 433,
+              "name": "atomic_create_text_exclusive"
+            },
+            {
+              "line": 9,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 302,
+          "path": "scripts/m8r_filesystem_safety.py",
+          "symbol": "safe_destination",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 23,
+              "name": "_is_relative_to"
+            },
+            {
+              "line": 33,
+              "name": "validate_governed_output_root"
+            },
+            {
+              "line": 50,
+              "name": "validate_contained_relative_paths"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 23,
+          "path": "scripts/m8r_05b_03/containment.py",
+          "symbol": "_is_relative_to",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 37,
+              "name": "measure_json_utf8"
+            },
+            {
+              "line": 58,
+              "name": "measure_text_utf8"
+            },
+            {
+              "line": 72,
+              "name": "serialize_bounded_json"
+            },
+            {
+              "line": 85,
+              "name": "encode_json_response"
+            },
+            {
+              "line": 93,
+              "name": "bounded_json_response"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 37,
+          "path": "server/unified_bounded_io.py",
+          "symbol": "measure_json_utf8",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-34",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "DECISION_REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "No universal family_id registration; capability IDs, typed evidence contract IDs and source-family IDs have distinct namespaces. 14 capabilities map to 12 descriptive groups, with H4 separately derived.",
+      "dimension": "family_id / capability relationship",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 74,
+              "name": "_expected_typed_contract"
+            },
+            {
+              "line": 79,
+              "name": "_allowed_typed_contracts"
+            },
+            {
+              "line": 87,
+              "name": "TargetResolution"
+            },
+            {
+              "line": 98,
+              "name": "OperationBinding"
+            },
+            {
+              "line": 118,
+              "name": "LineageMap"
+            },
+            {
+              "line": 130,
+              "name": "build_lineage_map"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 130,
+          "path": "scripts/m8r_05c/lineage_resolver.py",
+          "symbol": "build_lineage_map",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-35",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "MEDIUM",
+      "surface_category": "minimum_contract_dimension"
+    },
+    {
+      "applicability": "Network-only transport fields are NOT_APPLICABLE for local/derived families; all families must state applicability explicitly.",
+      "classification": "DECISION_REQUIRED",
+      "cross_phase_obligations": {
+        "L1": "cross_phase_invariant_matrix.json#CROSS-L1",
+        "L2": "cross_phase_invariant_matrix.json#CROSS-L2",
+        "L3": "cross_phase_invariant_matrix.json#CROSS-L3",
+        "L4": "cross_phase_invariant_matrix.json#CROSS-L4"
+      },
+      "current_authority": "server/services/unified_contract_versions.py",
+      "current_behavior": "Existing versioned schemas and Request/Catalog/Route bindings exist; no uniform per-family transition decision table is frozen.",
+      "dimension": "version upgrade/deprecation path",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 53,
+              "name": "UnsupportedRequestSchemaVersion"
+            },
+            {
+              "line": 57,
+              "name": "resolve_request_schema"
+            },
+            {
+              "line": 71,
+              "name": "resolve_planning_authority_paths"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 71,
+          "path": "server/services/unified_contract_versions.py",
+          "symbol": "resolve_planning_authority_paths",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 27,
+              "name": "PhaseHV3ContractValidationError"
+            },
+            {
+              "line": 31,
+              "name": "_fail"
+            },
+            {
+              "line": 35,
+              "name": "_unique_object_pairs"
+            },
+            {
+              "line": 45,
+              "name": "strict_json_loads"
+            },
+            {
+              "line": 53,
+              "name": "_load_current_authority_json"
+            },
+            {
+              "line": 60,
+              "name": "_matches_frozen_bytes"
+            },
+            {
+              "line": 79,
+              "name": "_validate_declared_scope"
+            },
+            {
+              "line": 92,
+              "name": "validate_trading_status_context_semantics"
+            },
+            {
+              "line": 100,
+              "name": "validate_corporate_action_context_semantics"
+            },
+            {
+              "line": 121,
+              "name": "validate_recent_performance_semantics"
+            },
+            {
+              "line": 222,
+              "name": "validate_discontinuity_safety_semantics"
+            },
+            {
+              "line": 261,
+              "name": "validate_h2_h3_h4_cross_evidence"
+            },
+            {
+              "line": 284,
+              "name": "main"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 27,
+          "path": "scripts/validate_phase_h_v3_contracts.py",
+          "symbol": "PhaseHV3ContractValidationError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "A1 must freeze the obligation and applicability, not automatically a runtime schema/interface.",
+      "finding_id": "DIM-36",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "MEDIUM",
+      "surface_category": "minimum_contract_dimension"
+    }
+  ],
+  "minimum": "Typed/declarative obligations + explicit existing registrations + acceptance conformance. No new canonical registry, runtime discovery or dynamic execution.",
+  "status": "CANDIDATE_NOT_FROZEN"
+}

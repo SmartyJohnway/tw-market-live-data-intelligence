@@ -1,0 +1,477 @@
+{
+  "additional_derived_non_capability_count": 1,
+  "catalog_archetype_count": 12,
+  "findings": [
+    {
+      "archetype_id": "bounded_historical_reference",
+      "capability_ids": [
+        "recent_performance"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "SOURCE_BACKED_DERIVED_DESCRIPTION",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-bounded_historical_reference",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "cash_institutional_flow_context",
+      "capability_ids": [
+        "cash_institutional_flow_context"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "MARKET_SPECIFIC_SOURCE_CONTEXT",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-cash_institutional_flow_context",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "corporate_action_context",
+      "capability_ids": [
+        "corporate_action_context"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "LIFECYCLE_SUBTYPE_CONTEXT",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-corporate_action_context",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "evidence_metadata",
+      "capability_ids": [
+        "source_currentness",
+        "evidence_quality"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "CONTRACT_ONLY_UPSTREAM_PROJECTION / CONTRACT_ONLY_UPSTREAM_PROJECTION",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-evidence_metadata",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "identity_resolution",
+      "capability_ids": [
+        "identity"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "CONTRACT_ONLY_LOCAL_IDENTITY",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-identity_resolution",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "index_futures_context",
+      "capability_ids": [
+        "index_futures_context"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "CROSS_MARKET_CONTEXT",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-index_futures_context",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "market_observation",
+      "capability_ids": [
+        "current_observation",
+        "official_eod_reference"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "SOURCE_BACKED_SHARED_OBSERVATION / SOURCE_BACKED_SHARED_OBSERVATION",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-market_observation",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "market_state_context",
+      "capability_ids": [
+        "market_state_context"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "MULTI_SOURCE_MARKET_CONTEXT",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-market_state_context",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "material_disclosures",
+      "capability_ids": [
+        "material_disclosures"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "SOURCE_BACKED_DAILY_BATCH",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-material_disclosures",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "monthly_revenue",
+      "capability_ids": [
+        "monthly_revenue"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "SOURCE_BACKED_REPORTING_PERIOD",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-monthly_revenue",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "session_context",
+      "capability_ids": [
+        "session_status"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "BLOCKED_SOURCE_BACKED_CONTEXT_CONTRACT",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-session_context",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "archetype_id": "trading_status_context",
+      "capability_ids": [
+        "trading_status_context"
+      ],
+      "classification": "DESCRIPTIVE_INVENTORY",
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "COMPOSITE_SUBTYPE_COVERAGE",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Archetype is an A0 analytical grouping; typed evidence schemas and selected routing own product identity.",
+      "finding_id": "ARCH-trading_status_context",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "archetype"
+    },
+    {
+      "classification": "DERIVED_NOT_REQUEST_CAPABILITY",
+      "current_authority": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "current_behavior": "discontinuity_safety is derived zero-network evidence, request_capability=false.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 63,
+              "name": "_load_result_schema"
+            },
+            {
+              "line": 70,
+              "name": "_build_request_summary"
+            },
+            {
+              "line": 91,
+              "name": "_build_resolution"
+            },
+            {
+              "line": 116,
+              "name": "_compute_result_status"
+            },
+            {
+              "line": 157,
+              "name": "_envelope_to_dict"
+            },
+            {
+              "line": 180,
+              "name": "_citation_to_dict"
+            },
+            {
+              "line": 196,
+              "name": "_canonical_identity_v2"
+            },
+            {
+              "line": 213,
+              "name": "_derived_metric_to_dict"
+            },
+            {
+              "line": 235,
+              "name": "_research_status"
+            },
+            {
+              "line": 240,
+              "name": "_not_applicable_research"
+            },
+            {
+              "line": 265,
+              "name": "_derived_h4_artifact"
+            },
+            {
+              "line": 290,
+              "name": "build_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 24,
+          "path": "scripts/m8r_05c/result_builder.py",
+          "symbol": "build_result",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "schemas/discontinuity_safety_evidence.v1.schema.json",
+          "symbol": "\"$id\"",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Do not register a network executor or invent a 15th capability.",
+      "finding_id": "ARCH-H4",
+      "recommended_next_tranche": "L5-A1",
+      "risk_severity": "LOW",
+      "surface_category": "non_capability_derived_evidence"
+    }
+  ]
+}
