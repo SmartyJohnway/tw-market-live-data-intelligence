@@ -1,0 +1,76 @@
+{
+  "schema": "phase_l_l4_a6_r3_r2_manifest.v1",
+  "run_id": "l4-a6-r3-r2-20261018T005100Z",
+  "entry_head": "cd88ba7b89f9d6fdbb1381bcb9a93533499863d7",
+  "entry_tree": "dddfb275d0869a1ad070a9235b1b3c04d0c0e293",
+  "origin_main": "c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2",
+  "artifact_count": 13,
+  "artifacts": [
+    {
+      "path": "candidate_range_diff_check.txt",
+      "bytes": 1061,
+      "sha256": "f349d2ac7d033c2a597b1ffc04fca811484598e29bd0e00b64e8980aa0344b58"
+    },
+    {
+      "path": "candidate_range_diff_check_command.txt",
+      "bytes": 64,
+      "sha256": "5569d73540981e9fc9b62394b2f1cb076705b84e1c0870cbb29eac6d19b4ac48"
+    },
+    {
+      "path": "candidate_range_diff_check_exit_code.txt",
+      "bytes": 3,
+      "sha256": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b"
+    },
+    {
+      "path": "candidate_range_diff_check_stderr_base64.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "candidate_range_diff_check_stdout_base64.txt",
+      "bytes": 1341,
+      "sha256": "1a0ff313ff943ecc98afd6f4cb2afd84eb528f85bd457c2cad8e527c54b8a0f0"
+    },
+    {
+      "path": "exception_aware_diff_check_command.txt",
+      "bytes": 917,
+      "sha256": "78184c385beb89bba0ae98568ebfba2e98b432996c8582d7efb4f60a252985c5"
+    },
+    {
+      "path": "exception_aware_diff_check_exit_code.txt",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "exception_aware_diff_check_output.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final_acceptance_reconciliation.json",
+      "bytes": 1434,
+      "sha256": "a7da82ac42b46e79054ee165fe61310d2c4e0bb60132f890670f21639a41415c"
+    },
+    {
+      "path": "historical_hash_chain_verification.json",
+      "bytes": 2318,
+      "sha256": "420798bf8b34d34ef429b67c4a934755cf54a518c56810ae6f7bd60c4242c804"
+    },
+    {
+      "path": "immutable_evidence_format_exception.json",
+      "bytes": 3631,
+      "sha256": "aa56bf98726d0a597a39bb07fae55a1f3a5c5780c24989e5c36d8df8e909d1c7"
+    },
+    {
+      "path": "offline_review.json",
+      "bytes": 1356,
+      "sha256": "06d6370075d00ec995faf5cb0e347824707cb19ced26e45174e115562c6ae365"
+    },
+    {
+      "path": "preflight_result.json",
+      "bytes": 540,
+      "sha256": "bb92847a0233c024840115ce5d1249b99a8c12171dabb71416121a9a1e1d1e3e"
+    }
+  ],
+  "canonical_sha256": "33641554865c53a7b369ea623b5f855702460b2f6e65993e1ebac73169416b6d"
+}
