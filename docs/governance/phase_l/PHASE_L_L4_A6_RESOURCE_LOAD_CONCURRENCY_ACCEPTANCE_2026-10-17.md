@@ -140,3 +140,10 @@ Accepted findings: RES-001/002/003 and LOAD-001/004 are COVERED; A3 resource res
 Limitations remain explicit: Mode C historical debt is unresolved; the two TG4 nodes remain `KNOWN_HISTORICAL_REPLAY_GAP_NOT_CURRENT_PROTECTION`, governed-deselected rather than passed, with zero new deselections. The full candidate-range diff-check retains exactly seven byte-preserved immutable evidence EOF formatting exceptions; no general whitespace waiver is created.
 
 At this pre-merge closure point, L4-A6 is Owner-accepted for merge but is not yet described as merged. L4-A7 and L5-L7 remain NOT AUTHORIZED.
+
+
+## Post-merge governance verification (2026-10-18)
+
+Owner acceptance: `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`. PR #375 is MERGED. Merge commit: `9a3a274df1f2602dced30633ea5fa119bc39d0e6`. Post-merge `origin/main`: `9a3a274df1f2602dced30633ea5fa119bc39d0e6`.
+
+Ancestry verification: A6 candidate `e5bb67862fe4309d7f83f73a374aa0f1756987d9`, R3-R2 reconciliation commit `e5bb67862fe4309d7f83f73a374aa0f1756987d9`, and Owner closure commit `f95469e475ba629248ae8ef6a103295a692143bc` are ancestors of post-merge `origin/main` (PASS). L4-A6 final tranche state is `OWNER-ACCEPTED AND MERGED`. L4-A7 and L5-L7 remain NOT AUTHORIZED.
