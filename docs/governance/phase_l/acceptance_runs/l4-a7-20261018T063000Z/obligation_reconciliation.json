@@ -1,0 +1,309 @@
+{
+  "schema": "phase_l_l4_a7_obligation_reconciliation.v1",
+  "run_id": "l4-a7-20261018T063000Z",
+  "a0_item_count": 33,
+  "exit_counts": {
+    "COVERED": 31,
+    "NOT_APPLICABLE": 2
+  },
+  "unresolved_blockers": 0,
+  "items": [
+    {
+      "boundary_id": "NET-001",
+      "category": "network_exposure",
+      "a0_status": "COVERED",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "COVERED",
+      "closure_authority": "A0 retained",
+      "rationale": "already covered at A0 and no later accepted tranche reopens it"
+    },
+    {
+      "boundary_id": "NET-002",
+      "category": "network_exposure",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A1",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A1",
+      "rationale": "application-level loopback/socket-origin boundary; A4 later freezes same-user caller trust"
+    },
+    {
+      "boundary_id": "NET-003",
+      "category": "network_exposure",
+      "a0_status": "COVERED",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "COVERED",
+      "closure_authority": "A0 retained",
+      "rationale": "already covered at A0 and no later accepted tranche reopens it"
+    },
+    {
+      "boundary_id": "NET-004",
+      "category": "network_exposure",
+      "a0_status": "NOT_APPLICABLE",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "NOT_APPLICABLE",
+      "closure_authority": "A0 retained",
+      "rationale": "A0 not-applicable classification remains valid for frozen L4 scope"
+    },
+    {
+      "boundary_id": "PATH-001",
+      "category": "filesystem_path",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A2",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A2",
+      "rationale": "external-root/reparse/SQLite leaf containment"
+    },
+    {
+      "boundary_id": "PATH-002",
+      "category": "filesystem_path",
+      "a0_status": "COVERED",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "COVERED",
+      "closure_authority": "A0 retained",
+      "rationale": "already covered at A0 and no later accepted tranche reopens it"
+    },
+    {
+      "boundary_id": "PATH-003",
+      "category": "filesystem_path",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A2",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A2",
+      "rationale": "control/output path containment and identity continuity"
+    },
+    {
+      "boundary_id": "PATH-004",
+      "category": "filesystem_path",
+      "a0_status": "COVERED",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "COVERED",
+      "closure_authority": "A0 retained",
+      "rationale": "already covered at A0 and no later accepted tranche reopens it"
+    },
+    {
+      "boundary_id": "PATH-005",
+      "category": "filesystem_path",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A2",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A2",
+      "rationale": "operational/lifecycle/control-root path coverage"
+    },
+    {
+      "boundary_id": "IN-001",
+      "category": "input_bounds",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3",
+      "rationale": "bounded HTTP ingress"
+    },
+    {
+      "boundary_id": "IN-002",
+      "category": "input_bounds",
+      "a0_status": "COVERED",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "COVERED",
+      "closure_authority": "A0 retained",
+      "rationale": "already covered at A0 and no later accepted tranche reopens it"
+    },
+    {
+      "boundary_id": "IN-003",
+      "category": "input_bounds",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3 + L4-A6",
+      "rationale": "mutation/input bounded; cumulative storage residual resolved by dynamic disk admission with no auto truncation"
+    },
+    {
+      "boundary_id": "IN-004",
+      "category": "input_bounds",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3",
+      "rationale": "raw MCP frame bounded before SDK parsing"
+    },
+    {
+      "boundary_id": "IN-005",
+      "category": "input_bounds",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3",
+      "rationale": "Catalog/schema/source hard bounds consolidated"
+    },
+    {
+      "boundary_id": "OUT-001",
+      "category": "output_bounds",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3",
+      "rationale": "bounded public projection; no unsupported SDK stdout backstop claim"
+    },
+    {
+      "boundary_id": "OUT-002",
+      "category": "output_bounds",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3 + L4-A6",
+      "rationale": "serialized output bound plus long-horizon memory/resource acceptance"
+    },
+    {
+      "boundary_id": "OUT-003",
+      "category": "output_bounds",
+      "a0_status": "GAP",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3 + L4-A6",
+      "rationale": "artifact/output bound plus memory/performance resource acceptance"
+    },
+    {
+      "boundary_id": "OUT-004",
+      "category": "output_bounds",
+      "a0_status": "COVERED",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "COVERED",
+      "closure_authority": "A0 retained",
+      "rationale": "already covered at A0 and no later accepted tranche reopens it"
+    },
+    {
+      "boundary_id": "INJ-001",
+      "category": "prompt_tool_injection",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A4",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A4",
+      "rationale": "source/agent/evidence content cannot become control-plane authority"
+    },
+    {
+      "boundary_id": "INJ-002",
+      "category": "prompt_tool_injection",
+      "a0_status": "COVERED",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "COVERED",
+      "closure_authority": "A0 retained",
+      "rationale": "already covered at A0 and no later accepted tranche reopens it"
+    },
+    {
+      "boundary_id": "AUTH-001",
+      "category": "authorization",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A4",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A4",
+      "rationale": "server-owned authorization; same-user local-process trust explicitly frozen"
+    },
+    {
+      "boundary_id": "AUTH-002",
+      "category": "authorization",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A4",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A4",
+      "rationale": "legacy network execution routes disabled and tested"
+    },
+    {
+      "boundary_id": "SEC-001",
+      "category": "secret_handling",
+      "a0_status": "NOT_APPLICABLE",
+      "a0_recommended_next_tranche": null,
+      "exit_status": "NOT_APPLICABLE",
+      "closure_authority": "A0 retained",
+      "rationale": "A0 not-applicable classification remains valid for frozen L4 scope"
+    },
+    {
+      "boundary_id": "SEC-002",
+      "category": "secret_handling",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A4",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A4",
+      "rationale": "active inventoried output surfaces pass secret-canary review"
+    },
+    {
+      "boundary_id": "DEP-001",
+      "category": "dependency_supply_chain",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A5",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A5",
+      "rationale": "deterministic repository install authority and exact pins"
+    },
+    {
+      "boundary_id": "DEP-002",
+      "category": "dependency_supply_chain",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A5",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A5",
+      "rationale": "active executable/supply-chain invocation surface bounded"
+    },
+    {
+      "boundary_id": "RES-001",
+      "category": "resource",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A6",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A6",
+      "rationale": "finite action/network execution envelopes; global ASGI hard deadline intentionally NOT_USED_BY_DESIGN"
+    },
+    {
+      "boundary_id": "RES-002",
+      "category": "resource",
+      "a0_status": "DEFERRED_VALUE",
+      "a0_recommended_next_tranche": "L4-A6",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A6",
+      "rationale": "dynamic fail-closed disk admission plus structural/empirical memory acceptance; no hard RSS cap"
+    },
+    {
+      "boundary_id": "RES-003",
+      "category": "resource",
+      "a0_status": "GAP",
+      "a0_recommended_next_tranche": "L4-A6",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A6",
+      "rationale": "resource-intensive concurrency ceiling 1 per app process, fail-fast/no queue"
+    },
+    {
+      "boundary_id": "LOAD-001",
+      "category": "large_input_load",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A6",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A6",
+      "rationale": "existing max-target/Watchlist/operation bounds accepted at limit and rejected above"
+    },
+    {
+      "boundary_id": "LOAD-002",
+      "category": "large_input_load",
+      "a0_status": "PARTIAL",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3 + L4-A6",
+      "rationale": "serialized dimension bounded; memory/disk/resource residual accepted"
+    },
+    {
+      "boundary_id": "LOAD-003",
+      "category": "large_input_load",
+      "a0_status": "GAP",
+      "a0_recommended_next_tranche": "L4-A3",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A3 + L4-A6",
+      "rationale": "handoff serialized dimension bounded; capacity/resource residual accepted"
+    },
+    {
+      "boundary_id": "LOAD-004",
+      "category": "large_input_load",
+      "a0_status": "DEFERRED_VALUE",
+      "a0_recommended_next_tranche": "L4-A6",
+      "exit_status": "COVERED",
+      "closure_authority": "L4-A6",
+      "rationale": "concurrency/disk/memory long-horizon acceptance; destructive OOM/disk-fill not required"
+    }
+  ]
+}

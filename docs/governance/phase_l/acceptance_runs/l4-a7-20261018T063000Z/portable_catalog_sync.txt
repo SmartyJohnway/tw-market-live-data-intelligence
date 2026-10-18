@@ -1,0 +1,1 @@
+﻿PASS: Portable Skill catalog is fully synchronized with Canonical Catalog SoT (Deep Equality Verified).

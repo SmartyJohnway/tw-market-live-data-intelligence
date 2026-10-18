@@ -1,0 +1,52 @@
+﻿{
+    "runtime_skill_exact_six":  {
+                                    "status":  "PASS",
+                                    "command":  "python scripts/validate_runtime_skill_guide_sync.py",
+                                    "exit_code":  0
+                                },
+    "pip_check":  {
+                      "status":  "PASS",
+                      "command":  "python -m pip check",
+                      "exit_code":  0
+                  },
+    "portable_catalog_sync":  {
+                                  "status":  "PASS",
+                                  "command":  "python scripts/validate_portable_catalog_sync.py",
+                                  "exit_code":  0
+                              },
+    "phase_h_v3":  {
+                       "status":  "PASS",
+                       "command":  "python scripts/validate_phase_h_v3_contracts.py",
+                       "exit_code":  0
+                   },
+    "v1_public_exact_six":  {
+                                "status":  "PASS",
+                                "command":  "python scripts/validate_v1_public_contracts.py",
+                                "exit_code":  0
+                            },
+    "compileall":  {
+                       "status":  "PASS",
+                       "command":  "python -m compileall -q server scripts",
+                       "exit_code":  0
+                   },
+    "source_registry":  {
+                            "status":  "PASS",
+                            "command":  "python scripts/validate_source_registry.py",
+                            "exit_code":  0
+                        },
+    "verify_environment":  {
+                               "status":  "PASS",
+                               "command":  "python scripts/verify_environment.py",
+                               "exit_code":  0
+                           },
+    "verify_dependency_supply_chain":  {
+                                           "status":  "PASS",
+                                           "command":  "python scripts/verify_dependency_supply_chain.py",
+                                           "exit_code":  0
+                                       },
+    "unified_contracts":  {
+                              "status":  "PASS",
+                              "command":  "python scripts/validate_unified_market_evidence_contracts.py",
+                              "exit_code":  0
+                          }
+}
