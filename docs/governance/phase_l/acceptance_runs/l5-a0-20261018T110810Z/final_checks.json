@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "compileall",
+        "-q",
+        "scripts",
+        "server",
+        "tests"
+      ],
+      "return_code": 0,
+      "log": "final_check_01.txt"
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "return_code": 0,
+      "log": "final_check_02.txt"
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "return_code": 0,
+      "log": "final_check_03.txt"
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_v1_public_contracts.py"
+      ],
+      "return_code": 0,
+      "log": "final_check_04.txt"
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_unified_market_evidence_contracts.py"
+      ],
+      "return_code": 0,
+      "log": "final_check_05.txt"
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "return_code": 0,
+      "log": "final_check_06.txt"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "return_code": 0,
+      "log": "final_check_07.txt"
+    }
+  ]
+}

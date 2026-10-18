@@ -1,0 +1,64 @@
+{
+  "artifact_count": 54,
+  "corrected_guard_authoritative_for_validation_network_counting": true,
+  "initial_guard_invalid_adjudication": "11224 was a false host extraction from getaddrinfo instrumentation; historical raw evidence is preserved unchanged.",
+  "initial_guard_invalid_raw_record": {
+    "adjudication": "False host extraction: instrumentation read the port as host; preserved as historical raw evidence.",
+    "event": "socket.getaddrinfo",
+    "host": "11224"
+  },
+  "original_a0_files_modified": false,
+  "original_all_54_artifact_hashes_match_manifest": true,
+  "original_manifest_artifact_count_verified": 54,
+  "original_manifest_canonical_sha256": "aa7dee61185eddb66e4adb5c08b700fb884404dbf77e26ba6187a1097277ba94",
+  "original_manifest_recomputed_sha256": "aa7dee61185eddb66e4adb5c08b700fb884404dbf77e26ba6187a1097277ba94",
+  "original_run_id": "l5-a0-20261018T110810Z",
+  "protected_paths_match_entry_commit": {
+    "corrected-guard/validation_results.json": {
+      "matches_entry_commit": true,
+      "sha256": "e60b7bef6dfe427200d0dad96bbb4d8ff94deed3e6ce975eecf4dc70dd5aca1c"
+    },
+    "initial-guard-invalid/validation_results.json": {
+      "matches_entry_commit": true,
+      "sha256": "9b49851c95d0b3c2f2c979ffb6dc4a1ce9804bc12e6390ef2dc316886f4ca203"
+    },
+    "manifest.json": {
+      "matches_entry_commit": true,
+      "sha256": "c59f7e862c530111098bfd2c92609420107d36ac32fe567700e3e0539ed00135"
+    },
+    "offline_review.json": {
+      "matches_entry_commit": true,
+      "sha256": "8745daa58c69ead9cc499253911529d4a137a64bd1bafba3034470f5b0206cdb"
+    },
+    "validation_results.json": {
+      "matches_entry_commit": true,
+      "sha256": "e0abaf22f5e2d38de46aa5d6403e3219e4ef3fbb1abf6bdd202ac4f0b397890f"
+    }
+  },
+  "protected_paths_sha256": {
+    "corrected-guard": null,
+    "initial-guard-invalid": null,
+    "manifest.json": "c59f7e862c530111098bfd2c92609420107d36ac32fe567700e3e0539ed00135",
+    "offline_review.json": "8745daa58c69ead9cc499253911529d4a137a64bd1bafba3034470f5b0206cdb",
+    "validation_results.json": "e0abaf22f5e2d38de46aa5d6403e3219e4ef3fbb1abf6bdd202ac4f0b397890f"
+  },
+  "technical_findings_preserved": {
+    "additional_derived_evidence": [
+      "H4 discontinuity_safety"
+    ],
+    "architecture_conflicts": 0,
+    "candidate_contract_dimensions": {
+      "DECISION_REQUIRED": 2,
+      "DERIVED": 2,
+      "FAMILY_SPECIFIC": 4,
+      "OPTIONAL": 2,
+      "PLATFORM_PROVIDED": 6,
+      "REQUIRED": 20
+    },
+    "catalog_archetypes": 12,
+    "catalog_capabilities": 14,
+    "plugin_framework_assessment": "PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW",
+    "registration_surfaces": 39,
+    "representative_traces": "13 x 24 stages"
+  }
+}

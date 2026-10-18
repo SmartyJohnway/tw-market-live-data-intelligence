@@ -1,0 +1,2897 @@
+{
+  "dangerous_multi_authority": "Typed contract maps repeat across loader/lineage/projector/Audit/Markdown and Catalog contains I3 route metadata. Existing distinct role checks prevent independent activation; A2 should prove agreement without deleting independent tests.",
+  "findings": [
+    {
+      "archetype_id": "material_disclosures",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/material_disclosure_evidence.v1.schema.json",
+        "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 7,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/material_disclosure_evidence.v1.schema.json",
+          "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 14,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 21,
+              "name": "SourceFailure"
+            },
+            {
+              "line": 26,
+              "name": "TransportResult"
+            },
+            {
+              "line": 32,
+              "name": "parse_csv"
+            },
+            {
+              "line": 64,
+              "name": "_failure_reason"
+            },
+            {
+              "line": 70,
+              "name": "parse_json"
+            },
+            {
+              "line": 78,
+              "name": "fetch_once"
+            },
+            {
+              "line": 88,
+              "name": "failed_provenance"
+            },
+            {
+              "line": 124,
+              "name": "normalize_source_rows"
+            },
+            {
+              "line": 145,
+              "name": "field"
+            },
+            {
+              "line": 151,
+              "name": "bind_rows"
+            },
+            {
+              "line": 22,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/phase_g/research_executor.py",
+          "symbol": "ROUTES",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 10,
+              "name": "_date"
+            },
+            {
+              "line": 19,
+              "name": "_published"
+            },
+            {
+              "line": 26,
+              "name": "execute"
+            },
+            {
+              "line": 78,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 80,
+              "name": "_conflict_diagnostic"
+            },
+            {
+              "line": 82,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 26,
+          "path": "scripts/phase_g/mops_material_disclosures.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 2,
+        "files": [
+          "tests/unit/test_phase_g_material_disclosures.py",
+          "tests/unit/test_phase_g_result_v2_projection.py"
+        ]
+      },
+      "finding_id": "COST-material_disclosures",
+      "governance_acceptance_surfaces": {
+        "count": 1,
+        "files": [
+          "docs/acceptance_runs/phase_g_pr_d_closure.json"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 10,
+        "files": [
+          "scripts/phase_g/research_executor.py",
+          "scripts/phase_g/mops_material_disclosures.py",
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 2,
+        "files": [
+          "scripts/phase_g/research_executor.py",
+          "scripts/phase_g/mops_material_disclosures.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    },
+    {
+      "archetype_id": "monthly_revenue",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/monthly_revenue_evidence.v1.schema.json",
+        "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 7,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/monthly_revenue_evidence.v1.schema.json",
+          "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 14,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 21,
+              "name": "SourceFailure"
+            },
+            {
+              "line": 26,
+              "name": "TransportResult"
+            },
+            {
+              "line": 32,
+              "name": "parse_csv"
+            },
+            {
+              "line": 64,
+              "name": "_failure_reason"
+            },
+            {
+              "line": 70,
+              "name": "parse_json"
+            },
+            {
+              "line": 78,
+              "name": "fetch_once"
+            },
+            {
+              "line": 88,
+              "name": "failed_provenance"
+            },
+            {
+              "line": 124,
+              "name": "normalize_source_rows"
+            },
+            {
+              "line": 145,
+              "name": "field"
+            },
+            {
+              "line": 151,
+              "name": "bind_rows"
+            },
+            {
+              "line": 22,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/phase_g/research_executor.py",
+          "symbol": "ROUTES",
+          "symbol_kind": "REGISTRY_OR_CONSTANT"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_roc_date"
+            },
+            {
+              "line": 20,
+              "name": "_report_date"
+            },
+            {
+              "line": 28,
+              "name": "_integer"
+            },
+            {
+              "line": 34,
+              "name": "_number"
+            },
+            {
+              "line": 40,
+              "name": "_value"
+            },
+            {
+              "line": 52,
+              "name": "execute"
+            },
+            {
+              "line": 81,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 83,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 52,
+          "path": "scripts/phase_g/mops_monthly_revenue.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 2,
+        "files": [
+          "tests/unit/test_phase_g_monthly_revenue.py",
+          "tests/unit/test_phase_g_mode_c_v2.py"
+        ]
+      },
+      "finding_id": "COST-monthly_revenue",
+      "governance_acceptance_surfaces": {
+        "count": 1,
+        "files": [
+          "docs/acceptance_runs/phase_g_pr_d_closure.json"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 10,
+        "files": [
+          "scripts/phase_g/research_executor.py",
+          "scripts/phase_g/mops_monthly_revenue.py",
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 2,
+        "files": [
+          "scripts/phase_g/research_executor.py",
+          "scripts/phase_g/mops_monthly_revenue.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    },
+    {
+      "archetype_id": "market_observation",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_operation_result.v2.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 6,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_operation_result.v2.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 15,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 12,
+              "name": "fetch_twse_official_eod_json"
+            },
+            {
+              "line": 22,
+              "name": "_reject"
+            },
+            {
+              "line": 25,
+              "name": "parse_twse_official_eod_rows"
+            },
+            {
+              "line": 57,
+              "name": "execute_twse_official_eod_adapter"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/m8a_twse_official_eod_adapter.py",
+          "symbol": "fetch_twse_official_eod_json",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 10,
+              "name": "classify_instrument"
+            },
+            {
+              "line": 12,
+              "name": "fetch_tpex_official_eod_json"
+            },
+            {
+              "line": 20,
+              "name": "_reject"
+            },
+            {
+              "line": 21,
+              "name": "parse_tpex_official_eod_rows"
+            },
+            {
+              "line": 47,
+              "name": "execute_tpex_official_eod_adapter"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 10,
+          "path": "scripts/m8a_tpex_official_eod_adapter.py",
+          "symbol": "classify_instrument",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 42,
+              "name": "utc_now"
+            },
+            {
+              "line": 46,
+              "name": "dump_json"
+            },
+            {
+              "line": 50,
+              "name": "load_json"
+            },
+            {
+              "line": 54,
+              "name": "governance"
+            },
+            {
+              "line": 78,
+              "name": "watchlist_schema"
+            },
+            {
+              "line": 89,
+              "name": "normalize_watchlist"
+            },
+            {
+              "line": 131,
+              "name": "iter_instruments"
+            },
+            {
+              "line": 147,
+              "name": "_reject_forbidden_keys"
+            },
+            {
+              "line": 170,
+              "name": "validate_watchlist"
+            },
+            {
+              "line": 211,
+              "name": "conversation_handoff_from_watchlist"
+            },
+            {
+              "line": 224,
+              "name": "source_plan_for_instrument"
+            },
+            {
+              "line": 250,
+              "name": "plan_live_observation"
+            },
+            {
+              "line": 271,
+              "name": "_parse_taifex_price"
+            },
+            {
+              "line": 280,
+              "name": "_taifex_timestamp"
+            },
+            {
+              "line": 286,
+              "name": "_taifex_contract_month"
+            },
+            {
+              "line": 304,
+              "name": "_select_taifex_tx_contract"
+            },
+            {
+              "line": 313,
+              "name": "_parse_taifex_tx_item"
+            },
+            {
+              "line": 322,
+              "name": "fetch_taifex_tx_observation"
+            },
+            {
+              "line": 341,
+              "name": "_parse_mis_numeric"
+            },
+            {
+              "line": 350,
+              "name": "_select_mis_price"
+            },
+            {
+              "line": 361,
+              "name": "_parse_mis_source_timestamp"
+            },
+            {
+              "line": 386,
+              "name": "_parse_mis_item"
+            },
+            {
+              "line": 398,
+              "name": "_MisResponseError"
+            },
+            {
+              "line": 405,
+              "name": "_MisTransportError"
+            },
+            {
+              "line": 412,
+              "name": "_mis_reject_duplicate_json_keys"
+            },
+            {
+              "line": 421,
+              "name": "_decode_mis_response"
+            },
+            {
+              "line": 456,
+              "name": "_mis_expected_identity"
+            },
+            {
+              "line": 463,
+              "name": "_mis_requested_channels_for_symbol"
+            },
+            {
+              "line": 472,
+              "name": "_mis_candidate_channels"
+            },
+            {
+              "line": 500,
+              "name": "_validate_mis_item_identity"
+            },
+            {
+              "line": 535,
+              "name": "execute_live_observation"
+            },
+            {
+              "line": 706,
+              "name": "read_latest_observation"
+            },
+            {
+              "line": 713,
+              "name": "load_source_adapter_matrix"
+            },
+            {
+              "line": 717,
+              "name": "source_capabilities"
+            },
+            {
+              "line": 735,
+              "name": "validate_source_adapter_matrix"
+            },
+            {
+              "line": 756,
+              "name": "watchlist_summary"
+            },
+            {
+              "line": 781,
+              "name": "_observation_by_symbol"
+            },
+            {
+              "line": 785,
+              "name": "build_watchlist_rows"
+            },
+            {
+              "line": 807,
+              "name": "_safe_list"
+            },
+            {
+              "line": 811,
+              "name": "_load_canonical_summary"
+            },
+            {
+              "line": 832,
+              "name": "_observation_status"
+            },
+            {
+              "line": 842,
+              "name": "_source_health_checks_by_target"
+            },
+            {
+              "line": 853,
+              "name": "_conversation_per_symbol_observations"
+            },
+            {
+              "line": 901,
+              "name": "_conversation_observation_bucket"
+            },
+            {
+              "line": 923,
+              "name": "_is_reference_only_row"
+            },
+            {
+              "line": 927,
+              "name": "_is_stale_or_closed_session_row"
+            },
+            {
+              "line": 931,
+              "name": "_conversation_observation_summary"
+            },
+            {
+              "line": 940,
+              "name": "_conversation_source_health_summary"
+            },
+            {
+              "line": 974,
+              "name": "build_ai_safe_market_context_projections_for_latest_observations"
+            },
+            {
+              "line": 1005,
+              "name": "build_ai_safe_market_context_projection_collection"
+            },
+            {
+              "line": 1021,
+              "name": "build_deterministic_metrics_contexts_for_latest_observations"
+            },
+            {
+              "line": 1051,
+              "name": "build_deterministic_metrics_context_collection"
+            },
+            {
+              "line": 1069,
+              "name": "build_bounded_watchlist_cross_context_collection"
+            },
+            {
+              "line": 1103,
+              "name": "_unwrap_latest_observation_payload"
+            },
+            {
+              "line": 1111,
+              "name": "build_market_clock_session_state_controlled_context"
+            },
+            {
+              "line": 1145,
+              "name": "build_conversation_context"
+            },
+            {
+              "line": 1227,
+              "name": "conversation_context_markdown"
+            },
+            {
+              "line": 399,
+              "name": "__init__"
+            },
+            {
+              "line": 406,
+              "name": "__init__"
+            },
+            {
+              "line": 583,
+              "name": "assign_batch_rows"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 42,
+          "path": "scripts/m5k_common.py",
+          "symbol": "utc_now",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 2,
+        "files": [
+          "tests/unit/test_m8r_06_03_production_adapter.py",
+          "tests/unit/test_l3_a2_eod_diagnostic_propagation.py"
+        ]
+      },
+      "finding_id": "COST-market_observation",
+      "governance_acceptance_surfaces": {
+        "count": 1,
+        "files": [
+          "docs/governance/phase_l/PHASE_L_L3_A2_EOD_DIAGNOSTIC_PROPAGATION_GUARD_2026-10-15.md"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 11,
+        "files": [
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8a_twse_official_eod_adapter.py",
+          "scripts/m8a_tpex_official_eod_adapter.py",
+          "scripts/m5k_common.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 5,
+        "files": [
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8a_twse_official_eod_adapter.py",
+          "scripts/m8a_tpex_official_eod_adapter.py",
+          "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
+          "scripts/m5k_common.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    },
+    {
+      "archetype_id": "bounded_historical_reference",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/recent_performance_evidence.v1.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 6,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/recent_performance_evidence.v1.schema.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 15,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 51,
+              "name": "TWSEStockDayFormatError"
+            },
+            {
+              "line": 56,
+              "name": "TWSEStockDayResult"
+            },
+            {
+              "line": 73,
+              "name": "_Response"
+            },
+            {
+              "line": 84,
+              "name": "_NoRedirectHandler"
+            },
+            {
+              "line": 91,
+              "name": "_default_http_get"
+            },
+            {
+              "line": 108,
+              "name": "_fail"
+            },
+            {
+              "line": 112,
+              "name": "_target_identity"
+            },
+            {
+              "line": 135,
+              "name": "_normalize_month"
+            },
+            {
+              "line": 144,
+              "name": "_validate_timestamp"
+            },
+            {
+              "line": 155,
+              "name": "_validate_bounds"
+            },
+            {
+              "line": 175,
+              "name": "_content_type"
+            },
+            {
+              "line": 184,
+              "name": "_html_charset"
+            },
+            {
+              "line": 197,
+              "name": "_cell_text"
+            },
+            {
+              "line": 202,
+              "name": "_ReportHTMLParser"
+            },
+            {
+              "line": 251,
+              "name": "_normalize_header_label"
+            },
+            {
+              "line": 256,
+              "name": "_normalize_title_text"
+            },
+            {
+              "line": 261,
+              "name": "_row_data_cells"
+            },
+            {
+              "line": 266,
+              "name": "_parse_roc_date"
+            },
+            {
+              "line": 276,
+              "name": "_parse_volume"
+            },
+            {
+              "line": 282,
+              "name": "_close_lexical_class"
+            },
+            {
+              "line": 293,
+              "name": "_parse_close"
+            },
+            {
+              "line": 315,
+              "name": "_normalize_html"
+            },
+            {
+              "line": 463,
+              "name": "fetch_twse_stock_day_month"
+            },
+            {
+              "line": 77,
+              "name": "read"
+            },
+            {
+              "line": 78,
+              "name": "close"
+            },
+            {
+              "line": 87,
+              "name": "redirect_request"
+            },
+            {
+              "line": 205,
+              "name": "__init__"
+            },
+            {
+              "line": 213,
+              "name": "handle_starttag"
+            },
+            {
+              "line": 228,
+              "name": "handle_endtag"
+            },
+            {
+              "line": 246,
+              "name": "handle_data"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 51,
+          "path": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+          "symbol": "TWSEStockDayFormatError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 38,
+              "name": "TWSEStockDayWalkResult"
+            },
+            {
+              "line": 59,
+              "name": "_result"
+            },
+            {
+              "line": 69,
+              "name": "_valid_timestamp"
+            },
+            {
+              "line": 79,
+              "name": "_identity"
+            },
+            {
+              "line": 97,
+              "name": "_valid_observation"
+            },
+            {
+              "line": 143,
+              "name": "_previous_month"
+            },
+            {
+              "line": 150,
+              "name": "_get"
+            },
+            {
+              "line": 156,
+              "name": "collect_twse_stock_day_lookback"
+            },
+            {
+              "line": 217,
+              "name": "finish"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 38,
+          "path": "server/services/phase_h_h3_twse_stock_day_walker.py",
+          "symbol": "TWSEStockDayWalkResult",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 32,
+              "name": "TWSEGovernedEndResolution"
+            },
+            {
+              "line": 45,
+              "name": "_previous_month"
+            },
+            {
+              "line": 50,
+              "name": "_target_identity"
+            },
+            {
+              "line": 67,
+              "name": "_observation_is_valid"
+            },
+            {
+              "line": 112,
+              "name": "resolve_twse_governed_end"
+            },
+            {
+              "line": 161,
+              "name": "finish"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 32,
+          "path": "server/services/phase_h_h3_twse_governed_end.py",
+          "symbol": "TWSEGovernedEndResolution",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 20,
+              "name": "H3DerivationError"
+            },
+            {
+              "line": 32,
+              "name": "_fail"
+            },
+            {
+              "line": 36,
+              "name": "_date"
+            },
+            {
+              "line": 48,
+              "name": "_timestamp"
+            },
+            {
+              "line": 60,
+              "name": "_citations"
+            },
+            {
+              "line": 70,
+              "name": "_finite_number"
+            },
+            {
+              "line": 79,
+              "name": "_normalize_record"
+            },
+            {
+              "line": 102,
+              "name": "_same_semantic_record"
+            },
+            {
+              "line": 106,
+              "name": "_normalize_average"
+            },
+            {
+              "line": 135,
+              "name": "build_recent_performance_evidence"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 20,
+          "path": "server/services/phase_h_recent_performance.py",
+          "symbol": "H3DerivationError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 1,
+        "files": [
+          "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py"
+        ]
+      },
+      "finding_id": "COST-bounded_historical_reference",
+      "governance_acceptance_surfaces": {
+        "count": 1,
+        "files": [
+          "docs/governance/phase_j/PHASE_J_J_B04_A6_INTEGRATED_MARKET_RESEARCH_INTERPRETATION_LIVE_ACCEPTANCE_2026-10-10.json"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 12,
+        "files": [
+          "server/services/phase_h_h3_twse_stock_day_adapter.py",
+          "server/services/phase_h_h3_twse_stock_day_walker.py",
+          "server/services/phase_h_h3_twse_governed_end.py",
+          "server/services/phase_h_recent_performance.py",
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 5,
+        "files": [
+          "server/services/phase_h_h3_twse_stock_day_adapter.py",
+          "server/services/phase_h_h3_twse_stock_day_walker.py",
+          "server/services/phase_h_h3_twse_governed_end.py",
+          "server/services/phase_h_recent_performance.py",
+          "scripts/m8r_06_03_production_adapter.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    },
+    {
+      "archetype_id": "market_state_context",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/market_state_context_evidence.v1.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 6,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/market_state_context_evidence.v1.schema.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 15,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/phase_i_i1_dormant_source_descriptors.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 77,
+              "name": "I1ProductionSourceError"
+            },
+            {
+              "line": 82,
+              "name": "TransportObservation"
+            },
+            {
+              "line": 98,
+              "name": "_no_redirect_opener"
+            },
+            {
+              "line": 106,
+              "name": "_http_transport"
+            },
+            {
+              "line": 118,
+              "name": "_content_type"
+            },
+            {
+              "line": 122,
+              "name": "_is_json_content_type"
+            },
+            {
+              "line": 129,
+              "name": "_fetch_source"
+            },
+            {
+              "line": 186,
+              "name": "_selected_fmtqik"
+            },
+            {
+              "line": 206,
+              "name": "_selected_twse_breadth"
+            },
+            {
+              "line": 213,
+              "name": "_component_from_transport"
+            },
+            {
+              "line": 240,
+              "name": "_failed_evidence"
+            },
+            {
+              "line": 255,
+              "name": "_observe_market"
+            },
+            {
+              "line": 350,
+              "name": "_transport_json"
+            },
+            {
+              "line": 361,
+              "name": "_targets"
+            },
+            {
+              "line": 396,
+              "name": "_artifact"
+            },
+            {
+              "line": 415,
+              "name": "_operation_result"
+            },
+            {
+              "line": 433,
+              "name": "production_batch_operation_adapter_candidate"
+            },
+            {
+              "line": 460,
+              "name": "production_operation_adapter_candidate"
+            },
+            {
+              "line": 471,
+              "name": "build_i1_candidate_runtime_adapter_registry"
+            },
+            {
+              "line": 99,
+              "name": "RejectRedirect"
+            },
+            {
+              "line": 100,
+              "name": "redirect_request"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 77,
+          "path": "server/services/phase_i_i1_production_candidate.py",
+          "symbol": "I1ProductionSourceError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 14,
+              "name": "MarketStateNormalizationError"
+            },
+            {
+              "line": 38,
+              "name": "_date"
+            },
+            {
+              "line": 47,
+              "name": "_number"
+            },
+            {
+              "line": 59,
+              "name": "_one_row"
+            },
+            {
+              "line": 67,
+              "name": "_component"
+            },
+            {
+              "line": 79,
+              "name": "normalize_twse_breadth_observation"
+            },
+            {
+              "line": 105,
+              "name": "normalize_twse_market_state"
+            },
+            {
+              "line": 170,
+              "name": "normalize_tpex_market_state"
+            },
+            {
+              "line": 203,
+              "name": "assemble_market_state_context"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 14,
+          "path": "server/services/phase_i_market_state_adapters.py",
+          "symbol": "MarketStateNormalizationError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 2,
+        "files": [
+          "tests/unit/test_phase_i_i1_market_state.py",
+          "tests/unit/test_phase_i_i1_production_activation.py"
+        ]
+      },
+      "finding_id": "COST-market_state_context",
+      "governance_acceptance_surfaces": {
+        "count": 1,
+        "files": [
+          "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 10,
+        "files": [
+          "server/services/phase_i_i1_production_candidate.py",
+          "server/services/phase_i_market_state_adapters.py",
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+          "config/phase_i_i1_dormant_source_descriptors.json",
+          "server/services/phase_i_i1_production_candidate.py",
+          "server/services/phase_i_market_state_adapters.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    },
+    {
+      "archetype_id": "index_futures_context",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/index_futures_context_evidence.v1.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 6,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/index_futures_context_evidence.v1.schema.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 15,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/phase_i_i2_source_authority.v1.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 27,
+              "name": "ProductionTransportError"
+            },
+            {
+              "line": 40,
+              "name": "AcquiredSource"
+            },
+            {
+              "line": 51,
+              "name": "_RejectRedirects"
+            },
+            {
+              "line": 56,
+              "name": "_read_once"
+            },
+            {
+              "line": 74,
+              "name": "_base_media_type"
+            },
+            {
+              "line": 81,
+              "name": "acquire_taifex_once"
+            },
+            {
+              "line": 28,
+              "name": "__init__"
+            },
+            {
+              "line": 52,
+              "name": "redirect_request"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 27,
+          "path": "server/services/phase_i_i2_production_transport.py",
+          "symbol": "ProductionTransportError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 29,
+              "name": "_stamp"
+            },
+            {
+              "line": 33,
+              "name": "_validate_batch"
+            },
+            {
+              "line": 61,
+              "name": "production_batch_operation_adapter_candidate"
+            },
+            {
+              "line": 115,
+              "name": "production_operation_adapter_candidate"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 29,
+          "path": "server/services/phase_i_i2_production_candidate.py",
+          "symbol": "_stamp",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 51,
+              "name": "I2SourceError"
+            },
+            {
+              "line": 55,
+              "name": "_parse_source_date"
+            },
+            {
+              "line": 64,
+              "name": "decode_taifex_payload"
+            },
+            {
+              "line": 83,
+              "name": "decode_or_copy_rows"
+            },
+            {
+              "line": 103,
+              "name": "select_tx_regular_series"
+            },
+            {
+              "line": 133,
+              "name": "_parse_numeric"
+            },
+            {
+              "line": 155,
+              "name": "_transport_fixture_metadata"
+            },
+            {
+              "line": 173,
+              "name": "alignment_status"
+            },
+            {
+              "line": 182,
+              "name": "_is_iso_date"
+            },
+            {
+              "line": 189,
+              "name": "normalize_taifex_tx_payload"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 51,
+          "path": "server/services/phase_i_i2_index_futures_adapters.py",
+          "symbol": "I2SourceError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 2,
+        "files": [
+          "tests/unit/test_phase_i_i2_a4_activation.py",
+          "tests/unit/test_phase_i_i2_production_transport.py"
+        ]
+      },
+      "finding_id": "COST-index_futures_context",
+      "governance_acceptance_surfaces": {
+        "count": 1,
+        "files": [
+          "docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 11,
+        "files": [
+          "server/services/phase_i_i2_production_transport.py",
+          "server/services/phase_i_i2_production_candidate.py",
+          "server/services/phase_i_i2_index_futures_adapters.py",
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/phase_i_i2_source_authority.v1.json",
+          "server/services/phase_i_i2_production_transport.py",
+          "server/services/phase_i_i2_production_candidate.py",
+          "server/services/phase_i_i2_index_futures_adapters.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    },
+    {
+      "archetype_id": "cash_institutional_flow_context",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/cash_institutional_flow_context_evidence.v2.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 6,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/cash_institutional_flow_context_evidence.v2.schema.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 14,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 26,
+              "name": "load_frozen_contract"
+            },
+            {
+              "line": 39,
+              "name": "validate_frozen_contract_object"
+            },
+            {
+              "line": 46,
+              "name": "_unique_pairs"
+            },
+            {
+              "line": 55,
+              "name": "_source_date"
+            },
+            {
+              "line": 65,
+              "name": "_integer"
+            },
+            {
+              "line": 74,
+              "name": "_expression"
+            },
+            {
+              "line": 78,
+              "name": "_flow"
+            },
+            {
+              "line": 88,
+              "name": "PreparedRow"
+            },
+            {
+              "line": 93,
+              "name": "_normalized_row"
+            },
+            {
+              "line": 132,
+              "name": "PreparedSource"
+            },
+            {
+              "line": 141,
+              "name": "prepare_market_source"
+            },
+            {
+              "line": 207,
+              "name": "validate_evidence"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 26,
+          "path": "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+          "symbol": "load_frozen_contract",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 38,
+              "name": "build_i3_production_candidate_registry"
+            },
+            {
+              "line": 45,
+              "name": "build_i3_production_candidate_registrations"
+            },
+            {
+              "line": 62,
+              "name": "_validate_batch"
+            },
+            {
+              "line": 109,
+              "name": "_failed_evidence"
+            },
+            {
+              "line": 126,
+              "name": "production_batch_operation_adapter_candidate"
+            },
+            {
+              "line": 212,
+              "name": "production_operation_adapter_candidate"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 38,
+          "path": "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+          "symbol": "build_i3_production_candidate_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 2,
+        "files": [
+          "tests/unit/test_phase_i_i3_execution_date.py",
+          "tests/unit/test_phase_i_i3_a4_activation.py"
+        ]
+      },
+      "finding_id": "COST-cash_institutional_flow_context",
+      "governance_acceptance_surfaces": {
+        "count": 1,
+        "files": [
+          "docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 10,
+        "files": [
+          "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+          "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 3,
+        "files": [
+          "docs/data_capabilities/phase_i_i3_source_authority.v1.json",
+          "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+          "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    },
+    {
+      "archetype_id": "trading_status_context",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/trading_status_context_composite.v1.schema.json",
+        "schemas/trading_status_context_evidence.v1.schema.json",
+        "schemas/trading_status_context_evidence.v2.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 8,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/trading_status_context_composite.v1.schema.json",
+          "schemas/trading_status_context_evidence.v1.schema.json",
+          "schemas/trading_status_context_evidence.v2.schema.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 16,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/phase_h_h1_dormant_source_descriptors.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 59,
+              "name": "H1CompositeSourceAttemptError"
+            },
+            {
+              "line": 77,
+              "name": "_expected_normalization_failure_code"
+            },
+            {
+              "line": 85,
+              "name": "_sha256"
+            },
+            {
+              "line": 89,
+              "name": "_now"
+            },
+            {
+              "line": 93,
+              "name": "_NoRedirect"
+            },
+            {
+              "line": 98,
+              "name": "official_get"
+            },
+            {
+              "line": 128,
+              "name": "_decode_payload"
+            },
+            {
+              "line": 140,
+              "name": "_validate_source_rows"
+            },
+            {
+              "line": 162,
+              "name": "_write_json"
+            },
+            {
+              "line": 168,
+              "name": "_source_failure"
+            },
+            {
+              "line": 187,
+              "name": "execute_composite_operation"
+            },
+            {
+              "line": 288,
+              "name": "production_composite_adapter"
+            },
+            {
+              "line": 94,
+              "name": "redirect_request"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 59,
+          "path": "server/services/phase_h_h1_tpex_composite.py",
+          "symbol": "H1CompositeSourceAttemptError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 27,
+              "name": "H1NormalizationError"
+            },
+            {
+              "line": 31,
+              "name": "_descriptor"
+            },
+            {
+              "line": 37,
+              "name": "_source"
+            },
+            {
+              "line": 42,
+              "name": "_validated_rows"
+            },
+            {
+              "line": 54,
+              "name": "_date_value"
+            },
+            {
+              "line": 69,
+              "name": "_tpex_attention_date_value"
+            },
+            {
+              "line": 82,
+              "name": "_tpex_disposition_date_value"
+            },
+            {
+              "line": 99,
+              "name": "_tpex_disposition_snapshot_date"
+            },
+            {
+              "line": 118,
+              "name": "_tpex_disposition_rows_for_target"
+            },
+            {
+              "line": 128,
+              "name": "_snapshot_date"
+            },
+            {
+              "line": 145,
+              "name": "_bound_row"
+            },
+            {
+              "line": 154,
+              "name": "_item"
+            },
+            {
+              "line": 173,
+              "name": "_result"
+            },
+            {
+              "line": 209,
+              "name": "failed_source_result"
+            },
+            {
+              "line": 214,
+              "name": "normalize_tpex_attention"
+            },
+            {
+              "line": 230,
+              "name": "normalize_tpex_disposition"
+            },
+            {
+              "line": 256,
+              "name": "_tpex_cmode_date_value"
+            },
+            {
+              "line": 269,
+              "name": "_tpex_cmode_snapshot_date"
+            },
+            {
+              "line": 278,
+              "name": "_h1_v2_result"
+            },
+            {
+              "line": 319,
+              "name": "normalize_tpex_cmode_native"
+            },
+            {
+              "line": 376,
+              "name": "normalize_representative_tpex_h1_component"
+            },
+            {
+              "line": 391,
+              "name": "normalize_twse_changed_trading"
+            },
+            {
+              "line": 155,
+              "name": "text"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 27,
+          "path": "server/services/phase_h_trading_status_adapters.py",
+          "symbol": "H1NormalizationError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 2,
+        "files": [
+          "tests/unit/test_l3_a4_h1_composite_negative_fixture_matrix.py",
+          "tests/unit/test_phase_j_b03_a2_6_stage_b_activation.py"
+        ]
+      },
+      "finding_id": "COST-trading_status_context",
+      "governance_acceptance_surfaces": {
+        "count": 1,
+        "files": [
+          "docs/governance/phase_j/PHASE_J_J_B03_C0_CLOSURE_AND_READINESS_RECONCILIATION_2026-10-07.json"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 10,
+        "files": [
+          "server/services/phase_h_h1_tpex_composite.py",
+          "server/services/phase_h_trading_status_adapters.py",
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 3,
+        "files": [
+          "config/phase_h_h1_dormant_source_descriptors.json",
+          "server/services/phase_h_h1_tpex_composite.py",
+          "server/services/phase_h_trading_status_adapters.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    },
+    {
+      "archetype_id": "corporate_action_context",
+      "canonical_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "schemas/corporate_action_context_evidence.v1.schema.json",
+        "schemas/discontinuity_safety_evidence.v1.schema.json",
+        "schemas/unified_market_evidence_audit_package.v3.schema.json",
+        "schemas/unified_market_evidence_execution_request.v3.schema.json",
+        "schemas/unified_market_evidence_request.v3.schema.json",
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "canonical_registration_points": {
+        "count": 7,
+        "files": [
+          "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "schemas/corporate_action_context_evidence.v1.schema.json",
+          "schemas/discontinuity_safety_evidence.v1.schema.json",
+          "schemas/unified_market_evidence_audit_package.v3.schema.json",
+          "schemas/unified_market_evidence_execution_request.v3.schema.json",
+          "schemas/unified_market_evidence_request.v3.schema.json",
+          "schemas/unified_market_evidence_result.v3.schema.json"
+        ],
+        "unit": "distinct canonical Catalog/public-or-family schema paths"
+      },
+      "classification": "AUDITED_MINIMUM_TOUCHPOINTS",
+      "coordinated_review_path_lower_bound": 16,
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "current_behavior": "Current explicit maintenance surface measured by deduplicated paths and named authority roles.",
+      "derived_synchronized_files": {
+        "count": 2,
+        "files": [
+          "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+          "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+        ]
+      },
+      "documentation_skill_surfaces": {
+        "count": 3,
+        "files": [
+          "skills/tw-market-evidence-agent/SKILL.md",
+          "docs/agent_usage_guide.md",
+          "skills/tw-market-evidence-agent/references/current_limitations.md"
+        ]
+      },
+      "exact_source_files": [
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 31,
+          "path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+          "symbol": "data_need_capabilities",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 5,
+          "path": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "symbol": "routes",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/phase_h_h2_dormant_source_descriptors.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 46,
+              "name": "H2SourceAttemptError"
+            },
+            {
+              "line": 50,
+              "name": "_NoRedirect"
+            },
+            {
+              "line": 55,
+              "name": "_now"
+            },
+            {
+              "line": 59,
+              "name": "official_get_once"
+            },
+            {
+              "line": 82,
+              "name": "_decode_rows"
+            },
+            {
+              "line": 98,
+              "name": "_target_from_request"
+            },
+            {
+              "line": 111,
+              "name": "_h3_dependency"
+            },
+            {
+              "line": 184,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 198,
+              "name": "_result_base"
+            },
+            {
+              "line": 205,
+              "name": "_materialize"
+            },
+            {
+              "line": 226,
+              "name": "execute_h2_twse_exright_pre"
+            },
+            {
+              "line": 292,
+              "name": "derive_h4_for_completed_plan"
+            },
+            {
+              "line": 51,
+              "name": "redirect_request"
+            },
+            {
+              "line": 305,
+              "name": "load_primary"
+            },
+            {
+              "line": 317,
+              "name": "derive_one"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 46,
+          "path": "server/services/phase_h_h2_twse_exright_executor.py",
+          "symbol": "H2SourceAttemptError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 29,
+              "name": "H2NormalizationError"
+            },
+            {
+              "line": 33,
+              "name": "_descriptor"
+            },
+            {
+              "line": 38,
+              "name": "_source"
+            },
+            {
+              "line": 43,
+              "name": "failed_source_result"
+            },
+            {
+              "line": 53,
+              "name": "_typed"
+            },
+            {
+              "line": 71,
+              "name": "_event_type"
+            },
+            {
+              "line": 85,
+              "name": "_binding_row"
+            },
+            {
+              "line": 102,
+              "name": "_event"
+            },
+            {
+              "line": 117,
+              "name": "normalize_tpex_exright_prepost"
+            },
+            {
+              "line": 127,
+              "name": "normalize_tpex_exright_daily"
+            },
+            {
+              "line": 137,
+              "name": "normalize_twse_twt48u_all"
+            },
+            {
+              "line": 147,
+              "name": "assemble_corporate_action_context"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 29,
+          "path": "server/services/phase_h_corporate_action_adapters.py",
+          "symbol": "H2NormalizationError",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Counts are a conservative audited minimum, not a promise all files must change or a historical implementation diff.",
+      "family_specific_test_files": {
+        "count": 2,
+        "files": [
+          "tests/unit/test_phase_j_b04_a3_h2_executor.py",
+          "tests/unit/test_phase_j_b04_a3_end_to_end_projection.py"
+        ]
+      },
+      "finding_id": "COST-corporate_action_context",
+      "governance_acceptance_surfaces": {
+        "count": 2,
+        "files": [
+          "docs/governance/phase_j/PHASE_J_J_B04_A3_NETWORK_FREE_IMPLEMENTATION_ACCEPTANCE_2026-10-08.json",
+          "docs/governance/phase_j/PHASE_J_J_B04_A6_INTEGRATED_MARKET_RESEARCH_INTERPRETATION_LIVE_ACCEPTANCE_2026-10-10.json"
+        ]
+      },
+      "independent_registration_responsibilities": {
+        "count": 9,
+        "roles": [
+          "Catalog capability support",
+          "public Request/Result/Audit schemas",
+          "subordinate family contract",
+          "selected route",
+          "planner executor disposition",
+          "executor tuple metadata",
+          "trusted callable binding",
+          "source request/normalization authority",
+          "Owner acceptance"
+        ]
+      },
+      "recommended_next_tranche": "L5-A2",
+      "risk_severity": "MEDIUM",
+      "role_count_note": "Nine independently checked registration responsibilities, not nine independent activation systems. Distinct path count includes implementation and is only coordinated review cost; not all paths must change. Derived/docs/tests are conformance checks, not independent activators.",
+      "runtime_code_touchpoints": {
+        "count": 10,
+        "files": [
+          "server/services/phase_h_h2_twse_exright_executor.py",
+          "server/services/phase_h_corporate_action_adapters.py",
+          "scripts/m8r_06_03_production_adapter.py",
+          "scripts/m8r_05c/artifact_loader.py",
+          "scripts/m8r_05c/lineage_resolver.py",
+          "scripts/m8r_05c/models.py",
+          "scripts/m8r_05c/evidence_projector.py",
+          "scripts/m8r_05c/result_builder.py",
+          "scripts/m8r_05c/audit_package_builder.py",
+          "scripts/m8r_05c/markdown_renderer.py"
+        ]
+      },
+      "runtime_routing_authorities": {
+        "count": 4,
+        "files": [
+          "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+          "config/m8r_06_03_executor_registry_metadata.json",
+          "scripts/m8r_06_03_production_adapter.py",
+          "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+        ]
+      },
+      "source_contract_and_implementation_seams": {
+        "count": 3,
+        "files": [
+          "config/phase_h_h2_dormant_source_descriptors.json",
+          "server/services/phase_h_h2_twse_exright_executor.py",
+          "server/services/phase_h_corporate_action_adapters.py"
+        ]
+      },
+      "surface_category": "extension_ergonomics"
+    }
+  ],
+  "method": "Explicit named authority-role and deduplicated file counts from current conformance traces; conservative lower bound, not LOC or speculative patch count."
+}

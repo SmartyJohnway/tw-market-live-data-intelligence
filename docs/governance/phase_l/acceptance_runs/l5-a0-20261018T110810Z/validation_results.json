@@ -1,0 +1,132 @@
+{
+  "additional_default_ci_status": "FAIL_BASELINE_NOT_REPAIRED",
+  "external_attempt_records": [],
+  "external_socket_attempts": 0,
+  "initial_instrumentation_record": "initial-guard-invalid/validation_results.json",
+  "initial_record_adjudication": "INVALID guard host extraction used port 11224. Not an external socket attempt. Corrected hook rerun zero external attempts.",
+  "production_user_state_mutations": 0,
+  "provider_requests": 0,
+  "required_baseline_status": "PASS",
+  "scope": "Python audit-hook guarded validator processes and inherited Python subprocesses; git fetch is entry transport, excluded from provider-validation counters; no OS-wide traffic claim",
+  "status": "HOLD",
+  "validators": [
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/verify_dependency_supply_chain.py"
+      ],
+      "log": "corrected-guard/validator_01.txt",
+      "return_code": 0,
+      "seconds": 0.198
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/verify_environment.py"
+      ],
+      "log": "corrected-guard/validator_02.txt",
+      "return_code": 0,
+      "seconds": 2.383
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_source_registry.py"
+      ],
+      "log": "corrected-guard/validator_03.txt",
+      "return_code": 0,
+      "seconds": 0.353
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "log": "corrected-guard/validator_04.txt",
+      "return_code": 0,
+      "seconds": 0.892
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "log": "corrected-guard/validator_05.txt",
+      "return_code": 0,
+      "seconds": 1.413
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_v1_public_contracts.py"
+      ],
+      "log": "corrected-guard/validator_06.txt",
+      "return_code": 0,
+      "seconds": 1.787
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_unified_market_evidence_contracts.py"
+      ],
+      "log": "corrected-guard/validator_07.txt",
+      "return_code": 0,
+      "seconds": 0.348
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "log": "corrected-guard/validator_08.txt",
+      "return_code": 0,
+      "seconds": 0.094
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "log": "corrected-guard/validator_09.txt",
+      "return_code": 0,
+      "seconds": 0.781
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "compileall",
+        "-q",
+        "scripts",
+        "server",
+        "tests"
+      ],
+      "log": "corrected-guard/validator_10.txt",
+      "return_code": 0,
+      "seconds": 0.776
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/run_test_profile.py",
+        "default-ci",
+        "--json"
+      ],
+      "log": "corrected-guard/validator_11.txt",
+      "return_code": 1,
+      "seconds": 86.584
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "log": "corrected-guard/validator_12.txt",
+      "return_code": 0,
+      "seconds": 0.04
+    }
+  ]
+}

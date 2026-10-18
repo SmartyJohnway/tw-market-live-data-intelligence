@@ -1,0 +1,1173 @@
+{
+  "caveat": "A0 proves architecture compatibility from current authorities; no future family implementation has been accepted. L3 helper is not a universal production semantic validator.",
+  "findings": [
+    {
+      "classification": "COMPATIBLE_WITH_REQUIRED_CONFORMANCE",
+      "current_authority": "server/operational_diagnostics.py",
+      "current_behavior": "Reuse trace_id and canonical request/execution/governed-operation IDs; do not invent a second correlation system. Adapter timing is inherited by existing controlled dispatch; network/source calls must use the accepted source timing seam or an explicitly equivalent governed seam. Expose bounded stable failure reason codes. Keep governed network attempt counts in transport/operation/receipt/Audit artifacts; operational JSONL may reference behavior but is not a second accounting truth.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 70,
+              "name": "_windows_memory_api"
+            },
+            {
+              "line": 102,
+              "name": "normalize_trace_id"
+            },
+            {
+              "line": 112,
+              "name": "new_trace_id"
+            },
+            {
+              "line": 116,
+              "name": "bind_trace_id"
+            },
+            {
+              "line": 121,
+              "name": "reset_trace_id"
+            },
+            {
+              "line": 125,
+              "name": "current_trace_id"
+            },
+            {
+              "line": 134,
+              "name": "process_memory_bytes"
+            },
+            {
+              "line": 161,
+              "name": "disk_free_bytes"
+            },
+            {
+              "line": 172,
+              "name": "timed_source_call"
+            },
+            {
+              "line": 203,
+              "name": "_bounded_string"
+            },
+            {
+              "line": 209,
+              "name": "build_event"
+            },
+            {
+              "line": 244,
+              "name": "serialize_event"
+            },
+            {
+              "line": 251,
+              "name": "event_path_from_env"
+            },
+            {
+              "line": 268,
+              "name": "emit_jsonl"
+            },
+            {
+              "line": 294,
+              "name": "emit_stderr"
+            },
+            {
+              "line": 304,
+              "name": "emit_runtime_event"
+            },
+            {
+              "line": 55,
+              "name": "_WindowsProcessMemoryCounters"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 172,
+          "path": "server/operational_diagnostics.py",
+          "symbol": "timed_source_call",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 44,
+              "name": "DispatchRuntimeContext"
+            },
+            {
+              "line": 55,
+              "name": "RuntimeAdapterRegistration"
+            },
+            {
+              "line": 71,
+              "name": "RuntimeAdapterRegistry"
+            },
+            {
+              "line": 154,
+              "name": "PreparedDispatch"
+            },
+            {
+              "line": 160,
+              "name": "_validate_request_against_metadata"
+            },
+            {
+              "line": 177,
+              "name": "prepare_dispatch"
+            },
+            {
+              "line": 221,
+              "name": "_verify_evidence_artifacts"
+            },
+            {
+              "line": 244,
+              "name": "request_identity"
+            },
+            {
+              "line": 248,
+              "name": "_emit_adapter_invocation_event"
+            },
+            {
+              "line": 279,
+              "name": "_invoke_adapter"
+            },
+            {
+              "line": 296,
+              "name": "_invoke_batch_adapter"
+            },
+            {
+              "line": 316,
+              "name": "dispatch_prepared"
+            },
+            {
+              "line": 72,
+              "name": "__init__"
+            },
+            {
+              "line": 84,
+              "name": "get"
+            },
+            {
+              "line": 90,
+              "name": "get_route"
+            },
+            {
+              "line": 95,
+              "name": "routes_for_executor"
+            },
+            {
+              "line": 98,
+              "name": "resolve"
+            },
+            {
+              "line": 392,
+              "name": "validate_result"
+            },
+            {
+              "line": 439,
+              "name": "normalized_failure"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 177,
+          "path": "scripts/m8r_05b_03/dispatch.py",
+          "symbol": "prepare_dispatch",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 22,
+              "name": "_timeout_seconds"
+            },
+            {
+              "line": 28,
+              "name": "_emit_child_event"
+            },
+            {
+              "line": 48,
+              "name": "execute_mode_b2_once"
+            },
+            {
+              "line": 132,
+              "name": "execute_local_operator_ticket"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 48,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "symbol": "execute_mode_b2_once",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Future existing-family conformance must prove inheritance; no second operational, retention, drift or security authority.",
+      "finding_id": "CROSS-L1",
+      "obligations": [
+        "Reuse trace_id and canonical request/execution/governed-operation IDs; do not invent a second correlation system.",
+        "Adapter timing is inherited by existing controlled dispatch; network/source calls must use the accepted source timing seam or an explicitly equivalent governed seam.",
+        "Expose bounded stable failure reason codes.",
+        "Keep governed network attempt counts in transport/operation/receipt/Audit artifacts; operational JSONL may reference behavior but is not a second accounting truth."
+      ],
+      "phase": "L1",
+      "platform_seams": [
+        "server/operational_diagnostics.py::bind_trace_id/current_trace_id/timed_source_call/build_event/emit_jsonl",
+        "scripts/m8r_05b_03/dispatch.py::_invoke_adapter/_invoke_batch_adapter/_emit_adapter_invocation_event",
+        "server/services/unified_mode_b2_execution.py::_emit_child_event"
+      ],
+      "recommended_next_tranche": "L5-A3",
+      "risk_severity": "MEDIUM",
+      "surface_category": "cross_phase"
+    },
+    {
+      "classification": "COMPATIBLE_WITH_REQUIRED_CONFORMANCE",
+      "current_authority": "server/services/unified_replay_inspector.py",
+      "current_behavior": "Read/replay retained evidence locally without network or write; missing/incompatible evidence fails typed and never refetches. A refetch remains a new validation-preview-authorization-execute-once action. Declare retention class; unknown is UNCLASSIFIED_REQUIRES_POLICY and not deletion authority. Evidence-family schema evolution must preserve historical Result/Audit/artifact readability or provide an explicit compatible transition; installation-state migration policy is not inferred from evidence schema changes. Backup/restore remains explicit declared-member scope and does not automatically promote all new artifacts into core backup.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 19,
+              "name": "_InspectionFailure"
+            },
+            {
+              "line": 24,
+              "name": "_version"
+            },
+            {
+              "line": 29,
+              "name": "_contained_file"
+            },
+            {
+              "line": 36,
+              "name": "_find_retained"
+            },
+            {
+              "line": 47,
+              "name": "inspect_finalized_package"
+            },
+            {
+              "line": 20,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 47,
+          "path": "server/services/unified_replay_inspector.py",
+          "symbol": "inspect_finalized_package",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 15,
+              "name": "_entry"
+            },
+            {
+              "line": 77,
+              "name": "retention_inventory"
+            },
+            {
+              "line": 82,
+              "name": "classify_artifact_family"
+            },
+            {
+              "line": 95,
+              "name": "classify_artifact"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 82,
+          "path": "server/services/unified_retention_inventory.py",
+          "symbol": "classify_artifact_family",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 49,
+              "name": "BackupError"
+            },
+            {
+              "line": 58,
+              "name": "BackupRoot"
+            },
+            {
+              "line": 64,
+              "name": "BackupMember"
+            },
+            {
+              "line": 77,
+              "name": "_canonical_bytes"
+            },
+            {
+              "line": 81,
+              "name": "_reject_json_constant"
+            },
+            {
+              "line": 85,
+              "name": "_strict_object"
+            },
+            {
+              "line": 94,
+              "name": "_manifest_hash"
+            },
+            {
+              "line": 100,
+              "name": "_is_reparse_or_symlink"
+            },
+            {
+              "line": 108,
+              "name": "_reject_reparse_components"
+            },
+            {
+              "line": 122,
+              "name": "_relative"
+            },
+            {
+              "line": 142,
+              "name": "_contained_file"
+            },
+            {
+              "line": 160,
+              "name": "_source_signature"
+            },
+            {
+              "line": 167,
+              "name": "_verify_binding"
+            },
+            {
+              "line": 184,
+              "name": "_validate_roots"
+            },
+            {
+              "line": 208,
+              "name": "_selected_for_tier"
+            },
+            {
+              "line": 220,
+              "name": "_verify_watchlist_database"
+            },
+            {
+              "line": 243,
+              "name": "_sqlite_logical_fingerprint"
+            },
+            {
+              "line": 265,
+              "name": "_sqlite_snapshot_fingerprint"
+            },
+            {
+              "line": 299,
+              "name": "plan_backup"
+            },
+            {
+              "line": 414,
+              "name": "_read_source_bytes"
+            },
+            {
+              "line": 441,
+              "name": "_sqlite_snapshot"
+            },
+            {
+              "line": 480,
+              "name": "_hash_file"
+            },
+            {
+              "line": 508,
+              "name": "_write_json"
+            },
+            {
+              "line": 516,
+              "name": "_manifest_for"
+            },
+            {
+              "line": 539,
+              "name": "create_backup"
+            },
+            {
+              "line": 649,
+              "name": "_validate_manifest_plan"
+            },
+            {
+              "line": 711,
+              "name": "verify_backup"
+            },
+            {
+              "line": 716,
+              "name": "_verify_backup"
+            },
+            {
+              "line": 52,
+              "name": "__init__"
+            },
+            {
+              "line": 227,
+              "name": "connect_read_only"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 299,
+          "path": "server/services/unified_backup.py",
+          "symbol": "plan_backup",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 51,
+              "name": "RestoreError"
+            },
+            {
+              "line": 60,
+              "name": "RestoreCompatibilityContract"
+            },
+            {
+              "line": 70,
+              "name": "CompatibilityAttestation"
+            },
+            {
+              "line": 93,
+              "name": "_canonical_bytes"
+            },
+            {
+              "line": 97,
+              "name": "_receipt_hash"
+            },
+            {
+              "line": 103,
+              "name": "_contract_hash"
+            },
+            {
+              "line": 120,
+              "name": "_reject_json_constant"
+            },
+            {
+              "line": 124,
+              "name": "_strict_object"
+            },
+            {
+              "line": 133,
+              "name": "_load_manifest"
+            },
+            {
+              "line": 151,
+              "name": "_verify_source"
+            },
+            {
+              "line": 186,
+              "name": "_validate_contract"
+            },
+            {
+              "line": 197,
+              "name": "_watchlist_schema_version"
+            },
+            {
+              "line": 213,
+              "name": "_classify"
+            },
+            {
+              "line": 269,
+              "name": "inspect_restore"
+            },
+            {
+              "line": 296,
+              "name": "_unsafe_path"
+            },
+            {
+              "line": 308,
+              "name": "_safe_relative"
+            },
+            {
+              "line": 315,
+              "name": "_resolve_destination"
+            },
+            {
+              "line": 353,
+              "name": "_source_inventory"
+            },
+            {
+              "line": 364,
+              "name": "_verify_watchlist"
+            },
+            {
+              "line": 380,
+              "name": "_verify_member_path"
+            },
+            {
+              "line": 398,
+              "name": "_make_receipt"
+            },
+            {
+              "line": 424,
+              "name": "_validate_receipt_envelope"
+            },
+            {
+              "line": 470,
+              "name": "restore_backup"
+            },
+            {
+              "line": 564,
+              "name": "verify_restored_state"
+            },
+            {
+              "line": 54,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 269,
+          "path": "server/services/unified_restore.py",
+          "symbol": "inspect_restore",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 35,
+              "name": "MigrationError"
+            },
+            {
+              "line": 44,
+              "name": "MigrationDefinition"
+            },
+            {
+              "line": 71,
+              "name": "_canonical"
+            },
+            {
+              "line": 76,
+              "name": "_require_utc"
+            },
+            {
+              "line": 85,
+              "name": "_digest"
+            },
+            {
+              "line": 89,
+              "name": "_integrity"
+            },
+            {
+              "line": 96,
+              "name": "_registry_rows"
+            },
+            {
+              "line": 100,
+              "name": "_attestation_hash"
+            },
+            {
+              "line": 105,
+              "name": "_manifest"
+            },
+            {
+              "line": 123,
+              "name": "_ensure_source_location"
+            },
+            {
+              "line": 139,
+              "name": "_inventory"
+            },
+            {
+              "line": 153,
+              "name": "_inventory_sha"
+            },
+            {
+              "line": 158,
+              "name": "_has_exact_directories"
+            },
+            {
+              "line": 179,
+              "name": "_safe_root"
+            },
+            {
+              "line": 198,
+              "name": "_derive"
+            },
+            {
+              "line": 259,
+              "name": "inspect_migration"
+            },
+            {
+              "line": 287,
+              "name": "MigrationPlan"
+            },
+            {
+              "line": 339,
+              "name": "_plan_from_payload"
+            },
+            {
+              "line": 360,
+              "name": "preview_migration"
+            },
+            {
+              "line": 430,
+              "name": "_validate_plan"
+            },
+            {
+              "line": 494,
+              "name": "_read_members"
+            },
+            {
+              "line": 513,
+              "name": "_destination"
+            },
+            {
+              "line": 539,
+              "name": "_check_existing_isolated"
+            },
+            {
+              "line": 558,
+              "name": "_write_members"
+            },
+            {
+              "line": 573,
+              "name": "_member_records"
+            },
+            {
+              "line": 578,
+              "name": "_verify_watchlist_members"
+            },
+            {
+              "line": 596,
+              "name": "_receipt_body"
+            },
+            {
+              "line": 630,
+              "name": "apply_migration"
+            },
+            {
+              "line": 723,
+              "name": "verify_migrated_state"
+            },
+            {
+              "line": 819,
+              "name": "rollback_migration"
+            },
+            {
+              "line": 882,
+              "name": "verify_rollback"
+            },
+            {
+              "line": 38,
+              "name": "__init__"
+            },
+            {
+              "line": 54,
+              "name": "authority_record"
+            },
+            {
+              "line": 312,
+              "name": "to_dict"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 259,
+          "path": "server/services/unified_migration.py",
+          "symbol": "inspect_migration",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Future existing-family conformance must prove inheritance; no second operational, retention, drift or security authority.",
+      "finding_id": "CROSS-L2",
+      "obligations": [
+        "Read/replay retained evidence locally without network or write; missing/incompatible evidence fails typed and never refetches.",
+        "A refetch remains a new validation-preview-authorization-execute-once action.",
+        "Declare retention class; unknown is UNCLASSIFIED_REQUIRES_POLICY and not deletion authority.",
+        "Evidence-family schema evolution must preserve historical Result/Audit/artifact readability or provide an explicit compatible transition; installation-state migration policy is not inferred from evidence schema changes.",
+        "Backup/restore remains explicit declared-member scope and does not automatically promote all new artifacts into core backup."
+      ],
+      "phase": "L2",
+      "platform_seams": [
+        "server/services/unified_replay_inspector.py::inspect_finalized_package",
+        "server/services/unified_retention_inventory.py::classify_artifact/classify_artifact_family",
+        "server/services/unified_backup.py::plan_backup/create_backup/verify_backup",
+        "server/services/unified_restore.py::inspect_restore/restore_backup/verify_restored_state",
+        "server/services/unified_migration.py::inspect_migration/preview_migration/apply_migration/rollback_migration"
+      ],
+      "recommended_next_tranche": "L5-A3",
+      "risk_severity": "MEDIUM",
+      "surface_category": "cross_phase"
+    },
+    {
+      "classification": "COMPATIBLE_WITH_REQUIRED_SOURCE_SPECIFIC_CONFORMANCE",
+      "current_authority": "server/services/phase_l_source_drift_contract.py",
+      "current_behavior": "Network-backed families require transport -> contract -> semantic validation and explicit encoding, empty response, publication delay, rate-limit, removal and target/universe rules. The generic observation helper preserves supplied facts only; it is acceptance/observation infrastructure and is not a universal production semantic validator or retry policy. Derived/non-network families mark transport/rate-limit/removal dimensions NOT_APPLICABLE but still require semantic validation, provenance and typed failure semantics. No bounded probe becomes polling, scheduling or an automatic provider-health claim.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "RetryAfterFact"
+            },
+            {
+              "line": 49,
+              "name": "SourceDriftObservation"
+            },
+            {
+              "line": 75,
+              "name": "_normalize_http_date"
+            },
+            {
+              "line": 87,
+              "name": "_has_explicit_timezone"
+            },
+            {
+              "line": 96,
+              "name": "parse_retry_after"
+            },
+            {
+              "line": 114,
+              "name": "observe_source_attempt"
+            },
+            {
+              "line": 68,
+              "name": "as_dict"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 114,
+          "path": "server/services/phase_l_source_drift_contract.py",
+          "symbol": "observe_source_attempt",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "extension_implication": "Future existing-family conformance must prove inheritance; no second operational, retention, drift or security authority.",
+      "finding_id": "CROSS-L3",
+      "obligations": [
+        "Network-backed families require transport -> contract -> semantic validation and explicit encoding, empty response, publication delay, rate-limit, removal and target/universe rules.",
+        "The generic observation helper preserves supplied facts only; it is acceptance/observation infrastructure and is not a universal production semantic validator or retry policy.",
+        "Derived/non-network families mark transport/rate-limit/removal dimensions NOT_APPLICABLE but still require semantic validation, provenance and typed failure semantics.",
+        "No bounded probe becomes polling, scheduling or an automatic provider-health claim."
+      ],
+      "phase": "L3",
+      "platform_seams": [
+        "server/services/phase_l_source_drift_contract.py::observe_source_attempt/parse_retry_after",
+        "source-specific adapters, normalizers and semantic validators listed by docs/governance/phase_l/PHASE_L_L3_A0_SOURCE_DRIFT_SCOPE_AND_INVENTORY_2026-10-15.md"
+      ],
+      "recommended_next_tranche": "L5-A3",
+      "risk_severity": "MEDIUM",
+      "surface_category": "cross_phase"
+    },
+    {
+      "classification": "COMPATIBLE_WITH_REQUIRED_CONFORMANCE",
+      "current_authority": "server/local_network_boundary.py",
+      "current_behavior": "Existing Unified HTTP routes inherit loopback-only exposure, 1 MiB ingress, 8 MiB public projection and per-process fail-fast concurrency ceiling 1. Family routes must declare finite timeout, request/result bounds, network_required and output_policy in executor metadata and match callable registration exactly. Use server-owned authorization and contained roots; payload fields cannot choose command, module, adapter, registry, source URL, executable or output root. Persistent writes require dynamic fail-closed disk admission and atomic/contained publication. Source/agent/evidence content remains data, never control-plane authority; new output surfaces require hostile-content and secret-canary review. No family-owned generic network, retention, resource, secret or authorization policy.",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_host_from_address"
+            },
+            {
+              "line": 21,
+              "name": "is_loopback_network_scope"
+            },
+            {
+              "line": 42,
+              "name": "LocalNetworkBoundaryMiddleware"
+            },
+            {
+              "line": 45,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 42,
+          "path": "server/local_network_boundary.py",
+          "symbol": "LocalNetworkBoundaryMiddleware",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "server/unified_payload_bounds.py",
+          "symbol": null,
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 37,
+              "name": "measure_json_utf8"
+            },
+            {
+              "line": 58,
+              "name": "measure_text_utf8"
+            },
+            {
+              "line": 72,
+              "name": "serialize_bounded_json"
+            },
+            {
+              "line": 85,
+              "name": "encode_json_response"
+            },
+            {
+              "line": 93,
+              "name": "bounded_json_response"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 37,
+          "path": "server/unified_bounded_io.py",
+          "symbol": "measure_json_utf8",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 26,
+              "name": "classify_request"
+            },
+            {
+              "line": 63,
+              "name": "ResourceAdmissionGate"
+            },
+            {
+              "line": 104,
+              "name": "ResourceAdmissionMiddleware"
+            },
+            {
+              "line": 139,
+              "name": "ResourceDiskAdmissionError"
+            },
+            {
+              "line": 145,
+              "name": "_existing_directory"
+            },
+            {
+              "line": 156,
+              "name": "available_disk_bytes"
+            },
+            {
+              "line": 164,
+              "name": "require_disk_capacity"
+            },
+            {
+              "line": 174,
+              "name": "sqlite_write_requirement"
+            },
+            {
+              "line": 193,
+              "name": "serialized_json_bytes"
+            },
+            {
+              "line": 202,
+              "name": "serialized_text_bytes"
+            },
+            {
+              "line": 66,
+              "name": "__init__"
+            },
+            {
+              "line": 73,
+              "name": "try_enter"
+            },
+            {
+              "line": 80,
+              "name": "leave"
+            },
+            {
+              "line": 87,
+              "name": "active"
+            },
+            {
+              "line": 92,
+              "name": "admitted"
+            },
+            {
+              "line": 107,
+              "name": "__init__"
+            },
+            {
+              "line": 140,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 104,
+          "path": "server/resource_boundaries.py",
+          "symbol": "ResourceAdmissionMiddleware",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 8,
+              "name": "FilesystemSafetyError"
+            },
+            {
+              "line": 14,
+              "name": "SafeDestination"
+            },
+            {
+              "line": 20,
+              "name": "PathClassification"
+            },
+            {
+              "line": 29,
+              "name": "_looks_device_namespace"
+            },
+            {
+              "line": 36,
+              "name": "_looks_unc"
+            },
+            {
+              "line": 41,
+              "name": "_looks_drive_relative"
+            },
+            {
+              "line": 44,
+              "name": "_looks_windows_absolute"
+            },
+            {
+              "line": 47,
+              "name": "classify_artifact_relative_path"
+            },
+            {
+              "line": 153,
+              "name": "validate_relative_artifact_path"
+            },
+            {
+              "line": 161,
+              "name": "reject_uri_like_root"
+            },
+            {
+              "line": 169,
+              "name": "is_reparse_or_symlink"
+            },
+            {
+              "line": 184,
+              "name": "_lexical_absolute"
+            },
+            {
+              "line": 191,
+              "name": "reject_reparse_components"
+            },
+            {
+              "line": 212,
+              "name": "_path_identity"
+            },
+            {
+              "line": 224,
+              "name": "_assert_identity"
+            },
+            {
+              "line": 230,
+              "name": "capture_directory_identity"
+            },
+            {
+              "line": 239,
+              "name": "verify_directory_identity"
+            },
+            {
+              "line": 249,
+              "name": "validate_authorized_root"
+            },
+            {
+              "line": 293,
+              "name": "_is_relative_to"
+            },
+            {
+              "line": 302,
+              "name": "safe_destination"
+            },
+            {
+              "line": 350,
+              "name": "atomic_write_bytes"
+            },
+            {
+              "line": 418,
+              "name": "atomic_write_text"
+            },
+            {
+              "line": 433,
+              "name": "atomic_create_text_exclusive"
+            },
+            {
+              "line": 9,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 302,
+          "path": "scripts/m8r_filesystem_safety.py",
+          "symbol": "safe_destination",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 36,
+              "name": "ModeB2Error"
+            },
+            {
+              "line": 42,
+              "name": "_utc_now"
+            },
+            {
+              "line": 46,
+              "name": "_zulu"
+            },
+            {
+              "line": 50,
+              "name": "_next_local_action_issuance_time"
+            },
+            {
+              "line": 66,
+              "name": "_unused_state"
+            },
+            {
+              "line": 77,
+              "name": "_json_text"
+            },
+            {
+              "line": 81,
+              "name": "_write_control_package"
+            },
+            {
+              "line": 119,
+              "name": "_materialize_execution_ticket"
+            },
+            {
+              "line": 169,
+              "name": "_authorizable_preview"
+            },
+            {
+              "line": 186,
+              "name": "_non_actionable_preview_code"
+            },
+            {
+              "line": 252,
+              "name": "build_mode_b2_authorization"
+            },
+            {
+              "line": 313,
+              "name": "build_local_operator_execution_ticket"
+            },
+            {
+              "line": 37,
+              "name": "__init__"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 252,
+          "path": "server/services/unified_mode_b2.py",
+          "symbol": "build_mode_b2_authorization",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 44,
+              "name": "DispatchRuntimeContext"
+            },
+            {
+              "line": 55,
+              "name": "RuntimeAdapterRegistration"
+            },
+            {
+              "line": 71,
+              "name": "RuntimeAdapterRegistry"
+            },
+            {
+              "line": 154,
+              "name": "PreparedDispatch"
+            },
+            {
+              "line": 160,
+              "name": "_validate_request_against_metadata"
+            },
+            {
+              "line": 177,
+              "name": "prepare_dispatch"
+            },
+            {
+              "line": 221,
+              "name": "_verify_evidence_artifacts"
+            },
+            {
+              "line": 244,
+              "name": "request_identity"
+            },
+            {
+              "line": 248,
+              "name": "_emit_adapter_invocation_event"
+            },
+            {
+              "line": 279,
+              "name": "_invoke_adapter"
+            },
+            {
+              "line": 296,
+              "name": "_invoke_batch_adapter"
+            },
+            {
+              "line": 316,
+              "name": "dispatch_prepared"
+            },
+            {
+              "line": 72,
+              "name": "__init__"
+            },
+            {
+              "line": 84,
+              "name": "get"
+            },
+            {
+              "line": 90,
+              "name": "get_route"
+            },
+            {
+              "line": 95,
+              "name": "routes_for_executor"
+            },
+            {
+              "line": 98,
+              "name": "resolve"
+            },
+            {
+              "line": 392,
+              "name": "validate_result"
+            },
+            {
+              "line": 439,
+              "name": "normalized_failure"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 177,
+          "path": "scripts/m8r_05b_03/dispatch.py",
+          "symbol": "prepare_dispatch",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "extension_implication": "Future existing-family conformance must prove inheritance; no second operational, retention, drift or security authority.",
+      "finding_id": "CROSS-L4",
+      "obligations": [
+        "Existing Unified HTTP routes inherit loopback-only exposure, 1 MiB ingress, 8 MiB public projection and per-process fail-fast concurrency ceiling 1.",
+        "Family routes must declare finite timeout, request/result bounds, network_required and output_policy in executor metadata and match callable registration exactly.",
+        "Use server-owned authorization and contained roots; payload fields cannot choose command, module, adapter, registry, source URL, executable or output root.",
+        "Persistent writes require dynamic fail-closed disk admission and atomic/contained publication.",
+        "Source/agent/evidence content remains data, never control-plane authority; new output surfaces require hostile-content and secret-canary review.",
+        "No family-owned generic network, retention, resource, secret or authorization policy."
+      ],
+      "phase": "L4",
+      "platform_seams": [
+        "server/local_network_boundary.py::LocalNetworkBoundaryMiddleware",
+        "server/unified_payload_bounds.py::MAX_UNIFIED_REQUEST_BYTES/MAX_UNIFIED_RESPONSE_BYTES",
+        "server/unified_bounded_io.py::bounded_json_response/serialize_bounded_json",
+        "server/resource_boundaries.py::ResourceAdmissionMiddleware/require_disk_capacity",
+        "scripts/m8r_filesystem_safety.py::safe_destination/atomic_write_bytes/atomic_write_text",
+        "server/services/unified_mode_b2.py::build_mode_b2_authorization",
+        "scripts/m8r_05b_03/dispatch.py::prepare_dispatch/dispatch_prepared"
+      ],
+      "recommended_next_tranche": "L5-A3",
+      "risk_severity": "MEDIUM",
+      "surface_category": "cross_phase"
+    }
+  ],
+  "result": "COMPATIBLE_WITH_REQUIRED_CONFORMANCE"
+}
