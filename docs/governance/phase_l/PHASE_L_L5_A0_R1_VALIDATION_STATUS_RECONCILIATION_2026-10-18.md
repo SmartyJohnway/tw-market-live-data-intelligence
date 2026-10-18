@@ -8,4 +8,4 @@ The required A0 baseline remains **PASS**. The exact comparison and all 41 node 
 
 This reconciliation does not declare the 41 failures fixed, does not convert them to PASS, and does not authorize L5-A1. It does not repeat or revise the L5-A0 architecture inventory, freeze any candidate contract dimension, or change the primary L5-A0 disposition. No runtime, test semantics, public schema, Catalog, routing, activation, dependency, or MCP surface changed. Provider requests: 0. Production state mutations: 0. Python audit-hook external socket attempts during R1 validation: 0, within the recorded hook and subprocess scope; this is not an OS-wide network observation.
 
-Current state remains: L5 STARTED; L5-A0 technical inventory COMPLETE / Owner acceptance PENDING; L5-A1+ and L6-L7 NOT AUTHORIZED.
+Current state: L5 STARTED; L5-A0 OWNER-ACCEPTED FOR MERGE after R1 PASS; L5-A1+ and L6-L7 NOT AUTHORIZED.
