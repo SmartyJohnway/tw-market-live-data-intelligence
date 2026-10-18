@@ -1,0 +1,22 @@
+git diff --check c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2..HEAD
+
+docs/governance/phase_l/acceptance_runs/l4-a6-r1-20261017T140430Z/memory_acceptance_matrix.json:189: trailing whitespace.
++}
+
+docs/governance/phase_l/acceptance_runs/l4-a6-r2-20261017T141119Z/memory_acceptance_matrix.json:189: trailing whitespace.
++}
+
+docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix.json:7898: trailing whitespace.
++}
+
+docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix_pre_harness_correction.json:922: trailing whitespace.
++}
+
+docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix_pre_instrumentation_exclusion.json:5493: trailing whitespace.
++}
+
+docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix_pre_traceback_owner_fix.json:1028: trailing whitespace.
++}
+
+docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix_single_frame_trace.json:1016: trailing whitespace.
++}

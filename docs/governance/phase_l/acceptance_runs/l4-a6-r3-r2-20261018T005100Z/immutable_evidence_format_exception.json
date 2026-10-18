@@ -1,0 +1,84 @@
+{
+  "schema": "phase_l_l4_a6_immutable_evidence_format_exception.v1",
+  "exception_count": 7,
+  "scope": "EOF line-ending formatting only",
+  "runtime_semantic_impact": "NONE",
+  "test_semantic_impact": "NONE",
+  "json_parseability_impact": "NONE",
+  "hash_chain_impact_if_normalized": "YES",
+  "chosen_action": "PRESERVE HISTORICAL BYTES",
+  "exceptions": [
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a6-r1-20261017T140430Z/memory_acceptance_matrix.json",
+      "sha256": "a9ef54629c28de13132310ff0afe9eaa982eeb7c8678f70996bf854d4b84ac01",
+      "byte_size": 6174,
+      "crcrlf_count": 1,
+      "crcrlf_location": "EOF",
+      "historical_run": "l4-a6-r1-20261017T140430Z",
+      "hash_authority_reference": "R1 historical HOLD hash authority",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a6-r2-20261017T141119Z/memory_acceptance_matrix.json",
+      "sha256": "ce55533ea845db477d586410eabedb77023c520922c2caffe08893e11d221e5a",
+      "byte_size": 6170,
+      "crcrlf_count": 1,
+      "crcrlf_location": "EOF",
+      "historical_run": "l4-a6-r2-20261017T141119Z",
+      "hash_authority_reference": "R2 historical HOLD hash authority",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix.json",
+      "sha256": "13286b9a90af25703b733814805537d380ec4c3337b53cf731322e10b88e4db6",
+      "byte_size": 415599,
+      "crcrlf_count": 1,
+      "crcrlf_location": "EOF",
+      "historical_run": "l4-a6-r3-20261017T150419Z",
+      "hash_authority_reference": "R3 manifest artifact hash",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix_pre_harness_correction.json",
+      "sha256": "3d890250452ae6223f196c23f08ff56aa64b31728b2f6364e58a79c5025a3222",
+      "byte_size": 38097,
+      "crcrlf_count": 1,
+      "crcrlf_location": "EOF",
+      "historical_run": "l4-a6-r3-20261017T150419Z",
+      "hash_authority_reference": "R3 manifest artifact hash",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix_pre_instrumentation_exclusion.json",
+      "sha256": "49e961e1517f814e3e4d9d5375c7ce7264ab2a141270ae6118ce50006c4a8eda",
+      "byte_size": 285652,
+      "crcrlf_count": 1,
+      "crcrlf_location": "EOF",
+      "historical_run": "l4-a6-r3-20261017T150419Z",
+      "hash_authority_reference": "R3 manifest artifact hash",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix_pre_traceback_owner_fix.json",
+      "sha256": "ff7ad723ebdb75051be9fa4d23eb82a1375c04aad7bae319c7fc48c1bcc4ac53",
+      "byte_size": 44434,
+      "crcrlf_count": 1,
+      "crcrlf_location": "EOF",
+      "historical_run": "l4-a6-r3-20261017T150419Z",
+      "hash_authority_reference": "R3 manifest artifact hash",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l4-a6-r3-20261017T150419Z/memory_stabilization_matrix_single_frame_trace.json",
+      "sha256": "cda97f7a413d74935c1a2af3e2d4e3ab3e3d52c1fa39912080fed82e4ba1b45c",
+      "byte_size": 42566,
+      "crcrlf_count": 1,
+      "crcrlf_location": "EOF",
+      "historical_run": "l4-a6-r3-20261017T150419Z",
+      "hash_authority_reference": "R3 manifest artifact hash",
+      "status": "PASS"
+    }
+  ],
+  "no_other_candidate_files_triggered_full_range_diff_check": true,
+  "generic_trailing_whitespace_waiver": "NONE"
+}

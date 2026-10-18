@@ -1,0 +1,66 @@
+{
+  "schema": "phase_l_l4_a6_r3_r1_manifest.v1",
+  "run_id": "l4-a6-r3-r1-20261018T004303Z",
+  "entry_head": "330e84891a1a3b83a79d73806b4543fb1704c2fc",
+  "entry_tree": "6c9681ae891652dd62f14a1a65c15083c1cf5728",
+  "origin_main": "c8c23e2c1c47d7695ee63c3c527b8461a9cf16b2",
+  "artifact_count": 11,
+  "artifacts": [
+    {
+      "path": "corrected_integrated_gate.json",
+      "bytes": 728,
+      "sha256": "2ce5152b3e3ea8510bf3cb8bfcaf103c7c23a9adb126fbdd0dc57bdcb713805c"
+    },
+    {
+      "path": "corrected_integrated_gate_exit_code.txt",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "corrected_integrated_gate_output.txt",
+      "bytes": 1474,
+      "sha256": "dd2f335791cb77ec18138ef1d1065eafeb1efc55b9f5c70b386cf0d5d314e4fd"
+    },
+    {
+      "path": "external_network_sentinel.json",
+      "bytes": 322,
+      "sha256": "2d2a95550030700e783b2ce2deab08e0fcb48eed80ecd796a56874609bcca4f1"
+    },
+    {
+      "path": "external_socket_attempts.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "final_finding_reconciliation.json",
+      "bytes": 1327,
+      "sha256": "7a85f43672d118607d2c13486f214200b64ba6c5ede19fc623cebe03fa7e24f4"
+    },
+    {
+      "path": "historical_test_authority_reconciliation.json",
+      "bytes": 2768,
+      "sha256": "53aee73d88eccfcc499e31e9777a5b53091022a79077240fc3b4a8e5e920e124"
+    },
+    {
+      "path": "integrated_gate_command.txt",
+      "bytes": 1249,
+      "sha256": "656164c163693eaf8f4ec855a76d2873c608287015221284fb3d8321fabc9376"
+    },
+    {
+      "path": "offline_review.json",
+      "bytes": 1248,
+      "sha256": "ad149d43490e76770b340cd14ca05fb1bf77d05e861e88115c0e3a21b758284f"
+    },
+    {
+      "path": "preflight_result.json",
+      "bytes": 502,
+      "sha256": "1040ae83cdda7ac2f3acb3a37168ac78fae303172e6d21d5860b3d4f0f7e03bf"
+    },
+    {
+      "path": "r3_evidence_reuse_verification.json",
+      "bytes": 7586,
+      "sha256": "168195c13819b99d6b3d14e3f883a3f4e03b6d3645e17b29d05f06c2606146ac"
+    }
+  ],
+  "canonical_sha256": "bfc40bde1fb6ac1430627bd8cd385e329feed7fedb0d5996e8f82fa94ce11aeb"
+}

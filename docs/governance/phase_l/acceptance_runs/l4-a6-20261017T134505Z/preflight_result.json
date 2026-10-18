@@ -1,0 +1,16 @@
+{
+  "a7_started": false,
+  "destructive_disk_fill": false,
+  "disposition": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_HOLD",
+  "external_socket_attempts": 0,
+  "oom_stress": false,
+  "provider_requests": 0,
+  "real_user_watchlist_mutation": false,
+  "reason_codes": [
+    "whole_request_deadline_not_enforced",
+    "machine_independent_process_rss_ceiling_not_frozen",
+    "cumulative_watchlist_revision_storage_uncapped"
+  ],
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_preflight_result.v1"
+}

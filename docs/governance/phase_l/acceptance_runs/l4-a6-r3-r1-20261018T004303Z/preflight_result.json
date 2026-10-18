@@ -1,0 +1,15 @@
+{
+  "schema": "phase_l_l4_a6_r3_r1_preflight.v1",
+  "run_id": "l4-a6-r3-r1-20261018T004303Z",
+  "disposition": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS",
+  "corrected_integrated_gate": "PASS",
+  "unexpected_failures": 0,
+  "governed_historical_deselections": 2,
+  "new_deselections": 0,
+  "external_socket_attempts": 0,
+  "provider_requests": 0,
+  "resource_findings_covered": true,
+  "a3_resource_residuals": "RESOLVED",
+  "owner_acceptance": "PENDING",
+  "a7_started": false
+}

@@ -1,0 +1,32 @@
+{
+  "findings": [
+    {
+      "finding_id": "RES-001",
+      "rationale": "17 active network-required executor registry entries have finite positive transport timeouts; Local Service and Mode B2 action envelopes are finite. Whole-server deadline intentionally unused for bounded local work.",
+      "status": "COVERED"
+    },
+    {
+      "finding_id": "RES-002",
+      "rationale": "Dynamic fail-closed disk admission verified for Watchlist, Mode B2 and Mode C writers; existing Watchlist reads survive low disk; representative M1-M8 memory acceptance passed.",
+      "status": "COVERED"
+    },
+    {
+      "finding_id": "RES-003",
+      "rationale": "Single-process fail-fast resource admission ceiling is 1; no queue; exception and success release regressions pass.",
+      "status": "COVERED"
+    },
+    {
+      "finding_id": "LOAD-001",
+      "rationale": "Existing limits remain: 50/51 targets, 500/501 Watchlist entries, 100 operation authority, 1 MiB ingress and 8 MiB output.",
+      "status": "COVERED"
+    },
+    {
+      "finding_id": "LOAD-004",
+      "rationale": "Single-slot concurrency, dynamic disk admission and 1000-cycle stabilization evidence pass; destructive pressure tests were not run.",
+      "status": "COVERED"
+    }
+  ],
+  "hold_reason": "The bounded integrated regression suite reports two repeatable failures in legacy historical Mode C tamper tests; all other listed tests pass and the failures were not deselected.",
+  "schema": "phase_l_l4_a6_r3_resource_surface_reconciliation.v1",
+  "technical_disposition": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_HOLD"
+}

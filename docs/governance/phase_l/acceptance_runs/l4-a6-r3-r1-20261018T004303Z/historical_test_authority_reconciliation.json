@@ -1,0 +1,62 @@
+{
+  "schema": "phase_l_l4_a6_r3_r1_historical_test_authority.v1",
+  "node_ids": [
+    "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected"
+  ],
+  "tg4": {
+    "path": "docs/governance/test_governance/TG4_KNOWN_HISTORICAL_REPLAY_GAPS.v1.json",
+    "classification": "KNOWN_HISTORICAL_REPLAY_GAP_NOT_CURRENT_PROTECTION",
+    "current_default_ci_affected": false,
+    "nodes_are_passing": false,
+    "nodes_repaired": false
+  },
+  "phase_j": {
+    "clean_baseline_reproduction_commit": "09b8c16f0aced84cf85c10b0da1c09d95e7f09c5",
+    "same_two_nodes_failed_on_clean_baseline": true,
+    "candidate_only_failures": 0,
+    "j2_acceptance_nodes": false,
+    "default_ci_included": false,
+    "authority": "docs/governance/phase_j/PHASE_J_FINAL_CLOSURE_R2_2026-10-11.json"
+  },
+  "phase_l_prior_treatment": {
+    "l4_a0": "disclosed historical failures; not represented as pass",
+    "l4_a2": "both deselected; disclosed as historical debt",
+    "l4_a3": "both deselected; 0 failures",
+    "l4_a4": "outside bounded gate; explicitly not represented as passing",
+    "references": [
+      "docs/governance/phase_l/acceptance_runs/l4-a0-20261017T064432Z/offline_review.json",
+      "docs/governance/phase_l/acceptance_runs/l4-a2-20261017T085705Z/offline_review.json",
+      "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/offline_review.json",
+      "docs/governance/phase_l/acceptance_runs/l4-a4-20261017T110257Z/offline_review.json"
+    ]
+  },
+  "a6_initial": {
+    "run_id": "l4-a6-20261017T134505Z",
+    "deselected": 2,
+    "failed": 0,
+    "nodes_represented_as_passing": false
+  },
+  "r3_actual_invocation": {
+    "run_id": "l4-a6-r3-20261017T150419Z",
+    "passed": 308,
+    "failed": 2,
+    "skipped": 1,
+    "deselected": 0,
+    "disposition": "HOLD_INTEGRATED_GATE_FAILURE",
+    "operationally_correct_for_invocation": true,
+    "selection_inconsistent_with_frozen_phase_l_authority": true
+  },
+  "r3_r1_corrected_invocation": {
+    "deselected_nodes": [
+      "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+      "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected"
+    ],
+    "deselected": 2,
+    "passing": false,
+    "repaired": false,
+    "current_regression": false,
+    "new_deselections": 0
+  },
+  "authority_chain": "historical governed debt -> consistently deselected -> accidentally included in R3 mandatory gate -> reproduced historical failure -> restored to governed deselection in R3-R1"
+}

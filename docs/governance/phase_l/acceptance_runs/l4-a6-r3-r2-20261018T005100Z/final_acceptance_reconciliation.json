@@ -1,0 +1,34 @@
+{
+  "schema": "phase_l_l4_a6_r3_r2_final_reconciliation.v1",
+  "technical_disposition": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS",
+  "preserved_findings": {
+    "RES-001": "COVERED",
+    "RES-002": "COVERED",
+    "RES-003": "COVERED",
+    "LOAD-001": "COVERED",
+    "LOAD-004": "COVERED",
+    "A3_RESOURCE_RESIDUALS": "RESOLVED"
+  },
+  "memory_stabilization": "PASS",
+  "low_disk_read_availability": "PASS",
+  "middleware_order": "PASS",
+  "timeout_envelope": "PASS",
+  "resource_intensive_concurrency": 1,
+  "persistent_write_disk_admission": "DYNAMIC_FAIL_CLOSED",
+  "memory_hard_runtime_kill_threshold": "NOT_USED",
+  "whole_server_global_hard_deadline": "NOT_USED_BY_DESIGN",
+  "automatic_governed_revision_truncation": "NO",
+  "mode_c_historical_debt_resolved": "NO",
+  "governed_historical_deselections": 2,
+  "new_deselections": 0,
+  "r3_r1_integrated_gate": "308 passed / 1 skipped / 2 governed deselected / 0 failed",
+  "validator_interpretation": {
+    "full_candidate_range_git_diff_check": "KNOWN_IMMUTABLE_EVIDENCE_FORMAT_EXCEPTION",
+    "exit_code": 2,
+    "warning_count": 7,
+    "semantic_current_diff_check": "PASS",
+    "semantic_current_diff_check_exit_code": 0,
+    "excluded_paths_exactly": 7
+  },
+  "r3_r1_validator_field_supersession": "git_diff_check was PASS for its closure working-state check; R3-R2 supersedes only its full candidate-range interpretation. No technical/resource finding changed."
+}

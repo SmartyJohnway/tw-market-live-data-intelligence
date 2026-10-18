@@ -1,0 +1,922 @@
+{
+  "limitations": [
+    "RSS is an observed process working set, not a hard cap.",
+    "tracemalloc observes Python-managed allocations and excludes native allocations.",
+    "No OOM test or allocate-until-failure test was run."
+  ],
+  "memory_hard_runtime_kill_threshold": "NOT_USED",
+  "policy_class": "EXPLICIT_NO_HARD_RUNTIME_LIMIT_WITH_STRUCTURAL_BOUND",
+  "rss_observation_is_not_tracemalloc_peak": true,
+  "scenario_count": 8,
+  "scenarios": [
+    {
+      "details": {
+        "network_acquisition": false,
+        "route_count": 58
+      },
+      "rss_baseline_bytes": 21499904,
+      "rss_delta_bytes": 54509568,
+      "rss_post_bytes": 76009472,
+      "rss_pre_bytes": 21499904,
+      "scenario": "M1_baseline_local_service",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 0,
+      "serialized_output_bytes": 46,
+      "tracemalloc_current_bytes": 22349993,
+      "tracemalloc_peak_bytes": 22368566,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "network_acquisition": false,
+        "preview_status": "target_not_plannable",
+        "target_count": 50
+      },
+      "rss_baseline_bytes": 21499904,
+      "rss_delta_bytes": 12484608,
+      "rss_post_bytes": 71106560,
+      "rss_pre_bytes": 58621952,
+      "scenario": "M2_max_target_offline_planning_50",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 1440,
+      "serialized_output_bytes": 19306,
+      "tracemalloc_current_bytes": 8203789,
+      "tracemalloc_peak_bytes": 8610094,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "entry_count": 500,
+        "persistent_state": false
+      },
+      "rss_baseline_bytes": 21499904,
+      "rss_delta_bytes": 724992,
+      "rss_post_bytes": 67244032,
+      "rss_pre_bytes": 66519040,
+      "scenario": "M3_max_watchlist_shape_500",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 147666,
+      "serialized_output_bytes": 25,
+      "tracemalloc_current_bytes": 114302,
+      "tracemalloc_peak_bytes": 667340,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "item_count": 50,
+        "provider_request": false,
+        "supported_family": "material_disclosure_evidence.v1"
+      },
+      "rss_baseline_bytes": 21499904,
+      "rss_delta_bytes": 122880,
+      "rss_post_bytes": 67366912,
+      "rss_pre_bytes": 67244032,
+      "scenario": "M4_supported_material_disclosure_50",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 19157,
+      "serialized_output_bytes": 19157,
+      "tracemalloc_current_bytes": 1314,
+      "tracemalloc_peak_bytes": 176296,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "envelope_bytes": 8388608,
+        "observed_projection_bytes": 7300055,
+        "temp_only": true
+      },
+      "rss_baseline_bytes": 21499904,
+      "rss_delta_bytes": 0,
+      "rss_post_bytes": 67366912,
+      "rss_pre_bytes": 67366912,
+      "scenario": "M5_near_bound_mode_c_projection",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 0,
+      "serialized_output_bytes": 7300055,
+      "tracemalloc_current_bytes": 216,
+      "tracemalloc_peak_bytes": 13307432,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "envelope_bytes": 8388608,
+        "network_acquisition": false,
+        "structured_bytes": 3900064,
+        "text_bytes": 3900000
+      },
+      "rss_baseline_bytes": 21499904,
+      "rss_delta_bytes": 28057600,
+      "rss_post_bytes": 95424512,
+      "rss_pre_bytes": 67366912,
+      "scenario": "M6_near_bound_ai_handoff",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 0,
+      "serialized_output_bytes": 7800064,
+      "tracemalloc_current_bytes": 14525615,
+      "tracemalloc_peak_bytes": 28199918,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "details": {
+        "concurrent_light_reads": 8,
+        "in_process_transport": true,
+        "max_workers": 8
+      },
+      "rss_baseline_bytes": 21499904,
+      "rss_delta_bytes": 2457600,
+      "rss_post_bytes": 91385856,
+      "rss_pre_bytes": 88928256,
+      "scenario": "M7_concurrent_light_read",
+      "scenario_status": "PASS",
+      "serialized_input_bytes": 0,
+      "serialized_output_bytes": 160,
+      "tracemalloc_current_bytes": 620604,
+      "tracemalloc_peak_bytes": 1536040,
+      "tracemalloc_pre_bytes": 0
+    },
+    {
+      "checkpoints": [
+        {
+          "cycle": 100,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 93777920,
+          "tracemalloc_current_bytes": 49139,
+          "tracemalloc_peak_bytes": 446540
+        },
+        {
+          "cycle": 200,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 93806592,
+          "tracemalloc_current_bytes": 59240,
+          "tracemalloc_peak_bytes": 456735
+        },
+        {
+          "cycle": 250,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 93806592,
+          "tracemalloc_current_bytes": 61285,
+          "tracemalloc_peak_bytes": 458918
+        },
+        {
+          "cycle": 300,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 93212672,
+          "tracemalloc_current_bytes": 113099,
+          "tracemalloc_peak_bytes": 1010936
+        },
+        {
+          "cycle": 400,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 93491200,
+          "tracemalloc_current_bytes": 115861,
+          "tracemalloc_peak_bytes": 1010936
+        },
+        {
+          "cycle": 500,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 93634560,
+          "tracemalloc_current_bytes": 117728,
+          "tracemalloc_peak_bytes": 1010936
+        },
+        {
+          "cycle": 600,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94720000,
+          "tracemalloc_current_bytes": 168250,
+          "tracemalloc_peak_bytes": 1067103
+        },
+        {
+          "cycle": 700,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94740480,
+          "tracemalloc_current_bytes": 169537,
+          "tracemalloc_peak_bytes": 1067103
+        },
+        {
+          "cycle": 750,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94781440,
+          "tracemalloc_current_bytes": 170204,
+          "tracemalloc_peak_bytes": 1067103
+        },
+        {
+          "cycle": 800,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94273536,
+          "tracemalloc_current_bytes": 221069,
+          "tracemalloc_peak_bytes": 1119630
+        },
+        {
+          "cycle": 900,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94273536,
+          "tracemalloc_current_bytes": 222315,
+          "tracemalloc_peak_bytes": 1119630
+        },
+        {
+          "cycle": 1000,
+          "functional_output_sha256": "04b0b58577795b756fe95894fba76702c2117d5c0aa687960cf9df38c504b600",
+          "functional_preview_status": "target_not_plannable",
+          "rss_observation_bytes": 94326784,
+          "tracemalloc_current_bytes": 223082,
+          "tracemalloc_peak_bytes": 1119630
+        }
+      ],
+      "equal_windows": [
+        {
+          "end_cycle": 250,
+          "retained_growth_bytes": 61285,
+          "retained_growth_bytes_per_cycle": 245.14,
+          "start_cycle": 1,
+          "window": "W1"
+        },
+        {
+          "end_cycle": 500,
+          "retained_growth_bytes": 56443,
+          "retained_growth_bytes_per_cycle": 225.772,
+          "start_cycle": 251,
+          "window": "W2"
+        },
+        {
+          "end_cycle": 750,
+          "retained_growth_bytes": 52476,
+          "retained_growth_bytes_per_cycle": 209.904,
+          "start_cycle": 501,
+          "window": "W3"
+        },
+        {
+          "end_cycle": 1000,
+          "retained_growth_bytes": 52878,
+          "retained_growth_bytes_per_cycle": 211.512,
+          "start_cycle": 751,
+          "window": "W4"
+        }
+      ],
+      "functional_output_deterministic": true,
+      "late_half_slope_lower_than_early_half": true,
+      "measured_cycles": 1000,
+      "object_count_deltas": [
+        {
+          "all_type_count_delta_count": 5,
+          "cycle": 250,
+          "focused_type_count_deltas_from_warmup": {
+            "tracemalloc.Snapshot": 1,
+            "tracemalloc._Traces": 1
+          },
+          "largest_positive_type_deltas": [
+            [
+              "builtins.tuple",
+              1232
+            ],
+            [
+              "builtins.list",
+              2
+            ],
+            [
+              "tracemalloc.Snapshot",
+              1
+            ],
+            [
+              "builtins.dict",
+              1
+            ],
+            [
+              "tracemalloc._Traces",
+              1
+            ]
+          ]
+        },
+        {
+          "all_type_count_delta_count": 5,
+          "cycle": 500,
+          "focused_type_count_deltas_from_warmup": {
+            "tracemalloc.Snapshot": 2,
+            "tracemalloc._Traces": 2
+          },
+          "largest_positive_type_deltas": [
+            [
+              "builtins.tuple",
+              1939
+            ],
+            [
+              "builtins.list",
+              3
+            ],
+            [
+              "tracemalloc.Snapshot",
+              2
+            ],
+            [
+              "builtins.dict",
+              2
+            ],
+            [
+              "tracemalloc._Traces",
+              2
+            ]
+          ]
+        },
+        {
+          "all_type_count_delta_count": 5,
+          "cycle": 750,
+          "focused_type_count_deltas_from_warmup": {
+            "tracemalloc.Snapshot": 3,
+            "tracemalloc._Traces": 3
+          },
+          "largest_positive_type_deltas": [
+            [
+              "builtins.tuple",
+              2515
+            ],
+            [
+              "builtins.list",
+              4
+            ],
+            [
+              "tracemalloc.Snapshot",
+              3
+            ],
+            [
+              "tracemalloc._Traces",
+              3
+            ],
+            [
+              "builtins.dict",
+              2
+            ]
+          ]
+        },
+        {
+          "all_type_count_delta_count": 5,
+          "cycle": 1000,
+          "focused_type_count_deltas_from_warmup": {
+            "tracemalloc.Snapshot": 4,
+            "tracemalloc._Traces": 4
+          },
+          "largest_positive_type_deltas": [
+            [
+              "builtins.tuple",
+              3146
+            ],
+            [
+              "builtins.list",
+              5
+            ],
+            [
+              "tracemalloc.Snapshot",
+              4
+            ],
+            [
+              "tracemalloc._Traces",
+              4
+            ],
+            [
+              "builtins.dict",
+              2
+            ]
+          ]
+        }
+      ],
+      "positive_product_traceback_growth_detected": true,
+      "product_defined_type_growth_detected": false,
+      "rss_baseline_bytes": 21499904,
+      "rss_delta_bytes": 1769472,
+      "rss_independent_linear_growth_pattern": false,
+      "rss_post_bytes": 95272960,
+      "rss_pre_bytes": 93503488,
+      "rss_window_slopes_bytes_per_cycle": [
+        1212.416,
+        -688.128,
+        4587.52,
+        -1818.624
+      ],
+      "scenario": "M8_long_horizon_identical_bounded_workload",
+      "scenario_status": "HOLD_RUNAWAY_GROWTH",
+      "serialized_input_bytes_total": 1440000,
+      "serialized_output_bytes_total": 19306000,
+      "slopes_decline_across_equal_windows": false,
+      "strict_monotonic_5_cycle_result": "HISTORICAL_SHORT_HORIZON_FALSE_POSITIVE_FOR_FINAL_CLASSIFICATION",
+      "traceback_classification_review_required": true,
+      "traceback_window_diffs": [
+        {
+          "from_cycle": 250,
+          "to_cycle": 500,
+          "top_retained_diffs": [
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 551,
+              "size_diff_bytes": 35098,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:197"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 2,
+              "size_diff_bytes": 13056,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:198"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 74,
+              "size_diff_bytes": 3700,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\m8r_03d_f1_security_master_snapshot_exporter.py:34"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 21,
+              "size_diff_bytes": 987,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\jsonschema\\_types.py:116"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 848,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:253"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 13,
+              "size_diff_bytes": 767,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\pathlib\\_local.py:537"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 328,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:560"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 328,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:423"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 315,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:246"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 168,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:252"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 3,
+              "size_diff_bytes": 160,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:558"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 1,
+              "size_diff_bytes": 160,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:263"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 1,
+              "size_diff_bytes": 160,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:262"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\referencing\\_core.py:418"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 96,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:240"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 3,
+              "size_diff_bytes": 84,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:152"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 1,
+              "size_diff_bytes": 47,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\referencing\\_core.py:534"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:150"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:236"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:235"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:31"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:234"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:154"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:243"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:242"
+            }
+          ]
+        },
+        {
+          "from_cycle": 500,
+          "to_cycle": 750,
+          "top_retained_diffs": [
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 551,
+              "size_diff_bytes": 35098,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:197"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 2,
+              "size_diff_bytes": 13056,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:198"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 23,
+              "size_diff_bytes": 1081,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\jsonschema\\_types.py:116"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 19,
+              "size_diff_bytes": 950,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\m8r_03d_f1_security_master_snapshot_exporter.py:34"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 880,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:253"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 320,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:560"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 320,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:423"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 315,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:246"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": -4,
+              "size_diff_bytes": -188,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\referencing\\_core.py:418"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 168,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:252"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 3,
+              "size_diff_bytes": 160,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:558"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 3,
+              "size_diff_bytes": 141,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\referencing\\_core.py:534"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 96,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:240"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 3,
+              "size_diff_bytes": 84,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:152"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 59,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\pathlib\\_local.py:537"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:263"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:262"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:150"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:236"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:235"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:31"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:234"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:154"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:243"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:242"
+            }
+          ]
+        },
+        {
+          "from_cycle": 750,
+          "to_cycle": 1000,
+          "top_retained_diffs": [
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 551,
+              "size_diff_bytes": 35098,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:197"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 2,
+              "size_diff_bytes": 13056,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:198"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 48,
+              "size_diff_bytes": 2256,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\jsonschema\\_types.py:116"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 816,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:253"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 315,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:246"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 312,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:560"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 1,
+              "size_diff_bytes": 312,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:423"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 6,
+              "size_diff_bytes": 168,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:252"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 3,
+              "size_diff_bytes": 160,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\tracemalloc.py:558"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 3,
+              "size_diff_bytes": 96,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:240"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 2,
+              "size_diff_bytes": 94,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\referencing\\_core.py:418"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 3,
+              "size_diff_bytes": 84,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:152"
+            },
+            {
+              "category": "THIRD_PARTY_LIBRARY",
+              "count_diff": 1,
+              "size_diff_bytes": 47,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\referencing\\_core.py:534"
+            },
+            {
+              "category": "PYTHON_STANDARD_LIBRARY_OR_INTERPRETER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\pathlib\\_local.py:537"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\m8r_03d_f1_security_master_snapshot_exporter.py:34"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:263"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:262"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:150"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:236"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:235"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:31"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:234"
+            },
+            {
+              "category": "TW_MARKET_PRODUCT",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\server\\operational_diagnostics.py:154"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:243"
+            },
+            {
+              "category": "ACCEPTANCE_HELPER",
+              "count_diff": 0,
+              "size_diff_bytes": 0,
+              "traceback": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l4-a6\\scripts\\run_phase_l_l4_a6_memory_acceptance.py:242"
+            }
+          ]
+        }
+      ],
+      "tracemalloc_current_bytes": 347122,
+      "tracemalloc_peak_bytes": 1172828,
+      "warmup_cycles": 30,
+      "warmup_statuses": [
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable",
+        "target_not_plannable"
+      ]
+    }
+  ],
+  "schema": "phase_l_l4_a6_memory_acceptance_matrix.v3",
+  "status": "HOLD_RUNAWAY_GROWTH",
+  "strict_monotonic_5_cycle_result": "HISTORICAL_SHORT_HORIZON_FALSE_POSITIVE_FOR_FINAL_CLASSIFICATION",
+  "strict_monotonic_retained_growth_detected": true
+}

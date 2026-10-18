@@ -1,0 +1,20 @@
+{
+  "automatic_revision_truncation": false,
+  "existing_current_schema_db_read": {
+    "mutation_during_reopen": "NONE",
+    "read_list_get": "PASS",
+    "reopen_under_injected_low_disk": "PASS"
+  },
+  "new_db_under_low_disk": {
+    "database_created": false,
+    "fails_before_sqlite_creation": "PASS"
+  },
+  "overall": "PASS",
+  "preview_and_commit_under_low_disk": {
+    "both_fail_closed": "PASS",
+    "version_and_history_unchanged": "PASS"
+  },
+  "schema": "phase_l_l4_a6_r3_watchlist_low_disk_matrix.v1",
+  "source_test": "tests/unit/test_phase_l_l4_a6_r1_repairs.py",
+  "storage_policy": "UNBOUNDED_IN_TIME_BY_RETENTION_CONTRACT_WITH_EACH_NEW_WRITE_SUBJECT_TO_DYNAMIC_DISK_ADMISSION"
+}

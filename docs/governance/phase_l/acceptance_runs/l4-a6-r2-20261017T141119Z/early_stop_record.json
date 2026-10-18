@@ -1,0 +1,18 @@
+{
+  "schema": "phase_l_l4_a6_r2_early_stop_record.v1",
+  "run_id": "l4-a6-r2-20261017T141119Z",
+  "memory_matrix": "memory_acceptance_matrix.json",
+  "memory_matrix_sha256": "ce55533ea845db477d586410eabedb77023c520922c2caffe08893e11d221e5a",
+  "m8": "HOLD_RUNAWAY_GROWTH",
+  "m8_30_cycle_diagnostic": "m8_30_cycle_diagnostic.json",
+  "m8_30_cycle_sha256": "83fba3cc5c8d4bcb0a1bd8868d0ee0bf2484e51303e1baf9506cca07a51f533f",
+  "r2_sampler_repair": "PASS",
+  "r1_01_watchlist": "PASS",
+  "r1_02_middleware": "PASS",
+  "timeout_envelope": "NOT_RUN",
+  "integrated_gate": "NOT_RUN",
+  "external_network_sentinel": "NOT_RUN",
+  "commit": "NONE",
+  "stop_reason": "Thirty-cycle trace retained growth continued; no demonstrated stabilization, and retained allocation traces include product code call sites. Per governed rule stop before timeout and integrated acceptance.",
+  "final_disposition": "L4_A6_RESOURCE_LOAD_REGRESSION_HOLD"
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "phase_l_l4_a6_r2_sampler_retention_repair.v1",
+  "root_cause": "Windows process_memory_bytes previously defined a ctypes.Structure subclass and POINTER type on each call and reconfigured WinDLL prototypes each sample.",
+  "repair": "Windows counter structure and pointer type are module-level; kernel32/psapi handles and function prototypes use a thread-safe lazy singleton.",
+  "open_process_access": "0x1000",
+  "handle_closed_in_finally": true,
+  "failure_returns_null": true,
+  "dependency_changes": 0,
+  "regression_test": "tests/unit/test_phase_l_l4_a6_r1_repairs.py::test_windows_memory_sampler_reuses_module_type_pointer_and_api_for_100_samples",
+  "regression_test_result": "PASS",
+  "sample_calls": 100,
+  "stable_type_pointer_and_api_identity": true,
+  "arbitrary_rss_threshold_used": false,
+  "ctypes_retained_metadata_after_repair": "snapshot diff shows ctypes allocation entries decreased from cycle 1 to cycle 30"
+}

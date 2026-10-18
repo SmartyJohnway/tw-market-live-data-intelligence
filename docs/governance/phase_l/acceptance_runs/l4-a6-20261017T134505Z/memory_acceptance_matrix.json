@@ -1,0 +1,24 @@
+{
+  "reason": "No machine-independent process memory budget or representative supported host floor is frozen; no OOM or destructive allocation test was run.",
+  "rss_ceiling": null,
+  "run_id": "l4-a6-20261017T134505Z",
+  "safe_evidence": [
+    {
+      "result": "PASS",
+      "scenario": "max request and bounded response contract",
+      "source": "L4-A3 request/response bound tests"
+    },
+    {
+      "result": "PASS",
+      "scenario": "synthetic maximum target and Watchlist dimensions",
+      "source": "A6 resource boundary tests"
+    },
+    {
+      "result": "PASS",
+      "scenario": "bounded resource concurrency",
+      "source": "A6 ASGI overlap test"
+    }
+  ],
+  "schema": "phase_l_l4_a6_memory_acceptance_matrix.v1",
+  "status": "DEFERRED_VALUE"
+}

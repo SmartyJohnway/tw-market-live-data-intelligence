@@ -1,0 +1,51 @@
+{
+  "background_monitoring": 0,
+  "destructive_disk_fill_tests": 0,
+  "external_socket_attempts": 0,
+  "focused_gate": {
+    "command": "pytest -q tests/unit/test_phase_l_l4_a6_r1_repairs.py tests/unit/test_phase_l_l4_a6_resource_boundaries.py tests/unit/test_phase_l_l4_a6_r3_acceptance.py tests/unit/test_m8r_07b_local_service_contract.py tests/unit/test_m8r_06_03_execute_once.py",
+    "failed": 0,
+    "passed": 57,
+    "skipped": 0
+  },
+  "independent_failure_rerun": {
+    "deselected": 0,
+    "failed": 2,
+    "passed": 0
+  },
+  "integrated_gate": {
+    "deselected": 0,
+    "failed": 2,
+    "failure_ids": [
+      "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+      "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected"
+    ],
+    "failure_reason": "Each historical test expects a .v1 result/audit file after the current fixture build; the current build does not create those paths. Both were independently rerun and failed the same way. No test code was changed and neither was deselected.",
+    "passed": 308,
+    "scope": "A6 R1 repairs/resources/R3 acceptance, A3 bounds, A4 control-plane/injection, A5 supply-chain, A1/A2, Watchlists, Mode B1/B2, execute-once, Mode C/05C, MCP Local Service, Unified API, lifecycle, operational diagnostics",
+    "skipped": 1
+  },
+  "known_skip": "tests/integration/test_unified_workbench_api.py::test_governed_local_candidate_is_git_ignored (existing explicit fixture skip)",
+  "live_market_acquisition": 0,
+  "oom_tests": 0,
+  "overall": "HOLD_INTEGRATED_GATE_FAILURE",
+  "polling": 0,
+  "production_user_state_mutations": 0,
+  "provider_requests": 0,
+  "run_id": "l4-a6-r3-20261017T150419Z",
+  "schema": "phase_l_l4_a6_r3_offline_review.v1",
+  "validators": {
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "phase_h_v3": "PASS",
+    "pip_check": "PASS",
+    "portable_catalog_sync": "PASS",
+    "py_compile_changed_python": "PASS",
+    "runtime_skill_exact_six": "PASS",
+    "source_registry": "PASS",
+    "unified_contracts": "PASS",
+    "v1_public_exact_six": "PASS",
+    "verify_dependency_supply_chain": "PASS",
+    "verify_environment": "PASS"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "phase_l_l4_a6_r3_r2_preflight.v1",
+  "run_id": "l4-a6-r3-r2-20261018T005100Z",
+  "disposition": "PASS_IMMUTABLE_EVIDENCE_DIFF_CHECK_RECONCILED",
+  "technical_disposition_preserved": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS",
+  "full_candidate_range_git_diff_check": "KNOWN_IMMUTABLE_EVIDENCE_FORMAT_EXCEPTION",
+  "exception_aware_candidate_range_diff_check": "PASS",
+  "owner_acceptance": "PENDING",
+  "a7_started": false,
+  "exception_aware_candidate_range_exit_code": 0,
+  "full_candidate_range_warning_count": 7
+}

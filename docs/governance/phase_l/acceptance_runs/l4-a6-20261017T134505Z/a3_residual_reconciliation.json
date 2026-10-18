@@ -1,0 +1,38 @@
+{
+  "a3_evidence_ref": "docs/governance/phase_l/acceptance_runs/l4-a3-20261017T102100Z/finding_reconciliation.json",
+  "findings": [
+    {
+      "a3_serialized_status": "COVERED",
+      "a6_status": "PARTIAL",
+      "finding": "IN-003",
+      "reason": "per-write SQLite disk admission added; historical revision growth remains append-only and uncapped"
+    },
+    {
+      "a3_serialized_status": "COVERED",
+      "a6_status": "PARTIAL",
+      "finding": "OUT-002",
+      "reason": "serialized response cap remains; no process RSS ceiling"
+    },
+    {
+      "a3_serialized_status": "COVERED",
+      "a6_status": "PARTIAL",
+      "finding": "OUT-003",
+      "reason": "three-file output cap and disk preflight remain; peak construction memory is not independently capped"
+    },
+    {
+      "a3_serialized_status": "COVERED",
+      "a6_status": "PARTIAL",
+      "finding": "LOAD-002",
+      "reason": "source/schema/serialized output bounds plus disk admission; no aggregate RSS ceiling"
+    },
+    {
+      "a3_serialized_status": "COVERED",
+      "a6_status": "PARTIAL",
+      "finding": "LOAD-003",
+      "reason": "existing handoff serialized cap retained; no peak memory or whole-route deadline"
+    }
+  ],
+  "revision_truncation": false,
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_a3_residual_reconciliation.v1"
+}

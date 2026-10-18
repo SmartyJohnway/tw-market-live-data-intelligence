@@ -1,0 +1,8 @@
+{
+  "cumulative_storage": "no fixed database cap; new writes fail closed when dynamic disk admission does not fit",
+  "disk_policy": "admission only; not quota, cleanup, or retention",
+  "result_audit": "existing bounded package materialization retained",
+  "run_id": "l4-a6-20261017T134505Z",
+  "schema": "phase_l_l4_a6_retention_resource_boundary.v1",
+  "watchlist_revision_history": "append-only; no automatic truncation or revision deletion added"
+}

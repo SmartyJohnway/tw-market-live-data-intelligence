@@ -1,0 +1,29 @@
+{
+  "automatic_governed_revision_truncation": "NO",
+  "cumulative_watchlist_storage": "UNBOUNDED_IN_TIME_BY_RETENTION_CONTRACT_WITH_EACH_NEW_WRITE_SUBJECT_TO_DYNAMIC_DISK_ADMISSION",
+  "overall": "RESOLVED",
+  "residuals": [
+    {
+      "disposition": "RESOLVED_BY_DYNAMIC_WRITE_ADMISSION_WITH_NO_AUTO_TRUNCATION",
+      "finding_id": "IN-003"
+    },
+    {
+      "disposition": "ACCEPTED_UNDER_STRUCTURAL_BOUNDS_AND_LONG_HORIZON_MEMORY_EVIDENCE",
+      "finding_id": "OUT-002"
+    },
+    {
+      "disposition": "ACCEPTED_UNDER_STRUCTURAL_BOUNDS_AND_LONG_HORIZON_MEMORY_EVIDENCE",
+      "finding_id": "OUT-003"
+    },
+    {
+      "disposition": "ACCEPTED_WITH_A6_RESOURCE_POLICY",
+      "finding_id": "LOAD-002"
+    },
+    {
+      "disposition": "ACCEPTED_WITH_A6_RESOURCE_POLICY",
+      "finding_id": "LOAD-003"
+    }
+  ],
+  "schema": "phase_l_l4_a6_r3_a3_residual_reconciliation.v1",
+  "serialized_a3_dimensions": "UNCHANGED_AND_COVERED"
+}

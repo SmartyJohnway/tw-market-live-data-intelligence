@@ -1,0 +1,49 @@
+{
+  "destructive_disk_fill": false,
+  "oom_stress": false,
+  "provider_acquisition": false,
+  "run_id": "l4-a6-20261017T134505Z",
+  "scenarios": [
+    {
+      "fixture": "synthetic 500 entries accepted; 501 rejected",
+      "result": "PASS",
+      "scenario": "large Watchlist"
+    },
+    {
+      "fixture": "synthetic 50 accepted without resource-bound rejection; 51 rejected",
+      "result": "PASS",
+      "scenario": "multi-target"
+    },
+    {
+      "fixture": "A3 schema/result boundary tests; source row and aggregate output bounds",
+      "result": "PASS_FOR_SERIALIZED_CONTRACT",
+      "scenario": "large disclosure/result"
+    },
+    {
+      "fixture": "A3 producer/server response cap tests; no empirical latency claim",
+      "result": "PASS_FOR_SERIALIZED_CONTRACT",
+      "scenario": "long AI handoff"
+    },
+    {
+      "fixture": "simultaneous ASGI requests; second resource request fails fast",
+      "result": "PASS",
+      "scenario": "bounded concurrent local calls"
+    },
+    {
+      "fixture": "source and child finite timeout contracts retained; no whole route deadline",
+      "result": "PARTIAL",
+      "scenario": "timeout"
+    },
+    {
+      "fixture": "no OOM stress; RSS ceiling deferred",
+      "result": "NOT_RUN",
+      "scenario": "memory pressure"
+    },
+    {
+      "fixture": "injected low/free-unavailable observations reject before writes",
+      "result": "PASS",
+      "scenario": "disk pressure"
+    }
+  ],
+  "schema": "phase_l_l4_a6_load_acceptance_matrix.v1"
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "phase_l_l4_a6_r3_r1_final_finding_reconciliation.v1",
+  "source_run": "l4-a6-r3-20261017T150419Z",
+  "reused_sealed_findings": {
+    "RES-001": "COVERED",
+    "RES-002": "COVERED",
+    "RES-003": "COVERED",
+    "LOAD-001": "COVERED",
+    "LOAD-004": "COVERED",
+    "A3_RESOURCE_RESIDUALS": "RESOLVED"
+  },
+  "memory_stabilization": "PASS_BOUNDED_CACHE_STABILIZATION",
+  "timeout_envelope": "PASS",
+  "watchlist_low_disk": "PASS",
+  "middleware_order": "PASS",
+  "resource_intensive_concurrency_ceiling": 1,
+  "whole_server_global_hard_deadline": "NOT_USED_BY_DESIGN",
+  "memory_hard_runtime_kill_threshold": "NOT_USED",
+  "persistent_write_disk_admission": "DYNAMIC_FAIL_CLOSED",
+  "automatic_governed_revision_truncation": "NO",
+  "a3_residuals": {
+    "IN-003": "RESOLVED_BY_DYNAMIC_WRITE_ADMISSION_WITH_NO_AUTO_TRUNCATION",
+    "OUT-002": "ACCEPTED_UNDER_STRUCTURAL_BOUNDS_AND_LONG_HORIZON_MEMORY_EVIDENCE",
+    "OUT-003": "ACCEPTED_UNDER_STRUCTURAL_BOUNDS_AND_LONG_HORIZON_MEMORY_EVIDENCE",
+    "LOAD-002": "ACCEPTED_WITH_A6_RESOURCE_POLICY",
+    "LOAD-003": "ACCEPTED_WITH_A6_RESOURCE_POLICY"
+  },
+  "r3_original_integrated_failure_reclassified_for_gate_selection_only": true,
+  "mode_c_historical_debt_resolved": false,
+  "underlying_r3_resource_artifacts_unchanged": true
+}

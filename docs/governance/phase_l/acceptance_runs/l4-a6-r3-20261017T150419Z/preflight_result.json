@@ -1,0 +1,16 @@
+{
+  "a3_resource_residuals": "RESOLVED",
+  "a7_started": false,
+  "all_resource_findings_covered": true,
+  "disposition": "L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_HOLD",
+  "external_socket_attempts": 0,
+  "integrated_regression": "FAIL_TWO_HISTORICAL_MODE_C_TESTS",
+  "memory_stabilization": "PASS_BOUNDED_CACHE_STABILIZATION",
+  "middleware_order": "PASS",
+  "owner_acceptance": "PENDING",
+  "provider_requests": 0,
+  "run_id": "l4-a6-r3-20261017T150419Z",
+  "schema": "phase_l_l4_a6_r3_preflight_result.v1",
+  "timeout_envelope": "PASS",
+  "watchlist_low_disk": "PASS"
+}

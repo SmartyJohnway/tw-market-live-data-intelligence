@@ -1,0 +1,22 @@
+{
+  "authorized_local_request_reaches_resource_gate": "PASS",
+  "concurrency_gate_release_success_exception": "PASS",
+  "cross_origin_privileged_request_rejected_before_resource_gate": "PASS",
+  "expected_outer_to_inner": [
+    "LocalNetworkBoundaryMiddleware",
+    "LocalControlPlaneBoundaryMiddleware",
+    "ResourceAdmissionMiddleware",
+    "CORSMiddleware"
+  ],
+  "observed_outer_to_inner_prefix": [
+    "LocalNetworkBoundaryMiddleware",
+    "LocalControlPlaneBoundaryMiddleware",
+    "ResourceAdmissionMiddleware",
+    "CORSMiddleware"
+  ],
+  "overall": "PASS",
+  "queue": "NONE",
+  "resource_intensive_concurrency_ceiling": 1,
+  "schema": "phase_l_l4_a6_r3_middleware_order_matrix.v1",
+  "source_test": "tests/unit/test_phase_l_l4_a6_r1_repairs.py"
+}
