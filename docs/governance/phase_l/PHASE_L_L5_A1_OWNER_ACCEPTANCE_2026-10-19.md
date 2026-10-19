@@ -30,4 +30,10 @@ L5-A1 is Owner-accepted for merge but must not be described as merged until PR/m
 
 ## Post-Merge Verification
 
-Pending verified PR and merge metadata.
+- PR: #382
+- PR base: `0a1b3bf3b18b009cc8f54c6207a468612d337f9f`
+- PR head: `3fc3e9c129d9d001c648b36cafc0081bc9821edd`
+- Merge commit: `8ff92ca79af821a8641967184a26ee37db69d326`
+- Merged at: `2026-10-19T04:19:03Z`
+- Final A1 state: OWNER-ACCEPTED AND MERGED.
+- L5-A2+ remains NOT AUTHORIZED.
