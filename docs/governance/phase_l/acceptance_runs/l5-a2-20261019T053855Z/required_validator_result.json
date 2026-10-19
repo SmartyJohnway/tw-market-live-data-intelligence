@@ -1,0 +1,68 @@
+[
+  {
+    "exit_code": 0,
+    "output": "{\r\n  \"browser_extra_count\": 1,\r\n  \"direct_count\": 11,\r\n  \"errors\": [],\r\n  \"lock_count\": 49,\r\n  \"network_access\": false,\r\n  \"status\": \"PASS\",\r\n  \"writes\": false\r\n}",
+    "status": "PASS",
+    "id": "verify_dependency_supply_chain"
+  },
+  {
+    "exit_code": 0,
+    "output": "{\r\n  \"failures\": [],\r\n  \"packages\": {\r\n    \"fastapi\": \"0.133.0\",\r\n    \"httpx\": \"0.28.1\",\r\n    \"jsonschema\": \"4.25.0\",\r\n    \"mcp\": \"1.29.0\",\r\n    \"pandas\": \"2.3.1\",\r\n    \"requests\": \"2.32.4\",\r\n    \"uvicorn\": \"0.41.0\"\r\n  },\r\n  \"platform\": \"Windows-10-10.0.19045-SP0\",\r\n  \"python\": \"3.13.7\",\r\n  \"status\": \"PASS\"\r\n}",
+    "status": "PASS",
+    "id": "verify_environment"
+  },
+  {
+    "exit_code": 0,
+    "output": "No broken requirements found.",
+    "status": "PASS",
+    "id": "pip_check"
+  },
+  {
+    "exit_code": 0,
+    "output": "{\r\n  \"errors\": [],\r\n  \"ok\": true\r\n}",
+    "status": "PASS",
+    "id": "validate_source_registry"
+  },
+  {
+    "exit_code": 0,
+    "output": "PASS: Portable Skill catalog is fully synchronized with Canonical Catalog SoT (Deep Equality Verified).",
+    "status": "PASS",
+    "id": "validate_portable_catalog_sync"
+  },
+  {
+    "exit_code": 0,
+    "output": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}",
+    "status": "PASS",
+    "id": "validate_runtime_skill_guide_sync"
+  },
+  {
+    "exit_code": 0,
+    "output": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"tool_count\": 6}",
+    "status": "PASS",
+    "id": "validate_v1_public_contracts"
+  },
+  {
+    "exit_code": 0,
+    "output": "",
+    "status": "PASS",
+    "id": "validate_unified_market_evidence_contracts"
+  },
+  {
+    "exit_code": 0,
+    "output": "phase_h_v3_contracts: PASS",
+    "status": "PASS",
+    "id": "validate_phase_h_v3_contracts"
+  },
+  {
+    "exit_code": 0,
+    "output": "",
+    "status": "PASS",
+    "id": "compileall"
+  },
+  {
+    "exit_code": 0,
+    "output": "",
+    "status": "PASS",
+    "id": "git_diff_check_before_frontdoor"
+  }
+]

@@ -1,6 +1,6 @@
 ---
 
-## Current L5 state — A1 technical contract freeze (2026-10-18)
+## Current L5 state — A2 explicit registration conformance (2026-10-19)
 
 L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after technical
 exit `PHASE_L_L4_EXIT_REVIEW_PASS`. L5 is STARTED under
@@ -8,21 +8,22 @@ exit `PHASE_L_L4_EXIT_REVIEW_PASS`. L5 is STARTED under
 L5-A0 is **OWNER-ACCEPTED AND MERGED** via PR #380 at `241a5249987c008a28d959677704eee483a1c216`, with disposition
 `L5_A0_EVIDENCE_FAMILY_EXTENSION_SURFACE_INVENTORY_COMPLETE`.
 The 14-capability inventory maps 12 descriptive archetypes plus non-capability H4;
-13 representative traces cover all 14 capabilities. The minimum evidence-family extension contract is technically frozen by L5-A1; Owner acceptance is pending. Assessment: `PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW`; no new family or runtime change.
+13 representative traces cover all 14 capabilities. The minimum evidence-family extension contract is Owner-accepted and merged. L5-A2 technical conformance hardening is complete; Owner acceptance is pending. Assessment: `PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW`; no new family or runtime change.
 Required offline baseline checks pass; extra default-ci baseline remains non-green
 (1,248 passed, 41 failed, four skipped, five deselected), explicitly preserved for review.
 See `docs/governance/phase_l/PHASE_L_L5_A0_EVIDENCE_FAMILY_EXTENSION_SURFACE_INVENTORY_2026-10-18.md`
 and `docs/governance/phase_l/acceptance_runs/l5-a0-20261018T110810Z/offline_review.json`.
 See `docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_2026-10-18.md` and `docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/offline_validation.json`.
+See `docs/governance/phase_l/PHASE_L_L5_A2_EXPLICIT_REGISTRATION_CONFORMANCE_HARDENING_2026-10-19.md` and `docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/offline_review.json`.
 L5-A1: OWNER-ACCEPTED AND MERGED under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`.
-L5-A2+ is NOT AUTHORIZED. L6-L7 is NOT AUTHORIZED. Phase M remains NOT AUTHORIZED.
-L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ remains NOT AUTHORIZED.
+L5-A2: TECHNICAL CONFORMANCE HARDENING COMPLETE / OWNER ACCEPTANCE PENDING; L5-A3+ and L6-L7 are NOT AUTHORIZED. Phase M remains NOT AUTHORIZED.
+L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2: TECHNICAL CONFORMANCE HARDENING COMPLETE / OWNER ACCEPTANCE PENDING; L5-A3+ and L6-L7 are NOT AUTHORIZED.
 
 title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "2026-10-18: Phase J/K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2/L3 CLOSED; L4-A0-A6 Owner-accepted and merged; L4-A6 technical disposition L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS; L4-A7 PHASE_L_L4_EXIT_REVIEW_PASS; L4 CLOSED under PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after PR #378 merge e184e2b5abfabc4656943d9734e4dc68230a8bbd; L5 STARTED; L5-A0 Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 NOT AUTHORIZED."
+status_reconciled_through: "2026-10-19: Phase J/K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2/L3 CLOSED; L4-A0-A6 Owner-accepted and merged; L4-A6 technical disposition L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS; L4-A7 PHASE_L_L4_EXIT_REVIEW_PASS; L4 CLOSED under PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after PR #378 merge e184e2b5abfabc4656943d9734e4dc68230a8bbd; L5 STARTED; L5-A0 Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2: TECHNICAL CONFORMANCE HARDENING COMPLETE / OWNER ACCEPTANCE PENDING; L5-A3+ and L6-L7 are NOT AUTHORIZED."
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -1449,7 +1450,7 @@ sources, zero deterministic contract drift proven); its one-shot authority is
 consumed and a second run is prohibited. L4-A0 inventory is Owner-accepted and merged under
 `L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_OWNER_ACCEPTED_FOR_MERGE`. L4-A1 is Owner-accepted and merged under
 `L4_A1_NETWORK_EXPOSURE_REQUEST_SURFACE_HARDENING_OWNER_ACCEPTED_FOR_MERGE`.
-L4-A2 is Owner-accepted and merged under `L4_A2_PATH_CONTAINMENT_HARDENING_OWNER_ACCEPTED_FOR_MERGE`; L4-A3 is Owner-accepted and merged; L4-A4 is Owner-accepted and merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED. See
+L4-A2 is Owner-accepted and merged under `L4_A2_PATH_CONTAINMENT_HARDENING_OWNER_ACCEPTED_FOR_MERGE`; L4-A3 is Owner-accepted and merged; L4-A4 is Owner-accepted and merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2: TECHNICAL CONFORMANCE HARDENING COMPLETE / OWNER ACCEPTANCE PENDING; L5-A3+ and L6-L7 are NOT AUTHORIZED. See
 `docs/governance/phase_l/PHASE_L_L4_A0_SECURITY_RESOURCE_BOUNDARY_INVENTORY_2026-10-17.md`,
 `docs/governance/phase_l/PHASE_L_L4_A1_NETWORK_EXPOSURE_REQUEST_SURFACE_HARDENING_2026-10-17.md`,
 and `docs/governance/phase_l/PHASE_L_L4_A2_PATH_CONTAINMENT_HARDENING_2026-10-17.md`.

@@ -1,0 +1,77 @@
+{
+  "rules": [
+    {
+      "rule_id": "R1",
+      "relation": "Catalog ↔ Request vocabulary",
+      "disposition": "DIRECTLY_VALIDATED",
+      "mechanical_or_delegated_check": "request schema enum equals canonical Catalog capability IDs",
+      "failure_code": "A2_REQUEST_CATALOG_VOCABULARY_MISMATCH",
+      "result": "PASS"
+    },
+    {
+      "rule_id": "R2",
+      "relation": "Catalog ↔ selected routing",
+      "disposition": "DIRECTLY_VALIDATED",
+      "mechanical_or_delegated_check": "route capability exists; selected executor is one of declared candidates; contract-only states remain unselected",
+      "failure_code": "A2_UNKNOWN_ROUTED_CAPABILITY",
+      "result": "PASS"
+    },
+    {
+      "rule_id": "R3",
+      "relation": "route ↔ planner disposition",
+      "disposition": "DIRECTLY_VALIDATED",
+      "mechanical_or_delegated_check": "resolved/executable, blocked, and plan-only route dispositions are internally consistent; existing Unified contract gate delegated",
+      "failure_code": "A2_BLOCKED_ROUTE_HAS_SELECTION",
+      "result": "PASS"
+    },
+    {
+      "rule_id": "R4",
+      "relation": "executor metadata ↔ trusted callable",
+      "disposition": "DIRECTLY_VALIDATED",
+      "mechanical_or_delegated_check": "selected routes require exact metadata tuple and callable materialized by trusted static builder",
+      "failure_code": "A2_EXECUTOR_WITHOUT_TRUSTED_CALLABLE",
+      "result": "PASS"
+    },
+    {
+      "rule_id": "R5",
+      "relation": "typed evidence contract consistency",
+      "disposition": "DIRECTLY_VALIDATED",
+      "mechanical_or_delegated_check": "typed loader/lineage/projection/Result/Audit/handoff version references exist in explicit loader/schema authorities; semantics deferred",
+      "failure_code": "A2_TYPED_EVIDENCE_CONTRACT_VERSION_MISMATCH",
+      "result": "PASS"
+    },
+    {
+      "rule_id": "R6",
+      "relation": "source authority consistency",
+      "disposition": "DIRECTLY_VALIDATED",
+      "mechanical_or_delegated_check": "source identities come from named current H/I authorities; unknown and selected dormant sources fail closed; Phase G source registry gate delegated",
+      "failure_code": "A2_UNKNOWN_SOURCE_AUTHORITY",
+      "result": "PASS"
+    },
+    {
+      "rule_id": "R7",
+      "relation": "derived synchronized views",
+      "disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_or_delegated_check": "portable Catalog and runtime Skill remain derived and are checked by their existing synchronization validators",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "result": "PASS"
+    },
+    {
+      "rule_id": "R8",
+      "relation": "historical duplication",
+      "disposition": "STRUCTURALLY_ASSERTED",
+      "mechanical_or_delegated_check": "the two historical duplicate surfaces are expressly forbidden from resolving current runtime authority",
+      "failure_code": "A2_HISTORICAL_DUPLICATE_AS_CURRENT_AUTHORITY",
+      "result": "PASS"
+    },
+    {
+      "rule_id": "R9",
+      "relation": "Owner acceptance authority",
+      "disposition": "STRUCTURALLY_ASSERTED",
+      "mechanical_or_delegated_check": "validator result is diagnostic only; Owner/governance acceptance and activation require separate authority",
+      "failure_code": "A2_OWNER_ACCEPTANCE_REQUIRED",
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS"
+}

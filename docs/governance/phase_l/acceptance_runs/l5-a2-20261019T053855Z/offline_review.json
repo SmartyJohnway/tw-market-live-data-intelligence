@@ -1,0 +1,96 @@
+{
+  "status": "L5_A2_EXPLICIT_REGISTRATION_CONFORMANCE_HARDENING_PASS",
+  "scope": "deterministic offline explicit-registration conformance hardening only",
+  "registration_coverage": {
+    "total_a0_rows": 39,
+    "extension_relevant": 30,
+    "accounted": 30,
+    "unresolved": 0,
+    "not_an_extension_point": 9,
+    "negative_controls_preserved": 9,
+    "promoted": 0,
+    "friction_groups": 8,
+    "friction_groups_reconciled": 8,
+    "disposition_counts": {
+      "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE": 10,
+      "DIRECTLY_VALIDATED": 11,
+      "PUBLICATION_CONFORMANCE_DEFERRED_TO_A4": 2,
+      "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3": 3,
+      "STRUCTURALLY_ASSERTED": 4
+    }
+  },
+  "architecture": {
+    "new_canonical_authorities": 0,
+    "runtime_discovery": false,
+    "plugin_framework": false,
+    "new_family": false,
+    "new_capability": false,
+    "runtime_semantic_changes": 0,
+    "request_result_audit_semantic_changes": 0,
+    "routing_executor_source_activation_changes": 0,
+    "mcp_tool_count": 6,
+    "architecture_conflicts": 0
+  },
+  "a1_integrity": {
+    "status": "PASS",
+    "manifest_artifact_count": 32,
+    "manifest_canonical_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+    "dimensions_frozen": 36,
+    "remaining_decision_required": 0,
+    "universal_family_id_registry": false,
+    "version_transition_ids_unchanged": true,
+    "version_transition_count": 12
+  },
+  "validator": {
+    "status": "PASS",
+    "focused_test_passed": 10,
+    "focused_test_failed": 0,
+    "required_validator_results": {
+      "verify_dependency_supply_chain": "PASS",
+      "verify_environment": "PASS",
+      "pip_check": "PASS",
+      "validate_source_registry": "PASS",
+      "validate_portable_catalog_sync": "PASS",
+      "validate_runtime_skill_guide_sync": "PASS",
+      "validate_v1_public_contracts": "PASS",
+      "validate_unified_market_evidence_contracts": "PASS",
+      "validate_phase_h_v3_contracts": "PASS",
+      "compileall": "PASS",
+      "git_diff_check_before_frontdoor": "PASS"
+    }
+  },
+  "default_ci": {
+    "candidate_counts": {
+      "collected": 1298,
+      "selected": 1293,
+      "passed": 1248,
+      "failed": 41,
+      "skipped": 4,
+      "deselected": 5
+    },
+    "historical_failed_node_count": 41,
+    "candidate_only_failed_nodes": 0,
+    "entry_base_only_failed_nodes": 0,
+    "exact_failed_node_set_equal": true,
+    "failure_set_comparison_note": "The A0 R1 baseline captured one failed node with a pytest diagnostic suffix; comparison normalization removed only the suffix after the node-id separator. Raw A0 R1 record is preserved and the 41-node set matches exactly."
+  },
+  "front_door": {
+    "status": "PASS",
+    "current_stale_rollups_before": 20,
+    "current_stale_rollups_after": 0,
+    "historical_rollups_preserved": 2,
+    "current_state_contradictions": 0
+  },
+  "offline_accounting": {
+    "provider_requests": 0,
+    "live_market_source_acquisition": 0,
+    "production_state_mutations": 0,
+    "external_socket_attempts": "NOT_MEASURED",
+    "os_wide_network_observation": false
+  },
+  "disposition_boundary": {
+    "l5_a2_owner_acceptance": "PENDING",
+    "l5_a3_plus_authorized": false,
+    "l6_l7_authorized": false
+  }
+}

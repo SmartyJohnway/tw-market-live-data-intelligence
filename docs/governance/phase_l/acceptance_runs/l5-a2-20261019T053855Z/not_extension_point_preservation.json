@@ -1,0 +1,79 @@
+{
+  "count": 9,
+  "preserved_negative_controls": 9,
+  "promoted_to_extension_point": 0,
+  "rows": [
+    {
+      "registration_id": "validator",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "scripts/m8r_05a_f3/capability_validator.py",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "citation",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "scripts/m8r_05c/citation_builder.py",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "governance",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "identity",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "scripts/m8r_05a_f3/security_master_loader.py",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "authorization",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "scripts/m8r_05b_02/validator.py",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "network_policy",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "server/local_network_boundary.py",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "resources",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "server/resource_boundaries.py",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "retention",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "server/services/unified_retention_inventory.py",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "mcp",
+      "A0_classification": "NOT_AN_EXTENSION_POINT",
+      "authority_file": "server/unified_mcp/tool_contracts.py",
+      "preserved_negative_control": true,
+      "promoted_to_extension_point": false
+    }
+  ],
+  "covered_platform_controls": [
+    "identity",
+    "authorization",
+    "network policy",
+    "resource policy",
+    "retention",
+    "MCP/public tool surface"
+  ],
+  "result": "PASS"
+}

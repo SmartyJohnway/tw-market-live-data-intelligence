@@ -1,0 +1,703 @@
+{
+  "total_friction_groups": 8,
+  "registration_level_dispositions": 8,
+  "groups": [
+    {
+      "friction_group_id": "HARD-schema_loader",
+      "A0_classification": "INTENTIONAL_BOUNDED_PRODUCT_CONTRACT_WITH_EXTENSION_FRICTION",
+      "current_authority": "scripts/m8r_05c/artifact_loader.py",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 75,
+              "name": "_load_schema"
+            },
+            {
+              "line": 83,
+              "name": "_validate_schema"
+            },
+            {
+              "line": 94,
+              "name": "_validate_request_schema"
+            },
+            {
+              "line": 104,
+              "name": "_load_json"
+            },
+            {
+              "line": 115,
+              "name": "_sha256_file"
+            },
+            {
+              "line": 122,
+              "name": "_check_containment"
+            },
+            {
+              "line": 138,
+              "name": "_load_phase_h_source_attempts"
+            },
+            {
+              "line": 202,
+              "name": "load_projection_inputs"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 202,
+          "path": "scripts/m8r_05c/artifact_loader.py",
+          "symbol": "load_projection_inputs",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "current_behavior": "_RESEARCH_EVIDENCE_CONTRACTS enumerates typed schema names",
+      "A2_registration_disposition": "DIRECTLY_VALIDATED",
+      "registration_level_check": "loader allowlist contract IDs resolve to local versioned schemas",
+      "failure_code": "A2_TYPED_EVIDENCE_SCHEMA_MISSING",
+      "next_semantic_tranche": "A3 handles semantic transformation."
+    },
+    {
+      "friction_group_id": "HARD-lineage",
+      "A0_classification": "INTENTIONAL_BOUNDED_PRODUCT_CONTRACT_WITH_EXTENSION_FRICTION",
+      "current_authority": "scripts/m8r_05c/lineage_resolver.py",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 74,
+              "name": "_expected_typed_contract"
+            },
+            {
+              "line": 79,
+              "name": "_allowed_typed_contracts"
+            },
+            {
+              "line": 87,
+              "name": "TargetResolution"
+            },
+            {
+              "line": 98,
+              "name": "OperationBinding"
+            },
+            {
+              "line": 118,
+              "name": "LineageMap"
+            },
+            {
+              "line": 130,
+              "name": "build_lineage_map"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 130,
+          "path": "scripts/m8r_05c/lineage_resolver.py",
+          "symbol": "build_lineage_map",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "current_behavior": "Capability identity map and H/I typed contract maps repeat approved vocabulary",
+      "A2_registration_disposition": "DIRECTLY_VALIDATED",
+      "registration_level_check": "lineage typed-contract references are contained in the loader authority",
+      "failure_code": "A2_TYPED_EVIDENCE_CONTRACT_VERSION_MISMATCH",
+      "next_semantic_tranche": "A3 handles semantic lineage correctness."
+    },
+    {
+      "friction_group_id": "HARD-runtime_routes",
+      "A0_classification": "INTENTIONAL_BOUNDED_PRODUCT_CONTRACT_WITH_EXTENSION_FRICTION",
+      "current_authority": "scripts/m8r_06_03_production_adapter.py",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 87,
+              "name": "_h3_failed_month"
+            },
+            {
+              "line": 103,
+              "name": "_validate_h3_month_result"
+            },
+            {
+              "line": 183,
+              "name": "load_production_executor_metadata"
+            },
+            {
+              "line": 190,
+              "name": "production_executor_metadata_sha256"
+            },
+            {
+              "line": 194,
+              "name": "_result_base"
+            },
+            {
+              "line": 211,
+              "name": "_require_approved_execution"
+            },
+            {
+              "line": 218,
+              "name": "_write_safe_evidence"
+            },
+            {
+              "line": 249,
+              "name": "_write_research_evidence"
+            },
+            {
+              "line": 271,
+              "name": "_fetch_official_payload"
+            },
+            {
+              "line": 283,
+              "name": "_research_targets"
+            },
+            {
+              "line": 303,
+              "name": "_research_batch_operation_adapter"
+            },
+            {
+              "line": 361,
+              "name": "_assess_current_observation"
+            },
+            {
+              "line": 447,
+              "name": "_current_observation"
+            },
+            {
+              "line": 508,
+              "name": "_official_eod"
+            },
+            {
+              "line": 539,
+              "name": "_phase_h_artifact_record"
+            },
+            {
+              "line": 571,
+              "name": "_phase_h_h1_sidecar"
+            },
+            {
+              "line": 600,
+              "name": "_phase_h_h1_result_base"
+            },
+            {
+              "line": 619,
+              "name": "_phase_h_h1_tpex_attention"
+            },
+            {
+              "line": 714,
+              "name": "_phase_h_h3_result_base"
+            },
+            {
+              "line": 733,
+              "name": "_phase_h_h3_twse_recent_performance"
+            },
+            {
+              "line": 1004,
+              "name": "production_operation_adapter"
+            },
+            {
+              "line": 1030,
+              "name": "production_batch_operation_adapter"
+            },
+            {
+              "line": 1135,
+              "name": "_phase_i_i1_timed_transport"
+            },
+            {
+              "line": 1150,
+              "name": "phase_i_i1_timed_operation_adapter"
+            },
+            {
+              "line": 1156,
+              "name": "phase_i_i1_timed_batch_adapter"
+            },
+            {
+              "line": 1164,
+              "name": "build_production_runtime_adapter_registry"
+            },
+            {
+              "line": 322,
+              "name": "timed_fetch"
+            },
+            {
+              "line": 778,
+              "name": "bounded_month_fetch"
+            },
+            {
+              "line": 840,
+              "name": "walker_month_fetch"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1164,
+          "path": "scripts/m8r_06_03_production_adapter.py",
+          "symbol": "build_production_runtime_adapter_registry",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 3,
+          "path": "config/m8r_06_03_executor_registry_metadata.json",
+          "symbol": "executors",
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "current_behavior": "Trusted route tuple list and metadata must agree",
+      "A2_registration_disposition": "DIRECTLY_VALIDATED",
+      "registration_level_check": "selected route tuples match metadata and trusted callable registrations",
+      "failure_code": "A2_EXECUTOR_WITHOUT_TRUSTED_CALLABLE",
+      "next_semantic_tranche": "No discovery; do not add activation."
+    },
+    {
+      "friction_group_id": "HARD-typed_projection",
+      "A0_classification": "INTENTIONAL_BOUNDED_PRODUCT_CONTRACT_WITH_EXTENSION_FRICTION",
+      "current_authority": "scripts/m8r_05c/models.py",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 12,
+              "name": "EvidenceEnvelopeProjection"
+            },
+            {
+              "line": 25,
+              "name": "DerivedMetricProjection"
+            },
+            {
+              "line": 43,
+              "name": "CitationProjection"
+            },
+            {
+              "line": 55,
+              "name": "ResolutionProjection"
+            },
+            {
+              "line": 65,
+              "name": "TargetEvidenceProjection"
+            },
+            {
+              "line": 85,
+              "name": "TargetProjection"
+            },
+            {
+              "line": 97,
+              "name": "PartialFailureProjection"
+            },
+            {
+              "line": 105,
+              "name": "RequestSummaryProjection"
+            },
+            {
+              "line": 115,
+              "name": "ProjectionInputs"
+            },
+            {
+              "line": 141,
+              "name": "ProjectionResult"
+            },
+            {
+              "line": 158,
+              "name": "CitationToOperationEntry"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 12,
+          "path": "scripts/m8r_05c/models.py",
+          "symbol": "EvidenceEnvelopeProjection",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 47,
+              "name": "project_typed_research_evidence"
+            },
+            {
+              "line": 73,
+              "name": "project_phase_h_typed_evidence"
+            },
+            {
+              "line": 89,
+              "name": "project_trading_status_context_evidence"
+            },
+            {
+              "line": 115,
+              "name": "_research_artifact"
+            },
+            {
+              "line": 124,
+              "name": "_project_material_disclosures"
+            },
+            {
+              "line": 163,
+              "name": "_project_monthly_revenue"
+            },
+            {
+              "line": 178,
+              "name": "_project_envelope"
+            },
+            {
+              "line": 265,
+              "name": "_project_current_observation"
+            },
+            {
+              "line": 309,
+              "name": "_project_envelope_legacy"
+            },
+            {
+              "line": 334,
+              "name": "_project_envelope_v1_1"
+            },
+            {
+              "line": 343,
+              "name": "_project_official_eod_legacy"
+            },
+            {
+              "line": 359,
+              "name": "_project_official_eod_pre_v1_3"
+            },
+            {
+              "line": 426,
+              "name": "_project_official_eod"
+            },
+            {
+              "line": 440,
+              "name": "project_target_evidence"
+            },
+            {
+              "line": 463,
+              "name": "_cite"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 440,
+          "path": "scripts/m8r_05c/evidence_projector.py",
+          "symbol": "project_target_evidence",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 63,
+              "name": "_load_result_schema"
+            },
+            {
+              "line": 70,
+              "name": "_build_request_summary"
+            },
+            {
+              "line": 91,
+              "name": "_build_resolution"
+            },
+            {
+              "line": 116,
+              "name": "_compute_result_status"
+            },
+            {
+              "line": 157,
+              "name": "_envelope_to_dict"
+            },
+            {
+              "line": 180,
+              "name": "_citation_to_dict"
+            },
+            {
+              "line": 196,
+              "name": "_canonical_identity_v2"
+            },
+            {
+              "line": 213,
+              "name": "_derived_metric_to_dict"
+            },
+            {
+              "line": 235,
+              "name": "_research_status"
+            },
+            {
+              "line": 240,
+              "name": "_not_applicable_research"
+            },
+            {
+              "line": 265,
+              "name": "_derived_h4_artifact"
+            },
+            {
+              "line": 290,
+              "name": "build_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 24,
+          "path": "scripts/m8r_05c/result_builder.py",
+          "symbol": "build_result",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "current_behavior": "Typed model fields, per-family projection and coverage branches",
+      "A2_registration_disposition": "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3",
+      "registration_level_check": "identity/version references checked; projection semantics deferred",
+      "failure_code": "A2_TYPED_EVIDENCE_CONTRACT_VERSION_MISMATCH",
+      "next_semantic_tranche": "A3 schema/normalization/projection."
+    },
+    {
+      "friction_group_id": "HARD-audit_handoff",
+      "A0_classification": "INTENTIONAL_BOUNDED_PRODUCT_CONTRACT_WITH_EXTENSION_FRICTION",
+      "current_authority": "scripts/m8r_05c/audit_package_builder.py",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 41,
+              "name": "_load_audit_schema"
+            },
+            {
+              "line": 65,
+              "name": "_phase_h_attempt_metadata"
+            },
+            {
+              "line": 73,
+              "name": "_audit_attempt"
+            },
+            {
+              "line": 111,
+              "name": "_phase_h_governance"
+            },
+            {
+              "line": 189,
+              "name": "_phase_i_evidence"
+            },
+            {
+              "line": 212,
+              "name": "build_audit_package"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 21,
+          "path": "scripts/m8r_05c/audit_package_builder.py",
+          "symbol": "build_audit_package",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 57,
+              "name": "_section"
+            },
+            {
+              "line": 62,
+              "name": "_fmt_timing"
+            },
+            {
+              "line": 68,
+              "name": "_fmt_evidence_envelope"
+            },
+            {
+              "line": 117,
+              "name": "_fmt_eod_reference"
+            },
+            {
+              "line": 168,
+              "name": "_data_need_label"
+            },
+            {
+              "line": 181,
+              "name": "_fmt_typed_research_evidence"
+            },
+            {
+              "line": 238,
+              "name": "_fmt_phase_h_evidence"
+            },
+            {
+              "line": 334,
+              "name": "render_result_markdown"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 334,
+          "path": "scripts/m8r_05c/markdown_renderer.py",
+          "symbol": "render_result_markdown",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "current_behavior": "Source-family provenance and user-visible units/coverage rendering",
+      "A2_registration_disposition": "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3",
+      "registration_level_check": "registration identities checked; projection/citation semantics deferred",
+      "failure_code": "A2_TYPED_EVIDENCE_CONTRACT_VERSION_MISMATCH",
+      "next_semantic_tranche": "A3 semantic conformance."
+    },
+    {
+      "friction_group_id": "HARD-planner",
+      "A0_classification": "INTENTIONAL_BOUNDED_PRODUCT_CONTRACT_WITH_EXTENSION_FRICTION",
+      "current_authority": "scripts/m8r_05b_01/planner.py",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 26,
+              "name": "_pairs"
+            },
+            {
+              "line": 34,
+              "name": "routing_security_type"
+            },
+            {
+              "line": 41,
+              "name": "_targets"
+            },
+            {
+              "line": 50,
+              "name": "_validate_inputs"
+            },
+            {
+              "line": 66,
+              "name": "_warning"
+            },
+            {
+              "line": 69,
+              "name": "_refresh_operation_id"
+            },
+            {
+              "line": 79,
+              "name": "validate_batch_integrity"
+            },
+            {
+              "line": 100,
+              "name": "plan_identity_scope"
+            },
+            {
+              "line": 110,
+              "name": "build_plan"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 110,
+          "path": "scripts/m8r_05b_01/planner.py",
+          "symbol": "build_plan",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "current_behavior": "H3/H2 dependency and I3 source-date binding; metadata capabilities inherit upstream operations",
+      "A2_registration_disposition": "DIRECTLY_VALIDATED",
+      "registration_level_check": "route status and selected executor disposition checked against Catalog and metadata",
+      "failure_code": "A2_BLOCKED_ROUTE_HAS_SELECTION",
+      "next_semantic_tranche": "No planner discovery."
+    },
+    {
+      "friction_group_id": "HARD-source_seams",
+      "A0_classification": "INTENTIONAL_BOUNDED_PRODUCT_CONTRACT_WITH_EXTENSION_FRICTION",
+      "current_authority": "scripts/phase_g/mops_material_disclosures.py",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 10,
+              "name": "_date"
+            },
+            {
+              "line": 19,
+              "name": "_published"
+            },
+            {
+              "line": 26,
+              "name": "execute"
+            },
+            {
+              "line": 78,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 80,
+              "name": "_conflict_diagnostic"
+            },
+            {
+              "line": 82,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 26,
+          "path": "scripts/phase_g/mops_material_disclosures.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [
+            {
+              "line": 13,
+              "name": "_roc_date"
+            },
+            {
+              "line": 20,
+              "name": "_report_date"
+            },
+            {
+              "line": 28,
+              "name": "_integer"
+            },
+            {
+              "line": 34,
+              "name": "_number"
+            },
+            {
+              "line": 40,
+              "name": "_value"
+            },
+            {
+              "line": 52,
+              "name": "execute"
+            },
+            {
+              "line": 81,
+              "name": "_binding_diagnostics"
+            },
+            {
+              "line": 83,
+              "name": "_result"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 52,
+          "path": "scripts/phase_g/mops_monthly_revenue.py",
+          "symbol": "execute",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        }
+      ],
+      "current_behavior": "Different reporting-period and disclosure-item semantics share research executor",
+      "A2_registration_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "registration_level_check": "Phase H/I explicit source authorities checked and source-registry gate delegated for broader inventory",
+      "failure_code": "A2_UNKNOWN_SOURCE_AUTHORITY",
+      "next_semantic_tranche": "Dormant source remains dormant."
+    },
+    {
+      "friction_group_id": "HARD-test_matrix",
+      "A0_classification": "INTENTIONAL_BOUNDED_PRODUCT_CONTRACT_WITH_EXTENSION_FRICTION",
+      "current_authority": "scripts/validate_portable_catalog_sync.py",
+      "exact_source_files": [
+        {
+          "defined_symbols": [
+            {
+              "line": 19,
+              "name": "validate"
+            }
+          ],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 19,
+          "path": "scripts/validate_portable_catalog_sync.py",
+          "symbol": "validate",
+          "symbol_kind": "FUNCTION_OR_CLASS"
+        },
+        {
+          "defined_symbols": [],
+          "git_base": "4e8aa0557644ac76cca22e67c824ffd0eab7b6c1",
+          "line": 1,
+          "path": "config/test_execution_profiles.json",
+          "symbol": null,
+          "symbol_kind": "SCHEMA_OR_DOCUMENT_SELECTOR"
+        }
+      ],
+      "current_behavior": "Explicit assertions and test-path lists are deliberate independent safeguards",
+      "A2_registration_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "registration_level_check": "portable catalog and runtime Skill sync gates retained; focused validator tests added",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "next_semantic_tranche": "No profile redesign."
+    }
+  ],
+  "result": "PASS"
+}
