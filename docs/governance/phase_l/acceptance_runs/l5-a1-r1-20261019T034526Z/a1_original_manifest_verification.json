@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "original_a1_run_id": "l5-a1-20261018T140202Z",
+  "artifact_count": 32,
+  "declared_manifest_canonical_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+  "recomputed_manifest_canonical_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+  "all_32_entry_artifacts_match_at_r1_entry": true,
+  "all_32_entry_artifact_files_exist": true,
+  "manifest_file_will_not_be_modified": true,
+  "note": "All 32 original artifact hashes were verified before front-door edits; the original A1 manifest and run are left untouched."
+}

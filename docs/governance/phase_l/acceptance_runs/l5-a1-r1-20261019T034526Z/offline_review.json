@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "disposition": "L5_A1_FRONT_DOOR_STATUS_RECONCILIATION_PASS",
+  "primary_a1_disposition": "L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_TECHNICAL_FREEZE_PASS",
+  "stale_live_state_occurrences_before": 7,
+  "stale_live_state_occurrences_after": 0,
+  "current_state_contradictions": 0,
+  "original_a1_manifest_verified_at_entry": true,
+  "git_diff_check": "PASS",
+  "change_scope": "PASS",
+  "technical_validators_rerun": false,
+  "contract_content_or_T1_T12_changed": false,
+  "provider_requests": 0,
+  "production_state_mutations": 0,
+  "external_network_attempts": "NOT_PERFORMED; no OS-wide network observation claimed"
+}

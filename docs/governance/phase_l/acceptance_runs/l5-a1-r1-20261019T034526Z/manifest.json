@@ -1,0 +1,51 @@
+{
+  "run_id": "l5-a1-r1-20261019T034526Z",
+  "status": "L5_A1_FRONT_DOOR_STATUS_RECONCILIATION_PASS",
+  "entry_head": "e1348ce5fcc0314452aa49b53c3f9eda43c8b9e1",
+  "entry_tree": "d4baefa186d60268676e46071d8d70e6560e68c3",
+  "authorized_base": "0a1b3bf3b18b009cc8f54c6207a468612d337f9f",
+  "a1_original_manifest_canonical_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+  "artifact_count": 7,
+  "artifacts": [
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L5_A1_R1_FRONT_DOOR_STATUS_RECONCILIATION_2026-10-18.md",
+      "canonical_bytes": 2385,
+      "sha256": "bfa32b42622b67d47267624d1271beb5608a083edc65b6a604f421dfbd1e2de5"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/a1_original_manifest_verification.json",
+      "canonical_bytes": 595,
+      "sha256": "9b3b2ba88c8c41819f229cf9512147fe9461069439e2f2372806c639a86ee92d"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/diff_scope_verification.json",
+      "canonical_bytes": 2254,
+      "sha256": "6141453205a96f656eeb9a3912cf1ab0da983bce4169286402a5015bc047012f"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/offline_review.json",
+      "canonical_bytes": 652,
+      "sha256": "a3cf459e25f11f809e046c34adbee2706312a1e01596b9a3405a94f67e37b4b5"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/preflight_result.json",
+      "canonical_bytes": 756,
+      "sha256": "f5cfa9506cd69436e2808889183050c76de02c10c8fc01c60c0b1ec3534c2184"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/stale_state_inventory_after.json",
+      "canonical_bytes": 1115,
+      "sha256": "95239233facbf7fff97eee18a710b463a1411047ebf79ad464952d9b14aa3bdb"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/stale_state_inventory_before.json",
+      "canonical_bytes": 10744,
+      "sha256": "6c19747fe200a2be47c3e8d5a48165475e88398ff46f2e450ca1892ae4f53198"
+    }
+  ],
+  "hash_policy": "UTF-8 text; CRLF/CR normalized to LF before SHA-256. Manifest canonical SHA-256 is compact sorted-key UTF-8 JSON excluding manifest_canonical_sha256.",
+  "provider_requests": 0,
+  "production_state_mutations": 0,
+  "external_network_attempts": "NOT_PERFORMED; no OS-wide network observation claimed",
+  "manifest_canonical_sha256": "4afd4fafa1d84d7301de4ee2fc30bb03b6b238b027b461fef740c9494e10c0ca"
+}
