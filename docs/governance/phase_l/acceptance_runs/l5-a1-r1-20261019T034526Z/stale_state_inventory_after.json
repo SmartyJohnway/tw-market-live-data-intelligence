@@ -1,0 +1,42 @@
+{
+  "run_id": "l5-a1-r1-20261019T034526Z",
+  "scope": [
+    "PROJECT.md",
+    "HANDOFF.md",
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md"
+  ],
+  "live_stale_occurrences_after": 0,
+  "current_state_contradictions": 0,
+  "files": [
+    {
+      "path": "PROJECT.md",
+      "stale_live_occurrence_count": 0,
+      "occurrences": [],
+      "current_state_contradiction_count": 0,
+      "contradictions": []
+    },
+    {
+      "path": "HANDOFF.md",
+      "stale_live_occurrence_count": 0,
+      "occurrences": [],
+      "current_state_contradiction_count": 0,
+      "contradictions": []
+    },
+    {
+      "path": "ROADMAP.md",
+      "stale_live_occurrence_count": 0,
+      "occurrences": [],
+      "current_state_contradiction_count": 0,
+      "contradictions": []
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "stale_live_occurrence_count": 0,
+      "occurrences": [],
+      "current_state_contradiction_count": 0,
+      "contradictions": []
+    }
+  ],
+  "top_level_state_preserved": true
+}

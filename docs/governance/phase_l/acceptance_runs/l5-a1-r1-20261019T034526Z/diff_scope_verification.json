@@ -1,0 +1,41 @@
+{
+  "result": "PASS",
+  "expected_paths": [
+    "HANDOFF.md",
+    "PROJECT.md",
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+    "docs/governance/phase_l/PHASE_L_L5_A1_R1_FRONT_DOOR_STATUS_RECONCILIATION_2026-10-18.md",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/a1_original_manifest_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/diff_scope_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/manifest.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/offline_review.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/preflight_result.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/stale_state_inventory_after.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/stale_state_inventory_before.json"
+  ],
+  "observed_paths": [
+    "HANDOFF.md",
+    "PROJECT.md",
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+    "docs/governance/phase_l/PHASE_L_L5_A1_R1_FRONT_DOOR_STATUS_RECONCILIATION_2026-10-18.md",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/a1_original_manifest_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/diff_scope_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/manifest.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/offline_review.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/preflight_result.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/stale_state_inventory_after.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-r1-20261019T034526Z/stale_state_inventory_before.json"
+  ],
+  "only_authorized_frontdoor_and_governance_evidence_paths": true,
+  "runtime_changes": 0,
+  "test_changes": 0,
+  "public_schema_changes": 0,
+  "catalog_changes": 0,
+  "routing_changes": 0,
+  "executor_changes": 0,
+  "source_changes": 0,
+  "dependency_changes": 0,
+  "product_configuration_changes": 0
+}

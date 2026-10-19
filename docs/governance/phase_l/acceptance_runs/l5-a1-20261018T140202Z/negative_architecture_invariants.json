@@ -1,0 +1,19 @@
+{
+  "dynamic_plugin_loading": false,
+  "family_owned_platform_policy": false,
+  "frozen_v3_mutation": false,
+  "invariants": [
+    "No universal runtime family registry merely for extensibility.",
+    "No second Catalog/source/executor/identity authority, request protocol, or Result/Audit system.",
+    "No family-specific MCP tool.",
+    "No dynamic third-party execution, Python entry points, discovery, or hot loading.",
+    "No hidden acquisition or automatic source/capability activation.",
+    "No trading, order routing, or broker credentials."
+  ],
+  "new_capability": false,
+  "new_family": false,
+  "public_mcp_tool_count": 6,
+  "runtime_registry": false,
+  "second_catalog_source_executor_identity_request_or_result_audit_authority": false,
+  "status": "PASS"
+}

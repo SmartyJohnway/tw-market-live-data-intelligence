@@ -1,0 +1,57 @@
+[
+  {
+    "name": "scripts/verify_dependency_supply_chain.py",
+    "return_code": 0,
+    "log": "validator_01.txt"
+  },
+  {
+    "name": "scripts/verify_environment.py",
+    "return_code": 0,
+    "log": "validator_02.txt"
+  },
+  {
+    "name": "-m pip check",
+    "return_code": 0,
+    "log": "validator_03.txt"
+  },
+  {
+    "name": "scripts/validate_source_registry.py",
+    "return_code": 0,
+    "log": "validator_04.txt"
+  },
+  {
+    "name": "scripts/validate_portable_catalog_sync.py",
+    "return_code": 0,
+    "log": "validator_05.txt"
+  },
+  {
+    "name": "scripts/validate_runtime_skill_guide_sync.py",
+    "return_code": 0,
+    "log": "validator_06.txt"
+  },
+  {
+    "name": "scripts/validate_v1_public_contracts.py",
+    "return_code": 0,
+    "log": "validator_07.txt"
+  },
+  {
+    "name": "scripts/validate_unified_market_evidence_contracts.py",
+    "return_code": 0,
+    "log": "validator_08.txt"
+  },
+  {
+    "name": "scripts/validate_phase_h_v3_contracts.py",
+    "return_code": 0,
+    "log": "validator_09.txt"
+  },
+  {
+    "name": "-m compileall -q scripts server tests",
+    "return_code": 0,
+    "log": "validator_10.txt"
+  },
+  {
+    "name": "diff --check",
+    "return_code": 0,
+    "log": "validator_11.txt"
+  }
+]
