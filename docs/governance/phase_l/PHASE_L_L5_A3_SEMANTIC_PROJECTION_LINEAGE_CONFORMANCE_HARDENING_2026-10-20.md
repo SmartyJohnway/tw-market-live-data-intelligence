@@ -1,9 +1,9 @@
 # Phase L5-A3 — Semantic Projection, Lineage & Derived Output Conformance Hardening
 
-**Authority:** `USER_CHAT_2026-10-20_PHASE_L_L5_A3_SEMANTIC_CONFORMANCE_HARDENING_AUTHORIZATION`  
-**Exact base:** `b4b5dac547b0fd0becb5b7a97ac7c158af305147`  
-**Base tree:** `d6cdc089086f3939ce1a13ca8f1bb469a6c19113`  
-**Branch:** `phase-l/l5-a3-semantic-conformance-hardening`  
+**Authority:** `USER_CHAT_2026-10-20_PHASE_L_L5_A3_SEMANTIC_CONFORMANCE_HARDENING_AUTHORIZATION`
+**Exact base:** `b4b5dac547b0fd0becb5b7a97ac7c158af305147`
+**Base tree:** `d6cdc089086f3939ce1a13ca8f1bb469a6c19113`
+**Branch:** `phase-l/l5-a3-semantic-conformance-hardening`
 **Run:** `l5-a3-20261020T015810Z`
 
 ## A1/A2 obligations and inherited deferrals
@@ -31,6 +31,6 @@ The A3 offline validator and focused mutation tests pass. Phase G research, Phas
 
 Publication/Skill-guide redesign and broader publication integration are deferred to unauthorized L5-A4+. No new family/capability/source/executor/route, canonical authority, runtime discovery, plugin framework, public tool, network behavior, or dependency was introduced. Provider requests and live acquisitions were zero; production state mutations were zero; external socket attempts were not measured.
 
-**Technical disposition:** `L5_A3_SEMANTIC_PROJECTION_LINEAGE_CONFORMANCE_HARDENING_PASS`  
-**Owner acceptance:** PENDING  
+**Technical disposition:** `L5_A3_SEMANTIC_PROJECTION_LINEAGE_CONFORMANCE_HARDENING_PASS`
+**Owner acceptance:** PENDING
 **Stop boundary:** L5-A4+, L6-L7, and Phase M remain unauthorized.

@@ -24,9 +24,9 @@
       "sha256": "2fc20460ddbfc702e0c2abc1cb4f55e728390fdedfea708206d924efb5d14138"
     },
     {
-      "canonical_bytes": 4025,
+      "canonical_bytes": 4013,
       "path": "docs/governance/phase_l/PHASE_L_L5_A3_SEMANTIC_PROJECTION_LINEAGE_CONFORMANCE_HARDENING_2026-10-20.md",
-      "sha256": "eeaf109a03ff25077b125a009b6a2bdda73c7ac7d8b729404e88c5bdd80c7c49"
+      "sha256": "3d96a4a8c69c42e6023bc2f16ece34c6698f6574bbc5b4735fe4db27ac3c0496"
     },
     {
       "canonical_bytes": 1554,
@@ -154,7 +154,7 @@
       "sha256": "b6bc4d75c4b32640a558a55128ab7f36e9b26c595857e7a2b167b1893e3d01af"
     }
   ],
-  "canonical_sha256": "2e24281a50907ad4fbb1ef551fb3f0251fdfb789409b9737f543751643fd7f10",
+  "canonical_sha256": "20bc3316440c938e0139c35f5f8d76aec03ecb18cd761b64e77d7d81251b2cfe",
   "normalization_policy": "UTF-8 text; CRLF/CR normalized to LF before SHA-256",
   "run_id": "l5-a3-20261020T015810Z"
 }
