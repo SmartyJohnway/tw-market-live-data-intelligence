@@ -15,6 +15,7 @@ CAPABILITY = "cash_institutional_flow_context"
 EVIDENCE_V2 = "cash_institutional_flow_context_evidence.v2"
 I3_EXECUTOR = "phase_i_i3_cash_institutional_flow_context_executor"
 CANDIDATE_BASELINE = "5c26e7b541bdb6c0d70a39c1e0eab8e129823373"
+L5_A4_ENTRY = "91458d203ac28fe4ab00c89229ed1320bcb64753"
 A26_COMPOSITE_EXECUTOR = "phase_h_h1_tpex_composite_executor"
 A26_H1_CAPABILITY = "trading_status_context"
 A26_ADDED_SOURCES = {"H1-TPEX-DISPOSITION-OPENAPI", "H1-TPEX-CHANGED-TRADING-OPENAPI"}
@@ -318,6 +319,101 @@ def strip_a3_h2_production_adapter_addition(text: str) -> str:
     return text
 
 
+A4_I2_CAPABILITY = "index_futures_context"
+A4_CATALOG_PATH = "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+A4_ROUTING_PATH = "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+A4_CATALOG_DESCRIPTION = (
+    "Optional descriptive TAIFEX TX regular-session context for resolved TWSE "
+    "company common-share targets; Owner-accepted production activation; "
+    "explicit-request and approval-gated."
+)
+A4_CATALOG_LIMITATION_OLD = (
+    "A3 bounded live acceptance passed; A4 branch technical activation candidate "
+    "remains approval-gated and explicit-request only; final Owner production "
+    "activation pending; currentness unknown"
+)
+A4_CATALOG_LIMITATION_NEW = (
+    "A3 bounded live acceptance and final Owner production activation accepted; "
+    "selected route remains approval-gated and explicit-request only; currentness unknown"
+)
+A4_ROUTING_STATUS_SOURCE = (
+    "Catalog V3 runtime_executable; final Owner production activation accepted "
+    "under PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json"
+)
+A4_ROUTING_LIMITATION_OLD = (
+    "A4 branch technical activation candidate; final Owner production activation pending"
+)
+A4_ROUTING_LIMITATION_NEW = (
+    "Final Owner production activation accepted; approval-gated and explicit-request only"
+)
+
+
+def _load_json_at_commit(commit: str, relative: str):
+    """Read a pinned authority blob; never consult a moving remote ref."""
+    return json.loads(subprocess.check_output(
+        ["git", "show", f"{commit}:{relative}"], cwd=ROOT
+    ).decode("utf-8"))
+
+
+def _replace_one(values: list, old: str, new: str, label: str) -> list:
+    if not isinstance(values, list) or values.count(old) != 1:
+        raise AssertionError(f"l5_a4_publication_delta_unexpected:{label}")
+    return [new if item == old else item for item in values]
+
+
+def _project_exact_a4_i2_row(relative: str, current, entry):
+    """Validate and project only the pre-approved I2 publication delta.
+
+    The A4 entry is pinned by commit SHA. The current row must match it in every
+    field other than the exact descriptive publication fields authorized by A4.
+    The return value is used only in a historical comparison; current files are
+    validated first by the normal current-authority validators and never written.
+    """
+    if relative not in {A4_CATALOG_PATH, A4_ROUTING_PATH}:
+        return current
+    result = json.loads(json.dumps(current))
+    rows_key = "data_need_capabilities" if relative == A4_CATALOG_PATH else "routes"
+    current_rows, entry_rows = result.get(rows_key), entry.get(rows_key)
+    if not isinstance(current_rows, list) or not isinstance(entry_rows, list):
+        raise AssertionError(f"l5_a4_publication_authority_invalid:{relative}")
+    current_matches = [row for row in current_rows if row.get("capability_id") == A4_I2_CAPABILITY]
+    entry_matches = [row for row in entry_rows if row.get("capability_id") == A4_I2_CAPABILITY]
+    if len(current_matches) != 1 or len(entry_matches) != 1:
+        raise AssertionError(f"l5_a4_publication_identity_invalid:{relative}")
+    current_row, entry_row = current_matches[0], entry_matches[0]
+    expected_current = json.loads(json.dumps(entry_row))
+    if relative == A4_CATALOG_PATH:
+        expected_current["description"] = A4_CATALOG_DESCRIPTION
+        expected_current["known_limitations"] = _replace_one(
+            expected_current.get("known_limitations"), A4_CATALOG_LIMITATION_OLD,
+            A4_CATALOG_LIMITATION_NEW, "catalog.known_limitations")
+    else:
+        expected_current["capability_status_source"] = A4_ROUTING_STATUS_SOURCE
+        expected_current["known_limitations"] = _replace_one(
+            expected_current.get("known_limitations"), A4_ROUTING_LIMITATION_OLD,
+            A4_ROUTING_LIMITATION_NEW, "routing.known_limitations")
+    if current_row != expected_current:
+        raise AssertionError(f"l5_a4_publication_delta_out_of_scope:{relative}")
+    # Project only after the complete row was checked against the pinned A4 entry.
+    result[rows_key] = [entry_row if row.get("capability_id") == A4_I2_CAPABILITY else row
+                        for row in current_rows]
+    return result
+
+
+def assert_projected_authority_matches_historical(projected, historical, relative: str) -> None:
+    """Final fail-closed comparison shared by production code and focused tests."""
+    if projected != historical:
+        raise AssertionError(f"non_i3_production_authority_drift:{relative}")
+
+
+def project_l5_a4_publication_reconciliation(relative: str, current, historical):
+    """Validate exact A4 wording, then restore pinned A4-entry wording for old gates."""
+    if relative not in {A4_CATALOG_PATH, A4_ROUTING_PATH}:
+        return current
+    entry = _load_json_at_commit(L5_A4_ENTRY, relative)
+    return _project_exact_a4_i2_row(relative, current, entry)
+
+
 def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_BASELINE) -> None:
     """Require current shared JSON authority to equal baseline sans I3 additions."""
     if relative == "scripts/m8r_06_03_production_adapter.py":
@@ -355,8 +451,8 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
     normalized = _normalize_current_h1_v2_addition(_without_i3(current))
     normalized = project_current_a26_h1_addition(relative, normalized, old)
     normalized = project_current_a3_h2_addition(relative, normalized, old)
-    if normalized != old:
-        raise AssertionError(f"non_i3_production_authority_drift:{relative}")
+    normalized = project_l5_a4_publication_reconciliation(relative, normalized, old)
+    assert_projected_authority_matches_historical(normalized, old, relative)
 
 
 def assert_candidate_is_dormant(catalog_relative: str, routing_relative: str) -> None:

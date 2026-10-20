@@ -1,0 +1,16 @@
+{
+  "architecture_conflicts": 0,
+  "blockers": [
+    {
+      "classification": "REGRESSION_GATE_HOLD",
+      "failure": "non_i3_production_authority_drift: Catalog descriptive prose",
+      "finding_id": "A4-REGRESSION-001",
+      "next_step": "Separate Owner reconciliation of I3 non-I3 authority guard publication metadata boundary; no guard/test changes made.",
+      "test_node": "tests/unit/test_phase_i_i3_a4_preflight.py::test_preflight_validator_preserves_historical_snapshot_and_checks_active_state"
+    }
+  ],
+  "new_canonical_authorities": 0,
+  "new_capability": false,
+  "new_family": false,
+  "runtime_discovery": false
+}

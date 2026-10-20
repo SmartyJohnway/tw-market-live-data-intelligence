@@ -468,7 +468,7 @@
     },
     {
       "capability_id": "index_futures_context",
-      "capability_status_source": "Catalog V3 runtime_executable; A4 branch technical activation candidate, final Owner activation pending",
+      "capability_status_source": "Catalog V3 runtime_executable; final Owner production activation accepted under PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json",
       "supported_markets": [
         "TWSE"
       ],
@@ -497,7 +497,7 @@
       "parameter_mapping": {},
       "output_evidence_contract": "index_futures_context_evidence.v1",
       "known_limitations": [
-        "A4 branch technical activation candidate; final Owner production activation pending",
+        "Final Owner production activation accepted; approval-gated and explicit-request only",
         "TPEx cash targets unsupported",
         "TAIFEX TX regular session and standard monthly outright only"
       ],

@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "validators": [
+    {
+      "command": "python scripts/verify_dependency_supply_chain.py",
+      "exit_code": 0,
+      "log": "required-00.log",
+      "status": "PASS",
+      "name": "required-00"
+    },
+    {
+      "command": "python scripts/verify_environment.py",
+      "exit_code": 0,
+      "log": "required-01.log",
+      "status": "PASS",
+      "name": "required-01"
+    },
+    {
+      "command": "python -m pip check",
+      "exit_code": 0,
+      "log": "required-02.log",
+      "status": "PASS",
+      "name": "required-02"
+    },
+    {
+      "command": "python scripts/validate_source_registry.py",
+      "exit_code": 0,
+      "log": "required-03.log",
+      "status": "PASS",
+      "name": "required-03"
+    },
+    {
+      "command": "python scripts/validate_portable_catalog_sync.py",
+      "exit_code": 0,
+      "log": "required-04.log",
+      "status": "PASS",
+      "name": "required-04"
+    },
+    {
+      "command": "python scripts/validate_runtime_skill_guide_sync.py",
+      "exit_code": 0,
+      "log": "required-05.log",
+      "status": "PASS",
+      "name": "required-05"
+    },
+    {
+      "command": "python scripts/validate_v1_public_contracts.py",
+      "exit_code": 0,
+      "log": "required-06.log",
+      "status": "PASS",
+      "name": "required-06"
+    },
+    {
+      "command": "python scripts/validate_unified_market_evidence_contracts.py",
+      "exit_code": 0,
+      "log": "required-07.log",
+      "status": "PASS",
+      "name": "required-07"
+    },
+    {
+      "command": "python scripts/validate_phase_h_v3_contracts.py",
+      "exit_code": 0,
+      "log": "required-08.log",
+      "status": "PASS",
+      "name": "required-08"
+    },
+    {
+      "command": "python scripts/validate_l5_extension_registration_conformance.py",
+      "exit_code": 0,
+      "log": "required-09.log",
+      "status": "PASS",
+      "name": "required-09"
+    },
+    {
+      "command": "python scripts/validate_l5_extension_semantic_conformance.py",
+      "exit_code": 0,
+      "log": "required-10.log",
+      "status": "PASS",
+      "name": "required-10"
+    },
+    {
+      "command": "python scripts/validate_l5_extension_publication_conformance.py",
+      "exit_code": 0,
+      "log": "required-11.log",
+      "status": "PASS",
+      "name": "required-11"
+    },
+    {
+      "command": "python -m compileall -q scripts server tests",
+      "exit_code": 0,
+      "log": "required-12.log",
+      "status": "PASS",
+      "name": "required-12"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "log": "required-13.log",
+      "status": "PASS",
+      "name": "required-13"
+    }
+  ]
+}

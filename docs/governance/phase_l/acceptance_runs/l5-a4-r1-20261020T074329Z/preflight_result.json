@@ -1,0 +1,10 @@
+{
+  "run_id": "l5-a4-r1-20261020T074329Z",
+  "entry_branch": "phase-l/l5-a4-publication-integration-conformance",
+  "entry_head": "91458d203ac28fe4ab00c89229ed1320bcb64753",
+  "entry_tree": "91ecbb8dac58800f7f21cebf8e9657fed43ad2c6",
+  "original_worktree_changes_preserved": true,
+  "authorized_catalog_route_changes_only": true,
+  "functional_catalog_route_field_changes": 0,
+  "status": "PASS"
+}

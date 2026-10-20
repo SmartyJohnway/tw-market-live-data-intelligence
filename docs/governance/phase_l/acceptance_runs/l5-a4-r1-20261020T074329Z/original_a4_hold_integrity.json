@@ -1,0 +1,19 @@
+{
+  "run_id": "l5-a4-20261020T071416Z",
+  "original_disposition": "L5_A4_TEST_CATALOG_SKILL_GUIDE_PUBLICATION_INTEGRATION_HOLD",
+  "manifest_artifact_count": 48,
+  "manifest_declared_sha256": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+  "manifest_recomputed_sha256": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+  "manifest_sha_unchanged": true,
+  "historical_members_verified": 48,
+  "historical_member_mismatches": [],
+  "default_ci": {
+    "passed": 1247,
+    "failed": 42,
+    "skipped": 4,
+    "deselected": 5,
+    "historical_failures": 41,
+    "candidate_only_failures": 1
+  },
+  "status": "PASS"
+}

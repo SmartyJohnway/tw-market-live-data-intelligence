@@ -1,0 +1,42 @@
+{
+  "r2_disposition": "L5_A4_R2_POST_COMMIT_PUBLICATION_LINEAGE_SYNC_PASS",
+  "final_a4_technical_disposition": "PENDING_POST_COMMIT_VALIDATION",
+  "dirty_entry_gate": "PASS",
+  "generator_idempotence": "PASS",
+  "precommit_publication_validators": "PASS",
+  "focused_tests": {
+    "A4": "23 passed",
+    "R1 negative guard": "18 passed",
+    "I3 preflight": "6 passed"
+  },
+  "required_validators": "14/14 PASS",
+  "default_ci": {
+    "passed": 1248,
+    "failed": 41,
+    "skipped": 4,
+    "deselected": 5,
+    "historical_failures": 41,
+    "candidate_only_failures": 0,
+    "exact_failure_set_match": true
+  },
+  "catalog_functional_changes": 0,
+  "routing_functional_changes": 0,
+  "runtime_behavior_changes": 0,
+  "source_executor_changes": 0,
+  "schema_changes": 0,
+  "new_canonical_authority": 0,
+  "runtime_discovery": 0,
+  "mcp_tool_count": 6,
+  "provider_requests": 0,
+  "live_acquisition": 0,
+  "production_state_mutations": 0,
+  "external_socket_attempts": "NOT_MEASURED",
+  "sync_commit": "a37eea8a5b485ec2d83494fb709884a58f8693f3",
+  "post_commit_validation": "PENDING",
+  "status": "PASS",
+  "sync_tree": "8ce4139dab3eb44baa6dcb5614952f3d9a6f0b6e",
+  "post_sync_commit_validators": "PASS",
+  "post_sync_focused_tests": "A4 23 passed; R1 18 passed; I3 6 passed",
+  "canonical_lineage_after_sync": "PASS",
+  "final_committed_state_readonly_publication_checks": "PENDING_AFTER_EVIDENCE_COMMIT"
+}

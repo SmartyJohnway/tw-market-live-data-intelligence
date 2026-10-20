@@ -1,0 +1,61 @@
+{
+  "validators": [
+    {
+      "tail": "PASS: Portable Skill catalog is fully synchronized with Canonical Catalog SoT (Deep Equality Verified).",
+      "exit_code": 0,
+      "status": "PASS",
+      "name": "post-sync-portable",
+      "log": "post-sync-portable.log",
+      "command": "python scripts/validate_portable_catalog_sync.py"
+    },
+    {
+      "tail": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}",
+      "exit_code": 0,
+      "status": "PASS",
+      "name": "post-sync-runtime-skill",
+      "log": "post-sync-runtime-skill.log",
+      "command": "python scripts/validate_runtime_skill_guide_sync.py"
+    },
+    {
+      "tail": "  \"runtime_discovery\": false,\n  \"status\": \"PASS\",\n  \"writes\": false\n}",
+      "exit_code": 0,
+      "status": "PASS",
+      "name": "post-sync-publication",
+      "log": "post-sync-publication.log",
+      "command": "python scripts/validate_l5_extension_publication_conformance.py --json"
+    },
+    {
+      "tail": ".......................                                                  [100%]\n23 passed in 9.23s",
+      "exit_code": 0,
+      "status": "PASS",
+      "name": "post-sync-a4-focused",
+      "log": "post-sync-a4-focused.log",
+      "command": "python -m pytest -q tests/unit/test_l5_a4_publication_conformance.py"
+    },
+    {
+      "tail": "..................                                                       [100%]\n18 passed in 1.60s",
+      "exit_code": 0,
+      "status": "PASS",
+      "name": "post-sync-r1-negative",
+      "log": "post-sync-r1-negative.log",
+      "command": "python -m pytest -q tests/unit/test_l5_a4_r1_compatibility_projection.py"
+    },
+    {
+      "tail": "......                                                                   [100%]\n6 passed in 2.67s",
+      "exit_code": 0,
+      "status": "PASS",
+      "name": "post-sync-i3-preflight",
+      "log": "post-sync-i3-preflight.log",
+      "command": "python -m pytest -q tests/unit/test_phase_i_i3_a4_preflight.py"
+    },
+    {
+      "tail": "",
+      "exit_code": 0,
+      "status": "PASS",
+      "name": "post-sync-diff-check",
+      "log": "post-sync-diff-check.log",
+      "command": "git diff --check"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,83 @@
+{
+  "A1_dimensions": [
+    {
+      "acceptance_evidence": "Catalog contract validation and portable Catalog synchronization checks.",
+      "applicability_rule": "Applicable when public support/usage changes; NOT_APPLICABLE requires proof that no public behavior or user guidance changes.",
+      "canonical_owner": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "canonical_owner_role": "Unified Capability Catalog and synchronized portable output checks.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-18",
+      "evidence_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/generate_portable_catalog.py",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "name": "Catalog publication",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+        "scripts/generate_portable_catalog.py",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "source_finding_id": "DIM-18",
+      "version_owner": "Catalog version authority."
+    },
+    {
+      "acceptance_evidence": "Runtime Skill/guide synchronization check and bounded user guidance.",
+      "applicability_rule": "Applicable when public support/usage changes; NOT_APPLICABLE requires proof that no public behavior or user guidance changes.",
+      "canonical_owner": "skills/tw-market-evidence-agent/SKILL.md",
+      "canonical_owner_role": "Current runtime Skill/guide and synchronization validator.",
+      "classification": "REQUIRED",
+      "classification_before_a1": "REQUIRED",
+      "declarer": "Extension proposer and author of accepted family/source contract; Owner confirms completeness.",
+      "dimension_id": "DIM-19",
+      "evidence_files": [
+        "skills/tw-market-evidence-agent/SKILL.md",
+        "docs/agent_usage_guide.md",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "name": "Skill/guide publication",
+      "not_applicable_rule": "Only explicit NOT_APPLICABLE with bounded scope, rationale, and evidence that the underlying concept/operation/artifact does not exist. Absence never means N/A.",
+      "registration_surface": [
+        "docs/agent_usage_guide.md",
+        "scripts/validate_runtime_skill_guide_sync.py",
+        "skills/tw-market-evidence-agent/SKILL.md"
+      ],
+      "source_finding_id": "DIM-19",
+      "version_owner": "Current Skill/guide publication owner."
+    }
+  ],
+  "A3_deferrals": {
+    "deferred": [
+      "publication integration redesign",
+      "Skill/guide redesign",
+      "new-family publication conformance",
+      "broader acceptance publication automation"
+    ],
+    "reason": "L5-A4+ is not authorized; existing required sync gates remain unchanged.",
+    "status": "DEFERRED_NOT_AUTHORIZED"
+  },
+  "accounted": 2,
+  "deferred": 2,
+  "rows": [
+    {
+      "A2_disposition": "PUBLICATION_CONFORMANCE_DEFERRED_TO_A4",
+      "A4_disposition": "CHECKS_IMPLEMENTED_ACCEPTANCE_REGRESSION_GATE_HOLD",
+      "authority_role": "DERIVED_SYNCHRONIZED_VIEW",
+      "check": "preserve derived/documentation boundary; publication validation deferred",
+      "next_tranche": "A4",
+      "registration_id": "portable"
+    },
+    {
+      "A2_disposition": "PUBLICATION_CONFORMANCE_DEFERRED_TO_A4",
+      "A4_disposition": "CHECKS_IMPLEMENTED_ACCEPTANCE_REGRESSION_GATE_HOLD",
+      "authority_role": "GUIDE_DOCUMENTATION",
+      "check": "preserve derived/documentation boundary; publication validation deferred",
+      "next_tranche": "A4",
+      "registration_id": "runtime_guides"
+    }
+  ],
+  "unresolved_publication_rows": 0
+}

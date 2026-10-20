@@ -1,0 +1,18 @@
+{
+  "portable": {
+    "generated_from_commit": "8fc37608889fd11ea865827a3cf9e20524457271",
+    "canonical_git_blob_sha": "b9591b030037416333a73fc6c294a161f7c16ef0",
+    "raw_sha256": "6DDD83F504BABEA38488D750591FC2A7E0C3D7886AD3C5C8BD91034FA39FD326"
+  },
+  "quick_guide": {
+    "generated_from_commit": "8fc37608889fd11ea865827a3cf9e20524457271",
+    "canonical_git_blob_sha": "0f47162035e7870b98cca28cc47568abc2c9034e",
+    "routing_lineage_line": "- **Routing Git lineage**: `{\"canonical_git_blob_sha\": \"0f47162035e7870b98cca28cc47568abc2c9034e\", \"generated_from_commit\": \"8fc37608889fd11ea865827a3cf9e20524457271\"}`",
+    "raw_sha256": "5E303FC85F83B3CFCDA397CF9ECB5048459A5ABBB71A62BF68BF2EB9EF5EB196"
+  },
+  "equals_pre_generator_state": {
+    "portable": true,
+    "quick_guide": true
+  },
+  "status": "PASS"
+}

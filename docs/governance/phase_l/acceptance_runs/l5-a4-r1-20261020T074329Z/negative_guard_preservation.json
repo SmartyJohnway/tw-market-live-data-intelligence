@@ -1,0 +1,18 @@
+{
+  "test_file": "tests/unit/test_l5_a4_r1_compatibility_projection.py",
+  "test_result": "18 passed",
+  "rejected_mutations": [
+    "Catalog.support_status",
+    "Catalog.runtime_executable",
+    "Catalog.supported_markets",
+    "Routing.routing_status",
+    "Routing.runtime_executable",
+    "Routing.selected_executor_id",
+    "Routing.output_evidence_contract",
+    "Routing candidate executor/network/parameter mapping",
+    "unapproved index_futures_context prose",
+    "publication mutation to another capability"
+  ],
+  "blanket_bypass": false,
+  "historical_i3_test_modified": false
+}

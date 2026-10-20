@@ -1,0 +1,26 @@
+[
+  {
+    "log": "a4-focused.log",
+    "name": "a4-focused",
+    "status": "PASS",
+    "tail": ".......................                                                  [100%]\n23 passed in 11.19s",
+    "command": "python -m pytest -q tests/unit/test_l5_a4_publication_conformance.py",
+    "exit_code": 0
+  },
+  {
+    "log": "r1-negative-guard.log",
+    "name": "r1-negative-guard",
+    "status": "PASS",
+    "tail": "..................                                                       [100%]\n18 passed in 2.47s",
+    "command": "python -m pytest -q tests/unit/test_l5_a4_r1_compatibility_projection.py",
+    "exit_code": 0
+  },
+  {
+    "log": "i3-preflight.log",
+    "name": "i3-preflight",
+    "status": "PASS",
+    "tail": "......                                                                   [100%]\n6 passed in 6.21s",
+    "command": "python -m pytest -q tests/unit/test_phase_i_i3_a4_preflight.py",
+    "exit_code": 0
+  }
+]

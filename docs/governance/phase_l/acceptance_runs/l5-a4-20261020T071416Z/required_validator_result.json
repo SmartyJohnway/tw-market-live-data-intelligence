@@ -1,0 +1,139 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "command": [
+        "python",
+        "scripts/verify_dependency_supply_chain.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-00.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/verify_environment.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-01.log"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-02.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_source_registry.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-03.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-04.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-05.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_v1_public_contracts.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-06.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_unified_market_evidence_contracts.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-07.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-08.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_l5_extension_registration_conformance.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-09.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_l5_extension_semantic_conformance.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-10.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_l5_extension_publication_conformance.py"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-11.log"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "scripts",
+        "server",
+        "tests"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-12.log"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "log": "required-13.log"
+    }
+  ]
+}

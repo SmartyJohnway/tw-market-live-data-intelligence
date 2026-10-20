@@ -2,10 +2,10 @@
   "schema_version": "unified_market_evidence_capability_catalog.v3",
   "portable_metadata": {
     "canonical_source_path": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
-    "canonical_sha256": "00e6dad9fff81be1151e2ba1001396b0ef01f1fa2d48a7f17fadf235ba7fb2c5",
+    "canonical_sha256": "53f90abd35bbbaf4eed97c7b19d27a2ba2dec3d2f99d26996bb75f096716cffa",
     "generator_version": "PHASE-H-ACT-V3-v1",
-    "generated_from_commit": "79dcb1a7b7ad667663bb1dd10112822217337a04",
-    "canonical_git_blob_sha": "b39a8912c70d1fd69760bd94f2e5b2143ed0d5f4"
+    "generated_from_commit": "8fc37608889fd11ea865827a3cf9e20524457271",
+    "canonical_git_blob_sha": "b9591b030037416333a73fc6c294a161f7c16ef0"
   },
   "contract_versions": {
     "accepted_request_schema_versions": [
@@ -311,7 +311,7 @@
     },
     {
       "capability_id": "index_futures_context",
-      "description": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; A4 technical production activation candidate only, final Owner activation pending.",
+      "description": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; Owner-accepted production activation; explicit-request and approval-gated.",
       "support_status": "runtime_executable",
       "runtime_executable": true,
       "phase_i_activation_state": "selected_route_active",
@@ -329,7 +329,7 @@
       "known_limitations": [
         "TAIFEX TX regular session only; standard monthly outright series only",
         "TPEx targets, after-hours, weekly series, calendar spreads, MTX/TMF, options, and other products are unsupported",
-        "A3 bounded live acceptance passed; A4 branch technical activation candidate remains approval-gated and explicit-request only; final Owner production activation pending; currentness unknown",
+        "A3 bounded live acceptance and final Owner production activation accepted; selected route remains approval-gated and explicit-request only; currentness unknown",
         "no history, historical lookup/backfill, rolling futures, continuous-contract synthesis, polling, scheduler, or background refresh",
         "no basis/premium-discount, signals, bullish/bearish interpretation, or target-specific causation"
       ],

@@ -1,0 +1,15 @@
+{
+  "existing_runtime_currentness_policy_consumer_unchanged": true,
+  "files": [
+    {
+      "path": "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+      "unchanged": true
+    },
+    {
+      "path": "docs/data_capabilities/m8_source_capability_registry.json",
+      "unchanged": true
+    }
+  ],
+  "not_current_publication_capability_truth": true,
+  "status": "PASS"
+}

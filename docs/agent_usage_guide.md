@@ -1,8 +1,9 @@
 # Unified Market Evidence Agent Usage Guide
 
 This is the current operating guide for AI agents using the local Unified
-Market Evidence product. Runtime schemas, the canonical capability catalog,
-and registered MCP contracts remain authoritative when details differ.
+Market Evidence product. Runtime schemas, the canonical Capability Catalog and selected Routing,
+accepted activation ledgers, and registered MCP contracts remain authoritative
+when details differ.
 
 ## Use boundary
 
@@ -98,9 +99,9 @@ unofficial fallback. TAIFEX remains provisional/non-executable where the
 capability catalog says so; a capability boundary is not a source outage.
 
 For V3 trading-status context, only explicitly activated source routes execute.
-The current H1 product slice is intentionally partial: TPEx attention is active,
-while other declared trading-status types remain uncovered until their separate
-route gates pass. Corporate-action context and recent-performance execution
+The current H1 product slice is intentionally partial: the selected TPEx H1 composite covers attention/disposition; cmode marker
+semantics remain unresolved with zero canonical coverage. Suspension, resumption
+and changed-trading types remain uncovered. Corporate-action context and recent-performance execution
 remain blocked or plan-only where current routing says so.
 
 For an eligible TWSE/TPEX company common share, `material_disclosures` returns
@@ -127,3 +128,28 @@ python scripts/manage_security_master.py rollback RELEASE_ID
 
 There is no automatic Security Master update, startup fetch, scheduler,
 background polling, automatic watchlist mutation, trading, or order routing.
+
+## Catalog and selected-route publication boundary
+
+Catalog support != selected route executability. Effective executability requires
+runtime-compatible support AND a resolved selected executable route for the requested
+market/target scope. Unsupported, blocked, plan-only and provisional are distinct;
+none authorizes retrieval. Consult the canonical Catalog and canonical Routing,
+then validate/preview the request; guides are derived usage guidance only.
+
+- `session_status`: Catalog `runtime_executable`, but the current Unified 05B route
+  is blocked with no selected approved executor; NOT currently executable.
+- `market_state_context`: selected active TWSE/TPEX route, bounded descriptive context.
+- `index_futures_context`: final Owner production activation accepted; selected active
+  TWSE route for TAIFEX TX regular-session standard monthly outright context. TPEx
+  targets and provisional TAIFEX target support remain non-executable. Authority:
+  `docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json`
+  and `docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json`.
+- `cash_institutional_flow_context`: selected active TWSE/TPEX route; descriptive only.
+- `corporate_action_context` and `recent_performance`: selected bounded TWSE routes;
+  TPEx restrictions remain explicit. Preserve `CORPORATE_ACTION_COVERAGE_INCOMPLETE`,
+  H4 discontinuity-safety caveats, missing/source-failed distinctions, citations and
+  all existing A3 typed timing/currentness semantics in Result/Audit/AI-ready handoff.
+
+Runtime truth → publication projection. Publication does not activate routes.
+Historical AI guides/source-capability registries are not current capability authority.

@@ -1,0 +1,16 @@
+{
+  "helper": "scripts/phase_i_i3_a4_compat.py",
+  "pinned_a4_entry": "91458d203ac28fe4ab00c89229ed1320bcb64753",
+  "current_authority_validated_before_historical_projection": true,
+  "projection_scope": [
+    "Catalog:index_futures_context.description",
+    "Catalog:index_futures_context.known_limitations exact stale activation text",
+    "Routing:index_futures_context.capability_status_source",
+    "Routing:index_futures_context.known_limitations exact stale activation text"
+  ],
+  "functional_fields_checked_against_pinned_entry_before_projection": true,
+  "global_prose_stripping": false,
+  "arbitrary_hash_bypass": false,
+  "old_snapshot_is_current_authority": false,
+  "guard_fail_closed": true
+}

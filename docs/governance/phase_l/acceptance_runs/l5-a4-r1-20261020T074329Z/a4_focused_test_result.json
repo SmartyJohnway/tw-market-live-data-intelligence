@@ -1,0 +1,5 @@
+{
+  "publication_validator": "PASS",
+  "publication_focused_tests": "23 passed",
+  "r1_negative_tests": "18 passed"
+}

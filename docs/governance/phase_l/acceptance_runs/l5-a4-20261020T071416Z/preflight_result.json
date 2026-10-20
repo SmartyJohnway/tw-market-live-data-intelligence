@@ -1,0 +1,11 @@
+{
+  "run_id": "l5-a4-20261020T071416Z",
+  "status": "PASS",
+  "branch": "phase-l/l5-a4-publication-integration-conformance",
+  "entry_head": "91458d203ac28fe4ab00c89229ed1320bcb64753",
+  "entry_tree": "91ecbb8dac58800f7f21cebf8e9657fed43ad2c6",
+  "entry_clean": true,
+  "fetch_completed": true,
+  "ancestry": "5/5 PASS",
+  "owner_authority": "USER_CHAT_2026-10-20_PHASE_L_L5_A4_PUBLICATION_INTEGRATION_AUTHORIZATION"
+}

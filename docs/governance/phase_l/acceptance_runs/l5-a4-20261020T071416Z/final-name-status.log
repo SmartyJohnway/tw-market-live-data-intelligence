@@ -1,0 +1,8 @@
+M	docs/agent_usage_guide.md
+M	docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json
+M	docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json
+M	scripts/generate_portable_catalog.py
+M	skills/tw-market-evidence-agent/SKILL.md
+M	skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json
+M	skills/tw-market-evidence-agent/references/capability_quick_guide.md
+M	skills/tw-market-evidence-agent/references/current_limitations.md

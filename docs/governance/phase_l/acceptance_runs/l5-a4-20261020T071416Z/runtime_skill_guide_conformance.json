@@ -1,0 +1,26 @@
+{
+  "current_publication_contradictions": 0,
+  "known_debts": 2,
+  "known_debts_reconciled_in_worktree": 2,
+  "repairs": [
+    "support vs route distinction",
+    "H1 composite partial coverage",
+    "bounded active H2/H3 TWSE",
+    "I1/I2/I3 selected contexts",
+    "A3/H4 caveats"
+  ],
+  "status": "PASS",
+  "surfaces": [
+    "skills/tw-market-evidence-agent/SKILL.md",
+    "docs/agent_usage_guide.md",
+    "skills/tw-market-evidence-agent/references/current_limitations.md"
+  ],
+  "tools": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ]
+}

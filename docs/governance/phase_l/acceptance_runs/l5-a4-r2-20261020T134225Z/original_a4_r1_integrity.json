@@ -1,0 +1,28 @@
+{
+  "A4_primary": {
+    "manifest_path": "docs/governance/phase_l/acceptance_runs/l5-a4-20261020T071416Z/manifest.json",
+    "artifact_count": 48,
+    "expected_artifact_count": 48,
+    "declared_canonical_sha256": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+    "recomputed_canonical_sha256": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+    "expected_canonical_sha256": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+    "canonical_sha_matches": true,
+    "members_verified_against_committed_HEAD": 48,
+    "member_mismatches": [],
+    "status": "PASS"
+  },
+  "A4_R1": {
+    "manifest_path": "docs/governance/phase_l/acceptance_runs/l5-a4-r1-20261020T074329Z/manifest.json",
+    "artifact_count": 51,
+    "expected_artifact_count": 51,
+    "declared_canonical_sha256": "dd83ba9ab1d353993d2220d3e699bb0ed815bf54e0ee91d2e3435161459869e9",
+    "recomputed_canonical_sha256": "dd83ba9ab1d353993d2220d3e699bb0ed815bf54e0ee91d2e3435161459869e9",
+    "expected_canonical_sha256": "dd83ba9ab1d353993d2220d3e699bb0ed815bf54e0ee91d2e3435161459869e9",
+    "canonical_sha_matches": true,
+    "members_verified_against_committed_HEAD": 51,
+    "member_mismatches": [],
+    "status": "PASS"
+  },
+  "verification_basis": "committed HEAD 8fc37608; the authorized dirty derived publication files are verified against committed bytes rather than current worktree bytes",
+  "status": "PASS"
+}

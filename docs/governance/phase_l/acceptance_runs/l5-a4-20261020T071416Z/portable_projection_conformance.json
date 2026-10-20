@@ -1,0 +1,19 @@
+{
+  "catalog_hash": "53f90abd35bbbaf4eed97c7b19d27a2ba2dec3d2f99d26996bb75f096716cffa",
+  "input_state": "uncommitted worktree; no candidate committed",
+  "lineage_scope": "Git lineage denotes last committed source; canonical_sha256 binds current text. Final committed lineage not finalized because regression gate HOLD.",
+  "portable_JSON": "Catalog-only",
+  "quick_guide": "Catalog + canonical Routing",
+  "routing_hash": "6040cd1fd63a0b491bf19ecb3b53ed25a67731f74c84b2bccad7ebffac7e1a9d",
+  "source_lineage": {
+    "catalog": {
+      "canonical_git_blob_sha": "b39a8912c70d1fd69760bd94f2e5b2143ed0d5f4",
+      "generated_from_commit": "79dcb1a7b7ad667663bb1dd10112822217337a04"
+    },
+    "routing": {
+      "canonical_git_blob_sha": "a97068a77193ff7730764d027caceaf41b510126",
+      "generated_from_commit": "79dcb1a7b7ad667663bb1dd10112822217337a04"
+    }
+  },
+  "status": "PASS"
+}
