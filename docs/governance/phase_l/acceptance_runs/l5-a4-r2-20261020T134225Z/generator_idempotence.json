@@ -1,0 +1,18 @@
+{
+  "command": "python scripts/generate_portable_catalog.py",
+  "exit_code": 0,
+  "before_sha256": {
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json": "6DDD83F504BABEA38488D750591FC2A7E0C3D7886AD3C5C8BD91034FA39FD326",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md": "5E303FC85F83B3CFCDA397CF9ECB5048459A5ABBB71A62BF68BF2EB9EF5EB196"
+  },
+  "after_sha256": {
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json": "6DDD83F504BABEA38488D750591FC2A7E0C3D7886AD3C5C8BD91034FA39FD326",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md": "5E303FC85F83B3CFCDA397CF9ECB5048459A5ABBB71A62BF68BF2EB9EF5EB196"
+  },
+  "unchanged": true,
+  "git_diff_name_only": [
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+  ],
+  "status": "PASS"
+}

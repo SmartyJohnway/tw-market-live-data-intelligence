@@ -1,0 +1,19 @@
+{
+  "tracked_diff_paths": [
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+  ],
+  "expected_tracked_diff_paths": [
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+  ],
+  "catalog_modified": false,
+  "routing_modified": false,
+  "other_tracked_changes": [],
+  "first_sync_commit_allowed_files": [
+    "two derived outputs",
+    "R2 governance record",
+    "R2 evidence run"
+  ],
+  "status": "PASS"
+}

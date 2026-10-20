@@ -11,7 +11,7 @@ Effective executability requires runtime-compatible Catalog support AND a resolv
 Contract-supported, blocked, plan-only, unselected and provisional states never imply executable retrieval.
 - **Routing authority**: `docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json`
 - **Routing canonical SHA-256**: `6040cd1fd63a0b491bf19ecb3b53ed25a67731f74c84b2bccad7ebffac7e1a9d`
-- **Routing Git lineage**: `{"canonical_git_blob_sha": "a97068a77193ff7730764d027caceaf41b510126", "generated_from_commit": "79dcb1a7b7ad667663bb1dd10112822217337a04"}`
+- **Routing Git lineage**: `{"canonical_git_blob_sha": "0f47162035e7870b98cca28cc47568abc2c9034e", "generated_from_commit": "8fc37608889fd11ea865827a3cf9e20524457271"}`
 
 ## 1. Supported Data Needs
 

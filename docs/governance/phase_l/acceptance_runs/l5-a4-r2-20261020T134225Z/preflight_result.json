@@ -1,0 +1,23 @@
+{
+  "branch": "phase-l/l5-a4-publication-integration-conformance",
+  "head": "8fc37608889fd11ea865827a3cf9e20524457271",
+  "tree": "3f0bd468d797c8a4e57687a60436263a57fb0097",
+  "expected_head": "8fc37608889fd11ea865827a3cf9e20524457271",
+  "expected_tree": "3f0bd468d797c8a4e57687a60436263a57fb0097",
+  "modified_paths": [
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+  ],
+  "expected_modified_paths": [
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
+  ],
+  "untracked_paths": [],
+  "staged_paths": [],
+  "raw_sha256": {
+    "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json": "6DDD83F504BABEA38488D750591FC2A7E0C3D7886AD3C5C8BD91034FA39FD326",
+    "skills/tw-market-evidence-agent/references/capability_quick_guide.md": "5E303FC85F83B3CFCDA397CF9ECB5048459A5ABBB71A62BF68BF2EB9EF5EB196"
+  },
+  "status": "PASS",
+  "capture_boundary": "Captured before creating the R2 evidence directory; initial gate command showed exactly the two allowed modified paths, zero untracked paths, and zero staged paths."
+}

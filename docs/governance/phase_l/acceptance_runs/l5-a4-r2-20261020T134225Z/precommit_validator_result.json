@@ -1,0 +1,23 @@
+{
+  "validators": [
+    {
+      "exit_code": 0,
+      "command": "python scripts/validate_portable_catalog_sync.py",
+      "status": "PASS",
+      "log": "precommit-portable.log"
+    },
+    {
+      "exit_code": 0,
+      "command": "python scripts/validate_runtime_skill_guide_sync.py",
+      "status": "PASS",
+      "log": "precommit-runtime-skill.log"
+    },
+    {
+      "exit_code": 0,
+      "command": "python scripts/validate_l5_extension_publication_conformance.py --json",
+      "status": "PASS",
+      "log": "precommit-publication.log"
+    }
+  ],
+  "status": "PASS"
+}
