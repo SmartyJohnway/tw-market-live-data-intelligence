@@ -27,4 +27,11 @@ A3 introduced no new canonical authority, runtime discovery, evidence family, ca
 
 ## Merge record
 
-Pending actual PR merge. This section must be updated only after the normal merge succeeds.
+- PR: #386
+- Exact base OID: `b4b5dac547b0fd0becb5b7a97ac7c158af305147`
+- Exact head OID / Owner closure commit: `c027ed3556c52e0ee081834330dd7499bf9a51a1`
+- Merge method: normal merge commit
+- Merge commit: `cebc4d16ffa2db8903c72297ba2fdc00e60fb453`
+- `merged_at`: `2026-10-20T06:48:27Z`
+
+The four canonical front doors now state `OWNER-ACCEPTED AND MERGED`. L5-A4+ and L6-L7 remain unauthorized. No A4 work was started.
