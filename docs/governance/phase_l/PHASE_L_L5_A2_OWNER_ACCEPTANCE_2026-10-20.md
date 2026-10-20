@@ -21,8 +21,14 @@ The A2 validator, 10 focused tests, required validators, and default-ci comparis
 
 A2 accounted for 30/30 extension-relevant registration surfaces, preserved 9/9 negative controls, reconciled 8/8 friction groups, and left zero unresolved rows. It introduced no new canonical authority, runtime discovery, evidence family, or capability. Public MCP remains six tools.
 
-## Pre-merge current state
+## Merge record
 
-The four canonical front doors state `OWNER-ACCEPTED FOR MERGE` under the Owner token. They do not state that A2 has merged. L5-A3+ and L6-L7 remain unauthorized.
+- PR: #384
+- Exact base OID: `eba001a1c1c99244e6f3f5c7333d17536f816e12`
+- Exact head OID / Owner closure commit: `86298ed3adf9a4f4561757b6ce5feda9cb45faa2`
+- Merge method: normal merge commit
+- Merge commit: `d016ad04de4fc4646d8c9196de4903b0b0f8a9b8`
+- `merged_at`: `2026-10-20T01:24:32Z`
+- Merge parents: `eba001a1c1c99244e6f3f5c7333d17536f816e12` and `86298ed3adf9a4f4561757b6ce5feda9cb45faa2`
 
-The closure commit is separate from A2 and A2-R1. Actual merge metadata and final `OWNER-ACCEPTED AND MERGED` wording will be recorded only after the authorized PR merge.
+The four canonical front doors now state `OWNER-ACCEPTED AND MERGED`. L5-A3+ and L6-L7 remain unauthorized. No A3 work was started.
