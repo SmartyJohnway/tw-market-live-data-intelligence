@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "git_diff_check": "PASS",
+  "changed_paths_current_precommit": [
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+    "docs/governance/phase_l/PHASE_L_L5_A2_R1_FRONT_DOOR_STATUS_RECONCILIATION_2026-10-19.md",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/a2_original_manifest_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/diff_scope_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/manifest.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/offline_review.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/preflight_result.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/stale_state_inventory_after.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/stale_state_inventory_before.json"
+  ],
+  "allowed_changed_paths": [
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+    "docs/governance/phase_l/PHASE_L_L5_A2_R1_FRONT_DOOR_STATUS_RECONCILIATION_2026-10-19.md",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/a2_original_manifest_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/diff_scope_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/manifest.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/offline_review.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/preflight_result.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/stale_state_inventory_after.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/stale_state_inventory_before.json"
+  ],
+  "canonical_front_doors_changed": [
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md"
+  ],
+  "governance_record_changed": [
+    "docs/governance/phase_l/PHASE_L_L5_A2_R1_FRONT_DOOR_STATUS_RECONCILIATION_2026-10-19.md"
+  ],
+  "evidence_files_present": [
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/a2_original_manifest_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/diff_scope_verification.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/manifest.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/offline_review.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/preflight_result.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/stale_state_inventory_after.json",
+    "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/stale_state_inventory_before.json"
+  ],
+  "unexpected_paths": [],
+  "runtime_product_test_schema_catalog_routing_executor_source_dependency_config_changes": 0,
+  "validator_or_focused_test_changes": 0
+}

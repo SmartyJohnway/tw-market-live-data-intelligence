@@ -1,0 +1,20 @@
+{
+  "status": "L5_A2_FRONT_DOOR_STATUS_RECONCILIATION_PASS",
+  "scope": "governance/current-state metadata only",
+  "live_stale_a2_rollups_before": 2,
+  "live_stale_a2_rollups_after": 0,
+  "current_state_contradictions": 0,
+  "historical_a2_manifest_members_verified": 24,
+  "historical_a2_manifest_canonical_sha256": "b1dd1c009426e9470180e9962430284062538228e8ef940c6d2a71481c48bfea",
+  "original_a2_manifest_rewritten": false,
+  "a2_validator_changed": false,
+  "a2_test_semantics_changed": false,
+  "registration_reconciliation_changed": false,
+  "a1_contract_changed": false,
+  "runtime_product_changes": false,
+  "default_ci_rerun": false,
+  "focused_tests_rerun": false,
+  "technical_validators_rerun": false,
+  "git_diff_check": "PASS",
+  "changed_path_scope": "two canonical front doors plus R1 governance and R1 evidence only"
+}
