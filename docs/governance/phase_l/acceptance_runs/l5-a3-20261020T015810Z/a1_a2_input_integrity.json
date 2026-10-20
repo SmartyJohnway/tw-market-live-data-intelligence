@@ -1,0 +1,25 @@
+{
+  "a1_T1_T12_count": 12,
+  "a1_dimensions": 36,
+  "a1_file_hashes": {
+    "docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT.v1.json": "d2ce7ac5ce2ff7efa72ee663a66ae0b7089a934dac90aab3b3faa976c05c4efa",
+    "docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_2026-10-18.md": "84e0f7ed57fbd0e713bdb1dd939a8ff701fcdabc71425100376290f5ffc7187f",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/manifest.json": "0bb5bfdb59dfd38143ab77789d1caae3c1375785596e54b6dfe08e0e694c0638",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/registration_authority_matrix.json": "4e90562ba49d467305bc72787470be405f3c31e47c9afc4cfc92ec3789e6202e",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/version_transition_matrix.json": "bea6e1a72c7a00ef9939503c03766a7be78018aee585b2b1b34c6f805b72d2d0"
+  },
+  "a1_input_hashes_verified": true,
+  "a1_manifest_artifact_count": 32,
+  "a1_manifest_canonical_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+  "a1_remaining_decision_required": 0,
+  "a1_universal_family_id_registry": "NO",
+  "a2_disposition": "L5_A2_EXPLICIT_REGISTRATION_CONFORMANCE_HARDENING_PASS",
+  "a2_extension_rows": 30,
+  "a2_friction_groups": 8,
+  "a2_manifest_artifact_count": 24,
+  "a2_manifest_canonical_sha256": "b1dd1c009426e9470180e9962430284062538228e8ef940c6d2a71481c48bfea",
+  "a2_not_extension_rows": 9,
+  "a2_original_evidence_rewritten": false,
+  "a2_registration_rows": 39,
+  "status": "PASS"
+}

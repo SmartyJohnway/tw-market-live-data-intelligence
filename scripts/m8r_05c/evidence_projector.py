@@ -505,8 +505,18 @@ def project_target_evidence(
         proj.evidence_quality = projector(binding, _cite("evidence_quality"))
 
     if "material_disclosures" in requested_data_needs:
-        proj.material_disclosures = _project_material_disclosures(target_bindings.get("material_disclosures"), _cite("material_disclosures"))
+        research_binding = target_bindings.get("material_disclosures")
+        # No operation binding is missing evidence, not a failed source attempt.
+        # A present failed binding continues through the typed failure contract.
+        proj.material_disclosures = (
+            _project_material_disclosures(research_binding, _cite("material_disclosures"))
+            if research_binding is not None else None
+        )
     if "monthly_revenue" in requested_data_needs:
-        proj.monthly_revenue = _project_monthly_revenue(target_bindings.get("monthly_revenue"), _cite("monthly_revenue"))
+        research_binding = target_bindings.get("monthly_revenue")
+        proj.monthly_revenue = (
+            _project_monthly_revenue(research_binding, _cite("monthly_revenue"))
+            if research_binding is not None else None
+        )
 
     return proj

@@ -1,0 +1,36 @@
+{
+  "failed": 0,
+  "focused_test_file": "tests/unit/test_l5_a3_semantic_conformance.py",
+  "mutations": [
+    "normalizer value",
+    "source timestamp/retrieved_at substitution",
+    "stale to missing",
+    "missing to unsupported",
+    "source_failed to missing",
+    "partial to complete",
+    "citation operation",
+    "citation target",
+    "Result evidence vs Audit original",
+    "Audit identity/hash",
+    "handoff caveat loss",
+    "handoff nonexistent citation",
+    "public contract drift"
+  ],
+  "passed": 16,
+  "stable_failure_codes": {
+    "artifact": "A3_CITATION_ARTIFACT_MISMATCH",
+    "audit": "A3_AUDIT_PROVENANCE_DRIFT",
+    "audit_identity": "A3_RESULT_AUDIT_IDENTITY_MISMATCH",
+    "currentness": "A3_CURRENTNESS_SEMANTIC_DRIFT",
+    "handoff_caveat": "A3_HANDOFF_CAVEAT_LOSS",
+    "handoff_citation": "A3_HANDOFF_CITATION_DRIFT",
+    "normalization": "A3_NORMALIZATION_SEMANTIC_DRIFT",
+    "operation": "A3_LINEAGE_OPERATION_MISMATCH",
+    "public_contract": "A3_PUBLIC_CONTRACT_CHANGE_REQUIRED",
+    "result": "A3_RESULT_SEMANTIC_DRIFT",
+    "status": "A3_MISSING_UNSUPPORTED_FAILURE_COLLAPSE",
+    "target": "A3_LINEAGE_TARGET_MISMATCH",
+    "timing": "A3_TIMING_SEMANTIC_DRIFT"
+  },
+  "status": "PASS"
+}

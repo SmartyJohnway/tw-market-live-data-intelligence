@@ -1,0 +1,86 @@
+{
+  "missing_binding_repair_test": "PASS",
+  "new_public_statuses": 0,
+  "separation_rules": [
+    "no operation binding => Result missing_needs; no fabricated typed source_failed record",
+    "present failed operation remains source_failed/failed under its typed contract",
+    "unsupported is not inferred from absence",
+    "stale/currentness remains independent of availability",
+    "partial coverage remains partial and does not become complete",
+    "not_applicable emitted only by existing bounded applicability logic"
+  ],
+  "status": "PASS",
+  "typed_status_domains": [
+    {
+      "authority": "Phase G typed evidence schemas",
+      "domain": "research typed status",
+      "values": [
+        "available",
+        "partial",
+        "no_evidence_in_covered_scope",
+        "not_yet_available",
+        "not_applicable",
+        "unsupported",
+        "source_failed",
+        "binding_failed"
+      ]
+    },
+    {
+      "authority": "Phase H typed evidence schemas",
+      "domain": "Phase H trading/corporate typed status",
+      "values": [
+        "available",
+        "no_evidence_in_covered_scope",
+        "partial",
+        "source_failed",
+        "binding_failed",
+        "not_applicable",
+        "unsupported"
+      ]
+    },
+    {
+      "authority": "Phase H typed evidence schema",
+      "domain": "Phase H recent-performance coverage_status",
+      "values": [
+        "complete",
+        "partial",
+        "insufficient",
+        "unavailable",
+        "source_failed",
+        "binding_failed",
+        "unsupported",
+        "not_applicable"
+      ]
+    },
+    {
+      "authority": "Phase I typed evidence schema",
+      "domain": "Phase I market-state typed status",
+      "values": [
+        "complete",
+        "partial",
+        "unavailable",
+        "source_failed",
+        "binding_failed"
+      ]
+    },
+    {
+      "authority": "existing research typed schemas",
+      "domain": "currentness",
+      "values": [
+        "current_within_source_contract",
+        "stale",
+        "lagging",
+        "unknown"
+      ]
+    },
+    {
+      "authority": "Unified Result V3",
+      "domain": "Result target coverage",
+      "values": [
+        "provided_needs",
+        "missing_needs",
+        "partial_failures"
+      ]
+    }
+  ]
+}

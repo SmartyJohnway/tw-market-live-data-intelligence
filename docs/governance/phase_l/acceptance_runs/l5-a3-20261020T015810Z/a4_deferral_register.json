@@ -1,0 +1,10 @@
+{
+  "deferred": [
+    "publication integration redesign",
+    "Skill/guide redesign",
+    "new-family publication conformance",
+    "broader acceptance publication automation"
+  ],
+  "reason": "L5-A4+ is not authorized; existing required sync gates remain unchanged.",
+  "status": "DEFERRED_NOT_AUTHORIZED"
+}

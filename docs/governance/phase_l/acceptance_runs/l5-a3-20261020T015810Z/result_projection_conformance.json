@@ -1,0 +1,7 @@
+{
+  "deterministic_repeat": true,
+  "phase_h_result_hash_recomputed": true,
+  "public_result_schema_changed": false,
+  "status": "PASS",
+  "typed_values_coverage_and_citations": "existing Result V3 and Phase G tests PASS"
+}

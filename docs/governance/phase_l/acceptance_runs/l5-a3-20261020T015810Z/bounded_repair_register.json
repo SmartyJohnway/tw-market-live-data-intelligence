@@ -1,0 +1,19 @@
+{
+  "repairs": [
+    {
+      "issue": "Absent operation binding was materialized as typed source_failed with 1970 sentinel and unknown source contract.",
+      "path": "scripts/m8r_05c/evidence_projector.py",
+      "public_contract_change": false,
+      "repair": "No binding leaves typed family absent; existing Result coverage reports missing_needs. Present failed binding continues through existing typed failure contract.",
+      "test": "test_absent_operation_remains_missing_not_source_failed"
+    },
+    {
+      "issue": "V3 markdown omitted Phase I typed evidence fields emitted by canonical Result.",
+      "path": "scripts/m8r_05c/markdown_renderer.py",
+      "public_contract_change": false,
+      "repair": "Render all existing Phase I typed evidence as complete structured JSON, preserving fields without reinterpretation.",
+      "test": "test_v3_handoff_includes_phase_i_typed_evidence_and_citation"
+    }
+  ],
+  "status": "PASS"
+}

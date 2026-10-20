@@ -1,0 +1,10 @@
+{
+  "determinism": "fixed Phase H fixture projected twice; Result and Audit canonical hashes identical",
+  "mutation_rejected": "A3_NORMALIZATION_SEMANTIC_DRIFT",
+  "status": "PASS",
+  "tests": [
+    "tests/unit/test_phase_g_result_v2_projection.py::test_monthly_projection_preserves_signed_values_and_null_percentages",
+    "tests/unit/test_l5_a3_semantic_conformance.py::test_trace_mutations_fail_with_stable_category"
+  ],
+  "value_preservation": "Phase G signed monthly value and null percentages retained by existing typed projection tests"
+}
