@@ -23,3 +23,11 @@ Owner token: `L5_A4_TEST_CATALOG_SKILL_GUIDE_PUBLICATION_INTEGRATION_OWNER_ACCEP
 - Provider requests: 0; live market/source acquisition: 0; production state mutations: 0.
 
 This acceptance authorizes normal merge of L5-A4 only. It does not authorize L5-A5+, L6, L7, or Phase M.
+
+## Merge provenance
+
+- PR: `#388`
+- Merge commit: `11691c2eb9a33d2adbcce38fb59a50f822e15284`
+- Merged at: `2026-10-20T14:13:06Z`
+- State after merge: `OWNER-ACCEPTED AND MERGED`
+- L5-A5+ and L6-L7 remain NOT AUTHORIZED.
