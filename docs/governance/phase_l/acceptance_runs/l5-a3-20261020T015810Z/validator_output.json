@@ -7,7 +7,7 @@
     "result_hash_recomputed": true,
     "status": "PASS",
     "trace_count": 6,
-    "trace_sha256": "de3cd1c903c1d62a4b98f2be43bf9e24aaf68e89dc17159ab513439b82ab81e6",
+    "trace_sha256": "068ef851d74c547c780664af50adf3e723824d0df67cd93467051d45ffd535fc",
     "traces": [
       {
         "artifact_reference": "evidence/g1.json",
@@ -1215,7 +1215,13 @@
         "artifact_reference": "evidence/phase_i/i1/TPEX_market_state.json",
         "audit_identity": "covered by accepted I1 integration test",
         "audit_provenance": "covered by accepted I1 integration test",
-        "citation_mapping": "covered by accepted I1 integration test",
+        "citation_mapping": [
+          {
+            "artifact": "evidence/phase_i/i1/TPEX_market_state.json",
+            "citation_id": "cite-71ceefb1120b1009",
+            "operation_id": "umeop-op-v1-37e7ffc42102745298c7"
+          }
+        ],
         "currentness": "complete",
         "family_archetype": "market_state_context",
         "handoff_citations": [],
@@ -1223,7 +1229,7 @@
         "input_contract_version": "market_state_context_evidence.v1",
         "lineage": {
           "artifact": "evidence/phase_i/i1/TPEX_market_state.json",
-          "operation_id": "bound by accepted I1 integration test",
+          "operation_id": "umeop-op-v1-37e7ffc42102745298c7",
           "target": "TPEX:6488"
         },
         "mandatory_caveats": [],
@@ -1311,7 +1317,7 @@
             "volume_unit": "thousand_share"
           }
         },
-        "operation_id": "integration-test-derived-operation",
+        "operation_id": "umeop-op-v1-37e7ffc42102745298c7",
         "public_contract_versions": {
           "audit": "unified_market_evidence_audit_package.v3",
           "handoff": "existing-markdown-projection",

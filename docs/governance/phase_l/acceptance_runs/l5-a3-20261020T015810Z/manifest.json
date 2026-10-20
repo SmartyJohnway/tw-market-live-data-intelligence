@@ -119,9 +119,9 @@
       "sha256": "b9ede19a2dce0521e16f8217e51d2a4c7d0887cb442f2038fcb1ad555c5ba1d0"
     },
     {
-      "canonical_bytes": 59757,
+      "canonical_bytes": 59917,
       "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/semantic_trace_matrix.json",
-      "sha256": "284354a63502aa386b3b92adf252f65b8c0b11882777f0054885895814ab7899"
+      "sha256": "862590e0c7baf9a41383afdecbc14eab9d4506b102e6ee335146614c0db490ea"
     },
     {
       "canonical_bytes": 624,
@@ -129,9 +129,9 @@
       "sha256": "d21f8737a10e4bda806ce8908a5c3646518bf986e044f633b2de62a253e3a2c1"
     },
     {
-      "canonical_bytes": 65200,
+      "canonical_bytes": 65372,
       "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/validator_output.json",
-      "sha256": "54117429c95248bb6bf487543fef7ad5e5647f37545dba649236df2694b8e0e1"
+      "sha256": "929e03f1532b674818949916d7edc0ccc652c20b9876167bc6f1c3a19b6a6b46"
     },
     {
       "canonical_bytes": 29715,
@@ -144,9 +144,9 @@
       "sha256": "1d1aa525db03f555b481ab1c3bfb2ce692b7480613167753c7bd8a71de2e948d"
     },
     {
-      "canonical_bytes": 15073,
+      "canonical_bytes": 15230,
       "path": "scripts/validate_l5_extension_semantic_conformance.py",
-      "sha256": "141d36ef072954a7dfe45f2c8144d4c176359b74838f363037b9a6b67f79f443"
+      "sha256": "d464b5d85ad30c1337311f98d27150909672ca35b704bd9c46eaa75517e8243a"
     },
     {
       "canonical_bytes": 4106,
@@ -154,7 +154,7 @@
       "sha256": "b6bc4d75c4b32640a558a55128ab7f36e9b26c595857e7a2b167b1893e3d01af"
     }
   ],
-  "canonical_sha256": "20bc3316440c938e0139c35f5f8d76aec03ecb18cd761b64e77d7d81251b2cfe",
+  "canonical_sha256": "844402e972d7a3a793150db9cca3fb32be3e568860950b63d69c320ccda52c75",
   "normalization_policy": "UTF-8 text; CRLF/CR normalized to LF before SHA-256",
   "run_id": "l5-a3-20261020T015810Z"
 }

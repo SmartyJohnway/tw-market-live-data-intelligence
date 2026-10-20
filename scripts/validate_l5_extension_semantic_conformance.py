@@ -161,20 +161,23 @@ def build_evidence() -> dict:
     i_fixture = json.loads(i_mod.FIXTURE.read_text(encoding="utf-8"))
     from server.services.phase_i_market_state_adapters import normalize_tpex_market_state
     i_artifact = normalize_tpex_market_state(i_fixture, retrieved_at=i_mod.NOW)
+    i_operation_id = i_mod.PLAN["operations"][0]["operation_id"]
+    i_artifact_path = "evidence/phase_i/i1/TPEX_market_state.json"
+    i_citation_id = i_mod._build_citation_id(i_operation_id, i_artifact_path)
     i_trace = {
         "family_archetype": "market_state_context",
         "input_contract_version": i_artifact["schema_version"],
         "target_identity": "TPEX:6488",
-        "operation_id": "integration-test-derived-operation",
+        "operation_id": i_operation_id,
         "source_provenance": i_artifact.get("source"),
         "normalized_facts": i_artifact,
         "timing": {key: i_artifact.get(key) for key in ("observed_at", "retrieved_at", "calculated_at") if key in i_artifact},
         "currentness": i_artifact.get("currentness") or i_artifact.get("status"),
         "status_matrix": {"typed": i_artifact.get("status"), "result": "covered by test_i1_fixture_crosses_loader_lineage_result_v3_and_audit_v3"},
-        "lineage": {"operation_id": "bound by accepted I1 integration test", "target": "TPEX:6488", "artifact": "evidence/phase_i/i1/TPEX_market_state.json"},
-        "artifact_reference": "evidence/phase_i/i1/TPEX_market_state.json",
+        "lineage": {"operation_id": i_operation_id, "target": "TPEX:6488", "artifact": i_artifact_path},
+        "artifact_reference": i_artifact_path,
         "result_projection": "covered by accepted I1 integration test",
-        "citation_mapping": "covered by accepted I1 integration test",
+        "citation_mapping": [{"citation_id": i_citation_id, "operation_id": i_operation_id, "artifact": i_artifact_path}],
         "audit_identity": "covered by accepted I1 integration test",
         "audit_provenance": "covered by accepted I1 integration test",
         "handoff_projection": "covered by deterministic V3 renderer; see Phase H mode-C tests",
