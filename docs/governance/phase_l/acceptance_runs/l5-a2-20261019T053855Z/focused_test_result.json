@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "command": "python -m pytest tests/unit/test_l5_a2_extension_registration_conformance.py -q",
+  "tests_passed": 10,
+  "tests_failed": 0,
+  "cases": [
+    "current authorities conform",
+    "unknown routed capability",
+    "unknown route executor",
+    "missing trusted callable",
+    "unknown callable executor",
+    "typed contract mismatch",
+    "unknown source",
+    "derived view mismatch",
+    "forbidden extension-point promotion",
+    "historical duplicate used as current authority"
+  ]
+}

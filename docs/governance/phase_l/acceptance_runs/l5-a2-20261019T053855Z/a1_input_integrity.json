@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "a1_manifest_artifact_count": 32,
+  "a1_manifest_declared_canonical_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+  "a1_manifest_recomputed_canonical_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+  "a1_manifest_digest_matches": true,
+  "contract_id": "L5_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT",
+  "contract_version": "1",
+  "dimension_count": 36,
+  "remaining_decision_required": 0,
+  "universal_family_id_registry": false,
+  "version_matrix_transition_count": 12,
+  "version_matrix_transition_ids": [
+    "T1",
+    "T10",
+    "T11",
+    "T12",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6",
+    "T7",
+    "T8",
+    "T9"
+  ],
+  "registration_rows": 39,
+  "plugin_framework_assessment": "PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW",
+  "public_mcp_tools": 6,
+  "technical_input_hashes": {
+    "docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_2026-10-18.md": "84e0f7ed57fbd0e713bdb1dd939a8ff701fcdabc71425100376290f5ffc7187f",
+    "docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT.v1.json": "d2ce7ac5ce2ff7efa72ee663a66ae0b7089a934dac90aab3b3faa976c05c4efa",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/registration_authority_matrix.json": "4e90562ba49d467305bc72787470be405f3c31e47c9afc4cfc92ec3789e6202e",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/version_transition_matrix.json": "bea6e1a72c7a00ef9939503c03766a7be78018aee585b2b1b34c6f805b72d2d0",
+    "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/manifest.json": "0bb5bfdb59dfd38143ab77789d1caae3c1375785596e54b6dfe08e0e694c0638"
+  },
+  "frozen_inputs_unchanged_at_entry": true
+}

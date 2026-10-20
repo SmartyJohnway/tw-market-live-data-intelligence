@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "deterministic_json_output_equal_across_two_runs": true,
+  "result": {
+    "issue_count": 0,
+    "issues": [],
+    "network_access": false,
+    "production_state_mutation": false,
+    "runtime_discovery": false,
+    "status": "PASS",
+    "writes": false
+  },
+  "network_access": false,
+  "writes": false,
+  "production_state_mutation": false,
+  "runtime_discovery": false,
+  "synthetic_mismatch_cases_rejected": [
+    "unknown routed capability",
+    "route references unknown executor",
+    "selected executor metadata lacks trusted callable binding",
+    "callable binding references unknown executor identity",
+    "typed evidence contract/version mismatch",
+    "unknown source authority identity",
+    "derived view differs from canonical Catalog",
+    "NOT_AN_EXTENSION_POINT promoted",
+    "historical duplicate used as current authority"
+  ]
+}

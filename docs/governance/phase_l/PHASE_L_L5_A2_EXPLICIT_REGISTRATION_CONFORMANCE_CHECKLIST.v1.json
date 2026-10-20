@@ -1,0 +1,323 @@
+{
+  "checklist_id": "L5_A2_EXPLICIT_REGISTRATION_CONFORMANCE_CHECKLIST",
+  "version": "1",
+  "authority_kind": "TEST_ACCEPTANCE_ONLY",
+  "not_runtime_registry": true,
+  "not_capability_authority": true,
+  "not_source_authority": true,
+  "not_dispatch_authority": true,
+  "not_plugin_manifest": true,
+  "registration_inventory_source": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/registration_authority_matrix.json",
+  "checklist_contains_actual_capability_source_executor_values": false,
+  "registration_roles_and_checks": [
+    {
+      "role": "canonical capability catalog",
+      "check": "catalog and closed request vocabulary agree"
+    },
+    {
+      "role": "runtime route selection",
+      "check": "routes refer to catalog capabilities and coherent selected executor states"
+    },
+    {
+      "role": "executor metadata",
+      "check": "selected executor route tuples have metadata"
+    },
+    {
+      "role": "trusted callable binding",
+      "check": "selected executable routes have trusted statically registered callables"
+    },
+    {
+      "role": "typed evidence seams",
+      "check": "loader, lineage, projection, Result, Audit and handoff references agree on registered identities and schema availability"
+    },
+    {
+      "role": "source authorities",
+      "check": "source identity is explicit and dormant authority is not treated as selected"
+    },
+    {
+      "role": "derived synchronized views",
+      "check": "portable Catalog remains derived and existing sync gates remain authoritative checks"
+    },
+    {
+      "role": "historical duplication",
+      "check": "historical records cannot resolve current runtime authority"
+    },
+    {
+      "role": "acceptance boundary",
+      "check": "validator success does not activate a family or runtime route"
+    }
+  ],
+  "not_extension_point_controls": [
+    {
+      "registration_id": "validator",
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "citation",
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "governance",
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "identity",
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "authorization",
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "network_policy",
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "resources",
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "retention",
+      "promoted_to_extension_point": false
+    },
+    {
+      "registration_id": "mcp",
+      "promoted_to_extension_point": false
+    }
+  ],
+  "historical_duplication_controls": [
+    {
+      "registration_id": "source_registry",
+      "used_as_current_authority": false
+    },
+    {
+      "registration_id": "ai_guide_legacy",
+      "used_as_current_authority": false
+    }
+  ],
+  "friction_group_ids": [
+    "HARD-schema_loader",
+    "HARD-lineage",
+    "HARD-runtime_routes",
+    "HARD-typed_projection",
+    "HARD-audit_handoff",
+    "HARD-planner",
+    "HARD-source_seams",
+    "HARD-test_matrix"
+  ],
+  "new_canonical_authorities": 0,
+  "runtime_discovery": false,
+  "owner_acceptance_required_after_validator_pass": true,
+  "extension_relevant_registration_checks": [
+    {
+      "registration_id": "catalog",
+      "authority_role": "CANONICAL_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "routing",
+      "authority_role": "RUNTIME_ROUTING_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "executor_metadata",
+      "authority_role": "RUNTIME_ROUTING_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "runtime_adapter_binding",
+      "authority_role": "RUNTIME_ROUTING_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "executor_inventory",
+      "authority_role": "RUNTIME_ROUTING_AUTHORITY",
+      "check": "assert existing status and non-runtime role",
+      "A2_disposition": "STRUCTURALLY_ASSERTED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "source_registry",
+      "authority_role": "HISTORICAL_DUPLICATION",
+      "check": "assert existing status and non-runtime role",
+      "A2_disposition": "STRUCTURALLY_ASSERTED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "research_source_routes",
+      "authority_role": "SOURCE_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "eod_source_contracts",
+      "authority_role": "SOURCE_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "phase_h_sources",
+      "authority_role": "SOURCE_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "phase_i_sources",
+      "authority_role": "SOURCE_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "request_schema",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "execution_schema",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "result_schema",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "audit_schema",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "operation_schema",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "family_schemas",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "version_pairs",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "planner",
+      "authority_role": "RUNTIME_ROUTING_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "loader",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "lineage",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "runtime/canonical registration identity check",
+      "A2_disposition": "DIRECTLY_VALIDATED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "projection",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "registration identity/version only; semantic projection deferred",
+      "A2_disposition": "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3",
+      "next_tranche": "A3"
+    },
+    {
+      "registration_id": "audit_projection",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "registration identity/version only; semantic projection deferred",
+      "A2_disposition": "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3",
+      "next_tranche": "A3"
+    },
+    {
+      "registration_id": "handoff",
+      "authority_role": "SCHEMA_AUTHORITY",
+      "check": "registration identity/version only; semantic projection deferred",
+      "A2_disposition": "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3",
+      "next_tranche": "A3"
+    },
+    {
+      "registration_id": "portable",
+      "authority_role": "DERIVED_SYNCHRONIZED_VIEW",
+      "check": "preserve derived/documentation boundary; publication validation deferred",
+      "A2_disposition": "PUBLICATION_CONFORMANCE_DEFERRED_TO_A4",
+      "next_tranche": "A4"
+    },
+    {
+      "registration_id": "runtime_guides",
+      "authority_role": "GUIDE_DOCUMENTATION",
+      "check": "preserve derived/documentation boundary; publication validation deferred",
+      "A2_disposition": "PUBLICATION_CONFORMANCE_DEFERRED_TO_A4",
+      "next_tranche": "A4"
+    },
+    {
+      "registration_id": "ai_guide_legacy",
+      "authority_role": "HISTORICAL_DUPLICATION",
+      "check": "assert existing status and non-runtime role",
+      "A2_disposition": "STRUCTURALLY_ASSERTED",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "sync_gates",
+      "authority_role": "TEST_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "contract_gates",
+      "authority_role": "TEST_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "test_profiles",
+      "authority_role": "TEST_AUTHORITY",
+      "check": "named existing deterministic validator",
+      "A2_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "next_tranche": "A2"
+    },
+    {
+      "registration_id": "family_acceptance",
+      "authority_role": "CANONICAL_AUTHORITY",
+      "check": "assert existing status and non-runtime role",
+      "A2_disposition": "STRUCTURALLY_ASSERTED",
+      "next_tranche": "A2"
+    }
+  ]
+}

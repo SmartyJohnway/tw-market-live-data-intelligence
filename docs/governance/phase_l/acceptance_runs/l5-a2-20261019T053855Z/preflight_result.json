@@ -1,0 +1,20 @@
+{
+  "run_id": "l5-a2-20261019T053855Z",
+  "status": "PASS",
+  "owner_authority": "USER_CHAT_2026-10-19_PHASE_L_L5_A2_EXPLICIT_REGISTRATION_CONFORMANCE_HARDENING_AUTHORIZATION",
+  "branch": "phase-l/l5-a2-explicit-registration-conformance-hardening",
+  "entry_head": "eba001a1c1c99244e6f3f5c7333d17536f816e12",
+  "entry_tree": "b2fd73c3fdc0969db1b6daa222fe5be4bfe939d0",
+  "authorized_origin_main": "eba001a1c1c99244e6f3f5c7333d17536f816e12",
+  "authorized_base": "8ff92ca79af821a8641967184a26ee37db69d326",
+  "a1_merge_ancestor": "8ff92ca79af821a8641967184a26ee37db69d326",
+  "entry_worktree_clean": true,
+  "phase_l4": "CLOSED",
+  "phase_l5": "STARTED",
+  "l5_a0": "OWNER-ACCEPTED AND MERGED",
+  "l5_a1": "OWNER-ACCEPTED AND MERGED",
+  "l5_a2": "AUTHORIZED",
+  "l5_a3_plus_authorized": false,
+  "l6_l7_authorized": false,
+  "live_provider_acquisition_authorized": false
+}

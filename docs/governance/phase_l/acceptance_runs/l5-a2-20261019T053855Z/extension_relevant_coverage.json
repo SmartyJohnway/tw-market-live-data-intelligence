@@ -1,0 +1,15 @@
+{
+  "total_a0_registration_rows": 39,
+  "extension_relevant_rows": 30,
+  "a2_accounted_extension_rows": 30,
+  "disposition_counts": {
+    "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE": 10,
+    "DIRECTLY_VALIDATED": 11,
+    "PUBLICATION_CONFORMANCE_DEFERRED_TO_A4": 2,
+    "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3": 3,
+    "STRUCTURALLY_ASSERTED": 4
+  },
+  "unresolved_registration_rows": 0,
+  "all_row_ids_unique": true,
+  "all_rows_match_a0_and_a1_inventory": true
+}

@@ -1,0 +1,55 @@
+{
+  "run_id": "l5-a2-r1-20261020T011524Z",
+  "normalization_policy": "UTF-8 text; CRLF/CR normalized to LF before SHA-256",
+  "artifact_count": 9,
+  "artifacts": [
+    {
+      "path": "ROADMAP.md",
+      "canonical_bytes": 54443,
+      "sha256": "f56e6c45d3f201d24778614b74729aaa2de29446765eb8a8c740ce5bb0acd636"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "canonical_bytes": 19121,
+      "sha256": "9c37af7222f763e121331ee6fd8f3d85a3af5258fb3e4d2926227739062b6c05"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L5_A2_R1_FRONT_DOOR_STATUS_RECONCILIATION_2026-10-19.md",
+      "canonical_bytes": 2216,
+      "sha256": "95ff9b788ba34fd66c88670b9b653da4418e6f834de6d885001e93c0a24b928f"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/a2_original_manifest_verification.json",
+      "canonical_bytes": 7921,
+      "sha256": "071077ae68316959ab97a686c2240526b4bd5a0184539464fe548b06babed10b"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/diff_scope_verification.json",
+      "canonical_bytes": 3107,
+      "sha256": "149d62ca0207b7bca743345313db3a2b48ccca6dd2212825f9f8228dc0e9d38a"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/offline_review.json",
+      "canonical_bytes": 838,
+      "sha256": "aac60b26052c997da58629b8ae241f71dc2592b6153c95db805164eeecec41cb"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/preflight_result.json",
+      "canonical_bytes": 433,
+      "sha256": "3c4eadd871b347a12f733af2ffce66b195a4cb005610862aa9e24fcea36f0179"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/stale_state_inventory_after.json",
+      "canonical_bytes": 439,
+      "sha256": "15f93a4e66507a8e8ab509bb3b28b1cd017d445ee8edd56687ef3e362527aaf1"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a2-r1-20261020T011524Z/stale_state_inventory_before.json",
+      "canonical_bytes": 3729,
+      "sha256": "391b46c35f8199d7ad6665afe685c16a5a0d9a8ebed1e6e4faf9490742737730"
+    }
+  ],
+  "original_a2_manifest_canonical_sha256": "b1dd1c009426e9470180e9962430284062538228e8ef940c6d2a71481c48bfea",
+  "original_a2_manifest_rewritten": false,
+  "canonical_sha256": "c737bfbe06ce9faf4b0032a631ef3f75f11cbe9c6205fa41f7b04105d0549426"
+}

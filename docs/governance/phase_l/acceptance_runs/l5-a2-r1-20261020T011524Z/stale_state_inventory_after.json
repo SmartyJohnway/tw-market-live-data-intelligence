@@ -1,0 +1,18 @@
+{
+  "remaining_live_a2_not_authorized_rollups": 0,
+  "items": [],
+  "current_state_contradictions": 0,
+  "scan_scope": [
+    "PROJECT.md",
+    "HANDOFF.md",
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md"
+  ],
+  "scan_patterns": [
+    "L5-A2+ ... NOT AUTHORIZED",
+    "L5-A2 NOT AUTHORIZED",
+    "A2 NOT AUTHORIZED"
+  ],
+  "correct_current_state_present": true,
+  "result": "PASS"
+}

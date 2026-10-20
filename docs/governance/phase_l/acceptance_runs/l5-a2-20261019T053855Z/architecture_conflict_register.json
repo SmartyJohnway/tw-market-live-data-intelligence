@@ -1,0 +1,12 @@
+{
+  "conflicts": [],
+  "count": 0,
+  "notes": [
+    "A1 already distinguished capability, typed evidence, source, route, and executor identities.",
+    "The retained non-selected H1 attention executor is explicitly recorded as non-selected legacy rollback authority in existing orchestrator disposition; it is not an orphan or alternate selected route.",
+    "The A2 checklist is test/acceptance authority only and introduces no runtime or canonical authority."
+  ],
+  "new_canonical_authorities": 0,
+  "runtime_discovery": false,
+  "seventh_mcp_tool": false
+}

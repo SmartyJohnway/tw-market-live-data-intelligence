@@ -1,0 +1,35 @@
+{
+  "delegations": [
+    {
+      "validator": "scripts/validate_source_registry.py",
+      "status": "PASS",
+      "obligation": "current source registry/contract structural consistency; no new source inventory copied into A2 checker"
+    },
+    {
+      "validator": "scripts/validate_portable_catalog_sync.py",
+      "status": "PASS",
+      "obligation": "portable Catalog is derived synchronized view of canonical Catalog"
+    },
+    {
+      "validator": "scripts/validate_runtime_skill_guide_sync.py",
+      "status": "PASS",
+      "obligation": "runtime Skill tool/capability guide synchronization and six-tool public surface"
+    },
+    {
+      "validator": "scripts/validate_v1_public_contracts.py",
+      "status": "PASS",
+      "obligation": "preserve public compatibility contract assertions"
+    },
+    {
+      "validator": "scripts/validate_unified_market_evidence_contracts.py",
+      "status": "PASS",
+      "obligation": "Unified Request/Result/Audit contract and route compatibility"
+    },
+    {
+      "validator": "scripts/validate_phase_h_v3_contracts.py",
+      "status": "PASS",
+      "obligation": "Phase H V3 source and typed evidence contract assertions"
+    }
+  ],
+  "duplication_introduced": false
+}

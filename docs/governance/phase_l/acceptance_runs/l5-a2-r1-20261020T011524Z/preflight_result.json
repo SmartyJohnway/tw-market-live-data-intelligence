@@ -1,0 +1,10 @@
+{
+  "run_id": "l5-a2-r1-20261020T011524Z",
+  "branch": "phase-l/l5-a2-explicit-registration-conformance-hardening",
+  "entry_head": "193ca05261e002eac01c477931d07015d66acd1e",
+  "entry_tree": "311601d879e87fa1c2bb3d1622ade9f0ac7faab0",
+  "authorized_base": "eba001a1c1c99244e6f3f5c7333d17536f816e12",
+  "worktree_clean_at_entry": true,
+  "exact_entry_gate": "PASS",
+  "authorization_source": "Direct user instruction in this chat"
+}

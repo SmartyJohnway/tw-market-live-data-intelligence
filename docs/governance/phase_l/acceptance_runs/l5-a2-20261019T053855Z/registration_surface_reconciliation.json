@@ -1,0 +1,513 @@
+{
+  "source_authority": "A1 registration_authority_matrix cross-checked one-for-one with A0 extension_registration_surface_inventory",
+  "total_rows": 39,
+  "extension_relevant_rows": 30,
+  "not_an_extension_point_rows": 9,
+  "rows": [
+    {
+      "registration_id": "catalog",
+      "A0_classification": "CANONICAL_AUTHORITY",
+      "canonical_current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "exact_source_files": [
+        "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+      ],
+      "current_behavior": "Capability identity, parameters, bounds, support and publication",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_REQUEST_CATALOG_VOCABULARY_MISMATCH",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "routing",
+      "A0_classification": "RUNTIME_ROUTING_AUTHORITY",
+      "canonical_current_authority": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "exact_source_files": [
+        "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
+      ],
+      "current_behavior": "Selected executor, markets, target and batch/network policy",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_UNKNOWN_ROUTED_CAPABILITY",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "executor_metadata",
+      "A0_classification": "RUNTIME_ROUTING_AUTHORITY",
+      "canonical_current_authority": "config/m8r_06_03_executor_registry_metadata.json",
+      "exact_source_files": [
+        "config/m8r_06_03_executor_registry_metadata.json"
+      ],
+      "current_behavior": "Route tuple contract, timeout and maximum result items",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_SELECTED_ROUTE_WITHOUT_EXECUTOR_METADATA",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "runtime_adapter_binding",
+      "A0_classification": "RUNTIME_ROUTING_AUTHORITY",
+      "canonical_current_authority": "scripts/m8r_06_03_production_adapter.py",
+      "exact_source_files": [
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "current_behavior": "Trusted callable binding; no dynamic discovery",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_EXECUTOR_WITHOUT_TRUSTED_CALLABLE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "executor_inventory",
+      "A0_classification": "RUNTIME_ROUTING_AUTHORITY",
+      "canonical_current_authority": "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+      "exact_source_files": [
+        "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json"
+      ],
+      "current_behavior": "Planner selected executor reuse disposition",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "STRUCTURALLY_ASSERTED",
+      "mechanical_check": "assert existing status and non-runtime role",
+      "failure_code": "A2_ORPHAN_EXECUTOR_IDENTITY",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "source_registry",
+      "A0_classification": "HISTORICAL_DUPLICATION",
+      "canonical_current_authority": "docs/source_registry/source_authority_registry.json",
+      "exact_source_files": [
+        "docs/source_registry/source_authority_registry.json",
+        "docs/source_registry/source_contract_schema.json",
+        "docs/source_registry/source_family_coverage_matrix.json"
+      ],
+      "current_behavior": "M4 design-stage taxonomy inventory; not current Unified acquisition authority. Preserve historical validator.",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "STRUCTURALLY_ASSERTED",
+      "mechanical_check": "assert existing status and non-runtime role",
+      "failure_code": "A2_HISTORICAL_DUPLICATE_AS_CURRENT_AUTHORITY",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "research_source_routes",
+      "A0_classification": "SOURCE_AUTHORITY",
+      "canonical_current_authority": "scripts/phase_g/research_executor.py",
+      "exact_source_files": [
+        "scripts/phase_g/research_executor.py"
+      ],
+      "current_behavior": "Explicit Phase G capability/market source contracts and fallback routes",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_UNKNOWN_SOURCE_AUTHORITY",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "eod_source_contracts",
+      "A0_classification": "SOURCE_AUTHORITY",
+      "canonical_current_authority": "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
+      "exact_source_files": [
+        "docs/data_capabilities/m8a_official_eod_endpoint_contract_registry.json",
+        "config/m8a_official_eod_security_master.json"
+      ],
+      "current_behavior": "Official EOD endpoint and instrument source contracts; target eligibility remains installation identity authority",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_UNKNOWN_SOURCE_AUTHORITY",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "phase_h_sources",
+      "A0_classification": "SOURCE_AUTHORITY",
+      "canonical_current_authority": "config/phase_h_h1_dormant_source_descriptors.json",
+      "exact_source_files": [
+        "config/phase_h_h1_dormant_source_descriptors.json",
+        "config/phase_h_h2_dormant_source_descriptors.json",
+        "server/services/phase_h_h1_tpex_composite.py",
+        "server/services/phase_h_h2_twse_exright_executor.py",
+        "server/services/phase_h_h3_twse_stock_day_adapter.py"
+      ],
+      "current_behavior": "Descriptors alone do not activate routes; current selected executors own request/normalization contracts",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_UNKNOWN_SOURCE_AUTHORITY",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "phase_i_sources",
+      "A0_classification": "SOURCE_AUTHORITY",
+      "canonical_current_authority": "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+      "exact_source_files": [
+        "docs/data_capabilities/phase_i_i1_source_authority.v1.json",
+        "docs/data_capabilities/phase_i_i2_source_authority.v1.json",
+        "docs/data_capabilities/phase_i_i3_source_authority.v1.json"
+      ],
+      "current_behavior": "Family-specific approved source selection, subordinate to canonical route authority",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_UNKNOWN_SOURCE_AUTHORITY",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "request_schema",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "schemas/unified_market_evidence_request.v3.schema.json",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_request.v3.schema.json"
+      ],
+      "current_behavior": "Closed public data_need vocabulary",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "execution_schema",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "schemas/unified_market_evidence_execution_request.v3.schema.json",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_execution_request.v3.schema.json"
+      ],
+      "current_behavior": "Governed execution projection vocabulary",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "result_schema",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "schemas/unified_market_evidence_result.v3.schema.json",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_result.v3.schema.json"
+      ],
+      "current_behavior": "Typed family result fields and refs",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "audit_schema",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_audit_package.v3.schema.json"
+      ],
+      "current_behavior": "Audit lineage fields",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "operation_schema",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+      "exact_source_files": [
+        "schemas/unified_market_evidence_operation_result.v2.schema.json"
+      ],
+      "current_behavior": "Operation evidence envelope compatibility",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "family_schemas",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+      "exact_source_files": [
+        "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+        "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json"
+      ],
+      "current_behavior": "Versioned subordinate raw/normalized contracts, not a second protocol",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "version_pairs",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "server/services/unified_contract_versions.py",
+      "exact_source_files": [
+        "server/services/unified_contract_versions.py"
+      ],
+      "current_behavior": "Frozen Request version to Catalog/Route mapping",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "planner",
+      "A0_classification": "RUNTIME_ROUTING_AUTHORITY",
+      "canonical_current_authority": "scripts/m8r_05b_01/planner.py",
+      "exact_source_files": [
+        "scripts/m8r_05b_01/planner.py"
+      ],
+      "current_behavior": "Generic plan plus explicit derived dependencies, H2/H3 and I3 date prerequisites",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_BLOCKED_ROUTE_HAS_SELECTION",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "loader",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "scripts/m8r_05c/artifact_loader.py",
+      "exact_source_files": [
+        "scripts/m8r_05c/artifact_loader.py"
+      ],
+      "current_behavior": "Explicit schema allowlist and artifact semantic checks",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_TYPED_EVIDENCE_SCHEMA_MISSING",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "lineage",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "scripts/m8r_05c/lineage_resolver.py",
+      "exact_source_files": [
+        "scripts/m8r_05c/lineage_resolver.py"
+      ],
+      "current_behavior": "Closed mapping and typed-contract binding; fail closed",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DIRECTLY_VALIDATED",
+      "mechanical_check": "runtime/canonical registration identity check",
+      "failure_code": "A2_TYPED_EVIDENCE_CONTRACT_VERSION_MISMATCH",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "projection",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "scripts/m8r_05c/models.py",
+      "exact_source_files": [
+        "scripts/m8r_05c/models.py",
+        "scripts/m8r_05c/evidence_projector.py",
+        "scripts/m8r_05c/result_builder.py"
+      ],
+      "current_behavior": "Typed fields, missing/coverage semantics, existing Result construction",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3",
+      "mechanical_check": "registration identity/version only; semantic projection deferred",
+      "failure_code": "A2_TYPED_EVIDENCE_CONTRACT_VERSION_MISMATCH",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A3"
+    },
+    {
+      "registration_id": "audit_projection",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "scripts/m8r_05c/audit_package_builder.py",
+      "exact_source_files": [
+        "scripts/m8r_05c/audit_package_builder.py"
+      ],
+      "current_behavior": "Typed family provenance and attempt projection",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3",
+      "mechanical_check": "registration identity/version only; semantic projection deferred",
+      "failure_code": "A2_TYPED_EVIDENCE_CONTRACT_VERSION_MISMATCH",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A3"
+    },
+    {
+      "registration_id": "handoff",
+      "A0_classification": "SCHEMA_AUTHORITY",
+      "canonical_current_authority": "scripts/m8r_05c/markdown_renderer.py",
+      "exact_source_files": [
+        "scripts/m8r_05c/markdown_renderer.py"
+      ],
+      "current_behavior": "Runtime family Result/handoff projection and caveats; no independent authorization",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "SEMANTIC_CONFORMANCE_DEFERRED_TO_A3",
+      "mechanical_check": "registration identity/version only; semantic projection deferred",
+      "failure_code": "A2_TYPED_EVIDENCE_CONTRACT_VERSION_MISMATCH",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "MEDIUM",
+      "next_semantic_tranche": "A3"
+    },
+    {
+      "registration_id": "portable",
+      "A0_classification": "DERIVED_SYNCHRONIZED_VIEW",
+      "canonical_current_authority": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+      "exact_source_files": [
+        "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+        "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+        "scripts/generate_portable_catalog.py"
+      ],
+      "current_behavior": "Generated Catalog copy and quick guide with canonical hash and Git lineage",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "PUBLICATION_CONFORMANCE_DEFERRED_TO_A4",
+      "mechanical_check": "preserve derived/documentation boundary; publication validation deferred",
+      "failure_code": "A2_DERIVED_CATALOG_VIEW_MISMATCH",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A4"
+    },
+    {
+      "registration_id": "runtime_guides",
+      "A0_classification": "GUIDE_DOCUMENTATION",
+      "canonical_current_authority": "skills/tw-market-evidence-agent/SKILL.md",
+      "exact_source_files": [
+        "skills/tw-market-evidence-agent/SKILL.md",
+        "docs/agent_usage_guide.md",
+        "skills/tw-market-evidence-agent/references/current_limitations.md"
+      ],
+      "current_behavior": "Human/AI usage and bounded limitations",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "PUBLICATION_CONFORMANCE_DEFERRED_TO_A4",
+      "mechanical_check": "preserve derived/documentation boundary; publication validation deferred",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A4"
+    },
+    {
+      "registration_id": "ai_guide_legacy",
+      "A0_classification": "HISTORICAL_DUPLICATION",
+      "canonical_current_authority": "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+      "exact_source_files": [
+        "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+        "docs/data_capabilities/m8_source_capability_registry.json"
+      ],
+      "current_behavior": "Earlier guide/source-capability narrative is not a second current Unified Catalog",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "STRUCTURALLY_ASSERTED",
+      "mechanical_check": "assert existing status and non-runtime role",
+      "failure_code": "A2_HISTORICAL_DUPLICATE_AS_CURRENT_AUTHORITY",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "sync_gates",
+      "A0_classification": "TEST_AUTHORITY",
+      "canonical_current_authority": "scripts/validate_portable_catalog_sync.py",
+      "exact_source_files": [
+        "scripts/validate_portable_catalog_sync.py",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "current_behavior": "Intentional independent cross-checks; do not replace all with dynamic equality",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "contract_gates",
+      "A0_classification": "TEST_AUTHORITY",
+      "canonical_current_authority": "scripts/validate_v1_public_contracts.py",
+      "exact_source_files": [
+        "scripts/validate_v1_public_contracts.py",
+        "scripts/validate_unified_market_evidence_contracts.py",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "current_behavior": "Compatibility and current contract assertions",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "test_profiles",
+      "A0_classification": "TEST_AUTHORITY",
+      "canonical_current_authority": "config/test_execution_profiles.json",
+      "exact_source_files": [
+        "config/test_execution_profiles.json",
+        "config/test_governance_semantic_profiles.json",
+        "tests/conftest.py"
+      ],
+      "current_behavior": "Explicit current/historical classification and registration",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "DELEGATED_TO_EXISTING_DETERMINISTIC_GATE",
+      "mechanical_check": "named existing deterministic validator",
+      "failure_code": "DELEGATED_GATE_FAILURE",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A2"
+    },
+    {
+      "registration_id": "family_acceptance",
+      "A0_classification": "CANONICAL_AUTHORITY",
+      "canonical_current_authority": "docs/acceptance_runs/phase_g_pr_d_closure.json",
+      "exact_source_files": [
+        "docs/acceptance_runs/phase_g_pr_d_closure.json",
+        "docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json"
+      ],
+      "current_behavior": "Family-specific accepted contract/activation ledgers; separate explicit Owner promotion, never a modification to frozen L0",
+      "A1_obligation": "Update this existing authority only when applicable, with coordinated compatibility evidence; never turn it into discovery or a second authority.",
+      "A2_conformance_disposition": "STRUCTURALLY_ASSERTED",
+      "mechanical_check": "assert existing status and non-runtime role",
+      "failure_code": "A2_OWNER_ACCEPTANCE_REQUIRED",
+      "future_extension_implication": "Explicit update or compatibility proof required when applicable; no A0 modification.",
+      "risk_severity": "LOW",
+      "next_semantic_tranche": "A2"
+    }
+  ],
+  "unresolved_registration_rows": 0,
+  "new_canonical_authorities": 0
+}

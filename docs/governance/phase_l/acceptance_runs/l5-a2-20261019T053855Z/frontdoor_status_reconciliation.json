@@ -1,0 +1,144 @@
+{
+  "live_stale_rollups_before": 20,
+  "current_rollups_updated": 20,
+  "live_stale_rollups_after": 0,
+  "historical_rollups_preserved": 2,
+  "before": [
+    {
+      "path": "PROJECT.md",
+      "line_before": 18,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "L5-A2+ is NOT AUTHORIZED. L6-L7 is NOT AUTHORIZED. Phase M remains NOT AUTHORIZED."
+    },
+    {
+      "path": "PROJECT.md",
+      "line_before": 19,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ remains NOT AUTHORIZED."
+    },
+    {
+      "path": "PROJECT.md",
+      "line_before": 23,
+      "heading": "Current Phase L boundary (2026-10-17)",
+      "text": "L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Its technical exit passed under `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6's accepted live disposition remains PARTIAL (17 transport-degraded logical sources, six HTTP-200 sources, zero deterministic contract drift proven); its one-shot authority is consumed and a second run is prohibited. L4-A0 through A4 are Owner-accepted and merged. L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED."
+    },
+    {
+      "path": "PROJECT.md",
+      "line_before": 114,
+      "heading": "Current Phase L boundary (2026-10-17)",
+      "text": "`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 deterministic contract and A6 bounded live recertification are complete. A6 is Owner-accepted and merged with technical disposition PARTIAL; 17 sources were transport-degraded, six returned HTTP 200, and zero deterministic contract drift was proven. The one-shot authority is consumed and a second run is prohibited. A7 technical exit review passed under `PHASE_L_L3_EXIT_REVIEW_PASS`; L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED. See"
+    },
+    {
+      "path": "PROJECT.md",
+      "line_before": 176,
+      "heading": "Current Phase L boundary (2026-10-17)",
+      "text": "`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. G05 live recertification is recorded in A6. A6 is Owner-accepted and merged with technical disposition PARTIAL. A7 technical exit review is `PHASE_L_L3_EXIT_REVIEW_PASS`; L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED."
+    },
+    {
+      "path": "HANDOFF.md",
+      "line_before": 18,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "L5-A2+ is NOT AUTHORIZED. L6-L7 is NOT AUTHORIZED. Phase M remains NOT AUTHORIZED."
+    },
+    {
+      "path": "HANDOFF.md",
+      "line_before": 19,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ remains NOT AUTHORIZED."
+    },
+    {
+      "path": "HANDOFF.md",
+      "line_before": 23,
+      "heading": "Current Phase L handoff (2026-10-17)",
+      "text": "L3 is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged. A6 remains PARTIAL (17 transport-degraded, six HTTP-200, zero deterministic contract drift proven); its one-shot authority is consumed and a second run is prohibited. L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`. L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED."
+    },
+    {
+      "path": "HANDOFF.md",
+      "line_before": 452,
+      "heading": "Explicit stop boundary",
+      "text": "Phase K is complete under `PHASE_K_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. Do not repeat the Phase K host matrix for closure. Phase L is started and L0 is frozen under `PHASE_L_L0_ARCHITECTURE_CONTRACT_FROZEN`. L1 - Runtime Operability is CLOSED under `PHASE_L_L1_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; L2 - Replay / Retention / Migration is CLOSED under `PHASE_L_L2_EXIT_REVIEW_PASS`, with PR #353 merged at `b84ba8a4ac4819d115de33e55cf9adf2a5801e00`. L3 - Source Drift Hardening is CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`; A0-A6 are Owner-accepted and merged and A6 remains PARTIAL with its one-shot authority consumed. L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED. Recover current Phase L state from `docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md` before starting a new boundary.**"
+    },
+    {
+      "path": "ROADMAP.md",
+      "line_before": 18,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "L5-A2+ is NOT AUTHORIZED. L6-L7 is NOT AUTHORIZED. Phase M remains NOT AUTHORIZED."
+    },
+    {
+      "path": "ROADMAP.md",
+      "line_before": 19,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ remains NOT AUTHORIZED."
+    },
+    {
+      "path": "ROADMAP.md",
+      "line_before": 25,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "status_reconciled_through: \"2026-10-18: Phase J/K COMPLETE; Phase L STARTED; L0 FROZEN; L1/L2/L3 CLOSED; L4-A0-A6 Owner-accepted and merged; L4-A6 technical disposition L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS; L4-A7 PHASE_L_L4_EXIT_REVIEW_PASS; L4 CLOSED under PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after PR #378 merge e184e2b5abfabc4656943d9734e4dc68230a8bbd; L5 STARTED; L5-A0 Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 NOT AUTHORIZED.\""
+    },
+    {
+      "path": "ROADMAP.md",
+      "line_before": 1452,
+      "heading": "Current entry - L4 security/resource boundary inventory (2026-10-17)",
+      "text": "L4-A2 is Owner-accepted and merged under `L4_A2_PATH_CONTAINMENT_HARDENING_OWNER_ACCEPTED_FOR_MERGE`; L4-A3 is Owner-accepted and merged; L4-A4 is Owner-accepted and merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED. See"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "line_before": 18,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "L5-A2+ is NOT AUTHORIZED. L6-L7 is NOT AUTHORIZED. Phase M remains NOT AUTHORIZED."
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "line_before": 19,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`. L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ remains NOT AUTHORIZED."
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "line_before": 28,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "**L4:** CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L4_EXIT_REVIEW_PASS` and PR #378 merge `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L4-A0 through A4 Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 Owner-accepted and merged at c8c23e2; L4-A6 OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS`, PR #375, merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`; L4-A7 `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after PR #378 merge `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 STARTED; L5-A0 Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 NOT AUTHORIZED."
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "line_before": 29,
+      "heading": "Current L5 state — A1 technical contract freeze (2026-10-18)",
+      "text": "**L5:** STARTED; **L5-A0:** OWNER-ACCEPTED AND MERGED via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; **L5-A1:** OWNER-ACCEPTED AND MERGED under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; **L5-A2+ / L6-L7:** NOT AUTHORIZED"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "line_before": 113,
+      "heading": "5. Remaining Phase L boundaries",
+      "text": "- L3 Source Drift Hardening: CLOSED under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit `PHASE_L_L3_EXIT_REVIEW_PASS`. A0-A6 are Owner-accepted and merged (A6 PR #367). A6 remains PARTIAL: 17 transport-degraded logical sources, six HTTP-200 sources, and zero deterministic contract drift proven; its one-shot authority is consumed and a second run is prohibited. L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED."
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "line_before": 142,
+      "heading": "6. Current stop boundary",
+      "text": "A6 bounded live recertification is recorded as PARTIAL and Owner-accepted/merged. L3 is closed under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 technical exit PASS. L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED."
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "line_before": 146,
+      "heading": "6. Current stop boundary",
+      "text": "> Recover current main and read the frozen L0 contract, L3-A0 inventory, A1-A6 acceptance/governance records, A7 exit review, and current recovery index. A0-A6 are Owner-accepted and merged; A6 is PARTIAL with consumed one-shot authority and no repeat acquisition. L3 is Owner-closed after A7 technical exit PASS. L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED."
+    }
+  ],
+  "historical_preserved": [
+    {
+      "path": "ROADMAP.md",
+      "line": 1494,
+      "heading": "Historical entry - L3 source drift hardening after A7 technical exit review (2026-10-17)",
+      "text": "`ff330f94049adce93c72a9179b4d7b44d297fb2b`. L3-A5 passed independent technical review under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_ACCEPTANCE_REVIEW_PASS`, is Owner-accepted under `L3_A5_SOURCE_LIFECYCLE_THROTTLING_AND_PUBLICATION_DRIFT_CONTRACT_OWNER_ACCEPTED_FOR_MERGE`, and merged through PR #365 at `d2b3be8bafa3ad0eebeec5ffbece1fc6a759b3bd`. A0-A6 are Owner-accepted and merged. A6 is Owner-accepted and merged under `L3_A6_BOUNDED_LIVE_SOURCE_DRIFT_RECERTIFICATION_OWNER_ACCEPTED_FOR_MERGE`; its technical live disposition is PARTIAL (17 transport-degraded sources, six HTTP-200 sources, zero deterministic contract drift proven), with its one-shot authority consumed and no second run permitted. A7 technical exit review passed under `PHASE_L_L3_EXIT_REVIEW_PASS`; L3 Owner-closed under `PHASE_L_L3_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`. L4-A0 through A4 are Owner-accepted and merged; A4 merged through PR #373 at `a2dfd7ff7c062257a7c7c8f193fced4f9c707a29`; L4-A5 is Owner-accepted and merged at c8c23e2; L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`); L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after A7 merge through PR #378 at `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED. See"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "line": 154,
+      "heading": "L4-A6 R3 continuation status (2026-10-18)",
+      "text": "L4-A6 is OWNER-ACCEPTED AND MERGED under `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_OWNER_ACCEPTED_FOR_MERGE`, with final technical disposition `L4_A6_RESOURCE_LOAD_CONCURRENCY_ACCEPTANCE_PASS` (PR #375; merge commit `9a3a274df1f2602dced30633ea5fa119bc39d0e6`). R3 remains historical: its exact invocation correctly reported 308 passed, 2 failures, 1 skipped, and 0 deselected. R3-R1 restored the two TG4-governed historical Mode C deselections; the corrected gate reported 308 passed, 1 skipped, 2 governed deselected, and 0 failed. Those nodes remain unrepaired and are not represented as passing. L4-A7 technical exit review passed under `PHASE_L_L4_EXIT_REVIEW_PASS`; L4 is CLOSED under `PHASE_L_L4_OWNER_ACCEPTED_FINAL_CLOSURE_PASS` after PR #378 merge `e184e2b5abfabc4656943d9734e4dc68230a8bbd`; L5 is STARTED; L5-A0 is Owner-accepted and merged via PR #380 at `241a5249987c008a28d959677704eee483a1c216`; L5-A1 Owner-accepted and merged under `L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_OWNER_ACCEPTED_FOR_MERGE` via PR #382 at `8ff92ca79af821a8641967184a26ee37db69d326`; L5-A2+ and L6-L7 remain NOT AUTHORIZED. See `PHASE_L_L4_A6_R3_R1_GOVERNED_HISTORICAL_GATE_CORRECTION_2026-10-18.md` and `PHASE_L_L4_A7_TECHNICAL_EXIT_REVIEW_2026-10-18.md`."
+    }
+  ],
+  "post_scan_current_state_contradictions": 0,
+  "result": "PASS"
+}
