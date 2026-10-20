@@ -1,0 +1,8 @@
+{
+  "accepted_historical_failure_count": 41,
+  "candidate_counts": null,
+  "candidate_only_failed_nodes": null,
+  "exact_set_equality": null,
+  "note": "No new default-ci invocation or passing/failing count is fabricated.",
+  "status": "NOT_RUN_BLOCKED"
+}

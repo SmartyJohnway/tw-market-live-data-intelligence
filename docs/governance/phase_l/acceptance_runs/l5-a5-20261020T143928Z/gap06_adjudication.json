@@ -1,0 +1,18 @@
+{
+  "blocker": "A5-REQ-IDENTITY-001",
+  "dimension_cells_accounted": 0,
+  "dimension_cells_total": 72,
+  "family_proofs_pass": 0,
+  "family_proofs_total": 2,
+  "final_status": "OPEN_OWNER_DECISION_REQUIRED",
+  "finding": "GAP-06",
+  "new_family_required": "NO",
+  "new_plugin_framework_required": "NO",
+  "original_classification": "GAP",
+  "recommended_tranche": "L5-A5",
+  "representative_families": [
+    "monthly_revenue",
+    "material_disclosures"
+  ],
+  "unresolved": 72
+}

@@ -1,0 +1,38 @@
+{
+  "blocker": "A5-REQ-IDENTITY-001",
+  "disposition": "L5_A5_EXISTING_FAMILY_CONFORMANCE_GAP_REQUIRES_OWNER_DECISION",
+  "family": "material_disclosures",
+  "identity": {
+    "authority_files": [
+      "schemas/material_disclosure_evidence.v1.schema.json",
+      "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+      "scripts/phase_g/research_executor.py",
+      "scripts/phase_g/mops_material_disclosures.py",
+      "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "config/m8r_06_03_executor_registry_metadata.json"
+    ],
+    "capability_id": "material_disclosures",
+    "cardinality": {
+      "capability_to_typed_evidence": "1:1 in this example; N:M permitted",
+      "executor_to_capabilities": "1:N",
+      "source_contracts_to_typed_evidence": "N:1"
+    },
+    "executor_id": "phase_g_official_research_executor",
+    "operation_evidence_contract_id": "phase_g_material_disclosure_operation_evidence.v1",
+    "public_request_data_need": "data_needs[].capability_id = material_disclosures",
+    "routing_identity": [
+      "Unified Request V3 / material_disclosures / TWSE / phase_g_official_research_executor",
+      "Unified Request V3 / material_disclosures / TPEX / phase_g_official_research_executor"
+    ],
+    "source_authority_identity": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+    "source_contract_ids": [
+      "t187ap04_L",
+      "t187ap04_O"
+    ],
+    "typed_evidence_contract_id": "material_disclosure_evidence.v1"
+  },
+  "pass_claimed": false,
+  "remaining_proofs": "NOT_RUN_AFTER_STOP_CONDITION",
+  "result": "NOT_ACCEPTED_BLOCKED"
+}

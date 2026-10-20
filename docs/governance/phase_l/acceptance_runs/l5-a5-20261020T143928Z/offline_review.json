@@ -1,0 +1,21 @@
+{
+  "A6_plus_authorized": false,
+  "catalog_changes": 0,
+  "disposition": "L5_A5_EXISTING_FAMILY_CONFORMANCE_GAP_REQUIRES_OWNER_DECISION",
+  "external_socket_attempts": "NOT_MEASURED",
+  "family_dimension_cells_accounted": 0,
+  "gap06": "OPEN_OWNER_DECISION_REQUIRED",
+  "handoff": "DRAFT_PR_NOT_MERGEABLE_BY_GOVERNANCE",
+  "live_acquisition": 0,
+  "new_capability_count": 0,
+  "new_family_count": 0,
+  "owner_acceptance": "PENDING",
+  "production_runtime_changes": 0,
+  "production_state_mutations": 0,
+  "provider_requests": 0,
+  "public_mcp_tool_count": 6,
+  "representative_families_pass": 0,
+  "routing_changes": 0,
+  "schema_changes": 0,
+  "unresolved_cells": 72
+}

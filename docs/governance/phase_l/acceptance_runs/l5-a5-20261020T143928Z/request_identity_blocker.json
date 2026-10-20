@@ -1,0 +1,53 @@
+{
+  "actual_frozen_Request_V3": "data_needs[].type = <capability>",
+  "affected_families": [
+    "monthly_revenue",
+    "material_disclosures"
+  ],
+  "classification": "FROZEN_GOVERNANCE_EXAMPLE_REQUEST_REPRESENTATION_CONTRADICTION",
+  "conflicting_frozen_example": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/existing_family_conformance_examples.json",
+  "current_authority": "schemas/unified_market_evidence_request.v3.schema.json",
+  "exact_evidence": [
+    {
+      "json_pointer": "/examples/0/public_request_data_need",
+      "line": 25,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/existing_family_conformance_examples.json"
+    },
+    {
+      "json_pointer": "/examples/1/public_request_data_need",
+      "line": 55,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/existing_family_conformance_examples.json"
+    },
+    {
+      "json_pointer": "/properties/data_needs/items/properties/type",
+      "line": 58,
+      "path": "schemas/unified_market_evidence_request.v3.schema.json"
+    },
+    {
+      "json_pointer": "/properties/data_needs/items/required",
+      "line": 91,
+      "path": "schemas/unified_market_evidence_request.v3.schema.json"
+    },
+    {
+      "json_pointer": "/properties/data_needs/items/additionalProperties",
+      "line": 133,
+      "path": "schemas/unified_market_evidence_request.v3.schema.json"
+    }
+  ],
+  "expected_by_A1_and_A5_authorization": "data_needs[].capability_id = <capability>",
+  "failure_code": "A5_CAPABILITY_IDENTITY_DRIFT",
+  "finding_id": "A5-REQ-IDENTITY-001",
+  "interpretation": "The current Request schema remains valid and authoritative. A1 example notation and the literal A5 requirement do not match the frozen public representation. No runtime defect or second runtime registry is inferred.",
+  "owner_decision_required": "Authorize an explicit governance clarification mapping public data_needs[].type to capability identity while preserving A1 historical evidence and Request V3 bytes, or separately decide a public-contract change outside A5. No option is silently selected.",
+  "prohibited_repairs": [
+    "mutating Request V3",
+    "rewriting A1 frozen examples",
+    "silently treating capability_id as accepted Request syntax"
+  ],
+  "schema_additionalProperties": false,
+  "schema_requires": [
+    "type",
+    "priority"
+  ],
+  "severity": "BLOCKING"
+}
