@@ -1,0 +1,217 @@
+{
+  "existing_source_policy_consumer_note": "m8r_06_03_production_adapter.py:495 reads TWSE_MIS currentness policy from legacy source registry. It is not current publication capability identity authority; unchanged.",
+  "new_canonical_authorities": 0,
+  "surface_count": 10,
+  "surfaces": [
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "capability support",
+      "source_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "status": "CANONICAL",
+      "surface": "Canonical Catalog",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "selected/blocked routing",
+      "source_authority": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "status": "CANONICAL",
+      "surface": "Canonical Routing",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "Catalog-only projection",
+      "source_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "status": "DERIVED",
+      "surface": "Portable JSON",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "effective executability by scope",
+      "source_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json + docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "status": "DERIVED",
+      "surface": "Generated Quick Guide",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "AI workflow",
+      "source_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json + docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "status": "GUIDE",
+      "surface": "Runtime Skill",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "usage",
+      "source_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json + docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "status": "GUIDE",
+      "surface": "Agent Usage Guide",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "bounded caveats",
+      "source_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json + docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "status": "GUIDE",
+      "surface": "Current Limitations",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "HISTORICAL_DUPLICATION",
+      "source_authority": "docs/ai/M8_AI_CAPABILITY_QUICK_GUIDE.md",
+      "status": "HISTORICAL",
+      "surface": "Historical AI Guide",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "historical capability inventory; existing source policy use unchanged",
+      "source_authority": "docs/data_capabilities/m8_source_capability_registry.json",
+      "status": "HISTORICAL",
+      "surface": "Historical source registry",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    },
+    {
+      "must_not_control": [
+        "runtime dispatch",
+        "capability identity",
+        "activation",
+        "authorization"
+      ],
+      "role": "independent cross-checks",
+      "source_authority": "validate_portable_catalog_sync + validate_runtime_skill_guide_sync",
+      "status": "TEST_ACCEPTANCE_ONLY",
+      "surface": "Publication sync validators",
+      "synchronization_direction": "runtime truth -> publication projection",
+      "validator_coverage": [
+        "PUB-01",
+        "PUB-02",
+        "PUB-06",
+        "PUB-07",
+        "PUB-08",
+        "PUB-09"
+      ]
+    }
+  ]
+}

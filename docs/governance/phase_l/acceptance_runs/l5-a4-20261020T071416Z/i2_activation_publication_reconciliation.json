@@ -1,0 +1,57 @@
+{
+  "Catalog_functional_fields_changed": false,
+  "Routing_functional_fields_changed": false,
+  "authority_records": [
+    "PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json",
+    "PHASE_I_FINAL_CLOSURE_2026-10-05.json"
+  ],
+  "blocker": "I3 activation acceptance guard rejects non-I3 Catalog descriptive prose changes",
+  "changes": [
+    {
+      "after": [
+        "TAIFEX TX regular session only; standard monthly outright series only",
+        "TPEx targets, after-hours, weekly series, calendar spreads, MTX/TMF, options, and other products are unsupported",
+        "A3 bounded live acceptance and final Owner production activation accepted; selected route remains approval-gated and explicit-request only; currentness unknown",
+        "no history, historical lookup/backfill, rolling futures, continuous-contract synthesis, polling, scheduler, or background refresh",
+        "no basis/premium-discount, signals, bullish/bearish interpretation, or target-specific causation"
+      ],
+      "authority": "catalog",
+      "before": [
+        "TAIFEX TX regular session only; standard monthly outright series only",
+        "TPEx targets, after-hours, weekly series, calendar spreads, MTX/TMF, options, and other products are unsupported",
+        "A3 bounded live acceptance passed; A4 branch technical activation candidate remains approval-gated and explicit-request only; final Owner production activation pending; currentness unknown",
+        "no history, historical lookup/backfill, rolling futures, continuous-contract synthesis, polling, scheduler, or background refresh",
+        "no basis/premium-discount, signals, bullish/bearish interpretation, or target-specific causation"
+      ],
+      "field": "known_limitations"
+    },
+    {
+      "after": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; Owner-accepted production activation; explicit-request and approval-gated.",
+      "authority": "catalog",
+      "before": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; A4 technical production activation candidate only, final Owner activation pending.",
+      "field": "description"
+    },
+    {
+      "after": [
+        "Final Owner production activation accepted; approval-gated and explicit-request only",
+        "TPEx cash targets unsupported",
+        "TAIFEX TX regular session and standard monthly outright only"
+      ],
+      "authority": "routing",
+      "before": [
+        "A4 branch technical activation candidate; final Owner production activation pending",
+        "TPEx cash targets unsupported",
+        "TAIFEX TX regular session and standard monthly outright only"
+      ],
+      "field": "known_limitations"
+    },
+    {
+      "after": "Catalog V3 runtime_executable; final Owner production activation accepted under PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json",
+      "authority": "routing",
+      "before": "Catalog V3 runtime_executable; A4 branch technical activation candidate, final Owner activation pending",
+      "field": "capability_status_source"
+    }
+  ],
+  "finding_id": "P02",
+  "status": "PUBLICATION_REPAIRED_ACCEPTANCE_REGRESSION_HOLD"
+}

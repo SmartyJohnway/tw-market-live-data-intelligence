@@ -1,0 +1,28 @@
+{
+  "files": {
+    "PROJECT.md": {
+      "stale_l5_a4_plus_occurrences": 0,
+      "technical_complete_owner_pending_occurrences": 5,
+      "a5_l6_not_authorized_present": true
+    },
+    "HANDOFF.md": {
+      "stale_l5_a4_plus_occurrences": 0,
+      "technical_complete_owner_pending_occurrences": 4,
+      "a5_l6_not_authorized_present": true
+    },
+    "ROADMAP.md": {
+      "stale_l5_a4_plus_occurrences": 0,
+      "technical_complete_owner_pending_occurrences": 5,
+      "a5_l6_not_authorized_present": true
+    },
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md": {
+      "stale_l5_a4_plus_occurrences": 0,
+      "technical_complete_owner_pending_occurrences": 7,
+      "a5_l6_not_authorized_present": true
+    }
+  },
+  "stale_current_state_occurrences": 0,
+  "contradictions": 0,
+  "current_state": "L5-A4 technical publication integration complete / Owner acceptance pending; L5-A5+, L6-L7 not authorized",
+  "status": "PASS"
+}

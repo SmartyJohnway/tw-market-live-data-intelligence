@@ -1,0 +1,79 @@
+[
+  {
+    "name": "affected-i3-single",
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_phase_i_i3_a4_preflight.py::test_preflight_validator_preserves_historical_snapshot_and_checks_active_state"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "output": ".                                                                        [100%]\n1 passed in 2.66s\n"
+  },
+  {
+    "name": "affected-i3-file",
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_phase_i_i3_a4_preflight.py"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "output": "......                                                                   [100%]\n6 passed in 2.86s\n"
+  },
+  {
+    "name": "a4-validator",
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "scripts/validate_l5_extension_publication_conformance.py"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "output": "{\"authority_kind\": \"TEST_ACCEPTANCE_ONLY\", \"checks\": [\"PUB-01\", \"PUB-02\", \"PUB-03\", \"PUB-04\", \"PUB-05\", \"PUB-06\", \"PUB-07\", \"PUB-08\", \"PUB-09\"], \"errors\": [], \"network\": false, \"runtime_discovery\": false, \"status\": \"PASS\", \"writes\": false}\n"
+  },
+  {
+    "name": "a4-focused",
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_l5_a4_publication_conformance.py"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "output": ".......................                                                  [100%]\n23 passed in 12.28s\n"
+  },
+  {
+    "name": "r1-focused",
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit/test_l5_a4_r1_compatibility_projection.py"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "output": "..................                                                       [100%]\n18 passed in 1.80s\n"
+  }
+]

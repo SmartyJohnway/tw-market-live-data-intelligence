@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CANONICAL_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
+ROUTING_PATH = ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json"
 PORTABLE_JSON_PATH = ROOT / "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json"
 PORTABLE_GUIDE_PATH = ROOT / "skills/tw-market-evidence-agent/references/capability_quick_guide.md"
 # The checked-in portable projections are a CRLF byte contract.  Make that
@@ -66,7 +67,36 @@ def generate_portable_json_obj(
         "known_limitations": catalog.get("known_limitations", []),
     }
 
-def generate_portable_markdown_text(portable_data: dict, sha256: str) -> str:
+def route_publication(capability: dict, routes: list[dict]) -> tuple[str, str]:
+    """Derived display only; does not select or activate any executor."""
+    selected = [r for r in routes if r["capability_id"] == capability["capability_id"]]
+    states, effective = [], []
+    for route in selected:
+        scope = ",".join(route.get("supported_markets", [])) or "unspecified scope"
+        state = route.get("routing_status", "unresolved")
+        states.append(f"{scope}: {state}; executor={route.get('selected_executor_id') or 'none'}")
+        executable = (
+            capability.get("support_status") == "runtime_executable"
+            and route.get("runtime_executable") is True
+            and state == "resolved" and bool(route.get("selected_executor_id"))
+            and not route.get("provisional", False)
+        )
+        effective.append(f"{scope}: " + ("executable subject to authorization/policy" if executable
+                         else "NOT currently executable through this route"))
+    for market in capability.get("provisional_markets", []):
+        effective.append(f"{market}: provisional; NOT executable")
+    return "; ".join(states) or "no selected route", "; ".join(effective) or "NOT currently executable"
+
+
+def generate_portable_markdown_text(
+    portable_data: dict, sha256: str, routing: dict | None = None,
+    routing_hash: str | None = None, routing_lineage: dict | None = None,
+) -> str:
+    # Explicit canonical routing input for publication; portable JSON stays Catalog-only.
+    if routing is None:
+        routing = json.loads(ROUTING_PATH.read_text(encoding="utf-8"))
+        routing_hash = get_file_sha256(ROUTING_PATH)
+        routing_lineage = get_canonical_source_lineage(ROUTING_PATH)
     md_lines = [
         "# Unified Market Evidence Capability Quick Guide (Generated Projection)",
         "",
@@ -76,12 +106,17 @@ def generate_portable_markdown_text(portable_data: dict, sha256: str) -> str:
         "",
         "Use this guide to verify the supported capabilities and limits when composing Unified Requests.",
         "",
-        "`Support Status` is authoritative for executability. An approval boundary does not make a `contract_supported` capability a standalone executable route.",
+        "Catalog Support Status describes capability support, not selected-route executability.",
+        "Effective executability requires runtime-compatible Catalog support AND a resolved, selected executable route for the requested scope; authorization/policy still applies.",
+        "Contract-supported, blocked, plan-only, unselected and provisional states never imply executable retrieval.",
+        f"- **Routing authority**: `docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json`",
+        f"- **Routing canonical SHA-256**: `{routing_hash}`",
+        f"- **Routing Git lineage**: `{json.dumps(routing_lineage or {}, sort_keys=True)}`",
         "",
         "## 1. Supported Data Needs",
         "",
-        "| Capability ID | Support Status | Supported Markets | Approval Boundary | Coverage | History | Known Runtime Limitation |",
-        "|---|---|---|---|---|---|---|",
+        "| Capability ID | Support Status | Selected Route State | Effective Executability | Supported Markets | Approval Boundary | Coverage | History | Known Runtime Limitation |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
 
     for cap in portable_data["data_need_capabilities"]:
@@ -94,8 +129,9 @@ def generate_portable_markdown_text(portable_data: dict, sha256: str) -> str:
         limitations = "; ".join(cap.get("known_limitations", [])) or "catalog-defined"
         if status != "runtime_executable":
             limitations = f"Not currently runtime-executable; {limitations}"
+        route_state, effective = route_publication(cap, routing["routes"])
         md_lines.append(
-            f"| `{cid}` | `{status}` | {markets} | {gate} | {coverage} | {history} | {limitations} |"
+            f"| `{cid}` | `{status}` | {route_state} | {effective} | {markets} | {gate} | {coverage} | {history} | {limitations} |"
         )
 
     md_lines.extend([
@@ -123,8 +159,8 @@ def generate_portable_markdown_text(portable_data: dict, sha256: str) -> str:
         "- Material disclosures cover the latest completed official daily batch for eligible TWSE/TPEX company common shares.",
         "- Monthly revenue covers the latest available official monthly-revenue reporting period for eligible TWSE/TPEX company common shares; currency is TWD and unit is thousand.",
         "- Research acquisition uses official CSV first and governed official JSON OpenAPI fallback. Fallback use is explicit in evidence.",
-        "- Phase H trading-status context is executable only through explicitly activated routes; current H1 coverage is partial and does not imply complete surveillance-status coverage.",
-        "- Corporate-action and recent-performance executability follows the canonical catalog and explicitly selected routes; partial or blocked markets remain explicit and must not be inferred executable. Derived discontinuity safety never fabricates complete coverage.",
+        "- Phase H trading-status context is executable only through explicitly activated routes; current TPEx H1 composite covers attention/disposition; cmode has unresolved marker semantics and zero canonical coverage. H1 coverage remains partial.",
+        "- Corporate-action and recent-performance executability follows the canonical catalog and explicitly selected routes; partial or blocked markets remain explicit and must not be inferred executable. Derived discontinuity safety never fabricates complete coverage. Preserve CORPORATE_ACTION_COVERAGE_INCOMPLETE and all existing A3 typed context/citation/currentness caveats.",
         "- There is no arbitrary history, polling, scheduler, background refresh, financial summary, investment advice, or trading.",
         ""
     ])

@@ -1,0 +1,17 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_preflight_validator_preserves_historical_snapshot_and_checks_active_state _
+tests\unit\test_phase_i_i3_a4_preflight.py:19: in test_preflight_validator_preserves_historical_snapshot_and_checks_active_state
+    record = preflight.validate()
+             ^^^^^^^^^^^^^^^^^^^^
+scripts\validate_phase_i_i3_a4_preflight.py:95: in validate
+    active = validate_activation()
+             ^^^^^^^^^^^^^^^^^^^^^
+scripts\validate_phase_i_i3_a4_activation.py:143: in validate
+    assert_non_i3_authority_unchanged(path)
+scripts\phase_i_i3_a4_compat.py:359: in assert_non_i3_authority_unchanged
+    raise AssertionError(f"non_i3_production_authority_drift:{relative}")
+E   AssertionError: non_i3_production_authority_drift:docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json
+=========================== short test summary info ===========================
+FAILED tests/unit/test_phase_i_i3_a4_preflight.py::test_preflight_validator_preserves_historical_snapshot_and_checks_active_state
+1 failed in 3.12s

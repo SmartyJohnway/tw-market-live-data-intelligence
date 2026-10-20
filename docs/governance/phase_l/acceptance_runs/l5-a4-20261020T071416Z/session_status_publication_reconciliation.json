@@ -1,0 +1,9 @@
+{
+  "activation_changes": 0,
+  "catalog_support": "runtime_executable",
+  "effective": "NOT currently executable through Unified 05B",
+  "finding_id": "P01",
+  "routing_status": "blocked",
+  "selected_executor": null,
+  "status": "RECONCILED_IN_UNCOMMITTED_WORKTREE"
+}

@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit/test_l5_a4_publication_conformance.py",
+    "tests/unit/test_m8r_05a_f2_ai_guide_and_skill.py",
+    "tests/unit/test_m8r_05a_f2_portable_skill_sync.py",
+    "tests/unit/test_phase_g_pr_d_public_surfaces.py"
+  ],
+  "exit_code": 0,
+  "output": "..................................                                       [100%]\n34 passed in 15.87s\n",
+  "additional_historical_i2_activation_observation": {
+    "passed": 1,
+    "failed": 28,
+    "not_repaired": true,
+    "all_28_failures_already_in_accepted_baseline": true
+  }
+}

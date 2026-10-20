@@ -102,10 +102,9 @@ required clarification.
 - `monthly_revenue` covers only the latest available reporting period in TWD,
   unit thousand. `not_yet_available` means no exact target row was present in a
   healthy covered snapshot; it is not zero revenue.
-- `trading_status_context` is V3-native but currently only the explicitly
-  activated TPEx attention route executes; disposition, suspension, resumption,
-  and changed-trading coverage remain uncovered until their separate route gates
-  pass. Do not convert partial H1 coverage into a complete market-status claim.
+- `trading_status_context` is V3-native but the selected TPEx H1 composite route executes with attention/disposition
+  coverage; cmode marker semantics remain unresolved with zero canonical coverage.
+  Suspension, resumption and changed-trading coverage remain uncovered. Do not convert partial H1 coverage into a complete market-status claim.
 - `corporate_action_context` and `recent_performance` remain non-executable
   where current Catalog/Route authority says plan-only or blocked; V3 preferred
   does not override those states.
@@ -131,3 +130,28 @@ trading, order routing, model-selected URL, or model-selected executor.
 - `references/tool_selection_examples.md`
 - `references/current_limitations.md`
 - `assets/unified_capability_catalog_portable.json`
+
+## Catalog and selected-route publication boundary
+
+Catalog support != selected route executability. Effective executability requires
+runtime-compatible support AND a resolved selected executable route for the requested
+market/target scope. Unsupported, blocked, plan-only and provisional are distinct;
+none authorizes retrieval. Consult the canonical Catalog and canonical Routing,
+then validate/preview the request; guides are derived usage guidance only.
+
+- `session_status`: Catalog `runtime_executable`, but the current Unified 05B route
+  is blocked with no selected approved executor; NOT currently executable.
+- `market_state_context`: selected active TWSE/TPEX route, bounded descriptive context.
+- `index_futures_context`: final Owner production activation accepted; selected active
+  TWSE route for TAIFEX TX regular-session standard monthly outright context. TPEx
+  targets and provisional TAIFEX target support remain non-executable. Authority:
+  `docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json`
+  and `docs/governance/phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json`.
+- `cash_institutional_flow_context`: selected active TWSE/TPEX route; descriptive only.
+- `corporate_action_context` and `recent_performance`: selected bounded TWSE routes;
+  TPEx restrictions remain explicit. Preserve `CORPORATE_ACTION_COVERAGE_INCOMPLETE`,
+  H4 discontinuity-safety caveats, missing/source-failed distinctions, citations and
+  all existing A3 typed timing/currentness semantics in Result/Audit/AI-ready handoff.
+
+Runtime truth → publication projection. Publication does not activate routes.
+Historical AI guides/source-capability registries are not current capability authority.

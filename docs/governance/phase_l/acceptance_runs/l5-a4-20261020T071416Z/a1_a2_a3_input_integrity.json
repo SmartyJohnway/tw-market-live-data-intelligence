@@ -1,0 +1,571 @@
+{
+  "A1_DECISION_REQUIRED": 0,
+  "A1_contract_unchanged": true,
+  "A1_dimensions": 36,
+  "A2_coverage": {
+    "extension": "30/30",
+    "friction": "8/8",
+    "negative": "9/9",
+    "surfaces": 39
+  },
+  "A3_coverage": {
+    "semantic_friction": "4/4",
+    "semantic_rows": "3/3"
+  },
+  "T1_T12_sha": "bea6e1a72c7a00ef9939503c03766a7be78018aee585b2b1b34c6f805b72d2d0",
+  "T1_T12_unchanged": true,
+  "manifests": [
+    {
+      "canonical_sha": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+      "canonical_sha_verified": true,
+      "commit": "e1348ce5fcc0314452aa49b53c3f9eda43c8b9e1",
+      "count": 32,
+      "manifest_bytes_unchanged": true,
+      "members": [
+        {
+          "actual": "e65c916d0aa29c864257fdf8e0549737cc042343937a7a7703467a79f58a35cc",
+          "expected": "e65c916d0aa29c864257fdf8e0549737cc042343937a7a7703467a79f58a35cc",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/a0_input_integrity.json",
+          "verified": true
+        },
+        {
+          "actual": "8cb7fbbee270ae6ac0ed9715e7eab976934cba40388b1fab910298cd6e72c9e4",
+          "expected": "8cb7fbbee270ae6ac0ed9715e7eab976934cba40388b1fab910298cd6e72c9e4",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/architecture_adjudication.json",
+          "verified": true
+        },
+        {
+          "actual": "24e500e3dc43b328db16c2f8f457d972a90abc9b6af79294acd00b09de526a40",
+          "expected": "24e500e3dc43b328db16c2f8f457d972a90abc9b6af79294acd00b09de526a40",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/architecture_conflict_register.json",
+          "verified": true
+        },
+        {
+          "actual": "84ea6c9428e92adeb06de7be272ab2eb3100a305418d3c8407ae2692283fd37a",
+          "expected": "84ea6c9428e92adeb06de7be272ab2eb3100a305418d3c8407ae2692283fd37a",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/cross_phase_inheritance_contract.json",
+          "verified": true
+        },
+        {
+          "actual": "861bd88d985c3edf0c72d8c34d965f0ef2c67f80f0807c01364feeafdb4a87b2",
+          "expected": "861bd88d985c3edf0c72d8c34d965f0ef2c67f80f0807c01364feeafdb4a87b2",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/existing_family_conformance_examples.json",
+          "verified": true
+        },
+        {
+          "actual": "6800fb0034a32e12c7c151d18565eced559618b0c7a3cd44337757bb57f578ab",
+          "expected": "6800fb0034a32e12c7c151d18565eced559618b0c7a3cd44337757bb57f578ab",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/identity_namespace_relationship_decision.json",
+          "verified": true
+        },
+        {
+          "actual": "ee9b43c9aa30c87234b8a4289ff8ef9844e632b12a90514ccbcda1a82453557c",
+          "expected": "ee9b43c9aa30c87234b8a4289ff8ef9844e632b12a90514ccbcda1a82453557c",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/minimum_extension_contract_matrix.json",
+          "verified": true
+        },
+        {
+          "actual": "6c0d5e18e52f8bcad45f989b5e290cec3e53bcca4d78d6e2a8ce67df2a76a75b",
+          "expected": "6c0d5e18e52f8bcad45f989b5e290cec3e53bcca4d78d6e2a8ce67df2a76a75b",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/negative_architecture_invariants.json",
+          "verified": true
+        },
+        {
+          "actual": "81fc59ef8a1268e33631381cf94e0f99cbce4c870411849d5c4d2bb07680a788",
+          "expected": "81fc59ef8a1268e33631381cf94e0f99cbce4c870411849d5c4d2bb07680a788",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/offline_validation.json",
+          "verified": true
+        },
+        {
+          "actual": "94ed56b2b898d6629585ee26f57008fb3fd4d0238c61cce0170f04bc28894da9",
+          "expected": "94ed56b2b898d6629585ee26f57008fb3fd4d0238c61cce0170f04bc28894da9",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/plugin_framework_assessment.json",
+          "verified": true
+        },
+        {
+          "actual": "148056ffc37ed7ce89fe82877c2c0e327b234d473e5f4f45836495085ad6489f",
+          "expected": "148056ffc37ed7ce89fe82877c2c0e327b234d473e5f4f45836495085ad6489f",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/preflight_result.json",
+          "verified": true
+        },
+        {
+          "actual": "4e90562ba49d467305bc72787470be405f3c31e47c9afc4cfc92ec3789e6202e",
+          "expected": "4e90562ba49d467305bc72787470be405f3c31e47c9afc4cfc92ec3789e6202e",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/registration_authority_matrix.json",
+          "verified": true
+        },
+        {
+          "actual": "ad2addf806dee586a5f3e060d7414a1efcd6759556df5b9ecabe2fedbadca5bd",
+          "expected": "ad2addf806dee586a5f3e060d7414a1efcd6759556df5b9ecabe2fedbadca5bd",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_01.txt",
+          "verified": true
+        },
+        {
+          "actual": "78cdf5ed41b6b3e8ffcac848ce1408165aa49589c25989acd5ec8058707db293",
+          "expected": "78cdf5ed41b6b3e8ffcac848ce1408165aa49589c25989acd5ec8058707db293",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_02.txt",
+          "verified": true
+        },
+        {
+          "actual": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+          "expected": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_03.txt",
+          "verified": true
+        },
+        {
+          "actual": "a7607909c829734fdf16bb46074ac7fc4b5070e5e9e6bf64c9a4be0cc2d3b7cf",
+          "expected": "a7607909c829734fdf16bb46074ac7fc4b5070e5e9e6bf64c9a4be0cc2d3b7cf",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_04.txt",
+          "verified": true
+        },
+        {
+          "actual": "d90b26c5867f44aa6dd08ab58e4053e6f3287a73d5c3fad1ca6cc464deff2812",
+          "expected": "d90b26c5867f44aa6dd08ab58e4053e6f3287a73d5c3fad1ca6cc464deff2812",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_05.txt",
+          "verified": true
+        },
+        {
+          "actual": "f5b84ea71b3ff5857c8b40cc6e597cb7330f77acc406dc707d16abe40e135664",
+          "expected": "f5b84ea71b3ff5857c8b40cc6e597cb7330f77acc406dc707d16abe40e135664",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_06.txt",
+          "verified": true
+        },
+        {
+          "actual": "6ee8f0011bcfe59bd032eff756d27677b0e529267b6d8e2e4b95e999a5a8f052",
+          "expected": "6ee8f0011bcfe59bd032eff756d27677b0e529267b6d8e2e4b95e999a5a8f052",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_07.txt",
+          "verified": true
+        },
+        {
+          "actual": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_08.txt",
+          "verified": true
+        },
+        {
+          "actual": "073732646f7b8916cf871e04753ae0e27b6b3da0c02f7a578cf3819ed63c3cfa",
+          "expected": "073732646f7b8916cf871e04753ae0e27b6b3da0c02f7a578cf3819ed63c3cfa",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_09.txt",
+          "verified": true
+        },
+        {
+          "actual": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_10.txt",
+          "verified": true
+        },
+        {
+          "actual": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_11.txt",
+          "verified": true
+        },
+        {
+          "actual": "04fa9f52366d223f8778590253fbb160aa1911128dff0414808c9e1a782afbbf",
+          "expected": "04fa9f52366d223f8778590253fbb160aa1911128dff0414808c9e1a782afbbf",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/validator_results.json",
+          "verified": true
+        },
+        {
+          "actual": "bea6e1a72c7a00ef9939503c03766a7be78018aee585b2b1b34c6f805b72d2d0",
+          "expected": "bea6e1a72c7a00ef9939503c03766a7be78018aee585b2b1b34c6f805b72d2d0",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/version_transition_matrix.json",
+          "verified": true
+        },
+        {
+          "actual": "84e0f7ed57fbd0e713bdb1dd939a8ff701fcdabc71425100376290f5ffc7187f",
+          "expected": "84e0f7ed57fbd0e713bdb1dd939a8ff701fcdabc71425100376290f5ffc7187f",
+          "path": "docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT_2026-10-18.md",
+          "verified": true
+        },
+        {
+          "actual": "d2ce7ac5ce2ff7efa72ee663a66ae0b7089a934dac90aab3b3faa976c05c4efa",
+          "expected": "d2ce7ac5ce2ff7efa72ee663a66ae0b7089a934dac90aab3b3faa976c05c4efa",
+          "path": "docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT.v1.json",
+          "verified": true
+        },
+        {
+          "actual": "406c13cc0f686c599949519949385bb13703cbaa02cdfbeb3d7f472d71d7156c",
+          "expected": "406c13cc0f686c599949519949385bb13703cbaa02cdfbeb3d7f472d71d7156c",
+          "path": "scripts/l5_a1_build_evidence.py",
+          "verified": true
+        },
+        {
+          "actual": "21f603631463d6265a31d0884829d511345c03ffa7500accc05d08f9c6dbe503",
+          "expected": "21f603631463d6265a31d0884829d511345c03ffa7500accc05d08f9c6dbe503",
+          "path": "PROJECT.md",
+          "verified": true
+        },
+        {
+          "actual": "a35b905c43fd5d3c5af60a22d433790d653f90706873ac377f1487b927f50171",
+          "expected": "a35b905c43fd5d3c5af60a22d433790d653f90706873ac377f1487b927f50171",
+          "path": "HANDOFF.md",
+          "verified": true
+        },
+        {
+          "actual": "0a3e3bba126c6a2a245aeb011211f433d6b1df24ad0e484522f5190a449bf689",
+          "expected": "0a3e3bba126c6a2a245aeb011211f433d6b1df24ad0e484522f5190a449bf689",
+          "path": "ROADMAP.md",
+          "verified": true
+        },
+        {
+          "actual": "2547b7cd97e9e64318a5f3d4b8f486b8215c711cfa6ce1053196a9b9f5700625",
+          "expected": "2547b7cd97e9e64318a5f3d4b8f486b8215c711cfa6ce1053196a9b9f5700625",
+          "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+          "verified": true
+        }
+      ],
+      "run": "l5-a1-20261018T140202Z",
+      "verified": 32
+    },
+    {
+      "canonical_sha": "b1dd1c009426e9470180e9962430284062538228e8ef940c6d2a71481c48bfea",
+      "canonical_sha_verified": true,
+      "commit": "193ca05261e002eac01c477931d07015d66acd1e",
+      "count": 24,
+      "manifest_bytes_unchanged": true,
+      "members": [
+        {
+          "actual": "f382c3f7fd4b096dab30f96ff7052cf58a42eb747726b2f1edd91b81e9da7cd5",
+          "expected": "f382c3f7fd4b096dab30f96ff7052cf58a42eb747726b2f1edd91b81e9da7cd5",
+          "path": "HANDOFF.md",
+          "verified": true
+        },
+        {
+          "actual": "e78afa298e966d66a1a344dfa95c1a229c05d4ca4739ffef0b01df9c84e452a6",
+          "expected": "e78afa298e966d66a1a344dfa95c1a229c05d4ca4739ffef0b01df9c84e452a6",
+          "path": "PROJECT.md",
+          "verified": true
+        },
+        {
+          "actual": "50c6e4d508e810cdd8835ed2ecce7975e8348b519735735a959fbc4e5e3e85c4",
+          "expected": "50c6e4d508e810cdd8835ed2ecce7975e8348b519735735a959fbc4e5e3e85c4",
+          "path": "ROADMAP.md",
+          "verified": true
+        },
+        {
+          "actual": "7ac0c61792e778b9f8c40355899a6c898add6d210af7d289e1348a6a136b03a4",
+          "expected": "7ac0c61792e778b9f8c40355899a6c898add6d210af7d289e1348a6a136b03a4",
+          "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+          "verified": true
+        },
+        {
+          "actual": "83ad765b5d1c6a36966a6d51952ce2ac635485813a805ff0d6bec569a8eeec52",
+          "expected": "83ad765b5d1c6a36966a6d51952ce2ac635485813a805ff0d6bec569a8eeec52",
+          "path": "docs/governance/phase_l/PHASE_L_L5_A2_EXPLICIT_REGISTRATION_CONFORMANCE_CHECKLIST.v1.json",
+          "verified": true
+        },
+        {
+          "actual": "bb0857250fb79361c80ae4ffc936b8c0f3af8986b1485af9eb30759d18a9cb3f",
+          "expected": "bb0857250fb79361c80ae4ffc936b8c0f3af8986b1485af9eb30759d18a9cb3f",
+          "path": "docs/governance/phase_l/PHASE_L_L5_A2_EXPLICIT_REGISTRATION_CONFORMANCE_HARDENING_2026-10-19.md",
+          "verified": true
+        },
+        {
+          "actual": "fec3f3d59bb7896c86d87006e5df2089b42e1a169a5aab7679b89782372a3660",
+          "expected": "fec3f3d59bb7896c86d87006e5df2089b42e1a169a5aab7679b89782372a3660",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/a1_input_integrity.json",
+          "verified": true
+        },
+        {
+          "actual": "d8a9b4de7b393b100752abdbbaf1dca3b5da45065db965e975706adcd310400b",
+          "expected": "d8a9b4de7b393b100752abdbbaf1dca3b5da45065db965e975706adcd310400b",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/architecture_conflict_register.json",
+          "verified": true
+        },
+        {
+          "actual": "d7a64746a6d2ee3422d7ff3cbb802b5b94723b4f7eb85fa01eb20960d2f89808",
+          "expected": "d7a64746a6d2ee3422d7ff3cbb802b5b94723b4f7eb85fa01eb20960d2f89808",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/conformance_rule_matrix.json",
+          "verified": true
+        },
+        {
+          "actual": "f1635d738264e3526a609388cfb71f28427b8831e95938b60d048b3443d44f27",
+          "expected": "f1635d738264e3526a609388cfb71f28427b8831e95938b60d048b3443d44f27",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/default_ci_candidate_raw.json",
+          "verified": true
+        },
+        {
+          "actual": "0e1eeffb0b3d5dc8cf88d24289e1fca0861d3d21b891e1fc37c6c4a10de4024b",
+          "expected": "0e1eeffb0b3d5dc8cf88d24289e1fca0861d3d21b891e1fc37c6c4a10de4024b",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/default_ci_failure_set_comparison.json",
+          "verified": true
+        },
+        {
+          "actual": "412f554966751b08eb5f7823c644a77bf0c9285845eea2f2659c95d4a6e48f52",
+          "expected": "412f554966751b08eb5f7823c644a77bf0c9285845eea2f2659c95d4a6e48f52",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/existing_gate_delegation.json",
+          "verified": true
+        },
+        {
+          "actual": "f09385fa2ee27b2e9ebef438d005d85b8566462f389e48a6b3550eee50a6d029",
+          "expected": "f09385fa2ee27b2e9ebef438d005d85b8566462f389e48a6b3550eee50a6d029",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/extension_relevant_coverage.json",
+          "verified": true
+        },
+        {
+          "actual": "40a79a63649c5a232f582d9262a55f74fca6dd315631aaf985417fe8919f5fee",
+          "expected": "40a79a63649c5a232f582d9262a55f74fca6dd315631aaf985417fe8919f5fee",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/focused_test_result.json",
+          "verified": true
+        },
+        {
+          "actual": "1ea893cf75ac4d9cd25bab9f07f211bcf5554bf300fd8005f2ed69eae0f52692",
+          "expected": "1ea893cf75ac4d9cd25bab9f07f211bcf5554bf300fd8005f2ed69eae0f52692",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/friction_group_reconciliation.json",
+          "verified": true
+        },
+        {
+          "actual": "455dd16c52f7a321c4cee38f27bd1f97d98b64fe73220995906e24e1ac90c1cf",
+          "expected": "455dd16c52f7a321c4cee38f27bd1f97d98b64fe73220995906e24e1ac90c1cf",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/frontdoor_status_reconciliation.json",
+          "verified": true
+        },
+        {
+          "actual": "aa0e80cee73a2b2500056492083a83e97fbb296d783c06df0922321174100c8f",
+          "expected": "aa0e80cee73a2b2500056492083a83e97fbb296d783c06df0922321174100c8f",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/not_extension_point_preservation.json",
+          "verified": true
+        },
+        {
+          "actual": "e15031642fe17a96edb7e81480dfed2f7eab79cc08703e6602d685dccab3b221",
+          "expected": "e15031642fe17a96edb7e81480dfed2f7eab79cc08703e6602d685dccab3b221",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/offline_review.json",
+          "verified": true
+        },
+        {
+          "actual": "a2e78aed47793ab0aabf0faae4220de90af184999c7659a9f23140aeba19723a",
+          "expected": "a2e78aed47793ab0aabf0faae4220de90af184999c7659a9f23140aeba19723a",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/preflight_result.json",
+          "verified": true
+        },
+        {
+          "actual": "5b7cc3be0990452881deeff3a78d3bd9b999b324a61cf2283ce8e231c40a7b4f",
+          "expected": "5b7cc3be0990452881deeff3a78d3bd9b999b324a61cf2283ce8e231c40a7b4f",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/registration_surface_reconciliation.json",
+          "verified": true
+        },
+        {
+          "actual": "4f430048370e8c4cb5b4fa7c1bfcafa35b1a282e5f2db0646a1052bfa5e2ce7c",
+          "expected": "4f430048370e8c4cb5b4fa7c1bfcafa35b1a282e5f2db0646a1052bfa5e2ce7c",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/required_validator_result.json",
+          "verified": true
+        },
+        {
+          "actual": "7275bf09a4e0c3102ebab8aada0f9ece1769a91eb81a5d7b3ad7281ce79a924a",
+          "expected": "7275bf09a4e0c3102ebab8aada0f9ece1769a91eb81a5d7b3ad7281ce79a924a",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a2-20261019T053855Z/validator_self_test.json",
+          "verified": true
+        },
+        {
+          "actual": "be875b1061ff6d64e131d96cc05ebdc0cdbc6c055d65f36f3e8712b1687fa30b",
+          "expected": "be875b1061ff6d64e131d96cc05ebdc0cdbc6c055d65f36f3e8712b1687fa30b",
+          "path": "scripts/validate_l5_extension_registration_conformance.py",
+          "verified": true
+        },
+        {
+          "actual": "e06030f51e7633810793af18c9ca2d9aa33fb8227274f54e785008e978c7bd35",
+          "expected": "e06030f51e7633810793af18c9ca2d9aa33fb8227274f54e785008e978c7bd35",
+          "path": "tests/unit/test_l5_a2_extension_registration_conformance.py",
+          "verified": true
+        }
+      ],
+      "run": "l5-a2-20261019T053855Z",
+      "verified": 24
+    },
+    {
+      "canonical_sha": "844402e972d7a3a793150db9cca3fb32be3e568860950b63d69c320ccda52c75",
+      "canonical_sha_verified": true,
+      "commit": "e83a8233bedd88a088343921338dcd0aaacb2d3f",
+      "count": 30,
+      "manifest_bytes_unchanged": true,
+      "members": [
+        {
+          "actual": "b9bc8a8ffb68471723917177d25ec20acb1b52f6ab8c7d59a525cfb564d7553a",
+          "expected": "b9bc8a8ffb68471723917177d25ec20acb1b52f6ab8c7d59a525cfb564d7553a",
+          "path": "HANDOFF.md",
+          "verified": true
+        },
+        {
+          "actual": "364d9dc97a11ca2f4b80445794905c037577486f95cd5505b981305ecad2804f",
+          "expected": "364d9dc97a11ca2f4b80445794905c037577486f95cd5505b981305ecad2804f",
+          "path": "PROJECT.md",
+          "verified": true
+        },
+        {
+          "actual": "964bcfdc2a53b71d4dcc4d1567007128d1b36cf8f69eae959ba3d2e05150c0fd",
+          "expected": "964bcfdc2a53b71d4dcc4d1567007128d1b36cf8f69eae959ba3d2e05150c0fd",
+          "path": "ROADMAP.md",
+          "verified": true
+        },
+        {
+          "actual": "2fc20460ddbfc702e0c2abc1cb4f55e728390fdedfea708206d924efb5d14138",
+          "expected": "2fc20460ddbfc702e0c2abc1cb4f55e728390fdedfea708206d924efb5d14138",
+          "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+          "verified": true
+        },
+        {
+          "actual": "3d96a4a8c69c42e6023bc2f16ece34c6698f6574bbc5b4735fe4db27ac3c0496",
+          "expected": "3d96a4a8c69c42e6023bc2f16ece34c6698f6574bbc5b4735fe4db27ac3c0496",
+          "path": "docs/governance/phase_l/PHASE_L_L5_A3_SEMANTIC_PROJECTION_LINEAGE_CONFORMANCE_HARDENING_2026-10-20.md",
+          "verified": true
+        },
+        {
+          "actual": "b399e80586cb4ca36344b85f58fa3f0bfd7b36f67cc84a029684889a6bcef7f4",
+          "expected": "b399e80586cb4ca36344b85f58fa3f0bfd7b36f67cc84a029684889a6bcef7f4",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/a1_a2_input_integrity.json",
+          "verified": true
+        },
+        {
+          "actual": "2f355bd41470eebf054883d76382aa6940a1a3ffe19277967284c75ec7b1c897",
+          "expected": "2f355bd41470eebf054883d76382aa6940a1a3ffe19277967284c75ec7b1c897",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/a2_deferred_semantic_rows.json",
+          "verified": true
+        },
+        {
+          "actual": "b419279ed9293cb1832ba488b6dfbee31a3cf9e33815b67fe3c95f337e1de2e1",
+          "expected": "b419279ed9293cb1832ba488b6dfbee31a3cf9e33815b67fe3c95f337e1de2e1",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/a4_deferral_register.json",
+          "verified": true
+        },
+        {
+          "actual": "7d73ee5f20631b9bfc89c4ed20700b045d03e1425bc97f2c50097aab6a9b3865",
+          "expected": "7d73ee5f20631b9bfc89c4ed20700b045d03e1425bc97f2c50097aab6a9b3865",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/architecture_conflict_register.json",
+          "verified": true
+        },
+        {
+          "actual": "f6c98d977d07afa75beffeccdde8db53c970f258d478c5a721bdc6f026d1d828",
+          "expected": "f6c98d977d07afa75beffeccdde8db53c970f258d478c5a721bdc6f026d1d828",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/audit_projection_conformance.json",
+          "verified": true
+        },
+        {
+          "actual": "ea49f7364bf1ea3c030adba127b93a4f87e46f8ebb5ffac855051de123dee121",
+          "expected": "ea49f7364bf1ea3c030adba127b93a4f87e46f8ebb5ffac855051de123dee121",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/bounded_repair_register.json",
+          "verified": true
+        },
+        {
+          "actual": "8fc45b4375d787a3c484bd5e40fa1fc1913f2cbba140dff8404d0fc4a49e5bb3",
+          "expected": "8fc45b4375d787a3c484bd5e40fa1fc1913f2cbba140dff8404d0fc4a49e5bb3",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/default_ci_failure_set_comparison.json",
+          "verified": true
+        },
+        {
+          "actual": "8266cb8a5a80a94524b928e191d26dbb17626fe96abbae55b2fd26e16a9466d7",
+          "expected": "8266cb8a5a80a94524b928e191d26dbb17626fe96abbae55b2fd26e16a9466d7",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/handoff_conformance.json",
+          "verified": true
+        },
+        {
+          "actual": "9481a9505966bddd378527541a2b0584d1cccca12aabe933bd95743ea86b5a43",
+          "expected": "9481a9505966bddd378527541a2b0584d1cccca12aabe933bd95743ea86b5a43",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/lineage_citation_conformance.json",
+          "verified": true
+        },
+        {
+          "actual": "e397669eae3858cf532ed3cbcc701ea52be3dd908c2518530adff7cbf17f6500",
+          "expected": "e397669eae3858cf532ed3cbcc701ea52be3dd908c2518530adff7cbf17f6500",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/missing_unsupported_failure_matrix.json",
+          "verified": true
+        },
+        {
+          "actual": "cab2dcae6c26eaba617fe9e11bd38d9bcf224e023cdabf227eb005beed4da78f",
+          "expected": "cab2dcae6c26eaba617fe9e11bd38d9bcf224e023cdabf227eb005beed4da78f",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/normalization_conformance.json",
+          "verified": true
+        },
+        {
+          "actual": "c94b7ef081e10251e4c97c3e5591320791b352c9cfb68846becf7d8a1ea9b49e",
+          "expected": "c94b7ef081e10251e4c97c3e5591320791b352c9cfb68846becf7d8a1ea9b49e",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/offline_review.json",
+          "verified": true
+        },
+        {
+          "actual": "21a5dcfa38d31180cca8f40d4f0066e86d6b73b9f57b813bb32dc0177ecb8b93",
+          "expected": "21a5dcfa38d31180cca8f40d4f0066e86d6b73b9f57b813bb32dc0177ecb8b93",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/preflight_result.json",
+          "verified": true
+        },
+        {
+          "actual": "5668c8a75af01df4f3df5689da92f8d143ee535aff49beda5572a20a413bece5",
+          "expected": "5668c8a75af01df4f3df5689da92f8d143ee535aff49beda5572a20a413bece5",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/representative_family_matrix.json",
+          "verified": true
+        },
+        {
+          "actual": "be1a421c1f0a1de237d5d2b5d08aed996f6a98e7d37a27f74472223362f5b9a7",
+          "expected": "be1a421c1f0a1de237d5d2b5d08aed996f6a98e7d37a27f74472223362f5b9a7",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/required_validator_result.json",
+          "verified": true
+        },
+        {
+          "actual": "6db2e0811a3b8028a3226fffa6248371b719858b17b5b3f857d9dd66a394b193",
+          "expected": "6db2e0811a3b8028a3226fffa6248371b719858b17b5b3f857d9dd66a394b193",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/result_projection_conformance.json",
+          "verified": true
+        },
+        {
+          "actual": "e7def9567520a15081139edff6e9814d927a7465ce14a41165fd5f6a91438a4f",
+          "expected": "e7def9567520a15081139edff6e9814d927a7465ce14a41165fd5f6a91438a4f",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/semantic_friction_group_accounting.json",
+          "verified": true
+        },
+        {
+          "actual": "b9ede19a2dce0521e16f8217e51d2a4c7d0887cb442f2038fcb1ad555c5ba1d0",
+          "expected": "b9ede19a2dce0521e16f8217e51d2a4c7d0887cb442f2038fcb1ad555c5ba1d0",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/semantic_mutation_test_result.json",
+          "verified": true
+        },
+        {
+          "actual": "862590e0c7baf9a41383afdecbc14eab9d4506b102e6ee335146614c0db490ea",
+          "expected": "862590e0c7baf9a41383afdecbc14eab9d4506b102e6ee335146614c0db490ea",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/semantic_trace_matrix.json",
+          "verified": true
+        },
+        {
+          "actual": "d21f8737a10e4bda806ce8908a5c3646518bf986e044f633b2de62a253e3a2c1",
+          "expected": "d21f8737a10e4bda806ce8908a5c3646518bf986e044f633b2de62a253e3a2c1",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/timing_currentness_conformance.json",
+          "verified": true
+        },
+        {
+          "actual": "929e03f1532b674818949916d7edc0ccc652c20b9876167bc6f1c3a19b6a6b46",
+          "expected": "929e03f1532b674818949916d7edc0ccc652c20b9876167bc6f1c3a19b6a6b46",
+          "path": "docs/governance/phase_l/acceptance_runs/l5-a3-20261020T015810Z/validator_output.json",
+          "verified": true
+        },
+        {
+          "actual": "ca6145ecfa09ac01675de6853072007a58adf41c2991fd641484618fe91f73e8",
+          "expected": "ca6145ecfa09ac01675de6853072007a58adf41c2991fd641484618fe91f73e8",
+          "path": "scripts/m8r_05c/evidence_projector.py",
+          "verified": true
+        },
+        {
+          "actual": "1d1aa525db03f555b481ab1c3bfb2ce692b7480613167753c7bd8a71de2e948d",
+          "expected": "1d1aa525db03f555b481ab1c3bfb2ce692b7480613167753c7bd8a71de2e948d",
+          "path": "scripts/m8r_05c/markdown_renderer.py",
+          "verified": true
+        },
+        {
+          "actual": "d464b5d85ad30c1337311f98d27150909672ca35b704bd9c46eaa75517e8243a",
+          "expected": "d464b5d85ad30c1337311f98d27150909672ca35b704bd9c46eaa75517e8243a",
+          "path": "scripts/validate_l5_extension_semantic_conformance.py",
+          "verified": true
+        },
+        {
+          "actual": "b6bc4d75c4b32640a558a55128ab7f36e9b26c595857e7a2b167b1893e3d01af",
+          "expected": "b6bc4d75c4b32640a558a55128ab7f36e9b26c595857e7a2b167b1893e3d01af",
+          "path": "tests/unit/test_l5_a3_semantic_conformance.py",
+          "verified": true
+        }
+      ],
+      "run": "l5-a3-20261020T015810Z",
+      "verified": 30
+    }
+  ],
+  "public_mcp_count": 6,
+  "status": "PASS",
+  "universal_family_id_registry": false
+}
