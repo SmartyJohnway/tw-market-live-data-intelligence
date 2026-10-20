@@ -27,3 +27,7 @@ Final R2 disposition is `L5_A4_R2_POST_COMMIT_PUBLICATION_LINEAGE_SYNC_PASS` onl
 ## Pre-commit results
 
 Dirty-entry lineage and generator idempotence passed. Pre-commit portable catalog, runtime Skill/guide, and A4 publication validators passed. Focused results: A4 publication 23 passed, R1 negative guard 18 passed, and I3 preflight 6 passed. All 14 required validators passed. Default-ci reported 1,248 passed, 41 failed, four skipped, and five deselected; the 41 failed nodes exactly match the accepted R1 historical set, with zero candidate-only failures. These 41 remain failures. Post-commit validation is still required before final disposition.
+
+## Sync commit and post-commit verification
+
+The derived-publication sync commit is `a37eea8a5b485ec2d83494fb709884a58f8693f3` (tree `8ce4139dab3eb44baa6dcb5614952f3d9a6f0b6e`). Its changed paths are limited to the portable catalog, generated Quick Guide, and this R2 governance/evidence package; neither canonical authority file is present. Post-sync-commit validation passed: portable catalog sync, runtime Skill/guide sync, A4 publication conformance JSON, A4 focused tests (23), R1 negative guard tests (18), I3 preflight tests (6), and `git diff --check`. Catalog/Routing last-change commit remains `8fc37608889fd11ea865827a3cf9e20524457271` with blobs `b9591b030037416333a73fc6c294a161f7c16ef0` and `0f47162035e7870b98cca28cc47568abc2c9034e`, respectively. The final evidence-only commit is followed by the required final read-only publication validation.

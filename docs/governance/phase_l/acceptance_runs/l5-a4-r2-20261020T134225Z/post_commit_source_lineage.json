@@ -1,0 +1,21 @@
+{
+  "sync_commit": "a37eea8a5b485ec2d83494fb709884a58f8693f3",
+  "sync_tree": "8ce4139dab3eb44baa6dcb5614952f3d9a6f0b6e",
+  "canonical_authorities": {
+    "Catalog": {
+      "last_change_commit": "8fc37608889fd11ea865827a3cf9e20524457271",
+      "expected_last_change_commit": "8fc37608889fd11ea865827a3cf9e20524457271",
+      "blob": "b9591b030037416333a73fc6c294a161f7c16ef0",
+      "expected_blob": "b9591b030037416333a73fc6c294a161f7c16ef0",
+      "worktree_modified": false
+    },
+    "Routing": {
+      "last_change_commit": "8fc37608889fd11ea865827a3cf9e20524457271",
+      "expected_last_change_commit": "8fc37608889fd11ea865827a3cf9e20524457271",
+      "blob": "0f47162035e7870b98cca28cc47568abc2c9034e",
+      "expected_blob": "0f47162035e7870b98cca28cc47568abc2c9034e",
+      "worktree_modified": false
+    }
+  },
+  "status": "PASS"
+}
