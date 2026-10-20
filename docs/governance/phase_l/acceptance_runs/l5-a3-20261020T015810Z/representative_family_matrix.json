@@ -1,0 +1,41 @@
+{
+  "representatives": [
+    {
+      "archetype": "Phase G research typed disclosure list; publication/fact/observation timing, citations and partial status",
+      "family": "material_disclosures",
+      "test": "tests/unit/test_phase_g_result_v2_projection.py",
+      "trace_index": 0
+    },
+    {
+      "archetype": "Phase G numeric report with currency/unit, signed values and nullable comparison values",
+      "family": "monthly_revenue",
+      "test": "tests/unit/test_phase_g_result_v2_projection.py",
+      "trace_index": 1
+    },
+    {
+      "archetype": "Phase H typed context with source status and safety caveat",
+      "family": "trading_status_context",
+      "test": "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py",
+      "trace_index": 2
+    },
+    {
+      "archetype": "Phase H partial coverage and H4 dependent discontinuity guard",
+      "family": "corporate_action_context",
+      "test": "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py",
+      "trace_index": 3
+    },
+    {
+      "archetype": "Phase H range-bound return evidence and governance marker",
+      "family": "recent_performance",
+      "test": "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py",
+      "trace_index": 4
+    },
+    {
+      "archetype": "Phase I market context; end-to-end loader/lineage/Result V3/Audit V3",
+      "family": "market_state_context",
+      "test": "tests/integration/test_phase_i_i1_result_audit_projection.py::test_i1_fixture_crosses_loader_lineage_result_v3_and_audit_v3",
+      "trace_index": 5
+    }
+  ],
+  "status": "PASS"
+}

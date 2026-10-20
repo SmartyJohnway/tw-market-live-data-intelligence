@@ -1,0 +1,18 @@
+{
+  "roles_kept_distinct": [
+    "source publication/source fact date",
+    "source report/coverage date",
+    "observed_at",
+    "typed retrieved_at",
+    "bundle finalized_at used by citation retrieval metadata",
+    "Result generated_at/calculated_at",
+    "derived calculated_at"
+  ],
+  "rule": "timestamps are compared by semantic role; equal fixture literals do not establish role equivalence",
+  "status": "PASS",
+  "tests": [
+    "tests/unit/test_phase_g_result_v2_projection.py",
+    "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py",
+    "tests/integration/test_phase_i_i1_result_audit_projection.py"
+  ]
+}

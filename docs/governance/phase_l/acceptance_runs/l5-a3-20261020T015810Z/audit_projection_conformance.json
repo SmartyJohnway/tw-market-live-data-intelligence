@@ -1,0 +1,8 @@
+{
+  "audit_projection_semantic_changes": 0,
+  "phase_i_end_to_end": "PASS via accepted I1 integration test",
+  "public_audit_schema_changed": false,
+  "result_audit_identity_linked": true,
+  "result_citations_bound_to_audit_inventory": true,
+  "status": "PASS"
+}

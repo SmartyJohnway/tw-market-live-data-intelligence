@@ -1,0 +1,27 @@
+{
+  "accounted": 4,
+  "groups": [
+    {
+      "id": "HARD-schema_loader",
+      "proof": "Phase G/H/I inputs pass through explicit loader; semantic contract/version and output preservation traces recorded.",
+      "result": "PASS"
+    },
+    {
+      "id": "HARD-lineage",
+      "proof": "Phase H Result citation target/operation/artifact/hash matches Audit citation map and retained inventory; I1 end-to-end test passes.",
+      "result": "PASS"
+    },
+    {
+      "id": "HARD-typed_projection",
+      "proof": "Phase G values and H/I typed fixture projections are preserved; deterministic repeated H projection hash matches.",
+      "result": "PASS"
+    },
+    {
+      "id": "HARD-audit_handoff",
+      "proof": "Result/Audit ID/hash and citation lineage verified; H4 caveat preserved; Phase I V3 markdown now includes complete typed evidence.",
+      "result": "PASS"
+    }
+  ],
+  "total": 4,
+  "unresolved": 0
+}

@@ -331,6 +331,14 @@ def _fmt_phase_h_evidence(evidence: dict, need: str) -> str:
     return "\n".join(lines)
 
 
+def _fmt_phase_i_evidence(evidence: dict, need: str) -> str:
+    """Render existing Phase I typed evidence without deriving new semantics."""
+    # Keep the typed projection complete: Phase I families have distinct
+    # field sets and are not safely represented by a partial common template.
+    rendered = json.dumps(evidence, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return f"- **原始結構化證據（{need}）**: `{rendered}`"
+
+
 def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PROJECTOR_VERSION) -> str:
     """Render the result dict as AI-ready Markdown.
 
@@ -468,6 +476,7 @@ def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PRO
                 for need_key in (
                     "material_disclosures", "monthly_revenue", "trading_status_context",
                     "corporate_action_context", "recent_performance", "discontinuity_safety",
+                    "market_state_context", "index_futures_context", "cash_institutional_flow_context",
                 ):
                     typed = evidence.get(need_key)
                     if typed is None:
@@ -476,8 +485,10 @@ def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PRO
                     lines.append(_section(_data_need_label(need_key), 4))
                     if need_key in {"material_disclosures", "monthly_revenue"}:
                         lines.append(_fmt_typed_research_evidence(typed, need_key))
-                    else:
+                    elif need_key in {"trading_status_context", "corporate_action_context", "recent_performance", "discontinuity_safety"}:
                         lines.append(_fmt_phase_h_evidence(typed, need_key))
+                    else:
+                        lines.append(_fmt_phase_i_evidence(typed, need_key))
 
         # Derived metrics.
         derived_metrics = target.get("derived_metrics", [])

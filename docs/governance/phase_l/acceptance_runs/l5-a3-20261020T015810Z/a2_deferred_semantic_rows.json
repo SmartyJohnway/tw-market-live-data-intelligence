@@ -1,0 +1,37 @@
+{
+  "accounted_count": 3,
+  "count": 3,
+  "rows": [
+    {
+      "authority": "scripts/m8r_05c/models.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "files": [
+        "scripts/m8r_05c/models.py",
+        "scripts/m8r_05c/evidence_projector.py",
+        "scripts/m8r_05c/result_builder.py"
+      ],
+      "registration_id": "projection",
+      "semantic_scope": "typed projection, missing/coverage, Result consistency"
+    },
+    {
+      "authority": "scripts/m8r_05c/audit_package_builder.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "files": [
+        "scripts/m8r_05c/audit_package_builder.py"
+      ],
+      "registration_id": "audit_projection",
+      "semantic_scope": "provenance/source attempt and Result-Audit compatibility"
+    },
+    {
+      "authority": "scripts/m8r_05c/markdown_renderer.py",
+      "classification": "SCHEMA_AUTHORITY",
+      "files": [
+        "scripts/m8r_05c/markdown_renderer.py"
+      ],
+      "registration_id": "handoff",
+      "semantic_scope": "derived semantic fidelity, caveat, coverage and citation"
+    }
+  ],
+  "status": "PASS",
+  "unresolved_count": 0
+}

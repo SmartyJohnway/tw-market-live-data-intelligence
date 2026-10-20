@@ -1,0 +1,1434 @@
+{
+  "evidence": {
+    "phase_h_deterministic_repeat": true,
+    "phase_i_end_to_end_test": "tests/integration/test_phase_i_i1_result_audit_projection.py::test_i1_fixture_crosses_loader_lineage_result_v3_and_audit_v3",
+    "result_audit_identity_linked": true,
+    "result_citations_bound_to_audit_inventory": true,
+    "result_hash_recomputed": true,
+    "status": "PASS",
+    "trace_count": 6,
+    "trace_sha256": "068ef851d74c547c780664af50adf3e723824d0df67cd93467051d45ffd535fc",
+    "traces": [
+      {
+        "artifact_reference": "evidence/g1.json",
+        "audit_identity": {
+          "bundle_id": "umeb-v1-bbbbbbbbbbbbbbbbbbbb",
+          "result_hash": "6d6608aae16769fab5a9073b04fa7b7c677a46cbf402e2f7db6e964252795793",
+          "result_id": "umeresult-v2-accbb824bfb57ab238bc"
+        },
+        "audit_provenance": [
+          {
+            "artifact_references": [
+              {
+                "relative_path": "evidence/g1.json",
+                "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+                "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "material_disclosures",
+            "executor_id": "phase_g_official_research_executor",
+            "operation_id": "op-1"
+          }
+        ],
+        "citation_mapping": [
+          {
+            "artifact": "evidence/g1.json",
+            "citation_id": "cite-abfd342106826487"
+          }
+        ],
+        "currentness": {
+          "observed_at": "2026-09-15T21:30:00+08:00",
+          "status": "current_within_source_contract"
+        },
+        "family_archetype": "material_disclosures",
+        "handoff_citations": [
+          "cite-abfd342106826487"
+        ],
+        "handoff_projection": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `umeresult-v2-accbb824bfb57ab238bc`\n**請求 ID**: `req-v2`\n**生成時間**: 2026-09-15T21:31:00+08:00\n\n## 請求摘要\n- **執行模式**: execute_once\n- **目標數量**: 1\n- **請求的資料需求**: material_disclosures, monthly_revenue\n- **選擇性需求**: monthly_revenue\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 台積電\n- **市場**: TWSE\n- **已提供資料需求**: material_disclosures, monthly_revenue\n\n### 證據\n\n#### material_disclosures\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_completed_official_daily_batch\n  - `source_report_date`: 2026-09-15\n  - `coverage_through`: 2026-09-14\n  - `truncated`: False\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: 2026-09-15T21:30:00+08:00\n- **來源**:\n  - `source_family`: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA\n  - `source_contract_id`: t187ap04_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n\n- **發言時間**: 2026-09-14T15:02:01+08:00\n  - **事實發生日**: 2026-09-14\n  - **主旨**: 重大訊息\n  - **說明**: 官方說明\n  - **引用**: `cite-abfd342106826487`\n- **引用 IDs**: `cite-abfd342106826487`\n\n#### monthly_revenue\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_available_reporting_period\n  - `source_report_date`: 2026-09-15\n  - `reporting_period`: 2026-08\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: 2026-09-15T21:30:00+08:00\n- **來源**:\n  - `source_family`: MOPS_MONTHLY_REVENUE_OPEN_DATA\n  - `source_contract_id`: t187ap05_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n- **數值**:\n  - `currency`: TWD\n  - `unit`: thousand\n  - `current_month_revenue`: 1\n  - `previous_month_revenue`: 2\n  - `previous_year_same_month_revenue`: 3\n  - `mom_pct`: None\n  - `yoy_pct`: None\n  - `ytd_revenue`: 4\n  - `previous_year_ytd_revenue`: 5\n  - `ytd_yoy_pct`: None\n  - `note`: 官方備註\n- **引用 IDs**: `cite-cb9d79fdfc183231`\n\n### 引用來源\n- `cite-abfd342106826487` — 來源: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA | 擷取時間: 2026-09-15T21:31:00+08:00 | 參考: `evidence/g1.json`\n- `cite-cb9d79fdfc183231` — 來源: MOPS_MONTHLY_REVENUE_OPEN_DATA | 擷取時間: 2026-09-15T21:31:00+08:00 | 參考: `evidence/g2.json`\n\n## 審計包參考\n- **審計包 ID**: `umeap-v2-d62b545acf8548b03150`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v2.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v2`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ⚠️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現來源事實、覆蓋範圍與限制。 所有時效語義由來源 evidence artifact 和執行收據決定。",
+        "input_contract_version": "phase_g_research_operation_evidence.v1",
+        "lineage": {
+          "artifact": "evidence/g1.json",
+          "operation_id": "op-1",
+          "target": "TWSE:2330"
+        },
+        "mandatory_caveats": [],
+        "normalized_facts": {
+          "caveats": [],
+          "citation_ids": [
+            "cite-abfd342106826487"
+          ],
+          "coverage": {
+            "coverage_through": "2026-09-14",
+            "historical_lookup_supported": false,
+            "item_count": 1,
+            "mode": "latest_completed_official_daily_batch",
+            "source_report_date": "2026-09-15",
+            "truncated": false
+          },
+          "currentness": {
+            "observed_at": "2026-09-15T21:30:00+08:00",
+            "status": "current_within_source_contract"
+          },
+          "items": [
+            {
+              "citation_id": "cite-abfd342106826487",
+              "clause": null,
+              "description": "官方說明",
+              "description_truncated": false,
+              "published_at": "2026-09-14T15:02:01+08:00",
+              "revision_relation": {
+                "related_official_reference": null,
+                "relation_type": null,
+                "status": "unresolved"
+              },
+              "source_fact_date": "2026-09-14",
+              "subject": "重大訊息"
+            }
+          ],
+          "schema_version": "material_disclosure_evidence.v1",
+          "source": {
+            "authority": "official",
+            "fallback_used": false,
+            "market": "TWSE",
+            "source_contract_id": "t187ap04_L",
+            "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available"
+        },
+        "operation_id": "op-1",
+        "public_contract_versions": {
+          "audit": "delegated-to-accepted-mode-c-test",
+          "handoff": "existing-markdown-projection",
+          "request": "unified_market_evidence_request.v2",
+          "result": "unified_market_evidence_result.v2"
+        },
+        "result_projection": {
+          "caveats": [],
+          "citation_ids": [
+            "cite-abfd342106826487"
+          ],
+          "coverage": {
+            "coverage_through": "2026-09-14",
+            "historical_lookup_supported": false,
+            "item_count": 1,
+            "mode": "latest_completed_official_daily_batch",
+            "source_report_date": "2026-09-15",
+            "truncated": false
+          },
+          "currentness": {
+            "observed_at": "2026-09-15T21:30:00+08:00",
+            "status": "current_within_source_contract"
+          },
+          "items": [
+            {
+              "citation_id": "cite-abfd342106826487",
+              "clause": null,
+              "description": "官方說明",
+              "description_truncated": false,
+              "published_at": "2026-09-14T15:02:01+08:00",
+              "revision_relation": {
+                "related_official_reference": null,
+                "relation_type": null,
+                "status": "unresolved"
+              },
+              "source_fact_date": "2026-09-14",
+              "subject": "重大訊息"
+            }
+          ],
+          "schema_version": "material_disclosure_evidence.v1",
+          "source": {
+            "authority": "official",
+            "fallback_used": false,
+            "market": "TWSE",
+            "source_contract_id": "t187ap04_L",
+            "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available"
+        },
+        "source_provenance": {
+          "fallback_used": false,
+          "source_contract_id": "t187ap04_L",
+          "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+          "transport": "official_csv"
+        },
+        "status_matrix": {
+          "result": "available",
+          "result_overall": "full_success",
+          "typed": "available"
+        },
+        "target_identity": "TWSE:2330",
+        "timing": {
+          "observed_at": "2026-09-15T21:30:00+08:00"
+        }
+      },
+      {
+        "artifact_reference": "evidence/g2.json",
+        "audit_identity": {
+          "bundle_id": "umeb-v1-bbbbbbbbbbbbbbbbbbbb",
+          "result_hash": "6d6608aae16769fab5a9073b04fa7b7c677a46cbf402e2f7db6e964252795793",
+          "result_id": "umeresult-v2-accbb824bfb57ab238bc"
+        },
+        "audit_provenance": [
+          {
+            "artifact_references": [
+              {
+                "relative_path": "evidence/g2.json",
+                "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+                "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+              }
+            ],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "monthly_revenue",
+            "executor_id": "phase_g_official_research_executor",
+            "operation_id": "op-2"
+          }
+        ],
+        "citation_mapping": [
+          {
+            "artifact": "evidence/g2.json",
+            "citation_id": "cite-cb9d79fdfc183231"
+          }
+        ],
+        "currentness": {
+          "observed_at": "2026-09-15T21:30:00+08:00",
+          "status": "current_within_source_contract"
+        },
+        "family_archetype": "monthly_revenue",
+        "handoff_citations": [
+          "cite-cb9d79fdfc183231"
+        ],
+        "handoff_projection": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `umeresult-v2-accbb824bfb57ab238bc`\n**請求 ID**: `req-v2`\n**生成時間**: 2026-09-15T21:31:00+08:00\n\n## 請求摘要\n- **執行模式**: execute_once\n- **目標數量**: 1\n- **請求的資料需求**: material_disclosures, monthly_revenue\n- **選擇性需求**: monthly_revenue\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 台積電\n- **市場**: TWSE\n- **已提供資料需求**: material_disclosures, monthly_revenue\n\n### 證據\n\n#### material_disclosures\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_completed_official_daily_batch\n  - `source_report_date`: 2026-09-15\n  - `coverage_through`: 2026-09-14\n  - `truncated`: False\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: 2026-09-15T21:30:00+08:00\n- **來源**:\n  - `source_family`: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA\n  - `source_contract_id`: t187ap04_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n\n- **發言時間**: 2026-09-14T15:02:01+08:00\n  - **事實發生日**: 2026-09-14\n  - **主旨**: 重大訊息\n  - **說明**: 官方說明\n  - **引用**: `cite-abfd342106826487`\n- **引用 IDs**: `cite-abfd342106826487`\n\n#### monthly_revenue\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_available_reporting_period\n  - `source_report_date`: 2026-09-15\n  - `reporting_period`: 2026-08\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: 2026-09-15T21:30:00+08:00\n- **來源**:\n  - `source_family`: MOPS_MONTHLY_REVENUE_OPEN_DATA\n  - `source_contract_id`: t187ap05_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n- **數值**:\n  - `currency`: TWD\n  - `unit`: thousand\n  - `current_month_revenue`: 1\n  - `previous_month_revenue`: 2\n  - `previous_year_same_month_revenue`: 3\n  - `mom_pct`: None\n  - `yoy_pct`: None\n  - `ytd_revenue`: 4\n  - `previous_year_ytd_revenue`: 5\n  - `ytd_yoy_pct`: None\n  - `note`: 官方備註\n- **引用 IDs**: `cite-cb9d79fdfc183231`\n\n### 引用來源\n- `cite-abfd342106826487` — 來源: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA | 擷取時間: 2026-09-15T21:31:00+08:00 | 參考: `evidence/g1.json`\n- `cite-cb9d79fdfc183231` — 來源: MOPS_MONTHLY_REVENUE_OPEN_DATA | 擷取時間: 2026-09-15T21:31:00+08:00 | 參考: `evidence/g2.json`\n\n## 審計包參考\n- **審計包 ID**: `umeap-v2-d62b545acf8548b03150`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v2.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v2`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ⚠️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現來源事實、覆蓋範圍與限制。 所有時效語義由來源 evidence artifact 和執行收據決定。",
+        "input_contract_version": "phase_g_research_operation_evidence.v1",
+        "lineage": {
+          "artifact": "evidence/g2.json",
+          "operation_id": "op-2",
+          "target": "TWSE:2330"
+        },
+        "mandatory_caveats": [],
+        "normalized_facts": {
+          "caveats": [],
+          "citation_ids": [
+            "cite-cb9d79fdfc183231"
+          ],
+          "coverage": {
+            "historical_lookup_supported": false,
+            "mode": "latest_available_reporting_period",
+            "reporting_period": "2026-08",
+            "source_report_date": "2026-09-15"
+          },
+          "currentness": {
+            "observed_at": "2026-09-15T21:30:00+08:00",
+            "status": "current_within_source_contract"
+          },
+          "schema_version": "monthly_revenue_evidence.v1",
+          "source": {
+            "authority": "official",
+            "fallback_used": false,
+            "market": "TWSE",
+            "source_contract_id": "t187ap05_L",
+            "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available",
+          "value": {
+            "currency": "TWD",
+            "current_month_revenue": 1,
+            "mom_pct": null,
+            "note": "官方備註",
+            "previous_month_revenue": 2,
+            "previous_year_same_month_revenue": 3,
+            "previous_year_ytd_revenue": 5,
+            "unit": "thousand",
+            "yoy_pct": null,
+            "ytd_revenue": 4,
+            "ytd_yoy_pct": null
+          }
+        },
+        "operation_id": "op-2",
+        "public_contract_versions": {
+          "audit": "delegated-to-accepted-mode-c-test",
+          "handoff": "existing-markdown-projection",
+          "request": "unified_market_evidence_request.v2",
+          "result": "unified_market_evidence_result.v2"
+        },
+        "result_projection": {
+          "caveats": [],
+          "citation_ids": [
+            "cite-cb9d79fdfc183231"
+          ],
+          "coverage": {
+            "historical_lookup_supported": false,
+            "mode": "latest_available_reporting_period",
+            "reporting_period": "2026-08",
+            "source_report_date": "2026-09-15"
+          },
+          "currentness": {
+            "observed_at": "2026-09-15T21:30:00+08:00",
+            "status": "current_within_source_contract"
+          },
+          "schema_version": "monthly_revenue_evidence.v1",
+          "source": {
+            "authority": "official",
+            "fallback_used": false,
+            "market": "TWSE",
+            "source_contract_id": "t187ap05_L",
+            "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available",
+          "value": {
+            "currency": "TWD",
+            "current_month_revenue": 1,
+            "mom_pct": null,
+            "note": "官方備註",
+            "previous_month_revenue": 2,
+            "previous_year_same_month_revenue": 3,
+            "previous_year_ytd_revenue": 5,
+            "unit": "thousand",
+            "yoy_pct": null,
+            "ytd_revenue": 4,
+            "ytd_yoy_pct": null
+          }
+        },
+        "source_provenance": {
+          "fallback_used": false,
+          "source_contract_id": "t187ap05_L",
+          "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+          "transport": "official_csv"
+        },
+        "status_matrix": {
+          "result": "available",
+          "result_overall": "full_success",
+          "typed": "available"
+        },
+        "target_identity": "TWSE:2330",
+        "timing": {
+          "observed_at": "2026-09-15T21:30:00+08:00"
+        }
+      },
+      {
+        "artifact_reference": "evidence/phase_h/h1/TWSE_2330.json",
+        "audit_identity": {
+          "bundle_id": "umeb-v1-66666666666666666666",
+          "result_hash": "269c590f8d96fdb17b4dd67d36d1024c6e06cf8da7b23c463b3d7109c26fc1d2",
+          "result_id": "umeresult-v3-e8eaaad7e312c6b056f9"
+        },
+        "audit_provenance": [
+          {
+            "artifact_references": [
+              {
+                "byte_size": 1,
+                "relative_path": "evidence/phase_h/h1/TWSE_2330.json",
+                "schema_version": "trading_status_context_evidence.v1",
+                "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "trading_status_context",
+            "error_code": null,
+            "evidence_contract": "trading_status_context_evidence.v1",
+            "executor_id": "phase_h_fixture_projection_executor",
+            "market": "TWSE",
+            "operation_id": "op-h1",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          }
+        ],
+        "citation_mapping": [
+          {
+            "artifact": "evidence/phase_h/h1/TWSE_2330.json",
+            "citation_id": "cite-42498de647de3292"
+          }
+        ],
+        "currentness": "available",
+        "family_archetype": "trading_status_context",
+        "handoff_citations": [
+          "cite-42498de647de3292"
+        ],
+        "handoff_projection": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `umeresult-v3-e8eaaad7e312c6b056f9`\n**請求 ID**: `phase-h-v3-fixture`\n**生成時間**: 2026-09-22T00:00:00Z\n\n## 請求摘要\n- **執行模式**: preview\n- **目標數量**: 1\n- **請求的資料需求**: corporate_action_context, recent_performance, trading_status_context\n- **選擇性需求**: recent_performance\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 台積電\n- **市場**: TWSE\n- **查詢參考**: fixture\n- **已提供資料需求**: corporate_action_context, recent_performance, trading_status_context\n\n### 證據\n\n#### 近期表現 (Recent Performance)\n- **狀態**: unknown\n- **時效類別**: 未知\n\n> **注意**:\n> - raw unadjusted close-to-close evidence\n\n#### trading_status_context\n- **狀態**: available\n- **已覆蓋狀態類型**: attention, disposition, changed_trading_method, suspension, resumption\n- **未覆蓋狀態類型**: （無）\n- **引用 IDs**: `cite-42498de647de3292`\n\n#### corporate_action_context\n- **狀態**: available\n- **已覆蓋事件類型**: ex_dividend\n- **未覆蓋事件類型**: capital_reduction_resume, par_value_change_resume, split, reverse_split, share_consolidation\n- **注意事項**: partial governed subtype coverage\n- **引用 IDs**: `cite-19b1e117e57ac1ee`\n\n#### 近期表現 (Recent Performance)\n- **狀態**: complete\n- **first_observation_date**: 2026-08-01\n- **last_observation_date**: 2026-08-05\n- **注意事項**: raw unadjusted close-to-close evidence\n- **引用 IDs**: `cite-2cd92c177f17a8fb`\n\n#### discontinuity_safety\n- **狀態**: unknown\n- **H4 狀態**: coverage_incomplete\n- **比較視窗**: 2026-09-01 → 2026-09-21\n- **一般報酬解讀**: blocked\n- **解讀護欄**: CORPORATE_ACTION_COVERAGE_INCOMPLETE\n- **引用 IDs**: `cite-19b1e117e57ac1ee`\n\n### 衍生指標\n\n**Recent Return (%)**\n- **狀態**: unavailable\n- **無效原因**: required_fields_absent_in_artifact\n\n### 引用來源\n- `cite-42498de647de3292` — 來源: TWSE_PHASE_H_FIXTURE | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h1/TWSE_2330.json`\n- `cite-19b1e117e57ac1ee` — 來源: phase_h_fixture_projection_executor | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h2/TWSE_2330.json`\n- `cite-2cd92c177f17a8fb` — 來源: phase_h_fixture_projection_executor | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h3/TWSE_2330.json`\n\n## 審計包參考\n- **審計包 ID**: `umeap-v3-729f9921b632c8d8dd97`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+        "input_contract_version": "trading_status_context_evidence.v1",
+        "lineage": {
+          "artifact": "evidence/phase_h/h1/TWSE_2330.json",
+          "operation_id": "op-h1",
+          "target": "TWSE:2330"
+        },
+        "mandatory_caveats": [],
+        "normalized_facts": {
+          "caveats": [],
+          "citation_ids": [
+            "cite-42498de647de3292"
+          ],
+          "coverage": {
+            "covered_status_types": [
+              "attention",
+              "disposition",
+              "changed_trading_method",
+              "suspension",
+              "resumption"
+            ],
+            "declared_scope_complete": true,
+            "declared_status_types": [
+              "attention",
+              "disposition",
+              "changed_trading_method",
+              "suspension",
+              "resumption"
+            ],
+            "exact_target_search_succeeded": true,
+            "failed_source_families": [],
+            "retrieval_succeeded": true,
+            "source_contract_validated": true,
+            "source_snapshot_date": "2026-09-19",
+            "status": "complete",
+            "uncovered_status_types": []
+          },
+          "items": [
+            {
+              "citation_ids": [
+                "cite-42498de647de3292"
+              ],
+              "effective_from": null,
+              "effective_to": null,
+              "official_conditions": null,
+              "official_measures": null,
+              "official_reason": "official fixture reason",
+              "published_at": null,
+              "source_native_provenance": {
+                "flag": "Y"
+              },
+              "source_record_date": "2026-09-19",
+              "status_lifecycle": "unresolved",
+              "status_type": "attention"
+            }
+          ],
+          "observed_at": "2026-09-21T00:00:00Z",
+          "schema_version": "trading_status_context_evidence.v1",
+          "source": {
+            "activation_state": "eligible",
+            "license_authority": "ODGL",
+            "source_contract_id": "fixture-contract",
+            "source_family": "TWSE_PHASE_H_FIXTURE",
+            "source_role": "default_candidate",
+            "transport": "official_json_openapi"
+          },
+          "status": "available",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          }
+        },
+        "operation_id": "op-h1",
+        "public_contract_versions": {
+          "audit": "unified_market_evidence_audit_package.v3",
+          "handoff": "existing-markdown-projection",
+          "request": "unified_market_evidence_request.v3",
+          "result": "unified_market_evidence_result.v3"
+        },
+        "result_projection": {
+          "caveats": [],
+          "citation_ids": [
+            "cite-42498de647de3292"
+          ],
+          "coverage": {
+            "covered_status_types": [
+              "attention",
+              "disposition",
+              "changed_trading_method",
+              "suspension",
+              "resumption"
+            ],
+            "declared_scope_complete": true,
+            "declared_status_types": [
+              "attention",
+              "disposition",
+              "changed_trading_method",
+              "suspension",
+              "resumption"
+            ],
+            "exact_target_search_succeeded": true,
+            "failed_source_families": [],
+            "retrieval_succeeded": true,
+            "source_contract_validated": true,
+            "source_snapshot_date": "2026-09-19",
+            "status": "complete",
+            "uncovered_status_types": []
+          },
+          "items": [
+            {
+              "citation_ids": [
+                "cite-42498de647de3292"
+              ],
+              "effective_from": null,
+              "effective_to": null,
+              "official_conditions": null,
+              "official_measures": null,
+              "official_reason": "official fixture reason",
+              "published_at": null,
+              "source_native_provenance": {
+                "flag": "Y"
+              },
+              "source_record_date": "2026-09-19",
+              "status_lifecycle": "unresolved",
+              "status_type": "attention"
+            }
+          ],
+          "observed_at": "2026-09-21T00:00:00Z",
+          "schema_version": "trading_status_context_evidence.v1",
+          "source": {
+            "activation_state": "eligible",
+            "license_authority": "ODGL",
+            "source_contract_id": "fixture-contract",
+            "source_family": "TWSE_PHASE_H_FIXTURE",
+            "source_role": "default_candidate",
+            "transport": "official_json_openapi"
+          },
+          "status": "available",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          }
+        },
+        "source_provenance": {
+          "activation_state": "eligible",
+          "license_authority": "ODGL",
+          "source_contract_id": "fixture-contract",
+          "source_family": "TWSE_PHASE_H_FIXTURE",
+          "source_role": "default_candidate",
+          "transport": "official_json_openapi"
+        },
+        "status_matrix": {
+          "result": "available",
+          "result_overall": "full_success",
+          "typed": "available"
+        },
+        "target_identity": "TWSE:2330",
+        "timing": {
+          "observed_at": "2026-09-21T00:00:00Z"
+        }
+      },
+      {
+        "artifact_reference": "evidence/phase_h/h2/TWSE_2330.json",
+        "audit_identity": {
+          "bundle_id": "umeb-v1-66666666666666666666",
+          "result_hash": "269c590f8d96fdb17b4dd67d36d1024c6e06cf8da7b23c463b3d7109c26fc1d2",
+          "result_id": "umeresult-v3-e8eaaad7e312c6b056f9"
+        },
+        "audit_provenance": [
+          {
+            "artifact_references": [
+              {
+                "byte_size": 1,
+                "relative_path": "evidence/phase_h/h2/TWSE_2330.json",
+                "schema_version": "corporate_action_context_evidence.v1",
+                "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+              }
+            ],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "corporate_action_context",
+            "error_code": null,
+            "evidence_contract": "corporate_action_context_evidence.v1",
+            "executor_id": "phase_h_fixture_projection_executor",
+            "market": "TWSE",
+            "operation_id": "op-h2",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          }
+        ],
+        "citation_mapping": [
+          {
+            "artifact": "evidence/phase_h/h2/TWSE_2330.json",
+            "citation_id": "cite-19b1e117e57ac1ee"
+          }
+        ],
+        "currentness": "available",
+        "family_archetype": "corporate_action_context",
+        "handoff_citations": [
+          "cite-19b1e117e57ac1ee"
+        ],
+        "handoff_projection": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `umeresult-v3-e8eaaad7e312c6b056f9`\n**請求 ID**: `phase-h-v3-fixture`\n**生成時間**: 2026-09-22T00:00:00Z\n\n## 請求摘要\n- **執行模式**: preview\n- **目標數量**: 1\n- **請求的資料需求**: corporate_action_context, recent_performance, trading_status_context\n- **選擇性需求**: recent_performance\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 台積電\n- **市場**: TWSE\n- **查詢參考**: fixture\n- **已提供資料需求**: corporate_action_context, recent_performance, trading_status_context\n\n### 證據\n\n#### 近期表現 (Recent Performance)\n- **狀態**: unknown\n- **時效類別**: 未知\n\n> **注意**:\n> - raw unadjusted close-to-close evidence\n\n#### trading_status_context\n- **狀態**: available\n- **已覆蓋狀態類型**: attention, disposition, changed_trading_method, suspension, resumption\n- **未覆蓋狀態類型**: （無）\n- **引用 IDs**: `cite-42498de647de3292`\n\n#### corporate_action_context\n- **狀態**: available\n- **已覆蓋事件類型**: ex_dividend\n- **未覆蓋事件類型**: capital_reduction_resume, par_value_change_resume, split, reverse_split, share_consolidation\n- **注意事項**: partial governed subtype coverage\n- **引用 IDs**: `cite-19b1e117e57ac1ee`\n\n#### 近期表現 (Recent Performance)\n- **狀態**: complete\n- **first_observation_date**: 2026-08-01\n- **last_observation_date**: 2026-08-05\n- **注意事項**: raw unadjusted close-to-close evidence\n- **引用 IDs**: `cite-2cd92c177f17a8fb`\n\n#### discontinuity_safety\n- **狀態**: unknown\n- **H4 狀態**: coverage_incomplete\n- **比較視窗**: 2026-09-01 → 2026-09-21\n- **一般報酬解讀**: blocked\n- **解讀護欄**: CORPORATE_ACTION_COVERAGE_INCOMPLETE\n- **引用 IDs**: `cite-19b1e117e57ac1ee`\n\n### 衍生指標\n\n**Recent Return (%)**\n- **狀態**: unavailable\n- **無效原因**: required_fields_absent_in_artifact\n\n### 引用來源\n- `cite-42498de647de3292` — 來源: TWSE_PHASE_H_FIXTURE | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h1/TWSE_2330.json`\n- `cite-19b1e117e57ac1ee` — 來源: phase_h_fixture_projection_executor | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h2/TWSE_2330.json`\n- `cite-2cd92c177f17a8fb` — 來源: phase_h_fixture_projection_executor | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h3/TWSE_2330.json`\n\n## 審計包參考\n- **審計包 ID**: `umeap-v3-729f9921b632c8d8dd97`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+        "input_contract_version": "corporate_action_context_evidence.v1",
+        "lineage": {
+          "artifact": "evidence/phase_h/h2/TWSE_2330.json",
+          "operation_id": "op-h2",
+          "target": "TWSE:2330"
+        },
+        "mandatory_caveats": [
+          "partial governed subtype coverage"
+        ],
+        "normalized_facts": {
+          "caveats": [
+            "partial governed subtype coverage"
+          ],
+          "citation_ids": [
+            "cite-19b1e117e57ac1ee"
+          ],
+          "coverage": {
+            "covered_event_subtypes": [
+              "ex_dividend"
+            ],
+            "declared_event_subtypes": [
+              "ex_dividend",
+              "capital_reduction_resume",
+              "par_value_change_resume",
+              "split",
+              "reverse_split",
+              "share_consolidation"
+            ],
+            "declared_scope_complete": false,
+            "exact_target_search_succeeded": true,
+            "failed_source_families": [],
+            "requested_window": {
+              "end": "2026-09-21",
+              "start": "2026-09-01"
+            },
+            "retrieval_succeeded": true,
+            "source_contract_validated": true,
+            "status": "partial",
+            "uncovered_event_subtypes": [
+              "capital_reduction_resume",
+              "par_value_change_resume",
+              "split",
+              "reverse_split",
+              "share_consolidation"
+            ]
+          },
+          "events": [
+            {
+              "announcement_date": "2026-09-01",
+              "cash_dividend": {
+                "state": "blank",
+                "value": null
+              },
+              "citation_ids": [
+                "cite-19b1e117e57ac1ee"
+              ],
+              "effective_date": "2026-09-20",
+              "event_lifecycle": "scheduled",
+              "event_type": "ex_dividend",
+              "official_reference_price": {
+                "state": "not_announced",
+                "value": null
+              },
+              "official_source_proof": "TWT48U_ALL",
+              "opening_reference_basis": null,
+              "pre_event_close": {
+                "state": "unavailable",
+                "value": null
+              },
+              "revision_relation": {
+                "related_official_reference": null,
+                "relation_type": null,
+                "status": "unresolved"
+              },
+              "rights_ratio": {
+                "state": "blank",
+                "value": null
+              },
+              "source_evidence_stage": "preannouncement",
+              "stock_dividend_ratio": {
+                "state": "value",
+                "value": 0
+              },
+              "subscription_price": {
+                "state": "not_applicable",
+                "value": null
+              }
+            },
+            {
+              "announcement_date": "2026-09-01",
+              "cash_dividend": {
+                "state": "blank",
+                "value": null
+              },
+              "citation_ids": [
+                "cite-19b1e117e57ac1ee"
+              ],
+              "effective_date": "2026-09-20",
+              "event_lifecycle": "effective",
+              "event_type": "ex_dividend",
+              "official_reference_price": {
+                "state": "value",
+                "value": 95
+              },
+              "official_source_proof": "tpex_exright_daily",
+              "opening_reference_basis": null,
+              "pre_event_close": {
+                "state": "value",
+                "value": 100
+              },
+              "revision_relation": {
+                "related_official_reference": "pre-001",
+                "relation_type": "supersedes",
+                "status": "officially_linked"
+              },
+              "rights_ratio": {
+                "state": "blank",
+                "value": null
+              },
+              "source_evidence_stage": "official_reference_calculated",
+              "stock_dividend_ratio": {
+                "state": "value",
+                "value": 0
+              },
+              "subscription_price": {
+                "state": "not_applicable",
+                "value": null
+              }
+            }
+          ],
+          "observed_at": "2026-09-21T00:00:00Z",
+          "schema_version": "corporate_action_context_evidence.v1",
+          "sources": [
+            {
+              "activation_state": "eligible",
+              "license_authority": "ODGL",
+              "source_contract_id": "fixture-contract",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "source_role": "default_candidate",
+              "transport": "official_json_openapi"
+            }
+          ],
+          "status": "available",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          }
+        },
+        "operation_id": "op-h2",
+        "public_contract_versions": {
+          "audit": "unified_market_evidence_audit_package.v3",
+          "handoff": "existing-markdown-projection",
+          "request": "unified_market_evidence_request.v3",
+          "result": "unified_market_evidence_result.v3"
+        },
+        "result_projection": {
+          "caveats": [
+            "partial governed subtype coverage"
+          ],
+          "citation_ids": [
+            "cite-19b1e117e57ac1ee"
+          ],
+          "coverage": {
+            "covered_event_subtypes": [
+              "ex_dividend"
+            ],
+            "declared_event_subtypes": [
+              "ex_dividend",
+              "capital_reduction_resume",
+              "par_value_change_resume",
+              "split",
+              "reverse_split",
+              "share_consolidation"
+            ],
+            "declared_scope_complete": false,
+            "exact_target_search_succeeded": true,
+            "failed_source_families": [],
+            "requested_window": {
+              "end": "2026-09-21",
+              "start": "2026-09-01"
+            },
+            "retrieval_succeeded": true,
+            "source_contract_validated": true,
+            "status": "partial",
+            "uncovered_event_subtypes": [
+              "capital_reduction_resume",
+              "par_value_change_resume",
+              "split",
+              "reverse_split",
+              "share_consolidation"
+            ]
+          },
+          "events": [
+            {
+              "announcement_date": "2026-09-01",
+              "cash_dividend": {
+                "state": "blank",
+                "value": null
+              },
+              "citation_ids": [
+                "cite-19b1e117e57ac1ee"
+              ],
+              "effective_date": "2026-09-20",
+              "event_lifecycle": "scheduled",
+              "event_type": "ex_dividend",
+              "official_reference_price": {
+                "state": "not_announced",
+                "value": null
+              },
+              "official_source_proof": "TWT48U_ALL",
+              "opening_reference_basis": null,
+              "pre_event_close": {
+                "state": "unavailable",
+                "value": null
+              },
+              "revision_relation": {
+                "related_official_reference": null,
+                "relation_type": null,
+                "status": "unresolved"
+              },
+              "rights_ratio": {
+                "state": "blank",
+                "value": null
+              },
+              "source_evidence_stage": "preannouncement",
+              "stock_dividend_ratio": {
+                "state": "value",
+                "value": 0
+              },
+              "subscription_price": {
+                "state": "not_applicable",
+                "value": null
+              }
+            },
+            {
+              "announcement_date": "2026-09-01",
+              "cash_dividend": {
+                "state": "blank",
+                "value": null
+              },
+              "citation_ids": [
+                "cite-19b1e117e57ac1ee"
+              ],
+              "effective_date": "2026-09-20",
+              "event_lifecycle": "effective",
+              "event_type": "ex_dividend",
+              "official_reference_price": {
+                "state": "value",
+                "value": 95
+              },
+              "official_source_proof": "tpex_exright_daily",
+              "opening_reference_basis": null,
+              "pre_event_close": {
+                "state": "value",
+                "value": 100
+              },
+              "revision_relation": {
+                "related_official_reference": "pre-001",
+                "relation_type": "supersedes",
+                "status": "officially_linked"
+              },
+              "rights_ratio": {
+                "state": "blank",
+                "value": null
+              },
+              "source_evidence_stage": "official_reference_calculated",
+              "stock_dividend_ratio": {
+                "state": "value",
+                "value": 0
+              },
+              "subscription_price": {
+                "state": "not_applicable",
+                "value": null
+              }
+            }
+          ],
+          "observed_at": "2026-09-21T00:00:00Z",
+          "schema_version": "corporate_action_context_evidence.v1",
+          "sources": [
+            {
+              "activation_state": "eligible",
+              "license_authority": "ODGL",
+              "source_contract_id": "fixture-contract",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "source_role": "default_candidate",
+              "transport": "official_json_openapi"
+            }
+          ],
+          "status": "available",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          }
+        },
+        "source_provenance": [
+          {
+            "activation_state": "eligible",
+            "license_authority": "ODGL",
+            "source_contract_id": "fixture-contract",
+            "source_family": "TWSE_PHASE_H_FIXTURE",
+            "source_role": "default_candidate",
+            "transport": "official_json_openapi"
+          }
+        ],
+        "status_matrix": {
+          "result": "available",
+          "result_overall": "full_success",
+          "typed": "available"
+        },
+        "target_identity": "TWSE:2330",
+        "timing": {
+          "observed_at": "2026-09-21T00:00:00Z"
+        }
+      },
+      {
+        "artifact_reference": "evidence/phase_h/h3/TWSE_2330.json",
+        "audit_identity": {
+          "bundle_id": "umeb-v1-66666666666666666666",
+          "result_hash": "269c590f8d96fdb17b4dd67d36d1024c6e06cf8da7b23c463b3d7109c26fc1d2",
+          "result_id": "umeresult-v3-e8eaaad7e312c6b056f9"
+        },
+        "audit_provenance": [
+          {
+            "artifact_references": [
+              {
+                "byte_size": 1,
+                "relative_path": "evidence/phase_h/h3/TWSE_2330.json",
+                "schema_version": "recent_performance_evidence.v1",
+                "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+              }
+            ],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "recent_performance",
+            "error_code": null,
+            "evidence_contract": "recent_performance_evidence.v1",
+            "executor_id": "phase_h_fixture_projection_executor",
+            "market": "TWSE",
+            "operation_id": "op-h3",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          }
+        ],
+        "citation_mapping": [
+          {
+            "artifact": "evidence/phase_h/h3/TWSE_2330.json",
+            "citation_id": "cite-2cd92c177f17a8fb"
+          }
+        ],
+        "currentness": null,
+        "family_archetype": "recent_performance",
+        "handoff_citations": [
+          "cite-2cd92c177f17a8fb"
+        ],
+        "handoff_projection": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `umeresult-v3-e8eaaad7e312c6b056f9`\n**請求 ID**: `phase-h-v3-fixture`\n**生成時間**: 2026-09-22T00:00:00Z\n\n## 請求摘要\n- **執行模式**: preview\n- **目標數量**: 1\n- **請求的資料需求**: corporate_action_context, recent_performance, trading_status_context\n- **選擇性需求**: recent_performance\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 台積電\n- **市場**: TWSE\n- **查詢參考**: fixture\n- **已提供資料需求**: corporate_action_context, recent_performance, trading_status_context\n\n### 證據\n\n#### 近期表現 (Recent Performance)\n- **狀態**: unknown\n- **時效類別**: 未知\n\n> **注意**:\n> - raw unadjusted close-to-close evidence\n\n#### trading_status_context\n- **狀態**: available\n- **已覆蓋狀態類型**: attention, disposition, changed_trading_method, suspension, resumption\n- **未覆蓋狀態類型**: （無）\n- **引用 IDs**: `cite-42498de647de3292`\n\n#### corporate_action_context\n- **狀態**: available\n- **已覆蓋事件類型**: ex_dividend\n- **未覆蓋事件類型**: capital_reduction_resume, par_value_change_resume, split, reverse_split, share_consolidation\n- **注意事項**: partial governed subtype coverage\n- **引用 IDs**: `cite-19b1e117e57ac1ee`\n\n#### 近期表現 (Recent Performance)\n- **狀態**: complete\n- **first_observation_date**: 2026-08-01\n- **last_observation_date**: 2026-08-05\n- **注意事項**: raw unadjusted close-to-close evidence\n- **引用 IDs**: `cite-2cd92c177f17a8fb`\n\n#### discontinuity_safety\n- **狀態**: unknown\n- **H4 狀態**: coverage_incomplete\n- **比較視窗**: 2026-09-01 → 2026-09-21\n- **一般報酬解讀**: blocked\n- **解讀護欄**: CORPORATE_ACTION_COVERAGE_INCOMPLETE\n- **引用 IDs**: `cite-19b1e117e57ac1ee`\n\n### 衍生指標\n\n**Recent Return (%)**\n- **狀態**: unavailable\n- **無效原因**: required_fields_absent_in_artifact\n\n### 引用來源\n- `cite-42498de647de3292` — 來源: TWSE_PHASE_H_FIXTURE | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h1/TWSE_2330.json`\n- `cite-19b1e117e57ac1ee` — 來源: phase_h_fixture_projection_executor | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h2/TWSE_2330.json`\n- `cite-2cd92c177f17a8fb` — 來源: phase_h_fixture_projection_executor | 擷取時間: 2026-09-22T00:00:00Z | 參考: `evidence/phase_h/h3/TWSE_2330.json`\n\n## 審計包參考\n- **審計包 ID**: `umeap-v3-729f9921b632c8d8dd97`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+        "input_contract_version": "recent_performance_evidence.v1",
+        "lineage": {
+          "artifact": "evidence/phase_h/h3/TWSE_2330.json",
+          "operation_id": "op-h3",
+          "target": "TWSE:2330"
+        },
+        "mandatory_caveats": [
+          "raw unadjusted close-to-close evidence"
+        ],
+        "normalized_facts": {
+          "available_baselines": [
+            5
+          ],
+          "baselines": [
+            {
+              "actual_distinct_close_count": 6,
+              "end_observation_date": "2026-08-28",
+              "lookback_trading_days": 5,
+              "recent_return_pct": 20.0,
+              "required_distinct_close_count": 6,
+              "return_basis": "raw_unadjusted_close_to_close",
+              "start_observation_date": "2026-08-01",
+              "status": "available"
+            }
+          ],
+          "caveats": [
+            "raw unadjusted close-to-close evidence"
+          ],
+          "citation_ids": [
+            "cite-2cd92c177f17a8fb"
+          ],
+          "coverage_status": "complete",
+          "first_observation_date": "2026-08-01",
+          "governed_end_observation": {
+            "canonical_target_id": "TWSE:2330",
+            "citation_ids": [
+              "cite-2cd92c177f17a8fb"
+            ],
+            "close": 120,
+            "market": "TWSE",
+            "retrieved_at": "2026-09-21T00:00:00Z",
+            "security_code": "2330",
+            "source_contract_id": "fixture-history",
+            "source_family": "TWSE_PHASE_H_FIXTURE",
+            "trade_date": "2026-08-28",
+            "volume": 1028
+          },
+          "last_observation_date": "2026-08-05",
+          "missing_observation_count": 0,
+          "observations": [
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 100,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-01",
+              "volume": 1001
+            },
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 101,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-02",
+              "volume": 1002
+            },
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 102,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-03",
+              "volume": 1003
+            },
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 103,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-04",
+              "volume": 1004
+            },
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 104,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-05",
+              "volume": 1005
+            }
+          ],
+          "recent_close_range": {
+            "range_basis": "completed_session_closing_price",
+            "recent_close_high": 120,
+            "recent_close_low": 100
+          },
+          "requested_observations": 5,
+          "schema_version": "recent_performance_evidence.v1",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          },
+          "unavailable_baselines": [],
+          "valid_observation_count": 5,
+          "volume_context": {
+            "comparison_alignment": "partial_session_vs_completed_sessions",
+            "current_volume_basis": "intraday_cumulative",
+            "historical_average_basis": "completed_official_sessions",
+            "historical_average_volume": 1010
+          }
+        },
+        "operation_id": "op-h3",
+        "public_contract_versions": {
+          "audit": "unified_market_evidence_audit_package.v3",
+          "handoff": "existing-markdown-projection",
+          "request": "unified_market_evidence_request.v3",
+          "result": "unified_market_evidence_result.v3"
+        },
+        "result_projection": {
+          "available_baselines": [
+            5
+          ],
+          "baselines": [
+            {
+              "actual_distinct_close_count": 6,
+              "end_observation_date": "2026-08-28",
+              "lookback_trading_days": 5,
+              "recent_return_pct": 20.0,
+              "required_distinct_close_count": 6,
+              "return_basis": "raw_unadjusted_close_to_close",
+              "start_observation_date": "2026-08-01",
+              "status": "available"
+            }
+          ],
+          "caveats": [
+            "raw unadjusted close-to-close evidence"
+          ],
+          "citation_ids": [
+            "cite-2cd92c177f17a8fb"
+          ],
+          "coverage_status": "complete",
+          "first_observation_date": "2026-08-01",
+          "governed_end_observation": {
+            "canonical_target_id": "TWSE:2330",
+            "citation_ids": [
+              "cite-2cd92c177f17a8fb"
+            ],
+            "close": 120,
+            "market": "TWSE",
+            "retrieved_at": "2026-09-21T00:00:00Z",
+            "security_code": "2330",
+            "source_contract_id": "fixture-history",
+            "source_family": "TWSE_PHASE_H_FIXTURE",
+            "trade_date": "2026-08-28",
+            "volume": 1028
+          },
+          "last_observation_date": "2026-08-05",
+          "missing_observation_count": 0,
+          "observations": [
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 100,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-01",
+              "volume": 1001
+            },
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 101,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-02",
+              "volume": 1002
+            },
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 102,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-03",
+              "volume": 1003
+            },
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 103,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-04",
+              "volume": 1004
+            },
+            {
+              "canonical_target_id": "TWSE:2330",
+              "citation_ids": [
+                "cite-2cd92c177f17a8fb"
+              ],
+              "close": 104,
+              "market": "TWSE",
+              "retrieved_at": "2026-09-21T00:00:00Z",
+              "security_code": "2330",
+              "source_contract_id": "fixture-history",
+              "source_family": "TWSE_PHASE_H_FIXTURE",
+              "trade_date": "2026-08-05",
+              "volume": 1005
+            }
+          ],
+          "recent_close_range": {
+            "range_basis": "completed_session_closing_price",
+            "recent_close_high": 120,
+            "recent_close_low": 100
+          },
+          "requested_observations": 5,
+          "schema_version": "recent_performance_evidence.v1",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          },
+          "unavailable_baselines": [],
+          "valid_observation_count": 5,
+          "volume_context": {
+            "comparison_alignment": "partial_session_vs_completed_sessions",
+            "current_volume_basis": "intraday_cumulative",
+            "historical_average_basis": "completed_official_sessions",
+            "historical_average_volume": 1010
+          }
+        },
+        "source_provenance": null,
+        "status_matrix": {
+          "result": null,
+          "result_overall": "full_success",
+          "typed": "complete"
+        },
+        "target_identity": "TWSE:2330",
+        "timing": {}
+      },
+      {
+        "artifact_reference": "evidence/phase_i/i1/TPEX_market_state.json",
+        "audit_identity": "covered by accepted I1 integration test",
+        "audit_provenance": "covered by accepted I1 integration test",
+        "citation_mapping": [
+          {
+            "artifact": "evidence/phase_i/i1/TPEX_market_state.json",
+            "citation_id": "cite-71ceefb1120b1009",
+            "operation_id": "umeop-op-v1-37e7ffc42102745298c7"
+          }
+        ],
+        "currentness": "complete",
+        "family_archetype": "market_state_context",
+        "handoff_citations": [],
+        "handoff_projection": "covered by deterministic V3 renderer; see Phase H mode-C tests",
+        "input_contract_version": "market_state_context_evidence.v1",
+        "lineage": {
+          "artifact": "evidence/phase_i/i1/TPEX_market_state.json",
+          "operation_id": "umeop-op-v1-37e7ffc42102745298c7",
+          "target": "TPEX:6488"
+        },
+        "mandatory_caveats": [],
+        "normalized_facts": {
+          "benchmark": {
+            "change_points": -2.75,
+            "change_unit": "index_point",
+            "close_index": 300.25,
+            "identifier": "TPEx Mainboard Index"
+          },
+          "breadth": {
+            "down": 380,
+            "flat": 69,
+            "limit_down": 4,
+            "limit_up": 12,
+            "unmatched_including_suspended": 15,
+            "up": 401
+          },
+          "breadth_unit": "company_count",
+          "caveats": [],
+          "citation_ids": [],
+          "components": {
+            "tpex_mainborad_highlight": {
+              "observed_fields": {
+                "benchmark.change_points": -2.75,
+                "benchmark.close_index": 300.25,
+                "breadth.down": 380,
+                "breadth.flat": 69,
+                "breadth.limit_down": 4,
+                "breadth.limit_up": 12,
+                "breadth.unmatched_including_suspended": 15,
+                "breadth.up": 401,
+                "trade_date": "2026-09-24",
+                "turnover.value": 12345.67,
+                "turnover.volume": 456789.12
+              },
+              "official_date": "2026-09-24",
+              "source": {
+                "authority": "official",
+                "retrieved_at": "2026-09-29T06:00:00Z",
+                "source_contract_id": "TPEX_MAINBORAD_HIGHLIGHT_OPENAPI_V1",
+                "source_family": "TPEX_MAINBOARD_MARKET_HIGHLIGHT",
+                "source_id": "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI",
+                "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainborad_highlight"
+              },
+              "status": "available",
+              "unit_metadata": {
+                "benchmark.change_points": "index_point",
+                "benchmark.close_index": "index_point",
+                "breadth.down": "company_count",
+                "breadth.flat": "company_count",
+                "breadth.limit_down": "company_count",
+                "breadth.limit_up": "company_count",
+                "breadth.unmatched_including_suspended": "company_count",
+                "breadth.up": "company_count",
+                "turnover.value": "TWD_million",
+                "turnover.volume": "thousand_share"
+              }
+            }
+          },
+          "currentness_status": "unknown",
+          "market": "TPEX",
+          "retrieved_at": "2026-09-29T06:00:00Z",
+          "schema_version": "market_state_context_evidence.v1",
+          "source_unit_metadata": {
+            "I1-TPEX-MAINBOARD-HIGHLIGHT-OPENAPI": {
+              "benchmark.change_points": "index_point",
+              "benchmark.close_index": "index_point",
+              "breadth.down": "company_count",
+              "breadth.flat": "company_count",
+              "breadth.limit_down": "company_count",
+              "breadth.limit_up": "company_count",
+              "breadth.unmatched_including_suspended": "company_count",
+              "breadth.up": "company_count",
+              "turnover.value": "TWD_million",
+              "turnover.volume": "thousand_share"
+            }
+          },
+          "status": "complete",
+          "trade_date": "2026-09-24",
+          "turnover": {
+            "value": 12345.67,
+            "value_unit": "TWD_million",
+            "volume": 456789.12,
+            "volume_unit": "thousand_share"
+          }
+        },
+        "operation_id": "umeop-op-v1-37e7ffc42102745298c7",
+        "public_contract_versions": {
+          "audit": "unified_market_evidence_audit_package.v3",
+          "handoff": "existing-markdown-projection",
+          "request": "unified_market_evidence_request.v3",
+          "result": "unified_market_evidence_result.v3"
+        },
+        "result_projection": "covered by accepted I1 integration test",
+        "source_provenance": null,
+        "status_matrix": {
+          "result": "covered by test_i1_fixture_crosses_loader_lineage_result_v3_and_audit_v3",
+          "typed": "complete"
+        },
+        "target_identity": "TPEX:6488",
+        "timing": {
+          "retrieved_at": "2026-09-29T06:00:00Z"
+        }
+      }
+    ]
+  },
+  "existing_semantic_domains": [
+    {
+      "authority": "Phase G typed evidence schemas",
+      "domain": "research typed status",
+      "values": [
+        "available",
+        "partial",
+        "no_evidence_in_covered_scope",
+        "not_yet_available",
+        "not_applicable",
+        "unsupported",
+        "source_failed",
+        "binding_failed"
+      ]
+    },
+    {
+      "authority": "Phase H typed evidence schemas",
+      "domain": "Phase H trading/corporate typed status",
+      "values": [
+        "available",
+        "no_evidence_in_covered_scope",
+        "partial",
+        "source_failed",
+        "binding_failed",
+        "not_applicable",
+        "unsupported"
+      ]
+    },
+    {
+      "authority": "Phase H typed evidence schema",
+      "domain": "Phase H recent-performance coverage_status",
+      "values": [
+        "complete",
+        "partial",
+        "insufficient",
+        "unavailable",
+        "source_failed",
+        "binding_failed",
+        "unsupported",
+        "not_applicable"
+      ]
+    },
+    {
+      "authority": "Phase I typed evidence schema",
+      "domain": "Phase I market-state typed status",
+      "values": [
+        "complete",
+        "partial",
+        "unavailable",
+        "source_failed",
+        "binding_failed"
+      ]
+    },
+    {
+      "authority": "existing research typed schemas",
+      "domain": "currentness",
+      "values": [
+        "current_within_source_contract",
+        "stale",
+        "lagging",
+        "unknown"
+      ]
+    },
+    {
+      "authority": "Unified Result V3",
+      "domain": "Result target coverage",
+      "values": [
+        "provided_needs",
+        "missing_needs",
+        "partial_failures"
+      ]
+    }
+  ],
+  "failure_codes": {
+    "artifact": "A3_CITATION_ARTIFACT_MISMATCH",
+    "audit": "A3_AUDIT_PROVENANCE_DRIFT",
+    "audit_identity": "A3_RESULT_AUDIT_IDENTITY_MISMATCH",
+    "currentness": "A3_CURRENTNESS_SEMANTIC_DRIFT",
+    "handoff_caveat": "A3_HANDOFF_CAVEAT_LOSS",
+    "handoff_citation": "A3_HANDOFF_CITATION_DRIFT",
+    "normalization": "A3_NORMALIZATION_SEMANTIC_DRIFT",
+    "operation": "A3_LINEAGE_OPERATION_MISMATCH",
+    "public_contract": "A3_PUBLIC_CONTRACT_CHANGE_REQUIRED",
+    "result": "A3_RESULT_SEMANTIC_DRIFT",
+    "status": "A3_MISSING_UNSUPPORTED_FAILURE_COLLAPSE",
+    "target": "A3_LINEAGE_TARGET_MISMATCH",
+    "timing": "A3_TIMING_SEMANTIC_DRIFT"
+  },
+  "network": false,
+  "production_mutation": false,
+  "provider_acquisition": false,
+  "runtime_discovery": false,
+  "status": "PASS",
+  "writes": false
+}

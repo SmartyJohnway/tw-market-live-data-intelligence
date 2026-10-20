@@ -1,0 +1,49 @@
+{
+  "checks": [
+    {
+      "name": "verify_dependency_supply_chain",
+      "status": "PASS"
+    },
+    {
+      "name": "verify_environment",
+      "status": "PASS"
+    },
+    {
+      "name": "pip check",
+      "status": "PASS"
+    },
+    {
+      "name": "validate_source_registry",
+      "status": "PASS"
+    },
+    {
+      "name": "validate_portable_catalog_sync",
+      "status": "PASS"
+    },
+    {
+      "name": "validate_runtime_skill_guide_sync",
+      "status": "PASS"
+    },
+    {
+      "name": "validate_v1_public_contracts",
+      "status": "PASS"
+    },
+    {
+      "name": "validate_unified_market_evidence_contracts",
+      "status": "PASS"
+    },
+    {
+      "name": "validate_phase_h_v3_contracts",
+      "status": "PASS"
+    },
+    {
+      "name": "compileall",
+      "status": "PASS"
+    },
+    {
+      "name": "git diff --check",
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS"
+}

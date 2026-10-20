@@ -1,0 +1,18 @@
+{
+  "authorized_ancestors": [
+    "193ca05261e002eac01c477931d07015d66acd1e",
+    "0a252b11eb331f5671f94f1b972373157eb78a3c",
+    "86298ed3adf9a4f4561757b6ce5feda9cb45faa2",
+    "d016ad04de4fc4646d8c9196de4903b0b0f8a9b8",
+    "57eacb320483b05d42b0d118695a01ad050cf430",
+    "b4b5dac547b0fd0becb5b7a97ac7c158af305147"
+  ],
+  "branch": "phase-l/l5-a3-semantic-conformance-hardening",
+  "entry_head": "b4b5dac547b0fd0becb5b7a97ac7c158af305147",
+  "entry_tree": "d6cdc089086f3939ce1a13ca8f1bb469a6c19113",
+  "entry_worktree_clean": true,
+  "origin_main": "b4b5dac547b0fd0becb5b7a97ac7c158af305147",
+  "origin_main_tree": "d6cdc089086f3939ce1a13ca8f1bb469a6c19113",
+  "status": "PASS",
+  "worktree_from_exact_origin_main": true
+}

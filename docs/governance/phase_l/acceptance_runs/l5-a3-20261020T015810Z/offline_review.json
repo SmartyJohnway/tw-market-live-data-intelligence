@@ -1,0 +1,14 @@
+{
+  "audit_schema_changes": 0,
+  "catalog_routing_activation_source_activation_executor_activation_dependency_changes": 0,
+  "external_socket_attempts": "NOT_MEASURED",
+  "handoff_envelope_changes": 0,
+  "live_market_source_acquisition": 0,
+  "network_scope": "offline deterministic fixtures and validators; no OS-wide socket observation claim",
+  "production_runtime_semantic_changes": 2,
+  "production_state_mutations": 0,
+  "provider_requests": 0,
+  "public_request_changes": 0,
+  "result_schema_changes": 0,
+  "status": "PASS"
+}
