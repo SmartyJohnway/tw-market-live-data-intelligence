@@ -1,0 +1,40 @@
+{
+  "a6_candidate": "bfe500717e26f4f1b46cb934bcac364c0f6d8f65",
+  "a6_tree": "3cb1ee55c42699bc55143d4e999c3bff34d0b6da",
+  "current_delta_classification": "Owner-acceptance/current-front-door synchronization only; no runtime/test/schema/Catalog/route/source/executor/dependency paths changed.",
+  "current_integrated_implementation": [
+    {
+      "path": "scripts/l5_a6_build_evidence.py",
+      "same_as_a6_candidate": true
+    },
+    {
+      "path": "scripts/validate_l5_integrated_extension_contract_acceptance.py",
+      "same_as_a6_candidate": true
+    },
+    {
+      "path": "tests/helpers/l5_a6_integrated.py",
+      "same_as_a6_candidate": true
+    },
+    {
+      "path": "tests/helpers/l5_a6_source_transport.py",
+      "same_as_a6_candidate": true
+    },
+    {
+      "path": "tests/integration/test_l5_a6_integrated_extension_contract_acceptance.py",
+      "same_as_a6_candidate": true
+    }
+  ],
+  "current_main_delta_from_a6_candidate": [
+    "PROJECT.md",
+    "HANDOFF.md",
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+    "docs/governance/phase_l/PHASE_L_L5_A6_OWNER_ACCEPTANCE_2026-10-21.md"
+  ],
+  "manifest_artifact_count": 66,
+  "manifest_declared_sha256": "394ffb64d0e256b5560e1337c0147e3ffd6b7c9614f64e6b659ae2966cacdbb8",
+  "manifest_member_mismatches": [],
+  "manifest_members_matching_a6_candidate": 66,
+  "manifest_recomputed_sha256": "394ffb64d0e256b5560e1337c0147e3ffd6b7c9614f64e6b659ae2966cacdbb8",
+  "status": "PASS"
+}

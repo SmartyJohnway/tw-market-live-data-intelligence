@@ -1,0 +1,66 @@
+{
+  "A6_merge_commit": "7748f18e33a64a912f920c6303f73da67b0ab788",
+  "A6_merge_pr": 392,
+  "A6_owner_acceptance_record": "docs/governance/phase_l/PHASE_L_L5_A6_OWNER_ACCEPTANCE_2026-10-21.md",
+  "A6_owner_sync_pr": 393,
+  "all_a0_a6_owner_accepted_and_merged": true,
+  "current_canonical_frontdoor_sync_pr": 394,
+  "milestones": [
+    {
+      "ancestor_of_review_base": true,
+      "commit": "241a5249987c008a28d959677704eee483a1c216",
+      "provenance": "PR #380",
+      "stage": "A0"
+    },
+    {
+      "ancestor_of_review_base": true,
+      "commit": "8ff92ca79af821a8641967184a26ee37db69d326",
+      "provenance": "PR #382",
+      "stage": "A1"
+    },
+    {
+      "ancestor_of_review_base": true,
+      "commit": "d016ad04de4fc4646d8c9196de4903b0b0f8a9b8",
+      "provenance": "PR #384",
+      "stage": "A2"
+    },
+    {
+      "ancestor_of_review_base": true,
+      "commit": "cebc4d16ffa2db8903c72297ba2fdc00e60fb453",
+      "provenance": "PR #386",
+      "stage": "A3"
+    },
+    {
+      "ancestor_of_review_base": true,
+      "commit": "11691c2eb9a33d2adbcce38fb59a50f822e15284",
+      "provenance": "PR #388",
+      "stage": "A4"
+    },
+    {
+      "ancestor_of_review_base": true,
+      "commit": "303e2ba444721f939ce74a5f2c15b0a5bb562a7a",
+      "provenance": "PR #390",
+      "stage": "A5"
+    },
+    {
+      "ancestor_of_review_base": true,
+      "commit": "7748f18e33a64a912f920c6303f73da67b0ab788",
+      "provenance": "PR #392",
+      "stage": "A6"
+    },
+    {
+      "ancestor_of_review_base": true,
+      "commit": "b7c37d2e6a78c2dce3f446bb118ff6f27f5a6059",
+      "provenance": "PR #393",
+      "stage": "A6_OWNER_SYNC"
+    },
+    {
+      "ancestor_of_review_base": true,
+      "commit": "d782c91f3066fc5ea77d84ed6a649a4286fad2b7",
+      "provenance": "PR #394 canonical main",
+      "stage": "BASE"
+    }
+  ],
+  "review_base": "d782c91f3066fc5ea77d84ed6a649a4286fad2b7",
+  "status": "PASS"
+}

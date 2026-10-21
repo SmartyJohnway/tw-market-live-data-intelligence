@@ -1,0 +1,22 @@
+{
+  "a5_cells": 72,
+  "a5_cells_accounted": 72,
+  "a6_edges_verified": 72,
+  "a6_stages": 75,
+  "coverage": [
+    "TWSE full success",
+    "TPEx full success",
+    "mixed partially-failed path"
+  ],
+  "evidence": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/gap06_adjudication.json; docs/governance/phase_l/acceptance_runs/l5-a6-20261021T031032Z/integrated_graph_twse.json; docs/governance/phase_l/acceptance_runs/l5-a6-20261021T031032Z/integrated_graph_tpex.json; docs/governance/phase_l/acceptance_runs/l5-a6-20261021T031032Z/integrated_graph_mixed_outcome.json",
+  "families": [
+    "monthly_revenue",
+    "material_disclosures"
+  ],
+  "families_pass": 2,
+  "families_total": 2,
+  "financial_statements_added": false,
+  "new_family_required": false,
+  "representative_existing_families_sufficient_for_l5_exit": true,
+  "status": "PASS"
+}

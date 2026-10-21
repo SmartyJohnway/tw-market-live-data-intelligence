@@ -1,0 +1,31 @@
+{
+  "A0_A6_owner_accepted_and_merged": true,
+  "A0_gap_and_registration_reconciliation": "PASS",
+  "A1_dimensions": "36/36; DECISION_REQUIRED=0",
+  "A6_integrated_acceptance_current_main_valid": true,
+  "L5_status": "TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED",
+  "L6_L7": "NOT AUTHORIZED",
+  "Owner_final_closure": "PENDING",
+  "Phase_M": "NOT AUTHORIZED",
+  "all_exit_criteria_pass": true,
+  "competing_canonical_authorities": 0,
+  "default_ci": {
+    "candidate_only_failures": 0,
+    "counts": {
+      "deselected": 5,
+      "failed": 41,
+      "passed": 1248,
+      "skipped": 4
+    },
+    "exact_historical_failure_set_equal": true
+  },
+  "external_socket_attempts_within_declared_scope": 0,
+  "plugin_framework": "PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW",
+  "production_user_state_mutations": 0,
+  "provider_requests": 0,
+  "public_mcp_tools": 6,
+  "representative_existing_families_sufficient": true,
+  "technical_disposition": "PHASE_L_L5_EXIT_REVIEW_PASS",
+  "unintended_product_changes": 0,
+  "unresolved_L5_blockers": 0
+}

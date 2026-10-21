@@ -1,0 +1,10 @@
+{
+  "decision": "PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW",
+  "future_reconsideration_trigger": "A separately authorized product need for third-party extension, dynamic discovery or hot loading.",
+  "meaning": "Current explicit trusted registrations, typed governance contract, existing routing/executor seams and conformance acceptance support current extension architecture.",
+  "no_entry_point_scanning": true,
+  "no_hot_loading": true,
+  "no_runtime_discovery": true,
+  "not_equivalent_to": "PLUGIN_FRAMEWORK_NEVER_REQUIRED",
+  "status": "PASS"
+}

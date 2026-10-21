@@ -1,0 +1,8 @@
+{
+  "external_socket_attempts_within_declared_scope": 0,
+  "instrumentation_scope": "A6 parent connect/connect_ex/getaddrinfo plus child Python socket audit events for integrated trace/repeat runs; intentional guard self-test isolated. Validators run offline and declared network=false. Not OS-wide observation.",
+  "live_provider_acquisition": 0,
+  "os_wide_network_observation": false,
+  "production_user_state_mutations": 0,
+  "provider_requests": 0
+}

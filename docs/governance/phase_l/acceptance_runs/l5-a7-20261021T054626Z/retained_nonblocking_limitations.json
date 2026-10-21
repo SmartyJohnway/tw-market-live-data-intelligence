@@ -1,0 +1,68 @@
+{
+  "limitations": [
+    {
+      "frozen_L5_obligation_not_violated": "L0 minimum extension contract is not a zero-failure global CI promise; all A0-A6 obligations are covered by accepted dedicated gates.",
+      "limitation": "Accepted default-ci still has 41 historical failures",
+      "limitation_id": "LIM-01",
+      "reconsideration_trigger": "Reconsider when the separately governed Phase H/I/J historical compatibility debt is authorized for repair.",
+      "why_non_blocking": "A7 reproduced the exact accepted 41-node set; zero candidate-only failures, no deselection or reclassification."
+    },
+    {
+      "frozen_L5_obligation_not_violated": "L0 requires a minimum architecture contract and no new family merely for proof; live source certification is outside the L5 extension architecture obligation.",
+      "limitation": "Deterministic fixture transport acceptance is not live-provider certification",
+      "limitation_id": "LIM-02",
+      "reconsideration_trigger": "Reconsider only under separately authorized bounded source acceptance for a specific family/source.",
+      "why_non_blocking": "A6 uses accepted source fixtures at the existing raw transport seam and validates downstream contracts; it makes no live freshness or current provider behavior claim."
+    },
+    {
+      "frozen_L5_obligation_not_violated": "L0 requires typed contract and explicit trusted seams; no runtime activation hook was added.",
+      "limitation": "A6 raw transport substitution is acceptance-only",
+      "limitation_id": "LIM-03",
+      "reconsideration_trigger": "Reconsider if the product introduces a different transport/execution boundary.",
+      "why_non_blocking": "The helper patches the existing urlopen boundary in an isolated child and invokes unchanged executor main; planner, registries, executor, normalization, Result/Audit/citation/handoff remain real."
+    },
+    {
+      "frozen_L5_obligation_not_violated": "L0 allows explicit registrations and does not require a framework; no competing canonical authority was found.",
+      "limitation": "Explicit registration surfaces remain dispersed and coordinated",
+      "limitation_id": "LIM-04",
+      "reconsideration_trigger": "Reconsider if explicit coordination demonstrably prevents safe extensions or a second canonical authority appears.",
+      "why_non_blocking": "A0 maps 39 surfaces; A2 accounts 30 extension rows and preserves nine negative controls; A3-A6 validators/integrated traces detect conformance drift."
+    },
+    {
+      "frozen_L5_obligation_not_violated": "L0 says define minimum contract before considering a plugin framework; current framework need remains NOT_REQUIRED_NOW.",
+      "limitation": "No third-party plugin or hot-load support",
+      "limitation_id": "LIM-05",
+      "reconsideration_trigger": "Reconsider only with separately approved third-party/dynamic extension product need.",
+      "why_non_blocking": "Current extension model is typed governance plus explicit trusted registrations."
+    },
+    {
+      "frozen_L5_obligation_not_violated": "This directly implements L0 minimum contract and no family-by-demonstration rule.",
+      "limitation": "Any future family needs explicit conformance and Owner acceptance",
+      "limitation_id": "LIM-06",
+      "reconsideration_trigger": "Reconsider for each separately authorized future family proposal.",
+      "why_non_blocking": "A1 contract applies the 36 dimensions; A5/A6 prove two existing families; future family acceptance remains a gate."
+    },
+    {
+      "frozen_L5_obligation_not_violated": "No competing request language or public schema change is required for L0 extension contract.",
+      "limitation": "Unified Request V3 remains closed vocabulary",
+      "limitation_id": "LIM-07",
+      "reconsideration_trigger": "Reconsider only through a separately authorized public contract/version decision.",
+      "why_non_blocking": "A5 proves semantic capability identity is represented by Request data_needs[].type and rejects capability_id alias; schemas unchanged."
+    },
+    {
+      "frozen_L5_obligation_not_violated": "L0 and A1 preserve explicit validation/preview/authorization/execute-once and do not permit implicit activation.",
+      "limitation": "Publication and guides never activate a route",
+      "limitation_id": "LIM-08",
+      "reconsideration_trigger": "Reconsider if publication begins controlling runtime dispatch.",
+      "why_non_blocking": "A4 publication validator separates Catalog support from selected route/executable status; session_status is supported but blocked without selected executor."
+    },
+    {
+      "frozen_L5_obligation_not_violated": "L0 requires provenance preservation; the historical evidence remains immutable and its lineage limitations are explicit.",
+      "limitation": "Historical evidence retains bounded snapshot limitations",
+      "limitation_id": "LIM-09",
+      "reconsideration_trigger": "Reconsider only if original immutable evidence is proven corrupt or an authorized reconciliation is required.",
+      "why_non_blocking": "Accepted manifests bind their original runs; later current bytes are not falsely treated as historical matches."
+    }
+  ],
+  "status": "PASS"
+}

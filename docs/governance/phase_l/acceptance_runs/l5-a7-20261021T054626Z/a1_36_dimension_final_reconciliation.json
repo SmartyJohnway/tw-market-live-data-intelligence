@@ -1,0 +1,760 @@
+{
+  "A1_frozen_contract_integrity": {
+    "A6_T1_T12_byte_integrity_gate": "PASS",
+    "T1_T12_matrix_manifest_verified": true,
+    "T1_T12_matrix_sha256": "bea6e1a72c7a00ef9939503c03766a7be78018aee585b2b1b34c6f805b72d2d0",
+    "artifact_count": 32,
+    "contract_v1_sha256": "d2ce7ac5ce2ff7efa72ee663a66ae0b7089a934dac90aab3b3faa976c05c4efa",
+    "declared_manifest_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+    "manifest_run": "l5-a1-20261018T140202Z",
+    "recomputed_manifest_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b"
+  },
+  "DECISION_REQUIRED": 0,
+  "T1_T12_bytes_unchanged": true,
+  "T1_T12_transition_authority": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/version_transition_matrix.json",
+  "T1_T12_transition_rows": 12,
+  "a6_dimensions": 36,
+  "accounted": 36,
+  "audit_handoff_derived_from_existing_lineage_authority": true,
+  "deprecation_is_not_deletion": true,
+  "dimensions": [
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "contract/version identity",
+      "dimension_id": "DIM-01",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "supported markets",
+      "dimension_id": "DIM-02",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "supported target types",
+      "dimension_id": "DIM-03",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "parameter schema",
+      "dimension_id": "DIM-04",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "parameter bounds",
+      "dimension_id": "DIM-05",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "source authority",
+      "dimension_id": "DIM-06",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "routing/executor authority",
+      "dimension_id": "DIM-07",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "network-required flag",
+      "dimension_id": "DIM-08",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "source timestamp semantics",
+      "dimension_id": "DIM-09",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "retrieved-at semantics",
+      "dimension_id": "DIM-10",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "freshness/currentness semantics",
+      "dimension_id": "DIM-11",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PLUS_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "missing semantics",
+      "dimension_id": "DIM-12",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PLUS_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "unsupported semantics",
+      "dimension_id": "DIM-13",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "source failure semantics",
+      "dimension_id": "DIM-14",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "provenance requirements",
+      "dimension_id": "DIM-15",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "citation requirements",
+      "dimension_id": "DIM-16",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PLUS_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "tests",
+      "dimension_id": "DIM-17",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "DERIVED_PUBLICATION_GATE",
+      "a6_result": "PASS",
+      "dimension": "Catalog publication",
+      "dimension_id": "DIM-18",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "DERIVED_PUBLICATION_GATE",
+      "a6_result": "PASS",
+      "dimension": "Skill/guide publication",
+      "dimension_id": "DIM-19",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "acceptance authority",
+      "dimension_id": "DIM-20",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "OPTIONAL",
+      "a6_proof_class": "TRACE_PLUS_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "raw evidence schema",
+      "dimension_id": "DIM-21",
+      "frozen_classification": "OPTIONAL"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "OPTIONAL",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "replay support",
+      "dimension_id": "DIM-22",
+      "frozen_classification": "OPTIONAL"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "DERIVED_PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "DERIVED_PASS"
+        }
+      ],
+      "a6_classification": "DERIVED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "Audit projection",
+      "dimension_id": "DIM-23",
+      "frozen_classification": "DERIVED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "DERIVED_PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "DERIVED_PASS"
+        }
+      ],
+      "a6_classification": "DERIVED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "AI handoff projection",
+      "dimension_id": "DIM-24",
+      "frozen_classification": "DERIVED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "FAMILY_SPECIFIC",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "source request contract",
+      "dimension_id": "DIM-25",
+      "frozen_classification": "FAMILY_SPECIFIC"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "FAMILY_SPECIFIC",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "normalization contract",
+      "dimension_id": "DIM-26",
+      "frozen_classification": "FAMILY_SPECIFIC"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "FAMILY_SPECIFIC",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "identity binding",
+      "dimension_id": "DIM-27",
+      "frozen_classification": "FAMILY_SPECIFIC"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "FAMILY_SPECIFIC",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "Result projection",
+      "dimension_id": "DIM-28",
+      "frozen_classification": "FAMILY_SPECIFIC"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PLATFORM_INHERITED_PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PLATFORM_INHERITED_PASS"
+        }
+      ],
+      "a6_classification": "PLATFORM_PROVIDED",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "authorization class",
+      "dimension_id": "DIM-29",
+      "frozen_classification": "PLATFORM_PROVIDED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PLATFORM_INHERITED_PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PLATFORM_INHERITED_PASS"
+        }
+      ],
+      "a6_classification": "PLATFORM_PROVIDED",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "timeout authority",
+      "dimension_id": "DIM-30",
+      "frozen_classification": "PLATFORM_PROVIDED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PLATFORM_INHERITED_PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PLATFORM_INHERITED_PASS"
+        }
+      ],
+      "a6_classification": "PLATFORM_PROVIDED",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "retention classification",
+      "dimension_id": "DIM-31",
+      "frozen_classification": "PLATFORM_PROVIDED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PLATFORM_INHERITED_PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PLATFORM_INHERITED_PASS"
+        }
+      ],
+      "a6_classification": "PLATFORM_PROVIDED",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "resource bounds",
+      "dimension_id": "DIM-32",
+      "frozen_classification": "PLATFORM_PROVIDED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PLATFORM_INHERITED_PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PLATFORM_INHERITED_PASS"
+        }
+      ],
+      "a6_classification": "PLATFORM_PROVIDED",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "secret boundary",
+      "dimension_id": "DIM-33",
+      "frozen_classification": "PLATFORM_PROVIDED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PLATFORM_INHERITED_PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PLATFORM_INHERITED_PASS"
+        }
+      ],
+      "a6_classification": "PLATFORM_PROVIDED",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "path/output containment",
+      "dimension_id": "DIM-34",
+      "frozen_classification": "PLATFORM_PROVIDED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "TRACE_PROVEN",
+      "a6_result": "PASS",
+      "dimension": "family_id / capability relationship",
+      "dimension_id": "DIM-35",
+      "frozen_classification": "REQUIRED"
+    },
+    {
+      "a5_applicability_evidence_cells": [
+        {
+          "applicability": "APPLICABLE",
+          "family": "monthly_revenue",
+          "result": "PASS"
+        },
+        {
+          "applicability": "APPLICABLE",
+          "family": "material_disclosures",
+          "result": "PASS"
+        }
+      ],
+      "a6_classification": "REQUIRED",
+      "a6_proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "a6_result": "PASS",
+      "dimension": "version upgrade/deprecation path",
+      "dimension_id": "DIM-36",
+      "frozen_classification": "REQUIRED"
+    }
+  ],
+  "duplicate_frozen_ids": 0,
+  "explicit_applicability_cells": 72,
+  "family_policy_overrides_platform": false,
+  "frozen_classification_counts": {
+    "DECISION_REQUIRED": 0,
+    "DERIVED": 2,
+    "FAMILY_SPECIFIC": 4,
+    "OPTIONAL": 2,
+    "PLATFORM_PROVIDED": 6,
+    "REQUIRED": 22
+  },
+  "frozen_dimensions": 36,
+  "historical_identity_provenance_rewrite": false,
+  "missing_dimension_ids": [],
+  "omission_means_n_a": false,
+  "replay_refetch_separated": true,
+  "status": "PASS",
+  "unexplained_new_dimension_ids": []
+}
