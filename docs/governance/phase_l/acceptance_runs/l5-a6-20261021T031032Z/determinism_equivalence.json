@@ -1,0 +1,1431 @@
+{
+  "exclusions": [
+    {
+      "field": "operation.observed_at / typed.currentness.observed_at / Result.generated_at",
+      "reason": "retrieval/execution clock, distinct from retained source report/publication time"
+    },
+    {
+      "field": "Result.result_id/result_hash and audit_reference.audit_package_id",
+      "reason": "execution receipt/bundle timestamp-dependent identities, independently verified before comparison"
+    },
+    {
+      "field": "citation normalized_evidence_hash/retrieved_at",
+      "reason": "replace verified artifact hash with full operation semantic hash after excluding only observed_at"
+    },
+    {
+      "field": "handoff Result/Audit IDs and observed time text",
+      "reason": "only exact known run-local values replaced; full remaining markdown compared"
+    }
+  ],
+  "integrity_hashes_checked_before_semantic_comparison": true,
+  "not_excluded": [
+    "source dates",
+    "published_at",
+    "values",
+    "units",
+    "nulls",
+    "status",
+    "caveats",
+    "source/contract",
+    "operation IDs",
+    "citations",
+    "all remaining Result fields"
+  ],
+  "pairs": {
+    "tpex": {
+      "equal": true,
+      "first": {
+        "audit_lineage": [
+          {
+            "canonical_target_ids": [
+              "TPEX:6488"
+            ],
+            "capability_id": "material_disclosures",
+            "error_code": null,
+            "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TPEX",
+            "operation_id": "umeop-op-v1-45242ead48d575279cf4",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          },
+          {
+            "canonical_target_ids": [
+              "TPEX:6488"
+            ],
+            "capability_id": "monthly_revenue",
+            "error_code": null,
+            "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TPEX",
+            "operation_id": "umeop-op-v1-86ae44d52e4b0966dfdd",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          }
+        ],
+        "handoff_content": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `<result-id>`\n**請求 ID**: `l5-a6-tpex`\n**生成時間**: <execution-time>\n\n## 請求摘要\n- **執行模式**: execute\n- **目標數量**: 1\n- **請求的資料需求**: material_disclosures, monthly_revenue\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TPEX:6488`\n- **證券代碼**: 6488\n- **證券名稱**: 環球晶\n- **市場**: TPEX\n- **已提供資料需求**: material_disclosures, monthly_revenue\n\n### 證據\n\n#### material_disclosures\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_completed_official_daily_batch\n  - `source_report_date`: 2026-09-16\n  - `coverage_through`: 2026-09-15\n  - `truncated`: False\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: <execution-time>\n- **來源**:\n  - `source_family`: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA\n  - `source_contract_id`: t187ap04_O\n  - `market`: TPEX\n  - `transport`: official_csv\n  - `fallback_used`: False\n\n- **發言時間**: 2026-09-15T06:57:28+08:00\n  - **主旨**: 測試\n  - **說明**: 內容\n  - **引用**: `cite-4c9707ba8e0fc0a9`\n- **引用 IDs**: `cite-4c9707ba8e0fc0a9`\n\n#### monthly_revenue\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_available_reporting_period\n  - `source_report_date`: 2026-09-15\n  - `reporting_period`: 2026-08\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: <execution-time>\n- **來源**:\n  - `source_family`: MOPS_MONTHLY_REVENUE_OPEN_DATA\n  - `source_contract_id`: t187ap05_O\n  - `market`: TPEX\n  - `transport`: official_csv\n  - `fallback_used`: False\n- **數值**:\n  - `currency`: TWD\n  - `unit`: thousand\n  - `current_month_revenue`: 100\n  - `previous_month_revenue`: -2\n  - `previous_year_same_month_revenue`: 90\n  - `mom_pct`: None\n  - `yoy_pct`: 11.1\n  - `ytd_revenue`: 800\n  - `previous_year_ytd_revenue`: 700\n  - `ytd_yoy_pct`: None\n  - `note`: 官方備註\n- **引用 IDs**: `cite-72ec0dd80d9bcaa3`\n\n### 引用來源\n- `cite-72ec0dd80d9bcaa3` — 來源: MOPS_MONTHLY_REVENUE_OPEN_DATA | 擷取時間: <execution-time> | 參考: `evidence/umeop-op-v1-86ae44d52e4b0966dfdd.json`\n- `cite-4c9707ba8e0fc0a9` — 來源: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA | 擷取時間: <execution-time> | 參考: `evidence/umeop-op-v1-45242ead48d575279cf4.json`\n\n## 審計包參考\n- **審計包 ID**: `<audit-id>`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+        "operation_semantic_hashes": {
+          "evidence/umeop-op-v1-45242ead48d575279cf4.json": "5aaa5b577234ed49e9e1366bb999878e7d3db78de0bb4c453d0e7ce96f58ea35",
+          "evidence/umeop-op-v1-86ae44d52e4b0966dfdd.json": "91dfda44fc728e1a33a713249d00ab983abd1623db4b2a13f8b35c8ff2ae8b32"
+        },
+        "plan_operations": [
+          {
+            "batch_group_id": "umeop-batch-v1-7f203460a74e01992cee",
+            "blocking_reason_codes": [],
+            "canonical_target_ids": [
+              "TPEX:6488"
+            ],
+            "capability_id": "monthly_revenue",
+            "capability_requires_execution_approval": true,
+            "dependency_operation_ids": [],
+            "executor_id": "phase_g_official_research_executor",
+            "executor_invocation_eligible": true,
+            "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "market": "TPEX",
+            "network_required": true,
+            "operation_id": "umeop-op-v1-86ae44d52e4b0966dfdd",
+            "operation_status": "executable_pending_approval",
+            "parameters": {},
+            "security_types": [
+              "equity"
+            ],
+            "warnings": []
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-04f4e85484b3f50215b9",
+            "blocking_reason_codes": [],
+            "canonical_target_ids": [
+              "TPEX:6488"
+            ],
+            "capability_id": "material_disclosures",
+            "capability_requires_execution_approval": true,
+            "dependency_operation_ids": [],
+            "executor_id": "phase_g_official_research_executor",
+            "executor_invocation_eligible": true,
+            "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "market": "TPEX",
+            "network_required": true,
+            "operation_id": "umeop-op-v1-45242ead48d575279cf4",
+            "operation_status": "executable_pending_approval",
+            "parameters": {},
+            "security_types": [
+              "equity"
+            ],
+            "warnings": []
+          }
+        ],
+        "result_semantic_body": {
+          "audit_reference": {
+            "audit_package_id": "<audit-id>",
+            "relative_path": "audit/unified_market_evidence_audit_package.v3.json",
+            "schema_version": "unified_market_evidence_audit_package.v3"
+          },
+          "generated_at": "<execution-time>",
+          "request_caveats": [],
+          "request_id": "l5-a6-tpex",
+          "request_summary": {
+            "execution_mode": "execute",
+            "optional_data_needs": [],
+            "request_schema_version": "unified_market_evidence_request.v3",
+            "requested_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "required_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "target_count": 1
+          },
+          "result_hash": "<verified-result-hash>",
+          "result_id": "<result-id>",
+          "schema_version": "unified_market_evidence_result.v3",
+          "status": "full_success",
+          "targets": [
+            {
+              "canonical_identity": {
+                "canonical_target_id": "TPEX:6488",
+                "instrument_family": "company_share",
+                "instrument_type": "common_share",
+                "isin": "TW0006488000",
+                "market": "TPEX",
+                "security_code": "6488",
+                "security_name_en": "GlobalWafers",
+                "security_name_zh": "環球晶"
+              },
+              "citations": [
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-86ae44d52e4b0966dfdd.json",
+                  "citation_id": "cite-72ec0dd80d9bcaa3",
+                  "normalized_evidence_hash": "91dfda44fc728e1a33a713249d00ab983abd1623db4b2a13f8b35c8ff2ae8b32",
+                  "retrieved_at": "<execution-time>",
+                  "source_contract_id": "t187ap05_O",
+                  "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                  "source_report_date": "2026-09-15"
+                },
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-45242ead48d575279cf4.json",
+                  "citation_id": "cite-4c9707ba8e0fc0a9",
+                  "normalized_evidence_hash": "5aaa5b577234ed49e9e1366bb999878e7d3db78de0bb4c453d0e7ce96f58ea35",
+                  "retrieved_at": "<execution-time>",
+                  "source_contract_id": "t187ap04_O",
+                  "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                  "source_report_date": "2026-09-16"
+                }
+              ],
+              "coverage": {
+                "missing_needs": [],
+                "provided_needs": [
+                  "material_disclosures",
+                  "monthly_revenue"
+                ]
+              },
+              "evidence": {
+                "material_disclosures": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-4c9707ba8e0fc0a9"
+                  ],
+                  "coverage": {
+                    "coverage_through": "2026-09-15",
+                    "historical_lookup_supported": false,
+                    "item_count": 1,
+                    "mode": "latest_completed_official_daily_batch",
+                    "source_report_date": "2026-09-16",
+                    "truncated": false
+                  },
+                  "currentness": {
+                    "observed_at": "<execution-time>",
+                    "status": "current_within_source_contract"
+                  },
+                  "items": [
+                    {
+                      "citation_id": "cite-4c9707ba8e0fc0a9",
+                      "clause": null,
+                      "description": "內容",
+                      "description_truncated": false,
+                      "published_at": "2026-09-15T06:57:28+08:00",
+                      "revision_relation": {
+                        "related_official_reference": null,
+                        "relation_type": null,
+                        "status": "unresolved"
+                      },
+                      "source_fact_date": null,
+                      "subject": "測試"
+                    }
+                  ],
+                  "schema_version": "material_disclosure_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TPEX",
+                    "source_contract_id": "t187ap04_O",
+                    "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available"
+                },
+                "monthly_revenue": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-72ec0dd80d9bcaa3"
+                  ],
+                  "coverage": {
+                    "historical_lookup_supported": false,
+                    "mode": "latest_available_reporting_period",
+                    "reporting_period": "2026-08",
+                    "source_report_date": "2026-09-15"
+                  },
+                  "currentness": {
+                    "observed_at": "<execution-time>",
+                    "status": "current_within_source_contract"
+                  },
+                  "schema_version": "monthly_revenue_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TPEX",
+                    "source_contract_id": "t187ap05_O",
+                    "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available",
+                  "value": {
+                    "currency": "TWD",
+                    "current_month_revenue": 100,
+                    "mom_pct": null,
+                    "note": "官方備註",
+                    "previous_month_revenue": -2,
+                    "previous_year_same_month_revenue": 90,
+                    "previous_year_ytd_revenue": 700,
+                    "unit": "thousand",
+                    "yoy_pct": 11.1,
+                    "ytd_revenue": 800,
+                    "ytd_yoy_pct": null
+                  }
+                }
+              },
+              "resolution": {
+                "canonical_target_id": "TPEX:6488",
+                "market": "TPEX",
+                "security_code": "6488",
+                "security_name": "環球晶",
+                "status": "resolved"
+              }
+            }
+          ]
+        },
+        "result_semantic_body_sha256": "ef6b6aae65d4a8559f9aee0856f80336acde55e98e134d7f3d1c64a5c375e219",
+        "source_selection": [
+          {
+            "contract": "t187ap04_O",
+            "external_dispatch": false,
+            "fixture_failure": false,
+            "fixture_payload_sha256": "bca5b4238829e8d0709a68399805648517c168969aecae3645d5da301bd80c5e",
+            "timeout": 15,
+            "url": "https://mopsfin.twse.com.tw/opendata/t187ap04_O.csv"
+          },
+          {
+            "contract": "t187ap05_O",
+            "external_dispatch": false,
+            "fixture_failure": false,
+            "fixture_payload_sha256": "d86ba19f0a56cf1ce1d66bd1aae20f44306e578206d5e233d133e130ea4989bd",
+            "timeout": 15,
+            "url": "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv"
+          }
+        ],
+        "typed_semantics": {
+          "material_disclosures": {
+            "caveats": [],
+            "citation_ids": [
+              "cite-4c9707ba8e0fc0a9"
+            ],
+            "coverage": {
+              "coverage_through": "2026-09-15",
+              "historical_lookup_supported": false,
+              "item_count": 1,
+              "mode": "latest_completed_official_daily_batch",
+              "source_report_date": "2026-09-16",
+              "truncated": false
+            },
+            "currentness": {
+              "status": "current_within_source_contract"
+            },
+            "items": [
+              {
+                "citation_id": "cite-4c9707ba8e0fc0a9",
+                "clause": null,
+                "description": "內容",
+                "description_truncated": false,
+                "published_at": "2026-09-15T06:57:28+08:00",
+                "revision_relation": {
+                  "related_official_reference": null,
+                  "relation_type": null,
+                  "status": "unresolved"
+                },
+                "source_fact_date": null,
+                "subject": "測試"
+              }
+            ],
+            "schema_version": "material_disclosure_evidence.v1",
+            "source": {
+              "authority": "official",
+              "fallback_used": false,
+              "market": "TPEX",
+              "source_contract_id": "t187ap04_O",
+              "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+              "transport": "official_csv"
+            },
+            "status": "available"
+          },
+          "monthly_revenue": {
+            "caveats": [],
+            "citation_ids": [
+              "cite-72ec0dd80d9bcaa3"
+            ],
+            "coverage": {
+              "historical_lookup_supported": false,
+              "mode": "latest_available_reporting_period",
+              "reporting_period": "2026-08",
+              "source_report_date": "2026-09-15"
+            },
+            "currentness": {
+              "status": "current_within_source_contract"
+            },
+            "schema_version": "monthly_revenue_evidence.v1",
+            "source": {
+              "authority": "official",
+              "fallback_used": false,
+              "market": "TPEX",
+              "source_contract_id": "t187ap05_O",
+              "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+              "transport": "official_csv"
+            },
+            "status": "available",
+            "value": {
+              "currency": "TWD",
+              "current_month_revenue": 100,
+              "mom_pct": null,
+              "note": "官方備註",
+              "previous_month_revenue": -2,
+              "previous_year_same_month_revenue": 90,
+              "previous_year_ytd_revenue": 700,
+              "unit": "thousand",
+              "yoy_pct": 11.1,
+              "ytd_revenue": 800,
+              "ytd_yoy_pct": null
+            }
+          }
+        }
+      },
+      "first_semantic_sha256": "af110d1e64864f9737570047977d51f590f22370304087f5d8be43d10871bc7c",
+      "second": {
+        "audit_lineage": [
+          {
+            "canonical_target_ids": [
+              "TPEX:6488"
+            ],
+            "capability_id": "material_disclosures",
+            "error_code": null,
+            "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TPEX",
+            "operation_id": "umeop-op-v1-45242ead48d575279cf4",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          },
+          {
+            "canonical_target_ids": [
+              "TPEX:6488"
+            ],
+            "capability_id": "monthly_revenue",
+            "error_code": null,
+            "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TPEX",
+            "operation_id": "umeop-op-v1-86ae44d52e4b0966dfdd",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          }
+        ],
+        "handoff_content": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `<result-id>`\n**請求 ID**: `l5-a6-tpex`\n**生成時間**: <execution-time>\n\n## 請求摘要\n- **執行模式**: execute\n- **目標數量**: 1\n- **請求的資料需求**: material_disclosures, monthly_revenue\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TPEX:6488`\n- **證券代碼**: 6488\n- **證券名稱**: 環球晶\n- **市場**: TPEX\n- **已提供資料需求**: material_disclosures, monthly_revenue\n\n### 證據\n\n#### material_disclosures\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_completed_official_daily_batch\n  - `source_report_date`: 2026-09-16\n  - `coverage_through`: 2026-09-15\n  - `truncated`: False\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: <execution-time>\n- **來源**:\n  - `source_family`: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA\n  - `source_contract_id`: t187ap04_O\n  - `market`: TPEX\n  - `transport`: official_csv\n  - `fallback_used`: False\n\n- **發言時間**: 2026-09-15T06:57:28+08:00\n  - **主旨**: 測試\n  - **說明**: 內容\n  - **引用**: `cite-4c9707ba8e0fc0a9`\n- **引用 IDs**: `cite-4c9707ba8e0fc0a9`\n\n#### monthly_revenue\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_available_reporting_period\n  - `source_report_date`: 2026-09-15\n  - `reporting_period`: 2026-08\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: <execution-time>\n- **來源**:\n  - `source_family`: MOPS_MONTHLY_REVENUE_OPEN_DATA\n  - `source_contract_id`: t187ap05_O\n  - `market`: TPEX\n  - `transport`: official_csv\n  - `fallback_used`: False\n- **數值**:\n  - `currency`: TWD\n  - `unit`: thousand\n  - `current_month_revenue`: 100\n  - `previous_month_revenue`: -2\n  - `previous_year_same_month_revenue`: 90\n  - `mom_pct`: None\n  - `yoy_pct`: 11.1\n  - `ytd_revenue`: 800\n  - `previous_year_ytd_revenue`: 700\n  - `ytd_yoy_pct`: None\n  - `note`: 官方備註\n- **引用 IDs**: `cite-72ec0dd80d9bcaa3`\n\n### 引用來源\n- `cite-72ec0dd80d9bcaa3` — 來源: MOPS_MONTHLY_REVENUE_OPEN_DATA | 擷取時間: <execution-time> | 參考: `evidence/umeop-op-v1-86ae44d52e4b0966dfdd.json`\n- `cite-4c9707ba8e0fc0a9` — 來源: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA | 擷取時間: <execution-time> | 參考: `evidence/umeop-op-v1-45242ead48d575279cf4.json`\n\n## 審計包參考\n- **審計包 ID**: `<audit-id>`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+        "operation_semantic_hashes": {
+          "evidence/umeop-op-v1-45242ead48d575279cf4.json": "5aaa5b577234ed49e9e1366bb999878e7d3db78de0bb4c453d0e7ce96f58ea35",
+          "evidence/umeop-op-v1-86ae44d52e4b0966dfdd.json": "91dfda44fc728e1a33a713249d00ab983abd1623db4b2a13f8b35c8ff2ae8b32"
+        },
+        "plan_operations": [
+          {
+            "batch_group_id": "umeop-batch-v1-7f203460a74e01992cee",
+            "blocking_reason_codes": [],
+            "canonical_target_ids": [
+              "TPEX:6488"
+            ],
+            "capability_id": "monthly_revenue",
+            "capability_requires_execution_approval": true,
+            "dependency_operation_ids": [],
+            "executor_id": "phase_g_official_research_executor",
+            "executor_invocation_eligible": true,
+            "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "market": "TPEX",
+            "network_required": true,
+            "operation_id": "umeop-op-v1-86ae44d52e4b0966dfdd",
+            "operation_status": "executable_pending_approval",
+            "parameters": {},
+            "security_types": [
+              "equity"
+            ],
+            "warnings": []
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-04f4e85484b3f50215b9",
+            "blocking_reason_codes": [],
+            "canonical_target_ids": [
+              "TPEX:6488"
+            ],
+            "capability_id": "material_disclosures",
+            "capability_requires_execution_approval": true,
+            "dependency_operation_ids": [],
+            "executor_id": "phase_g_official_research_executor",
+            "executor_invocation_eligible": true,
+            "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "market": "TPEX",
+            "network_required": true,
+            "operation_id": "umeop-op-v1-45242ead48d575279cf4",
+            "operation_status": "executable_pending_approval",
+            "parameters": {},
+            "security_types": [
+              "equity"
+            ],
+            "warnings": []
+          }
+        ],
+        "result_semantic_body": {
+          "audit_reference": {
+            "audit_package_id": "<audit-id>",
+            "relative_path": "audit/unified_market_evidence_audit_package.v3.json",
+            "schema_version": "unified_market_evidence_audit_package.v3"
+          },
+          "generated_at": "<execution-time>",
+          "request_caveats": [],
+          "request_id": "l5-a6-tpex",
+          "request_summary": {
+            "execution_mode": "execute",
+            "optional_data_needs": [],
+            "request_schema_version": "unified_market_evidence_request.v3",
+            "requested_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "required_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "target_count": 1
+          },
+          "result_hash": "<verified-result-hash>",
+          "result_id": "<result-id>",
+          "schema_version": "unified_market_evidence_result.v3",
+          "status": "full_success",
+          "targets": [
+            {
+              "canonical_identity": {
+                "canonical_target_id": "TPEX:6488",
+                "instrument_family": "company_share",
+                "instrument_type": "common_share",
+                "isin": "TW0006488000",
+                "market": "TPEX",
+                "security_code": "6488",
+                "security_name_en": "GlobalWafers",
+                "security_name_zh": "環球晶"
+              },
+              "citations": [
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-86ae44d52e4b0966dfdd.json",
+                  "citation_id": "cite-72ec0dd80d9bcaa3",
+                  "normalized_evidence_hash": "91dfda44fc728e1a33a713249d00ab983abd1623db4b2a13f8b35c8ff2ae8b32",
+                  "retrieved_at": "<execution-time>",
+                  "source_contract_id": "t187ap05_O",
+                  "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                  "source_report_date": "2026-09-15"
+                },
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-45242ead48d575279cf4.json",
+                  "citation_id": "cite-4c9707ba8e0fc0a9",
+                  "normalized_evidence_hash": "5aaa5b577234ed49e9e1366bb999878e7d3db78de0bb4c453d0e7ce96f58ea35",
+                  "retrieved_at": "<execution-time>",
+                  "source_contract_id": "t187ap04_O",
+                  "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                  "source_report_date": "2026-09-16"
+                }
+              ],
+              "coverage": {
+                "missing_needs": [],
+                "provided_needs": [
+                  "material_disclosures",
+                  "monthly_revenue"
+                ]
+              },
+              "evidence": {
+                "material_disclosures": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-4c9707ba8e0fc0a9"
+                  ],
+                  "coverage": {
+                    "coverage_through": "2026-09-15",
+                    "historical_lookup_supported": false,
+                    "item_count": 1,
+                    "mode": "latest_completed_official_daily_batch",
+                    "source_report_date": "2026-09-16",
+                    "truncated": false
+                  },
+                  "currentness": {
+                    "observed_at": "<execution-time>",
+                    "status": "current_within_source_contract"
+                  },
+                  "items": [
+                    {
+                      "citation_id": "cite-4c9707ba8e0fc0a9",
+                      "clause": null,
+                      "description": "內容",
+                      "description_truncated": false,
+                      "published_at": "2026-09-15T06:57:28+08:00",
+                      "revision_relation": {
+                        "related_official_reference": null,
+                        "relation_type": null,
+                        "status": "unresolved"
+                      },
+                      "source_fact_date": null,
+                      "subject": "測試"
+                    }
+                  ],
+                  "schema_version": "material_disclosure_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TPEX",
+                    "source_contract_id": "t187ap04_O",
+                    "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available"
+                },
+                "monthly_revenue": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-72ec0dd80d9bcaa3"
+                  ],
+                  "coverage": {
+                    "historical_lookup_supported": false,
+                    "mode": "latest_available_reporting_period",
+                    "reporting_period": "2026-08",
+                    "source_report_date": "2026-09-15"
+                  },
+                  "currentness": {
+                    "observed_at": "<execution-time>",
+                    "status": "current_within_source_contract"
+                  },
+                  "schema_version": "monthly_revenue_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TPEX",
+                    "source_contract_id": "t187ap05_O",
+                    "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available",
+                  "value": {
+                    "currency": "TWD",
+                    "current_month_revenue": 100,
+                    "mom_pct": null,
+                    "note": "官方備註",
+                    "previous_month_revenue": -2,
+                    "previous_year_same_month_revenue": 90,
+                    "previous_year_ytd_revenue": 700,
+                    "unit": "thousand",
+                    "yoy_pct": 11.1,
+                    "ytd_revenue": 800,
+                    "ytd_yoy_pct": null
+                  }
+                }
+              },
+              "resolution": {
+                "canonical_target_id": "TPEX:6488",
+                "market": "TPEX",
+                "security_code": "6488",
+                "security_name": "環球晶",
+                "status": "resolved"
+              }
+            }
+          ]
+        },
+        "result_semantic_body_sha256": "ef6b6aae65d4a8559f9aee0856f80336acde55e98e134d7f3d1c64a5c375e219",
+        "source_selection": [
+          {
+            "contract": "t187ap04_O",
+            "external_dispatch": false,
+            "fixture_failure": false,
+            "fixture_payload_sha256": "bca5b4238829e8d0709a68399805648517c168969aecae3645d5da301bd80c5e",
+            "timeout": 15,
+            "url": "https://mopsfin.twse.com.tw/opendata/t187ap04_O.csv"
+          },
+          {
+            "contract": "t187ap05_O",
+            "external_dispatch": false,
+            "fixture_failure": false,
+            "fixture_payload_sha256": "d86ba19f0a56cf1ce1d66bd1aae20f44306e578206d5e233d133e130ea4989bd",
+            "timeout": 15,
+            "url": "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv"
+          }
+        ],
+        "typed_semantics": {
+          "material_disclosures": {
+            "caveats": [],
+            "citation_ids": [
+              "cite-4c9707ba8e0fc0a9"
+            ],
+            "coverage": {
+              "coverage_through": "2026-09-15",
+              "historical_lookup_supported": false,
+              "item_count": 1,
+              "mode": "latest_completed_official_daily_batch",
+              "source_report_date": "2026-09-16",
+              "truncated": false
+            },
+            "currentness": {
+              "status": "current_within_source_contract"
+            },
+            "items": [
+              {
+                "citation_id": "cite-4c9707ba8e0fc0a9",
+                "clause": null,
+                "description": "內容",
+                "description_truncated": false,
+                "published_at": "2026-09-15T06:57:28+08:00",
+                "revision_relation": {
+                  "related_official_reference": null,
+                  "relation_type": null,
+                  "status": "unresolved"
+                },
+                "source_fact_date": null,
+                "subject": "測試"
+              }
+            ],
+            "schema_version": "material_disclosure_evidence.v1",
+            "source": {
+              "authority": "official",
+              "fallback_used": false,
+              "market": "TPEX",
+              "source_contract_id": "t187ap04_O",
+              "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+              "transport": "official_csv"
+            },
+            "status": "available"
+          },
+          "monthly_revenue": {
+            "caveats": [],
+            "citation_ids": [
+              "cite-72ec0dd80d9bcaa3"
+            ],
+            "coverage": {
+              "historical_lookup_supported": false,
+              "mode": "latest_available_reporting_period",
+              "reporting_period": "2026-08",
+              "source_report_date": "2026-09-15"
+            },
+            "currentness": {
+              "status": "current_within_source_contract"
+            },
+            "schema_version": "monthly_revenue_evidence.v1",
+            "source": {
+              "authority": "official",
+              "fallback_used": false,
+              "market": "TPEX",
+              "source_contract_id": "t187ap05_O",
+              "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+              "transport": "official_csv"
+            },
+            "status": "available",
+            "value": {
+              "currency": "TWD",
+              "current_month_revenue": 100,
+              "mom_pct": null,
+              "note": "官方備註",
+              "previous_month_revenue": -2,
+              "previous_year_same_month_revenue": 90,
+              "previous_year_ytd_revenue": 700,
+              "unit": "thousand",
+              "yoy_pct": 11.1,
+              "ytd_revenue": 800,
+              "ytd_yoy_pct": null
+            }
+          }
+        }
+      },
+      "second_semantic_sha256": "af110d1e64864f9737570047977d51f590f22370304087f5d8be43d10871bc7c"
+    },
+    "twse": {
+      "equal": true,
+      "first": {
+        "audit_lineage": [
+          {
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "monthly_revenue",
+            "error_code": null,
+            "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TWSE",
+            "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          },
+          {
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "material_disclosures",
+            "error_code": null,
+            "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TWSE",
+            "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          }
+        ],
+        "handoff_content": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `<result-id>`\n**請求 ID**: `l5-a6-twse`\n**生成時間**: <execution-time>\n\n## 請求摘要\n- **執行模式**: execute\n- **目標數量**: 1\n- **請求的資料需求**: material_disclosures, monthly_revenue\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 重名測試\n- **市場**: TWSE\n- **已提供資料需求**: material_disclosures, monthly_revenue\n\n### 證據\n\n#### material_disclosures\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_completed_official_daily_batch\n  - `source_report_date`: 2026-09-16\n  - `coverage_through`: 2026-09-15\n  - `truncated`: False\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: <execution-time>\n- **來源**:\n  - `source_family`: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA\n  - `source_contract_id`: t187ap04_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n\n- **發言時間**: 2026-09-15T06:57:28+08:00\n  - **主旨**: 測試\n  - **說明**: 內容\n  - **引用**: `cite-da8da60108eb9e9c`\n- **引用 IDs**: `cite-da8da60108eb9e9c`\n\n#### monthly_revenue\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_available_reporting_period\n  - `source_report_date`: 2026-09-15\n  - `reporting_period`: 2026-08\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: <execution-time>\n- **來源**:\n  - `source_family`: MOPS_MONTHLY_REVENUE_OPEN_DATA\n  - `source_contract_id`: t187ap05_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n- **數值**:\n  - `currency`: TWD\n  - `unit`: thousand\n  - `current_month_revenue`: 100\n  - `previous_month_revenue`: -2\n  - `previous_year_same_month_revenue`: 90\n  - `mom_pct`: None\n  - `yoy_pct`: 11.1\n  - `ytd_revenue`: 800\n  - `previous_year_ytd_revenue`: 700\n  - `ytd_yoy_pct`: None\n  - `note`: 官方備註\n- **引用 IDs**: `cite-f8fd91c7bf3a86d7`\n\n### 引用來源\n- `cite-f8fd91c7bf3a86d7` — 來源: MOPS_MONTHLY_REVENUE_OPEN_DATA | 擷取時間: <execution-time> | 參考: `evidence/umeop-op-v1-6d76d3be67992e1c7481.json`\n- `cite-da8da60108eb9e9c` — 來源: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA | 擷取時間: <execution-time> | 參考: `evidence/umeop-op-v1-980a771a89fe9150625a.json`\n\n## 審計包參考\n- **審計包 ID**: `<audit-id>`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+        "operation_semantic_hashes": {
+          "evidence/umeop-op-v1-6d76d3be67992e1c7481.json": "c1ada08c83da5a799833c71d8dea32a658cc4bc0057fda5a074fa656a4df65ad",
+          "evidence/umeop-op-v1-980a771a89fe9150625a.json": "88ed16513306351569cc11a5740bdd743b2f649a809b1a42e464a2d1032d158f"
+        },
+        "plan_operations": [
+          {
+            "batch_group_id": "umeop-batch-v1-430ac6b640cff2771b15",
+            "blocking_reason_codes": [],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "monthly_revenue",
+            "capability_requires_execution_approval": true,
+            "dependency_operation_ids": [],
+            "executor_id": "phase_g_official_research_executor",
+            "executor_invocation_eligible": true,
+            "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "market": "TWSE",
+            "network_required": true,
+            "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+            "operation_status": "executable_pending_approval",
+            "parameters": {},
+            "security_types": [
+              "equity"
+            ],
+            "warnings": []
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-4049a50eaad39b18ee4e",
+            "blocking_reason_codes": [],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "material_disclosures",
+            "capability_requires_execution_approval": true,
+            "dependency_operation_ids": [],
+            "executor_id": "phase_g_official_research_executor",
+            "executor_invocation_eligible": true,
+            "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "market": "TWSE",
+            "network_required": true,
+            "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+            "operation_status": "executable_pending_approval",
+            "parameters": {},
+            "security_types": [
+              "equity"
+            ],
+            "warnings": []
+          }
+        ],
+        "result_semantic_body": {
+          "audit_reference": {
+            "audit_package_id": "<audit-id>",
+            "relative_path": "audit/unified_market_evidence_audit_package.v3.json",
+            "schema_version": "unified_market_evidence_audit_package.v3"
+          },
+          "generated_at": "<execution-time>",
+          "request_caveats": [],
+          "request_id": "l5-a6-twse",
+          "request_summary": {
+            "execution_mode": "execute",
+            "optional_data_needs": [],
+            "request_schema_version": "unified_market_evidence_request.v3",
+            "requested_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "required_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "target_count": 1
+          },
+          "result_hash": "<verified-result-hash>",
+          "result_id": "<result-id>",
+          "schema_version": "unified_market_evidence_result.v3",
+          "status": "full_success",
+          "targets": [
+            {
+              "canonical_identity": {
+                "canonical_target_id": "TWSE:2330",
+                "instrument_family": "company_share",
+                "instrument_type": "common_share",
+                "isin": "TW0002330008",
+                "market": "TWSE",
+                "security_code": "2330",
+                "security_name_en": "TSMC",
+                "security_name_zh": "重名測試"
+              },
+              "citations": [
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+                  "citation_id": "cite-f8fd91c7bf3a86d7",
+                  "normalized_evidence_hash": "c1ada08c83da5a799833c71d8dea32a658cc4bc0057fda5a074fa656a4df65ad",
+                  "retrieved_at": "<execution-time>",
+                  "source_contract_id": "t187ap05_L",
+                  "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                  "source_report_date": "2026-09-15"
+                },
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+                  "citation_id": "cite-da8da60108eb9e9c",
+                  "normalized_evidence_hash": "88ed16513306351569cc11a5740bdd743b2f649a809b1a42e464a2d1032d158f",
+                  "retrieved_at": "<execution-time>",
+                  "source_contract_id": "t187ap04_L",
+                  "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                  "source_report_date": "2026-09-16"
+                }
+              ],
+              "coverage": {
+                "missing_needs": [],
+                "provided_needs": [
+                  "material_disclosures",
+                  "monthly_revenue"
+                ]
+              },
+              "evidence": {
+                "material_disclosures": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-da8da60108eb9e9c"
+                  ],
+                  "coverage": {
+                    "coverage_through": "2026-09-15",
+                    "historical_lookup_supported": false,
+                    "item_count": 1,
+                    "mode": "latest_completed_official_daily_batch",
+                    "source_report_date": "2026-09-16",
+                    "truncated": false
+                  },
+                  "currentness": {
+                    "observed_at": "<execution-time>",
+                    "status": "current_within_source_contract"
+                  },
+                  "items": [
+                    {
+                      "citation_id": "cite-da8da60108eb9e9c",
+                      "clause": null,
+                      "description": "內容",
+                      "description_truncated": false,
+                      "published_at": "2026-09-15T06:57:28+08:00",
+                      "revision_relation": {
+                        "related_official_reference": null,
+                        "relation_type": null,
+                        "status": "unresolved"
+                      },
+                      "source_fact_date": null,
+                      "subject": "測試"
+                    }
+                  ],
+                  "schema_version": "material_disclosure_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TWSE",
+                    "source_contract_id": "t187ap04_L",
+                    "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available"
+                },
+                "monthly_revenue": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-f8fd91c7bf3a86d7"
+                  ],
+                  "coverage": {
+                    "historical_lookup_supported": false,
+                    "mode": "latest_available_reporting_period",
+                    "reporting_period": "2026-08",
+                    "source_report_date": "2026-09-15"
+                  },
+                  "currentness": {
+                    "observed_at": "<execution-time>",
+                    "status": "current_within_source_contract"
+                  },
+                  "schema_version": "monthly_revenue_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TWSE",
+                    "source_contract_id": "t187ap05_L",
+                    "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available",
+                  "value": {
+                    "currency": "TWD",
+                    "current_month_revenue": 100,
+                    "mom_pct": null,
+                    "note": "官方備註",
+                    "previous_month_revenue": -2,
+                    "previous_year_same_month_revenue": 90,
+                    "previous_year_ytd_revenue": 700,
+                    "unit": "thousand",
+                    "yoy_pct": 11.1,
+                    "ytd_revenue": 800,
+                    "ytd_yoy_pct": null
+                  }
+                }
+              },
+              "resolution": {
+                "canonical_target_id": "TWSE:2330",
+                "market": "TWSE",
+                "security_code": "2330",
+                "security_name": "重名測試",
+                "status": "resolved"
+              }
+            }
+          ]
+        },
+        "result_semantic_body_sha256": "c279aa7e0a1a6ed2f0205a97518b8970493df591daac17d75483b7732c13f921",
+        "source_selection": [
+          {
+            "contract": "t187ap05_L",
+            "external_dispatch": false,
+            "fixture_failure": false,
+            "fixture_payload_sha256": "e19bf96879114699ff9b27c4dfe47e37153fdf654d419c102216eb9489dd9649",
+            "timeout": 15,
+            "url": "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
+          },
+          {
+            "contract": "t187ap04_L",
+            "external_dispatch": false,
+            "fixture_failure": false,
+            "fixture_payload_sha256": "c315f942f5f0dc50bed810a9e03ad60d318fc6822e56608ab5ea57549f4bfadc",
+            "timeout": 15,
+            "url": "https://mopsfin.twse.com.tw/opendata/t187ap04_L.csv"
+          }
+        ],
+        "typed_semantics": {
+          "material_disclosures": {
+            "caveats": [],
+            "citation_ids": [
+              "cite-da8da60108eb9e9c"
+            ],
+            "coverage": {
+              "coverage_through": "2026-09-15",
+              "historical_lookup_supported": false,
+              "item_count": 1,
+              "mode": "latest_completed_official_daily_batch",
+              "source_report_date": "2026-09-16",
+              "truncated": false
+            },
+            "currentness": {
+              "status": "current_within_source_contract"
+            },
+            "items": [
+              {
+                "citation_id": "cite-da8da60108eb9e9c",
+                "clause": null,
+                "description": "內容",
+                "description_truncated": false,
+                "published_at": "2026-09-15T06:57:28+08:00",
+                "revision_relation": {
+                  "related_official_reference": null,
+                  "relation_type": null,
+                  "status": "unresolved"
+                },
+                "source_fact_date": null,
+                "subject": "測試"
+              }
+            ],
+            "schema_version": "material_disclosure_evidence.v1",
+            "source": {
+              "authority": "official",
+              "fallback_used": false,
+              "market": "TWSE",
+              "source_contract_id": "t187ap04_L",
+              "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+              "transport": "official_csv"
+            },
+            "status": "available"
+          },
+          "monthly_revenue": {
+            "caveats": [],
+            "citation_ids": [
+              "cite-f8fd91c7bf3a86d7"
+            ],
+            "coverage": {
+              "historical_lookup_supported": false,
+              "mode": "latest_available_reporting_period",
+              "reporting_period": "2026-08",
+              "source_report_date": "2026-09-15"
+            },
+            "currentness": {
+              "status": "current_within_source_contract"
+            },
+            "schema_version": "monthly_revenue_evidence.v1",
+            "source": {
+              "authority": "official",
+              "fallback_used": false,
+              "market": "TWSE",
+              "source_contract_id": "t187ap05_L",
+              "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+              "transport": "official_csv"
+            },
+            "status": "available",
+            "value": {
+              "currency": "TWD",
+              "current_month_revenue": 100,
+              "mom_pct": null,
+              "note": "官方備註",
+              "previous_month_revenue": -2,
+              "previous_year_same_month_revenue": 90,
+              "previous_year_ytd_revenue": 700,
+              "unit": "thousand",
+              "yoy_pct": 11.1,
+              "ytd_revenue": 800,
+              "ytd_yoy_pct": null
+            }
+          }
+        }
+      },
+      "first_semantic_sha256": "c720ef7e49f2203e5514a901e23cbd52c50f8cd7b95f71b8eee0eac20ba8fb94",
+      "second": {
+        "audit_lineage": [
+          {
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "monthly_revenue",
+            "error_code": null,
+            "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TWSE",
+            "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          },
+          {
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "material_disclosures",
+            "error_code": null,
+            "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TWSE",
+            "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          }
+        ],
+        "handoff_content": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `<result-id>`\n**請求 ID**: `l5-a6-twse`\n**生成時間**: <execution-time>\n\n## 請求摘要\n- **執行模式**: execute\n- **目標數量**: 1\n- **請求的資料需求**: material_disclosures, monthly_revenue\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 重名測試\n- **市場**: TWSE\n- **已提供資料需求**: material_disclosures, monthly_revenue\n\n### 證據\n\n#### material_disclosures\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_completed_official_daily_batch\n  - `source_report_date`: 2026-09-16\n  - `coverage_through`: 2026-09-15\n  - `truncated`: False\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: <execution-time>\n- **來源**:\n  - `source_family`: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA\n  - `source_contract_id`: t187ap04_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n\n- **發言時間**: 2026-09-15T06:57:28+08:00\n  - **主旨**: 測試\n  - **說明**: 內容\n  - **引用**: `cite-da8da60108eb9e9c`\n- **引用 IDs**: `cite-da8da60108eb9e9c`\n\n#### monthly_revenue\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_available_reporting_period\n  - `source_report_date`: 2026-09-15\n  - `reporting_period`: 2026-08\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: <execution-time>\n- **來源**:\n  - `source_family`: MOPS_MONTHLY_REVENUE_OPEN_DATA\n  - `source_contract_id`: t187ap05_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n- **數值**:\n  - `currency`: TWD\n  - `unit`: thousand\n  - `current_month_revenue`: 100\n  - `previous_month_revenue`: -2\n  - `previous_year_same_month_revenue`: 90\n  - `mom_pct`: None\n  - `yoy_pct`: 11.1\n  - `ytd_revenue`: 800\n  - `previous_year_ytd_revenue`: 700\n  - `ytd_yoy_pct`: None\n  - `note`: 官方備註\n- **引用 IDs**: `cite-f8fd91c7bf3a86d7`\n\n### 引用來源\n- `cite-f8fd91c7bf3a86d7` — 來源: MOPS_MONTHLY_REVENUE_OPEN_DATA | 擷取時間: <execution-time> | 參考: `evidence/umeop-op-v1-6d76d3be67992e1c7481.json`\n- `cite-da8da60108eb9e9c` — 來源: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA | 擷取時間: <execution-time> | 參考: `evidence/umeop-op-v1-980a771a89fe9150625a.json`\n\n## 審計包參考\n- **審計包 ID**: `<audit-id>`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+        "operation_semantic_hashes": {
+          "evidence/umeop-op-v1-6d76d3be67992e1c7481.json": "c1ada08c83da5a799833c71d8dea32a658cc4bc0057fda5a074fa656a4df65ad",
+          "evidence/umeop-op-v1-980a771a89fe9150625a.json": "88ed16513306351569cc11a5740bdd743b2f649a809b1a42e464a2d1032d158f"
+        },
+        "plan_operations": [
+          {
+            "batch_group_id": "umeop-batch-v1-430ac6b640cff2771b15",
+            "blocking_reason_codes": [],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "monthly_revenue",
+            "capability_requires_execution_approval": true,
+            "dependency_operation_ids": [],
+            "executor_id": "phase_g_official_research_executor",
+            "executor_invocation_eligible": true,
+            "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "market": "TWSE",
+            "network_required": true,
+            "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+            "operation_status": "executable_pending_approval",
+            "parameters": {},
+            "security_types": [
+              "equity"
+            ],
+            "warnings": []
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-4049a50eaad39b18ee4e",
+            "blocking_reason_codes": [],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "material_disclosures",
+            "capability_requires_execution_approval": true,
+            "dependency_operation_ids": [],
+            "executor_id": "phase_g_official_research_executor",
+            "executor_invocation_eligible": true,
+            "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "market": "TWSE",
+            "network_required": true,
+            "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+            "operation_status": "executable_pending_approval",
+            "parameters": {},
+            "security_types": [
+              "equity"
+            ],
+            "warnings": []
+          }
+        ],
+        "result_semantic_body": {
+          "audit_reference": {
+            "audit_package_id": "<audit-id>",
+            "relative_path": "audit/unified_market_evidence_audit_package.v3.json",
+            "schema_version": "unified_market_evidence_audit_package.v3"
+          },
+          "generated_at": "<execution-time>",
+          "request_caveats": [],
+          "request_id": "l5-a6-twse",
+          "request_summary": {
+            "execution_mode": "execute",
+            "optional_data_needs": [],
+            "request_schema_version": "unified_market_evidence_request.v3",
+            "requested_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "required_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "target_count": 1
+          },
+          "result_hash": "<verified-result-hash>",
+          "result_id": "<result-id>",
+          "schema_version": "unified_market_evidence_result.v3",
+          "status": "full_success",
+          "targets": [
+            {
+              "canonical_identity": {
+                "canonical_target_id": "TWSE:2330",
+                "instrument_family": "company_share",
+                "instrument_type": "common_share",
+                "isin": "TW0002330008",
+                "market": "TWSE",
+                "security_code": "2330",
+                "security_name_en": "TSMC",
+                "security_name_zh": "重名測試"
+              },
+              "citations": [
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+                  "citation_id": "cite-f8fd91c7bf3a86d7",
+                  "normalized_evidence_hash": "c1ada08c83da5a799833c71d8dea32a658cc4bc0057fda5a074fa656a4df65ad",
+                  "retrieved_at": "<execution-time>",
+                  "source_contract_id": "t187ap05_L",
+                  "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                  "source_report_date": "2026-09-15"
+                },
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+                  "citation_id": "cite-da8da60108eb9e9c",
+                  "normalized_evidence_hash": "88ed16513306351569cc11a5740bdd743b2f649a809b1a42e464a2d1032d158f",
+                  "retrieved_at": "<execution-time>",
+                  "source_contract_id": "t187ap04_L",
+                  "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                  "source_report_date": "2026-09-16"
+                }
+              ],
+              "coverage": {
+                "missing_needs": [],
+                "provided_needs": [
+                  "material_disclosures",
+                  "monthly_revenue"
+                ]
+              },
+              "evidence": {
+                "material_disclosures": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-da8da60108eb9e9c"
+                  ],
+                  "coverage": {
+                    "coverage_through": "2026-09-15",
+                    "historical_lookup_supported": false,
+                    "item_count": 1,
+                    "mode": "latest_completed_official_daily_batch",
+                    "source_report_date": "2026-09-16",
+                    "truncated": false
+                  },
+                  "currentness": {
+                    "observed_at": "<execution-time>",
+                    "status": "current_within_source_contract"
+                  },
+                  "items": [
+                    {
+                      "citation_id": "cite-da8da60108eb9e9c",
+                      "clause": null,
+                      "description": "內容",
+                      "description_truncated": false,
+                      "published_at": "2026-09-15T06:57:28+08:00",
+                      "revision_relation": {
+                        "related_official_reference": null,
+                        "relation_type": null,
+                        "status": "unresolved"
+                      },
+                      "source_fact_date": null,
+                      "subject": "測試"
+                    }
+                  ],
+                  "schema_version": "material_disclosure_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TWSE",
+                    "source_contract_id": "t187ap04_L",
+                    "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available"
+                },
+                "monthly_revenue": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-f8fd91c7bf3a86d7"
+                  ],
+                  "coverage": {
+                    "historical_lookup_supported": false,
+                    "mode": "latest_available_reporting_period",
+                    "reporting_period": "2026-08",
+                    "source_report_date": "2026-09-15"
+                  },
+                  "currentness": {
+                    "observed_at": "<execution-time>",
+                    "status": "current_within_source_contract"
+                  },
+                  "schema_version": "monthly_revenue_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TWSE",
+                    "source_contract_id": "t187ap05_L",
+                    "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available",
+                  "value": {
+                    "currency": "TWD",
+                    "current_month_revenue": 100,
+                    "mom_pct": null,
+                    "note": "官方備註",
+                    "previous_month_revenue": -2,
+                    "previous_year_same_month_revenue": 90,
+                    "previous_year_ytd_revenue": 700,
+                    "unit": "thousand",
+                    "yoy_pct": 11.1,
+                    "ytd_revenue": 800,
+                    "ytd_yoy_pct": null
+                  }
+                }
+              },
+              "resolution": {
+                "canonical_target_id": "TWSE:2330",
+                "market": "TWSE",
+                "security_code": "2330",
+                "security_name": "重名測試",
+                "status": "resolved"
+              }
+            }
+          ]
+        },
+        "result_semantic_body_sha256": "c279aa7e0a1a6ed2f0205a97518b8970493df591daac17d75483b7732c13f921",
+        "source_selection": [
+          {
+            "contract": "t187ap05_L",
+            "external_dispatch": false,
+            "fixture_failure": false,
+            "fixture_payload_sha256": "e19bf96879114699ff9b27c4dfe47e37153fdf654d419c102216eb9489dd9649",
+            "timeout": 15,
+            "url": "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
+          },
+          {
+            "contract": "t187ap04_L",
+            "external_dispatch": false,
+            "fixture_failure": false,
+            "fixture_payload_sha256": "c315f942f5f0dc50bed810a9e03ad60d318fc6822e56608ab5ea57549f4bfadc",
+            "timeout": 15,
+            "url": "https://mopsfin.twse.com.tw/opendata/t187ap04_L.csv"
+          }
+        ],
+        "typed_semantics": {
+          "material_disclosures": {
+            "caveats": [],
+            "citation_ids": [
+              "cite-da8da60108eb9e9c"
+            ],
+            "coverage": {
+              "coverage_through": "2026-09-15",
+              "historical_lookup_supported": false,
+              "item_count": 1,
+              "mode": "latest_completed_official_daily_batch",
+              "source_report_date": "2026-09-16",
+              "truncated": false
+            },
+            "currentness": {
+              "status": "current_within_source_contract"
+            },
+            "items": [
+              {
+                "citation_id": "cite-da8da60108eb9e9c",
+                "clause": null,
+                "description": "內容",
+                "description_truncated": false,
+                "published_at": "2026-09-15T06:57:28+08:00",
+                "revision_relation": {
+                  "related_official_reference": null,
+                  "relation_type": null,
+                  "status": "unresolved"
+                },
+                "source_fact_date": null,
+                "subject": "測試"
+              }
+            ],
+            "schema_version": "material_disclosure_evidence.v1",
+            "source": {
+              "authority": "official",
+              "fallback_used": false,
+              "market": "TWSE",
+              "source_contract_id": "t187ap04_L",
+              "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+              "transport": "official_csv"
+            },
+            "status": "available"
+          },
+          "monthly_revenue": {
+            "caveats": [],
+            "citation_ids": [
+              "cite-f8fd91c7bf3a86d7"
+            ],
+            "coverage": {
+              "historical_lookup_supported": false,
+              "mode": "latest_available_reporting_period",
+              "reporting_period": "2026-08",
+              "source_report_date": "2026-09-15"
+            },
+            "currentness": {
+              "status": "current_within_source_contract"
+            },
+            "schema_version": "monthly_revenue_evidence.v1",
+            "source": {
+              "authority": "official",
+              "fallback_used": false,
+              "market": "TWSE",
+              "source_contract_id": "t187ap05_L",
+              "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+              "transport": "official_csv"
+            },
+            "status": "available",
+            "value": {
+              "currency": "TWD",
+              "current_month_revenue": 100,
+              "mom_pct": null,
+              "note": "官方備註",
+              "previous_month_revenue": -2,
+              "previous_year_same_month_revenue": 90,
+              "previous_year_ytd_revenue": 700,
+              "unit": "thousand",
+              "yoy_pct": 11.1,
+              "ytd_revenue": 800,
+              "ytd_yoy_pct": null
+            }
+          }
+        }
+      },
+      "second_semantic_sha256": "c720ef7e49f2203e5514a901e23cbd52c50f8cd7b95f71b8eee0eac20ba8fb94"
+    }
+  },
+  "status": "PASS"
+}

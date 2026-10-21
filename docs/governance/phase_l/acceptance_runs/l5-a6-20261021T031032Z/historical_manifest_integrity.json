@@ -1,0 +1,91 @@
+{
+  "A3_accepted_authority": "PHASE_L_L5_A3_OWNER_ACCEPTANCE_2026-10-20.md records final-candidate 30/30 verification and no A3-R1 requirement. A6 preserves that accepted gate truth; no historical re-adjudication.",
+  "historical_member_current_bytes_not_recast": true,
+  "manifests": [
+    {
+      "artifact_count": 54,
+      "declared": "aa7dee61185eddb66e4adb5c08b700fb884404dbf77e26ba6187a1097277ba94",
+      "entry_bytes_unchanged": true,
+      "recomputed": "aa7dee61185eddb66e4adb5c08b700fb884404dbf77e26ba6187a1097277ba94",
+      "run": "l5-a0-20261018T110810Z"
+    },
+    {
+      "artifact_count": 23,
+      "declared": "c3975ce5726182b2d831d9c9b82ff3a300912a7222a536665a1acb9985d9a78f",
+      "entry_bytes_unchanged": true,
+      "recomputed": "c3975ce5726182b2d831d9c9b82ff3a300912a7222a536665a1acb9985d9a78f",
+      "run": "l5-a0-r1-20261018T122006Z"
+    },
+    {
+      "artifact_count": 32,
+      "declared": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+      "entry_bytes_unchanged": true,
+      "recomputed": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+      "run": "l5-a1-20261018T140202Z"
+    },
+    {
+      "artifact_count": 24,
+      "declared": "b1dd1c009426e9470180e9962430284062538228e8ef940c6d2a71481c48bfea",
+      "entry_bytes_unchanged": true,
+      "recomputed": "b1dd1c009426e9470180e9962430284062538228e8ef940c6d2a71481c48bfea",
+      "run": "l5-a2-20261019T053855Z"
+    },
+    {
+      "artifact_count": 30,
+      "declared": "844402e972d7a3a793150db9cca3fb32be3e568860950b63d69c320ccda52c75",
+      "entry_bytes_unchanged": true,
+      "recomputed": "844402e972d7a3a793150db9cca3fb32be3e568860950b63d69c320ccda52c75",
+      "run": "l5-a3-20261020T015810Z"
+    },
+    {
+      "artifact_count": 48,
+      "declared": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+      "entry_bytes_unchanged": true,
+      "recomputed": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+      "run": "l5-a4-20261020T071416Z"
+    },
+    {
+      "artifact_count": 51,
+      "declared": "dd83ba9ab1d353993d2220d3e699bb0ed815bf54e0ee91d2e3435161459869e9",
+      "entry_bytes_unchanged": true,
+      "recomputed": "dd83ba9ab1d353993d2220d3e699bb0ed815bf54e0ee91d2e3435161459869e9",
+      "run": "l5-a4-r1-20261020T074329Z"
+    },
+    {
+      "artifact_count": 46,
+      "declared": "9fb590dff3f51e93a0c91678d78a69ebabb732b1e939692c4222866cc917b0be",
+      "entry_bytes_unchanged": true,
+      "recomputed": "9fb590dff3f51e93a0c91678d78a69ebabb732b1e939692c4222866cc917b0be",
+      "run": "l5-a4-r2-20261020T134225Z"
+    },
+    {
+      "artifact_count": 23,
+      "declared": "c2db766581cfb6b6d37cefd69df191c0969ce178b4ed67311a23066cc076d8e8",
+      "entry_bytes_unchanged": true,
+      "recomputed": "c2db766581cfb6b6d37cefd69df191c0969ce178b4ed67311a23066cc076d8e8",
+      "run": "l5-a5-20261020T143928Z"
+    },
+    {
+      "artifact_count": 72,
+      "declared": "9572ea1e6417c58255ebebbd28f2348b433200854248293fa99fe1d6db6035c0",
+      "entry_bytes_unchanged": true,
+      "recomputed": "9572ea1e6417c58255ebebbd28f2348b433200854248293fa99fe1d6db6035c0",
+      "run": "l5-a5-r1-20261020T151923Z"
+    },
+    {
+      "artifact_count": 7,
+      "declared": "4afd4fafa1d84d7301de4ee2fc30bb03b6b238b027b461fef740c9494e10c0ca",
+      "entry_bytes_unchanged": true,
+      "recomputed": "4afd4fafa1d84d7301de4ee2fc30bb03b6b238b027b461fef740c9494e10c0ca",
+      "run": "l5-a1-r1-20261019T034526Z"
+    },
+    {
+      "artifact_count": 9,
+      "declared": "c737bfbe06ce9faf4b0032a631ef3f75f11cbe9c6205fa41f7b04105d0549426",
+      "entry_bytes_unchanged": true,
+      "recomputed": "c737bfbe06ce9faf4b0032a631ef3f75f11cbe9c6205fa41f7b04105d0549426",
+      "run": "l5-a2-r1-20261020T011524Z"
+    }
+  ],
+  "status": "PASS"
+}

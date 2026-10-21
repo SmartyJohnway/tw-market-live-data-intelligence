@@ -1,0 +1,27 @@
+{
+  "A7_authorized": false,
+  "L6_L7_authorized": false,
+  "Owner_acceptance": "PENDING",
+  "candidate_only": 0,
+  "default_ci": {
+    "deselected": 5,
+    "failed": 41,
+    "passed": 1248,
+    "skipped": 4
+  },
+  "determinism": "PASS",
+  "dimensions_accounted": 36,
+  "existing_tests": 232,
+  "focused_tests": 35,
+  "historical_failures_not_passing": 41,
+  "initial_existing_suite_failure": "Missing isolated Security Master; preserved existing-uninitialized logs; accepted test bootstrap rerun PASS without test/product edits.",
+  "live_acquisition": 0,
+  "production_mutations": 0,
+  "provider_requests": 0,
+  "required_gates": "16/16 PASS",
+  "socket_scope": "Primary harness parent and child only; not OS-wide; guard selftest intentional rejection recorded separately.",
+  "technical_disposition": "L5_A6_INTEGRATED_DETERMINISTIC_EXTENSION_CONTRACT_ACCEPTANCE_PASS",
+  "trace_results": "3/3 PASS",
+  "unexpected_external_socket_attempts": 0,
+  "unresolved": 0
+}

@@ -1,0 +1,2239 @@
+{
+  "edges": [
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S01",
+      "from_observed_sha256": "daef1ca1fefc4f6263b2a90ff3dc7d605634779952f6d5e07d8f6f39a8f9d341",
+      "result": "PASS",
+      "to": "S02",
+      "to_observed_sha256": "846ce723d23af7e7b65dff311f038c2557869ac3d6fc775e05b47f0ab7ef66b6",
+      "verification_rule": "Actual six-tool snapshot validates closed V3 Request arguments; unknown need/alias public probes reject."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S02",
+      "from_observed_sha256": "846ce723d23af7e7b65dff311f038c2557869ac3d6fc775e05b47f0ab7ef66b6",
+      "result": "PASS",
+      "to": "S03",
+      "to_observed_sha256": "5a1321b9bbfc91bcea8030f389c5cd8d6e57a4c62723f04e6b1252b117b3114c",
+      "verification_rule": "Actual Mode A target resolution binds Request input to isolated qualified Security Master ISIN/market/code."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S03",
+      "from_observed_sha256": "5a1321b9bbfc91bcea8030f389c5cd8d6e57a4c62723f04e6b1252b117b3114c",
+      "result": "PASS",
+      "to": "S04",
+      "to_observed_sha256": "22111fdb984aa576b3b0caa869a08c28ebd351841261bea62d63a31e076b87fa",
+      "verification_rule": "Request data_needs[].type values equal actual validation capability identities for the resolved target."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S04",
+      "from_observed_sha256": "22111fdb984aa576b3b0caa869a08c28ebd351841261bea62d63a31e076b87fa",
+      "result": "PASS",
+      "to": "S05",
+      "to_observed_sha256": "ddd710f0507f6af7b1a265b7196fccfc83cad7b5e98adb465f8005a55cb43d9a",
+      "verification_rule": "Validation is valid for this request_id and both required capabilities; no arbitrary capability is admitted."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S05",
+      "from_observed_sha256": "ddd710f0507f6af7b1a265b7196fccfc83cad7b5e98adb465f8005a55cb43d9a",
+      "result": "PASS",
+      "to": "S06",
+      "to_observed_sha256": "3f4e025de407d7c412bf69b49bee671d89b62606d3c5761a46983a540ee79e30",
+      "verification_rule": "Actual preview operations retain Request hash, target, capability, market and selected executor."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S06",
+      "from_observed_sha256": "3f4e025de407d7c412bf69b49bee671d89b62606d3c5761a46983a540ee79e30",
+      "result": "PASS",
+      "to": "S07",
+      "to_observed_sha256": "1e32f793a28dd4f4a0507731913c4c5b3d129417c22a9f2becb9b6672e751a64",
+      "verification_rule": "Preview performs no execution; actual single-use authorization approves exactly the rebuilt plan operations."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S07",
+      "from_observed_sha256": "1e32f793a28dd4f4a0507731913c4c5b3d129417c22a9f2becb9b6672e751a64",
+      "result": "PASS",
+      "to": "S08",
+      "to_observed_sha256": "b3eb6666cab3744e340a39658bbb4083a9e830a24cec3e7553a6a6d15fc84d44",
+      "verification_rule": "Actual approved operations select the trusted production research executor through the real registry."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S08",
+      "from_observed_sha256": "b3eb6666cab3744e340a39658bbb4083a9e830a24cec3e7553a6a6d15fc84d44",
+      "result": "PASS",
+      "to": "S09",
+      "to_observed_sha256": "55795a81c18e9630244a7f102b3fdca2d7931a249e1ec37f0801f6f2a38b0eeb",
+      "verification_rule": "Production research adapter emits the expected distinct source-family identities for the selected capabilities."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S09",
+      "from_observed_sha256": "55795a81c18e9630244a7f102b3fdca2d7931a249e1ec37f0801f6f2a38b0eeb",
+      "result": "PASS",
+      "to": "S10",
+      "to_observed_sha256": "7d7e9effd73f79275fe03c7058e47aa48a5107ce9a04c30c1e3244359e821232",
+      "verification_rule": "Operation and typed source contracts agree with the actual market-specific source contract."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S10",
+      "from_observed_sha256": "7d7e9effd73f79275fe03c7058e47aa48a5107ce9a04c30c1e3244359e821232",
+      "result": "PASS",
+      "to": "S11",
+      "to_observed_sha256": "332a49a744e54e62dd44f27315f3abdca571747c2ede1aa57e5f56c988584222",
+      "verification_rule": "Actual adapter HTTP request hits an exact existing source URL; only fixture bytes/error are returned."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S11",
+      "from_observed_sha256": "332a49a744e54e62dd44f27315f3abdca571747c2ede1aa57e5f56c988584222",
+      "result": "PASS",
+      "to": "S12",
+      "to_observed_sha256": "8fd95e7f20e3aaf7aa7870bb7d4259d6638c8eb128061f5c44ae6ecf9c4315d2",
+      "verification_rule": "Recorded fixture payload digest and actual normalizer preserve signed/null monetary values and disclosure facts."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S12",
+      "from_observed_sha256": "8fd95e7f20e3aaf7aa7870bb7d4259d6638c8eb128061f5c44ae6ecf9c4315d2",
+      "result": "PASS",
+      "to": "S13",
+      "to_observed_sha256": "f6bff77b64b08d0b8d347ae31e14e14d116b9b1526ca8233170b0518187da063",
+      "verification_rule": "Actual normalization output is retained under its operation schema, capability, executor and target."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S13",
+      "from_observed_sha256": "f6bff77b64b08d0b8d347ae31e14e14d116b9b1526ca8233170b0518187da063",
+      "result": "PASS",
+      "to": "S14",
+      "to_observed_sha256": "c55e0fa2d1823d25fbf17da135f5980402519b3e70c99ff69cf649588f5e9457",
+      "verification_rule": "Retained operation projects to the accepted typed schema; cross-family contract swaps reject."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S14",
+      "from_observed_sha256": "c55e0fa2d1823d25fbf17da135f5980402519b3e70c99ff69cf649588f5e9457",
+      "result": "PASS",
+      "to": "S15",
+      "to_observed_sha256": "45aab1c5fe5444b94b1258c5c79738c7e36e2e1ecf5d99bf6bbe0f30c602477d",
+      "verification_rule": "Operation/typed status, observed_at and source coverage fields agree without changing missing/failure state."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S15",
+      "from_observed_sha256": "45aab1c5fe5444b94b1258c5c79738c7e36e2e1ecf5d99bf6bbe0f30c602477d",
+      "result": "PASS",
+      "to": "S16",
+      "to_observed_sha256": "cf6ca487f38873bdfff44159a4195152763051e6fa7109dd8ddb4fe76b513914",
+      "verification_rule": "Independent disk byte length/hash equals operation artifact reference; schema validation also passes."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S16",
+      "from_observed_sha256": "cf6ca487f38873bdfff44159a4195152763051e6fa7109dd8ddb4fe76b513914",
+      "result": "PASS",
+      "to": "S17",
+      "to_observed_sha256": "dd4dbe3555cac7487277f8c248c92044ec748933c866b0b9b06af626a3ed80da",
+      "verification_rule": "Citation path/hash/source contract and Audit mapping bind the same retained artifact and operation."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S17",
+      "from_observed_sha256": "dd4dbe3555cac7487277f8c248c92044ec748933c866b0b9b06af626a3ed80da",
+      "result": "PASS",
+      "to": "S18",
+      "to_observed_sha256": "8be030c3594af898a80a7a9f1e39510b6d0d3cae1bf67e9d3921f5488b7e6502",
+      "verification_rule": "Typed family/citations inhabit the canonical Result; independently recomputed complete Result hash agrees."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S18",
+      "from_observed_sha256": "8be030c3594af898a80a7a9f1e39510b6d0d3cae1bf67e9d3921f5488b7e6502",
+      "result": "PASS",
+      "to": "S19",
+      "to_observed_sha256": "574a94e35b634c1df20be0ddf6172ed4486db19c3e0ef18d57b61bf342b0e09a",
+      "verification_rule": "Audit hash is independently recomputed and its result_id/result_hash equal the canonical Result."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S19",
+      "from_observed_sha256": "574a94e35b634c1df20be0ddf6172ed4486db19c3e0ef18d57b61bf342b0e09a",
+      "result": "PASS",
+      "to": "S20",
+      "to_observed_sha256": "d9d794e470cf64e1832be35d30d7b2eb1a938472edcef4cedb8a9e9faefefd72",
+      "verification_rule": "Handoff envelope and citation subset derive from the same Result and Audit, with no invented text/citation."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S20",
+      "from_observed_sha256": "d9d794e470cf64e1832be35d30d7b2eb1a938472edcef4cedb8a9e9faefefd72",
+      "result": "PASS",
+      "to": "S21",
+      "to_observed_sha256": "c8b408a2796e7dc6ff85745ce44ec22bb6f319c1f4a3de1f0466d377e2492c15",
+      "verification_rule": "Read Result uses the actual stored package and retains the same canonical_result/result_id/hash."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S21",
+      "from_observed_sha256": "c8b408a2796e7dc6ff85745ce44ec22bb6f319c1f4a3de1f0466d377e2492c15",
+      "result": "PASS",
+      "to": "S22",
+      "to_observed_sha256": "c8b408a2796e7dc6ff85745ce44ec22bb6f319c1f4a3de1f0466d377e2492c15",
+      "verification_rule": "MCP export through the actual client/service returns the same verified Result and shared renderer output."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S22",
+      "from_observed_sha256": "c8b408a2796e7dc6ff85745ce44ec22bb6f319c1f4a3de1f0466d377e2492c15",
+      "result": "PASS",
+      "to": "S23",
+      "to_observed_sha256": "cbf86cd591f7016754164a09ba30944e379384fab5ec7ab4d4a181ae4be02b3e",
+      "verification_rule": "Public describe selected executor and executable state match actual selected operations; contract-only identity stays non-executable."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S23",
+      "from_observed_sha256": "cbf86cd591f7016754164a09ba30944e379384fab5ec7ab4d4a181ae4be02b3e",
+      "result": "PASS",
+      "to": "S24",
+      "to_observed_sha256": "69b24126e5f4d3b05fc72abf1ec195350b1ed090e0a80096178fa1c5c84ccd37",
+      "verification_rule": "Both independent sync gates and accepted publication validator join canonical Catalog/Routing to derived views/guides."
+    },
+    {
+      "carried_identity": {
+        "capabilities": [
+          "monthly_revenue",
+          "material_disclosures"
+        ],
+        "operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "request_id": "l5-a6-twse",
+        "target": "TWSE:2330"
+      },
+      "evidence_source": "integrated_trace_twse.json; publication_join.json; platform_inheritance.json",
+      "from": "S24",
+      "from_observed_sha256": "69b24126e5f4d3b05fc72abf1ec195350b1ed090e0a80096178fa1c5c84ccd37",
+      "result": "PASS",
+      "to": "S25",
+      "to_observed_sha256": "9dc0cb5218dec040820248e721d3291ccb14ce86d179fbb61f4551c305340f20",
+      "verification_rule": "Recorded L1-L4 behavioral suites pass; actual timing correlation and contained authorization execution remain platform-owned."
+    }
+  ],
+  "errors": [],
+  "nodes": [
+    {
+      "current_authority": "server/unified_mcp/tool_contracts.py",
+      "observed": [
+        "market_describe_capabilities",
+        "market_validate_request",
+        "market_preview_request",
+        "market_read_result",
+        "market_export_ai_handoff",
+        "market_fetch_evidence"
+      ],
+      "role": "surface",
+      "stage": "S01"
+    },
+    {
+      "current_authority": "schemas/unified_market_evidence_request.v3.schema.json",
+      "observed": {
+        "data_needs": [
+          {
+            "parameters": {},
+            "priority": "required",
+            "type": "monthly_revenue"
+          },
+          {
+            "parameters": {},
+            "priority": "required",
+            "type": "material_disclosures"
+          }
+        ],
+        "execution_mode": "execute",
+        "request_id": "l5-a6-twse",
+        "schema_version": "unified_market_evidence_request.v3",
+        "targets": [
+          {
+            "input": "TWSE:2330",
+            "resolution_requirement": "exact"
+          }
+        ]
+      },
+      "role": "Request",
+      "stage": "S02"
+    },
+    {
+      "current_authority": "scripts/m8r_06_01c2_mode_a_security_master_loader.py",
+      "observed": {
+        "canonical_target_id": "TWSE:2330",
+        "instrument_family": "company_share",
+        "instrument_type": "common_share",
+        "isin": "TW0002330008",
+        "market": "TWSE",
+        "security_code": "2330",
+        "security_name_en": "TSMC",
+        "security_name_zh": "重名測試"
+      },
+      "role": "target/SecurityMaster",
+      "stage": "S03"
+    },
+    {
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "observed": [
+        "monthly_revenue",
+        "material_disclosures"
+      ],
+      "role": "capability",
+      "stage": "S04"
+    },
+    {
+      "current_authority": "server/services/unified_mode_a.py::validate_mode_a_request",
+      "observed": "valid",
+      "role": "validation",
+      "stage": "S05"
+    },
+    {
+      "current_authority": "server/services/unified_mode_b1.py::build_mode_b1_preview",
+      "observed": [
+        {
+          "batch_group_id": "umeop-batch-v1-430ac6b640cff2771b15",
+          "blocking_reason_codes": [],
+          "canonical_target_ids": [
+            "TWSE:2330"
+          ],
+          "capability_id": "monthly_revenue",
+          "capability_requires_execution_approval": true,
+          "dependency_operation_ids": [],
+          "executor_id": "phase_g_official_research_executor",
+          "executor_invocation_eligible": true,
+          "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+          "market": "TWSE",
+          "network_required": true,
+          "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+          "operation_status": "executable_pending_approval",
+          "parameters": {},
+          "security_types": [
+            "equity"
+          ],
+          "warnings": []
+        },
+        {
+          "batch_group_id": "umeop-batch-v1-4049a50eaad39b18ee4e",
+          "blocking_reason_codes": [],
+          "canonical_target_ids": [
+            "TWSE:2330"
+          ],
+          "capability_id": "material_disclosures",
+          "capability_requires_execution_approval": true,
+          "dependency_operation_ids": [],
+          "executor_id": "phase_g_official_research_executor",
+          "executor_invocation_eligible": true,
+          "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+          "market": "TWSE",
+          "network_required": true,
+          "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+          "operation_status": "executable_pending_approval",
+          "parameters": {},
+          "security_types": [
+            "equity"
+          ],
+          "warnings": []
+        }
+      ],
+      "role": "preview",
+      "stage": "S06"
+    },
+    {
+      "current_authority": "server/services/unified_mode_b2.py::build_local_operator_execution_ticket",
+      "observed": {
+        "approval_scope_mode": "whole_plan_executable_scope",
+        "approved_batch_group_ids": [],
+        "approved_batch_membership": {},
+        "approved_capability_ids": [
+          "material_disclosures",
+          "monthly_revenue"
+        ],
+        "approved_executor_ids": [
+          "phase_g_official_research_executor"
+        ],
+        "approved_operation_bindings": [
+          {
+            "batch_group_id": "umeop-batch-v1-430ac6b640cff2771b15",
+            "capability_id": "monthly_revenue",
+            "executor_id": "phase_g_official_research_executor",
+            "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "market": "TWSE",
+            "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+            "security_types": [
+              "equity"
+            ]
+          },
+          {
+            "batch_group_id": "umeop-batch-v1-4049a50eaad39b18ee4e",
+            "capability_id": "material_disclosures",
+            "executor_id": "phase_g_official_research_executor",
+            "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "market": "TWSE",
+            "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+            "security_types": [
+              "equity"
+            ]
+          }
+        ],
+        "approved_operation_ids": [
+          "umeop-op-v1-6d76d3be67992e1c7481",
+          "umeop-op-v1-980a771a89fe9150625a"
+        ],
+        "authorization_hash": "d6184242ad2f9155c930fa05d4e8e2d250450ef571622292a517012755efaf46",
+        "authorization_id": "umea-v1-d6184242ad2f9155c930",
+        "authorization_identity_scope": {
+          "approval_scope_mode": "whole_plan_executable_scope",
+          "approved_batch_group_ids": [],
+          "approved_batch_membership": {},
+          "approved_capability_ids": [
+            "material_disclosures",
+            "monthly_revenue"
+          ],
+          "approved_executor_ids": [
+            "phase_g_official_research_executor"
+          ],
+          "approved_operation_bindings": [
+            {
+              "batch_group_id": "umeop-batch-v1-430ac6b640cff2771b15",
+              "capability_id": "monthly_revenue",
+              "executor_id": "phase_g_official_research_executor",
+              "expected_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+              "market": "TWSE",
+              "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+              "security_types": [
+                "equity"
+              ]
+            },
+            {
+              "batch_group_id": "umeop-batch-v1-4049a50eaad39b18ee4e",
+              "capability_id": "material_disclosures",
+              "executor_id": "phase_g_official_research_executor",
+              "expected_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+              "market": "TWSE",
+              "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+              "security_types": [
+                "equity"
+              ]
+            }
+          ],
+          "approved_operation_ids": [
+            "umeop-op-v1-6d76d3be67992e1c7481",
+            "umeop-op-v1-980a771a89fe9150625a"
+          ],
+          "decision": "approved",
+          "expected_evidence_contracts": [
+            "phase_g_material_disclosure_operation_evidence.v1",
+            "phase_g_monthly_revenue_operation_evidence.v1"
+          ],
+          "expires_at": "2026-10-21T04:30:40Z",
+          "input_bindings": {
+            "capability_catalog_hash": "ec8e1255fd98767b2e2603b1e603e21917bc346156798347968f65afd52a5283",
+            "f3_validation_output_hash": "649751d0e0cf3fc363bc187ad149e4124855f7a8c6d876f4739768d0ca86af5e",
+            "handoff_contract_hash": "d9a6ae1ff39f6596cdc7408cafd297d3a2cd6b6b4d43249e3eec7ca3e72a6022",
+            "handoff_contract_version": "m8r_05b_orchestration_handoff_contract.v1.draft",
+            "normalized_request_hash": "846ce723d23af7e7b65dff311f038c2557869ac3d6fc775e05b47f0ab7ef66b6",
+            "original_request_hash": "846ce723d23af7e7b65dff311f038c2557869ac3d6fc775e05b47f0ab7ef66b6",
+            "planner_version": "m8r_05b_01.v1",
+            "routing_matrix_hash": "0151d769c2d4994f86e0bab906d729ccfd11d7e67d00a9b890d11b789daea539",
+            "routing_matrix_version": "m8r_05b_capability_to_executor_routing_matrix.v3",
+            "security_master_artifact_hashes": [
+              "15c26ff90500ba83993f31b822a914401159597e1ef964f9b7c48d84ddb1bdd2",
+              "459ffa0e34bf5d05753702e98c8e132bc17f5be6c78fbf32eabf78c8a757f714"
+            ],
+            "security_master_evidence_references": [
+              "local_security_master_release:security-master-20261021T041539Z:index",
+              "local_security_master_release:security-master-20261021T041539Z:manifest"
+            ]
+          },
+          "issued_at": "2026-10-21T04:15:40Z",
+          "maximum_use_count": 1,
+          "owner_identity_reference": "local_operator_mcp",
+          "plan_hash": "2ecef62d9e134018162bd5a8f4be681789d3a4100bb6108b56fd1f9c81f69790",
+          "plan_id": "umeop-v1-2ecef62d9e134018162b",
+          "plan_schema_version": "unified_market_evidence_orchestration_plan.v1",
+          "replay_policy": "deny_replay",
+          "schema_version": "unified_market_evidence_execution_authorization.v1",
+          "single_use": true
+        },
+        "authorization_status": "approved",
+        "caveats": [],
+        "contract_version": "m8r_05b_02.v1",
+        "created_by_component": "m8r_05b_02",
+        "decision": "approved",
+        "decision_reason": "conversation-triggered local-operator one-shot retrieval",
+        "execution_authorized": true,
+        "expected_evidence_contracts": [
+          "phase_g_material_disclosure_operation_evidence.v1",
+          "phase_g_monthly_revenue_operation_evidence.v1"
+        ],
+        "expires_at": "2026-10-21T04:30:40Z",
+        "input_bindings": {
+          "capability_catalog_hash": "ec8e1255fd98767b2e2603b1e603e21917bc346156798347968f65afd52a5283",
+          "f3_validation_output_hash": "649751d0e0cf3fc363bc187ad149e4124855f7a8c6d876f4739768d0ca86af5e",
+          "handoff_contract_hash": "d9a6ae1ff39f6596cdc7408cafd297d3a2cd6b6b4d43249e3eec7ca3e72a6022",
+          "handoff_contract_version": "m8r_05b_orchestration_handoff_contract.v1.draft",
+          "normalized_request_hash": "846ce723d23af7e7b65dff311f038c2557869ac3d6fc775e05b47f0ab7ef66b6",
+          "original_request_hash": "846ce723d23af7e7b65dff311f038c2557869ac3d6fc775e05b47f0ab7ef66b6",
+          "planner_version": "m8r_05b_01.v1",
+          "routing_matrix_hash": "0151d769c2d4994f86e0bab906d729ccfd11d7e67d00a9b890d11b789daea539",
+          "routing_matrix_version": "m8r_05b_capability_to_executor_routing_matrix.v3",
+          "security_master_artifact_hashes": [
+            "15c26ff90500ba83993f31b822a914401159597e1ef964f9b7c48d84ddb1bdd2",
+            "459ffa0e34bf5d05753702e98c8e132bc17f5be6c78fbf32eabf78c8a757f714"
+          ],
+          "security_master_evidence_references": [
+            "local_security_master_release:security-master-20261021T041539Z:index",
+            "local_security_master_release:security-master-20261021T041539Z:manifest"
+          ]
+        },
+        "issued_at": "2026-10-21T04:15:40Z",
+        "maximum_use_count": 1,
+        "network_authorized": true,
+        "owner_identity_reference": "local_operator_mcp",
+        "owner_review_reference": "local_operator_mcp_action",
+        "plan_binding_hash": "6f8409d20a1c3a5f75fc9ef7b41b8a9e41badb49199637ec73b49610a9b866c7",
+        "plan_hash": "2ecef62d9e134018162bd5a8f4be681789d3a4100bb6108b56fd1f9c81f69790",
+        "plan_id": "umeop-v1-2ecef62d9e134018162b",
+        "plan_schema_version": "unified_market_evidence_orchestration_plan.v1",
+        "replay_policy": "deny_replay",
+        "reviewed_at": "2026-10-21T04:15:40Z",
+        "revocation_reference": null,
+        "revoked_at": null,
+        "schema_version": "unified_market_evidence_execution_authorization.v1",
+        "scope_hash": "4cec791f3a1b7b9ef39091d145395e3dd448fe2de088f91246f7081483be1b7d",
+        "single_use": true,
+        "supersedes_authorization_id": null
+      },
+      "role": "authorization",
+      "stage": "S07"
+    },
+    {
+      "current_authority": "scripts/m8r_06_03_production_adapter.py::build_production_runtime_adapter_registry",
+      "observed": [
+        "phase_g_official_research_executor",
+        "phase_g_official_research_executor"
+      ],
+      "role": "executor",
+      "stage": "S08"
+    },
+    {
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py + mops_material_disclosures.py::SOURCE_FAMILY",
+      "observed": [
+        "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+        "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA"
+      ],
+      "role": "source authority",
+      "stage": "S09"
+    },
+    {
+      "current_authority": "scripts/phase_g/research_executor.py::ROUTES",
+      "observed": [
+        "t187ap05_L",
+        "t187ap04_L"
+      ],
+      "role": "source contract",
+      "stage": "S10"
+    },
+    {
+      "current_authority": "tests/helpers/l5_a6_source_transport.py::install",
+      "observed": [
+        {
+          "contract": "t187ap05_L",
+          "external_dispatch": false,
+          "fixture_failure": false,
+          "fixture_payload_sha256": "e19bf96879114699ff9b27c4dfe47e37153fdf654d419c102216eb9489dd9649",
+          "timeout": 15,
+          "url": "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
+        },
+        {
+          "contract": "t187ap04_L",
+          "external_dispatch": false,
+          "fixture_failure": false,
+          "fixture_payload_sha256": "c315f942f5f0dc50bed810a9e03ad60d318fc6822e56608ab5ea57549f4bfadc",
+          "timeout": 15,
+          "url": "https://mopsfin.twse.com.tw/opendata/t187ap04_L.csv"
+        }
+      ],
+      "role": "transport fixture",
+      "stage": "S11"
+    },
+    {
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py + mops_material_disclosures.py::execute",
+      "observed": {
+        "material_disclosures": [
+          {
+            "citation_id": "cite-da8da60108eb9e9c",
+            "clause": null,
+            "description": "內容",
+            "description_truncated": false,
+            "published_at": "2026-09-15T06:57:28+08:00",
+            "revision_relation": {
+              "related_official_reference": null,
+              "relation_type": null,
+              "status": "unresolved"
+            },
+            "source_fact_date": null,
+            "subject": "測試"
+          }
+        ],
+        "monthly_revenue": {
+          "currency": "TWD",
+          "current_month_revenue": 100,
+          "mom_pct": null,
+          "note": "官方備註",
+          "previous_month_revenue": -2,
+          "previous_year_same_month_revenue": 90,
+          "previous_year_ytd_revenue": 700,
+          "unit": "thousand",
+          "yoy_pct": 11.1,
+          "ytd_revenue": 800,
+          "ytd_yoy_pct": null
+        }
+      },
+      "role": "normalization",
+      "stage": "S12"
+    },
+    {
+      "current_authority": "scripts/m8r_06_03_production_adapter.py::_write_research_evidence",
+      "observed": {
+        "evidence/umeop-op-v1-6d76d3be67992e1c7481.json": {
+          "capability_id": "monthly_revenue",
+          "caveats": [],
+          "coverage": {
+            "mode": "latest_available_reporting_period",
+            "reporting_period": "2026-08",
+            "source_report_date": "2026-09-15"
+          },
+          "diagnostics": [],
+          "executor_id": "phase_g_official_research_executor",
+          "observed_at": "2026-10-21T04:15:41Z",
+          "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+          "source": {
+            "attempt_failures": [],
+            "fallback_attempted": false,
+            "fallback_used": false,
+            "source_contract_id": "t187ap05_L",
+            "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          },
+          "value": {
+            "currency": "TWD",
+            "current_month_revenue": 100,
+            "mom_pct": null,
+            "note": "官方備註",
+            "previous_month_revenue": -2,
+            "previous_year_same_month_revenue": 90,
+            "previous_year_ytd_revenue": 700,
+            "unit": "thousand",
+            "yoy_pct": 11.1,
+            "ytd_revenue": 800,
+            "ytd_yoy_pct": null
+          }
+        },
+        "evidence/umeop-op-v1-980a771a89fe9150625a.json": {
+          "capability_id": "material_disclosures",
+          "caveats": [],
+          "coverage": {
+            "coverage_through": "2026-09-15",
+            "mode": "latest_completed_official_daily_batch",
+            "source_report_date": "2026-09-16",
+            "truncated": false
+          },
+          "diagnostics": [],
+          "executor_id": "phase_g_official_research_executor",
+          "items": [
+            {
+              "clause": null,
+              "description_raw": "內容",
+              "normalized_record_hash": "24e03d394aed5252b65dfe06a3e2d93ace9021f8672a88b0c89434efd6e3b575",
+              "published_at": "2026-09-15T06:57:28+08:00",
+              "raw_speech_time": "65728",
+              "revision_relation": {
+                "related_official_reference": null,
+                "relation_type": null,
+                "status": "unresolved"
+              },
+              "source_fact_date": null,
+              "subject": "測試"
+            }
+          ],
+          "observed_at": "2026-10-21T04:15:41Z",
+          "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+          "source": {
+            "attempt_failures": [],
+            "fallback_attempted": false,
+            "fallback_used": false,
+            "source_contract_id": "t187ap04_L",
+            "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available",
+          "target": {
+            "canonical_target_id": "TWSE:2330",
+            "market": "TWSE",
+            "security_code": "2330"
+          }
+        }
+      },
+      "role": "operation evidence",
+      "stage": "S13"
+    },
+    {
+      "current_authority": "scripts/m8r_05c/evidence_projector.py",
+      "observed": {
+        "material_disclosures": {
+          "caveats": [],
+          "citation_ids": [
+            "cite-da8da60108eb9e9c"
+          ],
+          "coverage": {
+            "coverage_through": "2026-09-15",
+            "historical_lookup_supported": false,
+            "item_count": 1,
+            "mode": "latest_completed_official_daily_batch",
+            "source_report_date": "2026-09-16",
+            "truncated": false
+          },
+          "currentness": {
+            "observed_at": "2026-10-21T04:15:41Z",
+            "status": "current_within_source_contract"
+          },
+          "items": [
+            {
+              "citation_id": "cite-da8da60108eb9e9c",
+              "clause": null,
+              "description": "內容",
+              "description_truncated": false,
+              "published_at": "2026-09-15T06:57:28+08:00",
+              "revision_relation": {
+                "related_official_reference": null,
+                "relation_type": null,
+                "status": "unresolved"
+              },
+              "source_fact_date": null,
+              "subject": "測試"
+            }
+          ],
+          "schema_version": "material_disclosure_evidence.v1",
+          "source": {
+            "authority": "official",
+            "fallback_used": false,
+            "market": "TWSE",
+            "source_contract_id": "t187ap04_L",
+            "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available"
+        },
+        "monthly_revenue": {
+          "caveats": [],
+          "citation_ids": [
+            "cite-f8fd91c7bf3a86d7"
+          ],
+          "coverage": {
+            "historical_lookup_supported": false,
+            "mode": "latest_available_reporting_period",
+            "reporting_period": "2026-08",
+            "source_report_date": "2026-09-15"
+          },
+          "currentness": {
+            "observed_at": "2026-10-21T04:15:41Z",
+            "status": "current_within_source_contract"
+          },
+          "schema_version": "monthly_revenue_evidence.v1",
+          "source": {
+            "authority": "official",
+            "fallback_used": false,
+            "market": "TWSE",
+            "source_contract_id": "t187ap05_L",
+            "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+            "transport": "official_csv"
+          },
+          "status": "available",
+          "value": {
+            "currency": "TWD",
+            "current_month_revenue": 100,
+            "mom_pct": null,
+            "note": "官方備註",
+            "previous_month_revenue": -2,
+            "previous_year_same_month_revenue": 90,
+            "previous_year_ytd_revenue": 700,
+            "unit": "thousand",
+            "yoy_pct": 11.1,
+            "ytd_revenue": 800,
+            "ytd_yoy_pct": null
+          }
+        }
+      },
+      "role": "typed evidence",
+      "stage": "S14"
+    },
+    {
+      "current_authority": "scripts/m8r_05c/evidence_projector.py",
+      "observed": {
+        "material_disclosures": {
+          "currentness": {
+            "observed_at": "2026-10-21T04:15:41Z",
+            "status": "current_within_source_contract"
+          },
+          "status": "available"
+        },
+        "monthly_revenue": {
+          "currentness": {
+            "observed_at": "2026-10-21T04:15:41Z",
+            "status": "current_within_source_contract"
+          },
+          "status": "available"
+        }
+      },
+      "role": "timing/status",
+      "stage": "S15"
+    },
+    {
+      "current_authority": "scripts/m8r_05c/artifact_loader.py",
+      "observed": [
+        {
+          "byte_size": 895,
+          "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+          "item_count": 1,
+          "relative_path": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+          "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+          "sha256": "f33d3ceb9db18db4f9f3b244f5da5d4a0e90fd64e0725444487cfc08b8fb2110"
+        },
+        {
+          "byte_size": 1029,
+          "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+          "item_count": 1,
+          "relative_path": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+          "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+          "sha256": "e070f85cea8c3337ce7a0ad68167be92ce18abc5566a08130c88fd86bbc663e3"
+        }
+      ],
+      "role": "retained hash",
+      "stage": "S16"
+    },
+    {
+      "current_authority": "scripts/m8r_05c/citation_builder.py",
+      "observed": [
+        {
+          "artifact_hash": "f33d3ceb9db18db4f9f3b244f5da5d4a0e90fd64e0725444487cfc08b8fb2110",
+          "artifact_relative_path": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+          "canonical_target_id": "TWSE:2330",
+          "capability_id": "monthly_revenue",
+          "citation_id": "cite-f8fd91c7bf3a86d7",
+          "executor_id": "phase_g_official_research_executor",
+          "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+          "requested_data_need": "monthly_revenue"
+        },
+        {
+          "artifact_hash": "e070f85cea8c3337ce7a0ad68167be92ce18abc5566a08130c88fd86bbc663e3",
+          "artifact_relative_path": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+          "canonical_target_id": "TWSE:2330",
+          "capability_id": "material_disclosures",
+          "citation_id": "cite-da8da60108eb9e9c",
+          "executor_id": "phase_g_official_research_executor",
+          "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+          "requested_data_need": "material_disclosures"
+        }
+      ],
+      "role": "citations",
+      "stage": "S17"
+    },
+    {
+      "current_authority": "scripts/m8r_05c/result_builder.py",
+      "observed": {
+        "result_hash": "770e7bd8633f273115b3f5cd29598e8ee7c5b2f11ba89779456d1a5a467dee94",
+        "result_id": "umeresult-v3-d540fe41c14fd61ab80c"
+      },
+      "role": "Result",
+      "stage": "S18"
+    },
+    {
+      "current_authority": "scripts/m8r_05c/audit_package_builder.py",
+      "observed": {
+        "artifact_inventory": [
+          {
+            "byte_size": 895,
+            "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "item_count": 1,
+            "relative_path": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+            "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+            "sha256": "f33d3ceb9db18db4f9f3b244f5da5d4a0e90fd64e0725444487cfc08b8fb2110"
+          },
+          {
+            "byte_size": 1029,
+            "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "item_count": 1,
+            "relative_path": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+            "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+            "sha256": "e070f85cea8c3337ce7a0ad68167be92ce18abc5566a08130c88fd86bbc663e3"
+          }
+        ],
+        "audit_package_hash": "b18e3e61925bbe8063569fa3a851ed66011acdfabce3b9fcc02b74cac589e486",
+        "audit_package_id": "umeap-v3-b842bbb0399d4c75fb2d",
+        "authorization_identity": {
+          "authorization_hash": "d6184242ad2f9155c930fa05d4e8e2d250450ef571622292a517012755efaf46",
+          "authorization_id": "umea-v1-d6184242ad2f9155c930",
+          "schema_version": "unified_market_evidence_execution_authorization.v1",
+          "scope_hash": "4cec791f3a1b7b9ef39091d145395e3dd448fe2de088f91246f7081483be1b7d"
+        },
+        "bundle_identity": {
+          "bundle_hash": "74f1ca60e6d6d13a0b0f765d5b3d242ed4523c85fa384fff816940499ceb7106",
+          "bundle_id": "umeb-v1-74f1ca60e6d6d13a0b0f",
+          "finalized_at": "2026-10-21T04:15:41Z",
+          "overall_status": "succeeded",
+          "schema_version": "unified_market_evidence_bundle.v1",
+          "total_item_count": 2
+        },
+        "caveats": [],
+        "citation_to_operation_map": [
+          {
+            "artifact_hash": "f33d3ceb9db18db4f9f3b244f5da5d4a0e90fd64e0725444487cfc08b8fb2110",
+            "artifact_relative_path": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+            "canonical_target_id": "TWSE:2330",
+            "capability_id": "monthly_revenue",
+            "citation_id": "cite-f8fd91c7bf3a86d7",
+            "executor_id": "phase_g_official_research_executor",
+            "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+            "requested_data_need": "monthly_revenue"
+          },
+          {
+            "artifact_hash": "e070f85cea8c3337ce7a0ad68167be92ce18abc5566a08130c88fd86bbc663e3",
+            "artifact_relative_path": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+            "canonical_target_id": "TWSE:2330",
+            "capability_id": "material_disclosures",
+            "citation_id": "cite-da8da60108eb9e9c",
+            "executor_id": "phase_g_official_research_executor",
+            "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+            "requested_data_need": "material_disclosures"
+          }
+        ],
+        "claim_identity": {
+          "atomic_claim_hash": "95e936a1b59abb4e02791f974f9132fc1c520e07ac0a1dfb6963a349129211a2",
+          "claim_id": "umecl-v1-60d81b0f056929e288c3",
+          "finalized_record_hash": "484c87e6d642bceb5073fdd0928eff19e1431b98e3f0814ee1af1c7b58482e2c",
+          "schema_version": "unified_market_evidence_consumption_record.v1"
+        },
+        "integrity_verification": {
+          "all_artifact_hashes_verified": true,
+          "bundle_hash_verified": true,
+          "receipt_hash_verified": true,
+          "result_hash_verified": true
+        },
+        "operation_lineage": [
+          {
+            "artifact_references": [
+              {
+                "byte_size": 895,
+                "item_count": 1,
+                "relative_path": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+                "schema_version": "phase_g_monthly_revenue_operation_evidence.v1",
+                "sha256": "f33d3ceb9db18db4f9f3b244f5da5d4a0e90fd64e0725444487cfc08b8fb2110"
+              }
+            ],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "monthly_revenue",
+            "error_code": null,
+            "evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TWSE",
+            "operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          },
+          {
+            "artifact_references": [
+              {
+                "byte_size": 1029,
+                "item_count": 1,
+                "relative_path": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+                "schema_version": "phase_g_material_disclosure_operation_evidence.v1",
+                "sha256": "e070f85cea8c3337ce7a0ad68167be92ce18abc5566a08130c88fd86bbc663e3"
+              }
+            ],
+            "canonical_target_ids": [
+              "TWSE:2330"
+            ],
+            "capability_id": "material_disclosures",
+            "error_code": null,
+            "evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+            "executor_id": "phase_g_official_research_executor",
+            "market": "TWSE",
+            "operation_id": "umeop-op-v1-980a771a89fe9150625a",
+            "result_item_count": 1,
+            "status": "succeeded",
+            "warnings": []
+          }
+        ],
+        "phase_h_governance": {
+          "evidence_artifact_references": [],
+          "h4_derivations": [],
+          "source_attempts": []
+        },
+        "phase_i_evidence": {
+          "evidence_artifact_references": []
+        },
+        "plan_identity": {
+          "plan_hash": "2ecef62d9e134018162bd5a8f4be681789d3a4100bb6108b56fd1f9c81f69790",
+          "plan_id": "umeop-v1-2ecef62d9e134018162b",
+          "plan_status": "plan_ready",
+          "schema_version": "unified_market_evidence_orchestration_plan.v1"
+        },
+        "projector_metadata": {
+          "calculated_at_source": "cli_calculated_at",
+          "canonicalization_version": "m8r_05b_03_canonical_v1",
+          "projected_at": "2026-10-21T04:15:41Z",
+          "projector_version": "m8r_05c_v1_3",
+          "timestamp_authority": "receipt.finalized_at_or_cli_calculated_at"
+        },
+        "receipt_identity": {
+          "execution_receipt_hash": "ef2593ced46ff8e784fc472b72e2b6dd5dbad006b8d21b1ed8a4f97e5cfaee63",
+          "execution_receipt_id": "umerec-v1-ef2593ced46ff8e784fc",
+          "failed_operations": 0,
+          "finalized_at": "2026-10-21T04:15:41Z",
+          "overall_status": "succeeded",
+          "schema_version": "unified_market_evidence_execution_receipt.v1",
+          "succeeded_operations": 2,
+          "total_operations": 2
+        },
+        "replay_manifest": {
+          "atomic_claim_hash": "95e936a1b59abb4e02791f974f9132fc1c520e07ac0a1dfb6963a349129211a2",
+          "authorization_hash": "d6184242ad2f9155c930fa05d4e8e2d250450ef571622292a517012755efaf46",
+          "authorization_id": "umea-v1-d6184242ad2f9155c930",
+          "bundle_hash": "74f1ca60e6d6d13a0b0f765d5b3d242ed4523c85fa384fff816940499ceb7106",
+          "bundle_id": "umeb-v1-74f1ca60e6d6d13a0b0f",
+          "claim_id": "umecl-v1-60d81b0f056929e288c3",
+          "consumption_binding_hash": "00ded969116bbeaf055841f65eb6cf89eb5e3b5138766c4f9e45e0fb8437e768",
+          "consumption_binding_id": "umeacb-v1-00ded969116bbeaf0558",
+          "execution_receipt_hash": "ef2593ced46ff8e784fc472b72e2b6dd5dbad006b8d21b1ed8a4f97e5cfaee63",
+          "execution_receipt_id": "umerec-v1-ef2593ced46ff8e784fc",
+          "finalized_record_hash": "484c87e6d642bceb5073fdd0928eff19e1431b98e3f0814ee1af1c7b58482e2c",
+          "plan_hash": "2ecef62d9e134018162bd5a8f4be681789d3a4100bb6108b56fd1f9c81f69790",
+          "plan_id": "umeop-v1-2ecef62d9e134018162b",
+          "request_hash": "846ce723d23af7e7b65dff311f038c2557869ac3d6fc775e05b47f0ab7ef66b6",
+          "request_id": "l5-a6-twse"
+        },
+        "request_identity": {
+          "request_hash": "846ce723d23af7e7b65dff311f038c2557869ac3d6fc775e05b47f0ab7ef66b6",
+          "request_id": "l5-a6-twse",
+          "schema_version": "unified_market_evidence_request.v3"
+        },
+        "result_hash": "770e7bd8633f273115b3f5cd29598e8ee7c5b2f11ba89779456d1a5a467dee94",
+        "result_id": "umeresult-v3-d540fe41c14fd61ab80c",
+        "result_relative_path": "ai_context/unified_market_evidence_result.v3.json",
+        "schema_version": "unified_market_evidence_audit_package.v3",
+        "target_validation_identity": {
+          "f3_validation_output_hash": "649751d0e0cf3fc363bc187ad149e4124855f7a8c6d876f4739768d0ca86af5e",
+          "security_master_artifact_hashes": [
+            "15c26ff90500ba83993f31b822a914401159597e1ef964f9b7c48d84ddb1bdd2",
+            "459ffa0e34bf5d05753702e98c8e132bc17f5be6c78fbf32eabf78c8a757f714"
+          ],
+          "security_master_release_id": "security-master-20261021T041539Z",
+          "security_master_release_manifest_hash": "459ffa0e34bf5d05753702e98c8e132bc17f5be6c78fbf32eabf78c8a757f714"
+        },
+        "warnings": []
+      },
+      "role": "Audit",
+      "stage": "S19"
+    },
+    {
+      "current_authority": "server/services/unified_mode_c.py::build_mode_c_ai_handoff",
+      "observed": {
+        "additional_market_network_executed": false,
+        "ai_ready_markdown": "# 市場證據結果 (Market Evidence Result)\n\n**整體狀態**: ✅ 完整成功\n**結果 ID**: `umeresult-v3-d540fe41c14fd61ab80c`\n**請求 ID**: `l5-a6-twse`\n**生成時間**: 2026-10-21T04:15:41Z\n\n## 請求摘要\n- **執行模式**: execute\n- **目標數量**: 1\n- **請求的資料需求**: material_disclosures, monthly_revenue\n\n## 目標 1\n- **解析狀態**: ✅ 已解析\n- **規範目標 ID**: `TWSE:2330`\n- **證券代碼**: 2330\n- **證券名稱**: 重名測試\n- **市場**: TWSE\n- **已提供資料需求**: material_disclosures, monthly_revenue\n\n### 證據\n\n#### material_disclosures\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_completed_official_daily_batch\n  - `source_report_date`: 2026-09-16\n  - `coverage_through`: 2026-09-15\n  - `truncated`: False\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: 2026-10-21T04:15:41Z\n- **來源**:\n  - `source_family`: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA\n  - `source_contract_id`: t187ap04_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n\n- **發言時間**: 2026-09-15T06:57:28+08:00\n  - **主旨**: 測試\n  - **說明**: 內容\n  - **引用**: `cite-da8da60108eb9e9c`\n- **引用 IDs**: `cite-da8da60108eb9e9c`\n\n#### monthly_revenue\n- **狀態**: available\n- **覆蓋範圍**:\n  - `mode`: latest_available_reporting_period\n  - `source_report_date`: 2026-09-15\n  - `reporting_period`: 2026-08\n- **時效**:\n  - `status`: current_within_source_contract\n  - `observed_at`: 2026-10-21T04:15:41Z\n- **來源**:\n  - `source_family`: MOPS_MONTHLY_REVENUE_OPEN_DATA\n  - `source_contract_id`: t187ap05_L\n  - `market`: TWSE\n  - `transport`: official_csv\n  - `fallback_used`: False\n- **數值**:\n  - `currency`: TWD\n  - `unit`: thousand\n  - `current_month_revenue`: 100\n  - `previous_month_revenue`: -2\n  - `previous_year_same_month_revenue`: 90\n  - `mom_pct`: None\n  - `yoy_pct`: 11.1\n  - `ytd_revenue`: 800\n  - `previous_year_ytd_revenue`: 700\n  - `ytd_yoy_pct`: None\n  - `note`: 官方備註\n- **引用 IDs**: `cite-f8fd91c7bf3a86d7`\n\n### 引用來源\n- `cite-f8fd91c7bf3a86d7` — 來源: MOPS_MONTHLY_REVENUE_OPEN_DATA | 擷取時間: 2026-10-21T04:15:41Z | 參考: `evidence/umeop-op-v1-6d76d3be67992e1c7481.json`\n- `cite-da8da60108eb9e9c` — 來源: MOPS_MATERIAL_DISCLOSURE_OPEN_DATA | 擷取時間: 2026-10-21T04:15:41Z | 參考: `evidence/umeop-op-v1-980a771a89fe9150625a.json`\n\n## 審計包參考\n- **審計包 ID**: `umeap-v3-b842bbb0399d4c75fb2d`\n- **相對路徑**: `audit/unified_market_evidence_audit_package.v3.json`\n\n> ℹ️ 審計包 (`unified_market_evidence_audit_package.v3`) 包含完整作業系譜、人工製品清單、引用對應表與重播說明。審計包與 AI 對話結果分開保存。\n\n---\n> ℹ️ 本結果由確定性投影層 (M8R-05C) 生成，僅呈現已驗證事實、覆蓋範圍、時間基礎與解讀護欄。",
+        "audit_package_id": "umeap-v3-b842bbb0399d4c75fb2d",
+        "audit_reference": "audit/unified_market_evidence_audit_package.v3.json",
+        "canonical_result": {
+          "audit_reference": {
+            "audit_package_id": "umeap-v3-b842bbb0399d4c75fb2d",
+            "relative_path": "audit/unified_market_evidence_audit_package.v3.json",
+            "schema_version": "unified_market_evidence_audit_package.v3"
+          },
+          "generated_at": "2026-10-21T04:15:41Z",
+          "request_caveats": [],
+          "request_id": "l5-a6-twse",
+          "request_summary": {
+            "execution_mode": "execute",
+            "optional_data_needs": [],
+            "request_schema_version": "unified_market_evidence_request.v3",
+            "requested_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "required_data_needs": [
+              "material_disclosures",
+              "monthly_revenue"
+            ],
+            "target_count": 1
+          },
+          "result_hash": "770e7bd8633f273115b3f5cd29598e8ee7c5b2f11ba89779456d1a5a467dee94",
+          "result_id": "umeresult-v3-d540fe41c14fd61ab80c",
+          "schema_version": "unified_market_evidence_result.v3",
+          "status": "full_success",
+          "targets": [
+            {
+              "canonical_identity": {
+                "canonical_target_id": "TWSE:2330",
+                "instrument_family": "company_share",
+                "instrument_type": "common_share",
+                "isin": "TW0002330008",
+                "market": "TWSE",
+                "security_code": "2330",
+                "security_name_en": "TSMC",
+                "security_name_zh": "重名測試"
+              },
+              "citations": [
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+                  "citation_id": "cite-f8fd91c7bf3a86d7",
+                  "normalized_evidence_hash": "f33d3ceb9db18db4f9f3b244f5da5d4a0e90fd64e0725444487cfc08b8fb2110",
+                  "retrieved_at": "2026-10-21T04:15:41Z",
+                  "source_contract_id": "t187ap05_L",
+                  "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                  "source_report_date": "2026-09-15"
+                },
+                {
+                  "artifact_reference": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+                  "citation_id": "cite-da8da60108eb9e9c",
+                  "normalized_evidence_hash": "e070f85cea8c3337ce7a0ad68167be92ce18abc5566a08130c88fd86bbc663e3",
+                  "retrieved_at": "2026-10-21T04:15:41Z",
+                  "source_contract_id": "t187ap04_L",
+                  "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                  "source_report_date": "2026-09-16"
+                }
+              ],
+              "coverage": {
+                "missing_needs": [],
+                "provided_needs": [
+                  "material_disclosures",
+                  "monthly_revenue"
+                ]
+              },
+              "evidence": {
+                "material_disclosures": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-da8da60108eb9e9c"
+                  ],
+                  "coverage": {
+                    "coverage_through": "2026-09-15",
+                    "historical_lookup_supported": false,
+                    "item_count": 1,
+                    "mode": "latest_completed_official_daily_batch",
+                    "source_report_date": "2026-09-16",
+                    "truncated": false
+                  },
+                  "currentness": {
+                    "observed_at": "2026-10-21T04:15:41Z",
+                    "status": "current_within_source_contract"
+                  },
+                  "items": [
+                    {
+                      "citation_id": "cite-da8da60108eb9e9c",
+                      "clause": null,
+                      "description": "內容",
+                      "description_truncated": false,
+                      "published_at": "2026-09-15T06:57:28+08:00",
+                      "revision_relation": {
+                        "related_official_reference": null,
+                        "relation_type": null,
+                        "status": "unresolved"
+                      },
+                      "source_fact_date": null,
+                      "subject": "測試"
+                    }
+                  ],
+                  "schema_version": "material_disclosure_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TWSE",
+                    "source_contract_id": "t187ap04_L",
+                    "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available"
+                },
+                "monthly_revenue": {
+                  "caveats": [],
+                  "citation_ids": [
+                    "cite-f8fd91c7bf3a86d7"
+                  ],
+                  "coverage": {
+                    "historical_lookup_supported": false,
+                    "mode": "latest_available_reporting_period",
+                    "reporting_period": "2026-08",
+                    "source_report_date": "2026-09-15"
+                  },
+                  "currentness": {
+                    "observed_at": "2026-10-21T04:15:41Z",
+                    "status": "current_within_source_contract"
+                  },
+                  "schema_version": "monthly_revenue_evidence.v1",
+                  "source": {
+                    "authority": "official",
+                    "fallback_used": false,
+                    "market": "TWSE",
+                    "source_contract_id": "t187ap05_L",
+                    "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+                    "transport": "official_csv"
+                  },
+                  "status": "available",
+                  "value": {
+                    "currency": "TWD",
+                    "current_month_revenue": 100,
+                    "mom_pct": null,
+                    "note": "官方備註",
+                    "previous_month_revenue": -2,
+                    "previous_year_same_month_revenue": 90,
+                    "previous_year_ytd_revenue": 700,
+                    "unit": "thousand",
+                    "yoy_pct": 11.1,
+                    "ytd_revenue": 800,
+                    "ytd_yoy_pct": null
+                  }
+                }
+              },
+              "resolution": {
+                "canonical_target_id": "TWSE:2330",
+                "market": "TWSE",
+                "security_code": "2330",
+                "security_name": "重名測試",
+                "status": "resolved"
+              }
+            }
+          ]
+        },
+        "canonical_result_reference": "ai_context/unified_market_evidence_result.v3.json",
+        "citation_references": [
+          {
+            "artifact_hash": "e070f85cea8c3337ce7a0ad68167be92ce18abc5566a08130c88fd86bbc663e3",
+            "artifact_relative_path": "evidence/umeop-op-v1-980a771a89fe9150625a.json",
+            "canonical_target_id": "TWSE:2330",
+            "capability_id": "material_disclosures",
+            "citation_id": "cite-da8da60108eb9e9c",
+            "executor_id": "phase_g_official_research_executor"
+          },
+          {
+            "artifact_hash": "f33d3ceb9db18db4f9f3b244f5da5d4a0e90fd64e0725444487cfc08b8fb2110",
+            "artifact_relative_path": "evidence/umeop-op-v1-6d76d3be67992e1c7481.json",
+            "canonical_target_id": "TWSE:2330",
+            "capability_id": "monthly_revenue",
+            "citation_id": "cite-f8fd91c7bf3a86d7",
+            "executor_id": "phase_g_official_research_executor"
+          }
+        ],
+        "control_package_id": "umea-v1-d6184242ad2f9155c930",
+        "execution_outcome": "succeeded",
+        "materialization": "existing_verified",
+        "request_id": "l5-a6-twse",
+        "request_mode": "execute",
+        "result_hash": "770e7bd8633f273115b3f5cd29598e8ee7c5b2f11ba89779456d1a5a467dee94",
+        "result_id": "umeresult-v3-d540fe41c14fd61ab80c",
+        "result_status": "full_success",
+        "selection_provenance_identity": null,
+        "service_contract_version": "unified_market_evidence_local_service.v2"
+      },
+      "role": "handoff",
+      "stage": "S20"
+    },
+    {
+      "current_authority": "server/unified_mcp/server.py::dispatch_safe_tool",
+      "observed": "umeresult-v3-d540fe41c14fd61ab80c",
+      "role": "MCP read",
+      "stage": "S21"
+    },
+    {
+      "current_authority": "server/unified_mcp/server.py::dispatch_safe_tool",
+      "observed": "umeresult-v3-d540fe41c14fd61ab80c",
+      "role": "MCP export",
+      "stage": "S22"
+    },
+    {
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json + m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "observed": {
+        "accepted_request_schema_versions": [
+          "unified_market_evidence_request.v1",
+          "unified_market_evidence_request.v2",
+          "unified_market_evidence_request.v3"
+        ],
+        "capabilities": [
+          {
+            "allowed_parameters": {},
+            "approval_required": false,
+            "batching_scope": "none",
+            "blocking_reasons": [],
+            "capability_id": "identity",
+            "coverage_modes": [],
+            "description": "Retrieves the canonical security identity.",
+            "historical_lookup_supported": null,
+            "instrument_scope": null,
+            "known_limitations": [
+              "identity is resolved by the installation-local Security Master; unsupported or uninitialized identities fail closed"
+            ],
+            "markets": [
+              {
+                "disposition": "plan_only",
+                "market": "TAIFEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "plan_only",
+                "market": "TPEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "plan_only",
+                "market": "TWSE",
+                "production_executor_available": false
+              }
+            ],
+            "network_required": false,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [],
+            "routing_disposition": "plan_only",
+            "selected_executor_id": null,
+            "semantic_support_status": "contract_supported",
+            "supported_security_types": [],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "same_source",
+            "blocking_reasons": [],
+            "capability_id": "current_observation",
+            "coverage_modes": [],
+            "description": "Retrieves the latest available market data snapshot. Not guaranteed to be realtime.",
+            "historical_lookup_supported": null,
+            "instrument_scope": null,
+            "known_limitations": [
+              "not guaranteed realtime",
+              "source availability may produce partial results",
+              "TAIFEX current observation is not yet implemented"
+            ],
+            "markets": [
+              {
+                "disposition": "executable",
+                "market": "TPEX",
+                "production_executor_available": true
+              },
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [
+              "official_eod"
+            ],
+            "possible_timing_classes": [
+              "liveish_intraday_snapshot"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [
+              "equity"
+            ],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "same_source",
+            "blocking_reasons": [],
+            "capability_id": "official_eod_reference",
+            "coverage_modes": [],
+            "description": "Retrieves the official End of Day reference data.",
+            "historical_lookup_supported": null,
+            "instrument_scope": null,
+            "known_limitations": [
+              "publication grace remains provisional and configurable"
+            ],
+            "markets": [
+              {
+                "disposition": "provisional",
+                "market": "TAIFEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "executable",
+                "market": "TPEX",
+                "production_executor_available": true
+              },
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [
+              "official_eod"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [
+              "equity"
+            ],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "same_market",
+            "blocking_reasons": [
+              "authoritative holiday/emergency-closure evidence requires a separately governed retrieval or explicitly bound preexisting evidence",
+              "inventoried local builders only compute from supplied evidence",
+              "no approved 05B-compatible executor binds the complete session-status evidence set"
+            ],
+            "capability_id": "session_status",
+            "coverage_modes": [],
+            "description": "Retrieves the market session status, local clock and closure states.",
+            "historical_lookup_supported": null,
+            "instrument_scope": null,
+            "known_limitations": [
+              "TPEX closure authority follows synchronized-market assumption",
+              "TAIFEX day-session policy is provisional",
+              "TAIFEX night-session interpretation is unsupported",
+              "TAIFEX Taipei closure authority is unresolved"
+            ],
+            "markets": [
+              {
+                "disposition": "provisional",
+                "market": "TAIFEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "blocked",
+                "market": "TPEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "blocked",
+                "market": "TWSE",
+                "production_executor_available": false
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [
+              "request_session_context"
+            ],
+            "routing_disposition": "blocked",
+            "selected_executor_id": null,
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [],
+            "target_required": false
+          },
+          {
+            "allowed_parameters": {
+              "lookback_trading_days": {
+                "maximum": 20,
+                "minimum": 1,
+                "required": true,
+                "type": "integer"
+              }
+            },
+            "approval_required": true,
+            "batching_scope": "none",
+            "blocking_reasons": [
+              "H0-SRC-10 TPEx default bounded route remains unresolved",
+              "H0-SRC-11 and H0-SRC-12 optional provider contracts are pending"
+            ],
+            "capability_id": "recent_performance",
+            "coverage_modes": [],
+            "description": "Bounded descriptive recent-market reference evidence using 1..20 completed-session lookback observations plus one governed end observation.",
+            "historical_lookup_supported": null,
+            "instrument_scope": {
+              "instrument_families": [
+                "company_share"
+              ],
+              "instrument_types": [
+                "common_share"
+              ]
+            },
+            "known_limitations": [
+              "only H3-TWSE-DEFAULT-BOUNDED is selected for runtime execution; TPEX H3 remains blocked and non-executable",
+              "TWSE provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED; Owner controlled local-first use is not provider-approved automation",
+              "H0H-LIVE-003 and H0H-ROLL-004 are accepted for the selected TWSE route",
+              "optional provider contracts remain pending",
+              "no persistent history accumulation, scheduler, polling, or backfill"
+            ],
+            "markets": [
+              {
+                "disposition": "provisional",
+                "market": "TAIFEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "blocked",
+                "market": "TPEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [
+              "official_eod"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "phase_h_h3_twse_recent_performance_executor",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [
+              "equity"
+            ],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": false,
+            "batching_scope": "same_source",
+            "blocking_reasons": [],
+            "capability_id": "source_currentness",
+            "coverage_modes": [],
+            "description": "Retrieves metadata concerning retrieval timestamp, effective trade date, and timing class.",
+            "historical_lookup_supported": null,
+            "instrument_scope": null,
+            "known_limitations": [],
+            "markets": [
+              {
+                "disposition": "plan_only",
+                "market": "TAIFEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "plan_only",
+                "market": "TPEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "plan_only",
+                "market": "TWSE",
+                "production_executor_available": false
+              }
+            ],
+            "network_required": false,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [],
+            "routing_disposition": "plan_only",
+            "selected_executor_id": null,
+            "semantic_support_status": "contract_supported",
+            "supported_security_types": [],
+            "target_required": false
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": false,
+            "batching_scope": "same_source",
+            "blocking_reasons": [],
+            "capability_id": "evidence_quality",
+            "coverage_modes": [],
+            "description": "Retrieves details on data coverage, partial results, and available fallbacks.",
+            "historical_lookup_supported": null,
+            "instrument_scope": null,
+            "known_limitations": [],
+            "markets": [
+              {
+                "disposition": "plan_only",
+                "market": "TAIFEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "plan_only",
+                "market": "TPEX",
+                "production_executor_available": false
+              },
+              {
+                "disposition": "plan_only",
+                "market": "TWSE",
+                "production_executor_available": false
+              }
+            ],
+            "network_required": false,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [],
+            "routing_disposition": "plan_only",
+            "selected_executor_id": null,
+            "semantic_support_status": "contract_supported",
+            "supported_security_types": [],
+            "target_required": false
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "same_source",
+            "blocking_reasons": [],
+            "capability_id": "material_disclosures",
+            "coverage_modes": [
+              "latest_completed_official_daily_batch"
+            ],
+            "description": "Retrieves official material disclosures from the latest completed official daily batch for eligible Taiwan common shares.",
+            "historical_lookup_supported": false,
+            "instrument_scope": {
+              "instrument_families": [
+                "company_share"
+              ],
+              "instrument_types": [
+                "common_share"
+              ]
+            },
+            "known_limitations": [
+              "initial Phase G coverage is the latest completed official daily batch only",
+              "bounded historical lookup is not supported in initial G1",
+              "initial research eligibility is limited to company_share/common_share"
+            ],
+            "markets": [
+              {
+                "disposition": "executable",
+                "market": "TPEX",
+                "production_executor_available": true
+              },
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [
+              "official_json_openapi"
+            ],
+            "possible_timing_classes": [
+              "official_daily_batch"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "phase_g_official_research_executor",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "same_source",
+            "blocking_reasons": [],
+            "capability_id": "monthly_revenue",
+            "coverage_modes": [
+              "latest_available_reporting_period"
+            ],
+            "description": "Retrieves the latest available official monthly-revenue reporting period for eligible Taiwan common shares.",
+            "historical_lookup_supported": false,
+            "instrument_scope": {
+              "instrument_families": [
+                "company_share"
+              ],
+              "instrument_types": [
+                "common_share"
+              ]
+            },
+            "known_limitations": [
+              "initial G2 provides the latest available reporting period only",
+              "arbitrary monthly-revenue history is not supported in initial G2",
+              "initial research eligibility is limited to company_share/common_share"
+            ],
+            "markets": [
+              {
+                "disposition": "executable",
+                "market": "TPEX",
+                "production_executor_available": true
+              },
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [
+              "official_json_openapi"
+            ],
+            "possible_timing_classes": [
+              "official_monthly_reporting_period"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "phase_g_official_research_executor",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "same_market",
+            "blocking_reasons": [],
+            "capability_id": "market_state_context",
+            "coverage_modes": [
+              "single_official_market_date"
+            ],
+            "description": "Optional official market-level benchmark, breadth, and turnover context associated with a resolved TWSE or TPEx company common-share target; source units remain explicit and no target-specific causation is implied.",
+            "historical_lookup_supported": false,
+            "instrument_scope": {
+              "instrument_families": [
+                "company_share"
+              ],
+              "instrument_types": [
+                "common_share"
+              ]
+            },
+            "known_limitations": [
+              "TWSE market-state evidence may legitimately be partial when FMTQIK and exact 股票 breadth official dates do not align; TWSE breadth never falls back to 整體市場",
+              "TWSE and TPEx source-native monetary and volume units remain distinct and are not converted",
+              "currentness remains unknown without a separately governed market-session calendar input",
+              "market-level context does not establish target-specific causation",
+              "bounded live acceptance and I1-ROLL-001 passed; the selected TWSE and TPEx I1 sources have final Owner production activation acceptance",
+              "no historical lookup, polling, scheduler, background refresh, or persistent source history"
+            ],
+            "markets": [
+              {
+                "disposition": "executable",
+                "market": "TPEX",
+                "production_executor_available": true
+              },
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [
+              "official_eod"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "phase_i_i1_market_state_executor",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "same_source",
+            "blocking_reasons": [],
+            "capability_id": "index_futures_context",
+            "coverage_modes": [
+              "nearest_available_standard_monthly_outright"
+            ],
+            "description": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; Owner-accepted production activation; explicit-request and approval-gated.",
+            "historical_lookup_supported": false,
+            "instrument_scope": {
+              "instrument_families": [
+                "company_share"
+              ],
+              "instrument_types": [
+                "common_share"
+              ]
+            },
+            "known_limitations": [
+              "TAIFEX TX regular session only; standard monthly outright series only",
+              "TPEx targets, after-hours, weekly series, calendar spreads, MTX/TMF, options, and other products are unsupported",
+              "A3 bounded live acceptance and final Owner production activation accepted; selected route remains approval-gated and explicit-request only; currentness unknown",
+              "no history, historical lookup/backfill, rolling futures, continuous-contract synthesis, polling, scheduler, or background refresh",
+              "no basis/premium-discount, signals, bullish/bearish interpretation, or target-specific causation"
+            ],
+            "markets": [
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [
+              "official_eod"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "phase_i_i2_index_futures_context_executor",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [
+              "equity"
+            ],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "same_market",
+            "blocking_reasons": [],
+            "capability_id": "cash_institutional_flow_context",
+            "coverage_modes": [
+              "latest_governed_source_observation"
+            ],
+            "description": "Optional descriptive institutional cash share-flow evidence with independently attributed source dates.",
+            "historical_lookup_supported": false,
+            "instrument_scope": {
+              "instrument_families": [
+                "company_share"
+              ],
+              "instrument_types": [
+                "common_share"
+              ]
+            },
+            "known_limitations": [
+              "I3-A3 bounded-live acceptance is Owner-accepted",
+              "TWSE source date is resolved through governed calendar/currentness authority before authorization and bound immutably per execution",
+              "TPEx source-reported date remains source-native; finality and currentness remain unknown",
+              "common shares only; no history, polling, scheduler, fallback, raw persistence, or retry"
+            ],
+            "markets": [
+              {
+                "disposition": "executable",
+                "market": "TPEX",
+                "production_executor_available": true
+              },
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [
+              "official_eod"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [
+              "equity"
+            ],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "none",
+            "blocking_reasons": [],
+            "capability_id": "trading_status_context",
+            "coverage_modes": [
+              "partial_attention_disposition_plus_native_cmode"
+            ],
+            "description": "TPEx representative trading-status evidence: canonical attention and disposition plus unresolved source-native cmode observation, with fail-closed partial coverage.",
+            "historical_lookup_supported": false,
+            "instrument_scope": {
+              "instrument_families": [
+                "company_share"
+              ],
+              "instrument_types": [
+                "common_share"
+              ]
+            },
+            "known_limitations": [
+              "The selected TPEx composite provides canonical attention and disposition evidence; cmode remains source-native with unresolved semantics and contributes no canonical coverage.",
+              "changed_trading_method, suspension, and resumption remain uncovered.",
+              "H0-SRC-02 prevents complete H1 coverage claims.",
+              "V3 is the preferred production request/result authority; V1/V2 remain compatibility contracts."
+            ],
+            "markets": [
+              {
+                "disposition": "executable",
+                "market": "TPEX",
+                "production_executor_available": true
+              },
+              {
+                "disposition": "blocked",
+                "market": "TWSE",
+                "production_executor_available": false
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [
+              "official_bounded_context"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "phase_h_h1_tpex_composite_executor",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [
+              "equity"
+            ],
+            "target_required": true
+          },
+          {
+            "allowed_parameters": {},
+            "approval_required": true,
+            "batching_scope": "none",
+            "blocking_reasons": [],
+            "capability_id": "corporate_action_context",
+            "coverage_modes": [
+              "explicit_target_scoped_time_bounded"
+            ],
+            "description": "Quote-relevant price-basis corporate-action evidence with explicit subtype coverage and lifecycle stage.",
+            "historical_lookup_supported": false,
+            "instrument_scope": {
+              "instrument_families": [
+                "company_share"
+              ],
+              "instrument_types": [
+                "common_share"
+              ]
+            },
+            "known_limitations": [
+              "Only the TWSE TWT48U_ALL pre-announcement route is selected; no TPEx H2 route is activated.",
+              "TWT48U_ALL provides pre-announcement context only; final TWT49U evidence remains inactive.",
+              "Capital-reduction events require manual verification; par-value changes, splits, and consolidations remain source gaps.",
+              "Coverage remains subtype-limited; insufficient subtype coverage must remain coverage_incomplete and block ordinary-return interpretation.",
+              "Owner-controlled bounded A6 use is authorized; provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED and no provider approval is claimed."
+            ],
+            "markets": [
+              {
+                "disposition": "executable",
+                "market": "TWSE",
+                "production_executor_available": true
+              }
+            ],
+            "network_required": true,
+            "possible_fallbacks": [],
+            "possible_timing_classes": [
+              "official_bounded_context"
+            ],
+            "routing_disposition": "resolved",
+            "selected_executor_id": "phase_h_h2_twse_exright_pre_executor",
+            "semantic_support_status": "runtime_executable",
+            "supported_security_types": [
+              "equity"
+            ],
+            "target_required": true
+          }
+        ],
+        "capability_catalog_schema_version": "unified_market_evidence_capability_catalog.v3",
+        "emitted_result_schema_version": "unified_market_evidence_result.v3",
+        "preferred_request_schema_version": "unified_market_evidence_request.v3",
+        "routing_matrix_schema_version": "m8r_05b_capability_to_executor_routing_matrix.v3",
+        "service_contract_version": "unified_market_evidence_local_service.v2"
+      },
+      "role": "Catalog/Routing",
+      "stage": "S23"
+    },
+    {
+      "current_authority": "scripts/validate_l5_extension_publication_conformance.py",
+      "observed": {
+        "artifact": "publication_join.json",
+        "gate": "validate_l5_extension_publication_conformance"
+      },
+      "role": "portable/guide/Skill/use",
+      "stage": "S24"
+    },
+    {
+      "current_authority": "platform_inheritance.json",
+      "observed": {
+        "gates": "platform_inheritance.json + existing_integration_test_result.json"
+      },
+      "role": "L1-L4",
+      "stage": "S25"
+    }
+  ]
+}

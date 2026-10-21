@@ -1,0 +1,76 @@
+{
+  "families": {
+    "material_disclosures": {
+      "caveats": [
+        "all_governed_transports_failed"
+      ],
+      "citation_ids": [],
+      "coverage": {
+        "coverage_through": null,
+        "historical_lookup_supported": false,
+        "item_count": 0,
+        "mode": "latest_completed_official_daily_batch",
+        "source_report_date": null,
+        "truncated": false
+      },
+      "currentness": {
+        "observed_at": "2026-10-21T04:15:55Z",
+        "status": "unknown"
+      },
+      "items": [],
+      "schema_version": "material_disclosure_evidence.v1",
+      "source": {
+        "authority": "official",
+        "fallback_used": false,
+        "market": "TWSE",
+        "source_contract_id": "t187ap04_L",
+        "source_family": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+        "transport": "official_json_openapi"
+      },
+      "status": "source_failed"
+    },
+    "monthly_revenue": {
+      "caveats": [],
+      "citation_ids": [
+        "cite-f8fd91c7bf3a86d7"
+      ],
+      "coverage": {
+        "historical_lookup_supported": false,
+        "mode": "latest_available_reporting_period",
+        "reporting_period": "2026-08",
+        "source_report_date": "2026-09-15"
+      },
+      "currentness": {
+        "observed_at": "2026-10-21T04:15:55Z",
+        "status": "current_within_source_contract"
+      },
+      "schema_version": "monthly_revenue_evidence.v1",
+      "source": {
+        "authority": "official",
+        "fallback_used": false,
+        "market": "TWSE",
+        "source_contract_id": "t187ap05_L",
+        "source_family": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+        "transport": "official_csv"
+      },
+      "status": "available",
+      "value": {
+        "currency": "TWD",
+        "current_month_revenue": 100,
+        "mom_pct": null,
+        "note": "官方備註",
+        "previous_month_revenue": -2,
+        "previous_year_same_month_revenue": 90,
+        "previous_year_ytd_revenue": 700,
+        "unit": "thousand",
+        "yoy_pct": 11.1,
+        "ytd_revenue": 800,
+        "ytd_yoy_pct": null
+      }
+    }
+  },
+  "no_invented_failure_state": true,
+  "observed_aggregate": "partially_failed",
+  "source_failure_not_missing": true,
+  "status": "PASS"
+}

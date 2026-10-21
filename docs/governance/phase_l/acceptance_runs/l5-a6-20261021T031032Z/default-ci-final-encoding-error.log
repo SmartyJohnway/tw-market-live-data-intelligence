@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "D:\Codex-Workspace\projects\tw-market-live-data-intelligence-phase-l5-a6\scripts\run_test_profile.py", line 149, in <module>
+    if __name__=='__main__': raise SystemExit(main())
+                                              ~~~~^^
+  File "D:\Codex-Workspace\projects\tw-market-live-data-intelligence-phase-l5-a6\scripts\run_test_profile.py", line 145, in main
+    started=utc(); results=run_commands(command_plan, capture=args.json); finished=utc()
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Codex-Workspace\projects\tw-market-live-data-intelligence-phase-l5-a6\scripts\run_test_profile.py", line 76, in run_commands
+    proc=subprocess.run(cmd,cwd=ROOT,text=True,stdout=subprocess.PIPE if capture else None,stderr=subprocess.STDOUT if capture else None)
+  File "C:\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 556, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 1209, in communicate
+    stdout = self.stdout.read()
+  File "<frozen codecs>", line 325, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xac in position 134231: invalid start byte

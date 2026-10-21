@@ -1,0 +1,33 @@
+...F.................................................................... [ 31%]
+........................................................................ [ 62%]
+........................................................................ [ 93%]
+................                                                         [100%]
+================================== FAILURES ===================================
+__ test_j1_10_financial_statements_fail_closed_through_local_service_and_mcp __
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000027CC6585590>
+
+    def test_j1_10_financial_statements_fail_closed_through_local_service_and_mcp(monkeypatch):
+        request = {
+            "schema_version": "unified_market_evidence_request.v3",
+            "request_id": "j2-j1-10-financial-statements",
+            "targets": [{"input": "TWSE:2330", "market_hint": "TWSE", "resolution_requirement": "exact"}],
+            "data_needs": [{"type": "financial_statements", "priority": "required", "parameters": {}}],
+            "execution_mode": "preview",
+        }
+        client = TestClient(app)
+        response = client.post("/api/unified/validate-request", json={"request": request})
+>       assert response.status_code == 200
+E       assert 503 == 200
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+tests\integration\test_phase_j_j2_deterministic_cross_layer.py:177: AssertionError
+============================== warnings summary ===============================
+tests/unit/test_phase_l_l4_a6_resource_boundaries.py: 19 warnings
+  D:\Codex-Workspace\projects\tw-market-live-data-intelligence-phase-l5-a6\scripts\m8r_09_persistent_watchlists.py:104: DeprecationWarning: jsonschema.RefResolver is deprecated as of v4.18.0, in favor of the https://github.com/python-jsonschema/referencing library, which provides more compliant referencing behavior as well as more flexible APIs for customization. A future release will remove RefResolver. Please file a feature request (on referencing) if you are missing an API for the kind of customization you need.
+    resolver = jsonschema.RefResolver.from_schema(schema, store=_SCHEMA_CACHE)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/integration/test_phase_j_j2_deterministic_cross_layer.py::test_j1_10_financial_statements_fail_closed_through_local_service_and_mcp
+1 failed, 231 passed, 19 warnings in 60.64s (0:01:00)
