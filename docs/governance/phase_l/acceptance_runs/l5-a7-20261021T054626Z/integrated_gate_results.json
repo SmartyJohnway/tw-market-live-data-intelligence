@@ -1,0 +1,114 @@
+{
+  "A6_focused_test": {
+    "command": "python -X utf8 -B -m pytest -q tests/integration/test_l5_a6_integrated_extension_contract_acceptance.py",
+    "result": "35 passed"
+  },
+  "A6_manifest": {
+    "artifacts": 66,
+    "canonical_sha256": "394ffb64d0e256b5560e1337c0147e3ffd6b7c9614f64e6b659ae2966cacdbb8",
+    "members_verified_at_A6_candidate": 66
+  },
+  "all_six_exercised_each_trace": true,
+  "current_runtime_product_delta_since_A6_candidate": 0,
+  "exact_six_public_tools": 6,
+  "gates": [
+    {
+      "command": "python -X utf8 -B -m pytest -q tests/integration/test_l5_a6_integrated_extension_contract_acceptance.py",
+      "exit_code": 0,
+      "log": "00.log",
+      "name": "A6 integrated acceptance test"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_unified_market_evidence_contracts.py",
+      "exit_code": 0,
+      "log": "01.log",
+      "name": "A1 request/result/audit contracts"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_l5_extension_registration_conformance.py",
+      "exit_code": 0,
+      "log": "02.log",
+      "name": "A2 registration"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_l5_extension_semantic_conformance.py",
+      "exit_code": 0,
+      "log": "03.log",
+      "name": "A3 semantic"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_l5_extension_publication_conformance.py --json",
+      "exit_code": 0,
+      "log": "04.log",
+      "name": "A4 publication"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_l5_existing_family_conformance.py",
+      "exit_code": 0,
+      "log": "05.log",
+      "name": "A5 family"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_l5_integrated_extension_contract_acceptance.py",
+      "exit_code": 0,
+      "log": "06.log",
+      "name": "A6 integrated validator"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_v1_public_contracts.py",
+      "exit_code": 0,
+      "log": "07.log",
+      "name": "MCP exact-six from V1 authority"
+    },
+    {
+      "command": "python -X utf8 -B scripts/verify_dependency_supply_chain.py",
+      "exit_code": 0,
+      "log": "08.log",
+      "name": "Dependency supply chain"
+    },
+    {
+      "command": "python -X utf8 -B scripts/verify_environment.py",
+      "exit_code": 0,
+      "log": "09.log",
+      "name": "Environment"
+    },
+    {
+      "command": "python -m pip check",
+      "exit_code": 0,
+      "log": "10.log",
+      "name": "pip check"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_source_registry.py",
+      "exit_code": 0,
+      "log": "11.log",
+      "name": "Source registry"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_portable_catalog_sync.py",
+      "exit_code": 0,
+      "log": "12.log",
+      "name": "Portable catalog sync"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_runtime_skill_guide_sync.py",
+      "exit_code": 0,
+      "log": "13.log",
+      "name": "Runtime skill guide sync"
+    },
+    {
+      "command": "python -X utf8 -B scripts/validate_phase_h_v3_contracts.py",
+      "exit_code": 0,
+      "log": "14.log",
+      "name": "Phase H V3 contracts"
+    },
+    {
+      "command": "python -X utf8 -B -m compileall -q scripts server tests",
+      "exit_code": 0,
+      "log": "15.log",
+      "name": "compileall"
+    }
+  ],
+  "result_scope": "All commands executed against exact merged-main review base.",
+  "status": "PASS"
+}

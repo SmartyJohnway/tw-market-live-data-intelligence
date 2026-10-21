@@ -1,0 +1,21 @@
+{
+  "A2_registration_rows": 39,
+  "a2_conflict_count": 0,
+  "a6_conflicts": [],
+  "dynamic_runtime_discovery_authority": false,
+  "entry_point_scanning_activation": false,
+  "explicit_trusted_registrations_current": true,
+  "extension_relevant_rows": 30,
+  "hot_loading_activation": false,
+  "negative_controls_preserved": 9,
+  "owner_acceptance_remains_governance_boundary": true,
+  "promoted_to_extension_point": 0,
+  "publication_implicit_activation": false,
+  "second_catalog": false,
+  "second_executor_authority": false,
+  "second_identity_authority": false,
+  "second_result_audit_system": false,
+  "second_routing_authority": false,
+  "second_source_authority": false,
+  "status": "PASS"
+}

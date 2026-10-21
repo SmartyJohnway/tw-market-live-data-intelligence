@@ -1,0 +1,12 @@
+{
+  "deselected": 5,
+  "failed": 41,
+  "finished_at": "2026-10-21T05:51:05Z",
+  "historical_failures_remain_unresolved": true,
+  "no_historical_failure_reclassified_as_pass": true,
+  "passed": 1248,
+  "raw_log": "default-ci.log",
+  "selected": 1293,
+  "skipped": 4,
+  "status": "fail"
+}

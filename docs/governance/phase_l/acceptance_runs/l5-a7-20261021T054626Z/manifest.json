@@ -1,0 +1,210 @@
+{
+  "artifact_content_commit": "a0cc1910b4700d4d62fdab84fcab8dddbe295496",
+  "artifact_content_tree": "06fdbc66c05c1f623ac7ddd5a2918a89ca015c6b",
+  "artifact_count": 39,
+  "artifacts": [
+    {
+      "canonical_bytes": 30294,
+      "path": "HANDOFF.md",
+      "sha256": "7fe9c58a35541713425a93d0b38b219befe71d705c54296e798b5d4383e516fd"
+    },
+    {
+      "canonical_bytes": 35063,
+      "path": "PROJECT.md",
+      "sha256": "fd31c2447e3014f3deab7b66fcec56b1032f160e2ea2251862d8e7f380e3617b"
+    },
+    {
+      "canonical_bytes": 53917,
+      "path": "ROADMAP.md",
+      "sha256": "673eacb37a6169fb5c5676ac25ef2c99ead90404ee20d5600af04b98286aedc9"
+    },
+    {
+      "canonical_bytes": 22793,
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "sha256": "a67ea50cc89a82970e6a376eb0f94ea475116d3515565b16d89f6405483a871c"
+    },
+    {
+      "canonical_bytes": 11350,
+      "path": "docs/governance/phase_l/PHASE_L_L5_A7_EXTENSION_ARCHITECTURE_TECHNICAL_EXIT_REVIEW_2026-10-21.md",
+      "sha256": "c8e727544d6e29d18e9045d04dd1bcc4826bd55564ae5335407cdcd7ee47e2d1"
+    },
+    {
+      "canonical_bytes": 100,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/00.log",
+      "sha256": "1490a2e628f27ab7e97201148c0bdc9d05842394efd26a225b23021d58270b73"
+    },
+    {
+      "canonical_bytes": 0,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "canonical_bytes": 56,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/02.log",
+      "sha256": "5cd82d08cbe63e98f4a4f5c19e7baad4eacd46f80d9a485212e09db9f9cf7cc6"
+    },
+    {
+      "canonical_bytes": 69848,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/03.log",
+      "sha256": "b8d8f655f849aa93d3e13e1c7d8f1335867eaa3b017322c9bb08c9a2ec1bd4ef"
+    },
+    {
+      "canonical_bytes": 296,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/04.log",
+      "sha256": "c529ffe5746a55af0ff6ca687157053f5c8e698fc52dfe6512f8257949afca09"
+    },
+    {
+      "canonical_bytes": 3267,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/05.log",
+      "sha256": "6a82db47a95e8a66768ca23b997498dcb2c712bb1007777f49196f38ae2d59c1"
+    },
+    {
+      "canonical_bytes": 12811,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/06.log",
+      "sha256": "a43de30f3153a663a6c0468a182a0e011a4631509f3e8f143228e632d63d2ba4"
+    },
+    {
+      "canonical_bytes": 64,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/07.log",
+      "sha256": "6ee8f0011bcfe59bd032eff756d27677b0e529267b6d8e2e4b95e999a5a8f052"
+    },
+    {
+      "canonical_bytes": 155,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/08.log",
+      "sha256": "ad2addf806dee586a5f3e060d7414a1efcd6759556df5b9ecabe2fedbadca5bd"
+    },
+    {
+      "canonical_bytes": 298,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/09.log",
+      "sha256": "e370112bc8628535e5fc4e458ee7ec09c1f0adf3470dcd6a95e039b5fb3cb241"
+    },
+    {
+      "canonical_bytes": 30,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/10.log",
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "canonical_bytes": 33,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/11.log",
+      "sha256": "a7607909c829734fdf16bb46074ac7fc4b5070e5e9e6bf64c9a4be0cc2d3b7cf"
+    },
+    {
+      "canonical_bytes": 104,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/12.log",
+      "sha256": "d90b26c5867f44aa6dd08ab58e4053e6f3287a73d5c3fad1ca6cc464deff2812"
+    },
+    {
+      "canonical_bytes": 207,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/13.log",
+      "sha256": "f5b84ea71b3ff5857c8b40cc6e597cb7330f77acc406dc707d16abe40e135664"
+    },
+    {
+      "canonical_bytes": 27,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/14.log",
+      "sha256": "073732646f7b8916cf871e04753ae0e27b6b3da0c02f7a578cf3819ed63c3cfa"
+    },
+    {
+      "canonical_bytes": 0,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/15.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "canonical_bytes": 151541,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/a0_a6_reconciliation_ledger.json",
+      "sha256": "c115b14d2870b2dc4d422af9ca4ae044cac4c586160ba39f6d8b3f8051276477"
+    },
+    {
+      "canonical_bytes": 21932,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/a1_36_dimension_final_reconciliation.json",
+      "sha256": "c648afbe0493a7bb2c8e83786c743fda71d2669fe621792246707edc36855b97"
+    },
+    {
+      "canonical_bytes": 1509,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/a6_integrity_verification.json",
+      "sha256": "86f3d7d4e4dcea5cace06fb3589e8dbf21c43ce7a3b8a1e3183021d08e1f901a"
+    },
+    {
+      "canonical_bytes": 44839,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/default-ci.log",
+      "sha256": "a49956a00bf41472abe28ea7e201de0fdfd0325d1777f3c7b957bdf5d8cbba78"
+    },
+    {
+      "canonical_bytes": 287,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/default_ci_result.json",
+      "sha256": "eff9c889a6a2a889281a285d287975697ba0fee98a0c806abd50469cfc0414b4"
+    },
+    {
+      "canonical_bytes": 3953,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/diff_scope_verification.json",
+      "sha256": "ec8eaaeea0aaaa0e3eb7e5422d0cafed1c868523b4ab10e57de2775d7236e0fc"
+    },
+    {
+      "canonical_bytes": 698,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/extension_authority_conflict_check.json",
+      "sha256": "f7ab8182f0205c8c7472f5a13fa9699a597ec3c9c646504f9173234fd29cac1f"
+    },
+    {
+      "canonical_bytes": 1028,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/final_technical_review.json",
+      "sha256": "2ef8c35df06c6f00e4e1dfd2348b031b3d48df80dc3fc4ebdafbb3d399514708"
+    },
+    {
+      "canonical_bytes": 5143,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/historical_failure_equality.json",
+      "sha256": "1d59f2c0782e0c02450cb9a8f468f45b353273522835fc9994993caced1bf029"
+    },
+    {
+      "canonical_bytes": 3459,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/integrated_gate_results.json",
+      "sha256": "b988709ab46cf98d9b8ce1b55cde68f123f48ef787295b907cae24b623a44c7b"
+    },
+    {
+      "canonical_bytes": 1912,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/merge_ancestry_verification.json",
+      "sha256": "6569ca7bb5157ae1c0edc29cd1b07611ecd65967a642ecb7e3c93f2b07e31a38"
+    },
+    {
+      "canonical_bytes": 455,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/network_mutation_counters.json",
+      "sha256": "3ce518428cb49c3d93e996af407bba468aa723903b7a243d439dffb69df717df"
+    },
+    {
+      "canonical_bytes": 544,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/plugin_framework_need_assessment.json",
+      "sha256": "5d53a01f92dddaf1a11f5fdc00868214bb3a6a1728ac1b469baa29e0fa341626"
+    },
+    {
+      "canonical_bytes": 4694,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/post_commit_candidate_verification.json",
+      "sha256": "fb75339ecb62a93d13b69da1497e497a09b2666f1ae38e82855d936b37a99d11"
+    },
+    {
+      "canonical_bytes": 666,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/preflight_result.json",
+      "sha256": "c123cb40da221e5620cb39cfd843a89ef435134430ced8a83229942816f4e394"
+    },
+    {
+      "canonical_bytes": 863,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/representative_family_sufficiency.json",
+      "sha256": "e4fc449b9c6b28c65bbd18ff4c124997eb51a9600f232944dd75e16a9b19d878"
+    },
+    {
+      "canonical_bytes": 5216,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/retained_nonblocking_limitations.json",
+      "sha256": "a8273cf2443ae9a04ef6ab5bce59ceb4e890303fbd799bd2a364d38c9b6369f1"
+    },
+    {
+      "canonical_bytes": 2664,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a7-20261021T054626Z/validator_results.json",
+      "sha256": "91e385568bdb8fc9d4365cfcefd6a1245cccaafc2d19ea6c5e68b00c1e1bcf0f"
+    }
+  ],
+  "manifest_canonical_sha256": "961186f01e2eaf9c957a8075df7419285333430747a09b36a4b78d22e7d09ee7",
+  "normalization": "UTF-8 text; CRLF/CR normalized to LF before member SHA-256",
+  "post_commit_distinction": "All listed members were read from committed Git blobs at artifact_content_commit. The final manifest is committed separately and does not rewrite those member bytes.",
+  "review_base": "d782c91f3066fc5ea77d84ed6a649a4286fad2b7",
+  "review_base_tree": "fa47f67de8ac8bc3fe574cbcd978b86a9f4c626a",
+  "run_id": "l5-a7-20261021T054626Z",
+  "self_digest_policy": "compact sorted JSON ensure_ascii=false excluding manifest_canonical_sha256",
+  "technical_disposition": "PHASE_L_L5_EXIT_REVIEW_PASS"
+}
