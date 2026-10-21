@@ -1,0 +1,19 @@
+{
+  "precedents": [
+    "tests/helpers/phase_j_closure_r1_transport.py::install",
+    "tests/helpers/phase_j_closure_r1_server.py",
+    "tests/helpers/phase_j_j2_r1_transport.py",
+    "tests/integration/test_phase_j_j2_deterministic_cross_layer.py::_use_in_process_service_transport"
+  ],
+  "proof": "All six real tools, actual governed child and research routes observed in five lifecycle executions.",
+  "result": "PASS",
+  "runtime_files_changed": 0,
+  "runtime_test_hook_added": false,
+  "substitutions": [
+    "raw HTTP transport",
+    "accepted isolated Security Master fixture release",
+    "ASGI transport",
+    "temporary control root"
+  ],
+  "transport_bootstrap": "Test harness selects existing child bootstrap seam; helper invokes unchanged m8r_06_03_execute_once.main after installing only adapter.urlopen fixture bytes. No child/claim/registry/output substituted."
+}

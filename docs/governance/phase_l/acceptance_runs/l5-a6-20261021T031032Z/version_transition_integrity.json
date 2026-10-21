@@ -1,0 +1,13 @@
+{
+  "A1_bytes_unchanged": true,
+  "DECISION_REQUIRED": 0,
+  "T1_T12_bytes_unchanged": true,
+  "dimensions": 36,
+  "plugin_assessment": "PLUGIN_FRAMEWORK_NOT_REQUIRED_NOW",
+  "public_schema_changes": 0,
+  "source_contract_changes": 0,
+  "status": "PASS",
+  "typed_contract_changes": 0,
+  "universal_family_registry": false,
+  "version_transition": "NONE"
+}

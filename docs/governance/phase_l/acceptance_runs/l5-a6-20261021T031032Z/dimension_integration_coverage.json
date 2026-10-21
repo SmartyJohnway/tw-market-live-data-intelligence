@@ -1,0 +1,865 @@
+{
+  "DECISION_REQUIRED": 0,
+  "acceptance_authority_note": "Existing family Owner acceptance inherited from A5; this A6 technical evidence does not imply A6 Owner acceptance.",
+  "accounted": 36,
+  "count": 36,
+  "dimensions": [
+    {
+      "current_authority": "server/services/unified_contract_versions.py",
+      "delegated_tests": [],
+      "dimension": "contract/version identity",
+      "dimension_id": "DIM-01",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S13",
+        "S14",
+        "S15"
+      ]
+    },
+    {
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "delegated_tests": [],
+      "dimension": "supported markets",
+      "dimension_id": "DIM-02",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S04",
+        "S08",
+        "S23"
+      ]
+    },
+    {
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "delegated_tests": [],
+      "dimension": "supported target types",
+      "dimension_id": "DIM-03",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S03",
+        "S14"
+      ]
+    },
+    {
+      "current_authority": "schemas/unified_market_evidence_request.v3.schema.json",
+      "delegated_tests": [],
+      "dimension": "parameter schema",
+      "dimension_id": "DIM-04",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S02",
+        "S05"
+      ]
+    },
+    {
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "delegated_tests": [],
+      "dimension": "parameter bounds",
+      "dimension_id": "DIM-05",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S02",
+        "S05"
+      ]
+    },
+    {
+      "current_authority": "scripts/phase_g/research_executor.py",
+      "delegated_tests": [],
+      "dimension": "source authority",
+      "dimension_id": "DIM-06",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S09",
+        "S10",
+        "S11"
+      ]
+    },
+    {
+      "current_authority": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "delegated_tests": [],
+      "dimension": "routing/executor authority",
+      "dimension_id": "DIM-07",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S04",
+        "S08",
+        "S23"
+      ]
+    },
+    {
+      "current_authority": "config/m8r_06_03_executor_registry_metadata.json",
+      "delegated_tests": [],
+      "dimension": "network-required flag",
+      "dimension_id": "DIM-08",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S04",
+        "S08",
+        "S23"
+      ]
+    },
+    {
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py",
+      "delegated_tests": [],
+      "dimension": "source timestamp semantics",
+      "dimension_id": "DIM-09",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S13",
+        "S14",
+        "S15"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_06_03_production_adapter.py",
+      "delegated_tests": [],
+      "dimension": "retrieved-at semantics",
+      "dimension_id": "DIM-10",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S13",
+        "S14",
+        "S15"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_06_03_production_adapter.py",
+      "delegated_tests": [],
+      "dimension": "freshness/currentness semantics",
+      "dimension_id": "DIM-11",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S13",
+        "S14",
+        "S15"
+      ]
+    },
+    {
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py",
+      "delegated_tests": [
+        "tests/unit/test_l5_a5_existing_family_conformance.py"
+      ],
+      "dimension": "missing semantics",
+      "dimension_id": "DIM-12",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PLUS_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S13",
+        "S14",
+        "S15"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_05a_f3/capability_validator.py",
+      "delegated_tests": [
+        "tests/unit/test_l5_a5_existing_family_conformance.py"
+      ],
+      "dimension": "unsupported semantics",
+      "dimension_id": "DIM-13",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PLUS_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S02",
+        "S05"
+      ]
+    },
+    {
+      "current_authority": "scripts/phase_g/research_executor.py",
+      "delegated_tests": [],
+      "dimension": "source failure semantics",
+      "dimension_id": "DIM-14",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S13",
+        "S14",
+        "S15"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_05b_03/receipt.py",
+      "delegated_tests": [],
+      "dimension": "provenance requirements",
+      "dimension_id": "DIM-15",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S16",
+        "S17",
+        "S19"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_05c/citation_builder.py",
+      "delegated_tests": [],
+      "dimension": "citation requirements",
+      "dimension_id": "DIM-16",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S16",
+        "S17",
+        "S19"
+      ]
+    },
+    {
+      "current_authority": "config/test_execution_profiles.json",
+      "delegated_tests": [
+        "tests/unit/test_l5_a5_existing_family_conformance.py"
+      ],
+      "dimension": "tests",
+      "dimension_id": "DIM-17",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json",
+        "focused_test_result.json"
+      ],
+      "proof_class": "TRACE_PLUS_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "delegated_tests": [
+        "scripts/validate_l5_extension_publication_conformance.py"
+      ],
+      "dimension": "Catalog publication",
+      "dimension_id": "DIM-18",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json",
+        "publication_join.json"
+      ],
+      "proof_class": "DERIVED_PUBLICATION_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "current_authority": "skills/tw-market-evidence-agent/SKILL.md",
+      "delegated_tests": [
+        "scripts/validate_l5_extension_publication_conformance.py"
+      ],
+      "dimension": "Skill/guide publication",
+      "dimension_id": "DIM-19",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json",
+        "publication_join.json"
+      ],
+      "proof_class": "DERIVED_PUBLICATION_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "accepted_governance": "docs/governance/phase_l/PHASE_L_L5_A5_OWNER_ACCEPTANCE_2026-10-21.md",
+      "current_authority": "docs/acceptance_runs/phase_g_pr_d_closure.json",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "acceptance authority",
+      "dimension_id": "DIM-20",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "scope": "Existing family acceptance inherited; A6 Owner acceptance remains PENDING.",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+      "delegated_tests": [
+        "tests/unit/test_l5_a5_existing_family_conformance.py"
+      ],
+      "dimension": "raw evidence schema",
+      "dimension_id": "DIM-21",
+      "frozen_a1_classification": "OPTIONAL",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PLUS_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S16",
+        "S17",
+        "S19"
+      ]
+    },
+    {
+      "current_authority": "server/services/unified_replay_inspector.py",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "replay support",
+      "dimension_id": "DIM-22",
+      "frozen_a1_classification": "OPTIONAL",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_05c/audit_package_builder.py",
+      "delegated_tests": [],
+      "dimension": "Audit projection",
+      "dimension_id": "DIM-23",
+      "frozen_a1_classification": "DERIVED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S19"
+      ]
+    },
+    {
+      "current_authority": "server/services/unified_mode_c.py",
+      "delegated_tests": [],
+      "dimension": "AI handoff projection",
+      "dimension_id": "DIM-24",
+      "frozen_a1_classification": "DERIVED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S20",
+        "S22"
+      ]
+    },
+    {
+      "current_authority": "scripts/phase_g/research_executor.py",
+      "delegated_tests": [],
+      "dimension": "source request contract",
+      "dimension_id": "DIM-25",
+      "frozen_a1_classification": "FAMILY_SPECIFIC",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S09",
+        "S10",
+        "S11"
+      ]
+    },
+    {
+      "current_authority": "scripts/phase_g/mops_monthly_revenue.py",
+      "delegated_tests": [],
+      "dimension": "normalization contract",
+      "dimension_id": "DIM-26",
+      "frozen_a1_classification": "FAMILY_SPECIFIC",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S13",
+        "S14",
+        "S15"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_05a_f3/target_validator.py",
+      "delegated_tests": [],
+      "dimension": "identity binding",
+      "dimension_id": "DIM-27",
+      "frozen_a1_classification": "FAMILY_SPECIFIC",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S03",
+        "S14"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_05c/result_builder.py",
+      "delegated_tests": [],
+      "dimension": "Result projection",
+      "dimension_id": "DIM-28",
+      "frozen_a1_classification": "FAMILY_SPECIFIC",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S18"
+      ]
+    },
+    {
+      "current_authority": "server/services/unified_mode_b2.py",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "authorization class",
+      "dimension_id": "DIM-29",
+      "frozen_a1_classification": "PLATFORM_PROVIDED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "config/m8r_06_03_executor_registry_metadata.json",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "timeout authority",
+      "dimension_id": "DIM-30",
+      "frozen_a1_classification": "PLATFORM_PROVIDED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "server/services/unified_retention_inventory.py",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "retention classification",
+      "dimension_id": "DIM-31",
+      "frozen_a1_classification": "PLATFORM_PROVIDED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "server/resource_boundaries.py",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "resource bounds",
+      "dimension_id": "DIM-32",
+      "frozen_a1_classification": "PLATFORM_PROVIDED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "server/local_control_plane_boundary.py",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "secret boundary",
+      "dimension_id": "DIM-33",
+      "frozen_a1_classification": "PLATFORM_PROVIDED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "scripts/m8r_filesystem_safety.py",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "path/output containment",
+      "dimension_id": "DIM-34",
+      "frozen_a1_classification": "PLATFORM_PROVIDED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    },
+    {
+      "current_authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "delegated_tests": [],
+      "dimension": "family_id / capability relationship",
+      "dimension_id": "DIM-35",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json"
+      ],
+      "proof_class": "TRACE_PROVEN",
+      "result": "PASS",
+      "trace_stages": [
+        "S03",
+        "S14"
+      ]
+    },
+    {
+      "current_authority": "server/services/unified_contract_versions.py",
+      "delegated_tests": [
+        "tests/unit/test_unified_retention_inventory.py",
+        "tests/unit/test_unified_replay_inspector.py",
+        "tests/unit/test_phase_l_l4_a2_path_containment.py",
+        "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+        "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+        "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+        "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+      ],
+      "dimension": "version upgrade/deprecation path",
+      "dimension_id": "DIM-36",
+      "frozen_a1_classification": "REQUIRED",
+      "proof_artifacts": [
+        "edge_invariant_verification.json",
+        "existing_integration_test_result.json",
+        "required_validator_result.json",
+        "integrated_trace_twse.json",
+        "integrated_trace_tpex.json",
+        "integrated_trace_mixed_outcome.json",
+        "version_transition_integrity.json"
+      ],
+      "proof_class": "PLATFORM_INHERITED_ACCEPTED_GATE",
+      "result": "PASS",
+      "trace_stages": [
+        "S25"
+      ]
+    }
+  ],
+  "proof_class_counts": {
+    "DERIVED_PUBLICATION_GATE": 2,
+    "PLATFORM_INHERITED_ACCEPTED_GATE": 9,
+    "TRACE_PLUS_ACCEPTED_GATE": 4,
+    "TRACE_PROVEN": 21
+  },
+  "status": "PASS",
+  "unresolved": 0
+}

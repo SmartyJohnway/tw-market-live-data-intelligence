@@ -1,0 +1,32 @@
+{
+  "all_six_exercised_in_each_trace": true,
+  "count": 6,
+  "emitted_result": "unified_market_evidence_result.v3",
+  "preferred_request": "unified_market_evidence_request.v3",
+  "public_unknown_need_and_alias_rejections": {
+    "capability_id": {
+      "error": "invalid_tool_arguments"
+    },
+    "extra_capability_id": {
+      "error": "invalid_tool_arguments"
+    },
+    "financial_statements": {
+      "error": "invalid_tool_arguments"
+    },
+    "request_changed_after_preview": {
+      "http_status": 409,
+      "response": {
+        "error": "mode_b2_preview_stale",
+        "trace_id": "d29a500d-2cb0-4087-8950-09e92e09525e"
+      }
+    }
+  },
+  "tools": [
+    "market_describe_capabilities",
+    "market_validate_request",
+    "market_preview_request",
+    "market_read_result",
+    "market_export_ai_handoff",
+    "market_fetch_evidence"
+  ]
+}

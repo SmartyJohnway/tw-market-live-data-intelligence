@@ -1,0 +1,629 @@
+{
+  "L1": "Observed same trace_id across source timing, adapter timing and child completion; request/operation/authorization bound in actual Audit.",
+  "L2": "Actual finalized retained package; replay/retention/migration boundaries delegated to accepted platform gates; read/export produced no extra transport calls.",
+  "L3": "Raw fixture transport → actual contract/semantic validation; mixed failure retained as source_failed.",
+  "L4": "Actual authorization/claim, bounded fixed child, temp contained root; platform path/secret/resource/concurrency gates passed.",
+  "delegated_test_result": "existing_integration_test_result.json",
+  "inherited_authorities": {
+    "authorization_owner": "server/services/unified_mode_b2.py",
+    "behavioral_gates": [
+      "tests/unit/test_unified_retention_inventory.py",
+      "tests/unit/test_unified_replay_inspector.py",
+      "tests/unit/test_phase_l_l4_a2_path_containment.py",
+      "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+      "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+      "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+      "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+    ],
+    "family_modules": {
+      "scripts/phase_g/mops_material_disclosures.py": {
+        "defined_functions": [
+          "_binding_diagnostics",
+          "_conflict_diagnostic",
+          "_date",
+          "_published",
+          "_result",
+          "execute"
+        ],
+        "family_retention_or_security_policy_functions": [],
+        "private_lifecycle_functions": [],
+        "shared_source_stages_present": true
+      },
+      "scripts/phase_g/mops_monthly_revenue.py": {
+        "defined_functions": [
+          "_binding_diagnostics",
+          "_integer",
+          "_number",
+          "_report_date",
+          "_result",
+          "_roc_date",
+          "_value",
+          "execute"
+        ],
+        "family_retention_or_security_policy_functions": [],
+        "private_lifecycle_functions": [],
+        "shared_source_stages_present": true
+      }
+    },
+    "raw_provider_payload_retained_by_default": false,
+    "replay_owner": "server/services/unified_replay_inspector.py",
+    "resource_owner": "server/resource_boundaries.py",
+    "retention_owner": "server/services/unified_retention_inventory.py::classify_artifact_family"
+  },
+  "instrumentation_scope": "parent connect/connect_ex/getaddrinfo (loopback permitted for Windows asyncio self-pipe); child Python audit connect/getaddrinfo/sendto; not OS-wide",
+  "live_acquisition": 0,
+  "new_family_owned_platform_policies": 0,
+  "operational_events": {
+    "mixed_outcome": [
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 11.753,
+          "http_status": 200,
+          "process_memory_bytes": 91783168
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:53.383456+00:00",
+        "trace_id": "59ec0b3e-1fd8-4bc2-9396-23899395f8b9"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 31.211,
+          "http_status": 200,
+          "process_memory_bytes": 91783168
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:53.501245+00:00",
+        "trace_id": "4ed8cc8b-a922-4f6b-a82d-3f318142c840"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 53.109,
+          "http_status": 200,
+          "process_memory_bytes": 91852800
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:53.635881+00:00",
+        "trace_id": "7a3ff0a9-ca2f-4347-b7d9-db4626b830af"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 31.261,
+          "http_status": 409,
+          "process_memory_bytes": 91869184
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "error",
+        "timestamp_utc": "2026-10-21T04:15:53.754650+00:00",
+        "trace_id": "6346bbdf-f8ec-405e-bd81-89365b4ec0c0"
+      },
+      {
+        "capability_id": "monthly_revenue",
+        "component": "source_transport",
+        "event_code": "source.acquisition.completed",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 0.754
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "source_id": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+        "status": "returned",
+        "timestamp_utc": "2026-10-21T04:15:55.281094+00:00",
+        "trace_id": "37f827c5-d5fc-47be-9136-438005864303"
+      },
+      {
+        "batch_group_id": "umeop-batch-v1-430ac6b640cff2771b15",
+        "capability_id": "monthly_revenue",
+        "component": "adapter_dispatch",
+        "event_code": "adapter.execution.completed",
+        "execution_request_id": "umereq-v1-39b050f68613d62fb6c5",
+        "executor_id": "phase_g_official_research_executor",
+        "governed_operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 72.299,
+          "operation_count": 1
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:55.352615+00:00",
+        "trace_id": "37f827c5-d5fc-47be-9136-438005864303"
+      },
+      {
+        "capability_id": "material_disclosures",
+        "component": "source_transport",
+        "event_code": "source.acquisition.completed",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 0.384
+        },
+        "reason_code": "OSError",
+        "schema_version": "tw_market_operational_event.v1",
+        "source_id": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+        "status": "raised",
+        "timestamp_utc": "2026-10-21T04:15:55.411787+00:00",
+        "trace_id": "37f827c5-d5fc-47be-9136-438005864303"
+      },
+      {
+        "capability_id": "material_disclosures",
+        "component": "source_transport",
+        "event_code": "source.acquisition.completed",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 0.684
+        },
+        "reason_code": "OSError",
+        "schema_version": "tw_market_operational_event.v1",
+        "source_id": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+        "status": "raised",
+        "timestamp_utc": "2026-10-21T04:15:55.444384+00:00",
+        "trace_id": "37f827c5-d5fc-47be-9136-438005864303"
+      },
+      {
+        "batch_group_id": "umeop-batch-v1-4049a50eaad39b18ee4e",
+        "capability_id": "material_disclosures",
+        "component": "adapter_dispatch",
+        "event_code": "adapter.execution.completed",
+        "execution_request_id": "umereq-v1-04a5d22170a8d639af34",
+        "executor_id": "phase_g_official_research_executor",
+        "governed_operation_id": "umeop-op-v1-980a771a89fe9150625a",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 102.426,
+          "operation_count": 1
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:55.513805+00:00",
+        "trace_id": "37f827c5-d5fc-47be-9136-438005864303"
+      },
+      {
+        "authorization_id": "umea-v1-2782efa79c0dcaa14494",
+        "component": "execute_once_parent",
+        "event_code": "execution.child.completed",
+        "execution_receipt_id": "umerec-v1-5c1fcaedb2805409ad14",
+        "level": "INFO",
+        "metrics": {
+          "child_returncode": 0,
+          "duration_ms": 1534.315
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:55.866726+00:00",
+        "trace_id": "37f827c5-d5fc-47be-9136-438005864303"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 4124.343,
+          "http_status": 200,
+          "process_memory_bytes": 92463104
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:57.931162+00:00",
+        "trace_id": "37f827c5-d5fc-47be-9136-438005864303"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 876.143,
+          "http_status": 200,
+          "process_memory_bytes": 92467200
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:58.866798+00:00",
+        "trace_id": "48b99d6e-b325-443b-9e2b-9a100ece05b0"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 1753.348,
+          "http_status": 200,
+          "process_memory_bytes": 92508160
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:16:00.659021+00:00",
+        "trace_id": "38810f10-ab41-4d5d-bc88-133e22e6cb7a"
+      }
+    ],
+    "tpex": [
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 6.26,
+          "http_status": 200,
+          "process_memory_bytes": 90869760
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:46.589642+00:00",
+        "trace_id": "9ba3a4c1-3b34-4ae5-ac9e-34e6507aa303"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 20.958,
+          "http_status": 200,
+          "process_memory_bytes": 90877952
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:46.666675+00:00",
+        "trace_id": "cd7bfafa-7f7c-4737-b77a-6a44c3dddad8"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 18.709,
+          "http_status": 200,
+          "process_memory_bytes": 90972160
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:46.733581+00:00",
+        "trace_id": "29f538e8-baa7-4668-810d-1274e42eff29"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 16.978,
+          "http_status": 409,
+          "process_memory_bytes": 91070464
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "error",
+        "timestamp_utc": "2026-10-21T04:15:46.790253+00:00",
+        "trace_id": "407538c2-0890-477b-bcb9-c32170b4e4ef"
+      },
+      {
+        "capability_id": "material_disclosures",
+        "component": "source_transport",
+        "event_code": "source.acquisition.completed",
+        "level": "INFO",
+        "market": "TPEX",
+        "metrics": {
+          "duration_ms": 0.745
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "source_id": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+        "status": "returned",
+        "timestamp_utc": "2026-10-21T04:15:48.195494+00:00",
+        "trace_id": "2fdfd63d-968c-4222-a17c-40d83a91bdc4"
+      },
+      {
+        "batch_group_id": "umeop-batch-v1-04f4e85484b3f50215b9",
+        "capability_id": "material_disclosures",
+        "component": "adapter_dispatch",
+        "event_code": "adapter.execution.completed",
+        "execution_request_id": "umereq-v1-ce2b74c5aa7776e82a15",
+        "executor_id": "phase_g_official_research_executor",
+        "governed_operation_id": "umeop-op-v1-45242ead48d575279cf4",
+        "level": "INFO",
+        "market": "TPEX",
+        "metrics": {
+          "duration_ms": 110.219,
+          "operation_count": 1
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:48.304933+00:00",
+        "trace_id": "2fdfd63d-968c-4222-a17c-40d83a91bdc4"
+      },
+      {
+        "capability_id": "monthly_revenue",
+        "component": "source_transport",
+        "event_code": "source.acquisition.completed",
+        "level": "INFO",
+        "market": "TPEX",
+        "metrics": {
+          "duration_ms": 0.403
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "source_id": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+        "status": "returned",
+        "timestamp_utc": "2026-10-21T04:15:48.372276+00:00",
+        "trace_id": "2fdfd63d-968c-4222-a17c-40d83a91bdc4"
+      },
+      {
+        "batch_group_id": "umeop-batch-v1-7f203460a74e01992cee",
+        "capability_id": "monthly_revenue",
+        "component": "adapter_dispatch",
+        "event_code": "adapter.execution.completed",
+        "execution_request_id": "umereq-v1-9ff41fe48472adf518e3",
+        "executor_id": "phase_g_official_research_executor",
+        "governed_operation_id": "umeop-op-v1-86ae44d52e4b0966dfdd",
+        "level": "INFO",
+        "market": "TPEX",
+        "metrics": {
+          "duration_ms": 74.333,
+          "operation_count": 1
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:48.446179+00:00",
+        "trace_id": "2fdfd63d-968c-4222-a17c-40d83a91bdc4"
+      },
+      {
+        "authorization_id": "umea-v1-a691f3bbdfc4b02ce397",
+        "component": "execute_once_parent",
+        "event_code": "execution.child.completed",
+        "execution_receipt_id": "umerec-v1-a04380b0ab93b02aa4e9",
+        "level": "INFO",
+        "metrics": {
+          "child_returncode": 0,
+          "duration_ms": 1754.548
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:48.904638+00:00",
+        "trace_id": "2fdfd63d-968c-4222-a17c-40d83a91bdc4"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 3920.731,
+          "http_status": 200,
+          "process_memory_bytes": 91590656
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:50.745771+00:00",
+        "trace_id": "2fdfd63d-968c-4222-a17c-40d83a91bdc4"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 424.796,
+          "http_status": 200,
+          "process_memory_bytes": 91639808
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:51.211255+00:00",
+        "trace_id": "f204c8ed-8de4-457c-8b73-99c4fb4ee8e2"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 1714.13,
+          "http_status": 200,
+          "process_memory_bytes": 91779072
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:52.955979+00:00",
+        "trace_id": "cbd6a3ba-77d5-44af-bba1-8e37dea906c6"
+      }
+    ],
+    "twse": [
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 6.227,
+          "http_status": 200,
+          "process_memory_bytes": 89174016
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:39.771411+00:00",
+        "trace_id": "4e2380b2-ef87-47b3-ab32-4a30911f813f"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 22.409,
+          "http_status": 200,
+          "process_memory_bytes": 89317376
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:39.837743+00:00",
+        "trace_id": "787ac461-6d47-4176-920b-b6f1d1ad3d7b"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 22.112,
+          "http_status": 200,
+          "process_memory_bytes": 89645056
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:39.897056+00:00",
+        "trace_id": "a9b9e569-d5d0-4d7e-83fe-2c3ff79c3bc0"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 27.802,
+          "http_status": 409,
+          "process_memory_bytes": 89718784
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "error",
+        "timestamp_utc": "2026-10-21T04:15:39.967525+00:00",
+        "trace_id": "d29a500d-2cb0-4087-8950-09e92e09525e"
+      },
+      {
+        "capability_id": "monthly_revenue",
+        "component": "source_transport",
+        "event_code": "source.acquisition.completed",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 0.612
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "source_id": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+        "status": "returned",
+        "timestamp_utc": "2026-10-21T04:15:41.294798+00:00",
+        "trace_id": "0d4f7bce-af49-4f46-9c36-21e76887fb63"
+      },
+      {
+        "batch_group_id": "umeop-batch-v1-430ac6b640cff2771b15",
+        "capability_id": "monthly_revenue",
+        "component": "adapter_dispatch",
+        "event_code": "adapter.execution.completed",
+        "execution_request_id": "umereq-v1-ed699e92dbb755463749",
+        "executor_id": "phase_g_official_research_executor",
+        "governed_operation_id": "umeop-op-v1-6d76d3be67992e1c7481",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 62.261,
+          "operation_count": 1
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:41.356420+00:00",
+        "trace_id": "0d4f7bce-af49-4f46-9c36-21e76887fb63"
+      },
+      {
+        "capability_id": "material_disclosures",
+        "component": "source_transport",
+        "event_code": "source.acquisition.completed",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 0.371
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "source_id": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+        "status": "returned",
+        "timestamp_utc": "2026-10-21T04:15:41.405562+00:00",
+        "trace_id": "0d4f7bce-af49-4f46-9c36-21e76887fb63"
+      },
+      {
+        "batch_group_id": "umeop-batch-v1-4049a50eaad39b18ee4e",
+        "capability_id": "material_disclosures",
+        "component": "adapter_dispatch",
+        "event_code": "adapter.execution.completed",
+        "execution_request_id": "umereq-v1-414fefc84a34f9776bb4",
+        "executor_id": "phase_g_official_research_executor",
+        "governed_operation_id": "umeop-op-v1-980a771a89fe9150625a",
+        "level": "INFO",
+        "market": "TWSE",
+        "metrics": {
+          "duration_ms": 69.379,
+          "operation_count": 1
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:41.474545+00:00",
+        "trace_id": "0d4f7bce-af49-4f46-9c36-21e76887fb63"
+      },
+      {
+        "authorization_id": "umea-v1-d6184242ad2f9155c930",
+        "component": "execute_once_parent",
+        "event_code": "execution.child.completed",
+        "execution_receipt_id": "umerec-v1-ef2593ced46ff8e784fc",
+        "level": "INFO",
+        "metrics": {
+          "child_returncode": 0,
+          "duration_ms": 1331.744
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:41.833879+00:00",
+        "trace_id": "0d4f7bce-af49-4f46-9c36-21e76887fb63"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 3769.043,
+          "http_status": 200,
+          "process_memory_bytes": 90402816
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:43.773454+00:00",
+        "trace_id": "0d4f7bce-af49-4f46-9c36-21e76887fb63"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 525.593,
+          "http_status": 200,
+          "process_memory_bytes": 90705920
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:44.331544+00:00",
+        "trace_id": "98d5885c-a9f0-4325-8a94-536d734a13a7"
+      },
+      {
+        "component": "local_service",
+        "event_code": "http.request.completed",
+        "level": "INFO",
+        "metrics": {
+          "duration_ms": 1621.663,
+          "http_status": 200,
+          "process_memory_bytes": 90861568
+        },
+        "schema_version": "tw_market_operational_event.v1",
+        "status": "ok",
+        "timestamp_utc": "2026-10-21T04:15:45.990137+00:00",
+        "trace_id": "8a7d0bbb-4fff-4efb-98ba-09d55dac01c4"
+      }
+    ]
+  },
+  "os_wide_network_observation": false,
+  "production_mutations": 0,
+  "provider_requests": 0,
+  "status": "PASS",
+  "unexpected_external_socket_attempts_primary_traces": 0
+}

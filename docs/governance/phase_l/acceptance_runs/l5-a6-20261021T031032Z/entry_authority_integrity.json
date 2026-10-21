@@ -1,0 +1,27 @@
+{
+  "main": "928de0f930b0733e188ef3c873f994ce9e8a69d3",
+  "milestones": [
+    {
+      "ancestor_of_authorized_base": true,
+      "commit": "86f1e74f8208823b4cb6cf813eb474d5e76392ef"
+    },
+    {
+      "ancestor_of_authorized_base": true,
+      "commit": "d6e90895d0af606fccab74b8143cd43376ecabfa"
+    },
+    {
+      "ancestor_of_authorized_base": true,
+      "commit": "303e2ba444721f939ce74a5f2c15b0a5bb562a7a"
+    },
+    {
+      "ancestor_of_authorized_base": true,
+      "commit": "072a63623ba9f73236542e5f50e4903b6b4d06d1"
+    },
+    {
+      "ancestor_of_authorized_base": true,
+      "commit": "928de0f930b0733e188ef3c873f994ce9e8a69d3"
+    }
+  ],
+  "status": "PASS",
+  "tree": "320fa08120fe159bf4acead6267875cd6917b298"
+}

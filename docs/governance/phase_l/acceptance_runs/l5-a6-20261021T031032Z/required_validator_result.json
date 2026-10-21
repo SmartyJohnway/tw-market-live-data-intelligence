@@ -1,0 +1,158 @@
+{
+  "status": "PASS",
+  "validators": [
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/verify_dependency_supply_chain.py"
+      ],
+      "exit_code": 0,
+      "log": "required-00.log",
+      "seconds": 0.539
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/verify_environment.py"
+      ],
+      "exit_code": 0,
+      "log": "required-01.log",
+      "seconds": 9.12
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit_code": 0,
+      "log": "required-02.log",
+      "seconds": 1.647
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_source_registry.py"
+      ],
+      "exit_code": 0,
+      "log": "required-03.log",
+      "seconds": 0.721
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "exit_code": 0,
+      "log": "required-04.log",
+      "seconds": 0.537
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "exit_code": 0,
+      "log": "required-05.log",
+      "seconds": 3.087
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_v1_public_contracts.py"
+      ],
+      "exit_code": 0,
+      "log": "required-06.log",
+      "seconds": 4.002
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_unified_market_evidence_contracts.py"
+      ],
+      "exit_code": 0,
+      "log": "required-07.log",
+      "seconds": 0.645
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "exit_code": 0,
+      "log": "required-08.log",
+      "seconds": 0.489
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_registration_conformance.py"
+      ],
+      "exit_code": 0,
+      "log": "required-09.log",
+      "seconds": 0.956
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_semantic_conformance.py"
+      ],
+      "exit_code": 0,
+      "log": "required-10.log",
+      "seconds": 3.333
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_publication_conformance.py"
+      ],
+      "exit_code": 0,
+      "log": "required-11.log",
+      "seconds": 3.319
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_existing_family_conformance.py"
+      ],
+      "exit_code": 0,
+      "log": "required-12.log",
+      "seconds": 5.884
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_integrated_extension_contract_acceptance.py"
+      ],
+      "exit_code": 0,
+      "log": "required-13.log",
+      "final_source_reverification": "PASS after final Request/control/authorization/operation binding checks; required-13.log and required-13-operational.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "compileall",
+        "-q",
+        "scripts",
+        "server",
+        "tests"
+      ],
+      "exit_code": 0,
+      "log": "required-14.log",
+      "seconds": 10.993,
+      "final_compileall_reverification": "PASS after evidence author completion"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "required-15.log",
+      "seconds": 0.054
+    }
+  ]
+}

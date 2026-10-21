@@ -1,0 +1,10 @@
+{
+  "Owner_acceptance_pending": true,
+  "conflicts": [],
+  "new_capability": false,
+  "new_family": false,
+  "new_platform_policy": false,
+  "new_registry": false,
+  "public_tools": 6,
+  "runtime_discovery": false
+}

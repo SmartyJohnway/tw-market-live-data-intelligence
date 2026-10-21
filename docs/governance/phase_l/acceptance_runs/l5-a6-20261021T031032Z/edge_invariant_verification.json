@@ -1,0 +1,13 @@
+{
+  "edges_per_graph": 24,
+  "graphs": 3,
+  "stages_per_graph": 25,
+  "status": "PASS",
+  "total_verified_edges": 72,
+  "trace_errors": {
+    "mixed_outcome": [],
+    "tpex": [],
+    "twse": []
+  },
+  "verification_symbol": "scripts/validate_l5_integrated_extension_contract_acceptance.py::validate_trace"
+}

@@ -1,0 +1,51 @@
+{
+  "cases": 26,
+  "nodes": [
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[request_changed_after_preview]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[request_extra_field]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[preview_capability]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[executor]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[market]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[source_contract]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[operation_contract]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[typed_contract]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[artifact_hash]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[citation_operation]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[citation_target]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[result_hash]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[audit_hash]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[audit_lineage]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[handoff_invention]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[seventh_tool]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_trace_mutations_fail_closed[unexpected_socket]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[catalog]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[routing]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[portable]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[family_registry]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[new_capability]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[retention]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[security]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[resource]",
+    "tests/integration/test_l5_a6_integrated_extension_contract_acceptance::test_authority_mutations_fail_closed[missing_dimension]"
+  ],
+  "public_refusal_tests": {
+    "capability_id": {
+      "error": "invalid_tool_arguments"
+    },
+    "extra_capability_id": {
+      "error": "invalid_tool_arguments"
+    },
+    "financial_statements": {
+      "error": "invalid_tool_arguments"
+    },
+    "request_changed_after_preview": {
+      "http_status": 409,
+      "response": {
+        "error": "mode_b2_preview_stale",
+        "trace_id": "d29a500d-2cb0-4087-8950-09e92e09525e"
+      }
+    }
+  },
+  "socket_guard_selftest_separate_from_trace_attempts": true,
+  "status": "PASS"
+}
