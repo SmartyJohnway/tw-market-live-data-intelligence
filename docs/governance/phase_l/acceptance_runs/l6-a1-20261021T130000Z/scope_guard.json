@@ -1,0 +1,29 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "allowed_paths": [
+    "PROJECT.md",
+    "HANDOFF.md",
+    "ROADMAP.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+    "docs/governance/phase_l/PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_2026-10-21.md",
+    "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/"
+  ],
+  "runtime_product_changes": 0,
+  "public_schema_changes": 0,
+  "catalog_route_executor_source_changes": 0,
+  "dependency_changes": 0,
+  "docker_implementation": 0,
+  "installer_implementation": 0,
+  "init_implementation": 0,
+  "provider_requests": 0,
+  "live_acquisition": 0,
+  "production_state_mutations": 0,
+  "restore_migration_execution": 0,
+  "production_home_creation": 0,
+  "external_socket_attempts": "NOT_MEASURED_OS_WIDE; separately instrumented snapshot scope only",
+  "A2_plus": "NOT AUTHORIZED",
+  "L7": "NOT AUTHORIZED",
+  "Phase_M": "NOT AUTHORIZED",
+  "static_snapshot_socket_API_attempts": 0,
+  "static_snapshot_scope": "single build_tool_contract_snapshot Python process; connect/connect_ex/create_connection/getaddrinfo intercepted; no OS-wide observation"
+}

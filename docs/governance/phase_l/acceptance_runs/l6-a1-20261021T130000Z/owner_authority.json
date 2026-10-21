@@ -1,0 +1,14 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+  "kind": "DIRECT_OWNER_MESSAGE",
+  "scope": "CONTRACT_GOVERNANCE_FREEZE_ONLY",
+  "a0_state": "OWNER-ACCEPTED AND MERGED",
+  "a1_owner_acceptance": "PENDING",
+  "platform": "Windows 11 x64 only",
+  "platform_authority": "USER_CHAT_2026-10-21_WINDOWS11_NATIVE_TIER1_BASELINE_SUPERSESSION",
+  "runtime_implementation_authorized": false,
+  "A2_plus": "NOT AUTHORIZED",
+  "L7": "NOT AUTHORIZED",
+  "Phase_M": "NOT AUTHORIZED"
+}

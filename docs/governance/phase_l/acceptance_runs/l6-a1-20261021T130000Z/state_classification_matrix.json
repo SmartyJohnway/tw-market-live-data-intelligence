@@ -1,0 +1,80 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "rows": [
+    {
+      "logical_state": "installation metadata",
+      "root": "<HOME>\\meta\\installation.json",
+      "classification": "INSTALLATION_LOCAL_AUTHORITY",
+      "backup": "portable facts only; keep destination ID/path mapping"
+    },
+    {
+      "logical_state": "persisted user settings",
+      "root": "<HOME>\\config\\settings.json",
+      "classification": "DURABLE_USER_STATE",
+      "backup": "CORE"
+    },
+    {
+      "logical_state": "Security Master authority",
+      "root": "<STATE_ROOT>\\security-master",
+      "classification": "DURABLE_USER_STATE",
+      "backup": "CORE"
+    },
+    {
+      "logical_state": "retained official SM source/provenance",
+      "root": "<STATE_ROOT>\\security-master\\<logical provenance child>",
+      "classification": "GOVERNED_EVIDENCE",
+      "backup": "FULL_GOVERNED"
+    },
+    {
+      "logical_state": "Watchlists",
+      "root": "<STATE_ROOT>\\watchlists",
+      "classification": "DURABLE_USER_STATE",
+      "backup": "CORE"
+    },
+    {
+      "logical_state": "authorization/claim/Result/Audit/retained execution evidence",
+      "root": "<STATE_ROOT>\\governed",
+      "classification": "GOVERNED_EVIDENCE",
+      "backup": "FULL_GOVERNED"
+    },
+    {
+      "logical_state": "derived indexes/cache",
+      "root": "<HOME>\\cache",
+      "classification": "DERIVED_REBUILDABLE",
+      "backup": "EXCLUDED_CORE"
+    },
+    {
+      "logical_state": "operational diagnostics",
+      "root": "<HOME>\\logs",
+      "classification": "DIAGNOSTIC_NONCANONICAL",
+      "backup": "EXCLUDED_CORE_DEFAULT"
+    },
+    {
+      "logical_state": "PID/ownership",
+      "root": "%TEMP%\\TW-Market\\<installation-id>\\runtime",
+      "classification": "EPHEMERAL",
+      "backup": "EXCLUDED"
+    },
+    {
+      "logical_state": "incomplete acquisition/scratch",
+      "root": "%TEMP%\\TW-Market\\<installation-id>\\temp",
+      "classification": "EPHEMERAL",
+      "backup": "EXCLUDED"
+    },
+    {
+      "logical_state": "backup output",
+      "root": "caller-selected",
+      "classification": "EXTERNAL_DURABLE_OUTPUT",
+      "backup": "L2_VERIFIED_BACKUP"
+    },
+    {
+      "logical_state": "restore/migration staging",
+      "root": "existing L2 bounded caller destination/checkpoint lifecycle",
+      "classification": "L2_AUTHORITY",
+      "backup": "existing isolated staging/finalization"
+    }
+  ],
+  "row_count": 12,
+  "authority": "L0-D07 and existing L2; path placement alone cannot confer classification",
+  "label_scope": "A1 physical ownership roles only; not an extension/replacement of L2 bounded class vocabulary. Each backup member requires existing explicit family binding/classification; path location grants no tier or retention/deletion eligibility."
+}

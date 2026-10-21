@@ -1,0 +1,35 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "status": "PASS",
+  "authority_conflicts": 0,
+  "read_only_review_role": "sol_architect",
+  "reviewed_obligations": [
+    "HOME/state bootstrap",
+    "initialized mapping preservation",
+    "P4 destination identity",
+    "SM staging/finalization and retained identity",
+    "L2 explicit-member scope",
+    "legacy compatibility",
+    "init no acquisition",
+    "A3/A4/L7 deferral"
+  ],
+  "resolved_before_freeze": [
+    {
+      "id": "REV-01",
+      "finding": "HOME-in-APP_ROOT prohibition must be explicit",
+      "resolution": "HOME/STATE_ROOT and durable artifacts cannot equal/descend from APP_ROOT; APP_ROOT can be a separately replaceable child/sibling within HOME without freezing A3 layout"
+    },
+    {
+      "id": "REV-02",
+      "finding": "A0 SM manifest relocation binding must be explicit",
+      "resolution": "retained bundle/report identity is installation/state-relative and content-bound; staging is never activation authority"
+    },
+    {
+      "id": "REV-03",
+      "finding": "A1 labels could be mistaken as new L2 classifier",
+      "resolution": "physical ownership roles only; existing explicit family classification remains mandatory"
+    }
+  ],
+  "runtime_modified": false,
+  "new_owner_decision_invented": false
+}

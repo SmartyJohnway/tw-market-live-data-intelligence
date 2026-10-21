@@ -1,0 +1,246 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "owner_frozen_count": 15,
+  "owner_frozen_decisions": [
+    {
+      "decision_id": "A1-D01",
+      "topic": "Application/state separation",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "APP_ROOT is the replaceable, relocatable application/static-resource authority (scripts/server/schemas/Catalog/Route/executor metadata/frontend/skills/VERSION/dependency metadata), never canonical durable state. Durable user/governed state must survive application replacement and must not depend on the application path.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_root_contract.json"
+    },
+    {
+      "decision_id": "A1-D02",
+      "topic": "TW_MARKET_HOME",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "TW_MARKET_HOME is the installation control/home authority. Native Windows 11 default is %LOCALAPPDATA%\\TW-Market. It is not APP_ROOT, Windows Registry or roaming profile authority.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/home_bootstrap_contract.json"
+    },
+    {
+      "decision_id": "A1-D03",
+      "topic": "HOME bootstrap precedence",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "HOME resolves by explicit --home > TW_MARKET_HOME > Windows platform default before reading settings/metadata. settings.json cannot choose its own HOME. No circular dependency or application/developer-path fallback is permitted. Changing HOME selects another installation context; it does not silently copy, adopt or move state. After inherited L4 canonical-path/reparse validation, HOME and STATE_ROOT must not equal APP_ROOT or descend from it; managed durable/governed artifacts must also stay outside the APP_ROOT subtree. APP_ROOT may later be a sibling application directory within HOME if its replacement cannot affect those artifacts; A1 does not freeze A3 packaging placement.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/home_bootstrap_contract.json"
+    },
+    {
+      "decision_id": "A1-D04",
+      "topic": "TW_MARKET_STATE_ROOT",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "TW_MARKET_STATE_ROOT defaults to <HOME>\\state. Fresh init resolves explicit --state-root > TW_MARKET_STATE_ROOT > <HOME>\\state and persists the resolved absolute state_root in installation metadata. D:\\TW-Market-State is an allowed example. For an initialized installation metadata is canonical; conflicting CLI/ENV state-root selection must fail closed without silent relocation. This bootstrap is distinct from ordinary service-setting precedence. Fixed logical subroots are security-master/watchlists/governed, not independent permanent family homes. Canonical state remains outside APP_ROOT.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_root_contract.json"
+    },
+    {
+      "decision_id": "A1-D05",
+      "topic": "Physical layout and classification",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "HOME holds meta/config/cache/logs; default STATE_ROOT is HOME/state, or a separately selected root. STATE_ROOT holds security-master/watchlists/governed. %TEMP%\\TW-Market\\<installation-id> holds runtime/temp. Logical class is authoritative irrespective of physical co-location. A retained SM provenance child must be under SM state; exact internal child spelling is not frozen.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json"
+    },
+    {
+      "decision_id": "A1-D06",
+      "topic": "Installation identity",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "<HOME>\\meta\\installation.json has minimum logical fields installation_schema_version, installation_id, state_root and created_at. Version must be explicit/supported. installation_id is opaque, generated once during fresh offline init, independent of APP_ROOT, username, machine name and port, and preserved on ordinary init rerun, app upgrade and relocation. UUID encoding is not mandated. P4 restore keeps destination identity; source identity is provenance only. Source PID/ownership and absolute path mapping never become active destination authority. Incompatible metadata fails closed without mutation/migration.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/installation_identity_contract.json"
+    },
+    {
+      "decision_id": "A1-D07",
+      "topic": "Persisted settings authority",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "<HOME>\\config\\settings.json is the single core persisted user-settings authority: versioned extensible JSON with minimum logical fields schema_version, service.host and service.port. General resolution is explicit CLI > ENV > settings.json > product default. Port: --port > TW_MARKET_PORT > service.port > 8000. Host: --host > TW_MARKET_HOST > service.host > 127.0.0.1, subject to inherited L4 loopback and valid-port bounds. A1 adds no resolver/public schema/Registry/YAML/TOML/dependency. Exact version encoding is a later implementation detail; compatible version recognition is required.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/configuration_authority_contract.json"
+    },
+    {
+      "decision_id": "A1-D08",
+      "topic": "Local metadata versus portable preferences",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "installation.json is local installation identity/path mapping; settings.json carries portable product preferences. Source-machine absolute paths must not be blindly restored as portable preferences. settings cannot override local HOME/state mapping. Existing service-URL integration seam is not a second persisted user-config/home authority.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/configuration_authority_contract.json"
+    },
+    {
+      "decision_id": "A1-D09",
+      "topic": "Security Master relocation",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "<STATE_ROOT>\\security-master is canonical SM state. Incomplete/unqualified acquisition scratch is ephemeral under %TEMP%\\TW-Market\\<installation-id>\\temp\\security-master\\... or equivalent logical descendant. Final retained official source bundles/provenance are governed logical children of SM state outside APP_ROOT. Rebuildable indexes remain derived even when beside authority today. Explicit SM initialization/update remains the only acquisition path; init/start/doctor/application upgrade never acquire or refresh. Future integration joins manager/loader/materializer selection and explicitly separates staging, qualification, retention and activation. No manager/materializer changes occur here. Finalized retained bundle/report manifests must use installation/state-relative, content-bound identities, never APP_ROOT-dependent absolute paths as portable authority. Only qualified finalized retained state under SM authority may be activation input; ephemeral staging cannot become active/canonical authority. Historical provenance bytes are not rewritten by this future relocation contract.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/security_master_relocation_contract.json"
+    },
+    {
+      "decision_id": "A1-D10",
+      "topic": "Governed state root",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "<STATE_ROOT>\\governed is future canonical installation-relative authority for authorization, claim/control, canonical Results/Audits and associated retained execution evidence. Existing execute-once and Result/Audit/lineage/public contracts remain authoritative. Root selection must reach writers/readers/exporters without a parallel Result/Audit system or historical identity/hash rewrites.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/governed_state_contract.json"
+    },
+    {
+      "decision_id": "A1-D11",
+      "topic": "Cache/log/runtime/temp split",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "<HOME>\\cache is derived/rebuildable and excluded from canonical core backup. <HOME>\\logs is diagnostic, not Audit truth, excluded from core backup by default; no new duration is frozen and inherited bounded diagnostics remain binding. %TEMP%\\TW-Market\\<installation-id>\\runtime holds ephemeral PID/ownership; its temp sibling holds unfinished acquisition/scratch/atomic-operation temporary material. Neither is portable backup content. Installation ID does not replace L1 PID/start-token/executable checks. Existing L2 bounded sibling staging/atomic finalization remains unchanged. No new multi-process/concurrency policy is invented.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/runtime_log_temp_contract.json"
+    },
+    {
+      "decision_id": "A1-D12",
+      "topic": "Offline init responsibility",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "Future init is explicit, offline and idempotent: resolve HOME; create/read stable identity; resolve/persist state_root; create/verify required layout directories; create/validate versioned settings and metadata; verify local writability/containment; report installation state. Rerun preserves ID/settings/state placement and fails closed on incompatible metadata unless migration is separately authorized. Empty directories do not authorize business/governed records. init cannot acquire data, update/build/qualify/activate SM, restore/migrate, mutate Watchlists, create Result/Audit, authorize execution or repair unrelated state. doctor remains read-only with no implicit init/write probe. No init is implemented.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/init_contract.json"
+    },
+    {
+      "decision_id": "A1-D13",
+      "topic": "Initialization-state distinction",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "Future conceptual flow is application available -> INSTALLATION_NOT_INITIALIZED -> explicit offline init -> SECURITY_MASTER_NOT_INITIALIZED -> explicit SM initialization/update -> READY. READY means setup/identity readiness, not market freshness, route activation or execution permission. Current NOT_INITIALIZED is SM state; A2 must expose installation readiness separately while preserving existing-client SM meaning and L1 fresh uninitialized service/diagnostics without acquisition. Missing metadata cannot silently adopt old checkout state. Current runtime codes are unchanged.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/initialization_state_contract.json"
+    },
+    {
+      "decision_id": "A1-D14",
+      "topic": "Legacy root compatibility",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "Existing root ENV/CLI seams remain. Target chain is HOME -> installation metadata -> STATE_ROOT -> fixed logical subroots. Legacy overrides are not required for P1-P6 acceptance. Future effective roots outside canonical layout must be disclosed as NONCANONICAL_ROOT_OVERRIDE or equivalent typed diagnostic and inherit L4 checks; no silent metadata rewrite/relocation. Exact warning spelling and deprecation/removal timing remain later compatibility/release review.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/legacy_override_compatibility.json"
+    },
+    {
+      "decision_id": "A1-D15",
+      "topic": "L2 reuse/integration",
+      "classification": "OWNER_FROZEN",
+      "authority": "USER_CHAT_2026-10-21_PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_AUTHORIZATION",
+      "statement": "A1 ownership -> logical member enumeration -> existing L2 backup/restore/migration. Core backup logically includes portable user settings, SM durable authority, Watchlists and required portable facts/pointers. Full governed adds Results/Audits, authorization/control and retained governed provenance. Source ID/runtime/cache/log/temp/absolute path mappings are not portable active authority. L2 remains EXPLICIT_DECLARED_MEMBERS_ONLY, not whole-installation discovery. A1 metadata/settings require later L2 member-family/classification/version adapters; location cannot bypass UNCLASSIFIED_REQUIRES_POLICY. Verified restore is isolated and never activates. MIGRATION_REQUIRED is classification-only; newer unsupported state fails closed; migration is explicit, rollback uses verified A4 retained bytes and replay != refetch. No second backup/migration system.",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/l2_integration_map.json"
+    }
+  ],
+  "A1_DECISION_REQUIRED": 0,
+  "deferred_decisions": [
+    {
+      "topic": "Native packaging technology",
+      "classification": "DEFER_A3",
+      "frozen_choice": false
+    },
+    {
+      "topic": "Docker persistent mounts",
+      "classification": "DEFER_A4",
+      "frozen_choice": false
+    },
+    {
+      "topic": "Docker lifecycle",
+      "classification": "DEFER_A4",
+      "frozen_choice": false
+    },
+    {
+      "topic": "installer technology",
+      "classification": "DEFER_A3_OR_LATER",
+      "frozen_choice": false
+    },
+    {
+      "topic": "release/signing/final CI",
+      "classification": "DEFER_L7",
+      "frozen_choice": false
+    }
+  ],
+  "a0_reconciliation": [
+    {
+      "a0_id": "D1",
+      "topic": "prospective Windows 11 Tier-1",
+      "disposition": "OWNER_SUPERSEDED",
+      "a1_authority": "retained unchanged"
+    },
+    {
+      "a0_id": "D2",
+      "topic": "installation identity/home",
+      "disposition": "RESOLVED_CONTRACT",
+      "a1_authority": "A1-D02/D03/D06"
+    },
+    {
+      "a0_id": "D3",
+      "topic": "physical state roots",
+      "disposition": "RESOLVED_CONTRACT",
+      "a1_authority": "A1-D01/D04/D05"
+    },
+    {
+      "a0_id": "D4",
+      "topic": "persisted user configuration",
+      "disposition": "RESOLVED_CONTRACT",
+      "a1_authority": "A1-D07/D08"
+    },
+    {
+      "a0_id": "D5",
+      "topic": "SM relocation",
+      "disposition": "RESOLVED_CONTRACT",
+      "a1_authority": "A1-D09"
+    },
+    {
+      "a0_id": "D6",
+      "topic": "control/Result/Audit root",
+      "disposition": "RESOLVED_CONTRACT",
+      "a1_authority": "A1-D10"
+    },
+    {
+      "a0_id": "D7",
+      "topic": "logs/runtime placement",
+      "disposition": "RESOLVED_CONTRACT",
+      "a1_authority": "A1-D11"
+    },
+    {
+      "a0_id": "D8",
+      "topic": "init responsibility",
+      "disposition": "RESOLVED_CONTRACT",
+      "a1_authority": "A1-D12/D13"
+    },
+    {
+      "a0_id": "D9",
+      "topic": "Native packaging",
+      "disposition": "DEFER_A3",
+      "a1_authority": "recommendation not frozen"
+    },
+    {
+      "a0_id": "D10",
+      "topic": "Docker mounts",
+      "disposition": "DEFER_A4",
+      "a1_authority": "logical ownership only"
+    },
+    {
+      "a0_id": "D11",
+      "topic": "Docker lifecycle",
+      "disposition": "DEFER_A4",
+      "a1_authority": "not implemented"
+    },
+    {
+      "a0_id": "D12",
+      "topic": "upgrade/state relationship",
+      "disposition": "ALREADY_FROZEN",
+      "a1_authority": "L0/L2 retained"
+    },
+    {
+      "a0_id": "D13",
+      "topic": "P1-P6 strategy",
+      "disposition": "CONTRACT_IMPLICATIONS_ONLY",
+      "a1_authority": "not acceptance"
+    },
+    {
+      "a0_id": "D14",
+      "topic": "installer",
+      "disposition": "DEFER_A3_OR_LATER",
+      "a1_authority": "not selected"
+    },
+    {
+      "a0_id": "D15",
+      "topic": "release/signing/CI",
+      "disposition": "DEFER_L7",
+      "a1_authority": "not selected"
+    }
+  ]
+}

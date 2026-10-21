@@ -1,0 +1,66 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D14"
+  ],
+  "statements": [
+    "Existing root ENV/CLI seams remain. Target chain is HOME -> installation metadata -> STATE_ROOT -> fixed logical subroots. Legacy overrides are not required for P1-P6 acceptance. Future effective roots outside canonical layout must be disclosed as NONCANONICAL_ROOT_OVERRIDE or equivalent typed diagnostic and inherit L4 checks; no silent metadata rewrite/relocation. Exact warning spelling and deprecation/removal timing remain later compatibility/release review."
+  ],
+  "canonical_chain": [
+    "HOME",
+    "installation metadata",
+    "STATE_ROOT",
+    "fixed logical subroots"
+  ],
+  "seams_removed": false,
+  "required_for_p1_p6": false,
+  "warning_example": "NONCANONICAL_ROOT_OVERRIDE",
+  "deprecation": "later compatibility/release review",
+  "rows": [
+    {
+      "seam": "TW_MARKET_SECURITY_MASTER_ROOT",
+      "classification": "legacy compatibility override",
+      "behavior": "loader/lifecycle ENV or checkout default; manager --root is separate"
+    },
+    {
+      "seam": "manage_security_master.py --root",
+      "classification": "narrow operator override",
+      "behavior": "manager explicit root or checkout default"
+    },
+    {
+      "seam": "TW_MARKET_WATCHLIST_ROOT",
+      "classification": "legacy compatibility override",
+      "behavior": "Watchlist default_root/production_store"
+    },
+    {
+      "seam": "M8R_06_03_CONTROL_ROOT",
+      "classification": "legacy compatibility override",
+      "behavior": "governed producers/readers/Mode B2/Mode C"
+    },
+    {
+      "seam": "TW_MARKET_OPERATIONAL_EVENT_PATH",
+      "classification": "diagnostic override",
+      "behavior": "optional bounded operational JSONL sink"
+    },
+    {
+      "seam": "TW_MARKET_OPERATIONAL_TRACE_ID",
+      "classification": "diagnostic override",
+      "behavior": "correlation only; not root/installation identity"
+    },
+    {
+      "seam": "TW_MARKET_HOST / TW_MARKET_PORT",
+      "classification": "current canonical seam",
+      "behavior": "CLI > ENV > default currently; settings insertion is future"
+    },
+    {
+      "seam": "UNIFIED_MARKET_EVIDENCE_SERVICE_URL / --service-url",
+      "classification": "narrow operator override",
+      "behavior": "integration endpoint, not persisted home/config authority"
+    },
+    {
+      "seam": "M8R_06_03_EXECUTION_ENVIRONMENT / M8R_06_03_TEST_*",
+      "classification": "test-only seam",
+      "behavior": "acceptance harness, never installation settings"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D06"
+  ],
+  "statements": [
+    "<HOME>\\meta\\installation.json has minimum logical fields installation_schema_version, installation_id, state_root and created_at. Version must be explicit/supported. installation_id is opaque, generated once during fresh offline init, independent of APP_ROOT, username, machine name and port, and preserved on ordinary init rerun, app upgrade and relocation. UUID encoding is not mandated. P4 restore keeps destination identity; source identity is provenance only. Source PID/ownership and absolute path mapping never become active destination authority. Incompatible metadata fails closed without mutation/migration."
+  ],
+  "authority_path": "<HOME>\\meta\\installation.json",
+  "minimum_fields": [
+    "installation_schema_version",
+    "installation_id",
+    "state_root",
+    "created_at"
+  ],
+  "encoding": "NOT_FROZEN",
+  "generated_once": true,
+  "excluded_identity_inputs": [
+    "APP_ROOT",
+    "username",
+    "machine name",
+    "port"
+  ],
+  "p4_destination_identity": "KEEP_DESTINATION_INSTALLATION_ID",
+  "source_identity": "PROVENANCE_ONLY",
+  "source_runtime_ownership": "NEVER_ACTIVATE",
+  "field_meanings": {
+    "installation_schema_version": "supported explicit metadata version",
+    "installation_id": "stable opaque ID, one per initialized installation",
+    "state_root": "canonical resolved absolute local state mapping",
+    "created_at": "original installation creation timestamp, preserved on ordinary init rerun/upgrade/relocation"
+  }
+}

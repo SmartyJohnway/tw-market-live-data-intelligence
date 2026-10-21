@@ -1,0 +1,1439 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "method": "bounded read-only source inspection and AST symbol inventory; no lifecycle/source/state operation invoked",
+  "source_base": "7ec798d682ac91db776608a5e9a6a98e179dd1ec",
+  "source_file_count": 21,
+  "sources": {
+    "scripts/tw_market.py": {
+      "git_blob": "7e3a09bb3d7852388038789b8f00a65d3bcf900d",
+      "sha256": "e4a45451d3b6af6e4a2a4e0cce1920be62cd2ad25e1e712294c04efdd2eae7af",
+      "symbols": []
+    },
+    "scripts/tw_market_lifecycle.py": {
+      "git_blob": "084e816f60b1fb73020e84b638bc0d8ea182308f",
+      "sha256": "da6b7fc1b5294ddecb9d7cdb13ba4bf3ed1110cff0240ca65f21045615ad21b3",
+      "symbols": [
+        {
+          "symbol": "_NoRedirect",
+          "line": 48
+        },
+        {
+          "symbol": "_kernel32",
+          "line": 56
+        },
+        {
+          "symbol": "_effective",
+          "line": 74
+        },
+        {
+          "symbol": "_owner_path",
+          "line": 83
+        },
+        {
+          "symbol": "_event_path",
+          "line": 88
+        },
+        {
+          "symbol": "_process_start_token",
+          "line": 92
+        },
+        {
+          "symbol": "_process_executable",
+          "line": 118
+        },
+        {
+          "symbol": "_identity_matches",
+          "line": 143
+        },
+        {
+          "symbol": "_process_matches",
+          "line": 156
+        },
+        {
+          "symbol": "_starting_creator_matches",
+          "line": 160
+        },
+        {
+          "symbol": "_owner_state",
+          "line": 166
+        },
+        {
+          "symbol": "_port_open",
+          "line": 176
+        },
+        {
+          "symbol": "_health",
+          "line": 183
+        },
+        {
+          "symbol": "_capability_projection",
+          "line": 193
+        },
+        {
+          "symbol": "_read_owner",
+          "line": 206
+        },
+        {
+          "symbol": "_safe_unlink",
+          "line": 225
+        },
+        {
+          "symbol": "_sm_status",
+          "line": 236
+        },
+        {
+          "symbol": "_safe_service_url_for_diagnostics",
+          "line": 251
+        },
+        {
+          "symbol": "_base",
+          "line": 260
+        },
+        {
+          "symbol": "_doctor",
+          "line": 306
+        },
+        {
+          "symbol": "_aggregate_doctor_status",
+          "line": 382
+        },
+        {
+          "symbol": "_exit_code",
+          "line": 391
+        },
+        {
+          "symbol": "_start",
+          "line": 395
+        },
+        {
+          "symbol": "_cleanup_start_timeout",
+          "line": 479
+        },
+        {
+          "symbol": "_terminate_owned",
+          "line": 505
+        },
+        {
+          "symbol": "_stop",
+          "line": 553
+        },
+        {
+          "symbol": "_serve",
+          "line": 573
+        },
+        {
+          "symbol": "main",
+          "line": 581
+        },
+        {
+          "symbol": "redirect_request",
+          "line": 49
+        },
+        {
+          "symbol": "check",
+          "line": 309
+        }
+      ]
+    },
+    "scripts/manage_security_master.py": {
+      "git_blob": "78e03de3c528d52270923f203bdd65ab32a0599b",
+      "sha256": "f0f9a809be3b7a92ad35bc0e70a2480c1e4c69460f9d2c11594c0d5d28909dc5",
+      "symbols": [
+        {
+          "symbol": "_print",
+          "line": 30
+        },
+        {
+          "symbol": "main",
+          "line": 34
+        }
+      ]
+    },
+    "scripts/m8r_06_01b_materialize_production_inputs.py": {
+      "git_blob": "93a90d8274349179c5b408618c4bbf0825d6f942",
+      "sha256": "141feae207c8c0dd4757eb217dff19cf0046b688a78ad1a85c56dca69d12515a",
+      "symbols": [
+        {
+          "symbol": "log",
+          "line": 112
+        },
+        {
+          "symbol": "qualify_record",
+          "line": 118
+        },
+        {
+          "symbol": "_stop_on_bootstrap_transport_limit",
+          "line": 153
+        },
+        {
+          "symbol": "_sanitize_lifecycle_drift_detail",
+          "line": 160
+        },
+        {
+          "symbol": "_require_tpex_lifecycle_data_contract",
+          "line": 177
+        },
+        {
+          "symbol": "_tpex_delisted_request",
+          "line": 197
+        },
+        {
+          "symbol": "main",
+          "line": 227
+        },
+        {
+          "symbol": "_write_failure_report",
+          "line": 881
+        },
+        {
+          "symbol": "_write_candidate_materialization_report",
+          "line": 929
+        },
+        {
+          "symbol": "build_immutable_manifest",
+          "line": 947
+        }
+      ]
+    },
+    "scripts/m8r_06_security_master_candidate_paths.py": {
+      "git_blob": "9bda00ac1bbfadcdb515f1d3cf5ccb26148383d1",
+      "sha256": "26304ecd2691e56cb81a61176984ab6fc0c995297fe47858c3fef10956cf0e8b",
+      "symbols": [
+        {
+          "symbol": "validate_candidate_id",
+          "line": 14
+        },
+        {
+          "symbol": "is_legacy_accepted_candidate",
+          "line": 25
+        },
+        {
+          "symbol": "input_bundle_dir",
+          "line": 29
+        },
+        {
+          "symbol": "runtime_index_dir",
+          "line": 34
+        },
+        {
+          "symbol": "source_immutable_seal_path",
+          "line": 39
+        },
+        {
+          "symbol": "runtime_immutable_seal_path",
+          "line": 53
+        },
+        {
+          "symbol": "materialization_report_path",
+          "line": 73
+        }
+      ]
+    },
+    "scripts/m8r_08g_security_master_releases.py": {
+      "git_blob": "e92f96152ef580d25b7674c844d321a9a560ba8b",
+      "sha256": "9961ed048a32eb1ae4d7fcda308554b819221e64fd66145ca52ed1b0936a5530",
+      "symbols": [
+        {
+          "symbol": "LocalSecurityMasterError",
+          "line": 37
+        },
+        {
+          "symbol": "utc_now",
+          "line": 43
+        },
+        {
+          "symbol": "release_id_for_now",
+          "line": 47
+        },
+        {
+          "symbol": "sha256_file",
+          "line": 51
+        },
+        {
+          "symbol": "_json",
+          "line": 55
+        },
+        {
+          "symbol": "atomic_write_json",
+          "line": 59
+        },
+        {
+          "symbol": "_read",
+          "line": 69
+        },
+        {
+          "symbol": "_dir",
+          "line": 79
+        },
+        {
+          "symbol": "_schema",
+          "line": 85
+        },
+        {
+          "symbol": "_valid",
+          "line": 89
+        },
+        {
+          "symbol": "_hashes",
+          "line": 96
+        },
+        {
+          "symbol": "_commit",
+          "line": 100
+        },
+        {
+          "symbol": "_prov",
+          "line": 109
+        },
+        {
+          "symbol": "build_candidate_release",
+          "line": 143
+        },
+        {
+          "symbol": "_reasons",
+          "line": 172
+        },
+        {
+          "symbol": "validate_release_candidate",
+          "line": 208
+        },
+        {
+          "symbol": "_reject",
+          "line": 276
+        },
+        {
+          "symbol": "qualify_candidate_release",
+          "line": 292
+        },
+        {
+          "symbol": "build_qualified_release",
+          "line": 338
+        },
+        {
+          "symbol": "load_qualified_release",
+          "line": 342
+        },
+        {
+          "symbol": "activate_qualified_release",
+          "line": 374
+        },
+        {
+          "symbol": "load_active_identity_service",
+          "line": 393
+        },
+        {
+          "symbol": "retire_qualified_release",
+          "line": 419
+        },
+        {
+          "symbol": "list_releases",
+          "line": 441
+        },
+        {
+          "symbol": "__init__",
+          "line": 38
+        }
+      ]
+    },
+    "scripts/m8r_06_01c2_mode_a_security_master_loader.py": {
+      "git_blob": "86ba3f2f16f231ab30353b89416f249ffd76e96b",
+      "sha256": "6e4be32ecd4b673cad667a8449d2467753c9bfa78576d0cf1d071798ce643746",
+      "symbols": [
+        {
+          "symbol": "ModeASecurityMasterUnavailable",
+          "line": 50
+        },
+        {
+          "symbol": "ValidatedModeASecurityMaster",
+          "line": 59
+        },
+        {
+          "symbol": "get_production_mode_a_security_master",
+          "line": 69
+        },
+        {
+          "symbol": "reset_production_mode_a_security_master_for_tests",
+          "line": 100
+        },
+        {
+          "symbol": "_fail",
+          "line": 107
+        },
+        {
+          "symbol": "load_active_mode_a_security_master",
+          "line": 111
+        },
+        {
+          "symbol": "_load_dict",
+          "line": 156
+        },
+        {
+          "symbol": "_is_relative_to",
+          "line": 168
+        },
+        {
+          "symbol": "_resolve_governed_path",
+          "line": 176
+        },
+        {
+          "symbol": "_validate_pointer",
+          "line": 198
+        },
+        {
+          "symbol": "_validate_pointer_seal_binding",
+          "line": 212
+        },
+        {
+          "symbol": "load_mode_a_security_master",
+          "line": 245
+        },
+        {
+          "symbol": "__init__",
+          "line": 53
+        }
+      ]
+    },
+    "scripts/m8r_09_persistent_watchlists.py": {
+      "git_blob": "c113e16b74f8c37e04f7e3a8a109e99b7833853f",
+      "sha256": "31035164a6ab40691944a7fe9daba878ad79f3036d487c90f7e4080dbc737d8e",
+      "symbols": [
+        {
+          "symbol": "WatchlistError",
+          "line": 51
+        },
+        {
+          "symbol": "default_root",
+          "line": 57
+        },
+        {
+          "symbol": "default_security_master_root",
+          "line": 68
+        },
+        {
+          "symbol": "utc_now",
+          "line": 75
+        },
+        {
+          "symbol": "canonical_json",
+          "line": 79
+        },
+        {
+          "symbol": "sha256_json",
+          "line": 83
+        },
+        {
+          "symbol": "_hash_without_content_sha256",
+          "line": 87
+        },
+        {
+          "symbol": "validate_contract",
+          "line": 94
+        },
+        {
+          "symbol": "_depth",
+          "line": 110
+        },
+        {
+          "symbol": "_normal_text",
+          "line": 116
+        },
+        {
+          "symbol": "_normal_tags",
+          "line": 122
+        },
+        {
+          "symbol": "PersistentWatchlistStore",
+          "line": 132
+        },
+        {
+          "symbol": "production_store",
+          "line": 732
+        },
+        {
+          "symbol": "__init__",
+          "line": 52
+        },
+        {
+          "symbol": "__init__",
+          "line": 135
+        },
+        {
+          "symbol": "_validate_storage_path",
+          "line": 147
+        },
+        {
+          "symbol": "_connect",
+          "line": 160
+        },
+        {
+          "symbol": "_admit_sqlite_write",
+          "line": 176
+        },
+        {
+          "symbol": "_initial_schema_growth_bytes",
+          "line": 186
+        },
+        {
+          "symbol": "_estimate_commit_growth",
+          "line": 199
+        },
+        {
+          "symbol": "_inspect_schema_readonly",
+          "line": 240
+        },
+        {
+          "symbol": "_initialize",
+          "line": 282
+        },
+        {
+          "symbol": "_write",
+          "line": 336
+        },
+        {
+          "symbol": "_service",
+          "line": 344
+        },
+        {
+          "symbol": "identity_service_for_read",
+          "line": 352
+        },
+        {
+          "symbol": "_release_id",
+          "line": 356
+        },
+        {
+          "symbol": "_watchlist",
+          "line": 359
+        },
+        {
+          "symbol": "_validate_snapshot",
+          "line": 373
+        },
+        {
+          "symbol": "_revision",
+          "line": 383
+        },
+        {
+          "symbol": "_write_snapshot",
+          "line": 389
+        },
+        {
+          "symbol": "list_watchlists",
+          "line": 400
+        },
+        {
+          "symbol": "get_watchlist",
+          "line": 408
+        },
+        {
+          "symbol": "_identity_projection",
+          "line": 416
+        },
+        {
+          "symbol": "revisions",
+          "line": 427
+        },
+        {
+          "symbol": "revision",
+          "line": 455
+        },
+        {
+          "symbol": "_resolve_entry",
+          "line": 461
+        },
+        {
+          "symbol": "_legacy_items",
+          "line": 470
+        },
+        {
+          "symbol": "preview",
+          "line": 508
+        },
+        {
+          "symbol": "commit",
+          "line": 630
+        },
+        {
+          "symbol": "_affected_ids",
+          "line": 697
+        },
+        {
+          "symbol": "export",
+          "line": 705
+        },
+        {
+          "symbol": "verify_integrity",
+          "line": 713
+        }
+      ]
+    },
+    "server/services/unified_mode_b2.py": {
+      "git_blob": "d57b47202ed9ee0d1683e87327bc5e607a638ad4",
+      "sha256": "448d7f918d058b39b67c25f87dc6f0a294c35f4f24e18472595fb078c4a91b8a",
+      "symbols": [
+        {
+          "symbol": "ModeB2Error",
+          "line": 36
+        },
+        {
+          "symbol": "_utc_now",
+          "line": 42
+        },
+        {
+          "symbol": "_zulu",
+          "line": 46
+        },
+        {
+          "symbol": "_next_local_action_issuance_time",
+          "line": 50
+        },
+        {
+          "symbol": "_unused_state",
+          "line": 66
+        },
+        {
+          "symbol": "_json_text",
+          "line": 77
+        },
+        {
+          "symbol": "_write_control_package",
+          "line": 81
+        },
+        {
+          "symbol": "_materialize_execution_ticket",
+          "line": 119
+        },
+        {
+          "symbol": "_authorizable_preview",
+          "line": 169
+        },
+        {
+          "symbol": "_non_actionable_preview_code",
+          "line": 186
+        },
+        {
+          "symbol": "build_mode_b2_authorization",
+          "line": 252
+        },
+        {
+          "symbol": "build_local_operator_execution_ticket",
+          "line": 313
+        },
+        {
+          "symbol": "__init__",
+          "line": 37
+        }
+      ]
+    },
+    "server/services/unified_mode_c.py": {
+      "git_blob": "e9047b2160c9bd932309e796cbee688f8ab62077",
+      "sha256": "1138808a7f57f005c037bc30a00e730c8815086a09ff576dfd6268384fc681b8",
+      "symbols": [
+        {
+          "symbol": "ModeCError",
+          "line": 65
+        },
+        {
+          "symbol": "_read",
+          "line": 71
+        },
+        {
+          "symbol": "_bounded_file_bytes",
+          "line": 81
+        },
+        {
+          "symbol": "_enforce_public_projection_bound",
+          "line": 90
+        },
+        {
+          "symbol": "_safe_path",
+          "line": 109
+        },
+        {
+          "symbol": "_safe_package_path",
+          "line": 116
+        },
+        {
+          "symbol": "_find",
+          "line": 120
+        },
+        {
+          "symbol": "_verify_control",
+          "line": 137
+        },
+        {
+          "symbol": "_load_verified",
+          "line": 168
+        },
+        {
+          "symbol": "_f3",
+          "line": 195
+        },
+        {
+          "symbol": "_receipt_calculated_at",
+          "line": 215
+        },
+        {
+          "symbol": "_inputs",
+          "line": 223
+        },
+        {
+          "symbol": "_expected_outputs",
+          "line": 231
+        },
+        {
+          "symbol": "_persisted_output_version",
+          "line": 258
+        },
+        {
+          "symbol": "_read_verified_outputs",
+          "line": 275
+        },
+        {
+          "symbol": "build_mode_c_result_package",
+          "line": 307
+        },
+        {
+          "symbol": "read_mode_c_audit",
+          "line": 371
+        },
+        {
+          "symbol": "build_mode_c_ai_handoff",
+          "line": 380
+        },
+        {
+          "symbol": "__init__",
+          "line": 66
+        }
+      ]
+    },
+    "scripts/m8r_06_03_execute_once.py": {
+      "git_blob": "94f91dd46f3e05a2bf8be1652affb18eccd0a9c8",
+      "sha256": "d23bd3f808d8ad2a9622e9d07f64d9170fa4ae93f770269398a8180e9790d0eb",
+      "symbols": [
+        {
+          "symbol": "_now",
+          "line": 47
+        },
+        {
+          "symbol": "_load_json",
+          "line": 51
+        },
+        {
+          "symbol": "load_control_package",
+          "line": 61
+        },
+        {
+          "symbol": "_configure_transport_mode",
+          "line": 115
+        },
+        {
+          "symbol": "_install_deterministic_test_transport",
+          "line": 130
+        },
+        {
+          "symbol": "execute_once",
+          "line": 173
+        },
+        {
+          "symbol": "main",
+          "line": 211
+        },
+        {
+          "symbol": "record_invocation",
+          "line": 140
+        },
+        {
+          "symbol": "observation",
+          "line": 149
+        },
+        {
+          "symbol": "eod",
+          "line": 160
+        }
+      ]
+    },
+    "scripts/m8r_05c/artifact_loader.py": {
+      "git_blob": "e32c048b8564b199c99cb07ffaf773d1e2a81b3d",
+      "sha256": "235131ef15606bfe4d3ab83df7989270b71ec7c22fd758c0c94c79adf8ed18fa",
+      "symbols": [
+        {
+          "symbol": "_load_schema",
+          "line": 75
+        },
+        {
+          "symbol": "_validate_schema",
+          "line": 83
+        },
+        {
+          "symbol": "_validate_request_schema",
+          "line": 94
+        },
+        {
+          "symbol": "_load_json",
+          "line": 104
+        },
+        {
+          "symbol": "_sha256_file",
+          "line": 115
+        },
+        {
+          "symbol": "_check_containment",
+          "line": 122
+        },
+        {
+          "symbol": "_load_phase_h_source_attempts",
+          "line": 138
+        },
+        {
+          "symbol": "load_projection_inputs",
+          "line": 202
+        }
+      ]
+    },
+    "scripts/m8r_05c/result_builder.py": {
+      "git_blob": "6de4e334b4dd26db49a391e8b86bde044f24c08c",
+      "sha256": "6e0192a35c4358f75f554494d6d3564e60e35d6d119f146f8415a352c03ee651",
+      "symbols": [
+        {
+          "symbol": "_load_result_schema",
+          "line": 63
+        },
+        {
+          "symbol": "_build_request_summary",
+          "line": 70
+        },
+        {
+          "symbol": "_build_resolution",
+          "line": 91
+        },
+        {
+          "symbol": "_compute_result_status",
+          "line": 116
+        },
+        {
+          "symbol": "_envelope_to_dict",
+          "line": 157
+        },
+        {
+          "symbol": "_citation_to_dict",
+          "line": 180
+        },
+        {
+          "symbol": "_canonical_identity_v2",
+          "line": 196
+        },
+        {
+          "symbol": "_derived_metric_to_dict",
+          "line": 213
+        },
+        {
+          "symbol": "_research_status",
+          "line": 235
+        },
+        {
+          "symbol": "_not_applicable_research",
+          "line": 240
+        },
+        {
+          "symbol": "_derived_h4_artifact",
+          "line": 265
+        },
+        {
+          "symbol": "build_result",
+          "line": 290
+        }
+      ]
+    },
+    "scripts/m8r_05c/audit_package_builder.py": {
+      "git_blob": "b07f3be3f2a3e2a1d17a14b20359e4731a501cb7",
+      "sha256": "794bffa1c45241766138bd66017262b47ccf9513c44ef2599751ed69ff78d0c3",
+      "symbols": [
+        {
+          "symbol": "_load_audit_schema",
+          "line": 41
+        },
+        {
+          "symbol": "_phase_h_attempt_metadata",
+          "line": 65
+        },
+        {
+          "symbol": "_audit_attempt",
+          "line": 73
+        },
+        {
+          "symbol": "_phase_h_governance",
+          "line": 111
+        },
+        {
+          "symbol": "_phase_i_evidence",
+          "line": 189
+        },
+        {
+          "symbol": "build_audit_package",
+          "line": 212
+        }
+      ]
+    },
+    "server/operational_diagnostics.py": {
+      "git_blob": "15e3703a58cf3238dbd3a86d86f949e3e8dbce89",
+      "sha256": "3d356716f05d6f4a554d0960485acd594efd6790de2638f68ad9d8584b36e4c2",
+      "symbols": [
+        {
+          "symbol": "_windows_memory_api",
+          "line": 70
+        },
+        {
+          "symbol": "normalize_trace_id",
+          "line": 102
+        },
+        {
+          "symbol": "new_trace_id",
+          "line": 112
+        },
+        {
+          "symbol": "bind_trace_id",
+          "line": 116
+        },
+        {
+          "symbol": "reset_trace_id",
+          "line": 121
+        },
+        {
+          "symbol": "current_trace_id",
+          "line": 125
+        },
+        {
+          "symbol": "process_memory_bytes",
+          "line": 134
+        },
+        {
+          "symbol": "disk_free_bytes",
+          "line": 161
+        },
+        {
+          "symbol": "timed_source_call",
+          "line": 172
+        },
+        {
+          "symbol": "_bounded_string",
+          "line": 203
+        },
+        {
+          "symbol": "build_event",
+          "line": 209
+        },
+        {
+          "symbol": "serialize_event",
+          "line": 244
+        },
+        {
+          "symbol": "event_path_from_env",
+          "line": 251
+        },
+        {
+          "symbol": "emit_jsonl",
+          "line": 268
+        },
+        {
+          "symbol": "emit_stderr",
+          "line": 294
+        },
+        {
+          "symbol": "emit_runtime_event",
+          "line": 304
+        },
+        {
+          "symbol": "_WindowsProcessMemoryCounters",
+          "line": 55
+        }
+      ]
+    },
+    "server/services/unified_backup.py": {
+      "git_blob": "5e0b8f59fca6f7dafa26ab3b9271baf3466df873",
+      "sha256": "81b01e0800353907f512e168a1f39a594e8c706515355268f473abac969370bb",
+      "symbols": [
+        {
+          "symbol": "BackupError",
+          "line": 49
+        },
+        {
+          "symbol": "BackupRoot",
+          "line": 58
+        },
+        {
+          "symbol": "BackupMember",
+          "line": 64
+        },
+        {
+          "symbol": "_canonical_bytes",
+          "line": 77
+        },
+        {
+          "symbol": "_reject_json_constant",
+          "line": 81
+        },
+        {
+          "symbol": "_strict_object",
+          "line": 85
+        },
+        {
+          "symbol": "_manifest_hash",
+          "line": 94
+        },
+        {
+          "symbol": "_is_reparse_or_symlink",
+          "line": 100
+        },
+        {
+          "symbol": "_reject_reparse_components",
+          "line": 108
+        },
+        {
+          "symbol": "_relative",
+          "line": 122
+        },
+        {
+          "symbol": "_contained_file",
+          "line": 142
+        },
+        {
+          "symbol": "_source_signature",
+          "line": 160
+        },
+        {
+          "symbol": "_verify_binding",
+          "line": 167
+        },
+        {
+          "symbol": "_validate_roots",
+          "line": 184
+        },
+        {
+          "symbol": "_selected_for_tier",
+          "line": 208
+        },
+        {
+          "symbol": "_verify_watchlist_database",
+          "line": 220
+        },
+        {
+          "symbol": "_sqlite_logical_fingerprint",
+          "line": 243
+        },
+        {
+          "symbol": "_sqlite_snapshot_fingerprint",
+          "line": 265
+        },
+        {
+          "symbol": "plan_backup",
+          "line": 299
+        },
+        {
+          "symbol": "_read_source_bytes",
+          "line": 414
+        },
+        {
+          "symbol": "_sqlite_snapshot",
+          "line": 441
+        },
+        {
+          "symbol": "_hash_file",
+          "line": 480
+        },
+        {
+          "symbol": "_write_json",
+          "line": 508
+        },
+        {
+          "symbol": "_manifest_for",
+          "line": 516
+        },
+        {
+          "symbol": "create_backup",
+          "line": 539
+        },
+        {
+          "symbol": "_validate_manifest_plan",
+          "line": 649
+        },
+        {
+          "symbol": "verify_backup",
+          "line": 711
+        },
+        {
+          "symbol": "_verify_backup",
+          "line": 716
+        },
+        {
+          "symbol": "__init__",
+          "line": 52
+        },
+        {
+          "symbol": "connect_read_only",
+          "line": 227
+        }
+      ]
+    },
+    "server/services/unified_restore.py": {
+      "git_blob": "4246b5c802ec471a3a7e4c91563413930ccb6fce",
+      "sha256": "7d43613c674fdb0f3e327d79ddf7eff5e43a9b8605bf9fe28bb040b6c148facb",
+      "symbols": [
+        {
+          "symbol": "RestoreError",
+          "line": 51
+        },
+        {
+          "symbol": "RestoreCompatibilityContract",
+          "line": 60
+        },
+        {
+          "symbol": "CompatibilityAttestation",
+          "line": 70
+        },
+        {
+          "symbol": "_canonical_bytes",
+          "line": 93
+        },
+        {
+          "symbol": "_receipt_hash",
+          "line": 97
+        },
+        {
+          "symbol": "_contract_hash",
+          "line": 103
+        },
+        {
+          "symbol": "_reject_json_constant",
+          "line": 120
+        },
+        {
+          "symbol": "_strict_object",
+          "line": 124
+        },
+        {
+          "symbol": "_load_manifest",
+          "line": 133
+        },
+        {
+          "symbol": "_verify_source",
+          "line": 151
+        },
+        {
+          "symbol": "_validate_contract",
+          "line": 186
+        },
+        {
+          "symbol": "_watchlist_schema_version",
+          "line": 197
+        },
+        {
+          "symbol": "_classify",
+          "line": 213
+        },
+        {
+          "symbol": "inspect_restore",
+          "line": 269
+        },
+        {
+          "symbol": "_unsafe_path",
+          "line": 296
+        },
+        {
+          "symbol": "_safe_relative",
+          "line": 308
+        },
+        {
+          "symbol": "_resolve_destination",
+          "line": 315
+        },
+        {
+          "symbol": "_source_inventory",
+          "line": 353
+        },
+        {
+          "symbol": "_verify_watchlist",
+          "line": 364
+        },
+        {
+          "symbol": "_verify_member_path",
+          "line": 380
+        },
+        {
+          "symbol": "_make_receipt",
+          "line": 398
+        },
+        {
+          "symbol": "_validate_receipt_envelope",
+          "line": 424
+        },
+        {
+          "symbol": "restore_backup",
+          "line": 470
+        },
+        {
+          "symbol": "verify_restored_state",
+          "line": 564
+        },
+        {
+          "symbol": "__init__",
+          "line": 54
+        }
+      ]
+    },
+    "server/services/unified_migration.py": {
+      "git_blob": "ab3fd0dc5c8d832c6e55f5ecbe2441b0f9af439b",
+      "sha256": "0f83d0a5da9f22bd51138973c0d8b7e18b77b344140811f7e903c48830dab424",
+      "symbols": [
+        {
+          "symbol": "MigrationError",
+          "line": 35
+        },
+        {
+          "symbol": "MigrationDefinition",
+          "line": 44
+        },
+        {
+          "symbol": "_canonical",
+          "line": 71
+        },
+        {
+          "symbol": "_require_utc",
+          "line": 76
+        },
+        {
+          "symbol": "_digest",
+          "line": 85
+        },
+        {
+          "symbol": "_integrity",
+          "line": 89
+        },
+        {
+          "symbol": "_registry_rows",
+          "line": 96
+        },
+        {
+          "symbol": "_attestation_hash",
+          "line": 100
+        },
+        {
+          "symbol": "_manifest",
+          "line": 105
+        },
+        {
+          "symbol": "_ensure_source_location",
+          "line": 123
+        },
+        {
+          "symbol": "_inventory",
+          "line": 139
+        },
+        {
+          "symbol": "_inventory_sha",
+          "line": 153
+        },
+        {
+          "symbol": "_has_exact_directories",
+          "line": 158
+        },
+        {
+          "symbol": "_safe_root",
+          "line": 179
+        },
+        {
+          "symbol": "_derive",
+          "line": 198
+        },
+        {
+          "symbol": "inspect_migration",
+          "line": 259
+        },
+        {
+          "symbol": "MigrationPlan",
+          "line": 287
+        },
+        {
+          "symbol": "_plan_from_payload",
+          "line": 339
+        },
+        {
+          "symbol": "preview_migration",
+          "line": 360
+        },
+        {
+          "symbol": "_validate_plan",
+          "line": 430
+        },
+        {
+          "symbol": "_read_members",
+          "line": 494
+        },
+        {
+          "symbol": "_destination",
+          "line": 513
+        },
+        {
+          "symbol": "_check_existing_isolated",
+          "line": 539
+        },
+        {
+          "symbol": "_write_members",
+          "line": 558
+        },
+        {
+          "symbol": "_member_records",
+          "line": 573
+        },
+        {
+          "symbol": "_verify_watchlist_members",
+          "line": 578
+        },
+        {
+          "symbol": "_receipt_body",
+          "line": 596
+        },
+        {
+          "symbol": "apply_migration",
+          "line": 630
+        },
+        {
+          "symbol": "verify_migrated_state",
+          "line": 723
+        },
+        {
+          "symbol": "rollback_migration",
+          "line": 819
+        },
+        {
+          "symbol": "verify_rollback",
+          "line": 882
+        },
+        {
+          "symbol": "__init__",
+          "line": 38
+        },
+        {
+          "symbol": "authority_record",
+          "line": 54
+        },
+        {
+          "symbol": "to_dict",
+          "line": 312
+        }
+      ]
+    },
+    "server/services/unified_retention_inventory.py": {
+      "git_blob": "fee3c97211d76a0b1aee16ec4de7c34130c85759",
+      "sha256": "bdca3309c09148001207a944f27500871cf2d961926e507a5ce78bd2e7b9b2c8",
+      "symbols": [
+        {
+          "symbol": "_entry",
+          "line": 15
+        },
+        {
+          "symbol": "retention_inventory",
+          "line": 77
+        },
+        {
+          "symbol": "classify_artifact_family",
+          "line": 82
+        },
+        {
+          "symbol": "classify_artifact",
+          "line": 95
+        }
+      ]
+    },
+    "scripts/product_version.py": {
+      "git_blob": "c4d00c83394168bbfaac87b22bad1ce7c8d37945",
+      "sha256": "bbe05f7a73b8c8ab585dd8499dcbe7e1ab2694ca8f13fb7b23e50a92e31253a2",
+      "symbols": [
+        {
+          "symbol": "ProductVersionError",
+          "line": 17
+        },
+        {
+          "symbol": "product_version",
+          "line": 21
+        }
+      ]
+    },
+    "server/unified_mcp/tool_contracts.py": {
+      "git_blob": "add32621e1be6c999ba04c63c98a6cb5faeee281",
+      "sha256": "015c25dd5941dc5ead08e6c22df30679f25ef8c994376810f260af4aa32bb29f",
+      "symbols": [
+        {
+          "symbol": "ToolContractError",
+          "line": 41
+        },
+        {
+          "symbol": "_load_json",
+          "line": 45
+        },
+        {
+          "symbol": "load_unified_request_schema",
+          "line": 57
+        },
+        {
+          "symbol": "load_canonical_unified_request_schema",
+          "line": 77
+        },
+        {
+          "symbol": "canonical_request_schema_sha256",
+          "line": 82
+        },
+        {
+          "symbol": "build_request_envelope_schema",
+          "line": 90
+        },
+        {
+          "symbol": "build_control_package_schema",
+          "line": 114
+        },
+        {
+          "symbol": "_annotations",
+          "line": 131
+        },
+        {
+          "symbol": "_action_annotations",
+          "line": 140
+        },
+        {
+          "symbol": "ToolContractSnapshot",
+          "line": 145
+        },
+        {
+          "symbol": "build_tool_contract_snapshot",
+          "line": 163
+        },
+        {
+          "symbol": "build_tool_specs",
+          "line": 190
+        },
+        {
+          "symbol": "tool_schema_by_name",
+          "line": 195
+        },
+        {
+          "symbol": "adapter_identity",
+          "line": 199
+        },
+        {
+          "symbol": "validate_arguments",
+          "line": 152
+        }
+      ]
+    }
+  },
+  "findings": [
+    "lifecycle CLI has no init/home/state-root/settings resolver",
+    "_owner_path hashes ROOT, not hostname/port; port selects owner filename",
+    "manager --root defaults to checkout and does not read SM root ENV; loader/lifecycle do",
+    "materializer BUNDLE_BASE and manager input-bundle discovery remain checkout-local",
+    "Watchlist/control ENV seams exist with checkout defaults",
+    "L2 explicit caller members and forbidden roots; no automatic installation discovery",
+    "product_version reads tracked VERSION without Git",
+    "L1/L4 timing/diagnostics/path/resource policies are reused, not replaced"
+  ]
+}

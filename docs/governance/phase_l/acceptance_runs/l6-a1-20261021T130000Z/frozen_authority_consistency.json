@@ -1,0 +1,72 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "status": "PASS",
+  "authority_snapshots": [
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+      "canonical_sha256": "9cc56efcf69821be82af131e92a5e4cb229e27d155e65609e92298aad596c5a9",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L1_EXIT_REVIEW_2026-10-14.md",
+      "canonical_sha256": "5a6a0994bcc4fba66d65ea635dc1f85f5adfcdcec4941c28c4dd5b7f7f62c2d6",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L2_EXIT_REVIEW_2026-10-15.md",
+      "canonical_sha256": "8a316b1df7a55c76127e8bc55baae235b8a09cd076bd4c6acc848d6ec3182b17",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L2_A4_BACKUP_MANIFEST_AND_VERIFICATION_2026-10-14.md",
+      "canonical_sha256": "c460c111183aeec62a0466576cc6d335679cdf7797598a947bb494151b2459ac",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L2_A5_RESTORE_COMPATIBILITY_AND_BOUNDED_RESTORE_2026-10-14.md",
+      "canonical_sha256": "1ddf2a06e6834f8acf50bc6f92d7b4ccc3fd4d4789854a643396e508cc3ee585",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L2_A6_MIGRATION_AND_ROLLBACK_LIFECYCLE_2026-10-14.md",
+      "canonical_sha256": "b26c4eb7ca5f0dffa007b29aa68d95c37fad48497c311fc20920a1f585c13260",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L2_A6_R1_MIGRATION_SOURCE_LINEAGE_CLARIFICATION_2026-10-15.md",
+      "canonical_sha256": "ea65753d3e2d67087c7daa0090da342dc4f746af85dc333286f88e7b54f1ea07",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L4_A7_TECHNICAL_EXIT_REVIEW_2026-10-18.md",
+      "canonical_sha256": "4191c85e552fbdfbb0060df9e45896f6e36b4df27460f0473c42e5d2a9df2b58",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L5_OWNER_FINAL_CLOSURE_2026-10-21.md",
+      "canonical_sha256": "5867efc1cb98554333f3bd540b05f87125ca16689812a0a089661bedcfee4f3a",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L6_A0_PACKAGING_PORTABILITY_CURRENT_STATE_INVENTORY_2026-10-21.md",
+      "canonical_sha256": "9ad2e292ce452cb95b5c4112a075b2ba62686258fb48933e18cc9c356e1d7acd",
+      "current_equal_to_entry": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md",
+      "canonical_sha256": "75151c913274d056c62f5dcfcb634d7b9094fa6a6746ac3958176ae01339600c",
+      "current_equal_to_entry": true
+    }
+  ],
+  "a0_manifest": {
+    "sha256": "cd74076e02b0c47a6c0765d15eaa1310f07be231cc3e999573839dcf3aac3117",
+    "member_count": 26,
+    "members_verified": 26,
+    "self_hash_verified": true,
+    "binding": "historical committed content, not later front-door bytes"
+  },
+  "inherited_authority_conflicts": 0,
+  "history_rewritten": false,
+  "l2_current_support_not_overclaimed": true,
+  "windows11_policy_unchanged": true
+}

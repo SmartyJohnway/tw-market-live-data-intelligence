@@ -1,0 +1,13 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "base_commit": "7ec798d682ac91db776608a5e9a6a98e179dd1ec",
+  "base_tree": "a34cb171f206675e1731f8bf7da6c3bcc407c709",
+  "branch": "phase-l/l6-a1-installation-state-config-contract",
+  "entry_worktree_clean": true,
+  "isolated_worktree": "D:\\Codex-Workspace\\projects\\tw-market-live-data-intelligence-phase-l6-a1",
+  "original_checkout_untouched": true,
+  "a0_pr": 397,
+  "a0_merge_commit": "7ec798d682ac91db776608a5e9a6a98e179dd1ec",
+  "a0_merged_at": "2026-10-21T09:47:35Z",
+  "a0_manifest_sha256": "cd74076e02b0c47a6c0765d15eaa1310f07be231cc3e999573839dcf3aac3117"
+}

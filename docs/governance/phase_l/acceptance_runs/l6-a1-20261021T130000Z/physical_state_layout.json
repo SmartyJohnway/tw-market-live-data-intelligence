@@ -1,0 +1,26 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D05"
+  ],
+  "statements": [
+    "HOME holds meta/config/cache/logs; default STATE_ROOT is HOME/state, or a separately selected root. STATE_ROOT holds security-master/watchlists/governed. %TEMP%\\TW-Market\\<installation-id> holds runtime/temp. Logical class is authoritative irrespective of physical co-location. A retained SM provenance child must be under SM state; exact internal child spelling is not frozen."
+  ],
+  "home_children": [
+    "meta",
+    "config",
+    "cache",
+    "logs"
+  ],
+  "state_children": [
+    "security-master",
+    "watchlists",
+    "governed"
+  ],
+  "default_home_contains_state_child": true,
+  "ephemeral_root": "%TEMP%\\TW-Market\\<installation-id>",
+  "ephemeral_children": [
+    "runtime",
+    "temp"
+  ]
+}

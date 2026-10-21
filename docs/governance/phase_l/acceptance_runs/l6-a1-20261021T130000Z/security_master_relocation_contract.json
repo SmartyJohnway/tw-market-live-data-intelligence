@@ -1,0 +1,21 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D09"
+  ],
+  "statements": [
+    "<STATE_ROOT>\\security-master is canonical SM state. Incomplete/unqualified acquisition scratch is ephemeral under %TEMP%\\TW-Market\\<installation-id>\\temp\\security-master\\... or equivalent logical descendant. Final retained official source bundles/provenance are governed logical children of SM state outside APP_ROOT. Rebuildable indexes remain derived even when beside authority today. Explicit SM initialization/update remains the only acquisition path; init/start/doctor/application upgrade never acquire or refresh. Future integration joins manager/loader/materializer selection and explicitly separates staging, qualification, retention and activation. No manager/materializer changes occur here. Finalized retained bundle/report manifests must use installation/state-relative, content-bound identities, never APP_ROOT-dependent absolute paths as portable authority. Only qualified finalized retained state under SM authority may be activation input; ephemeral staging cannot become active/canonical authority. Historical provenance bytes are not rewritten by this future relocation contract."
+  ],
+  "canonical_root": "<STATE_ROOT>\\security-master",
+  "incomplete_staging": "%TEMP%\\TW-Market\\<installation-id>\\temp\\security-master\\...",
+  "retained_source_class": "GOVERNED_EVIDENCE under SM state",
+  "derived_indexes": "DERIVED_REBUILDABLE under cache or equivalent derived authority",
+  "acquisition_trigger": "explicit Security Master operation",
+  "init_acquires": false,
+  "start_acquires": false,
+  "doctor_acquires": false,
+  "upgrade_refreshes": false,
+  "retained_manifest_identity": "installation/state-relative and content-bound; never app-absolute as portable authority",
+  "ephemeral_staging_activation": false,
+  "activation_requires": "qualified finalized retained state under SM authority"
+}

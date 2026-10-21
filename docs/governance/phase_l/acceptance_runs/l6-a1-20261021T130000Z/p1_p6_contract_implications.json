@@ -1,0 +1,54 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "acceptance_claimed": false,
+  "rows": [
+    {
+      "id": "P1",
+      "inherited_a0_status": "PARTIAL",
+      "contract_implication": "New APP_ROOT on same machine preserves HOME/STATE_ROOT/installation ID; application resources remain replaceable.",
+      "acceptance": "NOT_EXECUTED_IN_A1",
+      "future_acceptance": "switch app path, prove state roots unchanged and lifecycle works",
+      "future_tranche": "A2/A3"
+    },
+    {
+      "id": "P2",
+      "inherited_a0_status": "GAP",
+      "contract_implication": "New Windows user gets user-local HOME and no inherited runtime. Explicit transfer/restore is required where applicable; no old-profile paths.",
+      "acceptance": "NOT_EXECUTED_IN_A1",
+      "future_acceptance": "fresh Win11 user, no inherited profile runtime",
+      "future_tranche": "A1/A2"
+    },
+    {
+      "id": "P3",
+      "inherited_a0_status": "GAP",
+      "contract_implication": "Fresh Win11 machine/user/arbitrary path uses explicit offline init then explicit SM update. No inherited .git/venv/data/tunnel/developer path.",
+      "acceptance": "NOT_EXECUTED_IN_A1",
+      "future_acceptance": "clean Win11 VM, arbitrary path, no Python/.git/state; initialize explicitly",
+      "future_tranche": "A1-A3"
+    },
+    {
+      "id": "P4",
+      "inherited_a0_status": "PARTIAL",
+      "contract_implication": "Destination keeps new installation ID; L2 restores declared portable state into isolated candidate, never source runtime/path activation.",
+      "acceptance": "NOT_EXECUTED_IN_A1",
+      "future_acceptance": "restore/verify then explicit activation, no acquisition",
+      "future_tranche": "A1/A2/A5"
+    },
+    {
+      "id": "P5",
+      "inherited_a0_status": "PARTIAL",
+      "contract_implication": "New app inspects supported old state under L2; explicit migration/rollback where required; upgrade is not refresh.",
+      "acceptance": "NOT_EXECUTED_IN_A1",
+      "future_acceptance": "old supported state cases and migration/rollback on newer app",
+      "future_tranche": "A2/A3/A5; release policy L7"
+    },
+    {
+      "id": "P6",
+      "inherited_a0_status": "NOT_YET_IMPLEMENTED",
+      "contract_implication": "Logical ownership is container-mappable only. Image/mount/listener/lifecycle syntax and implementation remain A4; portability acceptance A5.",
+      "acceptance": "NOT_EXECUTED_IN_A1",
+      "future_acceptance": "fresh mounted deployment; replace image; verify state and host stdio connection",
+      "future_tranche": "A4/A5"
+    }
+  ]
+}
