@@ -1,0 +1,47 @@
+{
+  "criteria": [
+    "replaceability",
+    "resource lookup",
+    "arbitrary path",
+    "state independence",
+    "upgrade",
+    "rollback",
+    "maintainability",
+    "reproducibility"
+  ],
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "options": [
+    {
+      "finding": "retains .git/dev coupling; insufficient release boundary",
+      "id": "A",
+      "name": "source checkout"
+    },
+    {
+      "finding": "removes .git but requires external Python/dependency management",
+      "id": "B",
+      "name": "git archive/source package"
+    },
+    {
+      "finding": "smallest plausible replaceable application with controlled dependencies and external state",
+      "id": "C",
+      "name": "versioned app bundle + isolated venv",
+      "recommendation": "preferred minimum candidate; not frozen/implemented"
+    },
+    {
+      "finding": "current static resources and ROOT-relative authority require packaging redesign",
+      "id": "D",
+      "name": "Python wheel"
+    },
+    {
+      "finding": "unnecessary runtime/resource extraction complexity without single-binary requirement",
+      "id": "E",
+      "name": "frozen executable"
+    },
+    {
+      "finding": "adds installation/signing/upgrade/uninstall policy; not minimum and not authorized",
+      "id": "F",
+      "name": "MSI/MSIX/installer"
+    }
+  ],
+  "recommended": "C, versioned bundle plus isolated venv and durable state outside app; Owner decision required"
+}

@@ -1,0 +1,60 @@
+{
+  "L1": {
+    "authority": [
+      "scripts/tw_market_lifecycle.py",
+      "server/operational_diagnostics.py"
+    ],
+    "reuse": [
+      "start/status/stop/doctor",
+      "owned process",
+      "diagnostics/correlation",
+      "source timing",
+      "resource snapshots"
+    ],
+    "rule": "one lifecycle truth"
+  },
+  "L2": {
+    "authority": [
+      "server/services/unified_retention_inventory.py",
+      "unified_backup.py",
+      "unified_restore.py",
+      "unified_migration.py"
+    ],
+    "reuse": [
+      "state classification",
+      "backup/hash manifest",
+      "restore compatibility",
+      "MIGRATION_REQUIRED",
+      "UNSUPPORTED_NEWER_STATE",
+      "inspect/preview/backup/apply/verify"
+    ],
+    "rule": "no second backup/migration classifier"
+  },
+  "L4": {
+    "authority": [
+      "scripts/m8r_filesystem_safety.py",
+      "server/resource_boundaries.py"
+    ],
+    "reuse": [
+      "path containment",
+      "loopback",
+      "resource/input/output bounds",
+      "secret/integration boundaries"
+    ],
+    "rule": "packaging inherits protections"
+  },
+  "L5": {
+    "authority": [
+      "canonical Catalog/Route",
+      "scripts/m8r_06_03_production_adapter.py",
+      "Unified MCP tool contracts"
+    ],
+    "reuse": [
+      "extension architecture",
+      "six MCP tools",
+      "canonical Catalog/Route/Executor"
+    ],
+    "rule": "no second Catalog/route/executor/MCP authority"
+  },
+  "evidence_run": "l6-a0-20261021T092005Z"
+}

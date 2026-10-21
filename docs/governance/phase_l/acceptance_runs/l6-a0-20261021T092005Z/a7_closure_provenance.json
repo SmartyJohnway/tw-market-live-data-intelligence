@@ -1,0 +1,16 @@
+{
+  "A0_A6_owner_accepted_and_merged": true,
+  "a7_candidate": "588a1a9f67840f8bd0231dfa807c3963a560dd15",
+  "a7_manifest_members": 39,
+  "a7_manifest_members_verified": 39,
+  "a7_manifest_self_hash_verified": true,
+  "a7_manifest_sha256": "961186f01e2eaf9c957a8075df7419285333430747a09b36a4b78d22e7d09ee7",
+  "a7_review_base": "d782c91f3066fc5ea77d84ed6a649a4286fad2b7",
+  "a7_review_tree": "fa47f67de8ac8bc3fe574cbcd978b86a9f4c626a",
+  "closure_disposition": "PHASE_L_L5_OWNER_ACCEPTED_FINAL_CLOSURE_PASS",
+  "closure_record": "docs/governance/phase_l/PHASE_L_L5_OWNER_FINAL_CLOSURE_2026-10-21.md",
+  "merge_ancestor_of_entry": true,
+  "merge_commit": "fea5259f8214aa405ed4017c7e9727bbf6d63ea9",
+  "owner_authority": "USER_CHAT_2026-10-21_ACCEPT_AND_MERGE_L5_A7",
+  "verification": "closure record and A7 exit review; manifest independently recomputed against content commit"
+}

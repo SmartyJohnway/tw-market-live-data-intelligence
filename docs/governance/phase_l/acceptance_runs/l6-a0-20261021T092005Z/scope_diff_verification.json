@@ -1,0 +1,10 @@
+{
+  "allowed_changes_only": true,
+  "candidate_branch": "phase-l/l6-a0-packaging-portability-inventory",
+  "changed_docker_installer_paths": 0,
+  "changed_product_runtime_paths": 0,
+  "changed_schema_catalog_route_executor_source_dependency_paths": 0,
+  "changed_test_paths": 0,
+  "git_diff_check": "PASS",
+  "original_checkout_status_preserved": "phase-j/j-b04-a5-bounded-live-source-acceptance; untracked data/ untouched"
+}

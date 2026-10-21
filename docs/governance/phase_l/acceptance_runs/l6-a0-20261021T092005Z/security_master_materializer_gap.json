@@ -1,0 +1,24 @@
+{
+  "confirmed": true,
+  "confirmed_manager_loader_split": true,
+  "decision": "DECISION_REQUIRED for future A1 contract and authorized implementation",
+  "evidence": [
+    "scripts/m8r_08g_security_master_releases.py:SECURITY_MASTER_ROOT",
+    "scripts/manage_security_master.py:--root and REPO_ROOT bundle glob",
+    "scripts/m8r_06_01b_materialize_production_inputs.py:BUNDLE_BASE",
+    "scripts/m8r_06_security_master_candidate_paths.py:input_bundle_dir"
+  ],
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "formal_root": "TW_MARKET_SECURITY_MASTER_ROOT / manage_security_master.py --root",
+  "formal_root_detail": "Runtime loader uses TW_MARKET_SECURITY_MASTER_ROOT; management uses explicit --root or checkout SECURITY_MASTER_ROOT default and does not read that ENV directly.",
+  "init_start_doctor": "must remain offline; init only layout/config/marker/writable validation; start accepts NOT_INITIALIZED; doctor read-only",
+  "logical_state_class": "mixed acquisition staging and retained governed source provenance; raw payloads/manifests/snapshot inputs persist, so not merely temp/cache",
+  "materializer_root": "<REPO_ROOT>/data/security_master/input_bundles",
+  "minimum_contract": [
+    "selected installation identity maps formal root and bundle root together",
+    "separate in-progress temp staging from finalized governed source bundle",
+    "manifest paths are installation-relative/content-bound, never app absolute",
+    "explicit bounded update remains only acquisition trigger"
+  ],
+  "outside_replaceable_tree": "bundle and report must live in external installation state, outside versioned application root"
+}

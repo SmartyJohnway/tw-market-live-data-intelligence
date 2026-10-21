@@ -2,11 +2,11 @@
 
 ## Current L5 state ? CLOSED (2026-10-21)
 
-L5 is **CLOSED** under `PHASE_L_L5_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following technical exit `PHASE_L_L5_EXIT_REVIEW_PASS`. L5-A7 is OWNER-ACCEPTED AND MERGED via PR #395 at `fea5259f8214aa405ed4017c7e9727bbf6d63ea9`. Owner authority: `USER_CHAT_2026-10-21_ACCEPT_AND_MERGE_L5_A7`. A0-A6 remain Owner-accepted and merged; retained A7 limitations remain visible and unchanged. L6, L7 and Phase M remain **NOT AUTHORIZED**. See `docs/governance/phase_l/PHASE_L_L5_OWNER_FINAL_CLOSURE_2026-10-21.md`.title: "tw-market-live-data-intelligence — Roadmap V3.2"
+L5 is **CLOSED** under `PHASE_L_L5_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following technical exit `PHASE_L_L5_EXIT_REVIEW_PASS`. L5-A7 is OWNER-ACCEPTED AND MERGED via PR #395 at `fea5259f8214aa405ed4017c7e9727bbf6d63ea9`. Owner authority: `USER_CHAT_2026-10-21_ACCEPT_AND_MERGE_L5_A7`. A0-A6 remain Owner-accepted and merged; retained A7 limitations remain visible and unchanged. L6 is STARTED; L6-A0 is authorized and pending Owner acceptance; L6-A1+, L7 and Phase M remain NOT AUTHORIZED. See `docs/governance/phase_l/PHASE_L_L5_OWNER_FINAL_CLOSURE_2026-10-21.md`.title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "2026-10-21: Phase L5 CLOSED under PHASE_L_L5_OWNER_ACCEPTED_FINAL_CLOSURE_PASS after A7 technical exit PHASE_L_L5_EXIT_REVIEW_PASS and PR #395 merge fea5259f8214aa405ed4017c7e9727bbf6d63ea9; L6-L7 and Phase M remain not authorized"
+status_reconciled_through: "2026-10-21: Phase L5 CLOSED; L6 STARTED; L6-A0 authorized / candidate inventory complete pending Owner review; L6-A1+, L7 and Phase M not authorized; prospective Native Tier-1 Windows 11 x64 only"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -24,6 +24,8 @@ tags:
 ---
 
 # tw-market-live-data-intelligence
+
+> **Current Phase L boundary (2026-10-21):** L5 is Owner-closed. L6 is STARTED; L6-A0 is authorized and its inventory candidate awaits Owner acceptance. L6-A1+, Docker/installer implementation, L7 and Phase M remain unauthorized. Native Tier-1 from L6 onward is Windows 11 x64 only under the prospective Owner policy; historical L0-D03 remains unchanged. See the L6-A0 governance record and Windows 11 policy supersession record.
 
 # Roadmap V3.2 — Post-V1.0 Stable Release & Pre-Phase-G Reconciliation
 

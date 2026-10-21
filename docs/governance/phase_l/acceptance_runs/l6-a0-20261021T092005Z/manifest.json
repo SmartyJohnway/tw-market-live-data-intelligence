@@ -1,0 +1,144 @@
+{
+  "artifact_content_commit": "c455267f8ebfd34a2d6fba85be03ec3f0a800786",
+  "artifact_content_tree": "5469a5d8d0b79af930dfd75f622e9722ad9ee888",
+  "artifact_count": 26,
+  "artifacts": [
+    {
+      "canonical_bytes": 31483,
+      "path": "HANDOFF.md",
+      "sha256": "a3e9945a7f2b57bd0ff414f8ba14a1766384dd0b1b766ef8331e27e1013db057"
+    },
+    {
+      "canonical_bytes": 36389,
+      "path": "PROJECT.md",
+      "sha256": "bd0aeec77d670cdc97bec44d61db3bb5b026861806c5be42b4ddeb26d07e1ac6"
+    },
+    {
+      "canonical_bytes": 54785,
+      "path": "ROADMAP.md",
+      "sha256": "f9dfc971118f01fd000d88f4fb22f7a2b12e0ee9714f4a1f3b851cd6aed8a8a9"
+    },
+    {
+      "canonical_bytes": 24650,
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "sha256": "b4ae06529f7db8a3f2e33867e53de3238d0d1741006500dab5d7cef984a78aee"
+    },
+    {
+      "canonical_bytes": 5590,
+      "path": "docs/governance/phase_l/PHASE_L_L6_A0_PACKAGING_PORTABILITY_CURRENT_STATE_INVENTORY_2026-10-21.md",
+      "sha256": "9ad2e292ce452cb95b5c4112a075b2ba62686258fb48933e18cc9c356e1d7acd"
+    },
+    {
+      "canonical_bytes": 1075,
+      "path": "docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md",
+      "sha256": "75151c913274d056c62f5dcfcb634d7b9094fa6a6746ac3958176ae01339600c"
+    },
+    {
+      "canonical_bytes": 880,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/a7_closure_provenance.json",
+      "sha256": "1f07116e20b9b6c9357e5c461851a745b73b6c92b749fbb44b3d2c5223d8fa75"
+    },
+    {
+      "canonical_bytes": 2569,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/application_surface_inventory.json",
+      "sha256": "7a08b514a9e6d1cd650b5cb5bd7b1950e9b1226f1520b7bc1626d58750efeabc"
+    },
+    {
+      "canonical_bytes": 1154,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "sha256": "d40962c9497640488ac27660d8a9451478f7c2a0c925a96de3ab4672d28a00d5"
+    },
+    {
+      "canonical_bytes": 3363,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/checkout_coupling_inventory.json",
+      "sha256": "8959d4541cac2736f13cbfca2d086a56307990634f71a8b18961e126de20c325"
+    },
+    {
+      "canonical_bytes": 3087,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/configuration_authority_matrix.json",
+      "sha256": "a5161e0d2c1368ff35eb58e74c9f8f547db0d01586f555c752da25d9ab946b5e"
+    },
+    {
+      "canonical_bytes": 1703,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/decision_ledger.json",
+      "sha256": "f97f144e84a7ab32ec741c62296476adbab3be0532d6b66e67166045d8344b8d"
+    },
+    {
+      "canonical_bytes": 969,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/docker_boundary_inventory.json",
+      "sha256": "c6671fc2292df308f1e942f1997d0d45fb1210217ebd5729cc6b4694fb2da289"
+    },
+    {
+      "canonical_bytes": 854,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/entry_identity.json",
+      "sha256": "785f9bb722a683dbda706d1b1c86f338b59b1ebaa2f4566d76067ab4340b9f90"
+    },
+    {
+      "canonical_bytes": 1397,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/final_inventory_review.json",
+      "sha256": "1499ad14fec5bb85af4c01154ea36925f977475d504948c429ae704bb5f257bf"
+    },
+    {
+      "canonical_bytes": 1435,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/native_packaging_options.json",
+      "sha256": "699a60544881e69c4e1ebb99192704abbb47f97f82e551f79ccbca24848c26ea"
+    },
+    {
+      "canonical_bytes": 2327,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/p1_p6_portability_matrix.json",
+      "sha256": "5011b8fed8f0cc2552980a71398af80faa06628de13613d063306a331611fa14"
+    },
+    {
+      "canonical_bytes": 1462,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/phase_l_reuse_map.json",
+      "sha256": "3b9fd07f38716fb15f09fa5629c4b531cc233f80416f618cfac6fe007d7eb92d"
+    },
+    {
+      "canonical_bytes": 5738,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/physical_state_root_matrix.json",
+      "sha256": "bb5f00753cddd0cf0e6dd0fe49344edf765ec4bcca18c96a3f5effabf6a4d4f1"
+    },
+    {
+      "canonical_bytes": 1246,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/platform_policy_reconciliation.json",
+      "sha256": "0773d5bfc75f567da18fbe497b3258ffbcd7fc3c44e7c1b8a7757fd81c871f1e"
+    },
+    {
+      "canonical_bytes": 481,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/preflight_result.json",
+      "sha256": "7eef5f648be5934685714059ceabed8e4af4664c6891a114b7f0f414dfa20555"
+    },
+    {
+      "canonical_bytes": 1690,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/runtime_resource_inventory.json",
+      "sha256": "d02fb0953ed7ca5855d6ef0afb9ff0c21d6b5c0daa8bab54a7d4d7d9b18a1cef"
+    },
+    {
+      "canonical_bytes": 426,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/scope_diff_verification.json",
+      "sha256": "f8ce18d56a0e52291f8fc4fcdb5cbbd3314bcfcd0be06c7afc6cf81917478bb8"
+    },
+    {
+      "canonical_bytes": 981,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/scope_guard.json",
+      "sha256": "8d4cf84149c4da95999a44b6fe6adecb4d16b3542561c542d256264a45df20be"
+    },
+    {
+      "canonical_bytes": 1633,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/security_master_materializer_gap.json",
+      "sha256": "67fe9b44f6f69394110349445846e432e6f1d6cbce017dde323763fcbea02b70"
+    },
+    {
+      "canonical_bytes": 1729,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/validator_results.json",
+      "sha256": "eb9b982fb5921a5b6b4c6759a73fe2a1aa817c096100bef1801988d554d14d2a"
+    }
+  ],
+  "entry_base": "c546232ed24fdb781a605e4403961d7ffb16a339",
+  "normalization": "UTF-8 text; CRLF/CR normalized to LF before member SHA-256",
+  "post_commit_distinction": "All listed artifacts are read from committed Git blobs at artifact_content_commit. Manifest is committed separately; no transient working-tree bytes are hashed.",
+  "run_id": "l6-a0-20261021T092005Z",
+  "self_digest_policy": "compact sorted JSON ensure_ascii=false excluding manifest_canonical_sha256",
+  "technical_disposition": "L6_A0_PACKAGING_PORTABILITY_INVENTORY_COMPLETE",
+  "manifest_canonical_sha256": "cd74076e02b0c47a6c0765d15eaa1310f07be231cc3e999573839dcf3aac3117"
+}

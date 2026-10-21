@@ -1,0 +1,29 @@
+{
+  "criteria": [
+    "application/state separation",
+    "physical roots explicit/contained/backup-classified",
+    "CLI > ENV > persisted user config > default consistently",
+    "init/start/status/stop/doctor coherent; doctor read-only",
+    "fresh NOT_INITIALIZED state",
+    "explicit SM acquisition only; acquisition outside replaceable tree",
+    "P1 relocation",
+    "P2 different user",
+    "P3 new Win11 machine/user/path/no runtime",
+    "P4 durable restore",
+    "P5 old supported state/new app/rollback",
+    "P6 fresh Docker Local Service",
+    "native package without .git and reproducible dependencies/resources",
+    "Docker durable mounts survive image replacement",
+    "no hidden acquisition",
+    "integration independence; host stdio MCP separate",
+    "exact six MCP tools",
+    "Request/Result/Audit compatible",
+    "no competing Catalog/Route/Executor",
+    "historical evidence immutable",
+    "historical default-ci failures exact and candidate-only=0",
+    "L7 boundary preserved",
+    "Windows 11 x64 Tier-1 acceptance"
+  ],
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "status": "candidate only; no exit acceptance run"
+}

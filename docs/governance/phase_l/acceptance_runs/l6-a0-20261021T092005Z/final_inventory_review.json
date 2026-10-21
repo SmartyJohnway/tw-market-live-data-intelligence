@@ -1,0 +1,35 @@
+{
+  "L5": "CLOSED",
+  "L6": "STARTED",
+  "L6_A0": "TECHNICAL INVENTORY COMPLETE / OWNER ACCEPTANCE PENDING",
+  "L6_A1_plus": "NOT AUTHORIZED",
+  "L7": "NOT AUTHORIZED",
+  "P1_P6": {
+    "BLOCKED_BY_DECISION": 0,
+    "COVERED": 0,
+    "GAP": 2,
+    "NOT_YET_IMPLEMENTED": 1,
+    "PARTIAL": 3
+  },
+  "Phase_M": "NOT AUTHORIZED",
+  "active_checkout_coupling_findings": 9,
+  "active_entrypoint_groups": 4,
+  "command_forms": 8,
+  "decision_required_items": 8,
+  "docker_installer_runtime_changes": 0,
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "limitations": [
+    "Accepted default-ci baseline 1248/41/4/5 was not rerun; 41 remain unresolved failures.",
+    "Win11 policy applies prospectively; L0-D03 historical bytes preserved.",
+    "P3 zero-runtime acceptance unproven.",
+    "Docker CLI version only; daemon and container compatibility untested."
+  ],
+  "live_acquisition": 0,
+  "meaning": "inventory sufficient to plan bounded tranche; portability not implemented/accepted",
+  "physical_root_mappings": 11,
+  "production_state_mutations": 0,
+  "provider_requests": 0,
+  "recommended_next_tranche": "L6-A1 Installation Identity / State / Configuration Contract",
+  "security_master_materializer": "confirmed formal root override is disconnected from checkout-local input bundle path; relocate by future contract",
+  "technical_disposition": "L6_A0_PACKAGING_PORTABILITY_INVENTORY_COMPLETE"
+}
