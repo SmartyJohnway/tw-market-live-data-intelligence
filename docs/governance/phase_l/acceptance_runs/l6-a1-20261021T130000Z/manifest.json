@@ -1,0 +1,201 @@
+{
+  "run_id": "l6-a1-20261021T130000Z",
+  "entry_base": "7ec798d682ac91db776608a5e9a6a98e179dd1ec",
+  "artifact_content_commit": "1e83623558569838278cc1479fb4649268e669d1",
+  "artifact_content_tree": "ee0af6d895fd2e8aa9cb0ab5b89b96b55eef6071",
+  "artifact_count": 31,
+  "artifacts": [
+    {
+      "path": "HANDOFF.md",
+      "canonical_bytes": 32143,
+      "sha256": "b01232ccbabf1c538158f0ec07f7d58511e100b30580142d7c1528d0e557cdb6",
+      "git_blob_oid": "b0bd2d03fce03706f5f7128a632ee29f8da20749"
+    },
+    {
+      "path": "PROJECT.md",
+      "canonical_bytes": 37187,
+      "sha256": "ccde4ef0a645be65122e3b1c6444395da138a489960a2cc1bff92e4dfb68efde",
+      "git_blob_oid": "ca8f6137bbff0188b222ebc8988c8b128d84b971"
+    },
+    {
+      "path": "ROADMAP.md",
+      "canonical_bytes": 55612,
+      "sha256": "c5c471efa677c3043368bc81368514eae334bd0b426a1454561184277eae398b",
+      "git_blob_oid": "b26243cc9dc86c2b17eaf7c43a6785f2b3deaaf5"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "canonical_bytes": 25930,
+      "sha256": "98707e3039d3b945c4618fc101c2da6a26f9469f32bae87d1843d7d3d91f49b6",
+      "git_blob_oid": "1f6eb211841ffaee38325346992dd844a85e9ae5"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_2026-10-21.md",
+      "canonical_bytes": 22578,
+      "sha256": "c63e588f710a2d1e675a2e3ddd9536074295843895344faf48a56380464d9a00",
+      "git_blob_oid": "3fcd5f07b66728c32054fcca765aee88ea56ac99"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/architecture_review.json",
+      "canonical_bytes": 1292,
+      "sha256": "1a675ce1b99e305e806751352b6c9bb8470a00b76e4926ff21a3166c3ae5f5a2",
+      "git_blob_oid": "359054ed8ac540c190a290b17f7fdb6c9acf6eb7"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/configuration_authority_contract.json",
+      "canonical_bytes": 1854,
+      "sha256": "8ec16406ac2e9caa138025c1632e3317f8db583e28fc07a587cb06fbbeb4020d",
+      "git_blob_oid": "f8c8f200f721d3d4dabf8c05474771cca5bf2213"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/current_source_inspection.json",
+      "canonical_bytes": 32580,
+      "sha256": "89ae3f5804894d8bce4eef4c9bb3abe17e39b86bbbec19110509a06cf3a82b23",
+      "git_blob_oid": "0d4968e64f021fef726e703bacb021b085d22157"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/decision_ledger.json",
+      "canonical_bytes": 17355,
+      "sha256": "4cafe07def65f5dcdbb7d53ae366632f70f4238deb7a123ee7ba7382b07ce6f5",
+      "git_blob_oid": "adb14863257bcdb17789dc91d24341f71c94833e"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/diff_scope_verification.json",
+      "canonical_bytes": 3257,
+      "sha256": "4c44dc645276b0f2d409ebbc525cc3ca0dff4060ddc192af2030e823b9d26553",
+      "git_blob_oid": "9b3576e671d5ba2a74e9dd02067e2c9d039da004"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/entry_identity.json",
+      "canonical_bytes": 619,
+      "sha256": "cf02ca87e9768dff65bc8147b7dee81aa0e5b763d559965d200a69d51cb16385",
+      "git_blob_oid": "8b2025aa11d77ab22b65bf47eb06ae5c02b8a463"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/final_contract_review.json",
+      "canonical_bytes": 5678,
+      "sha256": "b02cf5b4f836470a67ff0c49f470b85716ae54385b8ddf062afa1f8d9fa5a348",
+      "git_blob_oid": "38e5441d0f1953cb263ccf480e2e626dce635efd"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/frontdoor_reconciliation.json",
+      "canonical_bytes": 1478,
+      "sha256": "75632913752d8629fd83a854a2d23ab3a4fcf647accc873d2e1d084a6f323c6d",
+      "git_blob_oid": "8ac8475646f4642f2e6efec9acb701a719267955"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/frozen_authority_consistency.json",
+      "canonical_bytes": 3198,
+      "sha256": "47ebabf20ecfbbadb94763964c9ae89e31d4adc0f42f586eecc4281bb5e67751",
+      "git_blob_oid": "fbb15fea1d4ba1b0e679d313354da2a5e74efb33"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/governed_state_contract.json",
+      "canonical_bytes": 742,
+      "sha256": "f0ee40a35cf2072dc010655d4f68d0adfee7859ae8a9da6744f8cff46aa96110",
+      "git_blob_oid": "ea0681ce6edc41bfa516fdb84cdc73a4a0adb5a3"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/home_bootstrap_contract.json",
+      "canonical_bytes": 1477,
+      "sha256": "155cf9db067a533a5477cc6ec145a7d992dbf5f09d94d44fba6c1f45b9410d39",
+      "git_blob_oid": "f8ee1332be262d36a93bd4bfdf7530d5ba7c7f7d"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/implementation_gap_map.json",
+      "canonical_bytes": 16859,
+      "sha256": "404fdfae3fe14c842af3f873a38da1ae110fcb10a2c0ac4042a012fb7025a26f",
+      "git_blob_oid": "b3cbf20add8a50bc4822711e77cfbf51ae649747"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/init_contract.json",
+      "canonical_bytes": 1385,
+      "sha256": "6049f054cfa43b58211c1fb307adf4bbe3f2ed810cad7b02544d733fc0e8d72e",
+      "git_blob_oid": "3026b3e49cb52933118516e6aa1e192313b969ee"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/initialization_state_contract.json",
+      "canonical_bytes": 1069,
+      "sha256": "062c368cc177f19d6fc9a40eb13c954ac9155c79f4c9ebddf9665e5e8741d70d",
+      "git_blob_oid": "07ba27ba335dfb3b69fcaaad1e16983d77ca4ec5"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/installation_identity_contract.json",
+      "canonical_bytes": 1574,
+      "sha256": "66a25203ccd83f61b6c2ed69b3af28281cb05b7aa68244de173b228efbd9cb63",
+      "git_blob_oid": "b077fe8f360a7b9d3bdc76aedc5d4c019a22368a"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/l2_integration_map.json",
+      "canonical_bytes": 1675,
+      "sha256": "d86bbcf690799d75a16b6ca8119b5570ca11d97280e973dbc8536f56406a926f",
+      "git_blob_oid": "4fb774d3766402651ee7127610e1eb28c6e83019"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/legacy_override_compatibility.json",
+      "canonical_bytes": 2541,
+      "sha256": "02fa8f280eb567e4c2b74923aee925b3a291179c8b59796322f4713a9aeaf504",
+      "git_blob_oid": "11c3f440e098dd8d81936841b655f8128fe67060"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/owner_authority.json",
+      "canonical_bytes": 588,
+      "sha256": "ce08cc053d4dd8b90929cf1f3ab59bb6cdcca1e0766ecf3eae12eee9b4abe4ee",
+      "git_blob_oid": "b0f0c3ac22e8011d9dccda0508355157ca847d09"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/p1_p6_contract_implications.json",
+      "canonical_bytes": 2550,
+      "sha256": "5b756ffedecf39f380d2d6d3551701c18b822913210a597a167cb1b0a4046122",
+      "git_blob_oid": "ca133efea305f076ac7e3344cb81290fb1b4e4f4"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+      "canonical_bytes": 812,
+      "sha256": "c10cd7b2d9309efad414d46c1c11b0d61619ef552023ebfe737619e45faf1f2c",
+      "git_blob_oid": "d65494fa55510d58a7ba5eaf67fe934464e49b5c"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/runtime_log_temp_contract.json",
+      "canonical_bytes": 1187,
+      "sha256": "67f8df317116f4f9d11413241cc6475a8136cdd936369f758c0bbf82f1f21fcd",
+      "git_blob_oid": "682be605ab24f9c4a137518d622cd0c1441b1d29"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/scope_guard.json",
+      "canonical_bytes": 1173,
+      "sha256": "a20860601c8bc7fb6feca101626c0e3009328486eb5cdec6800e709181e3379d",
+      "git_blob_oid": "dc9409d54029c969f8bf5bd99e03314082281d62"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/security_master_relocation_contract.json",
+      "canonical_bytes": 1931,
+      "sha256": "5065ee1c6efc28f628b34e58f53474a3481264116b344255f33ca591d12541ef",
+      "git_blob_oid": "c0c345ba14ae2d2359667354a11ed89178fc64cf"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+      "canonical_bytes": 2778,
+      "sha256": "d50dd777b398cee6bf805c90d373d810f93b10a7df9b0dd2ea2e25dc295cf9dd",
+      "git_blob_oid": "2dbaa89376a4c348aea2b7fe31f4f484cd4e15e3"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_root_contract.json",
+      "canonical_bytes": 1563,
+      "sha256": "c21635859a95d2031ae96516d4efedb6d61c3455684002c1ad50938813251e5c",
+      "git_blob_oid": "0ec812bf515d5adaab6848805c125a7a4065ab53"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/validator_results.json",
+      "canonical_bytes": 2538,
+      "sha256": "a3f87f3b73f69052a655f7b00f16b68699c79f6a87fa0cfc35fe71a1c0034fce",
+      "git_blob_oid": "d10d27189e00ac675458f32d96b269ebcd4ad5ae"
+    }
+  ],
+  "normalization": "UTF-8 text; CRLF/CR normalized to LF before member SHA-256",
+  "self_digest_policy": "compact sorted JSON ensure_ascii=false excluding manifest_canonical_sha256",
+  "post_commit_distinction": "All members are read from committed Git blobs at artifact_content_commit; this separate manifest commit is excluded from member recursion. Final candidate HEAD adds only this manifest, so member bytes must also verify at final HEAD.",
+  "technical_disposition": "L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_FROZEN",
+  "owner_acceptance": "PENDING",
+  "manifest_canonical_sha256": "fd0289fcbee62f5260c46a15ea78f3e3520f27a023ea68c84061ad0ab6b1a8f2"
+}
