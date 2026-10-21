@@ -36,7 +36,7 @@ The minimum Native packaging recommendation for later Owner decision is a versio
 
 ## Portability and next boundary
 
-The current evidence does not establish product acceptance for P1-P6. P1/P2 have partial bounded path/config seams; P3-P6 remain gaps or not-yet-implemented. The detailed P1-P6 matrix, root/config matrices, lifecycle analysis, Docker boundary, reuse map, decision ledger, and candidate exit criteria are in this run's machine-readable artifacts.
+The current evidence does not establish product acceptance for P1-P6. P1/P4/P5 are PARTIAL; P2/P3 are GAP; P6 is NOT_YET_IMPLEMENTED. The detailed P1-P6 matrix, root/config matrices, lifecycle analysis, Docker boundary, reuse map, decision ledger, and candidate exit criteria are in this run's machine-readable artifacts.
 
 Recommended sequence, subject to new authorization: A1 installation identity/state/configuration contract; A2 native installation/lifecycle integration; A3 versioned Native application distribution; A4 Docker Local Service packaging; A5 integrated P1-P6 portability acceptance; A6 technical exit review. The sequence does not authorize any tranche.
 
