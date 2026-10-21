@@ -1,0 +1,23 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D02",
+    "A1-D03"
+  ],
+  "statements": [
+    "TW_MARKET_HOME is the installation control/home authority. Native Windows 11 default is %LOCALAPPDATA%\\TW-Market. It is not APP_ROOT, Windows Registry or roaming profile authority.",
+    "HOME resolves by explicit --home > TW_MARKET_HOME > Windows platform default before reading settings/metadata. settings.json cannot choose its own HOME. No circular dependency or application/developer-path fallback is permitted. Changing HOME selects another installation context; it does not silently copy, adopt or move state. After inherited L4 canonical-path/reparse validation, HOME and STATE_ROOT must not equal APP_ROOT or descend from it; managed durable/governed artifacts must also stay outside the APP_ROOT subtree. APP_ROOT may later be a sibling application directory within HOME if its replacement cannot affect those artifacts; A1 does not freeze A3 packaging placement."
+  ],
+  "logical_authority": "TW_MARKET_HOME",
+  "default": "%LOCALAPPDATA%\\TW-Market",
+  "registry_authority": false,
+  "roaming_authority": false,
+  "precedence": [
+    "explicit --home",
+    "TW_MARKET_HOME",
+    "Windows platform default"
+  ],
+  "settings_selects_home": false,
+  "circular_dependency": false,
+  "app_containment": "HOME/STATE_ROOT and durable artifacts cannot equal/descend from APP_ROOT after inherited L4 path/reparse checks; ancestor HOME is not forbidden"
+}

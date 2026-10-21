@@ -1,0 +1,48 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "files": [
+    {
+      "path": "PROJECT.md",
+      "live_A1_plus_stale_before": 5,
+      "live_A1_plus_stale_after": 0,
+      "current_A0_pending": 0,
+      "current_A1_not_authorized": 0,
+      "current_A1_owner_acceptance": "PENDING",
+      "A2_plus": "NOT AUTHORIZED",
+      "only_current_rollups_reconciled": true
+    },
+    {
+      "path": "HANDOFF.md",
+      "live_A1_plus_stale_before": 4,
+      "live_A1_plus_stale_after": 0,
+      "current_A0_pending": 0,
+      "current_A1_not_authorized": 0,
+      "current_A1_owner_acceptance": "PENDING",
+      "A2_plus": "NOT AUTHORIZED",
+      "only_current_rollups_reconciled": true
+    },
+    {
+      "path": "ROADMAP.md",
+      "live_A1_plus_stale_before": 3,
+      "live_A1_plus_stale_after": 0,
+      "current_A0_pending": 0,
+      "current_A1_not_authorized": 0,
+      "current_A1_owner_acceptance": "PENDING",
+      "A2_plus": "NOT AUTHORIZED",
+      "only_current_rollups_reconciled": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "live_A1_plus_stale_before": 6,
+      "live_A1_plus_stale_after": 0,
+      "current_A0_pending": 0,
+      "current_A1_not_authorized": 0,
+      "current_A1_owner_acceptance": "PENDING",
+      "A2_plus": "NOT AUTHORIZED",
+      "only_current_rollups_reconciled": true
+    }
+  ],
+  "stale_A1_plus_before": 18,
+  "stale_A1_plus_after": 0,
+  "current_contradictions": 0
+}

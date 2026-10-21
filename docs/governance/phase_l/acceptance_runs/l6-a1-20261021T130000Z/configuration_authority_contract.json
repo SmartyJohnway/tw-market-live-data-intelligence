@@ -1,0 +1,46 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D07",
+    "A1-D08"
+  ],
+  "statements": [
+    "<HOME>\\config\\settings.json is the single core persisted user-settings authority: versioned extensible JSON with minimum logical fields schema_version, service.host and service.port. General resolution is explicit CLI > ENV > settings.json > product default. Port: --port > TW_MARKET_PORT > service.port > 8000. Host: --host > TW_MARKET_HOST > service.host > 127.0.0.1, subject to inherited L4 loopback and valid-port bounds. A1 adds no resolver/public schema/Registry/YAML/TOML/dependency. Exact version encoding is a later implementation detail; compatible version recognition is required.",
+    "installation.json is local installation identity/path mapping; settings.json carries portable product preferences. Source-machine absolute paths must not be blindly restored as portable preferences. settings cannot override local HOME/state mapping. Existing service-URL integration seam is not a second persisted user-config/home authority."
+  ],
+  "authority_path": "<HOME>\\config\\settings.json",
+  "minimum_fields": [
+    "schema_version",
+    "service.host",
+    "service.port"
+  ],
+  "precedence": [
+    "explicit CLI",
+    "environment variable",
+    "settings.json",
+    "product default"
+  ],
+  "port_precedence": [
+    "--port",
+    "TW_MARKET_PORT",
+    "settings.json service.port",
+    "8000"
+  ],
+  "host_precedence": [
+    "--host",
+    "TW_MARKET_HOST",
+    "settings.json service.host",
+    "127.0.0.1"
+  ],
+  "bootstrap_exceptions": "HOME and state-root use their separate explicit bootstrap contracts",
+  "resolver_implemented": false,
+  "local_mapping": [
+    "installation_id",
+    "state_root"
+  ],
+  "portable_preferences": [
+    "service.host",
+    "service.port"
+  ],
+  "blind_absolute_path_restore": false
+}

@@ -1,0 +1,19 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D11"
+  ],
+  "statements": [
+    "<HOME>\\cache is derived/rebuildable and excluded from canonical core backup. <HOME>\\logs is diagnostic, not Audit truth, excluded from core backup by default; no new duration is frozen and inherited bounded diagnostics remain binding. %TEMP%\\TW-Market\\<installation-id>\\runtime holds ephemeral PID/ownership; its temp sibling holds unfinished acquisition/scratch/atomic-operation temporary material. Neither is portable backup content. Installation ID does not replace L1 PID/start-token/executable checks. Existing L2 bounded sibling staging/atomic finalization remains unchanged. No new multi-process/concurrency policy is invented."
+  ],
+  "cache_root": "<HOME>\\cache",
+  "logs_root": "<HOME>\\logs",
+  "runtime_root": "%TEMP%\\TW-Market\\<installation-id>\\runtime",
+  "temp_root": "%TEMP%\\TW-Market\\<installation-id>\\temp",
+  "logs_canonical_audit": false,
+  "logs_core_backup_default": false,
+  "logs_duration": "DEFERRED unless already frozen",
+  "runtime_portable_backup": false,
+  "temp_canonical_backup": false,
+  "l2_staging": "existing L2 lifecycle preserved"
+}

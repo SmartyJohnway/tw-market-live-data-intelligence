@@ -1,0 +1,31 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D12"
+  ],
+  "statements": [
+    "Future init is explicit, offline and idempotent: resolve HOME; create/read stable identity; resolve/persist state_root; create/verify required layout directories; create/validate versioned settings and metadata; verify local writability/containment; report installation state. Rerun preserves ID/settings/state placement and fails closed on incompatible metadata unless migration is separately authorized. Empty directories do not authorize business/governed records. init cannot acquire data, update/build/qualify/activate SM, restore/migrate, mutate Watchlists, create Result/Audit, authorize execution or repair unrelated state. doctor remains read-only with no implicit init/write probe. No init is implemented."
+  ],
+  "allowed_steps": [
+    "resolve HOME",
+    "create/read stable identity",
+    "resolve/persist state_root",
+    "create/verify layout",
+    "create/validate settings.json",
+    "create/validate installation.json",
+    "verify writability/containment",
+    "report state"
+  ],
+  "forbidden_effects": [
+    "provider acquisition",
+    "SM update/release activation",
+    "restore",
+    "migration",
+    "Watchlist business mutation",
+    "Result/Audit creation",
+    "authorization",
+    "unrelated repair"
+  ],
+  "idempotent": true,
+  "implemented": false
+}

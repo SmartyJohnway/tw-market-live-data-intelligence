@@ -1,0 +1,33 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D15"
+  ],
+  "statements": [
+    "A1 ownership -> logical member enumeration -> existing L2 backup/restore/migration. Core backup logically includes portable user settings, SM durable authority, Watchlists and required portable facts/pointers. Full governed adds Results/Audits, authorization/control and retained governed provenance. Source ID/runtime/cache/log/temp/absolute path mappings are not portable active authority. L2 remains EXPLICIT_DECLARED_MEMBERS_ONLY, not whole-installation discovery. A1 metadata/settings require later L2 member-family/classification/version adapters; location cannot bypass UNCLASSIFIED_REQUIRES_POLICY. Verified restore is isolated and never activates. MIGRATION_REQUIRED is classification-only; newer unsupported state fails closed; migration is explicit, rollback uses verified A4 retained bytes and replay != refetch. No second backup/migration system."
+  ],
+  "core_backup": [
+    "portable user config",
+    "SM durable authority",
+    "Watchlists",
+    "portable persistent facts/pointers"
+  ],
+  "full_additions": [
+    "Results",
+    "Audits",
+    "authorization/control",
+    "retained governed source/provenance"
+  ],
+  "not_destination_active_authority": [
+    "source installation ID",
+    "runtime PID/ownership",
+    "cache",
+    "logs",
+    "temp",
+    "absolute source-machine mappings"
+  ],
+  "existing_a4_scope": "EXPLICIT_DECLARED_MEMBERS_ONLY",
+  "new_l2_family_integration": "A1 metadata/settings not automatically supported; later explicit adapters/compatibility within existing L2",
+  "restore_activates": false,
+  "new_backup_system": false
+}

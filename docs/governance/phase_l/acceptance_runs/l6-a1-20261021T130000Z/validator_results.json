@@ -1,0 +1,64 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "status": "PASS_CONTENT_GOVERNANCE_CHECKS",
+  "default_ci": "NOT_RUN_NOT_REQUIRED_CONTRACT_ONLY",
+  "historical_default_ci": {
+    "passed": 1248,
+    "failed": 41,
+    "skipped": 4,
+    "deselected": 5,
+    "failure_status": "EXISTING_UNRESOLVED_FAILING_DEBT; not rerun or relabeled"
+  },
+  "exact_six_static_snapshot": {
+    "command": "python -X utf8 -B -c <instrumented build_tool_contract_snapshot; assert exact accepted six>",
+    "exit_code": 0,
+    "result": {
+      "status": "PASS",
+      "tool_count": 6,
+      "tools": [
+        "market_describe_capabilities",
+        "market_validate_request",
+        "market_preview_request",
+        "market_read_result",
+        "market_export_ai_handoff",
+        "market_fetch_evidence"
+      ],
+      "socket_API_attempts": 0,
+      "scope": "this Python static snapshot process only; connect/connect_ex/create_connection/getaddrinfo instrumented; no OS-wide proof"
+    },
+    "stderr": ""
+  },
+  "contract_consistency": {
+    "status": "PASS",
+    "owner_frozen_decisions": 15,
+    "human_machine_statements_equal": 15,
+    "A0_decisions_reconciled": 15,
+    "state_class_rows": 12,
+    "P1_P6_status_unchanged": true,
+    "source_symbols_valid": true,
+    "public_schema_file_added": false,
+    "purpose": "contract/governance correspondence and exact source references; no runtime resolver or portability acceptance simulated"
+  },
+  "frozen_authority_consistency": "PASS; 11 preserved authorities and A0 26-member committed manifest verified",
+  "A0_A1_reconciliation": "15/15 A0 decisions disposed; 15 A1 OWNER_FROZEN decisions; 5 deferred technology/release decisions",
+  "l2_reuse": "PASS; explicit declared members, no activation/parallel policy or backup system",
+  "Windows11_policy": "PASS_UNCHANGED",
+  "scope_guard": "PASS",
+  "git_diff_check": {
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  "source_mutation": 0,
+  "state_mutation": 0,
+  "provider_requests": 0,
+  "live_acquisition": 0,
+  "restore_migration_execution": 0,
+  "Docker_required": false,
+  "manifest_verification": "SEPARATE_MANDATORY_POST_CONTENT_COMMIT_GATE; not claimed from transient bytes",
+  "full_ci": "NOT_RUN_NOT_REQUIRED; no runtime implementation",
+  "authoring_check_history": {
+    "initial_staged_check": "FAIL: Markdown hard-break trailing spaces in newly added governance document",
+    "repair": "removed trailing spaces before first commit; no product change",
+    "final_authoritative_check": "git diff --cached --check must PASS"
+  }
+}

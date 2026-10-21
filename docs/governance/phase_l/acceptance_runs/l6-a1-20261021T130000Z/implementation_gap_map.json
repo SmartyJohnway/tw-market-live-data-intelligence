@@ -1,0 +1,263 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "gap_count": 16,
+  "product_repairs_in_a1": 0,
+  "gaps": [
+    {
+      "gap_id": "A1-G01",
+      "category": "HOME resolver absent",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:main",
+      "current_path_root": "CLI lacks --home; no persisted home",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/home_bootstrap_contract.json",
+      "future_code_surface": "scripts/tw_market.py; scripts/tw_market_lifecycle.py; shared future resolver",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "no migration for fresh; old state requires explicit adoption/transfer review",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G02",
+      "category": "STATE_ROOT resolver absent",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:_base",
+      "current_path_root": "independent per-root ENV/defaults",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_root_contract.json",
+      "future_code_surface": "shared resolver; all root consumers",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "explicit mapping/transfer for existing state, never silent",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G03",
+      "category": "persisted settings absent",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:_effective",
+      "current_path_root": "CLI > ENV > DEFAULT_HOST/DEFAULT_PORT only",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/configuration_authority_contract.json",
+      "future_code_surface": "lifecycle/launcher/resolver settings consumers",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "fresh settings none; incompatible metadata fails closed",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G04",
+      "category": "installation metadata absent",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:_owner_path",
+      "current_path_root": "no installation.json authority",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/installation_identity_contract.json",
+      "future_code_surface": "metadata IO/validation and lifecycle identity",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "new identity separate from existing durable-state adoption",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G05",
+      "category": "SM formal checkout default",
+      "current_source_authority": "scripts/m8r_08g_security_master_releases.py:SECURITY_MASTER_ROOT; scripts/manage_security_master.py:main; scripts/m8r_06_01c2_mode_a_security_master_loader.py:get_production_mode_a_security_master",
+      "current_path_root": "<APP_ROOT>/data/security_master; manager --root separate from loader ENV",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/security_master_relocation_contract.json",
+      "future_code_surface": "manager/releases/loader/lifecycle/watchlist SM selection",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "existing state explicit relocation/compatibility; no refresh",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G06",
+      "category": "SM checkout acquisition bundles",
+      "current_source_authority": "scripts/m8r_06_01b_materialize_production_inputs.py:BUNDLE_BASE; scripts/manage_security_master.py:main",
+      "current_path_root": "<APP_ROOT>/data/security_master/input_bundles; report paths relative to ROOT",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/security_master_relocation_contract.json",
+      "future_code_surface": "materializer/source bundle retention and manager bundle discovery",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "distinguish retained governed artifacts from scratch; explicit transfer only",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G07",
+      "category": "checkout-local identity indexes/pointer",
+      "current_source_authority": "scripts/m8r_06_security_master_candidate_paths.py; scripts/m8r_06_01c2_mode_a_security_master_loader.py:load_mode_a_security_master",
+      "current_path_root": "data/security_master/runtime_identity_indexes and config Mode-A pointer",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/runtime_log_temp_contract.json",
+      "future_code_surface": "candidate path helpers and legacy loader configuration",
+      "future_tranche": "A2/A3",
+      "compatibility_handling_required": true,
+      "migration_requirement": "derived data can rebuild; persistent binding/provenance cannot rewrite",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G08",
+      "category": "Watchlist checkout default",
+      "current_source_authority": "scripts/m8r_09_persistent_watchlists.py:default_root; scripts/m8r_09_persistent_watchlists.py:production_store",
+      "current_path_root": "<APP_ROOT>/data/watchlists or TW_MARKET_WATCHLIST_ROOT",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_root_contract.json",
+      "future_code_surface": "Watchlist injection/initialization and consumers",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "L2 consistent SQLite backup/isolated restore; no raw active-DB copy",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G09",
+      "category": "governed checkout default",
+      "current_source_authority": "server/services/unified_mode_b2.py:CONTROL_ROOT; server/services/unified_mode_c.py:CONTROL_ROOT; scripts/m8r_06_03_execute_once.py",
+      "current_path_root": "<APP_ROOT>/artifacts/m8r_06_03_workbench or M8R_06_03_CONTROL_ROOT",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/governed_state_contract.json",
+      "future_code_surface": "Mode B2/C; execute-once; retained read/replay/export; physical root injection",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "explicit retained byte transfer, no Result/Audit lineage rewrite",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G10",
+      "category": "checkout-hash runtime identity",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:_owner_path",
+      "current_path_root": "OS temp/tw-market-runtime/<checkout-sha-prefix>/service-<port>.json",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/runtime_log_temp_contract.json",
+      "future_code_surface": "L1 lifecycle owner paths",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "never migrate PID ownership; preserve current active-process safety",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G11",
+      "category": "operational event placement",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:_event_path; server/operational_diagnostics.py:emit_jsonl",
+      "current_path_root": "OS temp checkout-hash folder or TW_MARKET_OPERATIONAL_EVENT_PATH",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/runtime_log_temp_contract.json",
+      "future_code_surface": "lifecycle child environment + optional diagnostics sink",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "diagnostic not canonical; no new retention duration",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G12",
+      "category": "init command absent",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:main",
+      "current_path_root": "start/status/stop/doctor only",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/init_contract.json",
+      "future_code_surface": "CLI/resolver/metadata/layout validation",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "offline bounded idempotence; no state repair/migration",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G13",
+      "category": "NOT_INITIALIZED semantic compression",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:_sm_status; scripts/manage_security_master.py:main",
+      "current_path_root": "SM NOT_INITIALIZED; no installation readiness dimension",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/initialization_state_contract.json",
+      "future_code_surface": "readiness/status/doctor and compatibility consumers",
+      "future_tranche": "A2",
+      "compatibility_handling_required": true,
+      "migration_requirement": "no silent adoption or changed old-client SM interpretation",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G14",
+      "category": "legacy root overrides",
+      "current_source_authority": "scripts/tw_market_lifecycle.py:_base; server/services/unified_mode_c.py; scripts/m8r_09_persistent_watchlists.py:default_root",
+      "current_path_root": "existing direct ENV/CLI paths",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/legacy_override_compatibility.json",
+      "future_code_surface": "unified effective-root diagnostics/injection",
+      "future_tranche": "A2; removal later review",
+      "compatibility_handling_required": true,
+      "migration_requirement": "retain seams; diagnose noncanonical roots, no silent relocation",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G15",
+      "category": "L2 A1 settings/metadata integration",
+      "current_source_authority": "server/services/unified_backup.py:plan_backup; server/services/unified_restore.py:inspect_restore; server/services/unified_migration.py",
+      "current_path_root": "explicit declared members; current family/version policy only",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/l2_integration_map.json",
+      "future_code_surface": "logical enumeration + existing L2 classification/compatibility adapter",
+      "future_tranche": "A2/A5",
+      "compatibility_handling_required": true,
+      "migration_requirement": "new metadata versions require explicit compatibility; never bypass current classifier",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    },
+    {
+      "gap_id": "A1-G16",
+      "category": "application/resource lookup remains rooted in source tree",
+      "current_source_authority": "scripts/tw_market.py:ROOT; scripts/product_version.py:product_version; scripts/m8r_05c/artifact_loader.py:SCHEMAS_DIR",
+      "current_path_root": "application-relative imports/resources; VERSION already archive-readable",
+      "a1_target_authority": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_root_contract.json",
+      "future_code_surface": "resource inclusion/layout and no-.git package acceptance",
+      "future_tranche": "A3",
+      "compatibility_handling_required": true,
+      "migration_requirement": "no durable-state move caused by app replacement",
+      "current_behavior_can_temporarily_remain": "YES until separately authorized implementation; not target portability acceptance",
+      "migration_required": {
+        "fresh_install": false,
+        "existing_state": "explicit compatibility and transfer assessment; path relocation is not automatically schema migration; no silent migration"
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D01",
+    "A1-D04"
+  ],
+  "statements": [
+    "APP_ROOT is the replaceable, relocatable application/static-resource authority (scripts/server/schemas/Catalog/Route/executor metadata/frontend/skills/VERSION/dependency metadata), never canonical durable state. Durable user/governed state must survive application replacement and must not depend on the application path.",
+    "TW_MARKET_STATE_ROOT defaults to <HOME>\\state. Fresh init resolves explicit --state-root > TW_MARKET_STATE_ROOT > <HOME>\\state and persists the resolved absolute state_root in installation metadata. D:\\TW-Market-State is an allowed example. For an initialized installation metadata is canonical; conflicting CLI/ENV state-root selection must fail closed without silent relocation. This bootstrap is distinct from ordinary service-setting precedence. Fixed logical subroots are security-master/watchlists/governed, not independent permanent family homes. Canonical state remains outside APP_ROOT."
+  ],
+  "app_root_durable_authority": false,
+  "logical_authority": "TW_MARKET_STATE_ROOT",
+  "default": "<HOME>\\state",
+  "fresh_init_precedence": [
+    "explicit --state-root",
+    "TW_MARKET_STATE_ROOT",
+    "<HOME>\\state"
+  ],
+  "persisted_mapping": "<HOME>\\meta\\installation.json:state_root",
+  "initialized_override": "must agree with persisted mapping or fail closed; never silently relocate",
+  "subroots": [
+    "security-master",
+    "watchlists",
+    "governed"
+  ],
+  "state_inside_app_root": false
+}

@@ -1,0 +1,167 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "technical_disposition": "L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_FROZEN",
+  "review_kind": "TARGET_CONTRACT_FREEZE_ONLY; not runtime acceptance",
+  "owner_acceptance": "PENDING",
+  "owner_frozen_decisions": 15,
+  "a1_decision_required": 0,
+  "implementation_gaps": 16,
+  "authority_conflicts": 0,
+  "criteria": [
+    {
+      "criterion_id": 1,
+      "criterion": "HOME unambiguous",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 2,
+      "criterion": "HOME bootstrap noncircular",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 3,
+      "criterion": "STATE_ROOT unambiguous",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 4,
+      "criterion": "APP_ROOT has no canonical durable-state authority",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 5,
+      "criterion": "installation identity semantics frozen",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 6,
+      "criterion": "local metadata separated from portable config",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 7,
+      "criterion": "settings precedence preserves L0",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 8,
+      "criterion": "SM authority/staging/provenance separated",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 9,
+      "criterion": "Watchlist target mapped",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 10,
+      "criterion": "governed target mapped",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 11,
+      "criterion": "cache/log/runtime/temp classified",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 12,
+      "criterion": "init offline bounded idempotent",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 13,
+      "criterion": "initialization state distinction",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 14,
+      "criterion": "legacy override compatibility",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 15,
+      "criterion": "L2 reused without parallel system",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 16,
+      "criterion": "P1-P6 implications without acceptance",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 17,
+      "criterion": "A0 D9-D11 packaging/Docker deferred",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 18,
+      "criterion": "Windows11 Tier1 unchanged",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 19,
+      "criterion": "exact-six MCP preserved",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 20,
+      "criterion": "runtime/product mutations zero",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 21,
+      "criterion": "provider/live acquisitions zero",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 22,
+      "criterion": "production-state mutations zero",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 23,
+      "criterion": "committed manifest verification",
+      "result": "MANDATORY_POST_COMMIT_HANDOFF_GATE",
+      "evidence": "manifest.json and final Git verification; not transient authoring bytes"
+    },
+    {
+      "criterion_id": 24,
+      "criterion": "git diff check",
+      "result": "PASS",
+      "evidence": "frozen contract, source inventory and validator_results.json"
+    },
+    {
+      "criterion_id": 25,
+      "criterion": "final worktree clean",
+      "result": "MANDATORY_POST_COMMIT_HANDOFF_GATE",
+      "evidence": "manifest.json and final Git verification; not transient authoring bytes"
+    }
+  ],
+  "manifest_clean_gates": "must independently pass after separate manifest commit before PR handoff; final Git identities and integrity evidence reported in PR/final response",
+  "runtime_implemented": false,
+  "A2_plus": "NOT AUTHORIZED",
+  "L7": "NOT AUTHORIZED",
+  "Phase_M": "NOT AUTHORIZED"
+}

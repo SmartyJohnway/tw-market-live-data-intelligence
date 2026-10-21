@@ -1,0 +1,19 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D10"
+  ],
+  "statements": [
+    "<STATE_ROOT>\\governed is future canonical installation-relative authority for authorization, claim/control, canonical Results/Audits and associated retained execution evidence. Existing execute-once and Result/Audit/lineage/public contracts remain authoritative. Root selection must reach writers/readers/exporters without a parallel Result/Audit system or historical identity/hash rewrites."
+  ],
+  "canonical_root": "<STATE_ROOT>\\governed",
+  "members": [
+    "authorization",
+    "claim/control",
+    "Results",
+    "Audits",
+    "retained execution evidence"
+  ],
+  "second_result_audit_system": false,
+  "schema_redesign": false
+}

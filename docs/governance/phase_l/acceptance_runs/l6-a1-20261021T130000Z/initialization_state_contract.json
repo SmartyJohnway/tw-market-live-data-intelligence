@@ -1,0 +1,20 @@
+{
+  "evidence_run": "l6-a1-20261021T130000Z",
+  "decisions": [
+    "A1-D13"
+  ],
+  "statements": [
+    "Future conceptual flow is application available -> INSTALLATION_NOT_INITIALIZED -> explicit offline init -> SECURITY_MASTER_NOT_INITIALIZED -> explicit SM initialization/update -> READY. READY means setup/identity readiness, not market freshness, route activation or execution permission. Current NOT_INITIALIZED is SM state; A2 must expose installation readiness separately while preserving existing-client SM meaning and L1 fresh uninitialized service/diagnostics without acquisition. Missing metadata cannot silently adopt old checkout state. Current runtime codes are unchanged."
+  ],
+  "scope": "CONCEPTUAL_FUTURE_CONTRACT",
+  "flow": [
+    "application available",
+    "INSTALLATION_NOT_INITIALIZED",
+    "explicit offline init",
+    "SECURITY_MASTER_NOT_INITIALIZED",
+    "explicit SM operation",
+    "READY"
+  ],
+  "current_codes_changed": false,
+  "compatibility_mapping": "A2 integration required; preserve old-client SM NOT_INITIALIZED interpretation"
+}
