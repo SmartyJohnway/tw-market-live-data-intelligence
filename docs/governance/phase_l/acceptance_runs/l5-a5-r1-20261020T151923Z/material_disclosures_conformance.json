@@ -1,0 +1,80 @@
+{
+  "cases": [
+    {
+      "acceptance_fixture_root": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TWSE",
+      "artifact_hash_verified": true,
+      "audit_id": "umeap-v3-7c10b8f31c02a95f3380",
+      "kind": "DETERMINISTIC_EXISTING_PAYLOAD_PROJECTION_UNIT_FIXTURE_NOT_PRODUCTION_CONTROL_PACKAGE",
+      "market": "TWSE",
+      "operation_artifact": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TWSE/evidence/material_disclosures/TWSE_2330.json",
+      "result_hash": "872c1000a185d12237f7a57499729f2dff0fc149586c149ade5c30ac2ae8daf9",
+      "result_id": "umeresult-v3-ad739c2e33a60cc44e9a",
+      "source_contract": "t187ap04_L",
+      "typed_contract": "material_disclosure_evidence.v1",
+      "validator_errors": []
+    },
+    {
+      "acceptance_fixture_root": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TPEX",
+      "artifact_hash_verified": true,
+      "audit_id": "umeap-v3-090882fe4cf558e1d71e",
+      "kind": "DETERMINISTIC_EXISTING_PAYLOAD_PROJECTION_UNIT_FIXTURE_NOT_PRODUCTION_CONTROL_PACKAGE",
+      "market": "TPEX",
+      "operation_artifact": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TPEX/evidence/material_disclosures/TPEX_6488.json",
+      "result_hash": "b9fb38cae7b65f08498822665802dbf75b4b29153075accda0ea40c837a0e8df",
+      "result_id": "umeresult-v3-955ed8b7ac5621ad3919",
+      "source_contract": "t187ap04_O",
+      "typed_contract": "material_disclosure_evidence.v1",
+      "validator_errors": []
+    }
+  ],
+  "existing_test_nodes": [
+    "tests/unit/test_phase_g_material_disclosures.py::test_e08_identical_normalized_input_has_stable_evidence_hash",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c01_c07_csv_exact_binding_and_five_digit_time",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b08_name_match_with_wrong_code_fails_closed",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c11_fallback_and_c12_source_failed",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c03_c04_and_b09_missing_multiple_and_conflict",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c05_c06_revision_unresolved_and_future_fact_date",
+    "tests/unit/test_phase_g_material_disclosures.py::test_internal_operation_evidence_schema_validates_target_bounded_result",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c10_primary_csv_success_never_calls_json_fallback",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c13_c14_invalid_required_fields_and_empty_source_fail_closed",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c02_tpex_uses_its_own_official_contract",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c08_source_report_date_is_source_faithful",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c15_c16_only_target_rows_are_retained_with_full_internal_description",
+    "tests/unit/test_phase_g_material_disclosures.py::test_c09_never_fabricates_daily_refresh_clock",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b3_real_shape_tpex_json_fallback_binds_date_and_code",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b3_g1_hash_tie_break_is_ascending",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b3_g1_missing_contract_field_and_market_mismatch_fail_closed_before_binding",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b3_total_fallback_failure_retains_attempt_provenance",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b3_g1_schema_rejects_extra_target_and_inconsistent_status",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b4_g1_fallback_provenance_state_machine",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b4_g1_snapshot_report_date_missing_or_conflicting_fails_closed",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b5_g1_optional_outputs_are_schema_valid_and_keep_fallback_attempt",
+    "tests/unit/test_phase_g_material_disclosures.py::test_b5_g1_valid_row_plus_malformed_snapshot_identity_fails_closed"
+  ],
+  "family_owned_platform_policy": false,
+  "identity_graph": {
+    "Request_V3_wire_representation": "data_needs[].type = material_disclosures",
+    "cardinality": {
+      "capability_to_typed_evidence": "1:1 in this example; N:M permitted",
+      "executor_to_capabilities": "1:N",
+      "source_contracts_to_typed_evidence": "N:1"
+    },
+    "executor": "phase_g_official_research_executor",
+    "operation_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+    "routing_identities": [
+      "Unified Request V3 / material_disclosures / TWSE / phase_g_official_research_executor",
+      "Unified Request V3 / material_disclosures / TPEX / phase_g_official_research_executor"
+    ],
+    "semantic_capability_id": "material_disclosures",
+    "source_authority": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+    "source_contracts": [
+      "t187ap04_L",
+      "t187ap04_O"
+    ],
+    "typed_evidence_contract": "material_disclosure_evidence.v1"
+  },
+  "source_and_retrieval_timestamps_distinct": true,
+  "source_values_and_units_preserved": true,
+  "status": "PASS",
+  "two_markets_pass": 2
+}

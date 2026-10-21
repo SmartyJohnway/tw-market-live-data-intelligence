@@ -1,0 +1,17 @@
+{
+  "closure_level": "technical candidate only; Owner acceptance pending",
+  "dimensions": "36 x 2",
+  "family_dimension_cells_accounted": 72,
+  "family_proofs": "2/2 PASS",
+  "finding": "GAP-06",
+  "new_family_required": "NO",
+  "new_plugin_framework_required": "NO",
+  "original_classification": "GAP",
+  "recommended_tranche": "L5-A5",
+  "representative_families": [
+    "monthly_revenue",
+    "material_disclosures"
+  ],
+  "status": "CLOSED_BY_REPRESENTATIVE_EXISTING_FAMILY_CONFORMANCE",
+  "unresolved": 0
+}

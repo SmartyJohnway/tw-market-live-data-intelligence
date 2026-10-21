@@ -1,0 +1,8 @@
+{
+  "equal": true,
+  "initial_full_trace_sha256": "ba08c087f338ea8c2525e6a9f0a289b64d47d6237d1663db4f377c31e938ddfe",
+  "provider_calls": 0,
+  "repeat_full_trace_sha256": "ba08c087f338ea8c2525e6a9f0a289b64d47d6237d1663db4f377c31e938ddfe",
+  "status": "PASS",
+  "writes_by_validator": false
+}

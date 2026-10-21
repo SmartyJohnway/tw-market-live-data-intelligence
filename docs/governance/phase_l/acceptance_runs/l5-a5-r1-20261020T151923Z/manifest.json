@@ -1,0 +1,370 @@
+{
+  "A5_disposition": "L5_A5_REPRESENTATIVE_EXISTING_FAMILY_CONFORMANCE_PASS",
+  "R1_disposition": "L5_A5_R1_REQUEST_CAPABILITY_IDENTITY_REPRESENTATION_CLARIFICATION_PASS",
+  "artifact_count": 72,
+  "artifacts": [
+    {
+      "canonical_bytes": 33332,
+      "path": "HANDOFF.md",
+      "sha256": "a1b637fa108fe886c03ed19db9879b5571b97cb3e65d42a7b66c6e22937a1c4c"
+    },
+    {
+      "canonical_bytes": 37678,
+      "path": "PROJECT.md",
+      "sha256": "a351496f053035a3bf6f27b6070c986d5303a0a1549306195e91177ccc4c4091"
+    },
+    {
+      "canonical_bytes": 57797,
+      "path": "ROADMAP.md",
+      "sha256": "182372c9723547b0903b1c93b036c25a06f2c01062db8e47402cb90a092ac494"
+    },
+    {
+      "canonical_bytes": 24281,
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "sha256": "20a4177ff18d607a10ab524503e2fa2b02df81b91f319e844c715d324f46e9a0"
+    },
+    {
+      "canonical_bytes": 7265,
+      "path": "docs/governance/phase_l/PHASE_L_L5_A5_R1_REQUEST_CAPABILITY_IDENTITY_REPRESENTATION_CLARIFICATION_2026-10-20.md",
+      "sha256": "8a2b701d8e935cc8dae6bc7b300cee6e14b80b225491d423e7a3da25fc5a2feb"
+    },
+    {
+      "canonical_bytes": 4572,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/a1_a4_integrity.json",
+      "sha256": "9d2ddf470c21690b3e7a2bf0c606eef7633eca7f796d5c10abb35af547980839"
+    },
+    {
+      "canonical_bytes": 99,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/a5-focused.log",
+      "sha256": "1270bc256fcdf9530509fe2aeb5cd905b24707dd829cc8c9f9a3345ffbc6c4e7"
+    },
+    {
+      "canonical_bytes": 11508,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/a5-focused.xml",
+      "sha256": "c1edcff34678fe21f41c3749d09dc637e78e9689cd65423598dabe9e44357691"
+    },
+    {
+      "canonical_bytes": 261,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/architecture_conflict_register.json",
+      "sha256": "fa4708af7af4f252f2ead71eefce3164815d22ce253786e72db6e9a31ae503d3"
+    },
+    {
+      "canonical_bytes": 3804,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/cross_market_normalization.json",
+      "sha256": "609ce807f4703da82cb8e9a9c825c39cd868380b2b195d9c04ae17c493f3bef4"
+    },
+    {
+      "canonical_bytes": 44839,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/default-ci.log",
+      "sha256": "bcee5245aabbdf4029686630f507e2cb8f00888c69cdcf01e206bd861e7b73d1"
+    },
+    {
+      "canonical_bytes": 10062,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/default_ci_failure_set_comparison.json",
+      "sha256": "38f94cd192b9c11e21eed4e18f230d96591da8759a084c011b1df1f50d9790c3"
+    },
+    {
+      "canonical_bytes": 292,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/determinism_verification.json",
+      "sha256": "9ffcc28a39080da8d89e5f2000e9a49a0a1d57976908c1b588dc742a4658b1ba"
+    },
+    {
+      "canonical_bytes": 282341,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/deterministic_family_traces.json",
+      "sha256": "89484e3dd61b875c719853b50d6e3ad23ba697447831465fae5472fd6253c535"
+    },
+    {
+      "canonical_bytes": 7914,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/diff_scope_verification.json",
+      "sha256": "3b255b67dc8b048bda7d6beb9002bfada88db4d9aa2a24e8057e7ecbb04018d5"
+    },
+    {
+      "canonical_bytes": 1093,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/existing-family-platform.log",
+      "sha256": "e57781c2c188a3bc799bc169c4b1584eecf006387079503738b9d50d47dc6767"
+    },
+    {
+      "canonical_bytes": 27518,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/existing-family-platform.xml",
+      "sha256": "ab2e1c93307e6a40a103656db8e9ec6f1685753e83a5e9d01058b54673ab11ab"
+    },
+    {
+      "canonical_bytes": 21656,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/existing_family_test_result.json",
+      "sha256": "8dd1b98c34e66ada9af915d9b1920ce32332bc01ca820c0a56ba8bfd0f295e98"
+    },
+    {
+      "canonical_bytes": 104638,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/family_dimension_matrix.json",
+      "sha256": "bc20132c14b446ee02b8e440f28fe6812907014656674a68f16f10ce7638fded"
+    },
+    {
+      "canonical_bytes": 5180,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TPEX/ai_context/audit.v3.json",
+      "sha256": "2d465ece9504245f8d14632b131c0a96e24db47f24fed14b0c9f919e82044eab"
+    },
+    {
+      "canonical_bytes": 1893,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TPEX/ai_context/handoff.md",
+      "sha256": "662e50adf0ed46a1e83146d25adfb71412ce2ac34a337d9bfa73014a8bf979f8"
+    },
+    {
+      "canonical_bytes": 2552,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TPEX/ai_context/result.v3.json",
+      "sha256": "a53a71ef421ddef0cfb8ce0ca6e8160efba73e335558fd828f8043c13e099102"
+    },
+    {
+      "canonical_bytes": 1028,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TPEX/evidence/material_disclosures/TPEX_6488.json",
+      "sha256": "4797f9a39c37232126fbba0750f301a4ae7ee05d0fe9a0516e078b4d2d1752c6"
+    },
+    {
+      "canonical_bytes": 5180,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TWSE/ai_context/audit.v3.json",
+      "sha256": "099aef8387e9e54dc35691ab46362e4748c9a409ddbf11dff51f9970695b24d0"
+    },
+    {
+      "canonical_bytes": 1893,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TWSE/ai_context/handoff.md",
+      "sha256": "78c0af91a8cadd361d32350567690bad4a5a8994fd33bfa9b4169ef937908235"
+    },
+    {
+      "canonical_bytes": 2552,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TWSE/ai_context/result.v3.json",
+      "sha256": "ca8e7ca83bd0d1a144bfff5f38d9ca9436cb8c65dbe40f92114b6c03b2cb4de2"
+    },
+    {
+      "canonical_bytes": 1028,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TWSE/evidence/material_disclosures/TWSE_2330.json",
+      "sha256": "18342288a7e540d669f0275354829812a8a96723de35c5d8068e9392115ac2b8"
+    },
+    {
+      "canonical_bytes": 5112,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TPEX/ai_context/audit.v3.json",
+      "sha256": "46e5b2f7fde1a115abc44328839ad824deebb9b6e99f1237ddb40f4e5f415951"
+    },
+    {
+      "canonical_bytes": 2010,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TPEX/ai_context/handoff.md",
+      "sha256": "ed6cd35844176dd16d6e4d60f193951975f8749f38767c4027938a5a450d5fcc"
+    },
+    {
+      "canonical_bytes": 2428,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TPEX/ai_context/result.v3.json",
+      "sha256": "746ec99125c58c4586e3942df2bc28bc30d1b4cad84549c09b053be008c87ea8"
+    },
+    {
+      "canonical_bytes": 894,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TPEX/evidence/monthly_revenue/TPEX_6488.json",
+      "sha256": "7f61fc8c78b0d671a5a15dddb77dc1f8ce7e6549317dea3bf8ba69b99e530cd5"
+    },
+    {
+      "canonical_bytes": 5112,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TWSE/ai_context/audit.v3.json",
+      "sha256": "ac69189129c05451f797da9e387447945b2a296f78ac094caa866028702eb547"
+    },
+    {
+      "canonical_bytes": 2010,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TWSE/ai_context/handoff.md",
+      "sha256": "f6f0ac54b7d4e1822d092898649a4810a6b6d2e91d6d9c8d08ef0e37783d1840"
+    },
+    {
+      "canonical_bytes": 2428,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TWSE/ai_context/result.v3.json",
+      "sha256": "f9752f2e35bc6e88f22b456a760bc7349a6064fe4f63324deefe0ecb954398f0"
+    },
+    {
+      "canonical_bytes": 894,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TWSE/evidence/monthly_revenue/TWSE_2330.json",
+      "sha256": "8dca738a9c1a8a63a73163bc6224fa4737f1da08f11845ce93455be2c892e7eb"
+    },
+    {
+      "canonical_bytes": 9441,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/focused_test_result.json",
+      "sha256": "f6907af3db75f75e623ce62ee48768df0c47df697330c4afd13ad988888a54f0"
+    },
+    {
+      "canonical_bytes": 559,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/frontdoor_reconciliation.json",
+      "sha256": "2d6cc66cf72a1bde5512601429ebd0ebddf5c39152ecce5bc5d2c349e5c59eca"
+    },
+    {
+      "canonical_bytes": 513,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/gap06_adjudication.json",
+      "sha256": "e3990e2762b46e0c4e2352c43849dfa948244fc14ac0b8fc5553988fc8179e03"
+    },
+    {
+      "canonical_bytes": 9094,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/lineage_citation_conformance.json",
+      "sha256": "139143ad3c8f0783a1193779a9ed137c15fa857a60b9565e73c6afead6c5d21b"
+    },
+    {
+      "canonical_bytes": 5312,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/material_disclosures_conformance.json",
+      "sha256": "42608039c77393fa4354a2c879d18217b3a06d3154d4c712c69a2caeaa7f0c99"
+    },
+    {
+      "canonical_bytes": 164,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/matrix_artifact_verification.json",
+      "sha256": "584f8db29f8daff8e06f882e9e745da6df5bb2b2acc4b037dbf48e83897154e8"
+    },
+    {
+      "canonical_bytes": 3951,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/monthly_revenue_conformance.json",
+      "sha256": "3b0816baba93b1bf1cc46bc395fd5163942d8fa13339457ca8b0a7b0b22c283d"
+    },
+    {
+      "canonical_bytes": 10436,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/negative_mutation_tests.json",
+      "sha256": "49a60981ce34999da6f1a36d02debf7ec6d6e6d352977b388185250e3723aaef"
+    },
+    {
+      "canonical_bytes": 971,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/offline_review.json",
+      "sha256": "0dc9853cdc66921292e36d3c69ffb6050e78681e027ad3f3f16897c808e80468"
+    },
+    {
+      "canonical_bytes": 578,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/original_a5_hold_integrity.json",
+      "sha256": "2c7a05bf5a1c2832f0146353974ce5131524bfaaa5edfe011a37247d284acd8c"
+    },
+    {
+      "canonical_bytes": 976,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/owner_governance_clarification.json",
+      "sha256": "4f41db335b37f8e3e943c0ea19540a6ba87f5cdebdfd0d167c7be61c699d2fc2"
+    },
+    {
+      "canonical_bytes": 28511,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/platform_inheritance_conformance.json",
+      "sha256": "3511ec52b9c212ba28fa53046232b91a68dad71856f8784471bc6391061a3212"
+    },
+    {
+      "canonical_bytes": 546,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/preflight_result.json",
+      "sha256": "3665326207359e9c6a6c5d835ff24ee2015b2b8058b34baea6a77b8a608f5d9f"
+    },
+    {
+      "canonical_bytes": 611,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/publication_conformance.json",
+      "sha256": "88fa9e72206eaa35b4096aef25aa21ca6d35a3b36ea70fb29fa304662a1aae3c"
+    },
+    {
+      "canonical_bytes": 2286,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/representative_family_inventory.json",
+      "sha256": "454a5dd74df334376deaae0d6b3f73cf5164d12cffdd52d60d89af4b821ccead"
+    },
+    {
+      "canonical_bytes": 976,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/request_representation_reconciliation.json",
+      "sha256": "4f41db335b37f8e3e943c0ea19540a6ba87f5cdebdfd0d167c7be61c699d2fc2"
+    },
+    {
+      "canonical_bytes": 1408,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/request_schema_probe.json",
+      "sha256": "f900a772fec8d2ca02e0caa0cb3ced17cb6a99f9d8b009c8878e3241c642e07c"
+    },
+    {
+      "canonical_bytes": 155,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-00.log",
+      "sha256": "ad2addf806dee586a5f3e060d7414a1efcd6759556df5b9ecabe2fedbadca5bd"
+    },
+    {
+      "canonical_bytes": 298,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-01.log",
+      "sha256": "e370112bc8628535e5fc4e458ee7ec09c1f0adf3470dcd6a95e039b5fb3cb241"
+    },
+    {
+      "canonical_bytes": 30,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-02.log",
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "canonical_bytes": 33,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-03.log",
+      "sha256": "a7607909c829734fdf16bb46074ac7fc4b5070e5e9e6bf64c9a4be0cc2d3b7cf"
+    },
+    {
+      "canonical_bytes": 104,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-04.log",
+      "sha256": "d90b26c5867f44aa6dd08ab58e4053e6f3287a73d5c3fad1ca6cc464deff2812"
+    },
+    {
+      "canonical_bytes": 207,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-05.log",
+      "sha256": "f5b84ea71b3ff5857c8b40cc6e597cb7330f77acc406dc707d16abe40e135664"
+    },
+    {
+      "canonical_bytes": 64,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-06.log",
+      "sha256": "6ee8f0011bcfe59bd032eff756d27677b0e529267b6d8e2e4b95e999a5a8f052"
+    },
+    {
+      "canonical_bytes": 0,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-07.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "canonical_bytes": 27,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-08.log",
+      "sha256": "073732646f7b8916cf871e04753ae0e27b6b3da0c02f7a578cf3819ed63c3cfa"
+    },
+    {
+      "canonical_bytes": 56,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-09.log",
+      "sha256": "5cd82d08cbe63e98f4a4f5c19e7baad4eacd46f80d9a485212e09db9f9cf7cc6"
+    },
+    {
+      "canonical_bytes": 69848,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-10.log",
+      "sha256": "b8d8f655f849aa93d3e13e1c7d8f1335867eaa3b017322c9bb08c9a2ec1bd4ef"
+    },
+    {
+      "canonical_bytes": 240,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-11.log",
+      "sha256": "7a3d1eef7b971fe5a7a5abc2da28e46d9adaebf74d2e3b6978e4363d7a008b81"
+    },
+    {
+      "canonical_bytes": 3267,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-12.log",
+      "sha256": "6a82db47a95e8a66768ca23b997498dcb2c712bb1007777f49196f38ae2d59c1"
+    },
+    {
+      "canonical_bytes": 0,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-13.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "canonical_bytes": 0,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required-14.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "canonical_bytes": 2411,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/required_validator_result.json",
+      "sha256": "9b2ffac265c09a1df3f55d9999ea9bf5ba65789e379b04c750672561df7aea04"
+    },
+    {
+      "canonical_bytes": 6128,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/result_audit_handoff_conformance.json",
+      "sha256": "3f49360e29264cf3f1aba5292ca43995943a3924d046dda972ea93aacbb470ec"
+    },
+    {
+      "canonical_bytes": 4575,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/semantic_conformance.json",
+      "sha256": "192907a8f01ae74cf124a5bfc3ab47783573dd2a1fd2c65ffc342e54bab34a7a"
+    },
+    {
+      "canonical_bytes": 28073,
+      "path": "scripts/validate_l5_existing_family_conformance.py",
+      "sha256": "4cc447863f731f9a8250be344da11e957aef303888a28c58c6d13aedc0eeee18"
+    },
+    {
+      "canonical_bytes": 9609,
+      "path": "tests/unit/test_l5_a5_existing_family_conformance.py",
+      "sha256": "83901bd49f5091232c1130eda53dce79092eebb29e3548307cf1aacdeded7818"
+    }
+  ],
+  "canonical_sha256": "9572ea1e6417c58255ebebbd28f2348b433200854248293fa99fe1d6db6035c0",
+  "normalization_policy": "UTF-8 text; CRLF/CR normalized to LF before SHA-256. Manifest digest is compact sorted-key UTF-8 JSON excluding canonical_sha256.",
+  "run_id": "l5-a5-r1-20261020T151923Z"
+}

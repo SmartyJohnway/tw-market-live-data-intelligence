@@ -1,0 +1,96 @@
+{
+  "A1_DECISION_REQUIRED": 0,
+  "A1_frozen_dimensions": 36,
+  "A1_universal_family_registry": "NO",
+  "R1_verification": "PASS_ALL_SIX_MANIFEST_IDENTITIES_AND_FROZEN_INPUT_BYTES_UNCHANGED",
+  "T1_T12_unchanged": true,
+  "accepted_historical_counts": {
+    "A2_extension_relevant": "30/30",
+    "A2_friction_groups": "8/8",
+    "A2_negative_controls": "9/9",
+    "A2_registration_surfaces": 39,
+    "A3_semantic_friction_groups": "4/4",
+    "A3_semantic_rows": "3/3",
+    "A4_deferred_publication_rows": "2/2",
+    "A4_publication_debts_reconciled": "2/2"
+  },
+  "accepted_manifests": [
+    {
+      "artifact_count": 32,
+      "expected_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+      "historical_members_revalidated": false,
+      "manifest_bytes_equal_entry": true,
+      "note": "Manifest identity and immutable entry bytes verified; historical source-member snapshots are not recast as current bytes.",
+      "recomputed_sha256": "326d671e069869c3196a8dd9ba4e78525255d954f9b722bc2c3af4d91a3fbe2b",
+      "run_id": "l5-a1-20261018T140202Z"
+    },
+    {
+      "artifact_count": 24,
+      "expected_sha256": "b1dd1c009426e9470180e9962430284062538228e8ef940c6d2a71481c48bfea",
+      "historical_members_revalidated": false,
+      "manifest_bytes_equal_entry": true,
+      "note": "Manifest identity and immutable entry bytes verified; historical source-member snapshots are not recast as current bytes.",
+      "recomputed_sha256": "b1dd1c009426e9470180e9962430284062538228e8ef940c6d2a71481c48bfea",
+      "run_id": "l5-a2-20261019T053855Z"
+    },
+    {
+      "artifact_count": 30,
+      "expected_sha256": "844402e972d7a3a793150db9cca3fb32be3e568860950b63d69c320ccda52c75",
+      "historical_members_revalidated": false,
+      "manifest_bytes_equal_entry": true,
+      "note": "Manifest identity and immutable entry bytes verified; historical source-member snapshots are not recast as current bytes.",
+      "recomputed_sha256": "844402e972d7a3a793150db9cca3fb32be3e568860950b63d69c320ccda52c75",
+      "run_id": "l5-a3-20261020T015810Z"
+    },
+    {
+      "artifact_count": 48,
+      "expected_sha256": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+      "historical_members_revalidated": false,
+      "manifest_bytes_equal_entry": true,
+      "note": "Manifest identity and immutable entry bytes verified; historical source-member snapshots are not recast as current bytes.",
+      "recomputed_sha256": "7e76b0db1a2d99bc14903ad79124dd630e3f5aaeda47518c68303f44c3399769",
+      "run_id": "l5-a4-20261020T071416Z"
+    },
+    {
+      "artifact_count": 51,
+      "expected_sha256": "dd83ba9ab1d353993d2220d3e699bb0ed815bf54e0ee91d2e3435161459869e9",
+      "historical_members_revalidated": false,
+      "manifest_bytes_equal_entry": true,
+      "note": "Manifest identity and immutable entry bytes verified; historical source-member snapshots are not recast as current bytes.",
+      "recomputed_sha256": "dd83ba9ab1d353993d2220d3e699bb0ed815bf54e0ee91d2e3435161459869e9",
+      "run_id": "l5-a4-r1-20261020T074329Z"
+    },
+    {
+      "artifact_count": 46,
+      "expected_sha256": "9fb590dff3f51e93a0c91678d78a69ebabb732b1e939692c4222866cc917b0be",
+      "historical_members_revalidated": false,
+      "manifest_bytes_equal_entry": true,
+      "note": "Manifest identity and immutable entry bytes verified; historical source-member snapshots are not recast as current bytes.",
+      "recomputed_sha256": "9fb590dff3f51e93a0c91678d78a69ebabb732b1e939692c4222866cc917b0be",
+      "run_id": "l5-a4-r2-20261020T134225Z"
+    }
+  ],
+  "input_files": [
+    {
+      "canonical_sha256": "d2ce7ac5ce2ff7efa72ee663a66ae0b7089a934dac90aab3b3faa976c05c4efa",
+      "equal_entry": true,
+      "path": "docs/governance/phase_l/PHASE_L_L5_A1_MINIMUM_EVIDENCE_FAMILY_EXTENSION_CONTRACT.v1.json"
+    },
+    {
+      "canonical_sha256": "861bd88d985c3edf0c72d8c34d965f0ef2c67f80f0807c01364feeafdb4a87b2",
+      "equal_entry": true,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/existing_family_conformance_examples.json"
+    },
+    {
+      "canonical_sha256": "c82fb1c00d043a276805184ec3dbf6b287deb6b8f5344421e3fd55ab4b88836a",
+      "equal_entry": true,
+      "path": "schemas/unified_market_evidence_request.v3.schema.json"
+    },
+    {
+      "canonical_sha256": "bea6e1a72c7a00ef9939503c03766a7be78018aee585b2b1b34c6f805b72d2d0",
+      "equal_entry": true,
+      "path": "docs/governance/phase_l/acceptance_runs/l5-a1-20261018T140202Z/version_transition_matrix.json"
+    }
+  ],
+  "status": "PASS"
+}

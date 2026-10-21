@@ -1,0 +1,109 @@
+{
+  "authority_kind": "TEST_ACCEPTANCE_ONLY",
+  "cross_market_cases": 4,
+  "errors": [],
+  "family_dimension_cells": 72,
+  "network": false,
+  "new_registry": false,
+  "platform_proof": {
+    "authorization_owner": "server/services/unified_mode_b2.py",
+    "behavioral_gates": [
+      "tests/unit/test_unified_retention_inventory.py",
+      "tests/unit/test_unified_replay_inspector.py",
+      "tests/unit/test_phase_l_l4_a2_path_containment.py",
+      "tests/unit/test_phase_l_l4_a3_input_output_bounds.py",
+      "tests/unit/test_phase_l_l4_a4_injection_secret_boundary.py",
+      "tests/unit/test_phase_l_l4_a6_resource_boundaries.py",
+      "tests/unit/test_phase_l_l1_source_acquisition_timing.py"
+    ],
+    "family_modules": {
+      "scripts/phase_g/mops_material_disclosures.py": {
+        "defined_functions": [
+          "_binding_diagnostics",
+          "_conflict_diagnostic",
+          "_date",
+          "_published",
+          "_result",
+          "execute"
+        ],
+        "family_retention_or_security_policy_functions": [],
+        "private_lifecycle_functions": [],
+        "shared_source_stages_present": true
+      },
+      "scripts/phase_g/mops_monthly_revenue.py": {
+        "defined_functions": [
+          "_binding_diagnostics",
+          "_integer",
+          "_number",
+          "_report_date",
+          "_result",
+          "_roc_date",
+          "_value",
+          "execute"
+        ],
+        "family_retention_or_security_policy_functions": [],
+        "private_lifecycle_functions": [],
+        "shared_source_stages_present": true
+      }
+    },
+    "raw_provider_payload_retained_by_default": false,
+    "replay_owner": "server/services/unified_replay_inspector.py",
+    "resource_owner": "server/resource_boundaries.py",
+    "retention_owner": "server/services/unified_retention_inventory.py::classify_artifact_family"
+  },
+  "representative_families": 2,
+  "request_probe": [
+    {
+      "errors": [],
+      "family": "monthly_revenue",
+      "mode": "type",
+      "valid": true
+    },
+    {
+      "errors": [
+        "'lookback_trading_days' is a required property",
+        "'type' is a required property",
+        "Additional properties are not allowed ('capability_id' was unexpected)"
+      ],
+      "family": "monthly_revenue",
+      "mode": "capability_id",
+      "valid": false
+    },
+    {
+      "errors": [
+        "Additional properties are not allowed ('capability_id' was unexpected)"
+      ],
+      "family": "monthly_revenue",
+      "mode": "both",
+      "valid": false
+    },
+    {
+      "errors": [],
+      "family": "material_disclosures",
+      "mode": "type",
+      "valid": true
+    },
+    {
+      "errors": [
+        "'lookback_trading_days' is a required property",
+        "'type' is a required property",
+        "Additional properties are not allowed ('capability_id' was unexpected)"
+      ],
+      "family": "material_disclosures",
+      "mode": "capability_id",
+      "valid": false
+    },
+    {
+      "errors": [
+        "Additional properties are not allowed ('capability_id' was unexpected)"
+      ],
+      "family": "material_disclosures",
+      "mode": "both",
+      "valid": false
+    }
+  ],
+  "runtime_discovery": false,
+  "semantic_scenarios": 5,
+  "status": "PASS",
+  "writes": false
+}
