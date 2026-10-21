@@ -1,0 +1,135 @@
+{
+  "actual_scenarios": [
+    {
+      "Result_status": "full_success",
+      "caveats": [],
+      "caveats_preserved_in_handoff": true,
+      "currentness": {
+        "observed_at": "2026-09-16T00:00:00Z",
+        "status": "current_within_source_contract"
+      },
+      "family": "monthly_revenue",
+      "operation_status": "not_yet_available",
+      "scenario": "missing",
+      "typed_status": "not_yet_available",
+      "validator_errors": []
+    },
+    {
+      "Result_status": "failed",
+      "caveats": [
+        "all_governed_transports_failed"
+      ],
+      "caveats_preserved_in_handoff": true,
+      "currentness": {
+        "observed_at": "2026-09-16T00:00:00Z",
+        "status": "unknown"
+      },
+      "family": "monthly_revenue",
+      "operation_status": "source_failed",
+      "scenario": "source_failed",
+      "typed_status": "source_failed",
+      "validator_errors": []
+    },
+    {
+      "Result_status": "full_success",
+      "caveats": [],
+      "caveats_preserved_in_handoff": true,
+      "currentness": {
+        "observed_at": "2026-09-16T00:00:00Z",
+        "status": "current_within_source_contract"
+      },
+      "family": "material_disclosures",
+      "operation_status": "no_evidence_in_covered_scope",
+      "scenario": "missing",
+      "typed_status": "no_evidence_in_covered_scope",
+      "validator_errors": []
+    },
+    {
+      "Result_status": "failed",
+      "caveats": [
+        "all_governed_transports_failed"
+      ],
+      "caveats_preserved_in_handoff": true,
+      "currentness": {
+        "observed_at": "2026-09-16T00:00:00Z",
+        "status": "unknown"
+      },
+      "family": "material_disclosures",
+      "operation_status": "source_failed",
+      "scenario": "source_failed",
+      "typed_status": "source_failed",
+      "validator_errors": []
+    },
+    {
+      "Result_status": "full_success",
+      "caveats": [],
+      "caveats_preserved_in_handoff": true,
+      "currentness": {
+        "observed_at": "2026-09-16T00:00:00Z",
+        "status": "current_within_source_contract"
+      },
+      "family": "material_disclosures",
+      "operation_status": "partial",
+      "scenario": "partial",
+      "typed_status": "partial",
+      "validator_errors": []
+    }
+  ],
+  "available_fixtures": [
+    {
+      "citation_retrieved_at": "2026-09-22T00:00:00Z",
+      "family": "monthly_revenue",
+      "market": "TWSE",
+      "source_coverage": {
+        "mode": "latest_available_reporting_period",
+        "reporting_period": "2026-08",
+        "source_report_date": "2026-09-15"
+      },
+      "source_observed_at": "2026-09-16T00:00:00Z"
+    },
+    {
+      "citation_retrieved_at": "2026-09-22T00:00:00Z",
+      "family": "monthly_revenue",
+      "market": "TPEX",
+      "source_coverage": {
+        "mode": "latest_available_reporting_period",
+        "reporting_period": "2026-08",
+        "source_report_date": "2026-09-15"
+      },
+      "source_observed_at": "2026-09-16T00:00:00Z"
+    },
+    {
+      "citation_retrieved_at": "2026-09-22T00:00:00Z",
+      "family": "material_disclosures",
+      "market": "TWSE",
+      "source_coverage": {
+        "coverage_through": "2026-09-15",
+        "mode": "latest_completed_official_daily_batch",
+        "source_report_date": "2026-09-16",
+        "truncated": false
+      },
+      "source_observed_at": "2026-09-16T00:00:00Z"
+    },
+    {
+      "citation_retrieved_at": "2026-09-22T00:00:00Z",
+      "family": "material_disclosures",
+      "market": "TPEX",
+      "source_coverage": {
+        "coverage_through": "2026-09-15",
+        "mode": "latest_completed_official_daily_batch",
+        "source_report_date": "2026-09-16",
+        "truncated": false
+      },
+      "source_observed_at": "2026-09-16T00:00:00Z"
+    }
+  ],
+  "monthly_signed_and_null_proof": "current_month_revenue=100; previous_month_revenue=-2; mom_pct=null; TWD/thousand preserved from accepted fixture",
+  "partial_proof": "51 existing disclosure-shaped fixture rows normalize to 50 retained items with status partial and truncated=true; never upgraded to complete.",
+  "state_distinctions": "not_yet_available / no_evidence_in_covered_scope are actual family missing results; source_failed is separate. Unsupported remains platform eligibility/typed vocabulary; stale is a separate currentness axis (schema test), not a fabricated acquisition outcome.",
+  "status": "PASS",
+  "tests": [
+    "test_actual_missing_and_failure_states_remain_distinct",
+    "test_stale_currentness_and_unsupported_are_distinct_existing_schema_axes",
+    "test_partial_disclosure_does_not_become_complete"
+  ]
+}

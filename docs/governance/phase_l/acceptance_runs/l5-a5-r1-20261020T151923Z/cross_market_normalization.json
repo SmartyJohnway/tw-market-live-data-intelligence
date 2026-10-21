@@ -1,0 +1,65 @@
+{
+  "cases": [
+    {
+      "acceptance_fixture_root": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TWSE",
+      "artifact_hash_verified": true,
+      "audit_id": "umeap-v3-f88dac18bab561317d38",
+      "kind": "DETERMINISTIC_EXISTING_PAYLOAD_PROJECTION_UNIT_FIXTURE_NOT_PRODUCTION_CONTROL_PACKAGE",
+      "market": "TWSE",
+      "operation_artifact": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TWSE/evidence/monthly_revenue/TWSE_2330.json",
+      "result_hash": "981897f2757481520cf09dbbf566c2b921cd53957b769584fe682142055a0825",
+      "result_id": "umeresult-v3-ef9cc8ff22d1c7250852",
+      "source_contract": "t187ap05_L",
+      "typed_contract": "monthly_revenue_evidence.v1",
+      "validator_errors": []
+    },
+    {
+      "acceptance_fixture_root": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TPEX",
+      "artifact_hash_verified": true,
+      "audit_id": "umeap-v3-6d72c5854e361aaaf1fb",
+      "kind": "DETERMINISTIC_EXISTING_PAYLOAD_PROJECTION_UNIT_FIXTURE_NOT_PRODUCTION_CONTROL_PACKAGE",
+      "market": "TPEX",
+      "operation_artifact": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TPEX/evidence/monthly_revenue/TPEX_6488.json",
+      "result_hash": "93a90ce653e7addc175411aad9d5ca13a632bb5499b8e6293470934526fd1721",
+      "result_id": "umeresult-v3-10a4b2c178693f08d460",
+      "source_contract": "t187ap05_O",
+      "typed_contract": "monthly_revenue_evidence.v1",
+      "validator_errors": []
+    },
+    {
+      "acceptance_fixture_root": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TWSE",
+      "artifact_hash_verified": true,
+      "audit_id": "umeap-v3-7c10b8f31c02a95f3380",
+      "kind": "DETERMINISTIC_EXISTING_PAYLOAD_PROJECTION_UNIT_FIXTURE_NOT_PRODUCTION_CONTROL_PACKAGE",
+      "market": "TWSE",
+      "operation_artifact": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TWSE/evidence/material_disclosures/TWSE_2330.json",
+      "result_hash": "872c1000a185d12237f7a57499729f2dff0fc149586c149ade5c30ac2ae8daf9",
+      "result_id": "umeresult-v3-ad739c2e33a60cc44e9a",
+      "source_contract": "t187ap04_L",
+      "typed_contract": "material_disclosure_evidence.v1",
+      "validator_errors": []
+    },
+    {
+      "acceptance_fixture_root": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TPEX",
+      "artifact_hash_verified": true,
+      "audit_id": "umeap-v3-090882fe4cf558e1d71e",
+      "kind": "DETERMINISTIC_EXISTING_PAYLOAD_PROJECTION_UNIT_FIXTURE_NOT_PRODUCTION_CONTROL_PACKAGE",
+      "market": "TPEX",
+      "operation_artifact": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/material_disclosures/TPEX/evidence/material_disclosures/TPEX_6488.json",
+      "result_hash": "b9fb38cae7b65f08498822665802dbf75b4b29153075accda0ea40c837a0e8df",
+      "result_id": "umeresult-v3-955ed8b7ac5621ad3919",
+      "source_contract": "t187ap04_O",
+      "typed_contract": "material_disclosure_evidence.v1",
+      "validator_errors": []
+    }
+  ],
+  "fixture_authorities": [
+    "tests/unit/test_phase_g_monthly_revenue.py::HEAD/ROW/TARGET",
+    "tests/unit/test_phase_g_material_disclosures.py::CSV",
+    "tests/unit/test_phase_h_imp_6_v3_projection_handoff.py::_inputs",
+    "tests/fixtures/m8r_05a_f3/verified_security_master_snapshot.json"
+  ],
+  "per_family": "TWSE/TPEX normalized semantic bodies equal after removing expected market/source/citation provenance; schema identities remain stable.",
+  "provider_calls": 0,
+  "status": "PASS"
+}

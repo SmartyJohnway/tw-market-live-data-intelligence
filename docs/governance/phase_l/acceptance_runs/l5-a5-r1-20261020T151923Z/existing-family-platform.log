@@ -1,0 +1,10 @@
+........................................................................ [ 41%]
+........................................................................ [ 82%]
+..............................                                           [100%]
+============================== warnings summary ===============================
+tests/unit/test_phase_l_l4_a6_resource_boundaries.py: 19 warnings
+  D:\Codex-Workspace\projects\tw-market-live-data-intelligence-phase-l5-a5\scripts\m8r_09_persistent_watchlists.py:104: DeprecationWarning: jsonschema.RefResolver is deprecated as of v4.18.0, in favor of the https://github.com/python-jsonschema/referencing library, which provides more compliant referencing behavior as well as more flexible APIs for customization. A future release will remove RefResolver. Please file a feature request (on referencing) if you are missing an API for the kind of customization you need.
+    resolver = jsonschema.RefResolver.from_schema(schema, store=_SCHEMA_CACHE)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+174 passed, 19 warnings in 19.63s

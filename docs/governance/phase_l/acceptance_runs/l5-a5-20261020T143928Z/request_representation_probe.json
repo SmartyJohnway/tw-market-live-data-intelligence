@@ -1,0 +1,196 @@
+{
+  "cases": [
+    {
+      "errors": [],
+      "family": "monthly_revenue",
+      "mode": "current_type",
+      "request": {
+        "data_needs": [
+          {
+            "parameters": {},
+            "priority": "required",
+            "type": "monthly_revenue"
+          }
+        ],
+        "execution_mode": "preview",
+        "request_id": "a5-offline-identity-probe",
+        "schema_version": "unified_market_evidence_request.v3",
+        "targets": [
+          {
+            "input": "2330"
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "errors": [
+        {
+          "message": "Additional properties are not allowed ('capability_id' was unexpected)",
+          "path": "data_needs/0",
+          "validator": "additionalProperties"
+        },
+        {
+          "message": "'type' is a required property",
+          "path": "data_needs/0",
+          "validator": "required"
+        },
+        {
+          "message": "'lookback_trading_days' is a required property",
+          "path": "data_needs/0/parameters",
+          "validator": "required"
+        }
+      ],
+      "family": "monthly_revenue",
+      "mode": "literal_capability_id",
+      "request": {
+        "data_needs": [
+          {
+            "capability_id": "monthly_revenue",
+            "parameters": {},
+            "priority": "required"
+          }
+        ],
+        "execution_mode": "preview",
+        "request_id": "a5-offline-identity-probe",
+        "schema_version": "unified_market_evidence_request.v3",
+        "targets": [
+          {
+            "input": "2330"
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "errors": [
+        {
+          "message": "Additional properties are not allowed ('capability_id' was unexpected)",
+          "path": "data_needs/0",
+          "validator": "additionalProperties"
+        }
+      ],
+      "family": "monthly_revenue",
+      "mode": "both_fields",
+      "request": {
+        "data_needs": [
+          {
+            "capability_id": "monthly_revenue",
+            "parameters": {},
+            "priority": "required",
+            "type": "monthly_revenue"
+          }
+        ],
+        "execution_mode": "preview",
+        "request_id": "a5-offline-identity-probe",
+        "schema_version": "unified_market_evidence_request.v3",
+        "targets": [
+          {
+            "input": "2330"
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "errors": [],
+      "family": "material_disclosures",
+      "mode": "current_type",
+      "request": {
+        "data_needs": [
+          {
+            "parameters": {},
+            "priority": "required",
+            "type": "material_disclosures"
+          }
+        ],
+        "execution_mode": "preview",
+        "request_id": "a5-offline-identity-probe",
+        "schema_version": "unified_market_evidence_request.v3",
+        "targets": [
+          {
+            "input": "2330"
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "errors": [
+        {
+          "message": "Additional properties are not allowed ('capability_id' was unexpected)",
+          "path": "data_needs/0",
+          "validator": "additionalProperties"
+        },
+        {
+          "message": "'type' is a required property",
+          "path": "data_needs/0",
+          "validator": "required"
+        },
+        {
+          "message": "'lookback_trading_days' is a required property",
+          "path": "data_needs/0/parameters",
+          "validator": "required"
+        }
+      ],
+      "family": "material_disclosures",
+      "mode": "literal_capability_id",
+      "request": {
+        "data_needs": [
+          {
+            "capability_id": "material_disclosures",
+            "parameters": {},
+            "priority": "required"
+          }
+        ],
+        "execution_mode": "preview",
+        "request_id": "a5-offline-identity-probe",
+        "schema_version": "unified_market_evidence_request.v3",
+        "targets": [
+          {
+            "input": "2330"
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "errors": [
+        {
+          "message": "Additional properties are not allowed ('capability_id' was unexpected)",
+          "path": "data_needs/0",
+          "validator": "additionalProperties"
+        }
+      ],
+      "family": "material_disclosures",
+      "mode": "both_fields",
+      "request": {
+        "data_needs": [
+          {
+            "capability_id": "material_disclosures",
+            "parameters": {},
+            "priority": "required",
+            "type": "material_disclosures"
+          }
+        ],
+        "execution_mode": "preview",
+        "request_id": "a5-offline-identity-probe",
+        "schema_version": "unified_market_evidence_request.v3",
+        "targets": [
+          {
+            "input": "2330"
+          }
+        ]
+      },
+      "valid": false
+    }
+  ],
+  "conformance_claim": "HOLD: schema behavior contradicts literal frozen example requirement",
+  "network": false,
+  "probe_expectations": "6/6 PASS: actual syntax accepted; literal A1/A5 syntax and extra alias rejected",
+  "provider_calls": 0,
+  "schema": "schemas/unified_market_evidence_request.v3.schema.json",
+  "schema_canonical_sha256": "c82fb1c00d043a276805184ec3dbf6b287deb6b8f5344421e3fd55ab4b88836a",
+  "validator": "jsonschema.Draft7Validator",
+  "writes": false
+}

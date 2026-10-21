@@ -1,0 +1,56 @@
+{
+  "Request_schema_changed": false,
+  "cases": [
+    {
+      "errors": [],
+      "family": "monthly_revenue",
+      "mode": "type",
+      "valid": true
+    },
+    {
+      "errors": [
+        "'lookback_trading_days' is a required property",
+        "'type' is a required property",
+        "Additional properties are not allowed ('capability_id' was unexpected)"
+      ],
+      "family": "monthly_revenue",
+      "mode": "capability_id",
+      "valid": false
+    },
+    {
+      "errors": [
+        "Additional properties are not allowed ('capability_id' was unexpected)"
+      ],
+      "family": "monthly_revenue",
+      "mode": "both",
+      "valid": false
+    },
+    {
+      "errors": [],
+      "family": "material_disclosures",
+      "mode": "type",
+      "valid": true
+    },
+    {
+      "errors": [
+        "'lookback_trading_days' is a required property",
+        "'type' is a required property",
+        "Additional properties are not allowed ('capability_id' was unexpected)"
+      ],
+      "family": "material_disclosures",
+      "mode": "capability_id",
+      "valid": false
+    },
+    {
+      "errors": [
+        "Additional properties are not allowed ('capability_id' was unexpected)"
+      ],
+      "family": "material_disclosures",
+      "mode": "both",
+      "valid": false
+    }
+  ],
+  "literal_capability_id_rejected": true,
+  "status": "PASS",
+  "type_plus_capability_id_rejected": true
+}

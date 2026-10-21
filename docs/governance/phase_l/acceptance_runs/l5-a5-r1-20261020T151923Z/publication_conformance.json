@@ -1,0 +1,28 @@
+{
+  "activation_by_publication": false,
+  "current_surfaces": [
+    "canonical Catalog V3",
+    "selected Routing V3",
+    "portable Catalog",
+    "Quick Guide",
+    "Skill",
+    "agent usage guide",
+    "current limitations"
+  ],
+  "gates": [
+    "validate_portable_catalog_sync",
+    "validate_runtime_skill_guide_sync",
+    "validate_l5_extension_publication_conformance"
+  ],
+  "guides_canonical": false,
+  "representatives": [
+    "monthly_revenue",
+    "material_disclosures"
+  ],
+  "required_gate_log_refs": [
+    "required-04.log",
+    "required-05.log",
+    "required-11.log"
+  ],
+  "status": "PASS"
+}

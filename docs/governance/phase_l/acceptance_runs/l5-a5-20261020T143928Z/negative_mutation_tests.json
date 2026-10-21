@@ -1,0 +1,8 @@
+{
+  "acceptance_tests": "NOT_RUN",
+  "blocker": "A5-REQ-IDENTITY-001",
+  "bounded_schema_diagnostic": "request_representation_probe.json",
+  "diagnostic_cases": 6,
+  "focused_A5_test_module_added": false,
+  "status": "NOT_RUN_BLOCKED"
+}

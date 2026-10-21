@@ -1,0 +1,69 @@
+{
+  "cases": [
+    {
+      "acceptance_fixture_root": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TWSE",
+      "artifact_hash_verified": true,
+      "audit_id": "umeap-v3-f88dac18bab561317d38",
+      "kind": "DETERMINISTIC_EXISTING_PAYLOAD_PROJECTION_UNIT_FIXTURE_NOT_PRODUCTION_CONTROL_PACKAGE",
+      "market": "TWSE",
+      "operation_artifact": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TWSE/evidence/monthly_revenue/TWSE_2330.json",
+      "result_hash": "981897f2757481520cf09dbbf566c2b921cd53957b769584fe682142055a0825",
+      "result_id": "umeresult-v3-ef9cc8ff22d1c7250852",
+      "source_contract": "t187ap05_L",
+      "typed_contract": "monthly_revenue_evidence.v1",
+      "validator_errors": []
+    },
+    {
+      "acceptance_fixture_root": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TPEX",
+      "artifact_hash_verified": true,
+      "audit_id": "umeap-v3-6d72c5854e361aaaf1fb",
+      "kind": "DETERMINISTIC_EXISTING_PAYLOAD_PROJECTION_UNIT_FIXTURE_NOT_PRODUCTION_CONTROL_PACKAGE",
+      "market": "TPEX",
+      "operation_artifact": "docs/governance/phase_l/acceptance_runs/l5-a5-r1-20261020T151923Z/fixture_packages/monthly_revenue/TPEX/evidence/monthly_revenue/TPEX_6488.json",
+      "result_hash": "93a90ce653e7addc175411aad9d5ca13a632bb5499b8e6293470934526fd1721",
+      "result_id": "umeresult-v3-10a4b2c178693f08d460",
+      "source_contract": "t187ap05_O",
+      "typed_contract": "monthly_revenue_evidence.v1",
+      "validator_errors": []
+    }
+  ],
+  "existing_test_nodes": [
+    "tests/unit/test_phase_g_monthly_revenue.py::test_d01_d03_d04_d05_d06_values_signed_null_note_and_roc_dates",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_d02_tpex_route",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_d07_b08_healthy_missing_and_name_mismatch",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_d08_d09_d10_d11_transport_and_conflict_contracts",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_d12_d13_d14_schema_and_target_bounded_output",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_b3_real_shape_tpex_json_fallback_is_source_faithful",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_b3_g2_missing_field_market_mismatch_and_schema_negative",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_b4_g2_snapshot_period_identity_conflict_fails_closed_and_preserves_fallback",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_b5_g2_valid_row_plus_malformed_snapshot_identity_fails_closed",
+    "tests/unit/test_phase_g_monthly_revenue.py::test_b5_shared_source_provenance_schema_rules_a_to_g_for_both_contracts",
+    "tests/unit/test_m8r_06_03_production_adapter.py::test_research_monthly_revenue_route_uses_governed_json_fallback"
+  ],
+  "family_owned_platform_policy": false,
+  "identity_graph": {
+    "Request_V3_wire_representation": "data_needs[].type = monthly_revenue",
+    "cardinality": {
+      "capability_to_typed_evidence": "1:1 in this example; N:M permitted",
+      "executor_to_capabilities": "1:N",
+      "source_contracts_to_typed_evidence": "N:1"
+    },
+    "executor": "phase_g_official_research_executor",
+    "operation_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+    "routing_identities": [
+      "Unified Request V3 / monthly_revenue / TWSE / phase_g_official_research_executor",
+      "Unified Request V3 / monthly_revenue / TPEX / phase_g_official_research_executor"
+    ],
+    "semantic_capability_id": "monthly_revenue",
+    "source_authority": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+    "source_contracts": [
+      "t187ap05_L",
+      "t187ap05_O"
+    ],
+    "typed_evidence_contract": "monthly_revenue_evidence.v1"
+  },
+  "source_and_retrieval_timestamps_distinct": true,
+  "source_values_and_units_preserved": true,
+  "status": "PASS",
+  "two_markets_pass": 2
+}

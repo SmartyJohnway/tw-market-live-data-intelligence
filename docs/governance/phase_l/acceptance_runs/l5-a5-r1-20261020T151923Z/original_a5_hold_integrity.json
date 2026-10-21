@@ -1,0 +1,15 @@
+{
+  "artifact_count": 23,
+  "canonical_sha256": "c2db766581cfb6b6d37cefd69df191c0969ce178b4ed67311a23066cc076d8e8",
+  "historical_GAP06": "OPEN_OWNER_DECISION_REQUIRED",
+  "historical_acceptance_validators": "NOT_RUN_BLOCKED",
+  "historical_default_ci_comparison": "NOT_MEASURED",
+  "historical_matrix_adjudicated": 0,
+  "historical_pass": 0,
+  "historical_unresolved": 72,
+  "members_verified": 23,
+  "original_disposition": "L5_A5_EXISTING_FAMILY_CONFORMANCE_GAP_REQUIRES_OWNER_DECISION",
+  "original_run": "l5-a5-20261020T143928Z",
+  "rewritten": false,
+  "status": "PASS"
+}

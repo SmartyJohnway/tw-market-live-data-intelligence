@@ -1,0 +1,12 @@
+{
+  "branch": "phase-l/l5-a5-representative-existing-family-conformance",
+  "clean_starting_worktree": true,
+  "entry_gate": "PASS",
+  "entry_origin_main": "09d6db51cf242316632bffb7ee96eef88014a039",
+  "entry_tree": "cf3651e3da8dfab26c553d2b3d4a781a5e123e13",
+  "fetch_result": "PASS",
+  "milestone_ancestry": "6/6 PASS",
+  "owner_authority": "USER_CHAT_2026-10-20_PHASE_L_L5_A5_REPRESENTATIVE_EXISTING_FAMILY_CONFORMANCE_AUTHORIZATION",
+  "run_id": "l5-a5-20261020T143928Z",
+  "technical_stop": "A5-REQ-IDENTITY-001"
+}

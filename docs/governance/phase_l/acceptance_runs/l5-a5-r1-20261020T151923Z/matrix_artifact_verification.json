@@ -1,0 +1,6 @@
+{
+  "actual_persisted_matrix_cells_checked": 72,
+  "checker": "validate_l5_existing_family_conformance.py::validate_snapshot",
+  "errors": [],
+  "status": "PASS"
+}

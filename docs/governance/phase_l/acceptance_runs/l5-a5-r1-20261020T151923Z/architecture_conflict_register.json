@@ -1,0 +1,9 @@
+{
+  "family_registry": false,
+  "new_canonical_authorities": 0,
+  "original_notation_issue": "RESOLVED_BY_OWNER_GOVERNANCE_CLARIFICATION",
+  "plugin_framework": false,
+  "runtime_discovery": false,
+  "status": "PASS",
+  "unresolved_architecture_conflicts": 0
+}

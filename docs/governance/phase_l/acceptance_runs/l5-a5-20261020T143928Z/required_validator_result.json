@@ -1,0 +1,4 @@
+{
+  "reason": "A5 stop condition encountered during frozen Request representation inspection. No A5 validator is implemented or claimed PASS. Only schema diagnostic and final diff/scope checks are performed.",
+  "status": "NOT_RUN_BLOCKED"
+}

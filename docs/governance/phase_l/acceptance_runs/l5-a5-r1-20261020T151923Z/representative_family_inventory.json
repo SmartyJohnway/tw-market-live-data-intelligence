@@ -1,0 +1,50 @@
+{
+  "families": 2,
+  "identity_separation": "Semantic intent, public wire field, typed contract, operation contract, source family, source contract, executor and route are separate namespaces. Shared executor 1:N does not merge family identity; source contracts N:1 normalize to each stable typed schema. Global N:M remains permitted.",
+  "no_third_family": true,
+  "not_runtime_registry": true,
+  "representatives": [
+    {
+      "Request_V3_wire_representation": "data_needs[].type = monthly_revenue",
+      "cardinality": {
+        "capability_to_typed_evidence": "1:1 in this example; N:M permitted",
+        "executor_to_capabilities": "1:N",
+        "source_contracts_to_typed_evidence": "N:1"
+      },
+      "executor": "phase_g_official_research_executor",
+      "operation_evidence_contract": "phase_g_monthly_revenue_operation_evidence.v1",
+      "routing_identities": [
+        "Unified Request V3 / monthly_revenue / TWSE / phase_g_official_research_executor",
+        "Unified Request V3 / monthly_revenue / TPEX / phase_g_official_research_executor"
+      ],
+      "semantic_capability_id": "monthly_revenue",
+      "source_authority": "MOPS_MONTHLY_REVENUE_OPEN_DATA",
+      "source_contracts": [
+        "t187ap05_L",
+        "t187ap05_O"
+      ],
+      "typed_evidence_contract": "monthly_revenue_evidence.v1"
+    },
+    {
+      "Request_V3_wire_representation": "data_needs[].type = material_disclosures",
+      "cardinality": {
+        "capability_to_typed_evidence": "1:1 in this example; N:M permitted",
+        "executor_to_capabilities": "1:N",
+        "source_contracts_to_typed_evidence": "N:1"
+      },
+      "executor": "phase_g_official_research_executor",
+      "operation_evidence_contract": "phase_g_material_disclosure_operation_evidence.v1",
+      "routing_identities": [
+        "Unified Request V3 / material_disclosures / TWSE / phase_g_official_research_executor",
+        "Unified Request V3 / material_disclosures / TPEX / phase_g_official_research_executor"
+      ],
+      "semantic_capability_id": "material_disclosures",
+      "source_authority": "MOPS_MATERIAL_DISCLOSURE_OPEN_DATA",
+      "source_contracts": [
+        "t187ap04_L",
+        "t187ap04_O"
+      ],
+      "typed_evidence_contract": "material_disclosure_evidence.v1"
+    }
+  ]
+}

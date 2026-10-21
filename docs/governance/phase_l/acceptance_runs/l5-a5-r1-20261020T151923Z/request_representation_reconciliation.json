@@ -1,0 +1,20 @@
+{
+  "A1_historical_bytes_rewritten": false,
+  "Request_V3_changed": false,
+  "compatibility_alias": false,
+  "disposition": "L5_A5_R1_REQUEST_CAPABILITY_IDENTITY_REPRESENTATION_CLARIFICATION_PASS",
+  "historical_A1_notation": "data_needs[].capability_id = ...",
+  "historical_notation_classification": "HISTORICAL_NOTATION_DEFECT",
+  "historical_notation_is_accepted_Request_syntax": false,
+  "mapping": "request.data_needs[i].type value = semantic capability_id value",
+  "new_registry": false,
+  "original_issue": "FROZEN_GOVERNANCE_EXAMPLE_REQUEST_REPRESENTATION_CONTRADICTION",
+  "owner_authority": "USER_CHAT_2026-10-20_L5_A5_R1_GOVERNANCE_CLARIFICATION",
+  "public_contract_changed": false,
+  "resolution": "RESOLVED_BY_OWNER_GOVERNANCE_CLARIFICATION",
+  "runtime_changed": false,
+  "semantic_capability_identity_changed": false,
+  "semantic_namespace": "capability_id",
+  "transformation_table": false,
+  "wire_representation": "Unified Request V3 data_needs[].type"
+}
