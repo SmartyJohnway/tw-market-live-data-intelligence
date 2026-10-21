@@ -28,7 +28,7 @@ This acceptance authorizes normal merge of L5-A5 only. It does not authorize L5-
 ## Merge provenance
 
 - PR: `#390`
-- Merge commit: `PENDING`
-- Merged at: `PENDING`
-- State before merge: `OWNER-ACCEPTED FOR MERGE`
+- Merge commit: `303e2ba444721f939ce74a5f2c15b0a5bb562a7a`
+- Merged at: `2026-10-21T01:58:00Z`
+- State after merge: `OWNER-ACCEPTED AND MERGED`
 - L5-A6+ and L6-L7 remain NOT AUTHORIZED.
