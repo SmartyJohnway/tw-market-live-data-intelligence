@@ -1,0 +1,128 @@
+{
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "logical_root_mapping_count": 11,
+  "roots": [
+    {
+      "CLI": "manage_security_master.py --root",
+      "ENV": "TW_MARKET_SECURITY_MASTER_ROOT",
+      "authority": "scripts/m8r_08g_security_master_releases.py; scripts/m8r_06_01c2_mode_a_security_master_loader.py",
+      "backup": "core durable",
+      "checkout": "ACTIVE PRODUCT COUPLING",
+      "class": "Security Master durable authority",
+      "default": "<checkout>/data/security_master",
+      "docker": "explicit persistent mount",
+      "io": "explicit update creates candidate/release; runtime reads active release",
+      "kind": "durable user state",
+      "user_config": "none"
+    },
+    {
+      "CLI/ENV": "none for staging root",
+      "authority": "scripts/m8r_06_01b_materialize_production_inputs.py; scripts/m8r_06_security_master_candidate_paths.py; scripts/manage_security_master.py",
+      "backup": "governed retained source provenance, not plain cache",
+      "checkout": "ACTIVE PRODUCT COUPLING",
+      "class": "SM acquisition/materialization bundle",
+      "default": "<checkout>/data/security_master/input_bundles",
+      "docker": "must be external to replaceable image",
+      "io": "explicit materialization writes raw_payloads, snapshots, candidate data and reports",
+      "kind": "mixed staging + durable governed artifacts"
+    },
+    {
+      "authority": "scripts/m8r_06_security_master_candidate_paths.py",
+      "backup": "rebuildable",
+      "checkout": "build-path coupling",
+      "class": "derived runtime identity index",
+      "default": "<checkout>/data/security_master/runtime_identity_indexes/<candidate>",
+      "docker": "not canonical durable mount",
+      "io": "candidate build writes; ordinary lookup may be process memory",
+      "kind": "derived"
+    },
+    {
+      "CLI": "caller injection only",
+      "ENV": "TW_MARKET_WATCHLIST_ROOT",
+      "authority": "scripts/m8r_09_persistent_watchlists.py",
+      "backup": "core durable",
+      "checkout": "ACTIVE PRODUCT COUPLING",
+      "class": "Watchlists",
+      "default": "<checkout>/data/watchlists",
+      "docker": "persistent mount",
+      "io": "explicit mutations create SQLite store",
+      "kind": "durable user state"
+    },
+    {
+      "CLI": "none in lifecycle",
+      "ENV": "M8R_06_03_CONTROL_ROOT",
+      "authority": "server/services/unified_mode_b2.py; unified_mode_c.py; scripts/m8r_06_03_execute_once.py",
+      "backup": "full governed backup per L0/L2 classifications",
+      "checkout": "ACTIVE PRODUCT COUPLING",
+      "class": "control/auth/claim/Result/Audit",
+      "default": "<checkout>/artifacts/m8r_06_03_workbench",
+      "docker": "persistent mount",
+      "io": "explicit authorized execution writes packages and projections",
+      "kind": "governed evidence + control"
+    },
+    {
+      "ENV": "TW_MARKET_HOST; TW_MARKET_PORT",
+      "authority": "scripts/tw_market_lifecycle.py:_owner_path",
+      "backup": "excluded",
+      "checkout": "active hash coupling",
+      "class": "runtime ownership/PID",
+      "default": "OS temp/tw-market-runtime/<checkout-hash>/service-<port>.json",
+      "docker": "container lifecycle mapping decision",
+      "io": "lifecycle start/update/stop; ephemeral",
+      "kind": "ephemeral"
+    },
+    {
+      "ENV": "TW_MARKET_OPERATIONAL_EVENT_PATH",
+      "authority": "scripts/tw_market_lifecycle.py; server/operational_diagnostics.py",
+      "backup": "excluded",
+      "checkout": "active default hash coupling",
+      "class": "operational events",
+      "default": "same OS temp install-hash directory",
+      "docker": "stdout/stderr or sink decision",
+      "io": "bounded JSONL, only if parent exists",
+      "kind": "ephemeral bounded diagnostics"
+    },
+    {
+      "authority": "Mode A loader; Local Service; benchmark scripts",
+      "backup": "excluded/rebuildable",
+      "checkout": "benchmark only",
+      "class": "cache/derived process state",
+      "default": "process memory; developer benchmarks under artifacts",
+      "docker": "not durable",
+      "io": "process-lifetime runtime cache; benchmark output is not product runtime",
+      "kind": "derived"
+    },
+    {
+      "authority": "tw_market_lifecycle.py; unified_backup.py; unified_restore.py; unified_migration.py",
+      "backup": "unfinished staging excluded; completed backup caller-selected",
+      "checkout": "path/caller dependent",
+      "class": "temporary/staging",
+      "default": "OS temp; backup/restore/migration staging beside caller-selected destination",
+      "docker": "scratch distinct from durable mount",
+      "io": "staging then atomic rename",
+      "kind": "ephemeral until finalized"
+    },
+    {
+      "CLI": "partial, e.g. --root",
+      "ENV": "multiple roots/endpoints",
+      "authority": "no single authority; individual seams",
+      "backup": "L0 intends config in core backup; gap",
+      "checkout": "active pointer coupling",
+      "class": "user product config",
+      "default": "no unified persisted user-config root; Mode A pointer in <checkout>/config/",
+      "docker": "must be supplied deliberately",
+      "io": "repo-local pointer only; no general config store",
+      "kind": "durable contract gap"
+    },
+    {
+      "authority": "unified_backup.py; unified_restore.py; unified_migration.py",
+      "backup": "L2 authority",
+      "checkout": "not inherently checkout bound",
+      "class": "backup/restore and migration/checkpoint targets",
+      "default": "none; caller chooses paths; migration checkpoint binds verified backup",
+      "docker": "explicit host/state destination",
+      "io": "backup/restore/migration stage beside selected target then finalize",
+      "kind": "external durable/caller selected"
+    }
+  ]
+}

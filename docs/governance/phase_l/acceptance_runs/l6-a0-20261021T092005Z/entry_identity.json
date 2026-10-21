@@ -1,0 +1,20 @@
+{
+  "L5_closure": {
+    "PR": 395,
+    "authority": "PHASE_L_L5_OWNER_ACCEPTED_FINAL_CLOSURE_PASS",
+    "merge_commit": "fea5259f8214aa405ed4017c7e9727bbf6d63ea9",
+    "record": "docs/governance/phase_l/PHASE_L_L5_OWNER_FINAL_CLOSURE_2026-10-21.md",
+    "status": "CLOSED"
+  },
+  "branch": "phase-l/l6-a0-packaging-portability-inventory",
+  "canonical_repository": "D:/Codex-Workspace/projects/tw-market-live-data-intelligence",
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "exact_origin_main": "c546232ed24fdb781a605e4403961d7ffb16a339",
+  "exact_origin_tree": "689fb647e5401a75ee4b89fcf36710fc27324aee",
+  "head": "c546232ed24fdb781a605e4403961d7ffb16a339",
+  "original_checkout_touched": false,
+  "original_untracked_data_preserved": true,
+  "status": "PASS",
+  "tree": "689fb647e5401a75ee4b89fcf36710fc27324aee",
+  "worktree_clean_at_entry": true
+}

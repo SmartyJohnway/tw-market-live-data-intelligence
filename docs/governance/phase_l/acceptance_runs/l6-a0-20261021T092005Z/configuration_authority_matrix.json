@@ -1,0 +1,77 @@
+{
+  "cli_env_precedence": "implemented at selected seams only; no centralized persisted config",
+  "conclusion": "User-config precedence layer is absent. Individual values split across CLI, ENV and repository defaults; Mode A pointer is authority-specific repo config, not a general config authority.",
+  "configuration_conflict": "Runtime loader/lifecycle may use TW_MARKET_SECURITY_MASTER_ROOT while direct management command defaults to checkout SECURITY_MASTER_ROOT unless --root is supplied; no persisted setting joins them.",
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "precedence": [
+    "explicit CLI argument",
+    "environment variable",
+    "user configuration",
+    "product default"
+  ],
+  "seams": [
+    {
+      "class": "current product",
+      "cli": "manage_security_master --root",
+      "default": "<checkout>/data/security_master",
+      "manager_cli_detail": "--root is the explicit management override; manage_security_master default is SECURITY_MASTER_ROOT and does not itself read TW_MARKET_SECURITY_MASTER_ROOT. Lifecycle/loader ENV selection and management CLI root are separate seams.",
+      "name": "TW_MARKET_SECURITY_MASTER_ROOT",
+      "source": "scripts/m8r_06_01c2_mode_a_security_master_loader.py; scripts/tw_market_lifecycle.py"
+    },
+    {
+      "class": "current product",
+      "cli": "caller injection only",
+      "default": "<checkout>/data/watchlists",
+      "name": "TW_MARKET_WATCHLIST_ROOT",
+      "source": "scripts/m8r_09_persistent_watchlists.py"
+    },
+    {
+      "class": "current product",
+      "cli": "none at lifecycle",
+      "default": "<checkout>/artifacts/m8r_06_03_workbench",
+      "name": "M8R_06_03_CONTROL_ROOT",
+      "source": "server/services/unified_mode_b2.py; scripts/m8r_06_03_execute_once.py"
+    },
+    {
+      "class": "current product",
+      "cli": "--host / --port",
+      "default": "127.0.0.1:8000",
+      "name": "TW_MARKET_HOST / TW_MARKET_PORT",
+      "source": "scripts/tw_market_lifecycle.py"
+    },
+    {
+      "class": "current integration",
+      "cli": "--service-url",
+      "default": "loopback service",
+      "name": "UNIFIED_MARKET_EVIDENCE_SERVICE_URL",
+      "source": "scripts/run_unified_market_evidence_mcp.py"
+    },
+    {
+      "class": "diagnostics",
+      "cli": "none",
+      "default": "no sink unless explicitly selected",
+      "name": "TW_MARKET_OPERATIONAL_EVENT_PATH",
+      "source": "server/operational_diagnostics.py"
+    },
+    {
+      "class": "correlation",
+      "cli": "none",
+      "default": "generated/absent",
+      "name": "TW_MARKET_OPERATIONAL_TRACE_ID",
+      "source": "server/operational_diagnostics.py"
+    },
+    {
+      "class": "narrow explicit-source/test seam",
+      "cli": "source utilities --ssl-policy",
+      "default": "strict",
+      "name": "TW_MARKET_SSL_POLICY",
+      "source": "scripts/ssl_policy.py; scripts/run_m5k_live_observation.py"
+    }
+  ],
+  "single_persisted_user_config_authority": false,
+  "test_only": [
+    "M8R_06_03_EXECUTION_ENVIRONMENT",
+    "M8R_06_03_TEST_*",
+    "TW_MARKET_* set only by acceptance harnesses"
+  ]
+}

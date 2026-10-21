@@ -1,0 +1,64 @@
+{
+  "external_socket_attempts": "NOT_MEASURED",
+  "instrumentation_scope": "No OS-wide network observation claim; offline/no-write statements are limited to validators declaring that behavior.",
+  "live_acquisition": 0,
+  "not_run": [
+    "default-ci",
+    "market/source acquisition",
+    "Docker daemon/image/volume/build/run",
+    "restore/migration"
+  ],
+  "production_state_mutations": 0,
+  "provider_requests": 0,
+  "results": [
+    {
+      "command": "python scripts/verify_dependency_supply_chain.py",
+      "direct": 11,
+      "locked": 49,
+      "network_access": false,
+      "status": "PASS",
+      "writes": false
+    },
+    {
+      "command": "python scripts/verify_environment.py",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "python": "3.13.7",
+      "status": "PASS"
+    },
+    {
+      "command": "python -m pip check",
+      "detail": "No broken requirements found.",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/validate_source_registry.py",
+      "errors": [],
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/validate_portable_catalog_sync.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python scripts/validate_runtime_skill_guide_sync.py",
+      "status": "PASS",
+      "tool_count": 6
+    },
+    {
+      "command": "python scripts/validate_v1_public_contracts.py",
+      "product_version": "1.0.0",
+      "status": "PASS",
+      "tool_count": 6
+    },
+    {
+      "command": "build_tool_contract_snapshot() read-only static inspection",
+      "status": "PASS",
+      "tool_count": 6
+    },
+    {
+      "command": "Docker CLI version query",
+      "detail": "Docker version 29.8.1, build 4a63305",
+      "status": "OBSERVED_ONLY"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "docker_cli": {
+    "found": true,
+    "scope": "version query only; no daemon/image/volume/network/build/run",
+    "version": "Docker version 29.8.1, build 4a63305"
+  },
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "findings": [
+    "locked graph is Windows 11 x86_64; Linux-container compatibility unproven",
+    "loopback bind and host/container reachability contract absent",
+    "SM, Watchlist, control/evidence need explicit persistent mounts",
+    "image/container filesystem replaceable, no canonical durable state",
+    "recreate/rollback must use L2 state compatibility",
+    "host lifecycle must manage container health without background acquisition",
+    "stdio MCP remains host-side and targets service URL",
+    "DPAPI/Tunnel/connectors/Codex/Hermes optional, not core"
+  ],
+  "implementation": "NOT AUTHORIZED; no Dockerfile/Compose/image/volume/network created",
+  "profile": "Windows host retains stdio MCP/Agent; container Local Service only"
+}

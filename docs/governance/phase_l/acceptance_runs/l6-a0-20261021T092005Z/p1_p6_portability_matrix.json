@@ -1,0 +1,59 @@
+{
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "scenarios": [
+    {
+      "acceptance": "switch app path, prove state roots unchanged and lifecycle works",
+      "evidence": "ROOT-relative resources and checkout-hash owner marker; ENV seams exist",
+      "gap": "stable external roots through arbitrary app relocation",
+      "id": "P1",
+      "name": "relocation same machine",
+      "status": "PARTIAL",
+      "tranche": "A2/A3"
+    },
+    {
+      "acceptance": "fresh Win11 user, no inherited profile runtime",
+      "evidence": "ENV/temp support only, no user-config/ACL contract",
+      "gap": "per-user/shared ownership, config location and permissions",
+      "id": "P2",
+      "name": "different Windows user",
+      "status": "GAP",
+      "tranche": "A1/A2"
+    },
+    {
+      "acceptance": "clean Win11 VM, arbitrary path, no Python/.git/state; initialize explicitly",
+      "evidence": "fresh service supports NOT_INITIALIZED and startup no acquisition",
+      "gap": "app/dependencies/resources/init and state provisioning",
+      "id": "P3",
+      "name": "new machine/user/path/zero inherited runtime",
+      "status": "GAP",
+      "tranche": "A1-A3"
+    },
+    {
+      "acceptance": "restore/verify then explicit activation, no acquisition",
+      "evidence": "L2 verified backup/restore into caller-selected root",
+      "gap": "mapping restored logical roots to install identity and activation",
+      "id": "P4",
+      "name": "restore durable state to new install",
+      "status": "PARTIAL",
+      "tranche": "A1/A2/A5"
+    },
+    {
+      "acceptance": "old supported state cases and migration/rollback on newer app",
+      "evidence": "L2 compatibility attestations and explicit migration lifecycle",
+      "gap": "release-to-state matrix and shipped upgrade/rollback flow",
+      "id": "P5",
+      "name": "newer app on supported old state",
+      "status": "PARTIAL",
+      "tranche": "A2/A3/A5; release policy L7"
+    },
+    {
+      "acceptance": "fresh mounted deployment; replace image; verify state and host stdio connection",
+      "evidence": "L0 profile only; no Dockerfile/Compose; Windows-only lock",
+      "gap": "Linux dependencies, listener, mounts, host lifecycle",
+      "id": "P6",
+      "name": "fresh Docker",
+      "status": "NOT_YET_IMPLEMENTED",
+      "tranche": "A4/A5"
+    }
+  ]
+}

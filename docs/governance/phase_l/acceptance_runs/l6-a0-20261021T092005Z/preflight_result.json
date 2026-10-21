@@ -1,0 +1,13 @@
+{
+  "L5_owner_closure_ancestor": true,
+  "L5_owner_closure_commit": "fea5259f8214aa405ed4017c7e9727bbf6d63ea9",
+  "branch": "phase-l/l6-a0-packaging-portability-inventory",
+  "entry_head": "c546232ed24fdb781a605e4403961d7ffb16a339",
+  "entry_tree": "689fb647e5401a75ee4b89fcf36710fc27324aee",
+  "entry_worktree_clean": true,
+  "isolated_worktree": true,
+  "origin_main_exact": true,
+  "original_checkout_modified": false,
+  "run_id": "l6-a0-20261021T092005Z",
+  "status": "PASS"
+}

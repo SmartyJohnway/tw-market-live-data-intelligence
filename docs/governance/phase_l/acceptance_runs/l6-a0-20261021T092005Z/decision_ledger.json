@@ -1,0 +1,80 @@
+{
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "items": [
+    {
+      "class": "OWNER_SUPERSEDED",
+      "id": "D1",
+      "topic": "Windows 11-only Tier-1"
+    },
+    {
+      "class": "DECISION_REQUIRED",
+      "id": "D2",
+      "topic": "installation identity/home"
+    },
+    {
+      "class": "DECISION_REQUIRED",
+      "id": "D3",
+      "topic": "physical state roots"
+    },
+    {
+      "class": "DECISION_REQUIRED",
+      "id": "D4",
+      "topic": "persisted user config"
+    },
+    {
+      "class": "DECISION_REQUIRED",
+      "id": "D5",
+      "topic": "SM bundle/materializer relocation"
+    },
+    {
+      "class": "DECISION_REQUIRED",
+      "id": "D6",
+      "topic": "control/Result/Audit root"
+    },
+    {
+      "class": "CAN_BE_DERIVED",
+      "id": "D7",
+      "topic": "operational log/runtime placement"
+    },
+    {
+      "class": "CAN_BE_DERIVED",
+      "id": "D8",
+      "topic": "init responsibilities"
+    },
+    {
+      "class": "DECISION_REQUIRED",
+      "id": "D9",
+      "topic": "minimum native package C recommendation"
+    },
+    {
+      "class": "DECISION_REQUIRED",
+      "id": "D10",
+      "topic": "Docker persistent mounts"
+    },
+    {
+      "class": "DECISION_REQUIRED",
+      "id": "D11",
+      "topic": "Docker lifecycle integration"
+    },
+    {
+      "class": "ALREADY_FROZEN",
+      "id": "D12",
+      "topic": "upgrade/state relationship"
+    },
+    {
+      "class": "CAN_BE_DERIVED",
+      "id": "D13",
+      "topic": "P1-P6 acceptance approach"
+    },
+    {
+      "class": "OUT_OF_SCOPE",
+      "id": "D14",
+      "topic": "MSI/MSIX/installer"
+    },
+    {
+      "class": "DEFER_L7",
+      "id": "D15",
+      "topic": "build/release signing/CI"
+    }
+  ]
+}

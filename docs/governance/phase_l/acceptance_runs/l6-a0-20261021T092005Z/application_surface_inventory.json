@@ -1,0 +1,70 @@
+{
+  "active_entrypoint_groups": 4,
+  "command_forms": 8,
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "lookup": "Runtime imports and static resources are resolved from repository root via __file__; arbitrary-path package root contract is absent.",
+  "runtime_components": [
+    "scripts/",
+    "server/",
+    "schemas/",
+    "docs/contracts/schemas/",
+    "docs/data_capabilities/ Catalog and Route",
+    "config/ executor metadata and Mode A pointer",
+    "frontend/unified-workbench/",
+    "skills/tw-market-evidence-agent/",
+    "skills/tw-security-master-classifier/",
+    "VERSION",
+    "requirements.txt",
+    "requirements-lock.txt"
+  ],
+  "surfaces": [
+    {
+      "authority": "scripts/tw_market.py; scripts/tw_market_lifecycle.py",
+      "classification": "DEFER",
+      "current": "not implemented; only start/status/stop/doctor are registered",
+      "entry": "python -m scripts.tw_market init"
+    },
+    {
+      "authority": "scripts/tw_market_lifecycle.py",
+      "classification": "REUSE",
+      "current": "managed local Workbench service, loopback-only",
+      "entry": "python -m scripts.tw_market start"
+    },
+    {
+      "authority": "scripts/tw_market_lifecycle.py",
+      "classification": "REUSE",
+      "current": "read-only service/identity/resource status",
+      "entry": "python -m scripts.tw_market status"
+    },
+    {
+      "authority": "scripts/tw_market_lifecycle.py",
+      "classification": "REUSE",
+      "current": "stops only process matching owned-process identity",
+      "entry": "python -m scripts.tw_market stop"
+    },
+    {
+      "authority": "scripts/tw_market_lifecycle.py",
+      "classification": "REUSE",
+      "current": "read-only diagnostics; loopback and filesystem inspection",
+      "entry": "python -m scripts.tw_market doctor"
+    },
+    {
+      "authority": "scripts/run_unified_workbench.py; server/main.py",
+      "classification": "WRAP",
+      "current": "uvicorn Local Workbench; localhost-only",
+      "entry": "python scripts/run_unified_workbench.py"
+    },
+    {
+      "authority": "scripts/run_unified_market_evidence_mcp.py; server/unified_mcp/",
+      "classification": "WRAP",
+      "current": "stdio MCP adapter; CLI service URL > ENV > loopback default",
+      "entry": "python scripts/run_unified_market_evidence_mcp.py"
+    },
+    {
+      "authority": "scripts/manage_security_master.py",
+      "classification": "REUSE",
+      "current": "explicit status/update/history/rollback/migration; --root and explicit --live",
+      "entry": "python scripts/manage_security_master.py"
+    }
+  ]
+}

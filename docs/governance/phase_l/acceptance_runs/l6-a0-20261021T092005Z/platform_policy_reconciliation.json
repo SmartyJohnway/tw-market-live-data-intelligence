@@ -1,0 +1,37 @@
+{
+  "L0_D03": {
+    "classification": "HISTORICAL_IMMUTABLE",
+    "source": "docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md",
+    "value": "Windows 10 x64 and Windows 11 x64"
+  },
+  "current_policy": {
+    "Windows_10": "not release-blocking Tier-1",
+    "authority": "USER_CHAT_2026-10-21_WINDOWS11_NATIVE_TIER1_BASELINE_SUPERSESSION",
+    "classification": "OWNER_SUPERSEDED",
+    "effective": "L6 onward",
+    "native_tier1": "Windows 11 x64 only"
+  },
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "references": [
+    {
+      "classification": "CURRENT_STALE_POLICY",
+      "path": "HANDOFF.md"
+    },
+    {
+      "classification": "HISTORICAL_IMMUTABLE",
+      "path": "docs/governance/phase_l/PHASE_L_L1_A0_CURRENT_RUNTIME_OPERABILITY_INVENTORY_2026-10-13.md"
+    },
+    {
+      "classification": "HISTORICAL_IMMUTABLE",
+      "path": "docs/governance/phase_l/PHASE_L_L4_A5_DEPENDENCY_SUPPLY_CHAIN_HARDENING_2026-10-17.md"
+    },
+    {
+      "classification": "NON_BLOCKING_REFERENCE",
+      "path": "requirements-lock.txt"
+    },
+    {
+      "classification": "CURRENT_COMPATIBILITY_NOTE",
+      "path": "PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md"
+    }
+  ]
+}

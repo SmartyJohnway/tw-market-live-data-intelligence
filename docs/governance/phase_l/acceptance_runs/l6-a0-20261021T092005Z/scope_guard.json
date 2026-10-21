@@ -1,0 +1,41 @@
+{
+  "authorized": [
+    "inventory",
+    "architecture gap review",
+    "governance/evidence",
+    "front-door current-state update",
+    "candidate commit/push/PR"
+  ],
+  "counts": {
+    "docker_implementation": 0,
+    "installer_implementation": 0,
+    "live_acquisition": 0,
+    "production_state_mutations": 0,
+    "provider_requests": 0,
+    "runtime_product_mutation": 0
+  },
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "expected_changed_scope": [
+    "docs/governance/phase_l/",
+    "acceptance_runs/l6-a0-*/",
+    "PROJECT.md",
+    "HANDOFF.md",
+    "ROADMAP.md",
+    "PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md"
+  ],
+  "prohibited": [
+    "runtime/product",
+    "tests",
+    "schemas",
+    "Catalog/Route/Executor/source",
+    "dependencies",
+    "Dockerfile/Compose/image/volume/network",
+    "installer/MSI/MSIX/PyInstaller/wheel",
+    "init implementation",
+    "state migration/restore",
+    "live acquisition",
+    "A1+",
+    "L7",
+    "Phase M"
+  ]
+}

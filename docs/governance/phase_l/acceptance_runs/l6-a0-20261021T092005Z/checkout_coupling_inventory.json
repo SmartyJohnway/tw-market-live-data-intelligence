@@ -1,0 +1,104 @@
+{
+  "active_product_findings": [
+    {
+      "behavior": "__file__ root, sys.path and subprocess cwd",
+      "files": [
+        "scripts/tw_market.py",
+        "scripts/tw_market_lifecycle.py",
+        "scripts/run_unified_workbench.py",
+        "scripts/run_unified_market_evidence_mcp.py"
+      ],
+      "id": "C1",
+      "implication": "bundle must preserve/replace root resolution",
+      "surface": "Python app root"
+    },
+    {
+      "behavior": "checkout data default; repo config pointer and schema resources",
+      "files": [
+        "scripts/m8r_08g_security_master_releases.py",
+        "scripts/m8r_06_01c2_mode_a_security_master_loader.py"
+      ],
+      "id": "C2",
+      "implication": "installation root mapping",
+      "surface": "Security Master authority"
+    },
+    {
+      "behavior": "fixed REPO_ROOT/data bundle path despite --root",
+      "files": [
+        "scripts/m8r_06_01b_materialize_production_inputs.py",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/manage_security_master.py"
+      ],
+      "id": "C3",
+      "implication": "critical relocation blocker",
+      "surface": "SM acquired source bundles"
+    },
+    {
+      "behavior": "checkout data default or ENV",
+      "files": [
+        "scripts/m8r_09_persistent_watchlists.py"
+      ],
+      "id": "C4",
+      "implication": "replaceable tree currently includes durable DB",
+      "surface": "Watchlist"
+    },
+    {
+      "behavior": "checkout artifacts default or ENV",
+      "files": [
+        "server/services/unified_mode_b2.py",
+        "server/services/unified_mode_c.py"
+      ],
+      "id": "C5",
+      "implication": "durable governed data in replaceable tree",
+      "surface": "control/evidence"
+    },
+    {
+      "behavior": "authority files rooted in app checkout",
+      "files": [
+        "server/services/unified_mode_a.py",
+        "server/services/unified_local_service.py",
+        "scripts/m8r_06_03_production_adapter.py"
+      ],
+      "id": "C6",
+      "implication": "package resources move in lockstep",
+      "surface": "schemas/Catalog/Route/executor metadata"
+    },
+    {
+      "behavior": "repository-relative assets and classifier references",
+      "files": [
+        "server/main.py",
+        "scripts/m8r_06_01b_materialize_production_inputs.py"
+      ],
+      "id": "C7",
+      "implication": "bundle must preserve complete resources",
+      "surface": "frontend/skills/classifier resources"
+    },
+    {
+      "behavior": "source-root metadata",
+      "files": [
+        "scripts/product_version.py",
+        "VERSION",
+        "requirements.txt",
+        "requirements-lock.txt"
+      ],
+      "id": "C8",
+      "implication": "release bundle must bind version/lock",
+      "surface": "version/dependencies"
+    },
+    {
+      "behavior": "temporary path hashes checkout root",
+      "files": [
+        "scripts/tw_market_lifecycle.py"
+      ],
+      "id": "C9",
+      "implication": "relocation changes ephemeral lifecycle identity",
+      "surface": "owned process marker"
+    }
+  ],
+  "evidence_run": "l6-a0-20261021T092005Z",
+  "non_product": {
+    "DOCUMENTATION ONLY": "historical governance paths/navigation",
+    "HISTORICAL EVIDENCE": "Phase J paths, prior Windows homes, old checkouts: preserve as evidence, not defect",
+    "TEST/ACCEPTANCE ONLY": "fixture roots and M8R_06_03_TEST_*"
+  }
+}
