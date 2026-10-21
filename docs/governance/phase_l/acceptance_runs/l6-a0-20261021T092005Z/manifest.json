@@ -1,6 +1,6 @@
 {
-  "artifact_content_commit": "9eb37129449529acbbffea9d1a3d062d6dea6041",
-  "artifact_content_tree": "2d2c3f6c976f4a3de987834e5256c0e2a4ef32d3",
+  "artifact_content_commit": "c455267f8ebfd34a2d6fba85be03ec3f0a800786",
+  "artifact_content_tree": "5469a5d8d0b79af930dfd75f622e9722ad9ee888",
   "artifact_count": 26,
   "artifacts": [
     {
@@ -24,9 +24,9 @@
       "sha256": "b4ae06529f7db8a3f2e33867e53de3238d0d1741006500dab5d7cef984a78aee"
     },
     {
-      "canonical_bytes": 5614,
+      "canonical_bytes": 5590,
       "path": "docs/governance/phase_l/PHASE_L_L6_A0_PACKAGING_PORTABILITY_CURRENT_STATE_INVENTORY_2026-10-21.md",
-      "sha256": "90def4545087e69df97eca88933844adff6c0e5d46c60d51c99c6044f2525daa"
+      "sha256": "9ad2e292ce452cb95b5c4112a075b2ba62686258fb48933e18cc9c356e1d7acd"
     },
     {
       "canonical_bytes": 1075,
@@ -135,10 +135,10 @@
     }
   ],
   "entry_base": "c546232ed24fdb781a605e4403961d7ffb16a339",
-  "manifest_canonical_sha256": "63f7ff8ab488b8a90ce5bc353f2cf99cf152ba0183756da44e63b847b50f133d",
   "normalization": "UTF-8 text; CRLF/CR normalized to LF before member SHA-256",
   "post_commit_distinction": "All listed artifacts are read from committed Git blobs at artifact_content_commit. Manifest is committed separately; no transient working-tree bytes are hashed.",
   "run_id": "l6-a0-20261021T092005Z",
   "self_digest_policy": "compact sorted JSON ensure_ascii=false excluding manifest_canonical_sha256",
-  "technical_disposition": "L6_A0_PACKAGING_PORTABILITY_INVENTORY_COMPLETE"
+  "technical_disposition": "L6_A0_PACKAGING_PORTABILITY_INVENTORY_COMPLETE",
+  "manifest_canonical_sha256": "cd74076e02b0c47a6c0765d15eaa1310f07be231cc3e999573839dcf3aac3117"
 }
