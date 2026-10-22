@@ -1,0 +1,24 @@
+{
+  "automatic_restore_or_migration": false,
+  "implementation": "scripts/tw_market_installation.py::enumerate_installation_state",
+  "l2_core_modified": false,
+  "remaining": "Full explicit-member backup/restore portability integration and P4 acceptance deferred A5",
+  "roles": [
+    "installation_metadata",
+    "settings",
+    "security_master",
+    "watchlists",
+    "governed",
+    "cache",
+    "logs",
+    "runtime",
+    "temp"
+  ],
+  "root_location_bypasses_classifier": false,
+  "source_identity_restored_as_destination_authority": false,
+  "status": "PASS",
+  "tests": [
+    "tests/unit/test_l6_a2_installation.py::test_state_roles_are_fixed_and_non_discovering",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_enumeration_does_not_adopt_source_identity_or_scan_state"
+  ]
+}

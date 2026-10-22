@@ -1,0 +1,41 @@
+{
+  "product_acceptance_completed": false,
+  "rows": [
+    {
+      "future_acceptance": "L6-A5; A3/A4 prerequisite as applicable",
+      "id": "P1",
+      "progress": "Stable installation ID/root independent of APP path; packaged relocation not accepted",
+      "status": "PARTIAL"
+    },
+    {
+      "future_acceptance": "L6-A5; A3/A4 prerequisite as applicable",
+      "id": "P2",
+      "progress": "Alternate HOME independent context tested; real different-user acceptance absent",
+      "status": "PARTIAL"
+    },
+    {
+      "future_acceptance": "L6-A5; A3/A4 prerequisite as applicable",
+      "id": "P3",
+      "progress": "Fresh native init/lifecycle substrate tested; .git-free package/new-machine acceptance absent",
+      "status": "PARTIAL"
+    },
+    {
+      "future_acceptance": "L6-A5; A3/A4 prerequisite as applicable",
+      "id": "P4",
+      "progress": "Explicit logical enumeration only; restored durable-state integration absent",
+      "status": "PARTIAL"
+    },
+    {
+      "future_acceptance": "L6-A5; A3/A4 prerequisite as applicable",
+      "id": "P5",
+      "progress": "Stable identity/config semantics tested; package/upgrade acceptance absent",
+      "status": "PARTIAL"
+    },
+    {
+      "future_acceptance": "L6-A5; A3/A4 prerequisite as applicable",
+      "id": "P6",
+      "progress": "Docker implementation not authorized",
+      "status": "NOT_YET_IMPLEMENTED"
+    }
+  ]
+}

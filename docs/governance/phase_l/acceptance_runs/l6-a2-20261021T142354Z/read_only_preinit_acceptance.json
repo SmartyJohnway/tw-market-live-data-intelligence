@@ -1,0 +1,15 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "status/doctor/stop read-only; start fails; no HOME creation or child/socket checks",
+    "READY installation and SM NOT_INITIALIZED are distinct"
+  ],
+  "current_authority": "scripts/tw_market_lifecycle.py::main",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_preinit_commands_are_read_only",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_direct_production_factories_cannot_initialize_canonical_stores"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

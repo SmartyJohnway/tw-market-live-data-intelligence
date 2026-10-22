@@ -1,0 +1,17 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "Explicit directory/layout/settings/identity/writability only",
+    "Metadata published last; no acquisition, adoption, Result/Audit/authorization creation"
+  ],
+  "current_authority": "scripts/tw_market_installation.py::initialize_installation; scripts/tw_market_lifecycle.py::main",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_installation.py::test_initialize_is_idempotent_and_preserves_identity_and_settings",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_init_offline_business_state_absent_and_stable",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_concurrent_init_lock_prevents_losing_state_layout",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_init_refuses_unwritable_required_root_before_metadata_publication"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

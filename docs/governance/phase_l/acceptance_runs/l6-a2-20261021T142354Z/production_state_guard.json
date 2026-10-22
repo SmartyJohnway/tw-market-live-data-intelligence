@@ -1,0 +1,14 @@
+{
+  "isolated_acceptance_home": "C:\\Users\\weitang\\AppData\\Local\\Temp\\tw-market-l6-a2-accept-vdzh5ut4\\home",
+  "no_existing_state_adoption": true,
+  "production_state_mutations": 0,
+  "real_default_home_after": {
+    "exists": false
+  },
+  "real_default_home_before": {
+    "exists": false
+  },
+  "status": "PASS",
+  "unchanged": true,
+  "write_guard": "Python audit hook denies writes to actual default HOME and original checkout data/artifacts; bounded process scope, not OS-wide observation"
+}

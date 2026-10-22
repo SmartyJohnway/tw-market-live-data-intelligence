@@ -1,0 +1,121 @@
+{
+  "evidence_run": "l6-a2-20261021T142354Z",
+  "captured_before_product_mutation": true,
+  "entry_head": "430f280f9c1b4f8d0f387503bb22044214126b39",
+  "consumers": [
+    {
+      "path": "scripts/tw_market.py",
+      "reason": "product CLI delegates lifecycle; propagate installation context without packaging redesign",
+      "entry_exists": true,
+      "entry_git_blob": "7e3a09bb3d7852388038789b8f00a65d3bcf900d",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/tw_market_lifecycle.py",
+      "reason": "CLI init/lifecycle; HOME/state/settings/readiness; process ownership/logs; child context",
+      "entry_exists": true,
+      "entry_git_blob": "084e816f60b1fb73020e84b638bc0d8ea182308f",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/tw_market_installation.py",
+      "reason": "NEW single shared A1 resolver/metadata/init/logical enumeration authority",
+      "entry_exists": false,
+      "entry_git_blob": null,
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/manage_security_master.py",
+      "reason": "manager --root/default and explicit acquisition bundle discovery",
+      "entry_exists": true,
+      "entry_git_blob": "78e03de3c528d52270923f203bdd65ab32a0599b",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/m8r_06_01b_materialize_production_inputs.py",
+      "reason": "checkout-local BUNDLE_BASE, report and snapshot binding; acquisition staging/finalization",
+      "entry_exists": true,
+      "entry_git_blob": "93a90d8274349179c5b408618c4bbf0825d6f942",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/m8r_06_security_master_candidate_paths.py",
+      "reason": "input bundle/index/report root helpers; distinguish historical paths from new installation",
+      "entry_exists": true,
+      "entry_git_blob": "9bda00ac1bbfadcdb515f1d3cf5ccb26148383d1",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/m8r_08g_security_master_releases.py",
+      "reason": "default canonical SM root; preserve explicit root injection",
+      "entry_exists": true,
+      "entry_git_blob": "e92f96152ef580d25b7674c844d321a9a560ba8b",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/m8r_06_01c2_mode_a_security_master_loader.py",
+      "reason": "production default SM root and derived cache selection; legacy pointer kept historical",
+      "entry_exists": true,
+      "entry_git_blob": "86ba3f2f16f231ab30353b89416f249ffd76e96b",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/m8r_06_01c1b_compact_runtime_identity_index.py",
+      "reason": "conditional direct derived-index writer; if needed physical path integration only, static resources deferred A3",
+      "entry_exists": true,
+      "entry_git_blob": "f6ca8d509d7f9fe9425ab90eed7b47d459456b8e",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/m8r_09_persistent_watchlists.py",
+      "reason": "Watchlist default and SM identity root factory",
+      "entry_exists": true,
+      "entry_git_blob": "c113e16b74f8c37e04f7e3a8a109e99b7833853f",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/m8r_06_03_execute_once.py",
+      "reason": "governed root selection for execution packages",
+      "entry_exists": true,
+      "entry_git_blob": "94f91dd46f3e05a2bf8be1652affb18eccd0a9c8",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "server/services/unified_mode_b2.py",
+      "reason": "governed package root selection; imported by Mode C",
+      "entry_exists": true,
+      "entry_git_blob": "d57b47202ed9ee0d1683e87327bc5e607a638ad4",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "server/services/unified_mode_c.py",
+      "reason": "retained projection/read/export governed root consumer",
+      "entry_exists": true,
+      "entry_git_blob": "e9047b2160c9bd932309e796cbee688f8ab62077",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "server/operational_diagnostics.py",
+      "reason": "diagnostic sink selection only; preserve event bounds and Audit independence",
+      "entry_exists": true,
+      "entry_git_blob": "15e3703a58cf3238dbd3a86d86f949e3e8dbce89",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/run_unified_workbench.py",
+      "reason": "Native direct launcher HOME/settings propagation before service imports",
+      "entry_exists": true,
+      "entry_git_blob": "eb6ec10409ea0aec2d104248a7806f780d867f66",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    },
+    {
+      "path": "scripts/run_unified_market_evidence_mcp.py",
+      "reason": "host Native stdio launcher HOME/settings service endpoint, exact-six unchanged",
+      "entry_exists": true,
+      "entry_git_blob": "ea2789a1f5df9e5db4172596ffed0f7dc72a32d7",
+      "allowed_change": "physical root/installation/lifecycle only; no semantic authority change"
+    }
+  ],
+  "historical_acceptance_scripts": "excluded: no current runtime authority; not converted to new paths",
+  "L2_core": "unchanged; explicit member APIs and policies reused"
+}

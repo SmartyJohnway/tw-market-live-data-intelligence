@@ -1,0 +1,14 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "Fresh CLI > ENV > HOME/state",
+    "Persisted metadata canonical; conflict fails without relocation"
+  ],
+  "current_authority": "scripts/tw_market_installation.py::resolve_installation",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_installation.py::test_state_root_conflict_fails_closed"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

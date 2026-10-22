@@ -23,6 +23,7 @@ import jsonschema
 from scripts.m8r_08g_identity_service import CASH_MARKETS, instrument_id, listing_id, official_successor_migration
 from scripts.m8r_08g_security_master_releases import LocalSecurityMasterError, load_active_identity_service
 from scripts.m8r_filesystem_safety import FilesystemSafetyError, is_reparse_or_symlink, safe_destination, validate_authorized_root
+from scripts.tw_market_installation import effective_root, InstallationError
 from server.resource_boundaries import (
     ResourceDiskAdmissionError,
     require_disk_capacity,
@@ -31,7 +32,7 @@ from server.resource_boundaries import (
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_ROOT = REPO_ROOT / "data" / "watchlists"
+DEFAULT_ROOT = effective_root("watchlists")
 DATABASE_NAME = "watchlists.sqlite3"
 SCHEMA_VERSION = 1
 PREVIEW_TTL = timedelta(minutes=10)
@@ -61,15 +62,12 @@ def default_root() -> Path:
     launched Local Service.  A deployment may explicitly select its own local
     root, while command-line and test callers can still pass ``root`` directly.
     """
-    configured = os.environ.get("TW_MARKET_WATCHLIST_ROOT")
-    return Path(configured).expanduser() if configured else DEFAULT_ROOT
+    return effective_root("watchlists")
 
 
 def default_security_master_root() -> Path:
     """Use the same explicit installation-local security authority as Mode A."""
-    configured = os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT")
-    default = REPO_ROOT / "data" / "security_master"
-    return Path(configured).expanduser().resolve() if configured else default
+    return effective_root("security_master")
 
 
 def utc_now() -> str:
@@ -133,6 +131,11 @@ class PersistentWatchlistStore:
     """SQLite authority with preview-bound transactional semantic mutations."""
 
     def __init__(self, *, root: Path | None = None, identity_service: Any | None = None, security_master_root: Path | None = None, now: Callable[[], str] = utc_now):
+        if root is None and not os.environ.get("TW_MARKET_WATCHLIST_ROOT"):
+            try:
+                effective_root("watchlists", require_initialized=True)
+            except InstallationError as exc:
+                raise WatchlistError(exc.code) from exc
         selected_root = root if root is not None else default_root()
         try:
             self.root = validate_authorized_root(selected_root)
@@ -730,4 +733,4 @@ class PersistentWatchlistStore:
 
 
 def production_store() -> PersistentWatchlistStore:
-    return PersistentWatchlistStore(root=default_root())
+    return PersistentWatchlistStore()

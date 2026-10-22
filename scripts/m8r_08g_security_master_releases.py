@@ -6,6 +6,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 import jsonschema
+from scripts.m8r_filesystem_safety import (
+    FilesystemSafetyError,
+    is_reparse_or_symlink,
+    reject_reparse_components,
+    safe_destination,
+    validate_relative_artifact_path,
+)
 from scripts.m8r_08g_identity_service import (
     CASH_MARKETS,
     TaiwanMarketIdentityService,
@@ -16,7 +23,11 @@ from scripts.m8r_08g_identity_service import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SECURITY_MASTER_ROOT = REPO_ROOT / "data" / "security_master"
+# Frozen compatibility path for historical scripts/tests that inject an
+# explicit repository-local root.  Production defaults resolve through
+# ``resolve_default_security_master_root`` and never use this constant.
+HISTORICAL_SECURITY_MASTER_ROOT = REPO_ROOT / "data" / "security_master"
+SECURITY_MASTER_ROOT = HISTORICAL_SECURITY_MASTER_ROOT
 SCHEMA_ROOT = REPO_ROOT / "docs" / "contracts" / "schemas"
 ACTIVE_POINTER_NAME = "active.json"
 RELEASE_ID_RE = re.compile(r"^security-master-\d{8}T\d{6}Z$")
@@ -38,6 +49,18 @@ class LocalSecurityMasterError(RuntimeError):
     def __init__(self, code: str):
         self.code = code
         super().__init__(code)
+
+
+def resolve_default_security_master_root() -> Path:
+    """Return the shared installation Security Master root, fail-closed."""
+    from scripts.tw_market_installation import resolve_installation
+
+    installation = resolve_installation()
+    installation.require_initialized()
+    selected = getattr(installation, "security_master_root", None)
+    if selected is None:
+        raise LocalSecurityMasterError("INSTALLATION_ROOT_UNAVAILABLE")
+    return Path(selected).resolve()
 
 
 def utc_now():
@@ -124,7 +147,7 @@ def _prov(p: dict):
         )
     ):
         raise LocalSecurityMasterError("source_content_hashes_invalid")
-    return {
+    result = {
         "source_type": p.get("source_type")
         or p.get("source")
         or "explicit_governed_import",
@@ -138,6 +161,38 @@ def _prov(p: dict):
         },
         "source_content_hashes": dict(sorted(hashes.items())),
     }
+    # These optional fields bind retained provenance without turning a local
+    # staging path into canonical authority.  Historical callers omit them.
+    for key in ("local_diagnostic_path", "local_diagnostic_path_role", "retained_artifact_path"):
+        if p.get(key) is not None:
+            result[key] = p[key]
+    retained = result.get("retained_artifact_path")
+    if retained is not None:
+        try:
+            validate_relative_artifact_path(retained)
+        except (FilesystemSafetyError, TypeError) as exc:
+            raise LocalSecurityMasterError("retained_provenance_binding_invalid") from exc
+        if "input_snapshot" not in result["source_content_hashes"]:
+            raise LocalSecurityMasterError("retained_provenance_binding_invalid")
+    return result
+
+
+def _validate_retained_provenance(root: Path, manifest: dict) -> None:
+    retained = manifest.get("source_provenance", {}).get("retained_artifact_path")
+    if retained is None:
+        return
+    try:
+        destination = safe_destination(root, retained, create_parent=False)
+        candidate = destination.path
+        reject_reparse_components(root)
+        reject_reparse_components(candidate)
+    except (FilesystemSafetyError, TypeError) as exc:
+        raise LocalSecurityMasterError("retained_provenance_binding_invalid") from exc
+    if is_reparse_or_symlink(candidate) or not candidate.is_file():
+        raise LocalSecurityMasterError("retained_provenance_missing")
+    expected = manifest["source_provenance"]["source_content_hashes"].get("input_snapshot")
+    if expected != sha256_file(candidate):
+        raise LocalSecurityMasterError("retained_provenance_hash_mismatch")
 
 
 def build_candidate_release(
@@ -368,6 +423,7 @@ def load_qualified_release(*, root: Path, release_id: str):
         raise LocalSecurityMasterError("release_content_hash_mismatch")
     if report["status"] != "PASS":
         raise LocalSecurityMasterError("release_not_qualified")
+    _validate_retained_provenance(root, man)
     return rel, man, idx
 
 

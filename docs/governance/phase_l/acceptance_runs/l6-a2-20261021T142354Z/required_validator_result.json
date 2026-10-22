@@ -1,0 +1,186 @@
+{
+  "additional_historical_gate": {
+    "name": "validate_l5_existing_family_conformance",
+    "raw_log": "corrected-guard/validate_l5_existing_family_conformance.log",
+    "reason": "Frozen A5 BASE git-diff guard rejects the two explicitly authorized L6-A2 Mode B2/C physical-root changes; not an A2 gate, not weakened or represented as PASS",
+    "semantic_gates": "L5 registration/semantic/publication validators pass; Mode B2/execute-once/Watchlist focused suites pass",
+    "status": "FAIL_HISTORICAL_A5_SCOPE_GUARD"
+  },
+  "default_ci": "FAIL with exact inherited 41 unresolved nodes; candidate-only 0",
+  "gates": [
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_l6_a2_installation.py",
+        "tests/unit/test_l6_a2_lifecycle_integration.py",
+        "tests/unit/test_l6_a2_security_master_paths.py",
+        "tests/unit/test_tw_market_lifecycle.py",
+        "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+        "tests/unit/test_m8r_09_persistent_watchlists.py",
+        "tests/unit/test_m8r_06_03_mode_b2_authorization.py",
+        "tests/unit/test_m8r_06_03_execute_once.py",
+        "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py",
+        "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/focused.log",
+      "name": "focused",
+      "seconds": 93.068
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/verify_dependency_supply_chain.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/verify_dependency_supply_chain.log",
+      "name": "verify_dependency_supply_chain",
+      "seconds": 0.331
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/verify_environment.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/verify_environment.log",
+      "name": "verify_environment",
+      "seconds": 3.175
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_source_registry.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_source_registry.log",
+      "name": "validate_source_registry",
+      "seconds": 0.409
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_portable_catalog_sync.log",
+      "name": "validate_portable_catalog_sync",
+      "seconds": 0.315
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_runtime_skill_guide_sync.log",
+      "name": "validate_runtime_skill_guide_sync",
+      "seconds": 1.9
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_v1_public_contracts.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_v1_public_contracts.log",
+      "name": "validate_v1_public_contracts",
+      "seconds": 2.79
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_unified_market_evidence_contracts.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_unified_market_evidence_contracts.log",
+      "name": "validate_unified_market_evidence_contracts",
+      "seconds": 0.44
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_phase_h_v3_contracts.log",
+      "name": "validate_phase_h_v3_contracts",
+      "seconds": 0.147
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_registration_conformance.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_l5_extension_registration_conformance.log",
+      "name": "validate_l5_extension_registration_conformance",
+      "seconds": 0.552
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_semantic_conformance.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_l5_extension_semantic_conformance.log",
+      "name": "validate_l5_extension_semantic_conformance",
+      "seconds": 2.128
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_publication_conformance.py"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/validate_l5_extension_publication_conformance.log",
+      "name": "validate_l5_extension_publication_conformance",
+      "seconds": 1.977
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/pip-check.log",
+      "name": "pip-check",
+      "seconds": 1.061
+    },
+    {
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "compileall",
+        "-q",
+        "scripts",
+        "server",
+        "tests"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/compileall.log",
+      "name": "compileall",
+      "seconds": 0.769
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "corrected-guard/diff-check.log",
+      "name": "diff-check",
+      "seconds": 0.061
+    }
+  ],
+  "status": "PASS"
+}

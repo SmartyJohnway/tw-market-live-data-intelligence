@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import contextvars
 import ctypes
 import datetime as dt
 import hashlib
@@ -39,10 +40,26 @@ from scripts.m8r_filesystem_safety import (
     reject_reparse_components,
     validate_authorized_root,
 )
+from scripts.tw_market_installation import (
+    InstallationError, initialize_installation, resolve_installation,
+)
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
 _INSTANCE = "TW_MARKET_LIFECYCLE_INSTANCE"
+_INSTALLATION = contextvars.ContextVar("lifecycle_installation", default=None)
+
+
+def _installation():
+    return _INSTALLATION.get() or resolve_installation(app_root=ROOT)
+
+
+def _child_environment() -> dict[str, str]:
+    inst = _installation()
+    env = os.environ.copy()
+    env.update({"TW_MARKET_HOME": str(inst.home), "TW_MARKET_STATE_ROOT": str(inst.state_root),
+                "TW_MARKET_HOST": inst.effective_service_host, "TW_MARKET_PORT": str(inst.effective_service_port)})
+    return env
 
 
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -72,21 +89,18 @@ def _kernel32():
 
 
 def _effective(cli_host: str | None, cli_port: int | None) -> tuple[str, int, dict[str, str]]:
-    host = cli_host or os.environ.get("TW_MARKET_HOST") or DEFAULT_HOST
-    port = cli_port if cli_port is not None else int(os.environ.get("TW_MARKET_PORT", DEFAULT_PORT))
-    if host not in {"127.0.0.1", "localhost", "::1"} or not 1 <= port <= 65535:
-        raise ValueError("INVALID_LOCAL_ENDPOINT")
-    return host, port, {"host": "cli" if cli_host else "env" if os.environ.get("TW_MARKET_HOST") else "product_default",
-                        "port": "cli" if cli_port is not None else "env" if os.environ.get("TW_MARKET_PORT") else "product_default"}
+    selected = _INSTALLATION.get() or resolve_installation(host=cli_host, port=cli_port, app_root=ROOT)
+    return selected.effective_service_host, selected.effective_service_port, dict(selected.configuration_sources)
 
 
 def _owner_path(port: int) -> Path:
-    install = hashlib.sha256(str(ROOT.resolve()).encode("utf-8")).hexdigest()[:20]
-    return Path(tempfile.gettempdir()) / "tw-market-runtime" / install / f"service-{port}.json"
+    installation = _installation()
+    installation.require_initialized()
+    return installation.runtime_root / f"service-{port}.json"
 
 
 def _event_path(port: int) -> Path:
-    return _owner_path(port).parent / "operational-events.jsonl"
+    return _installation().operational_event_path
 
 
 def _process_start_token(pid: int) -> str | None:
@@ -154,11 +168,11 @@ def _identity_matches(pid: object, token: object, executable: object) -> bool:
 
 
 def _process_matches(record: dict) -> bool:
-    return _identity_matches(record.get("pid"), record.get("process_start_token"), record.get("executable"))
+    return bool(_installation().installation_id) and record.get("installation_id") == _installation().installation_id and _identity_matches(record.get("pid"), record.get("process_start_token"), record.get("executable"))
 
 
 def _starting_creator_matches(record: dict) -> bool:
-    return record.get("state") == "starting" and _identity_matches(
+    return bool(_installation().installation_id) and record.get("installation_id") == _installation().installation_id and record.get("state") == "starting" and _identity_matches(
         record.get("creator_pid"), record.get("creator_start_token"), record.get("creator_executable")
     )
 
@@ -213,7 +227,7 @@ def _read_owner(path: Path) -> tuple[dict | None, str | None]:
                 return None, None
             return None, "STALE_PROCESS_OWNERSHIP"
         value = json.loads(path.read_text(encoding="utf-8"))
-        if not isinstance(value, dict) or value.get("root") != str(ROOT.resolve()):
+        if not isinstance(value, dict) or not isinstance(value.get("root"), str):
             return None, "STALE_PROCESS_OWNERSHIP"
         return value, None
     except FileNotFoundError:
@@ -234,8 +248,8 @@ def _safe_unlink(path: Path) -> bool:
 
 
 def _sm_status() -> dict:
-    root = Path(os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT", ROOT / "data" / "security_master")).expanduser().resolve()
-    result = subprocess.run([sys.executable, str(ROOT / "scripts" / "manage_security_master.py"), "status", "--root", str(root)], cwd=ROOT, capture_output=True, text=True, timeout=10, check=False)
+    root = _installation().security_master_root
+    result = subprocess.run([sys.executable, str(ROOT / "scripts" / "manage_security_master.py"), "status", "--root", str(root)], cwd=ROOT, env=_child_environment(), capture_output=True, text=True, timeout=10, check=False)
     try: payload = json.loads(result.stdout)
     except ValueError: payload = {}
     state = payload.get("status")
@@ -266,7 +280,7 @@ def _base(host: str, port: int, sources: dict[str, str], service_url: str | None
     capability_projection = _capability_projection(host, port) if alive else None
     process = owner_state if owner_state != "NOT_RUNNING" else ("PORT_OCCUPIED_NOT_OWNED" if opened else "NOT_RUNNING")
     sm = _sm_status()
-    preload_run = subprocess.run([sys.executable, str(ROOT / "scripts" / "run_unified_workbench.py"), "--startup-check"], cwd=ROOT, capture_output=True, text=True, timeout=15, check=False)
+    preload_run = subprocess.run([sys.executable, str(ROOT / "scripts" / "run_unified_workbench.py"), "--startup-check"], cwd=ROOT, env=_child_environment(), capture_output=True, text=True, timeout=15, check=False)
     try: preload = json.loads(preload_run.stdout)
     except ValueError: preload = {}
     try:
@@ -293,12 +307,13 @@ def _base(host: str, port: int, sources: dict[str, str], service_url: str | None
         "mcp": {"status": "SERVICE_UNREACHABLE" if not alive else "READY" if mcp_ok else "MCP_RUNTIME_MISMATCH", "service_url": _safe_service_url_for_diagnostics(selected_service_url),
                 "sdk_compatible": mcp_ok, "local_service_reachable": alive},
         "paths": {"security_master_root": sm["root"],
-                  "watchlist_root": str(Path(os.environ.get("TW_MARKET_WATCHLIST_ROOT", ROOT / "data" / "watchlists")).expanduser().resolve()),
-                  "control_root": str(Path(os.environ.get("M8R_06_03_CONTROL_ROOT", ROOT / "artifacts" / "m8r_06_03_workbench")).expanduser().resolve()),
+                  "watchlist_root": str(_installation().watchlist_root),
+                  "control_root": str(_installation().governed_root),
                   "ownership_file": str(path),
                   "operational_event_path": str(_event_path(port))},
         "configuration": {"host": host, "port": port, "sources": sources},
         "resources": resources,
+        "installation": _installation().as_dict(),
         "checks": [],
     }
 
@@ -354,7 +369,7 @@ def _doctor(host: str, port: int, sources: dict[str, str], service_url: str | No
     process_state = report["service"]["process"]
     check("process_ownership", "WARN" if process_state in {"STALE_PROCESS_OWNERSHIP", "START_IN_PROGRESS", "PORT_OCCUPIED_NOT_OWNED"} else "PASS",
           process_state if process_state in {"STALE_PROCESS_OWNERSHIP", "START_IN_PROGRESS", "PORT_OCCUPIED_NOT_OWNED"} else None)
-    startup = subprocess.run([sys.executable, str(ROOT / "scripts" / "run_unified_workbench.py"), "--startup-check"], cwd=ROOT, capture_output=True, text=True, timeout=15, check=False)
+    startup = subprocess.run([sys.executable, str(ROOT / "scripts" / "run_unified_workbench.py"), "--startup-check"], cwd=ROOT, env=_child_environment(), capture_output=True, text=True, timeout=15, check=False)
     try: preload = json.loads(startup.stdout)
     except ValueError: preload = {}
     check("workbench_preload", "PASS" if startup.returncode == 0 else "FAIL", None if startup.returncode == 0 else "PRELOAD_FAILED", {"status": preload.get("status"), "security_master_status": preload.get("security_master_status")})
@@ -370,7 +385,7 @@ def _doctor(host: str, port: int, sources: dict[str, str], service_url: str | No
     except Exception:
         check("mcp_tool_contract", "FAIL", "MCP_TOOL_CONTRACT_UNAVAILABLE")
     effective_service_url = report["mcp"]["service_url"]
-    mcp_run = subprocess.run([sys.executable, str(ROOT / "scripts" / "run_unified_market_evidence_mcp.py"), "--service-url", effective_service_url, "--startup-check"], cwd=ROOT, capture_output=True, text=True, timeout=15, check=False)
+    mcp_run = subprocess.run([sys.executable, str(ROOT / "scripts" / "run_unified_market_evidence_mcp.py"), "--service-url", effective_service_url, "--startup-check"], cwd=ROOT, env=_child_environment(), capture_output=True, text=True, timeout=15, check=False)
     mcp_code = "READY" if mcp_run.returncode == 0 else "SERVICE_UNREACHABLE" if not report["service"]["alive"] else "MCP_STARTUP_CHECK_FAILED"
     check("mcp_startup_check", "PASS" if mcp_run.returncode == 0 else "WARN" if not report["service"]["alive"] else "FAIL", None if mcp_run.returncode == 0 else mcp_code)
     report["mcp"]["status"] = mcp_code
@@ -421,6 +436,7 @@ def _start(host: str, port: int) -> dict:
     if not creator_start_token or not creator_executable:
         return {"status": "START_FAILED", "reason_code": "CREATOR_PROCESS_IDENTITY_UNAVAILABLE"}
     reservation = {"schema": 1, "state": "starting", "instance_id": instance, "root": str(ROOT.resolve()),
+                   "installation_id": _installation().installation_id,
                    "host": host, "port": port, "creator_pid": creator_pid,
                    "creator_start_token": creator_start_token, "creator_executable": creator_executable,
                    "created_at": dt.datetime.now(dt.timezone.utc).isoformat()}
@@ -431,7 +447,9 @@ def _start(host: str, port: int) -> dict:
         if exc.code == "already_consumed_or_replayed":
             return {"status": "START_IN_PROGRESS", "reason_code": "START_IN_PROGRESS"}
         return {"status": "START_FAILED", "reason_code": "RUNTIME_PATH_UNSAFE"}
-    env = os.environ.copy(); env[_INSTANCE] = instance
+    env = _child_environment(); env[_INSTANCE] = instance
+    env["TW_MARKET_HOME"] = str(_installation().home)
+    env["TW_MARKET_STATE_ROOT"] = str(_installation().state_root)
     env[EVENT_PATH_ENV] = str(_event_path(port))
     creationflags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0) if os.name == "nt" else 0
     args = [sys.executable, "-m", "scripts.tw_market_lifecycle", "_serve", "--host", host, "--port", str(port)]
@@ -455,6 +473,7 @@ def _start(host: str, port: int) -> dict:
         _safe_unlink(owner_file)
         return {"status": "START_FAILED", "reason_code": "PROCESS_IDENTITY_UNAVAILABLE"}
     record = {"schema": 1, "root": str(ROOT.resolve()), "pid": process.pid, "process_start_token": token,
+              "installation_id": _installation().installation_id,
               "executable": str(Path(sys.executable).resolve()), "instance_id": instance,
               "host": host, "port": port, "started_at": dt.datetime.now(dt.timezone.utc).isoformat()}
     try:
@@ -581,22 +600,40 @@ def _serve(host: str, port: int) -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="TW-Market local runtime lifecycle")
     sub = parser.add_subparsers(dest="command", required=True)
-    for name in ("start", "status", "stop", "doctor"):
+    for name in ("init", "start", "status", "stop", "doctor"):
         p = sub.add_parser(name); p.add_argument("--host"); p.add_argument("--port", type=int); p.add_argument("--service-url"); p.add_argument("--json", action="store_true")
+        p.add_argument("--home"); p.add_argument("--state-root")
     sub.add_parser("_serve").add_argument("--host", default=DEFAULT_HOST)
     sub.choices["_serve"].add_argument("--port", type=int, required=True)
     args = parser.parse_args(argv)
     if args.command == "_serve": return _serve(args.host, args.port)
     started = time.monotonic(); operation_id = str(uuid.uuid4()); trace_id = new_trace_id(); timestamp = dt.datetime.now(dt.timezone.utc).isoformat()
     port_for_event: int | None = None
+    installation = None
+    context_token = None
     try:
+        resolver = initialize_installation if args.command == "init" else resolve_installation
+        installation = resolver(home=args.home, state_root=args.state_root, host=args.host, port=args.port, app_root=ROOT)
+        context_token = _INSTALLATION.set(installation)
         host, port, sources = _effective(args.host, args.port)
-        port_for_event = port
+        if installation.installation_status == "READY":
+            port_for_event = port
         service_url = args.service_url or (f"http://{host}:{port}" if args.host is not None or args.port is not None else os.environ.get("UNIFIED_MARKET_EVIDENCE_SERVICE_URL"))
-        if args.command == "start": result = _start(host, port)
+        if args.command == "init":
+            result = {"status": "INSTALLATION_READY", "installation": installation.as_dict(),
+                      "identity": _sm_status(), "network_on_init": False}
+        elif installation.installation_status != "READY":
+            result = {"status": installation.installation_status, "reason_code": installation.installation_status,
+                      "installation": installation.as_dict(),
+                      "identity": {"status": "UNKNOWN", "reason_code": "INSTALLATION_NOT_INITIALIZED"},
+                      "checks": [{"name": "installation", "status": "WARN", "reason_code": "INSTALLATION_NOT_INITIALIZED"}]}
+        elif args.command == "start": result = _start(host, port)
         elif args.command == "stop": result = _stop(host, port)
         elif args.command == "status": result = _base(host, port, sources, service_url)
         else: result = _doctor(host, port, sources, service_url)
+        result.setdefault("installation", installation.as_dict())
+    except InstallationError as exc:
+        result = {"status": "FAIL", "reason_code": exc.code}
     except (ValueError, subprocess.TimeoutExpired) as exc:
         result = {"status": "FAIL", "reason_code": str(exc) if isinstance(exc, ValueError) else "CHECK_TIMEOUT"}
     duration_ms = round((time.monotonic() - started) * 1000, 2)
@@ -609,6 +646,8 @@ def main(argv: list[str] | None = None) -> int:
             references={"lifecycle_operation_id": operation_id},
             metrics={"duration_ms": duration_ms},
         ), _event_path(port_for_event))
+    if context_token is not None:
+        _INSTALLATION.reset(context_token)
     if args.json: print(json.dumps(result, ensure_ascii=False, sort_keys=True))
     else:
         print(f"{result['status']}" + (f" ({result.get('reason_code')})" if result.get("reason_code") else ""))
@@ -616,7 +655,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Service: {result.get('service', {}).get('url')} | alive={result.get('service', {}).get('alive')}")
             print(f"Security Master: {result.get('identity', {}).get('status')} | {result.get('identity', {}).get('root')}")
             for item in result.get("checks", []): print(f"{item['status']} {item['name']}" + (f" [{item['reason_code']}]" if item.get("reason_code") else ""))
-    return _exit_code(result["status"])
+    return 1 if args.command == "start" and result["status"] in {"INSTALLATION_NOT_INITIALIZED", "INSTALLATION_INCOMPLETE"} else _exit_code(result["status"])
 
 
 if __name__ == "__main__": raise SystemExit(main())

@@ -7,8 +7,19 @@ from pathlib import Path
 import subprocess
 from types import SimpleNamespace
 from unittest.mock import patch
+import pytest
 
 from scripts import tw_market_lifecycle as lifecycle
+from scripts.tw_market_installation import initialize_installation, resolve_installation
+
+
+@pytest.fixture(autouse=True)
+def isolated_initialized_installation(tmp_path, monkeypatch):
+    # L6-A2 makes explicit offline init the lifecycle prerequisite. Preserve
+    # these L1 ownership assertions within an isolated initialized installation.
+    monkeypatch.setenv("TW_MARKET_HOME", str(tmp_path / "installation"))
+    monkeypatch.delenv("TW_MARKET_STATE_ROOT", raising=False)
+    initialize_installation()
 
 
 def test_missing_owner_is_not_running_and_stop_is_idempotent(tmp_path):
@@ -113,6 +124,7 @@ def test_current_product_lifecycle_sources_do_not_import_a6():
 
 def _starting_record():
     return {"schema": 1, "state": "starting", "instance_id": "instance-1", "root": str(lifecycle.ROOT.resolve()),
+            "installation_id": resolve_installation().installation_id,
             "host": "127.0.0.1", "port": 19374, "creator_pid": 4321, "creator_start_token": "creator-token",
             "creator_executable": str(Path(lifecycle.sys.executable).resolve()), "created_at": "2026-10-13T00:00:00+00:00"}
 

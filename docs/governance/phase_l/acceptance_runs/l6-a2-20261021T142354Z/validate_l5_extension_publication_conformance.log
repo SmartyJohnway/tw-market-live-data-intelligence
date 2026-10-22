@@ -1,0 +1,1 @@
+{"authority_kind": "TEST_ACCEPTANCE_ONLY", "checks": ["PUB-01", "PUB-02", "PUB-03", "PUB-04", "PUB-05", "PUB-06", "PUB-07", "PUB-08", "PUB-09"], "errors": [], "network": false, "runtime_discovery": false, "status": "PASS", "writes": false}

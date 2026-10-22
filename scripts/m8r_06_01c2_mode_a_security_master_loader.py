@@ -25,10 +25,11 @@ from scripts.m8r_06_security_master_candidate_paths import (
     validate_candidate_id,
 )
 from scripts.m8r_08g_security_master_releases import (
-    SECURITY_MASTER_ROOT,
     LocalSecurityMasterError,
     load_active_identity_service,
+    resolve_default_security_master_root,
 )
+from scripts.tw_market_installation import InstallationError
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 POINTER_SCHEMA_VERSION = "m8r_06_mode_a_security_master_pointer.v1"
@@ -91,6 +92,11 @@ def get_production_mode_a_security_master(
                 else:
                     # Preserve the public/default call shape and its existing
                     # process-lifetime activation seam.
+                    # The loader resolves the canonical installation root
+                    # internally.  Keeping the no-argument seam is important
+                    # for callers that inject this function for deterministic
+                    # tests; it also prevents a second default-root policy
+                    # from being introduced at the activation boundary.
                     _production_runtime = load_active_mode_a_security_master()
             else:
                 _production_runtime = load_mode_a_security_master(pointer_path)
@@ -110,7 +116,7 @@ def _fail(code: str) -> None:
 
 def load_active_mode_a_security_master(
     *,
-    security_master_root: Path | str = SECURITY_MASTER_ROOT,
+    security_master_root: Path | str | None = None,
 ) -> ValidatedModeASecurityMaster:
     """Load one atomically selected local release or expose NOT_INITIALIZED.
 
@@ -119,9 +125,13 @@ def load_active_mode_a_security_master(
     """
     try:
         service, active_pointer, release, manifest = load_active_identity_service(
-            root=Path(security_master_root).resolve()
+            root=(
+                Path(security_master_root).resolve()
+                if security_master_root is not None
+                else resolve_default_security_master_root()
+            )
         )
-    except LocalSecurityMasterError as exc:
+    except (LocalSecurityMasterError, InstallationError) as exc:
         _fail(exc.code)
     index = {
         "schema_version": "taiwan_market_identity_release_index.v1",

@@ -1,0 +1,15 @@
+{
+  "failures": [],
+  "packages": {
+    "fastapi": "0.133.0",
+    "httpx": "0.28.1",
+    "jsonschema": "4.25.0",
+    "mcp": "1.29.0",
+    "pandas": "2.3.1",
+    "requests": "2.32.4",
+    "uvicorn": "0.41.0"
+  },
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python": "3.13.7",
+  "status": "PASS"
+}

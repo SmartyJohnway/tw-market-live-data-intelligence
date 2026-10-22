@@ -1,0 +1,13 @@
+{
+  "count": 6,
+  "public_tool_contract_files_changed": false,
+  "status": "PASS",
+  "tools": [
+    "market_describe_capabilities",
+    "market_validate_request",
+    "market_preview_request",
+    "market_read_result",
+    "market_export_ai_handoff",
+    "market_fetch_evidence"
+  ]
+}

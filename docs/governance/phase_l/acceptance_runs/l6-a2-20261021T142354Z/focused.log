@@ -1,0 +1,26 @@
+.........................................F..........Exception ignored in audit hook:
+Traceback (most recent call last):
+  File "C:\Users\weitang\AppData\Local\Temp\tw-market-l6-a2-accept-ekv2qf26\guard\sitecustomize.py", line 4, in audit
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'LOCALAPPDATA'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+  File "C:\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\config\__init__.py", line 223, in console_main
+  File "C:\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\config\__init__.py", line 211, in main
+  File "<frozen _collections_abc>", line 956, in pop
+  File "<frozen os>", line 728, in __delitem__
+  File "C:\Users\weitang\AppData\Local\Temp\tw-market-l6-a2-accept-ekv2qf26\guard\sitecustomize.py", line 4, in audit
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'LOCALAPPDATA'
+Exception ignored in audit hook:
+Traceback (most recent call last):
+  File "C:\Users\weitang\AppData\Local\Temp\tw-market-l6-a2-accept-ekv2qf26\guard\sitecustomize.py", line 4, in audit
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'LOCALAPPDATA'
+Exception ignored in audit hook:
+Traceback (most recent call last):
+  File "C:\Users\weitang\AppData\Local\Temp\tw-market-l6-a2-accept-ekv2qf26\guard\sitecustomize.py", line 4, in audit
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'LOCALAPPDATA'

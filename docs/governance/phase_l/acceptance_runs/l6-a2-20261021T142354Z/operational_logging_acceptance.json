@@ -1,0 +1,14 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "HOME/logs/operational-events.jsonl default; explicit event override diagnosed",
+    "Existing L1 event schema/bounds reused; logs are not Audit authority"
+  ],
+  "current_authority": "scripts/tw_market_lifecycle.py::_event_path; _child_environment",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_log_override_is_visible_and_does_not_rewrite_metadata"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

@@ -35,6 +35,8 @@ from scripts.m8r_06_security_master_candidate_paths import (  # noqa: E402
     source_immutable_seal_path,
     validate_candidate_id,
 )
+from scripts.tw_market_installation import InstallationError, resolve_installation  # noqa: E402
+from scripts.m8r_filesystem_safety import FilesystemSafetyError, validate_authorized_root  # noqa: E402
 
 # Historical constants remain frozen-A compatibility evidence only.  Rotatable
 # production generation derives all authority from an explicit candidate ID.
@@ -588,6 +590,7 @@ def run_resolver_equivalence(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--candidate-id", required=True)
+    parser.add_argument("--cache-root", type=Path, default=None)
     parser.add_argument("--verify-resolver", action="store_true")
     args = parser.parse_args(argv)
     try:
@@ -595,7 +598,21 @@ def main(argv: list[str] | None = None) -> int:
         if candidate_id == AUTHORIZED_BUNDLE_ID:
             _fail("historical_candidate_a_runtime_materialization_forbidden")
         snapshot, seal, snapshot_sha256 = verify_bundle_integrity(candidate_id)
-        output_dir = runtime_index_dir(REPO_ROOT, candidate_id)
+        cache_root = args.cache_root
+        if cache_root is None:
+            installation = resolve_installation()
+            installation.require_initialized()
+            output_dir = runtime_index_dir(
+                REPO_ROOT, candidate_id, installation=installation
+            )
+        else:
+            # Validate the lexical root before any normalization so junctions
+            # and reparse components cannot be hidden by Path.resolve().
+            cache_root = validate_authorized_root(cache_root)
+            output_dir = runtime_index_dir(
+                REPO_ROOT, candidate_id, cache_root=cache_root
+            )
+        output_dir = validate_authorized_root(output_dir)
         index_path, manifest_path, index, _ = materialize_compact_artifacts(
             snapshot,
             snapshot_sha256,
@@ -611,13 +628,22 @@ def main(argv: list[str] | None = None) -> int:
         runtime_seal = build_runtime_immutable_seal(
             index, manifest, index_path=index_path, manifest_path=manifest_path
         )
-        write_json_file(runtime_immutable_seal_path(REPO_ROOT, candidate_id), runtime_seal)
+        # The CLI cache-root is an A2 installation/cache seam, not a
+        # historical repository-output override.  Keep the derived seal
+        # beside the derived index for both default and explicit cache roots.
+        seal_path = output_dir / "immutable_manifest.json"
+        write_json_file(seal_path, runtime_seal)
         print(f"index_sha256={sha256_file(index_path)}")
         print(f"manifest_sha256={sha256_file(manifest_path)}")
         print(f"coverage={json.dumps(compute_coverage(snapshot), sort_keys=True)}")
         if args.verify_resolver:
             print(json.dumps(run_resolver_equivalence(snapshot, index), sort_keys=True))
     except (CompactArtifactValidationError, AssertionError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+    except (InstallationError, FilesystemSafetyError) as error:
+        # Installation resolution is a mandatory authority for default cache
+        # writes.  No cache-root mode may silently target APP_ROOT.
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
     return 0

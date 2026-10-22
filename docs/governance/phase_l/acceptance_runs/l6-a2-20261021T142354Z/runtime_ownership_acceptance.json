@@ -1,0 +1,17 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "TEMP/TW-Market/installation-id/runtime",
+    "Existing PID/start-token/executable/duplicate/stale controls preserved",
+    "Old checkout markers not adopted"
+  ],
+  "current_authority": "scripts/tw_market_lifecycle.py::_owner_path; _process_matches; _starting_creator_matches",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_runtime_is_installation_keyed_across_app_roots",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_wrong_installation_pid_marker_is_never_active",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_initialized_sm_absent_real_start_status_stop"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

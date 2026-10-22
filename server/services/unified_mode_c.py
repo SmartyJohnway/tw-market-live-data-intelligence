@@ -27,7 +27,9 @@ from server.services.unified_contract_versions import PREFERRED_RESULT_SCHEMA_VE
 from server.unified_bounded_io import measure_json_utf8, measure_text_utf8
 from server.unified_payload_bounds import MAX_UNIFIED_RESPONSE_BYTES
 from server.services.unified_mode_a import validate_mode_a_request
-from server.services.unified_mode_b2 import CONTROL_ROOT
+from server.services.unified_mode_b2 import CONTROL_ROOT, ModeB2Error, _control_root
+
+_INITIAL_CONTROL_ROOT = CONTROL_ROOT
 from server.resource_boundaries import (
     ResourceDiskAdmissionError,
     require_disk_capacity,
@@ -169,13 +171,15 @@ def _load_verified(control_id: str) -> tuple[Path, dict[str, Path], Path, Path, 
     if not isinstance(control_id, str) or not control_id.startswith("umea-v1-") or len(control_id) > 128:
         raise ModeCError("control_package_id_invalid")
     try:
-        selected_root = Path(CONTROL_ROOT).expanduser()
+        selected_root = Path(CONTROL_ROOT if CONTROL_ROOT != _INITIAL_CONTROL_ROOT else _control_root()).expanduser()
         if not selected_root.exists() or not selected_root.is_dir():
             raise ModeCError("control_package_id_invalid")
         root = validate_authorized_root(selected_root)
         manifest_path = _safe_path(root, f"{control_id}/control/manifest.json")
     except ModeCError:
         raise
+    except ModeB2Error as exc:
+        raise ModeCError(exc.code) from exc
     except (ValueError, FilesystemSafetyError) as exc:
         raise ModeCError("control_package_id_invalid") from exc
     package = manifest_path.parents[1]

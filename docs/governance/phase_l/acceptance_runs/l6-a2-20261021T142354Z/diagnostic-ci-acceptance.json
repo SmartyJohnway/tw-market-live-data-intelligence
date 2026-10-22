@@ -1,0 +1,32 @@
+{
+  "mode": "diagnostic-ci",
+  "results": [
+    {
+      "name": "default-ci-initial",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/run_test_profile.py",
+        "default-ci",
+        "--json"
+      ],
+      "exit_code": 1,
+      "seconds": 117.934,
+      "log": "default-ci-initial.log"
+    }
+  ],
+  "isolated_home": "C:\\Users\\weitang\\AppData\\Local\\Temp\\tw-market-l6-a2-accept-uzszdkbl\\home",
+  "real_default_home_before": {
+    "exists": false
+  },
+  "real_default_home_after": {
+    "exists": false
+  },
+  "real_default_home_unchanged": true,
+  "external_socket_attempts": 0,
+  "external_attempt_records": [],
+  "network_scope": "Python audit-hook connect/sendto/getaddrinfo within acceptance processes and inherited Python children; loopback allowed; no OS-wide claim; Git/GitHub transport excluded",
+  "provider_requests": 0,
+  "live_acquisition": 0,
+  "production_state_mutations": 0,
+  "fixture_transport_substitution": "not counted as actual provider/network request"
+}

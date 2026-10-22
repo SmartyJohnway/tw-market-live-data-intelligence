@@ -202,6 +202,43 @@ def test_historical_a_remains_verifiable_but_rotatable_generation_is_rejected(
     assert sha256_file(historical_seal) == before
 
 
+def test_explicit_cache_root_keeps_runtime_seal_beside_derived_index(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import scripts.m8r_06_01c1b_compact_runtime_identity_index as module
+
+    candidate_id = "m8r06-01b-20990101T000001Z"
+    output_root = tmp_path / "cache"
+    index_path = output_root / candidate_id / "index.json"
+    manifest_path = output_root / candidate_id / "manifest.json"
+    index_path.parent.mkdir(parents=True)
+    index_path.write_text("{}")
+    manifest_path.write_text("{}")
+    captured: list[Path] = []
+    monkeypatch.setattr(
+        module,
+        "verify_bundle_integrity",
+        lambda _candidate: ({}, {"bundle_id": candidate_id, "skill_contract_hash": "b" * 64}, "a" * 64),
+    )
+    monkeypatch.setattr(module, "authorized_lineage", lambda _candidate: {})
+    monkeypatch.setattr(
+        module,
+        "materialize_compact_artifacts",
+        lambda *_args, **_kwargs: ({}, {}, {}, {}),
+    )
+    monkeypatch.setattr(
+        module,
+        "load_and_validate_compact_artifacts",
+        lambda *_args, **_kwargs: ({}, {}),
+    )
+    monkeypatch.setattr(module, "build_runtime_immutable_seal", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(module, "sha256_file", lambda _path: "a" * 64)
+    monkeypatch.setattr(module, "write_json_file", lambda path, _value: captured.append(Path(path)))
+    assert module.main(["--candidate-id", candidate_id, "--cache-root", str(output_root)]) == 0
+    assert captured == [output_root / candidate_id / "immutable_manifest.json"]
+    assert not (module.REPO_ROOT / "docs" / "reviews" / "security_master_candidates" / candidate_id / "runtime_identity_immutable_manifest.json").exists()
+
+
 def test_lookup_uses_canonical_resolver_contract_and_exact_semantics(
     tmp_path: Path,
     synthetic_snapshot: dict,

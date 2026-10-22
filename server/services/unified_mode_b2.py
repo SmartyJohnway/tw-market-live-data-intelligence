@@ -16,6 +16,7 @@ from scripts.m8r_05b_02.validator import validate_execution_authorization
 from scripts.m8r_05b_03.preflight import build_orchestrator_preflight, validate_preflight_hashes
 from scripts.m8r_06_03_production_adapter import PHASE_H_H1_EXECUTOR_ID, load_production_executor_metadata
 from scripts.m8r_filesystem_safety import atomic_write_text, safe_destination
+from scripts.tw_market_installation import InstallationError, effective_root
 from server.resource_boundaries import ResourceDiskAdmissionError, require_disk_capacity
 from server.services.watchlist_evidence_composer import (
     WatchlistEvidenceCompositionError,
@@ -27,7 +28,8 @@ from server.services.unified_mode_b1 import ModeB1PlanningUnavailable, build_mod
 ROOT = Path(__file__).resolve().parents[2]
 # This is process configuration only.  It permits an isolated local test/server
 # run without allowing any API payload to select an output location.
-CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).expanduser()
+CONTROL_ROOT = effective_root("governed")
+_INITIAL_CONTROL_ROOT = CONTROL_ROOT
 DEFAULT_TTL_SECONDS = 900
 _LOCAL_ACTION_ISSUANCE_LOCK = threading.Lock()
 _last_local_action_issued_at: datetime | None = None
@@ -37,6 +39,17 @@ class ModeB2Error(RuntimeError):
     def __init__(self, code: str):
         super().__init__(code)
         self.code = code
+
+
+def _control_root() -> Path:
+    # Preserve the established trusted in-process injection seam. Normal
+    # production selection is always resolved by the single installation layer.
+    if CONTROL_ROOT != _INITIAL_CONTROL_ROOT:
+        return Path(CONTROL_ROOT)
+    try:
+        return effective_root("governed", require_initialized=not bool(os.environ.get("M8R_06_03_CONTROL_ROOT")))
+    except InstallationError as exc:
+        raise ModeB2Error(exc.code) from exc
 
 
 def _utc_now() -> datetime:
@@ -128,8 +141,9 @@ def _materialize_execution_ticket(
     except AuthorizationError as exc:
         raise ModeB2Error(exc.code) from exc
     unused_state = _unused_state(binding)
-    package_root = CONTROL_ROOT / authorization["authorization_id"]
-    safe_destination(CONTROL_ROOT, f"{authorization['authorization_id']}/control/manifest.json", create_parent=True)
+    control_root = _control_root()
+    package_root = control_root / authorization["authorization_id"]
+    safe_destination(control_root, f"{authorization['authorization_id']}/control/manifest.json", create_parent=True)
     preflight = build_orchestrator_preflight(
         plan, authorization, binding,
         supplied_consumption_state=unused_state,
