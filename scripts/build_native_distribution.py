@@ -134,7 +134,7 @@ def build(output: Path, wheelhouse: Path) -> dict:
         if target.casefold() in {p.casefold() for p in payload}:
             raise ValueError("duplicate inclusion destination")
         mode = git("ls-tree", "HEAD", "--", source).split(None, 1)[0]
-        if mode != b"100644":
+        if mode not in {b"100644", b"100755"}:
             raise ValueError(f"source must be a tracked regular file: {source}")
         payload[target] = (git("show", "HEAD:" + source), entry["role"])
     for dep in dependencies:
