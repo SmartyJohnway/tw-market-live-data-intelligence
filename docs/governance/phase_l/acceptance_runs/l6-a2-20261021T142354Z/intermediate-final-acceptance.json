@@ -1,0 +1,215 @@
+{
+  "mode": "final",
+  "results": [
+    {
+      "name": "focused",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit/test_l6_a2_installation.py",
+        "tests/unit/test_l6_a2_lifecycle_integration.py",
+        "tests/unit/test_l6_a2_security_master_paths.py",
+        "tests/unit/test_tw_market_lifecycle.py",
+        "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+        "tests/unit/test_m8r_09_persistent_watchlists.py",
+        "tests/unit/test_m8r_06_03_mode_b2_authorization.py",
+        "tests/unit/test_m8r_06_03_execute_once.py",
+        "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py",
+        "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py"
+      ],
+      "exit_code": 0,
+      "seconds": 73.216,
+      "log": "focused.log"
+    },
+    {
+      "name": "verify_dependency_supply_chain",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/verify_dependency_supply_chain.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.271,
+      "log": "verify_dependency_supply_chain.log"
+    },
+    {
+      "name": "verify_environment",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/verify_environment.py"
+      ],
+      "exit_code": 0,
+      "seconds": 3.683,
+      "log": "verify_environment.log"
+    },
+    {
+      "name": "validate_source_registry",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_source_registry.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.452,
+      "log": "validate_source_registry.log"
+    },
+    {
+      "name": "validate_portable_catalog_sync",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_portable_catalog_sync.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.348,
+      "log": "validate_portable_catalog_sync.log"
+    },
+    {
+      "name": "validate_runtime_skill_guide_sync",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "exit_code": 0,
+      "seconds": 2.115,
+      "log": "validate_runtime_skill_guide_sync.log"
+    },
+    {
+      "name": "validate_v1_public_contracts",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_v1_public_contracts.py"
+      ],
+      "exit_code": 0,
+      "seconds": 2.461,
+      "log": "validate_v1_public_contracts.log"
+    },
+    {
+      "name": "validate_unified_market_evidence_contracts",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_unified_market_evidence_contracts.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.559,
+      "log": "validate_unified_market_evidence_contracts.log"
+    },
+    {
+      "name": "validate_phase_h_v3_contracts",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_phase_h_v3_contracts.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.193,
+      "log": "validate_phase_h_v3_contracts.log"
+    },
+    {
+      "name": "validate_l5_extension_registration_conformance",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_registration_conformance.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.594,
+      "log": "validate_l5_extension_registration_conformance.log"
+    },
+    {
+      "name": "validate_l5_extension_semantic_conformance",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_semantic_conformance.py"
+      ],
+      "exit_code": 0,
+      "seconds": 2.088,
+      "log": "validate_l5_extension_semantic_conformance.log"
+    },
+    {
+      "name": "validate_l5_extension_publication_conformance",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_extension_publication_conformance.py"
+      ],
+      "exit_code": 0,
+      "seconds": 1.945,
+      "log": "validate_l5_extension_publication_conformance.log"
+    },
+    {
+      "name": "validate_l5_existing_family_conformance",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/validate_l5_existing_family_conformance.py"
+      ],
+      "exit_code": 1,
+      "seconds": 3.302,
+      "log": "validate_l5_existing_family_conformance.log"
+    },
+    {
+      "name": "pip-check",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit_code": 0,
+      "seconds": 3.392,
+      "log": "pip-check.log"
+    },
+    {
+      "name": "compileall",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-m",
+        "compileall",
+        "-q",
+        "scripts",
+        "server",
+        "tests"
+      ],
+      "exit_code": 0,
+      "seconds": 11.014,
+      "log": "compileall.log"
+    },
+    {
+      "name": "default-ci-final",
+      "command": [
+        "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "scripts/run_test_profile.py",
+        "default-ci",
+        "--json"
+      ],
+      "exit_code": 1,
+      "seconds": 106.284,
+      "log": "default-ci-final.log"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.069,
+      "log": "diff-check.log"
+    }
+  ],
+  "isolated_home": "C:\\Users\\weitang\\AppData\\Local\\Temp\\tw-market-l6-a2-accept-adzs7yqc\\home",
+  "real_default_home_before": {
+    "exists": false
+  },
+  "real_default_home_after": {
+    "exists": false
+  },
+  "real_default_home_unchanged": true,
+  "external_socket_attempts": 0,
+  "external_attempt_records": [],
+  "network_scope": "Python audit-hook connect/sendto/getaddrinfo within acceptance processes and inherited Python children; loopback allowed; no OS-wide claim; Git/GitHub transport excluded",
+  "provider_requests": 0,
+  "live_acquisition": 0,
+  "production_state_mutations": 0,
+  "fixture_transport_substitution": "not counted as actual provider/network request"
+}

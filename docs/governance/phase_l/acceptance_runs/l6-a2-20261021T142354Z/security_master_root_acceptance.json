@@ -1,0 +1,15 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "Canonical STATE_ROOT/security-master",
+    "Manager --root > legacy ENV > canonical; no metadata rewrite"
+  ],
+  "current_authority": "scripts/m8r_08g_security_master_releases.py::resolve_default_security_master_root; scripts/manage_security_master.py::_installation_context",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_security_master_paths.py::test_modern_derived_roots_are_installation_local",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_default_loader_does_not_adopt_preinit_canonical_bytes"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

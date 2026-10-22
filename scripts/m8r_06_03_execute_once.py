@@ -28,6 +28,7 @@ from scripts.m8r_06_03_production_adapter import (
     load_production_executor_metadata,
 )
 from scripts.m8r_filesystem_safety import safe_destination
+from scripts.tw_market_installation import InstallationError, effective_root
 from server.operational_diagnostics import TRACE_ENV, bind_trace_id, reset_trace_id
 
 
@@ -35,7 +36,17 @@ from server.operational_diagnostics import TRACE_ENV, bind_trace_id, reset_trace
 # no browser/API request can affect this value.
 # Keep lexical authority visible until the shared filesystem-safety seam has
 # checked its components; resolving here would hide configured reparse paths.
-CONTROL_ROOT = Path(os.environ.get("M8R_06_03_CONTROL_ROOT", str(ROOT / "artifacts" / "m8r_06_03_workbench"))).expanduser()
+CONTROL_ROOT = effective_root("governed")
+_INITIAL_CONTROL_ROOT = CONTROL_ROOT
+
+
+def _control_root() -> Path:
+    if CONTROL_ROOT != _INITIAL_CONTROL_ROOT:
+        return Path(CONTROL_ROOT)
+    try:
+        return effective_root("governed", require_initialized=not bool(os.environ.get("M8R_06_03_CONTROL_ROOT")))
+    except InstallationError as exc:
+        raise OrchestrationError(exc.code) from exc
 REQUIRED_ARTIFACTS = (
     "request", "plan", "authorization", "consumption_binding",
     "unused_consumption_state", "preflight",
@@ -59,10 +70,11 @@ def _load_json(path: Path, code: str) -> dict[str, Any]:
 
 
 def load_control_package(authorization_id: str) -> tuple[Path, dict[str, dict[str, Any]], dict[str, Any]]:
+    control_root = _control_root()
     if not isinstance(authorization_id, str) or not authorization_id.startswith("umea-v1-"):
         raise OrchestrationError("control_package_id_invalid")
-    package_root = CONTROL_ROOT / authorization_id
-    manifest_path = safe_destination(CONTROL_ROOT, f"{authorization_id}/control/manifest.json", create_parent=False).path
+    package_root = control_root / authorization_id
+    manifest_path = safe_destination(control_root, f"{authorization_id}/control/manifest.json", create_parent=False).path
     manifest = _load_json(manifest_path, "control_package_manifest_invalid")
     artifacts: dict[str, dict[str, Any]] = {}
     hashes = manifest.get("artifact_hashes")
@@ -74,7 +86,7 @@ def load_control_package(authorization_id: str) -> tuple[Path, dict[str, dict[st
     ):
         raise OrchestrationError("control_package_manifest_invalid")
     for name in sorted(artifact_names):
-        path = safe_destination(CONTROL_ROOT, f"{authorization_id}/control/{name}.json", create_parent=False).path
+        path = safe_destination(control_root, f"{authorization_id}/control/{name}.json", create_parent=False).path
         content = path.read_bytes()
         if hashlib.sha256(content).hexdigest() != hashes.get(name):
             raise OrchestrationError("control_package_artifact_hash_mismatch")
@@ -106,7 +118,7 @@ def load_control_package(authorization_id: str) -> tuple[Path, dict[str, dict[st
     validate_preflight_hashes(preflight)
     if preflight.get("authorization_id") != authorization_id:
         raise OrchestrationError("control_package_binding_mismatch")
-    claim_path = safe_destination(CONTROL_ROOT, f"{authorization_id}/claims/{authorization_id}.consumption-record.json", create_parent=False).path
+    claim_path = safe_destination(control_root, f"{authorization_id}/claims/{authorization_id}.consumption-record.json", create_parent=False).path
     if claim_path.exists():
         raise OrchestrationError("authorization_already_claimed")
     return package_root, artifacts, manifest

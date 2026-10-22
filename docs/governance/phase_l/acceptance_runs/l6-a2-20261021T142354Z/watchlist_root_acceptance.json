@@ -1,0 +1,15 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "Canonical STATE_ROOT/watchlists; explicit ENV/test injection preserved",
+    "No active SQLite copy/adoption/schema change"
+  ],
+  "current_authority": "scripts/m8r_09_persistent_watchlists.py::production_store",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_dynamic_watchlist_and_control_root_share_installation",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_direct_production_factories_cannot_initialize_canonical_stores"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

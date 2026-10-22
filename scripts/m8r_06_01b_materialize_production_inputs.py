@@ -12,11 +12,11 @@ from __future__ import annotations
 
 import hashlib
 import json
-import hashlib
 import os
 import ssl
 import sys
 import traceback
+import argparse
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone, date
@@ -69,12 +69,17 @@ from scripts.m8r_06_security_master_candidate_paths import (  # noqa: E402
     source_immutable_seal_path,
     validate_candidate_id,
 )
+from scripts.m8r_filesystem_safety import (  # noqa: E402
+    reject_reparse_components,
+    validate_authorized_root,
+)
 sys.path.pop(0)
 
 # ── Constants ────────────────────────────────────────────────────────────────
 MANIFEST_PATH = SKILL_ROOT / "references" / "source-manifest.json"
 SCHEMA_DIR = SKILL_ROOT / "references" / "schemas"
 BUNDLE_BASE = ROOT / "data" / "security_master" / "input_bundles"
+REPORT_ROOT: Path | None = None
 
 TWSE_ISIN_ZH = "https://isin.twse.com.tw/isin/C_public.jsp?strMode={mode}"
 TWSE_DELISTED_URL = "https://www.twse.com.tw/company/suspendListingCsvAndHtml?lang=zh&type=html"
@@ -112,6 +117,57 @@ QUAL_REJECTED_LIFECYCLE = "REJECTED_LIFECYCLE_CONFLICT"
 def log(msg: str) -> None:
     safe = msg.encode("ascii", errors="replace").decode("ascii")
     print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] {safe}", flush=True)
+
+
+def _display_path(path: Path, *, root: Path | None = None) -> str:
+    """Render repository-relative paths while allowing external temp roots."""
+    root = root or REPORT_ROOT or ROOT
+    try:
+        return str(path.resolve().relative_to(root.resolve())).replace("\\", "/")
+    except ValueError:
+        return str(path.resolve()).replace("\\", "/")
+
+
+def _resolve_bundle_base(
+    explicit: Path | None,
+    *,
+    installation_temp_root: Path | None = None,
+    app_root: Path = ROOT,
+) -> Path:
+    """Resolve staging without ever defaulting direct production acquisition to APP_ROOT."""
+    if explicit is not None:
+        if installation_temp_root is not None:
+            selected_lex = Path(os.path.abspath(os.fspath(explicit)))
+            temp_lex = Path(os.path.abspath(os.fspath(installation_temp_root)))
+            app_lex = Path(os.path.abspath(os.fspath(app_root)))
+            reject_reparse_components(temp_lex)
+            reject_reparse_components(app_lex)
+            reject_reparse_components(selected_lex)
+            try:
+                selected_lex.relative_to(temp_lex)
+            except ValueError as exc:
+                raise ValueError("BUNDLE_ROOT_OUTSIDE_INSTALLATION_TEMP") from exc
+            try:
+                selected_lex.relative_to(app_lex)
+            except ValueError:
+                pass
+            else:
+                raise ValueError("BUNDLE_ROOT_INSIDE_APPLICATION_ROOT")
+            validate_authorized_root(temp_lex)
+            validate_authorized_root(app_lex)
+        return validate_authorized_root(explicit)
+    historical_default = (ROOT / "data" / "security_master" / "input_bundles").resolve()
+    if BUNDLE_BASE.resolve() != historical_default:
+        # Existing deterministic tests and explicitly injected historical
+        # harnesses may continue to provide their own bounded fixture root.
+        return validate_authorized_root(BUNDLE_BASE)
+    from scripts.tw_market_installation import resolve_installation
+
+    installation = resolve_installation()
+    installation.require_initialized()
+    if installation.temp_root is None:
+        raise RuntimeError("INSTALLATION_TEMP_ROOT_UNAVAILABLE")
+    return validate_authorized_root(Path(installation.temp_root) / "security-master")
 
 
 
@@ -224,12 +280,49 @@ def _tpex_delisted_request(manifest: dict[str, Any]) -> tuple[str, bytes, str]:
     return TPEX_DELISTED_URL, urlencode(parameters).encode("ascii"), request["content_type"]
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--bundle-root", type=Path, default=None)
+    parser.add_argument("--report-root", type=Path, default=None)
+    # Unit harnesses historically call ``main()`` while pytest's own flags
+    # remain in sys.argv.  Explicit callers must use the real parser so that
+    # installation/app roots cannot be smuggled in as alternate authorities.
+    if argv is None:
+        args, _unknown = parser.parse_known_args()
+    else:
+        args = parser.parse_args(argv)
     now_utc = datetime.now(timezone.utc)
     generated_at = now_utc.isoformat()
     effective_date = now_utc.strftime("%Y-%m-%d")
     bundle_id = f"m8r06-01b-{now_utc.strftime('%Y%m%dT%H%M%SZ')}"
-    bundle_dir = BUNDLE_BASE / bundle_id
+    installation_temp_root = None
+    if args.bundle_root is not None:
+        from scripts.tw_market_installation import resolve_installation
+
+        installation = resolve_installation()
+        installation.require_initialized()
+        if installation.temp_root is None:
+            raise RuntimeError("INSTALLATION_TEMP_ROOT_UNAVAILABLE")
+        installation_temp_root = Path(installation.temp_root) / "security-master"
+    bundle_base = _resolve_bundle_base(
+        args.bundle_root,
+        installation_temp_root=installation_temp_root,
+        app_root=ROOT,
+    )
+    # A direct production invocation keeps all candidate diagnostics beside
+    # its bounded staging root.  Explicit helper calls may still provide a
+    # repository root to the report helpers for historical fixtures.
+    if args.report_root is not None:
+        report_lex = Path(os.path.abspath(os.fspath(args.report_root)))
+        bundle_lex = Path(os.path.abspath(os.fspath(bundle_base)))
+        if report_lex != bundle_lex:
+            raise RuntimeError("REPORT_ROOT_MUST_EQUAL_BOUNDED_BUNDLE_ROOT")
+        report_root = validate_authorized_root(args.report_root)
+    else:
+        report_root = bundle_base
+    global REPORT_ROOT
+    REPORT_ROOT = report_root
+    bundle_dir = bundle_base / bundle_id
 
     log("=" * 70)
     log("M8R-06-01B Production Input Materialization")
@@ -638,12 +731,12 @@ def main() -> int:
     # Write classification records
     cr_path = bundle_dir / "classification_records.json"
     cr_path.write_text(json.dumps(qualified_records, ensure_ascii=False, indent=2), encoding="utf-8")
-    log(f"  Written: {cr_path.relative_to(ROOT)} ({len(qualified_records)} records)")
+    log(f"  Written: {_display_path(cr_path)} ({len(qualified_records)} records)")
 
     # Write lifecycle events
     le_path = bundle_dir / "lifecycle_events.json"
     le_path.write_text(json.dumps(lifecycle_events, ensure_ascii=False, indent=2), encoding="utf-8")
-    log(f"  Written: {le_path.relative_to(ROOT)} ({len(lifecycle_events)} events)")
+    log(f"  Written: {_display_path(le_path)} ({len(lifecycle_events)} events)")
 
     # Create source evidence manifest
     source_manifest = {
@@ -669,7 +762,7 @@ def main() -> int:
     }
     sem_path = bundle_dir / "source_evidence_manifest.json"
     sem_path.write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
-    log(f"  Written: {sem_path.relative_to(ROOT)}")
+    log(f"  Written: {_display_path(sem_path)}")
 
     # Create qualification report
     qual_report = {
@@ -692,7 +785,7 @@ def main() -> int:
     }
     qr_path = bundle_dir / "qualification_report.json"
     qr_path.write_text(json.dumps(qual_report, ensure_ascii=False, indent=2), encoding="utf-8")
-    log(f"  Written: {qr_path.relative_to(ROOT)}")
+    log(f"  Written: {_display_path(qr_path)}")
     # ── Phase H: Exporter dry-run ────────────────────────────────────────
     log("\n── Phase H: Exporter compatibility dry-run ──")
     exporter_status = "not_attempted"
@@ -705,7 +798,7 @@ def main() -> int:
             "snapshot_id": f"dryrun-{bundle_id}",
             "coverage_status": "governed_bounded_operator_universe",
             "skill_version": "source-manifest-1.1.0",
-            "snapshot_path": f"data/security_master/input_bundles/{bundle_id}/snapshot.json",
+            "snapshot_path": f"{bundle_id}/dryrun_snapshot.json",
             "skill_contract_hash": compute_skill_contract_hash(),
         }
 
@@ -767,7 +860,7 @@ def main() -> int:
     log(f"  Rejected records: {len(rejected_records)}")
     log(f"  Lifecycle events: {len(lifecycle_events)}")
     log(f"  Exporter dry-run: {exporter_status}")
-    log(f"  Bundle: {bundle_dir.relative_to(ROOT)}")
+    log(f"  Bundle: {_display_path(bundle_dir)}")
 
     # Determine principal decision
     if exporter_status == "passed" and qualified_records:
@@ -824,7 +917,7 @@ def main() -> int:
         "bundle_persisted_in_git": False,
         "bundle_id": bundle_id,
 
-        "bundle_path": str(bundle_dir.relative_to(ROOT)).replace("\\", "/"),
+        "bundle_path": _display_path(bundle_dir),
         "fixture_input_used": False,
         "historical_input_used_as_current": False,
         "exporter_dry_run_attempted": True,
@@ -873,7 +966,7 @@ def main() -> int:
     }
 
     report_path = _write_candidate_materialization_report(bundle_id, report)
-    log(f"\n  Report: {report_path.relative_to(ROOT)}")
+    log(f"\n  Report: {_display_path(report_path)}")
 
     return 0 if status != "BLOCKED" else 1
 
@@ -883,7 +976,7 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
                           decision: str, reason: str, *,
                           repo_root: Path | None = None) -> None:
     """Write a failure report when materialization cannot proceed."""
-    root = (repo_root or ROOT).resolve()
+    root = (repo_root or REPORT_ROOT or ROOT).resolve()
     bundle_dir.mkdir(parents=True, exist_ok=True)
     report = {
         "task": "M8R-06-01B-EXISTING-SECURITY-MASTER-CLASSIFIER-PRODUCTION-INPUT-MATERIALIZATION",
@@ -905,7 +998,7 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
         "lifecycle_events_rejected": 0,
         "production_input_bundle_created": False,
         "bundle_id": bundle_id,
-        "bundle_path": str(bundle_dir.relative_to(root)).replace("\\", "/"),
+        "bundle_path": _display_path(bundle_dir, root=root),
         "fixture_input_used": False,
         "historical_input_used_as_current": False,
         "exporter_dry_run_attempted": False,
@@ -923,7 +1016,21 @@ def _write_failure_report(bundle_dir: Path, generated_at: str, effective_date: s
     }
     _write_candidate_materialization_report(bundle_id, report, repo_root=root)
     evidence_path = bundle_dir / "source_evidence_manifest.json"
-    evidence_path.write_text(json.dumps({"source_probes": source_probes}, ensure_ascii=False, indent=2), encoding="utf-8")
+    evidence_path.write_text(
+        json.dumps(
+            {
+                "bootstrap_failure_code": report["bootstrap_failure_code"],
+                "authorized_next_task": report["authorized_next_task"],
+                "exporter_dry_run_attempted": report["exporter_dry_run_attempted"],
+                "principal_decision": report["principal_decision"],
+                "production_input_bundle_created": report["production_input_bundle_created"],
+                "source_probes": source_probes,
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
 
 
 def _write_candidate_materialization_report(
@@ -933,7 +1040,7 @@ def _write_candidate_materialization_report(
     repo_root: Path | None = None,
 ) -> Path:
     """Write only the governed, candidate-local 01B report."""
-    root = (repo_root or ROOT).resolve()
+    root = (repo_root or REPORT_ROOT or ROOT).resolve()
     candidate_id = validate_candidate_id(bundle_id)
     if is_legacy_accepted_candidate(candidate_id):
         raise ValueError("historical_candidate_a_materialization_forbidden")
@@ -954,7 +1061,7 @@ def build_immutable_manifest(
     repo_root: Path | None = None,
 ) -> None:
     """Write bundle-local metadata and its independently reviewed candidate seal."""
-    root = (repo_root or ROOT).resolve()
+    root = (repo_root or REPORT_ROOT or ROOT).resolve()
     candidate_id = validate_candidate_id(bundle_id)
     if is_legacy_accepted_candidate(candidate_id):
         raise ValueError("historical_candidate_a_materialization_forbidden")
@@ -1015,4 +1122,4 @@ def build_immutable_manifest(
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv[1:]))

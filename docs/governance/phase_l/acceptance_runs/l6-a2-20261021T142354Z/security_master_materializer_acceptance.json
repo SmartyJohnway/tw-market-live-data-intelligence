@@ -1,0 +1,17 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "Explicit action only; initialized installation TEMP staging",
+    "Qualified bundles retained as source-bundles/candidate under selected SM root with relative/hash-bound provenance",
+    "Atomic directory promotion; bounded disk admission; reparse/collision/member/hash rejection",
+    "Activation/load/rollback verify retained snapshot; no provider URL or qualification semantics changed"
+  ],
+  "current_authority": "scripts/manage_security_master.py::_retain_or_verify_bundle; scripts/m8r_06_01b_materialize_production_inputs.py::main",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_security_master_paths.py::test_unqualified_live_candidate_is_never_retained",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_staged_candidate_must_be_direct_child_of_temp_root"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

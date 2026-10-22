@@ -1,0 +1,121 @@
+{
+  "all_16_closed": false,
+  "fully_closed_A2": 13,
+  "fully_deferred": 1,
+  "gap_count": 16,
+  "partially_closed": 2,
+  "rows": [
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G01",
+      "original_category": "HOME resolver absent",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G02",
+      "original_category": "STATE_ROOT resolver absent",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G03",
+      "original_category": "persisted settings absent",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G04",
+      "original_category": "installation metadata absent",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G05",
+      "original_category": "SM formal checkout default",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G06",
+      "original_category": "SM checkout acquisition bundles",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2_PART / REMAINDER_DEFER_A3",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G07",
+      "original_category": "checkout-local identity indexes/pointer",
+      "remaining": "application/resource distribution"
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G08",
+      "original_category": "Watchlist checkout default",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G09",
+      "original_category": "governed checkout default",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G10",
+      "original_category": "checkout-hash runtime identity",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G11",
+      "original_category": "operational event placement",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G12",
+      "original_category": "init command absent",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G13",
+      "original_category": "NOT_INITIALIZED semantic compression",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G14",
+      "original_category": "legacy root overrides",
+      "remaining": null
+    },
+    {
+      "disposition": "CLOSED_A2_PART / REMAINDER_DEFER_A5",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G15",
+      "original_category": "L2 A1 settings/metadata integration",
+      "remaining": "full L2 backup/restore portability and P4"
+    },
+    {
+      "disposition": "DEFER_A3",
+      "evidence": "focused_test_results.json; implementation_scope.json",
+      "gap_id": "A1-G16",
+      "original_category": "application/resource lookup remains rooted in source tree",
+      "remaining": "application/resource distribution"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"status": "PASS", "tool_count": 6, "tools": ["market_describe_capabilities", "market_export_ai_handoff", "market_fetch_evidence", "market_preview_request", "market_read_result", "market_validate_request"]}

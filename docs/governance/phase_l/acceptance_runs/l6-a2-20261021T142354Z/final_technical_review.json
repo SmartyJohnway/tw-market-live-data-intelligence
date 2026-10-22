@@ -1,0 +1,37 @@
+{
+  "A3_plus": "NOT_AUTHORIZED",
+  "L7": "NOT_AUTHORIZED",
+  "Phase_M": "NOT_AUTHORIZED",
+  "candidate_only_failures": 0,
+  "default_ci": {
+    "deselected": 5,
+    "failed": 41,
+    "passed": 1249,
+    "skipped": 4
+  },
+  "disposition": "L6_A2_NATIVE_INSTALLATION_LIFECYCLE_INTEGRATION_COMPLETE",
+  "focused_tests": {
+    "failed": 0,
+    "passed": 193,
+    "skipped": 3
+  },
+  "gaps_deferred": 1,
+  "gaps_fully_closed": 13,
+  "gaps_partially_closed": 2,
+  "historical_failure_set_equal": true,
+  "manifest_binding": "Separate manifest commit binds all changed canonical members from committed Git blobs; no transient file binding",
+  "owner_acceptance": "PENDING",
+  "public_mcp_count": 6,
+  "remaining_limitations": [
+    "No .git-free resource/distribution acceptance (A3)",
+    "No Docker implementation (A4)",
+    "No full backup/restore/P1-P6 acceptance (A5)",
+    "No automatic existing-state adoption/migration",
+    "Explicit legacy overrides remain noncanonical and diagnosed",
+    "41 exact historical default-ci failures remain failing/unresolved",
+    "Additional A5 historical immutable-product-diff gate is scope-inapplicable to authorized A2 root integration; raw FAIL retained",
+    "Availability-dependent sealed/local-state integration tests are not claimed passing; conditional symlink tests remain host-dependent",
+    "Init lock left by abrupt process termination fails closed; no automatic stale-lock repair"
+  ],
+  "required_gates": "PASS"
+}

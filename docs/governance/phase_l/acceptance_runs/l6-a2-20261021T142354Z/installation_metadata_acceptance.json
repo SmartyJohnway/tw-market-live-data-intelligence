@@ -1,0 +1,15 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "Integer version 1; canonical UUID4; created_at stable",
+    "L4 atomic publication, HOME-wide exclusive init lock; no implicit migration"
+  ],
+  "current_authority": "scripts/tw_market_installation.py::_metadata; _atomic_json",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_installation.py::test_metadata_is_strict_and_stable",
+    "tests/unit/test_l6_a2_installation.py::test_failed_exclusive_publication_leaves_no_partial_metadata"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

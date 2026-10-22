@@ -1,0 +1,9 @@
+{
+  "initial_failure_extraction": "default-ci-initial-extraction-invalid.json retained; decoded-tail extraction in default-ci-initial-comparison.json is authoritative for that run",
+  "intermediate_prefix": "intermediate-* describes pre-final-corrections validation, never final-candidate proof",
+  "root_guard_initial_error": "Root-level focused.log contains a harness KeyError LOCALAPPDATA because protected paths were recomputed during each audit event and a test temporarily clears ENV; not a product PASS",
+  "correction": "Capture immutable protected roots when sitecustomize loads; final run outputs isolated in corrected-guard/",
+  "test_isolation_correction": "Uninitialized-materializer negative test now explicitly selects fresh HOME, independent of harness outer initialized installation",
+  "raw_evidence_preserved": true,
+  "post_content_commit_manifest_required": true
+}

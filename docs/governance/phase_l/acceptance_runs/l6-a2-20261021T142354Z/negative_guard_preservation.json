@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "raw_log": "corrected-guard/focused.log",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_security_master_paths.py::test_direct_materializer_rejects_reparse_bundle_root",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_materializer_rejects_forged_authority_root_flags",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_direct_materializer_rejects_divergent_report_root",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_materializer_cli_bundle_root_requires_initialized_installation",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_production_bundle_root_must_be_installation_temp_and_outside_app",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_unqualified_live_candidate_is_never_retained",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_staged_candidate_must_be_direct_child_of_temp_root",
+    "tests/unit/test_l6_a2_security_master_paths.py::test_staged_candidate_symlink_is_rejected_when_supported",
+    "tests/unit/test_m8r_08g_identity_service_and_releases.py::test_retained_provenance_is_required_for_activation",
+    "tests/unit/test_m8r_08g_identity_service_and_releases.py::test_retained_provenance_path_rejects_traversal",
+    "tests/unit/test_m8r_08g_identity_service_and_releases.py::test_retained_provenance_path_rejects_windows_unsafe_segments"
+  ],
+  "provider_calls": "deterministic substitution only",
+  "guard_not_blanket_bypass": true
+}

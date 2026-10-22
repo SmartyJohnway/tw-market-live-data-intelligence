@@ -1,0 +1,8 @@
+{
+  "external_attempt_records": [],
+  "external_socket_attempts": 0,
+  "fixture_transport_substitution": "not counted as actual provider/network request",
+  "live_acquisition": 0,
+  "network_scope": "Python audit-hook connect/sendto/getaddrinfo within acceptance processes and inherited Python children; loopback allowed; no OS-wide claim; Git/GitHub transport excluded",
+  "provider_requests": 0
+}

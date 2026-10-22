@@ -1,0 +1,15 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "Canonical STATE_ROOT/governed shared across authorization/materialization/reading",
+    "Compatibility override remains; no execution/Result/Audit/hash semantic redesign"
+  ],
+  "current_authority": "server/services/unified_mode_b2.py::_control_root; server/services/unified_mode_c.py::_load_verified; scripts/m8r_06_03_execute_once.py::_control_root",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_dynamic_watchlist_and_control_root_share_installation",
+    "tests/unit/test_l6_a2_lifecycle_integration.py::test_direct_production_factories_cannot_initialize_canonical_stores"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

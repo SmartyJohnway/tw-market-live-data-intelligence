@@ -1,0 +1,54 @@
+{
+  "additional_stale_clause_reconciled": "Four current A1 contract pointers previously said no A2 implementation is authorized; now distinguish the frozen contract from separately authorized A2 implementation.",
+  "current_state_contradictions": 0,
+  "final_scan": [
+    {
+      "A1_accepted_frozen_contract_notation": true,
+      "A2_candidate_reference": true,
+      "current_state_contradictions": [],
+      "path": "PROJECT.md"
+    },
+    {
+      "A1_accepted_frozen_contract_notation": true,
+      "A2_candidate_reference": true,
+      "current_state_contradictions": [],
+      "path": "HANDOFF.md"
+    },
+    {
+      "A1_accepted_frozen_contract_notation": true,
+      "A2_candidate_reference": true,
+      "current_state_contradictions": [],
+      "path": "ROADMAP.md"
+    },
+    {
+      "A1_accepted_frozen_contract_notation": true,
+      "A2_candidate_reference": true,
+      "current_state_contradictions": [],
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md"
+    }
+  ],
+  "historical_A1_records_unchanged": true,
+  "rows": [
+    {
+      "changed": true,
+      "path": "PROJECT.md",
+      "remaining_A2_not_authorized_lines": []
+    },
+    {
+      "changed": true,
+      "path": "HANDOFF.md",
+      "remaining_A2_not_authorized_lines": []
+    },
+    {
+      "changed": true,
+      "path": "ROADMAP.md",
+      "remaining_A2_not_authorized_lines": []
+    },
+    {
+      "changed": true,
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "remaining_A2_not_authorized_lines": []
+    }
+  ],
+  "target": "A0/A1 Owner-accepted merged; A2 technical candidate complete/Owner pending; A3+/L7/Phase M not authorized"
+}

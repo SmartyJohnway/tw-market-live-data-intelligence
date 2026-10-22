@@ -1,4 +1,5 @@
 from __future__ import annotations
+import hashlib
 import json
 from pathlib import Path
 import pytest
@@ -187,9 +188,19 @@ def test_records_import_is_non_production(tmp_path):
     assert not (tmp_path / "local" / "active.json").exists()
 
 
+def _initialized_live_installation(tmp_path):
+    from scripts.tw_market_installation import initialize_installation
+
+    return initialize_installation(
+        home=tmp_path / "installation-home",
+        state_root=tmp_path / "installation-state",
+    )
+
+
 def test_live_failure_leaves_active_unchanged(tmp_path, monkeypatch):
     from scripts import manage_security_master as manage
 
+    installation = _initialized_live_installation(tmp_path)
     old = "security-master-20260907T000000Z"
     qualify(tmp_path, old, [rec()])
     activate_qualified_release(root=tmp_path, release_id=old)
@@ -198,7 +209,18 @@ def test_live_failure_leaves_active_unchanged(tmp_path, monkeypatch):
         returncode = 1
 
     monkeypatch.setattr(manage.subprocess, "run", lambda *a, **k: Failed())
-    assert manage.main(["update", "--root", str(tmp_path), "--live"]) == 1
+    assert manage.main(
+        [
+            "update",
+            "--root",
+            str(tmp_path),
+            "--home",
+            str(installation.home),
+            "--state-root",
+            str(installation.state_root),
+            "--live",
+        ]
+    ) == 1
     assert json.loads((tmp_path / "active.json").read_text())["release_id"] == old
 
 
@@ -206,40 +228,44 @@ def test_live_success_qualifies_and_activates_in_one_command(tmp_path, monkeypat
     from scripts import manage_security_master as manage
     from scripts import m8r_08g_security_master_releases as releases
 
-    bundle = (
-        tmp_path
-        / "data"
-        / "security_master"
-        / "input_bundles"
-        / "m8r06-01b-20990101T000000Z"
-    )
-    bundle.mkdir(parents=True)
-    (bundle / "dryrun_snapshot.json").write_text(
-        json.dumps(
-            {
-                "snapshot_id": "s",
-                "records": [rec()],
-                "source_skill": {
-                    "name": "test",
-                    "skill_version": "1",
-                    "skill_contract_hash": "b" * 64,
-                },
-            }
-        )
-    )
+    installation = _initialized_live_installation(tmp_path)
+    bundle_id = "m8r06-01b-20990101T000000Z"
+    snapshot_payload = {
+        "snapshot_id": "s",
+        "records": [rec()],
+        "source_skill": {
+            "name": "test",
+            "skill_version": "1",
+            "skill_contract_hash": "b" * 64,
+        },
+    }
 
     class Success:
         returncode = 0
 
+    child_environment = {}
+
+    def materialize(*command, **_kwargs):
+        child_environment.update(_kwargs.get("env", {}))
+        bundle_root = Path(command[0][command[0].index("--bundle-root") + 1])
+        bundle = bundle_root / bundle_id
+        bundle.mkdir(parents=True)
+        (bundle / "dryrun_snapshot.json").write_text(json.dumps(snapshot_payload))
+        return Success()
+
     monkeypatch.setattr(manage, "REPO_ROOT", tmp_path)
     monkeypatch.setattr(releases, "_commit", lambda: "c" * 40)
-    monkeypatch.setattr(manage.subprocess, "run", lambda *a, **k: Success())
+    monkeypatch.setattr(manage.subprocess, "run", materialize)
     assert (
         manage.main(
             [
                 "update",
                 "--root",
                 str(tmp_path / "local"),
+                "--home",
+                str(installation.home),
+                "--state-root",
+                str(installation.state_root),
                 "--live",
                 "security-master-20990101T000000Z",
             ]
@@ -250,3 +276,67 @@ def test_live_success_qualifies_and_activates_in_one_command(tmp_path, monkeypat
         json.loads((tmp_path / "local" / "active.json").read_text())["release_id"]
         == "security-master-20990101T000000Z"
     )
+    assert child_environment["TW_MARKET_HOME"] == str(installation.home)
+    assert child_environment["TW_MARKET_STATE_ROOT"] == str(installation.state_root)
+    retained = tmp_path / "local" / "source-bundles" / bundle_id
+    retained_bytes = (retained / "dryrun_snapshot.json").read_bytes()
+    assert retained_bytes == json.dumps(snapshot_payload).encode()
+    expected_hash = hashlib.sha256(retained_bytes).hexdigest()
+    release_dir = tmp_path / "local" / "releases" / "security-master-20990101T000000Z"
+    manifest = json.loads((release_dir / "manifest.json").read_text())
+    assert manifest["source_provenance"]["source_content_hashes"]["input_snapshot"] == expected_hash
+    assert manifest["source_provenance"]["retained_artifact_path"] == (
+        f"source-bundles/{bundle_id}/dryrun_snapshot.json"
+    )
+
+
+def test_retained_provenance_is_required_for_activation(tmp_path):
+    release_id = "security-master-20990101T000002Z"
+    retained = tmp_path / "source-bundles" / "m8r06-01b-20990101T000000Z"
+    retained.mkdir(parents=True)
+    snapshot = retained / "dryrun_snapshot.json"
+    snapshot.write_bytes(b"retained")
+    provenance = prov()
+    provenance["retained_artifact_path"] = (
+        "source-bundles/m8r06-01b-20990101T000000Z/dryrun_snapshot.json"
+    )
+    provenance["source_content_hashes"] = {
+        "input_snapshot": hashlib.sha256(snapshot.read_bytes()).hexdigest()
+    }
+    build_candidate_release(
+        root=tmp_path,
+        release_id=release_id,
+        records=[rec()],
+        source_provenance=provenance,
+    )
+    qualify_candidate_release(root=tmp_path, release_id=release_id)
+    snapshot.unlink()
+    with pytest.raises(LocalSecurityMasterError, match="retained_provenance_missing"):
+        activate_qualified_release(root=tmp_path, release_id=release_id)
+
+
+def test_retained_provenance_path_rejects_traversal(tmp_path):
+    provenance = prov()
+    provenance["retained_artifact_path"] = "../outside.json"
+    provenance["source_content_hashes"] = {"input_snapshot": "a" * 64}
+    with pytest.raises(LocalSecurityMasterError, match="retained_provenance_binding_invalid"):
+        build_candidate_release(
+            root=tmp_path,
+            release_id="security-master-20990101T000003Z",
+            records=[rec()],
+            source_provenance=provenance,
+        )
+
+
+@pytest.mark.parametrize("unsafe", ["source-bundles/x:stream", "source-bundles/CON", "source-bundles/name. "])
+def test_retained_provenance_path_rejects_windows_unsafe_segments(tmp_path, unsafe):
+    provenance = prov()
+    provenance["retained_artifact_path"] = unsafe
+    provenance["source_content_hashes"] = {"input_snapshot": "a" * 64}
+    with pytest.raises(LocalSecurityMasterError, match="retained_provenance_binding_invalid"):
+        build_candidate_release(
+            root=tmp_path,
+            release_id="security-master-20990101T000004Z",
+            records=[rec()],
+            source_provenance=provenance,
+        )

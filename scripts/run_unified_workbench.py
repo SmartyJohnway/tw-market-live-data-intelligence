@@ -1,11 +1,13 @@
 import argparse
 import sys
 import json
+import os
 import uvicorn
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+from scripts.tw_market_installation import InstallationError, resolve_installation
 
 def preload_governed_runtime() -> dict:
     """Activate accepted immutable Mode A authorities for this process only."""
@@ -66,11 +68,24 @@ def run_startup_check() -> int:
 
 def main():
     parser = argparse.ArgumentParser(description="Unified Market Evidence Operator Workbench Launcher")
-    parser.add_argument("--host", type=str, default="127.0.0.1", help="Host to bind to. Only localhost is allowed.")
-    parser.add_argument("--port", type=int, default=8000, help="Port to bind to.")
+    parser.add_argument("--host", type=str, help="Host to bind to. Only localhost is allowed.")
+    parser.add_argument("--port", type=int, help="Port to bind to.")
+    parser.add_argument("--home")
+    parser.add_argument("--state-root")
     parser.add_argument("--startup-check", action="store_true", help="Run offline startup check and exit.")
     
     args = parser.parse_args()
+    try:
+        installation = resolve_installation(home=args.home, state_root=args.state_root, host=args.host, port=args.port)
+        installation.require_initialized()
+        os.environ["TW_MARKET_HOME"] = str(installation.home)
+        os.environ["TW_MARKET_STATE_ROOT"] = str(installation.state_root)
+        os.environ.setdefault("TW_MARKET_OPERATIONAL_EVENT_PATH", str(installation.operational_event_path))
+        args.host = installation.effective_service_host
+        args.port = installation.effective_service_port
+    except InstallationError as exc:
+        print(json.dumps({"status": "error", "reason_code": exc.code}))
+        raise SystemExit(1)
 
     if args.host not in ("127.0.0.1", "localhost", "::1"):
         print("ERROR: Mode A Workbench explicitly forbids non-localhost bindings to guarantee offline boundaries.")

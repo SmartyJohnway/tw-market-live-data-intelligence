@@ -1,0 +1,134 @@
+{
+  "status": "PASS",
+  "manifest_canonical_sha256": "fd0289fcbee62f5260c46a15ea78f3e3520f27a023ea68c84061ad0ab6b1a8f2",
+  "historical_content_commit": "1e83623558569838278cc1479fb4649268e669d1",
+  "historical_members_verified": 31,
+  "members": [
+    {
+      "path": "HANDOFF.md",
+      "verified": true
+    },
+    {
+      "path": "PROJECT.md",
+      "verified": true
+    },
+    {
+      "path": "ROADMAP.md",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_2026-10-21.md",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/architecture_review.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/configuration_authority_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/current_source_inspection.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/decision_ledger.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/diff_scope_verification.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/entry_identity.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/final_contract_review.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/frontdoor_reconciliation.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/frozen_authority_consistency.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/governed_state_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/home_bootstrap_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/implementation_gap_map.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/init_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/initialization_state_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/installation_identity_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/l2_integration_map.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/legacy_override_compatibility.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/owner_authority.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/p1_p6_contract_implications.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/runtime_log_temp_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/scope_guard.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/security_master_relocation_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_root_contract.json",
+      "verified": true
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/validator_results.json",
+      "verified": true
+    }
+  ],
+  "A1_historical_bytes_changed": false,
+  "current_frontdoors_are_not_immutable_A1_artifact_authority": true
+}

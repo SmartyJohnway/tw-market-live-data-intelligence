@@ -1,0 +1,17 @@
+{
+  "acceptance_scope": "isolated temporary installations; deterministic fixtures only",
+  "assertions": [
+    "CLI > ENV > settings > defaults",
+    "Fresh persisted settings use product defaults; transient CLI/ENV do not become durable preferences",
+    "Strict UTF-8 JSON/version/host/port; unknown root authority rejected"
+  ],
+  "current_authority": "scripts/tw_market_installation.py::_settings",
+  "executed_test_functions": [
+    "tests/unit/test_l6_a2_installation.py::test_malformed_or_forbidden_settings_fail_even_with_cli",
+    "tests/unit/test_l6_a2_installation.py::test_settings_cli_env_precedence_and_bounds",
+    "tests/unit/test_l6_a2_installation.py::test_persisted_settings_require_host_and_port"
+  ],
+  "execution": "focused_test_results.json",
+  "raw_log": "corrected-guard/focused.log",
+  "status": "PASS"
+}

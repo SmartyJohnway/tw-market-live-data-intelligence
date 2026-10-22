@@ -19,6 +19,7 @@ from server.unified_mcp.bounded_stdio import BoundedStdin
 from server.unified_mcp.local_service_client import DEFAULT_SERVICE_URL, LocalServiceClientError, UnifiedLocalServiceClient
 from server.unified_mcp.server import build_unified_market_evidence_mcp_server
 from server.unified_mcp.tool_contracts import ToolContractError, build_tool_contract_snapshot
+from scripts.tw_market_installation import InstallationError, resolve_installation
 
 EXIT_CONFIGURATION = 2
 EXIT_LOCAL_SERVICE = 3
@@ -65,9 +66,22 @@ async def _serve(service_url: str) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="M8R-08 unified MCP stdio safe-tool adapter")
-    parser.add_argument("--service-url", default=os.environ.get("UNIFIED_MARKET_EVIDENCE_SERVICE_URL", DEFAULT_SERVICE_URL))
+    parser.add_argument("--service-url")
+    parser.add_argument("--home")
+    parser.add_argument("--state-root")
     parser.add_argument("--startup-check", action="store_true", help="Verify SDK and Local Service compatibility, then exit.")
     args = parser.parse_args()
+    try:
+        installation = resolve_installation(home=args.home, state_root=args.state_root)
+        installation.require_initialized()
+        os.environ["TW_MARKET_HOME"] = str(installation.home)
+        os.environ["TW_MARKET_STATE_ROOT"] = str(installation.state_root)
+        os.environ.setdefault("TW_MARKET_OPERATIONAL_EVENT_PATH", str(installation.operational_event_path))
+        url_host = "[::1]" if installation.effective_service_host == "::1" else installation.effective_service_host
+        args.service_url = args.service_url or os.environ.get("UNIFIED_MARKET_EVIDENCE_SERVICE_URL") or f"http://{url_host}:{installation.effective_service_port}"
+    except InstallationError as exc:
+        _stderr(f"Installation check failed: {exc.code}")
+        return EXIT_CONFIGURATION
     if args.startup_check:
         async def check() -> int:
             if _runtime_version() != "1.29.0":
