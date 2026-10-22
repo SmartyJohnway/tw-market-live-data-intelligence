@@ -1,0 +1,1608 @@
+{
+  "schema_version": 1,
+  "strategy": "exact-file role allowlist",
+  "members": [
+    {
+      "source": "scripts/__init__.py",
+      "destination": "app/scripts/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m5k_common.py",
+      "destination": "app/scripts/m5k_common.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m5q_source_health.py",
+      "destination": "app/scripts/m5q_source_health.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8_source_freshness_evaluator.py",
+      "destination": "app/scripts/m8_source_freshness_evaluator.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8a_official_eod_instrument_classifier.py",
+      "destination": "app/scripts/m8a_official_eod_instrument_classifier.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8a_official_eod_observation.py",
+      "destination": "app/scripts/m8a_official_eod_observation.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8a_tpex_official_eod_adapter.py",
+      "destination": "app/scripts/m8a_tpex_official_eod_adapter.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8a_twse_official_eod_adapter.py",
+      "destination": "app/scripts/m8a_twse_official_eod_adapter.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_03c_contracts.py",
+      "destination": "app/scripts/m8r_03c_contracts.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_03c_conversation_contract_validator.py",
+      "destination": "app/scripts/m8r_03c_conversation_contract_validator.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_03c_watchlist_bundle_builder.py",
+      "destination": "app/scripts/m8r_03c_watchlist_bundle_builder.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_03c_watchlist_metrics.py",
+      "destination": "app/scripts/m8r_03c_watchlist_metrics.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_03d_f1_security_master_snapshot_adapter.py",
+      "destination": "app/scripts/m8r_03d_f1_security_master_snapshot_adapter.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_03d_f1_security_master_snapshot_exporter.py",
+      "destination": "app/scripts/m8r_03d_f1_security_master_snapshot_exporter.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_03d_watchlist_source_integration.py",
+      "destination": "app/scripts/m8r_03d_watchlist_source_integration.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05a_f3/__init__.py",
+      "destination": "app/scripts/m8r_05a_f3/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05a_f3/capability_validator.py",
+      "destination": "app/scripts/m8r_05a_f3/capability_validator.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05a_f3/request_intake.py",
+      "destination": "app/scripts/m8r_05a_f3/request_intake.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05a_f3/request_validation_models.py",
+      "destination": "app/scripts/m8r_05a_f3/request_validation_models.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05a_f3/security_master_loader.py",
+      "destination": "app/scripts/m8r_05a_f3/security_master_loader.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05a_f3/target_validator.py",
+      "destination": "app/scripts/m8r_05a_f3/target_validator.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_01/__init__.py",
+      "destination": "app/scripts/m8r_05b_01/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_01/artifact_loader.py",
+      "destination": "app/scripts/m8r_05b_01/artifact_loader.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_01/canonical.py",
+      "destination": "app/scripts/m8r_05b_01/canonical.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_01/models.py",
+      "destination": "app/scripts/m8r_05b_01/models.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_01/planner.py",
+      "destination": "app/scripts/m8r_05b_01/planner.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_02/__init__.py",
+      "destination": "app/scripts/m8r_05b_02/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_02/authorization.py",
+      "destination": "app/scripts/m8r_05b_02/authorization.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_02/canonical.py",
+      "destination": "app/scripts/m8r_05b_02/canonical.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_02/consumption_binding.py",
+      "destination": "app/scripts/m8r_05b_02/consumption_binding.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_02/models.py",
+      "destination": "app/scripts/m8r_05b_02/models.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_02/preflight.py",
+      "destination": "app/scripts/m8r_05b_02/preflight.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_02/validator.py",
+      "destination": "app/scripts/m8r_05b_02/validator.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/__init__.py",
+      "destination": "app/scripts/m8r_05b_03/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/authorization_gate.py",
+      "destination": "app/scripts/m8r_05b_03/authorization_gate.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/canonical.py",
+      "destination": "app/scripts/m8r_05b_03/canonical.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/component_artifact_roles.py",
+      "destination": "app/scripts/m8r_05b_03/component_artifact_roles.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/consumption_claim.py",
+      "destination": "app/scripts/m8r_05b_03/consumption_claim.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/containment.py",
+      "destination": "app/scripts/m8r_05b_03/containment.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/dependency_graph.py",
+      "destination": "app/scripts/m8r_05b_03/dependency_graph.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/dispatch.py",
+      "destination": "app/scripts/m8r_05b_03/dispatch.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/errors.py",
+      "destination": "app/scripts/m8r_05b_03/errors.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/preflight.py",
+      "destination": "app/scripts/m8r_05b_03/preflight.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/registry.py",
+      "destination": "app/scripts/m8r_05b_03/registry.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/request_projection.py",
+      "destination": "app/scripts/m8r_05b_03/request_projection.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/__init__.py",
+      "destination": "app/scripts/m8r_05c/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/artifact_loader.py",
+      "destination": "app/scripts/m8r_05c/artifact_loader.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/audit_package_builder.py",
+      "destination": "app/scripts/m8r_05c/audit_package_builder.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/canonical.py",
+      "destination": "app/scripts/m8r_05c/canonical.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/citation_builder.py",
+      "destination": "app/scripts/m8r_05c/citation_builder.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/containment.py",
+      "destination": "app/scripts/m8r_05c/containment.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/derived_metrics.py",
+      "destination": "app/scripts/m8r_05c/derived_metrics.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/errors.py",
+      "destination": "app/scripts/m8r_05c/errors.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/evidence_projector.py",
+      "destination": "app/scripts/m8r_05c/evidence_projector.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/lineage_resolver.py",
+      "destination": "app/scripts/m8r_05c/lineage_resolver.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/markdown_renderer.py",
+      "destination": "app/scripts/m8r_05c/markdown_renderer.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/models.py",
+      "destination": "app/scripts/m8r_05c/models.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/phase_h_semantics.py",
+      "destination": "app/scripts/m8r_05c/phase_h_semantics.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/result_builder.py",
+      "destination": "app/scripts/m8r_05c/result_builder.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_05c/trading_status_composer.py",
+      "destination": "app/scripts/m8r_05c/trading_status_composer.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_06_01b_materialize_production_inputs.py",
+      "destination": "app/scripts/m8r_06_01b_materialize_production_inputs.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_06_01c1b_compact_runtime_identity_index.py",
+      "destination": "app/scripts/m8r_06_01c1b_compact_runtime_identity_index.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_06_01c2_mode_a_security_master_loader.py",
+      "destination": "app/scripts/m8r_06_01c2_mode_a_security_master_loader.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_06_02_mode_b1_preview.py",
+      "destination": "app/scripts/m8r_06_02_mode_b1_preview.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_06_03_production_adapter.py",
+      "destination": "app/scripts/m8r_06_03_production_adapter.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_06_security_master_candidate_paths.py",
+      "destination": "app/scripts/m8r_06_security_master_candidate_paths.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_08g_identity_service.py",
+      "destination": "app/scripts/m8r_08g_identity_service.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_08g_security_master_releases.py",
+      "destination": "app/scripts/m8r_08g_security_master_releases.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_09_persistent_watchlists.py",
+      "destination": "app/scripts/m8r_09_persistent_watchlists.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_bounded_market_context_request.py",
+      "destination": "app/scripts/m8r_bounded_market_context_request.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_eod_expected_trade_date.py",
+      "destination": "app/scripts/m8r_eod_expected_trade_date.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/m8r_filesystem_safety.py",
+      "destination": "app/scripts/m8r_filesystem_safety.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/manage_security_master.py",
+      "destination": "app/scripts/manage_security_master.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/market_clock_session_state.py",
+      "destination": "app/scripts/market_clock_session_state.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/observation_contract.py",
+      "destination": "app/scripts/observation_contract.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/phase_g/__init__.py",
+      "destination": "app/scripts/phase_g/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/phase_g/mops_material_disclosures.py",
+      "destination": "app/scripts/phase_g/mops_material_disclosures.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/phase_g/mops_monthly_revenue.py",
+      "destination": "app/scripts/phase_g/mops_monthly_revenue.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/phase_g/research_executor.py",
+      "destination": "app/scripts/phase_g/research_executor.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/product_version.py",
+      "destination": "app/scripts/product_version.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/run_unified_market_evidence_mcp.py",
+      "destination": "app/scripts/run_unified_market_evidence_mcp.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/run_unified_workbench.py",
+      "destination": "app/scripts/run_unified_workbench.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/ssl_policy.py",
+      "destination": "app/scripts/ssl_policy.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/tw_market.py",
+      "destination": "app/scripts/tw_market.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/tw_market_installation.py",
+      "destination": "app/scripts/tw_market_installation.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/tw_market_lifecycle.py",
+      "destination": "app/scripts/tw_market_lifecycle.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/twse_trading_calendar.py",
+      "destination": "app/scripts/twse_trading_calendar.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/validate_m5f_canonical_market_context_package.py",
+      "destination": "app/scripts/validate_m5f_canonical_market_context_package.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/validate_phase_h_v3_contracts.py",
+      "destination": "app/scripts/validate_phase_h_v3_contracts.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "scripts/verify_environment.py",
+      "destination": "app/scripts/verify_environment.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/__init__.py",
+      "destination": "app/server/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/local_control_plane_boundary.py",
+      "destination": "app/server/local_control_plane_boundary.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/local_network_boundary.py",
+      "destination": "app/server/local_network_boundary.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/main.py",
+      "destination": "app/server/main.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/operational_diagnostics.py",
+      "destination": "app/server/operational_diagnostics.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/resource_boundaries.py",
+      "destination": "app/server/resource_boundaries.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_corporate_action_adapters.py",
+      "destination": "app/server/services/phase_h_corporate_action_adapters.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_discontinuity_safety.py",
+      "destination": "app/server/services/phase_h_discontinuity_safety.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_h1_tpex_composite.py",
+      "destination": "app/server/services/phase_h_h1_tpex_composite.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_h2_twse_exright_executor.py",
+      "destination": "app/server/services/phase_h_h2_twse_exright_executor.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_h3_twse_governed_end.py",
+      "destination": "app/server/services/phase_h_h3_twse_governed_end.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_h3_twse_stock_day_adapter.py",
+      "destination": "app/server/services/phase_h_h3_twse_stock_day_adapter.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_h3_twse_stock_day_walker.py",
+      "destination": "app/server/services/phase_h_h3_twse_stock_day_walker.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_recent_performance.py",
+      "destination": "app/server/services/phase_h_recent_performance.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_h_trading_status_adapters.py",
+      "destination": "app/server/services/phase_h_trading_status_adapters.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_i1_production_candidate.py",
+      "destination": "app/server/services/phase_i_i1_production_candidate.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_i2_index_futures_adapters.py",
+      "destination": "app/server/services/phase_i_i2_index_futures_adapters.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_i2_production_candidate.py",
+      "destination": "app/server/services/phase_i_i2_production_candidate.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_i2_production_transport.py",
+      "destination": "app/server/services/phase_i_i2_production_transport.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+      "destination": "app/server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+      "destination": "app/server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_i3_cash_institutional_flow_v2_evidence.py",
+      "destination": "app/server/services/phase_i_i3_cash_institutional_flow_v2_evidence.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_i3_production_transport.py",
+      "destination": "app/server/services/phase_i_i3_production_transport.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/phase_i_market_state_adapters.py",
+      "destination": "app/server/services/phase_i_market_state_adapters.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/unified_contract_versions.py",
+      "destination": "app/server/services/unified_contract_versions.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/unified_local_operator_action.py",
+      "destination": "app/server/services/unified_local_operator_action.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/unified_local_service.py",
+      "destination": "app/server/services/unified_local_service.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/unified_mode_a.py",
+      "destination": "app/server/services/unified_mode_a.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/unified_mode_b1.py",
+      "destination": "app/server/services/unified_mode_b1.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/unified_mode_b2.py",
+      "destination": "app/server/services/unified_mode_b2.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/unified_mode_b2_execution.py",
+      "destination": "app/server/services/unified_mode_b2_execution.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/unified_mode_c.py",
+      "destination": "app/server/services/unified_mode_c.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/services/watchlist_evidence_composer.py",
+      "destination": "app/server/services/watchlist_evidence_composer.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_bounded_io.py",
+      "destination": "app/server/unified_bounded_io.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_mcp/__init__.py",
+      "destination": "app/server/unified_mcp/__init__.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_mcp/bounded_stdio.py",
+      "destination": "app/server/unified_mcp/bounded_stdio.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_mcp/error_mapping.py",
+      "destination": "app/server/unified_mcp/error_mapping.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_mcp/local_service_client.py",
+      "destination": "app/server/unified_mcp/local_service_client.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_mcp/server.py",
+      "destination": "app/server/unified_mcp/server.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_mcp/tool_contracts.py",
+      "destination": "app/server/unified_mcp/tool_contracts.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_payload_bounds.py",
+      "destination": "app/server/unified_payload_bounds.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "server/unified_workbench_router.py",
+      "destination": "app/server/unified_workbench_router.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/classifier.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/classifier.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/common.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/common.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/isin_parser.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/isin_parser.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/lifecycle_common.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/lifecycle_common.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/merge_lifecycle_events.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/merge_lifecycle_events.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/parse_etn_termination.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/parse_etn_termination.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/parse_tpex_delisted.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/parse_tpex_delisted.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/parse_twse_delisted.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/parse_twse_delisted.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/probe_sources.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/probe_sources.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/scripts/schema_validation.py",
+      "destination": "app/skills/tw-security-master-classifier/scripts/schema_validation.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
+      "source": "VERSION",
+      "destination": "app/VERSION",
+      "role": "runtime_resource",
+      "justification": "Version / accepted dependency authority"
+    },
+    {
+      "source": "config/m5k_default_watchlist.json",
+      "destination": "app/config/m5k_default_watchlist.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8a_official_eod_instrument_classifier.py"
+    },
+    {
+      "source": "config/m5l_live_source_adapter_matrix.json",
+      "destination": "app/config/m5l_live_source_adapter_matrix.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in server/main.py"
+    },
+    {
+      "source": "config/m8a_official_eod_security_master.json",
+      "destination": "app/config/m8a_official_eod_security_master.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8a_official_eod_instrument_classifier.py"
+    },
+    {
+      "source": "config/m8r_06_03_executor_registry_metadata.json",
+      "destination": "app/config/m8r_06_03_executor_registry_metadata.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8r_06_03_production_adapter.py"
+    },
+    {
+      "source": "config/m8r_06_mode_a_security_master_pointer.json",
+      "destination": "app/config/m8r_06_mode_a_security_master_pointer.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8r_06_01c2_mode_a_security_master_loader.py"
+    },
+    {
+      "source": "config/phase_h_h1_dormant_source_descriptors.json",
+      "destination": "app/config/phase_h_h1_dormant_source_descriptors.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in server/services/phase_h_trading_status_adapters.py"
+    },
+    {
+      "source": "config/phase_h_h2_dormant_source_descriptors.json",
+      "destination": "app/config/phase_h_h2_dormant_source_descriptors.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in server/services/phase_h_corporate_action_adapters.py"
+    },
+    {
+      "source": "config/phase_i_i1_production_executor_candidate.json",
+      "destination": "app/config/phase_i_i1_production_executor_candidate.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in server/services/phase_i_i1_production_candidate.py"
+    },
+    {
+      "source": "docs/contracts/schemas/m8r_06_mode_a_security_master_pointer.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/m8r_06_mode_a_security_master_pointer.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/m8r_watchlist_ai_context_manifest.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/m8r_watchlist_ai_context_manifest.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/m8r_watchlist_ai_context_package.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/m8r_watchlist_ai_context_package.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/m8r_watchlist_ai_context_package.v2.schema.json",
+      "destination": "app/docs/contracts/schemas/m8r_watchlist_ai_context_package.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/m8r_watchlist_ai_fact_citation.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/m8r_watchlist_ai_fact_citation.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/m8r_watchlist_conversation_handoff.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/m8r_watchlist_conversation_handoff.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/m8r_watchlist_missing_evidence.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/m8r_watchlist_missing_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/persistent_watchlist.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/persistent_watchlist.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/persistent_watchlist_entry.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/persistent_watchlist_entry.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/persistent_watchlist_export.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/persistent_watchlist_export.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/persistent_watchlist_mutation_command.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/persistent_watchlist_mutation_command.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/persistent_watchlist_mutation_preview.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/persistent_watchlist_mutation_preview.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/persistent_watchlist_revision.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/persistent_watchlist_revision.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/taiwan_market_identity_active_pointer.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/taiwan_market_identity_active_pointer.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/taiwan_market_identity_candidate.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/taiwan_market_identity_candidate.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/taiwan_market_identity_record.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/taiwan_market_identity_record.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/taiwan_market_identity_release.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/taiwan_market_identity_release.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/taiwan_market_identity_release_index.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/taiwan_market_identity_release_index.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/taiwan_market_identity_release_manifest.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/taiwan_market_identity_release_manifest.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/taiwan_market_identity_release_qualification.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/taiwan_market_identity_release_qualification.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/taiwan_market_identity_release_status.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/taiwan_market_identity_release_status.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/tw_compact_runtime_identity_index.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/tw_compact_runtime_identity_index.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/tw_compact_runtime_identity_index_manifest.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/tw_compact_runtime_identity_index_manifest.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/tw_verified_security_master_snapshot.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/tw_verified_security_master_snapshot_manifest.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/tw_verified_security_master_snapshot_manifest.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/v1_release_manifest.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/v1_release_manifest.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/watchlist_evidence_selection.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/watchlist_evidence_selection.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/watchlist_evidence_selection_request.v1.schema.json",
+      "destination": "app/docs/contracts/schemas/watchlist_evidence_selection_request.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/watchlist_evidence_selection_request.v2.schema.json",
+      "destination": "app/docs/contracts/schemas/watchlist_evidence_selection_request.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/contracts/schemas/watchlist_evidence_selection_request.v3.schema.json",
+      "destination": "app/docs/contracts/schemas/watchlist_evidence_selection_request.v3.schema.json",
+      "role": "runtime_resource",
+      "justification": "Security Master and state contract validation schemas"
+    },
+    {
+      "source": "docs/data_capabilities/m8_source_capability_registry.json",
+      "destination": "app/docs/data_capabilities/m8_source_capability_registry.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8r_bounded_market_context_request.py"
+    },
+    {
+      "source": "docs/data_capabilities/m8r_03b_conversation_scope_contract.json",
+      "destination": "app/docs/data_capabilities/m8r_03b_conversation_scope_contract.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8r_03c_contracts.py"
+    },
+    {
+      "source": "docs/data_capabilities/m8r_03b_evidence_bundle_contracts.json",
+      "destination": "app/docs/data_capabilities/m8r_03b_evidence_bundle_contracts.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8r_03c_contracts.py"
+    },
+    {
+      "source": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v2.json",
+      "destination": "app/docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v2.json",
+      "role": "runtime_resource",
+      "justification": "Version-aware Local Service authority"
+    },
+    {
+      "source": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "destination": "app/docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+      "role": "runtime_resource",
+      "justification": "Version-aware Local Service authority"
+    },
+    {
+      "source": "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+      "destination": "app/docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8r_06_02_mode_b1_preview.py"
+    },
+    {
+      "source": "docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json",
+      "destination": "app/docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json",
+      "role": "runtime_resource",
+      "justification": "Runtime reference in scripts/m8r_06_02_mode_b1_preview.py"
+    },
+    {
+      "source": "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json",
+      "destination": "app/docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json",
+      "role": "runtime_resource",
+      "justification": "Version-aware Local Service authority"
+    },
+    {
+      "source": "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
+      "destination": "app/docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
+      "role": "runtime_resource",
+      "justification": "Version-aware Local Service authority"
+    },
+    {
+      "source": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "destination": "app/docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "role": "runtime_resource",
+      "justification": "Version-aware Local Service authority"
+    },
+    {
+      "source": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+      "destination": "app/docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+      "role": "runtime_resource",
+      "justification": "Exact governance exception: frozen source contract loaded by active I3 adapter; immutable authority"
+    },
+    {
+      "source": "frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html",
+      "destination": "app/frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html",
+      "role": "runtime_resource",
+      "justification": "Workbench static asset"
+    },
+    {
+      "source": "frontend/unified-workbench/unified-workbench.css",
+      "destination": "app/frontend/unified-workbench/unified-workbench.css",
+      "role": "runtime_resource",
+      "justification": "Workbench static asset"
+    },
+    {
+      "source": "frontend/unified-workbench/unified-workbench.js",
+      "destination": "app/frontend/unified-workbench/unified-workbench.js",
+      "role": "runtime_resource",
+      "justification": "Workbench static asset"
+    },
+    {
+      "source": "frontend/unified-workbench/watchlist-workbench.js",
+      "destination": "app/frontend/unified-workbench/watchlist-workbench.js",
+      "role": "runtime_resource",
+      "justification": "Workbench static asset"
+    },
+    {
+      "source": "frontend/unified-workbench/workbench-state.js",
+      "destination": "app/frontend/unified-workbench/workbench-state.js",
+      "role": "runtime_resource",
+      "justification": "Workbench static asset"
+    },
+    {
+      "source": "requirements-lock.txt",
+      "destination": "app/requirements-lock.txt",
+      "role": "runtime_resource",
+      "justification": "Version / accepted dependency authority"
+    },
+    {
+      "source": "requirements.txt",
+      "destination": "app/requirements.txt",
+      "role": "runtime_resource",
+      "justification": "Version / accepted dependency authority"
+    },
+    {
+      "source": "schemas/cash_institutional_flow_context_evidence.v1.schema.json",
+      "destination": "app/schemas/cash_institutional_flow_context_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/cash_institutional_flow_context_evidence.v2.schema.json",
+      "destination": "app/schemas/cash_institutional_flow_context_evidence.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/corporate_action_context_evidence.v1.schema.json",
+      "destination": "app/schemas/corporate_action_context_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/discontinuity_safety_evidence.v1.schema.json",
+      "destination": "app/schemas/discontinuity_safety_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/index_futures_context_evidence.v1.schema.json",
+      "destination": "app/schemas/index_futures_context_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/m8r_eod_expected_trade_date_status.schema.json",
+      "destination": "app/schemas/m8r_eod_expected_trade_date_status.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/m8r_phase_c_execution_preview.schema.json",
+      "destination": "app/schemas/m8r_phase_c_execution_preview.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/market_state_context_evidence.v1.schema.json",
+      "destination": "app/schemas/market_state_context_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/material_disclosure_evidence.v1.schema.json",
+      "destination": "app/schemas/material_disclosure_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/monthly_revenue_evidence.v1.schema.json",
+      "destination": "app/schemas/monthly_revenue_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+      "destination": "app/schemas/phase_g_material_disclosure_operation_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+      "destination": "app/schemas/phase_g_monthly_revenue_operation_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/phase_h_source_attempt_governance.v1.schema.json",
+      "destination": "app/schemas/phase_h_source_attempt_governance.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/recent_performance_evidence.v1.schema.json",
+      "destination": "app/schemas/recent_performance_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/trading_status_context_composite.v1.schema.json",
+      "destination": "app/schemas/trading_status_context_composite.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/trading_status_context_evidence.v1.schema.json",
+      "destination": "app/schemas/trading_status_context_evidence.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/trading_status_context_evidence.v2.schema.json",
+      "destination": "app/schemas/trading_status_context_evidence.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/twse_mis_identity.v1.schema.json",
+      "destination": "app/schemas/twse_mis_identity.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_audit_package.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_audit_package.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_audit_package.v2.schema.json",
+      "destination": "app/schemas/unified_market_evidence_audit_package.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+      "destination": "app/schemas/unified_market_evidence_audit_package.v3.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_authorization_consumption_binding.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_authorization_consumption_binding.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_bundle.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_bundle.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_capability_catalog.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_capability_catalog.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_capability_catalog.v2.schema.json",
+      "destination": "app/schemas/unified_market_evidence_capability_catalog.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_consumption_record.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_consumption_record.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_execution_authorization.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_execution_authorization.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_execution_receipt.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_execution_receipt.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_execution_request.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_execution_request.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_execution_request.v2.schema.json",
+      "destination": "app/schemas/unified_market_evidence_execution_request.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_execution_request.v3.schema.json",
+      "destination": "app/schemas/unified_market_evidence_execution_request.v3.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_executor_registry_metadata.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_executor_registry_metadata.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_finalization_journal.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_finalization_journal.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_operation_result.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_operation_result.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+      "destination": "app/schemas/unified_market_evidence_operation_result.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_orchestration_plan.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_orchestration_plan.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_orchestrator_preflight.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_orchestrator_preflight.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_preview_response.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_preview_response.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_request.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_request.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_request.v2.schema.json",
+      "destination": "app/schemas/unified_market_evidence_request.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_request.v3.schema.json",
+      "destination": "app/schemas/unified_market_evidence_request.v3.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_request_validation.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_request_validation.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_result.v1.schema.json",
+      "destination": "app/schemas/unified_market_evidence_result.v1.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_result.v2.schema.json",
+      "destination": "app/schemas/unified_market_evidence_result.v2.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "schemas/unified_market_evidence_result.v3.schema.json",
+      "destination": "app/schemas/unified_market_evidence_result.v3.schema.json",
+      "role": "runtime_resource",
+      "justification": "Accepted request/result/audit and runtime schema resources"
+    },
+    {
+      "source": "skills/tw-market-evidence-agent/SKILL.md",
+      "destination": "app/skills/tw-market-evidence-agent/SKILL.md",
+      "role": "runtime_resource",
+      "justification": "Runtime producer skill provenance / agent usage contract"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/SKILL.md",
+      "destination": "app/skills/tw-security-master-classifier/SKILL.md",
+      "role": "runtime_resource",
+      "justification": "Runtime producer skill provenance / agent usage contract"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/schemas/batch-classification-report.schema.json",
+      "destination": "app/skills/tw-security-master-classifier/references/schemas/batch-classification-report.schema.json",
+      "role": "runtime_resource",
+      "justification": "Classifier schema validation"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/schemas/classification-result.schema.json",
+      "destination": "app/skills/tw-security-master-classifier/references/schemas/classification-result.schema.json",
+      "role": "runtime_resource",
+      "justification": "Classifier schema validation"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/schemas/lifecycle-event.schema.json",
+      "destination": "app/skills/tw-security-master-classifier/references/schemas/lifecycle-event.schema.json",
+      "role": "runtime_resource",
+      "justification": "Classifier schema validation"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/schemas/normalized-security-record.schema.json",
+      "destination": "app/skills/tw-security-master-classifier/references/schemas/normalized-security-record.schema.json",
+      "role": "runtime_resource",
+      "justification": "Classifier schema validation"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/schemas/probe-result.schema.json",
+      "destination": "app/skills/tw-security-master-classifier/references/schemas/probe-result.schema.json",
+      "role": "runtime_resource",
+      "justification": "Classifier schema validation"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/schemas/resolution-result.schema.json",
+      "destination": "app/skills/tw-security-master-classifier/references/schemas/resolution-result.schema.json",
+      "role": "runtime_resource",
+      "justification": "Classifier schema validation"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/schemas/source-manifest.schema.json",
+      "destination": "app/skills/tw-security-master-classifier/references/schemas/source-manifest.schema.json",
+      "role": "runtime_resource",
+      "justification": "Classifier schema validation"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/source-manifest.json",
+      "destination": "app/skills/tw-security-master-classifier/references/source-manifest.json",
+      "role": "runtime_resource",
+      "justification": "Classifier production rules/source contract"
+    },
+    {
+      "source": "packaging_native/bootstrap/bootstrap.ps1",
+      "destination": "bootstrap/bootstrap.ps1",
+      "role": "bootstrap",
+      "justification": "Offline integrity and runtime bootstrap"
+    },
+    {
+      "source": "packaging_native/bootstrap/bootstrap.py",
+      "destination": "bootstrap/bootstrap.py",
+      "role": "bootstrap",
+      "justification": "Offline integrity and runtime bootstrap"
+    },
+    {
+      "source": "packaging_native/bootstrap/launch.py",
+      "destination": "bootstrap/launch.py",
+      "role": "bootstrap",
+      "justification": "Offline integrity and runtime bootstrap"
+    },
+    {
+      "source": "packaging_native/bootstrap/package_integrity.py",
+      "destination": "bootstrap/package_integrity.py",
+      "role": "bootstrap",
+      "justification": "Offline integrity and runtime bootstrap"
+    },
+    {
+      "source": "packaging_native/launchers/tw-market-mcp.cmd",
+      "destination": "tw-market-mcp.cmd",
+      "role": "launcher",
+      "justification": "Relative package entry point"
+    },
+    {
+      "source": "packaging_native/launchers/tw-market-security-master.cmd",
+      "destination": "tw-market-security-master.cmd",
+      "role": "launcher",
+      "justification": "Relative package entry point"
+    },
+    {
+      "source": "packaging_native/launchers/tw-market.cmd",
+      "destination": "tw-market.cmd",
+      "role": "launcher",
+      "justification": "Relative package entry point"
+    },
+    {
+      "source": "packaging_native/README-PACKAGE.md",
+      "destination": "README-PACKAGE.md",
+      "role": "metadata",
+      "justification": "Consumer documentation / license"
+    },
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "role": "license",
+      "justification": "Consumer documentation / license"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/classification-contract.md",
+      "destination": "app/skills/tw-security-master-classifier/references/classification-contract.md",
+      "role": "runtime_resource",
+      "justification": "Exact producer compute_skill_contract_hash input; preserve accepted provenance semantics"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/lifecycle-contract.md",
+      "destination": "app/skills/tw-security-master-classifier/references/lifecycle-contract.md",
+      "role": "runtime_resource",
+      "justification": "Exact producer compute_skill_contract_hash input; preserve accepted provenance semantics"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/output-contract.md",
+      "destination": "app/skills/tw-security-master-classifier/references/output-contract.md",
+      "role": "runtime_resource",
+      "justification": "Exact producer compute_skill_contract_hash input; preserve accepted provenance semantics"
+    },
+    {
+      "source": "skills/tw-security-master-classifier/references/source-contract.md",
+      "destination": "app/skills/tw-security-master-classifier/references/source-contract.md",
+      "role": "runtime_resource",
+      "justification": "Exact producer compute_skill_contract_hash input; preserve accepted provenance semantics"
+    }
+  ]
+}
