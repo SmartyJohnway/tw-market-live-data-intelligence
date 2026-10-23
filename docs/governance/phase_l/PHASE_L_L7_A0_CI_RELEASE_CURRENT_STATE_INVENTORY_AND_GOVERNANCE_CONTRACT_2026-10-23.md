@@ -24,7 +24,11 @@ This disposition does not certify green CI or approve a stable release.
 
 Roadmap V3.2 historical **L.8 CI / Release Governance** maps to current **L7**.
 Historical L.7 extension architecture maps to current L5. The frozen L0-D02 target
-is provisionally v1.5.0; L0-D03 still includes Windows 10 and Windows 11 x64.
+is provisionally v1.5.0. Historical L0-D03 records Windows 10 and Windows 11 x64,
+but the accepted [prospective supersession](PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md)
+under `USER_CHAT_2026-10-21_WINDOWS11_NATIVE_TIER1_BASELINE_SUPERSESSION`
+sets current L6/L7 release-blocking Native Tier-1 to **Windows 11 x64 only**.
+Windows 10 is not release-blocking; historical L0-D03 remains unchanged.
 The machine-readable obligation matrix covers all 15 required obligations. None
 is declared satisfied merely because a YAML file exists.
 
@@ -114,8 +118,9 @@ and exclusion from blocking status. A0 implements no such exclusion.
 
 Python 3.13 as canonical release/required CI is a candidate policy, not an adopted
 support change. A3 owns runtime/dependency policy with A4 compatibility review.
-A2 must reconcile L0 Windows 10 Tier-1 with the Windows 11 Native requirement;
-any proposed support narrowing requires explicit Owner adjudication.
+A2 implements and validates the already-decided Windows 11 x64 Native policy.
+It does not re-decide whether Windows 10 is release-blocking. Python version
+policy remains a separate later decision; this correction preserves L7-EXIT-05.
 
 `requirements.txt` has ranges except the exact MCP pin; `requirements-lock.txt`
 has exact transitive versions/platform markers but no hashes. Native and Docker
@@ -209,7 +214,7 @@ compatibility, dependency/runtime/version decisions, complete manifest and artif
 provenance, bounded live, explicit publication, post-release proof and final Phase L
 obligations. Every criterion is NOT_YET_ACCEPTED_FOR_L7_RELEASE.
 
-The gap register contains **22 owned gaps**, including the Windows 10 obligation;
+The gap register contains **21 owned gaps**; the erroneous Windows platform decision gap is removed;
 none is unowned. Release blockers are future work, not an A0 claim of readiness.
 The A0 inventory resolves the governance ambiguity by naming evidence, decisions,
 ownership and required proof; implementation awaits separate authorization.
@@ -226,4 +231,12 @@ Product/runtime, test semantics, workflows, dependencies, VERSION and GitHub
 settings remain unchanged. Release/publication actions, live-provider requests,
 production-state mutations and D-drive access commands are **0**. These are
 task-action counts plus diff containment, not system-wide telemetry claims.
-After opening the PR, stop for independent review and Owner acceptance.
+After updating the PR, stop for independent re-review and Owner acceptance.
+
+The review of candidate `3893c9c7f21b33378b8d8a27c4170846a5c7e4cc` returned
+`L7_A0_INDEPENDENT_REVIEW_CHANGES_REQUIRED`: it incorrectly reopened the accepted
+Native platform policy as L7-GAP-22. The bounded correction removes that gap,
+reconciles the accepted prospective authority and updates counts consistently.
+The 29-item exit contract, including L7-EXIT-05, is byte-unchanged. This repair
+does not claim independent acceptance; re-review remains pending. See
+`review_correction.json` in the A0 evidence run.

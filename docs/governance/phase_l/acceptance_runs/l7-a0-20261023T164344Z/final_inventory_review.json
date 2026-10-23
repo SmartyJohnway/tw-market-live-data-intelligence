@@ -9,7 +9,7 @@
   "merge_authorized": false,
   "no_large_matrix_rerun": true,
   "obligations": 15,
-  "owned_gaps": 22,
+  "owned_gaps": 21,
   "owner_acceptance": "PENDING",
   "profiles": 23,
   "required_validators": "8 PASS",

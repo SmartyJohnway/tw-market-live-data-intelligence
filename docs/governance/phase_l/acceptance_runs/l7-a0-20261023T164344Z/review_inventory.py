@@ -55,7 +55,13 @@ def review():
     assert {x['name'] for x in load('test_profile_inventory')['profiles']} == set(profiles)
     assert {x['path'] for x in load('workflow_inventory')['workflows']} == {p.relative_to(R).as_posix() for p in (R / '.github/workflows').glob('*.yml')}
     gaps = load('gap_register')
-    assert len(gaps['gaps']) == 22 and all(x['owner'] in ['A1','A2','A3','A4','A5','A6','A7','OUTSIDE_L7'] for x in gaps['gaps'])
+    assert len(gaps['gaps']) == 21 and all(x['owner'] in ['A1','A2','A3','A4','A5','A6','A7','OUTSIDE_L7'] for x in gaps['gaps'])
+    assert gaps['by_owner'] == dict(collections.Counter(x['owner'] for x in gaps['gaps']))
+    assert gaps['by_severity'] == dict(collections.Counter(x['severity'] for x in gaps['gaps']))
+    assert all(x['id'] != 'L7-GAP-22' for x in gaps['gaps'])
+    correction = load('review_correction')
+    assert digest((E/'candidate_l7_exit_criteria.json').read_bytes()) == correction['exit_contract_sha256']
+    assert load('python_support_matrix_inventory')['platform_policy_status'] == 'ACCEPTED_PROSPECTIVE_POLICY'
     for item in load('source_inventory')['sources']:
         blob = subprocess.check_output(['git','cat-file','blob',BASE+':'+item['path']],cwd=R)
         assert digest(blob) == item['sha256'], item['path']
@@ -64,6 +70,7 @@ def review():
         text = (R/name).read_text(encoding='utf-8')
         assert 'L7-A0' in text[:4000] and 'OWNER ACCEPTANCE PENDING' in text[:4000], name
         assert 'L7-A1+' in text[:4000] and 'NOT AUTHORIZED' in text[:4000], name
+        assert 'with 21 owned gaps.' in text[:4000], name
     compile(Path(__file__).read_text(encoding='utf-8'), __file__, 'exec')
     return {'status':'PASS','changed_paths':sorted(changed),'allowed_front_doors':FRONT,'allowed_report':DOC,'allowed_evidence_prefix':prefix,'product_runtime_test_workflow_dependency_VERSION_changes':0,'review_harness_static':'PASS'}
 

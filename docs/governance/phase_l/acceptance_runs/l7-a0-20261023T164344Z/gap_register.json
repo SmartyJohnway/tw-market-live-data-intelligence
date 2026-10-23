@@ -1,7 +1,7 @@
 {
   "by_owner": {
     "A1": 4,
-    "A2": 5,
+    "A2": 4,
     "A3": 5,
     "A4": 2,
     "A5": 1,
@@ -10,7 +10,7 @@
     "OUTSIDE_L7": 1
   },
   "by_severity": {
-    "DECISION_REQUIRED": 5,
+    "DECISION_REQUIRED": 4,
     "HARDENING_RECOMMENDED": 1,
     "HISTORICAL_DEBT": 1,
     "NONBLOCKING_LIMITATION": 2,
@@ -184,14 +184,6 @@
       "id": "L7-GAP-21",
       "owner": "OUTSIDE_L7",
       "severity": "NONBLOCKING_LIMITATION",
-      "status": "OPEN_OWNED"
-    },
-    {
-      "A0_implementation": false,
-      "gap": "L0 Windows 10 x64 Tier-1 obligation versus Windows 11-only Native requirement needs explicit coverage/support reconciliation",
-      "id": "L7-GAP-22",
-      "owner": "A2",
-      "severity": "DECISION_REQUIRED",
       "status": "OPEN_OWNED"
     }
   ],

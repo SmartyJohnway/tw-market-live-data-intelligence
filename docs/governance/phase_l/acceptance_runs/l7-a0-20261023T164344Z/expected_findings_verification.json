@@ -70,6 +70,13 @@
       "hypothesis": "no v1.5.0 tag/release in observed complete GitHub lists",
       "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
       "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "Current L6/L7 release-blocking Native Tier-1 is Windows 11 x64 only; Windows 10 not release-blocking",
+      "qualification": "Accepted prospective policy supersedes historical L0-D03 for L6 onward without rewriting history",
+      "source": "docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md",
+      "status": "VERIFIED",
+      "token": "USER_CHAT_2026-10-21_WINDOWS11_NATIVE_TIER1_BASELINE_SUPERSESSION"
     }
   ]
 }

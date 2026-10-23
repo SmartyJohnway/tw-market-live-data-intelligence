@@ -2,9 +2,15 @@
   "candidate_future_policy": "3.13 canonical release and required CI; 3.11/3.12 compatibility only if justified by tests and dependency support",
   "compatibility_review_owner": "A4",
   "decision_status": "DECISION_REQUIRED",
+  "decision_status_scope": "Python version/support policy only; Native Windows Tier-1 policy is already decided.",
   "not_accepted_support_change": true,
   "owner": "A3",
-  "platform_obligation": "L0-D03 retains Windows 10 x64 AND Windows 11 x64 Tier-1; L6 Native package specifically requires Windows 11. A2 must reconcile Windows 10 coverage/support before final release, with explicit Owner adjudication if narrowing is proposed.",
+  "platform_obligation": "Historical frozen L0-D03 remains unchanged. Accepted prospective supersession applies from L6 onward, including L7: release-blocking Native Tier-1 is Windows 11 x64 only; Windows 10 is not release-blocking. A2 implements release validation of this decided policy and must not reopen it.",
+  "platform_policy_authority": {
+    "source": "docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md",
+    "token": "USER_CHAT_2026-10-21_WINDOWS11_NATIVE_TIER1_BASELINE_SUPERSESSION"
+  },
+  "platform_policy_status": "ACCEPTED_PROSPECTIVE_POLICY",
   "release_requirement": "Resolve CI/runtime mismatch before release; keep current declared support unchanged in A0",
   "surfaces": [
     {

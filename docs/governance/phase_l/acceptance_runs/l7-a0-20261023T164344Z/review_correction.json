@@ -1,0 +1,36 @@
+{
+  "L7_EXIT_05": "Windows 11 x64 release acceptance",
+  "authority": {
+    "source": "docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md",
+    "token": "USER_CHAT_2026-10-21_WINDOWS11_NATIVE_TIER1_BASELINE_SUPERSESSION"
+  },
+  "by_owner": {
+    "A1": 4,
+    "A2": 4,
+    "A3": 5,
+    "A4": 2,
+    "A5": 1,
+    "A6": 3,
+    "A7": 1,
+    "OUTSIDE_L7": 1
+  },
+  "by_severity": {
+    "DECISION_REQUIRED": 4,
+    "HARDENING_RECOMMENDED": 1,
+    "HISTORICAL_DEBT": 1,
+    "NONBLOCKING_LIMITATION": 2,
+    "PRE_RELEASE_REQUIRED": 7,
+    "RELEASE_BLOCKER": 6
+  },
+  "correction": "Remove gap; current L6/L7 release-blocking Native Tier-1 Windows 11 x64 only; historical L0-D03 unchanged; A2 implementation/validation only",
+  "exit_contract_byte_changes": 0,
+  "exit_contract_sha256": "a600adde6360ac195fc9b2117c571b5d871236d02f628f9399179e18280c05f3",
+  "finding": "Erroneous L7-GAP-22 reopened accepted prospective Native Tier-1 policy",
+  "gap_total_after": 21,
+  "gap_total_before": 22,
+  "independent_re_review": "PENDING",
+  "independent_review_disposition": "L7_A0_INDEPENDENT_REVIEW_CHANGES_REQUIRED",
+  "merge_authorized": false,
+  "reviewed_candidate": "3893c9c7f21b33378b8d8a27c4170846a5c7e4cc",
+  "scope": "bounded governance correction only"
+}

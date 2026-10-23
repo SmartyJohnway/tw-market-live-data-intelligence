@@ -10,7 +10,7 @@ L7 is **STARTED**. L7-A0 is **TECHNICAL INVENTORY / GOVERNANCE CONTRACT COMPLETE
 Phase M NOT AUTHORIZED. Phase L NOT CLOSED.** Merge/auto-merge are not authorized.
 
 The 15-obligation inventory freezes the proposed A1-A7 sequence and canonical
-29-item final exit contract, with 22 owned gaps. Default CI remains overall FAIL
+29-item final exit contract, with 21 owned gaps. Default CI remains overall FAIL
 (1245 passed / 45 failed / 4 skipped / 5 deselected; candidate-only failures=0);
 expanded evidence remains FAIL (525 passed / 2 historical assertions). A0 changes
 no product, tests, workflows, dependencies, VERSION or GitHub settings. Python,
