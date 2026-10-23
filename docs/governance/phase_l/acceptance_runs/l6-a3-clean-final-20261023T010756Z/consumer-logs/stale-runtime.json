@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "stale or relocated runtime; remove entire derived runtime directory and bootstrap again\n"
+}

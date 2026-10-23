@@ -2,71 +2,107 @@
 
 POST-INCIDENT CLEAN REIMPLEMENTATION FROM MERGED A2.
 
-Technical disposition: `L6_A3_DEPENDENCY_CLOSURE_BLOCKED`.
-Owner acceptance: PENDING. No technical completion or PR claim.
+Technical acceptance: PASS. Delivery: governance publication / push / PR pending at
+this evidence commit. The final candidate commit/tree and delivered disposition are
+recorded in the PR body. Owner acceptance: PENDING. No merge is authorized.
 
-## Authority and entry
+## Authority and identity
 
 Owner authority: `USER_CHAT_2026-10-22_PHASE_L_L6_A3_CLEAN_REIMPLEMENTATION_FROM_MERGED_A2_AUTHORIZATION`.
-Exact fetched base: `911a841b866795e8d0cd83d80b30b34701aa5980`.
-Base tree: `72234b87fb3d47758c196c2ac80cc88549463837`.
-Fresh branch: `phase-l/l6-a3-native-distribution-packaging-clean`.
-Implementation commits: `3e0eca3e2bf483bff9626c67c95586ea84658f64`, `03774040265dcfd8d78fba9abbb26740b7d90514`.
-Implementation tree: `596e0075806e263d6f1424ed5450c45407f73126`.
-Run: `l6-a3-clean-20261023T002829Z`. Work began 2026-10-22 and resumed 2026-10-23 Asia/Taipei.
-Lost original commit/tree `3f4965bf55155c1e176e128c57c05ac0b69fefe8` / `5903859c136afc05201346100b4f4619e9966fb7` remain historical reference only. No old source identity was reconstructed.
+Path clarification: `USER_CHAT_2026-10-23_L6_A3_THIRD_PARTY_UPSTREAM_EMBEDDED_PATH_EXCEPTION_AUTHORIZATION`.
+Pytest addendum: `USER_CHAT_2026-10-23_L6_A3_PYTEST_UPSTREAM_EMBEDDED_PATH_EXCEPTION_ADDENDUM`.
+Entry base `911a841b866795e8d0cd83d80b30b34701aa5980`, tree `72234b87fb3d47758c196c2ac80cc88549463837`, fetched from canonical origin/main (PR #399).
+Branch: `phase-l/l6-a3-native-distribution-packaging-clean`.
+Final package implementation/content commit `0c1850ac23db5a9a4e25a5196ca62dedf17ece2a`, tree `e2a2b27733f16a167facc265012c5b4dadedefe6`.
+Final run `l6-a3-clean-final-20261023T010756Z`. All final consumer evidence binds this committed source and its exact ZIP.
+The source/evidence preservation commit `3d7b905e8aaac979d41ded638624f9188dfdedd0` is not the accepted package source. Its blocked run is retained as intermediate history.
+Lost original A3 commit/tree `3f4965bf55155c1e176e128c57c05ac0b69fefe8` / `5903859c136afc05201346100b4f4619e9966fb7` are HISTORICAL REFERENCE ONLY. Original A3 was not recovered or merged.
 
-## Implemented but unaccepted
+## Package C and resources
 
-Package C exact-file role allowlist, builder, distribution/dependency manifests,
-standard-library integrity verifier, offline bundle-local bootstrap, three relative
-launchers, and package instructions exist in committed source. Version continues
-to use tracked VERSION. Security Master release producer gains packaged-source
-identity lookup with integrity validation; source checkout behavior remains.
-49 Windows CPython 3.13 x64-compatible locked wheels were downloaded from the
-explicit PyPI index. The temporary tools environment installed them offline and
-`pip check` passed. Consumer bootstrap is not accepted merely from this result.
-40 focused integrity/exclusion tests passed in the recorded intermediate run.
+Versioned application bundle plus consumer-created bundle-local Python venv. APP_ROOT
+is bundle/app. Runtime/venv is derived, rebuildable and noncanonical. HOME/state
+identity/precedence remains A1/A2; canonical business state is external. No init or
+acquisition occurs in bootstrap or launcher startup. No Docker or installer work.
+The builder reads clean committed Git blobs through an exact-file role allowlist,
+not a checkout copy followed by deletion. Runtime uses no Git. VERSION semantics
+are unchanged and resolve to 1.0.0 without Git.
 
-Resource policy is provisional. Review identified omitted imports from
-`m8r_05b_03/__init__.py` (controlled_dispatch/orchestrator), so resource closure
-has not passed. One exact frozen I3 governance JSON is provisionally included as
-an active runtime contract exception; no historical authority file was changed.
+Inventory and every matched resource/authority reference line are classified in
+`runtime_resource_inventory.json` / `resource_dependency_map.json`. The package
+contains runtime Python closure, public schemas, exact contract/catalog/config
+resources, Workbench assets and linked runtime skill resources. Four package
+initializer imports and five legacy validator imports were explicitly closed.
+An exact frozen I3 governance JSON is required by the active adapter and is included
+unchanged. Two immutable legacy bounded-seed/template configs are explicitly
+justified; they are not canonical installation SM/Watchlist state. Historical
+data/artifact readers fail closed when their excluded artifacts are absent.
+No user-state adoption or fixture activation is introduced.
 
-## Blocking dependency/path conflict
+## Dependencies, integrity, bootstrap and launchers
 
-Sections 18, 33, 50.27 and 51 prohibit dependency changes, forbid portable D-drive
-path strings, require zero leakage, and require stopping when closure is blocked.
-A decompressed-member scan found 213 D-like strings across seven unchanged
-upstream wheels and 80 members. Cryptography accounts for 122 matches across two
-members; its `_rust.pyd` contains upstream build paths such as `D:\a\infra\...`.
-Some other matches are documentation examples. These strings do not establish
-local D-drive access or runtime path authority. Full wheel hashes and member
-hashes are in `dependency_embedded_path_scan.json`.
+All 49 exact accepted dependencies are unchanged. Their Windows CPython 3.13 x64
+wheel hashes were checked against official PyPI release JSON and committed in the
+artifact lock. Builder rejects same-name/version artifact substitutions. Consumer
+pip is isolated, no-index, wheelhouse-only, binary-only and hash-required; pip check
+and exact installed distributions pass. This is not a signed attestation or final SBOM.
+Exactly eight unchanged, hash-pinned upstream wheel identities have the Owner
+embedded-path exception. No ninth exception was inferred. UTF-8/UTF-16 decompressed
+member evidence is retained. First-party current-host leakage = 0; unapproved
+D-drive literals = 0. Approved upstream strings are present and are not described
+as absent. Compressed incidental bytes are not scan authority.
 
-The builder's raw compressed-byte scan also false-positives on incidental byte
-sequences. Correcting that scanner would not eliminate genuine upstream strings.
-No wheel has been stripped, patched, rebuilt, substituted, dropped or upgraded.
-A bounded Owner clarification is pending to exempt unchanged, hash-pinned,
-third-party upstream build/debug provenance while retaining the prohibition on
-local/first-party paths and runtime dependencies. No exception is assumed.
+Standard-library integrity verification covers schema/self digest/count, unsafe and
+Windows-reserved paths, duplicate/case-fold paths, member bytes/digests, unexpected
+protected extras and reparse/symlink conditions. Actual tampered VERSION and
+manifest cases fail before runtime creation. Bootstrap first run and idempotence
+pass; stale relocated runtime is rejected. Runtime recreation, not venv relocation,
+is the supported move procedure. Launchers locate relative to themselves, use the
+bundle venv, clear Python path/home contamination, preserve quoted/non-ASCII CLI
+arguments and exit status, and use UTF-8 output without changing system PATH.
 
-## Verification limits and safety
+## Fresh acceptance
 
-No accepted ZIP, consumer bootstrap, idempotence, lifecycle, exact-six MCP,
-Security Master package run, APP_ROOT write guard, or relocation probe exists.
-The historical SERVICE_EXITED_DURING_START is not adjudicated by this work.
-Current-environment baseline default CI remains FAIL; candidate comparison is
-not completed, and candidate-only failures are unknown. Intermediate logs are
-retained rather than represented as final acceptance.
+Final ZIP: `TW-Market-1.0.0-windows-x64.zip`; 40613350 bytes.
+SHA-256 `14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d`.
+Archive members 333; manifested members 332 plus the manifest itself. Wheels 49.
+Manifest canonical SHA-256 `d6a5f3ef948f6d2d022bc4db3c90032fb4ca5137eca2254324bbd4fd78b07445`.
 
-All parent Git/build/test commands target C:\twmarket_temp. No D-drive commands
-were issued and no live provider acquisition was executed. The Python guard is
-process-scoped, not OS-wide. Initial delegated smoke-test TEMP/TMP confinement
-was not retained; therefore this report does not assert complete filesystem
-write proof for that early smoke run. No user production installation was used.
+Fresh consumer paths include spaces and non-ASCII characters, with cwd outside
+repo, Git unavailable, no checkout/developer-venv sys.path fallback, and 110 loaded
+first-party module origins beneath packaged APP_ROOT. Pre-init status is read-only
+and does not create HOME. Explicit init yields installation READY / SM NOT_INITIALIZED.
+Start/status/doctor/stop, MCP startup plus actual stdio initialize/tools-list with
+exactly six public tools, and SM status pass. Doctor's SM warning is expected.
+Normal runtime APP_ROOT fingerprint is unchanged. A second independent local venv
+uses the same HOME/STATE, installation ID and settings at APP_ROOT B. This is the
+A3_DISTRIBUTION_RELOCATION_PROBE, not final P1 acceptance.
 
-A1-G07 remains CLOSED_A2_PART / REMAINDER_DEFER_A3; A1-G16 remains DEFER_A3.
-P1-P5 remain PARTIAL; P6 NOT_YET_IMPLEMENTED / A4. No P1-P6 completion claim.
-A4/A5/L7/Phase M, Docker, installer, merge and auto-merge remain unauthorized.
-Current rollups have not been advanced to a completed A3 candidate.
+Clean attempt reproduced SERVICE_EXITED_DURING_START; foreground stderr confirmed
+a missing legacy validator import. Exact resource inclusion fixed the current
+candidate; final start succeeds. No A2 lifecycle redesign was needed. The lost
+original candidate's root cause is not independently proven and is not assumed.
+SM staging is TEMP; retained provenance is STATE_ROOT. No live acquisition ran.
+
+Final Python/inherited-Python guard events = []; external dependency/provider
+network attempts during consumer acceptance = 0; production default HOME was not
+targeted; no D commands issued or D writes observed. This is not OS-wide telemetry.
+The early delegated smoke confinement gap remains historical and is not
+retroactively declared PASS; final acceptance independently establishes its scope.
+
+## Validation and limits
+
+Focused tests: 101 passed, 0 failed. Required compile/Phase-H V3/portable Catalog/
+runtime Skill-guide validators pass. Default CI remains FAIL: base and candidate
+each 1246 passed / 44 failed / 4 skipped / 5 deselected; exact failed node sets
+match, candidate-only failures = 0. Historical 41 are a subset. The three extra
+current-environment failures require initialized HOME; controlled unchanged-A2
+probes fail 3/3 before init and pass 3/3 with a separate explicitly initialized
+bounded HOME. Tests and historical evidence were not weakened or rewritten.
+
+A1-G07 CLOSED; A1-G16 CLOSED_A3 for packaged application/resource lookup. P1/P3
+are materially improved but not final; P2/P4/P5 PARTIAL; P6 NOT_YET_IMPLEMENTED/A4.
+No full P1-P6, Phase L completion, A4/A5, Docker, installer, L7 or Phase M claim.
+Signing/release/final SBOM are future work. Current front doors point here; frozen
+A0/A1/A2 evidence is unchanged. Push/PR is authorized after clean evidence
+publication; PR creation is the stopping point. Owner/independent review pending.

@@ -1,0 +1,12 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "architecture": "versioned application bundle + per-bundle isolated venv",
+  "APP_ROOT": "<bundle>/app",
+  "runtime": "<bundle>/runtime/venv; DERIVED REBUILDABLE NON-CANONICAL NOT BACKUP STATE",
+  "consumer_python": "Windows CPython 3.13 x64",
+  "product_version": "1.0.0",
+  "installer_or_docker": false
+}

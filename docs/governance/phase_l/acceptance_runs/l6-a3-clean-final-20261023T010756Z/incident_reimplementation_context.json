@@ -1,0 +1,14 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "strategy": "POST-INCIDENT CLEAN REIMPLEMENTATION FROM MERGED A2",
+  "lost_commit": "3f4965bf55155c1e176e128c57c05ac0b69fefe8",
+  "lost_tree": "5903859c136afc05201346100b4f4619e9966fb7",
+  "classification": "HISTORICAL LOST-A3 PROVENANCE / REFERENCE ONLY",
+  "old_zip_used_as_source": false,
+  "earlier_blocker_evidence": "l6-a3-clean-20261023T002829Z",
+  "early_unconfined_smoke": "not used for final acceptance; not retroactively asserted PASS",
+  "new_final_acceptance_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023"
+}

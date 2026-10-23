@@ -1,0 +1,13 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "status": "PASS",
+  "service_start": "STARTED",
+  "loaded_first_party_module_count": 110,
+  "all_loaded_first_party_origins_beneath_APP_ROOT": true,
+  "materializer_skill_imports_loaded_without_running_main": true,
+  "skill_contract_hash": "bf0670e00b0c9a69ffa5b31efed6eb9219bc068e7c1237062787daba4e5a5573",
+  "schemas_catalog_workbench_MCP": "doctor checks and source assembled-policy import test passed"
+}

@@ -1,0 +1,30 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_____________ test_real_localhost_authorize_execute_once_vertical _____________
+tests\unit\test_m8r_06_03_localhost_vertical.py:65: in test_real_localhost_authorize_execute_once_vertical
+    raise AssertionError("supported localhost launcher did not become healthy")
+E   AssertionError: supported localhost launcher did not become healthy
+___ test_normal_launch_preloads_before_uvicorn_and_uses_no_background_work ____
+scripts\run_unified_workbench.py:80: in main
+    installation.require_initialized()
+scripts\tw_market_installation.py:247: in require_initialized
+    raise InstallationError("INSTALLATION_NOT_INITIALIZED")
+E   scripts.tw_market_installation.InstallationError: INSTALLATION_NOT_INITIALIZED
+
+During handling of the above exception, another exception occurred:
+tests\unit\test_m8r_08c_r1_launcher_readiness.py:25: in test_normal_launch_preloads_before_uvicorn_and_uses_no_background_work
+    launcher.main()
+scripts\run_unified_workbench.py:88: in main
+    raise SystemExit(1)
+E   SystemExit: 1
+---------------------------- Captured stdout call -----------------------------
+{"status": "error", "reason_code": "INSTALLATION_NOT_INITIALIZED"}
+_________________ test_preload_failure_prevents_uvicorn_bind __________________
+tests\unit\test_m8r_08c_r1_launcher_readiness.py:34: in test_preload_failure_prevents_uvicorn_bind
+    assert "ValueError" in output
+E   assert 'ValueError' in '{"status": "error", "reason_code": "INSTALLATION_NOT_INITIALIZED"}\n'
+=========================== short test summary info ===========================
+FAILED tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical
+FAILED tests/unit/test_m8r_08c_r1_launcher_readiness.py::test_normal_launch_preloads_before_uvicorn_and_uses_no_background_work
+FAILED tests/unit/test_m8r_08c_r1_launcher_readiness.py::test_preload_failure_prevents_uvicorn_bind
+3 failed in 32.71s

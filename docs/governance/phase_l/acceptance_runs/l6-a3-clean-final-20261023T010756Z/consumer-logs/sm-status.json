@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "{\n  \"installation_diagnostics\": {\n    \"home_source\": \"env\",\n    \"settings_origins\": {\n      \"host\": \"settings\",\n      \"port\": \"env\"\n    },\n    \"state_root_source\": \"metadata\"\n  },\n  \"status\": \"NOT_INITIALIZED\"\n}\n",
+  "stderr": ""
+}

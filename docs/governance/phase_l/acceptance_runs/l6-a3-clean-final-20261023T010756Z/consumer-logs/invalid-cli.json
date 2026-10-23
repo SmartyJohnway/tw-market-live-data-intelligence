@@ -1,0 +1,5 @@
+{
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "usage: tw_market.py [-h] {init,start,status,stop,doctor,_serve} ...\ntw_market.py: error: argument command: invalid choice: 'unknown-command' (choose from init, start, status, stop, doctor, _serve)\n"
+}
