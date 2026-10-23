@@ -32,3 +32,18 @@ def test_incompatible_wheel_rejected(tmp_path,monkeypatch,tag):
 
 def test_missing_dependency_rejected(tmp_path):
     with pytest.raises(ValueError,match='incomplete wheel'):inspect_wheels(tmp_path)
+
+
+def test_runtime_agent_links_are_included():
+    sources={x['source'] for x in json.loads((ROOT/'packaging_native/resource-policy.json').read_text())['members']}
+    for name in ('references/capability_quick_guide.md','references/evidence_semantics.md',
+                 'references/tool_selection_examples.md','references/current_limitations.md',
+                 'assets/unified_capability_catalog_portable.json'):
+        assert 'skills/tw-market-evidence-agent/'+name in sources
+
+
+def test_same_name_version_wheel_substitution_is_rejected(tmp_path):
+    with zipfile.ZipFile(tmp_path/'requests-2.34.2-py3-none-any.whl','w') as z:
+        z.writestr('requests-2.34.2.dist-info/METADATA','Name: requests\nVersion: 2.34.2\n')
+    with pytest.raises(ValueError,match='committed PyPI artifact authority'):
+        inspect_wheels(tmp_path)

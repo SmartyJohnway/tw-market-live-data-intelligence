@@ -1657,6 +1657,36 @@
       "destination": "app/scripts/generate_chatgpt_briefing.py",
       "role": "application",
       "justification": "Legacy validator runtime import dependency; builder functions shared with read-only package inspection"
+    },
+    {
+      "source": "skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+      "destination": "app/skills/tw-market-evidence-agent/references/capability_quick_guide.md",
+      "role": "runtime_resource",
+      "justification": "Runtime evidence-agent skill linked usage and capability publication resource; preserve source bytes"
+    },
+    {
+      "source": "skills/tw-market-evidence-agent/references/evidence_semantics.md",
+      "destination": "app/skills/tw-market-evidence-agent/references/evidence_semantics.md",
+      "role": "runtime_resource",
+      "justification": "Runtime evidence-agent skill linked usage and capability publication resource; preserve source bytes"
+    },
+    {
+      "source": "skills/tw-market-evidence-agent/references/tool_selection_examples.md",
+      "destination": "app/skills/tw-market-evidence-agent/references/tool_selection_examples.md",
+      "role": "runtime_resource",
+      "justification": "Runtime evidence-agent skill linked usage and capability publication resource; preserve source bytes"
+    },
+    {
+      "source": "skills/tw-market-evidence-agent/references/current_limitations.md",
+      "destination": "app/skills/tw-market-evidence-agent/references/current_limitations.md",
+      "role": "runtime_resource",
+      "justification": "Runtime evidence-agent skill linked usage and capability publication resource; preserve source bytes"
+    },
+    {
+      "source": "skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+      "destination": "app/skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
+      "role": "runtime_resource",
+      "justification": "Runtime evidence-agent skill linked usage and capability publication resource; preserve source bytes"
     }
   ]
 }

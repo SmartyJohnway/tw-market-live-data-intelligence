@@ -60,6 +60,16 @@ def main():
         finally:env.clear();env.update(old)
     try:
         A=extract('Location A With Spaces 非ASCII');B=extract('Location-B')
+        tamper=[]
+        for relative in ('app/VERSION','distribution-manifest.json'):
+            target=B/relative;original=target.read_bytes()
+            target.write_bytes(original+b' altered')
+            clean=env.copy();env.pop('PYTHONPATH',None);env.pop('PYTHONHOME',None)
+            try:rejected=command('tamper-'+target.name,[a.python,'-B',str(B/'bootstrap/bootstrap.py')],check=False)
+            finally:env.clear();env.update(clean);target.write_bytes(original)
+            assert rejected.returncode!=0 and not (B/'runtime').exists()
+            tamper.append({'member':relative,'rejected':True,'runtime_created':False})
+        write('distribution_manifest_verification',{'tamper_cases':tamper,'fail_closed_before_runtime':True})
         boot=bootstrap(A,'bootstrap-A');second=bootstrap(A,'bootstrap-A-again')
         assert parse(second)['status']=='verified-existing'
         assert not Path(env['TW_MARKET_HOME']).exists()
