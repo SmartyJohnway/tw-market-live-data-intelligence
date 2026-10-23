@@ -8,7 +8,7 @@ TECHNICAL CANDIDATE; technical acceptance passes, OWNER ACCEPTANCE PENDING.
 It uses Package C: versioned application bundle plus per-bundle isolated venv.
 The original pre-incident A3 is ABANDONED / LOST LOCAL CANDIDATE / NOT MERGED.
 
-Current authority: `PHASE_L_L6_A3_NATIVE_APPLICATION_RESOURCE_DISTRIBUTION_PACKAGING_2026-10-22.md`;
+Current authority: `docs/governance/phase_l/PHASE_L_L6_A3_NATIVE_APPLICATION_RESOURCE_DISTRIBUTION_PACKAGING_2026-10-22.md`;
 final evidence `l6-a3-clean-final-20261023T010756Z`. Exact upstream-path exceptions are limited to eight
 unchanged wheel identities under the 2026-10-23 Owner authority and pytest addendum.
 Default CI remains FAIL: 1246 passed / 44 failed / 4 skipped / 5 deselected;

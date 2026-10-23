@@ -1,36 +1,9 @@
 ---
-
-## Current L6-A3 clean candidate (2026-10-23)
-
-L6-A0, L6-A1 and L6-A2 are OWNER-ACCEPTED AND MERGED (A2: PR #399,
-`911a841b866795e8d0cd83d80b30b34701aa5980`). L6-A3 is a CLEAN REIMPLEMENTATION
-TECHNICAL CANDIDATE; technical acceptance passes, OWNER ACCEPTANCE PENDING.
-It uses Package C: versioned application bundle plus per-bundle isolated venv.
-The original pre-incident A3 is ABANDONED / LOST LOCAL CANDIDATE / NOT MERGED.
-
-Current authority: `PHASE_L_L6_A3_NATIVE_APPLICATION_RESOURCE_DISTRIBUTION_PACKAGING_2026-10-22.md`;
-final evidence `l6-a3-clean-final-20261023T010756Z`. Exact upstream-path exceptions are limited to eight
-unchanged wheel identities under the 2026-10-23 Owner authority and pytest addendum.
-Default CI remains FAIL: 1246 passed / 44 failed / 4 skipped / 5 deselected;
-exact same current-environment A2 failure set, candidate-only failures = 0.
-The 44 include the historical 41 plus three isolated uninitialized-HOME-sensitive
-legacy tests, reconciled by controlled unchanged-A2 probes.
-A1-G07 CLOSED; A1-G16 CLOSED_A3. P1/P3 materially improved but not final;
-P2/P4/P5 PARTIAL; P6 NOT_YET_IMPLEMENTED / A4. Full P1-P6 is not accepted.
-
-L6-A4, L6-A5, Docker, installer, L7, Phase M and merge/auto-merge remain
-NOT AUTHORIZED. Authorized delivery ends after push and opening a PR for review.
-Earlier dated L6-A2 candidate / A3-not-authorized prose below is retained entry
-history and is superseded by this current block; frozen evidence is unchanged.
-
-
-## Current L5 state ? CLOSED (2026-10-21)
-
-L5 is **CLOSED** under `PHASE_L_L5_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following technical exit `PHASE_L_L5_EXIT_REVIEW_PASS`. L5-A7 is OWNER-ACCEPTED AND MERGED via PR #395 at `fea5259f8214aa405ed4017c7e9727bbf6d63ea9`. Owner authority: `USER_CHAT_2026-10-21_ACCEPT_AND_MERGE_L5_A7`. A0-A6 remain Owner-accepted and merged; retained A7 limitations remain visible and unchanged. L6 is STARTED; L6-A0 is OWNER-ACCEPTED AND MERGED via PR #397 at `7ec798d682ac91db776608a5e9a6a98e179dd1ec`; L6-A1 is OWNER-ACCEPTED AND MERGED via PR #398 at `430f280f9c1b4f8d0f387503bb22044214126b39`; L6-A2 is AUTHORIZED and its technical candidate is COMPLETE / Owner acceptance PENDING; L6-A3+, L7 and Phase M remain NOT AUTHORIZED. See `docs/governance/phase_l/PHASE_L_L5_OWNER_FINAL_CLOSURE_2026-10-21.md`.title: "tw-market-live-data-intelligence — Roadmap V3.2"
+title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "2026-10-21: Phase L5 CLOSED; L6 STARTED; L6-A0 Owner-accepted and merged; L6-A1 Owner-accepted and merged; L6-A2 technical candidate complete / Owner acceptance pending; L6-A3+, L7 and Phase M not authorized; prospective Native Tier-1 Windows 11 x64 only"
+status_reconciled_through: "2026-10-23: L6-A0/A1/A2 Owner-accepted and merged; L6-A3 clean reimplementation technical candidate / Owner acceptance pending; L6-A4/A5, Docker, installer, L7 and Phase M not authorized; Native Tier-1 Windows 11 x64 only"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -49,9 +22,38 @@ tags:
 
 # tw-market-live-data-intelligence
 
+## Current L6-A3 clean candidate (2026-10-23)
+
+L6-A0, L6-A1 and L6-A2 are OWNER-ACCEPTED AND MERGED (A2: PR #399,
+`911a841b866795e8d0cd83d80b30b34701aa5980`). L6-A3 is a CLEAN REIMPLEMENTATION
+TECHNICAL CANDIDATE; technical acceptance passes, OWNER ACCEPTANCE PENDING.
+It uses Package C: versioned application bundle plus per-bundle isolated venv.
+The original pre-incident A3 is ABANDONED / LOST LOCAL CANDIDATE / NOT MERGED.
+
+Current authority: `docs/governance/phase_l/PHASE_L_L6_A3_NATIVE_APPLICATION_RESOURCE_DISTRIBUTION_PACKAGING_2026-10-22.md`;
+final evidence `l6-a3-clean-final-20261023T010756Z`. Exact upstream-path exceptions are limited to eight
+unchanged wheel identities under the 2026-10-23 Owner authority and pytest addendum.
+Default CI remains FAIL: 1246 passed / 44 failed / 4 skipped / 5 deselected;
+exact same current-environment A2 failure set, candidate-only failures = 0.
+The 44 include the historical 41 plus three isolated uninitialized-HOME-sensitive
+legacy tests, reconciled by controlled unchanged-A2 probes.
+A1-G07 CLOSED; A1-G16 CLOSED_A3. P1/P3 materially improved but not final;
+P2/P4/P5 PARTIAL; P6 NOT_YET_IMPLEMENTED / A4. Full P1-P6 is not accepted.
+
+L6-A4, L6-A5, Docker, installer, L7, Phase M and merge/auto-merge remain
+NOT AUTHORIZED. Authorized delivery ends after push and opening a PR for review.
+Earlier dated L6-A2 candidate / A3-not-authorized prose below is retained entry
+history and is superseded by this current block; frozen evidence is unchanged.
+
+
+## Historical L5/L6 entry snapshot (2026-10-21; superseded above)
+
+L5 is **CLOSED** under `PHASE_L_L5_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following technical exit `PHASE_L_L5_EXIT_REVIEW_PASS`. L5-A7 is OWNER-ACCEPTED AND MERGED via PR #395 at `fea5259f8214aa405ed4017c7e9727bbf6d63ea9`. Owner authority: `USER_CHAT_2026-10-21_ACCEPT_AND_MERGE_L5_A7`. A0-A6 remain Owner-accepted and merged; retained A7 limitations remain visible and unchanged. L6 is STARTED; L6-A0 is OWNER-ACCEPTED AND MERGED via PR #397 at `7ec798d682ac91db776608a5e9a6a98e179dd1ec`; L6-A1 is OWNER-ACCEPTED AND MERGED via PR #398 at `430f280f9c1b4f8d0f387503bb22044214126b39`; L6-A2 is AUTHORIZED and its technical candidate is COMPLETE / Owner acceptance PENDING; L6-A3+, L7 and Phase M remain NOT AUTHORIZED. See `docs/governance/phase_l/PHASE_L_L5_OWNER_FINAL_CLOSURE_2026-10-21.md`.
+
+
 Historical L6-A2 entry authority (superseded above): `docs/governance/phase_l/PHASE_L_L6_A2_NATIVE_INSTALLATION_LIFECYCLE_INTEGRATION_2026-10-21.md`; evidence `l6-a2-20261021T142354Z`. Native packaging, Docker and installer implementation remain NOT AUTHORIZED.
 
-> **Current Phase L boundary (2026-10-21):** L5 is Owner-closed. L6 is STARTED; L6-A0 is OWNER-ACCEPTED AND MERGED via PR #397. L6-A1 is OWNER-ACCEPTED AND MERGED via PR #398. L6-A2 is AUTHORIZED; technical candidate COMPLETE / Owner acceptance PENDING. L6-A3+, Native packaging, Docker/installer implementation, L7 and Phase M remain NOT AUTHORIZED. Native Tier-1 from L6 onward is Windows 11 x64 only under the prospective Owner policy; historical L0-D03 remains unchanged. See the L6-A0 governance record and Windows 11 policy supersession record.
+> **Historical Phase L entry boundary (2026-10-21; superseded above):** L5 is Owner-closed. L6 is STARTED; L6-A0 is OWNER-ACCEPTED AND MERGED via PR #397. L6-A1 is OWNER-ACCEPTED AND MERGED via PR #398. L6-A2 is AUTHORIZED; technical candidate COMPLETE / Owner acceptance PENDING. L6-A3+, Native packaging, Docker/installer implementation, L7 and Phase M remain NOT AUTHORIZED. Native Tier-1 from L6 onward is Windows 11 x64 only under the prospective Owner policy; historical L0-D03 remains unchanged. See the L6-A0 governance record and Windows 11 policy supersession record.
 
 A1 contract: `docs/governance/phase_l/PHASE_L_L6_A1_INSTALLATION_IDENTITY_STATE_CONFIGURATION_CONTRACT_2026-10-21.md`. A1 is the accepted frozen contract; the separately authorized A2 implements its Native installation/lifecycle subset. A3+ remains NOT AUTHORIZED.
 
