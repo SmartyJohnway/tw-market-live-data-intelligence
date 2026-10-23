@@ -13,6 +13,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "ee316f784831fe684e21fa8d146512d96a888050"
+A5_BASE = "d5dac702c25e9728db86e9ef32f4fe8185086b89"
 sys.path.insert(0, str(ROOT))
 from packaging_native.path_scan import scan_payload
 
@@ -40,13 +41,26 @@ def _secret_shaped(data: bytes) -> bool:
     ))
 
 
-def build_context(wheelhouse: Path, output: Path) -> dict:
+def build_context(wheelhouse: Path, output: Path, *, acceptance_base: str | None = None) -> dict:
     status = _git("status", "--porcelain", "--untracked-files=all").decode().splitlines()
-    if _git("rev-parse", "origin/main").decode().strip() != BASE:
+    if acceptance_base is not None:
+        if acceptance_base != A5_BASE or _git("rev-parse", "origin/main").decode().strip() != A5_BASE:
+            raise ValueError("L6_A5_ENTRY_BASE_DRIFT")
+        if status:
+            raise ValueError("committed Docker source must have a clean worktree")
+        subprocess.run(["git", "merge-base", "--is-ancestor", A5_BASE, "HEAD"], cwd=ROOT, check=True)
+        if _git("rev-list", "--merges", A5_BASE + "..HEAD").strip():
+            raise ValueError("A5 source must retain linear lineage from exact entry")
+        commit = _git("rev-parse", "HEAD").decode().strip()
+        tree = _git("rev-parse", "HEAD^{tree}").decode().strip()
+    elif _git("rev-parse", "origin/main").decode().strip() != BASE:
         raise ValueError("L6_A4_ENTRY_BASE_DRIFT")
-    subprocess.run(["git", "merge-base", "--is-ancestor", BASE, "HEAD"], cwd=ROOT, check=True)
-    commit = _git("rev-parse", "HEAD").decode().strip()
-    if commit == BASE:
+    else:
+        subprocess.run(["git", "merge-base", "--is-ancestor", BASE, "HEAD"], cwd=ROOT, check=True)
+        commit = _git("rev-parse", "HEAD").decode().strip()
+    if acceptance_base is not None:
+        pass
+    elif commit == BASE:
         if any(line.startswith("??") or line[1] not in " " for line in status):
             raise ValueError("pre-commit Docker context requires all candidate files staged with no unstaged or untracked files")
         staged = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False)
@@ -159,9 +173,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--wheelhouse", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--acceptance-base", choices=[A5_BASE])
     args = parser.parse_args()
     try:
-        result = build_context(args.wheelhouse.resolve(), args.output.resolve())
+        result = build_context(args.wheelhouse.resolve(), args.output.resolve(), acceptance_base=args.acceptance_base)
     except (OSError, ValueError, subprocess.CalledProcessError, KeyError, zipfile.BadZipFile) as exc:
         print(json.dumps({"status": "FAIL", "reason": str(exc)}, sort_keys=True), file=sys.stderr)
         return 1

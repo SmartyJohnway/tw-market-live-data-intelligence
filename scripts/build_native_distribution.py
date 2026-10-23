@@ -23,6 +23,7 @@ from packaging_native.bootstrap.package_integrity import canonical_digest, verif
 from packaging_native.path_scan import scan_payload
 
 BASE = "911a841b866795e8d0cd83d80b30b34701aa5980"
+A5_BASE = "d5dac702c25e9728db86e9ef32f4fe8185086b89"
 PROFILE = "native-package-c-windows-cp313-x64"
 FORBIDDEN = {".git", ".github", "tests", "acceptance_runs", "__pycache__", ".pytest_cache", ".venv", "venv", "data", "artifacts", "node_modules", ".env"}
 RUNTIME_GOVERNANCE_EXCEPTION = "app/docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json"
@@ -125,11 +126,16 @@ def check_member(path: str, data: bytes) -> None:
         raise ValueError(f"secret-shaped payload in {path}")
 
 
-def build(output: Path, wheelhouse: Path) -> dict:
+def build(output: Path, wheelhouse: Path, *, acceptance_base: str | None = None) -> dict:
     if git("status", "--porcelain", "--untracked-files=all").strip():
         raise ValueError("final build requires clean committed source")
-    subprocess.run(["git", "merge-base", "--is-ancestor", BASE, "HEAD"], cwd=ROOT, check=True)
-    if git('rev-list', '--merges', BASE + '..HEAD').strip():
+    base = BASE
+    if acceptance_base is not None:
+        if acceptance_base != A5_BASE or git('rev-parse', 'origin/main').decode().strip() != A5_BASE:
+            raise ValueError('L6_A5_ENTRY_BASE_DRIFT')
+        base = A5_BASE
+    subprocess.run(["git", "merge-base", "--is-ancestor", base, "HEAD"], cwd=ROOT, check=True)
+    if git('rev-list', '--merges', base + '..HEAD').strip():
         raise ValueError('candidate must retain a linear clean reimplementation from exact A2')
     commit = git("rev-parse", "HEAD").decode().strip()
     tree = git("rev-parse", "HEAD^{tree}").decode().strip()
@@ -195,5 +201,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--wheelhouse", type=Path, required=True)
+    parser.add_argument("--acceptance-base", choices=[A5_BASE])
     args = parser.parse_args()
-    print(json.dumps(build(args.output.resolve(), args.wheelhouse.resolve()), indent=2))
+    print(json.dumps(build(args.output.resolve(), args.wheelhouse.resolve(), acceptance_base=args.acceptance_base), indent=2))
