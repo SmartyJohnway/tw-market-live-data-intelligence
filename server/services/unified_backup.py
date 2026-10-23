@@ -28,6 +28,7 @@ BACKUP_FORMAT_VERSION = "tw_market_backup.v1"
 PRODUCT_IDENTITY = "tw-market-live-data-intelligence"
 SELECTION_SCOPE = "EXPLICIT_DECLARED_MEMBERS_ONLY"
 AUTHORITY_BINDING_MODEL = "TRUSTED_INTERNAL_CALLER_ATTESTED"
+A1_SETTINGS_BINDING = "a1-installation-settings-v1"
 _HASH_RE = re.compile(r"^[0-9a-f]{64}$")
 _ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 _SUPPORTED_TIERS = {"CORE", "FULL_GOVERNED"}
@@ -52,6 +53,22 @@ class BackupError(RuntimeError):
     def __init__(self, code: str):
         self.code = code
         super().__init__(code)
+
+
+def validate_a1_portable_settings(path: Path) -> None:
+    """A1-D15 adapter: v1 endpoint preferences only; no paths or identity."""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_strict_object,
+                          parse_constant=_reject_json_constant)
+        service = data["service"]
+        if (set(data) != {"schema_version", "service"} or type(data["schema_version"]) is not int
+                or data["schema_version"] != 1 or not isinstance(service, dict)
+                or set(service) != {"host", "port"}
+                or service["host"] not in {"127.0.0.1", "localhost", "::1"}
+                or type(service["port"]) is not int or not 1 <= service["port"] <= 65535):
+            raise ValueError
+    except (ValueError, TypeError, KeyError, OSError) as exc:
+        raise BackupError("A1_PORTABLE_SETTINGS_INVALID") from exc
 
 
 @dataclass(frozen=True)
@@ -341,7 +358,8 @@ def plan_backup(
                 raise BackupError("BACKUP_MANIFEST_INVALID")
         backup_paths[backup_relative] = member.logical_member_id
         folded_paths[backup_relative.casefold()] = backup_relative
-        if member.artifact_family == "user_product_settings":
+        if member.artifact_family == "user_product_settings" and not (
+                member.authority_binding_verified and member.authority_binding_id == A1_SETTINGS_BINDING):
             # A3 records no established current settings store. Preserve that
             # explicit absence in the plan without accepting a claimed source.
             family = classify_artifact_family(member.artifact_family)
@@ -353,6 +371,8 @@ def plan_backup(
             omitted.append({"logical_member_id": member.logical_member_id, "artifact_family": member.artifact_family, "disposition": reason or "OMITTED"})
             continue
         source = _contained_file(root_map[member.source_root_id], source_relative)
+        if member.artifact_family == "user_product_settings":
+            validate_a1_portable_settings(source)
         signature = _source_signature(source)
         remaining_bytes = max_total_bytes - total
         if remaining_bytes <= 0:
@@ -690,8 +710,12 @@ def _validate_manifest_plan(plan: Mapping[str, Any]) -> None:
         if policy["state_class"] == "UNCLASSIFIED_REQUIRES_POLICY":
             raise BackupError("UNCLASSIFIED_SOURCE_STATE")
         include, _ = _selected_for_tier(policy["backup_tier"], plan["backup_tier"], plan.get("include_derived") is True)
-        if row.get("artifact_family") == "user_product_settings" or not include:
+        if not include:
             raise BackupError("BACKUP_CLASSIFICATION_MISMATCH")
+        if row.get("artifact_family") == "user_product_settings":
+            if row.get("authority_binding_id") != A1_SETTINGS_BINDING:
+                raise BackupError("BACKUP_CLASSIFICATION_MISMATCH")
+            validate_a1_portable_settings(_contained_file(Path(plan["_root_bindings"][row["source_root_id"]]), row["source_relative_path"]))
         for key in ("state_class", "backup_tier", "integrity_binding", "replay_required", "audit_required"):
             if row.get(key) != policy[key]:
                 raise BackupError("BACKUP_CLASSIFICATION_MISMATCH")
@@ -814,6 +838,10 @@ def _verify_backup(backup_path: Path, *, allow_staging: bool, max_total_bytes: i
         if not isinstance(item.get("size_bytes"), int) or isinstance(item.get("size_bytes"), bool) or item["size_bytes"] < 0 or not _HASH_RE.fullmatch(str(item.get("sha256", ""))):
             raise BackupError("BACKUP_MANIFEST_INVALID")
         target = _contained_file(package, relative)
+        if family_name == "user_product_settings":
+            if item["source_authority_id"] != A1_SETTINGS_BINDING:
+                raise BackupError("BACKUP_CLASSIFICATION_MISMATCH")
+            validate_a1_portable_settings(target)
         actual_size = _source_signature(target)[2]
         if actual_size != item["size_bytes"]:
             raise BackupError("BACKUP_MEMBER_SIZE_MISMATCH")
