@@ -63,11 +63,14 @@ def dependency_authority() -> dict[str, str]:
 
 def inspect_wheels(wheelhouse: Path) -> list[dict]:
     expected = dependency_authority()
+    authority = wheel_hash_authority()
     observed = {}
     records = []
     for wheel in sorted(wheelhouse.iterdir()):
         if not wheel.is_file() or wheel.is_symlink() or wheel.suffix != ".whl":
             raise ValueError("wheelhouse contains a non-wheel member")
+        if authority.get(wheel.name) != digest(wheel.read_bytes()):
+            raise ValueError('wheel bytes differ from committed PyPI artifact authority')
         with zipfile.ZipFile(wheel) as archive:
             metadata_names = [n for n in archive.namelist() if n.endswith(".dist-info/METADATA")]
             if len(metadata_names) != 1:
@@ -93,6 +96,17 @@ def inspect_wheels(wheelhouse: Path) -> list[dict]:
     if observed != expected:
         raise ValueError("L6_A3_DEPENDENCY_CLOSURE_BLOCKED: incomplete wheel set")
     return records
+
+
+def wheel_hash_authority() -> dict[str, str]:
+    authority = json.loads((ROOT / 'packaging_native/wheelhouse-lock.json').read_text())
+    if authority['requirements_lock_sha256'] != digest((ROOT / 'requirements-lock.txt').read_bytes()):
+        raise ValueError('dependency authority changed; regenerate and review artifact lock')
+    wheels = authority['wheels']
+    result = {row['wheel_filename']: row['sha256'] for row in wheels}
+    if len(result) != len(wheels):
+        raise ValueError('duplicate wheel artifact authority')
+    return result
 
 
 def check_member(path: str, data: bytes) -> None:

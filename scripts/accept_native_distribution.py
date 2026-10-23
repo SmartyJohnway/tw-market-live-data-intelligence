@@ -84,6 +84,8 @@ def main():
         code="import sys,json,os;sys.path.insert(0,"+repr(str(A/'app'))+");from scripts.tw_market_installation import resolve_installation;from scripts.product_version import product_version;from scripts.m8r_08g_security_master_releases import _commit;print(json.dumps({'sys_path':sys.path,'sys_executable':sys.executable,'version':product_version(),'installation':resolve_installation().as_dict(),'source_commit':_commit()}))"
         probe=parse(command('isolation-A',[str(A/'runtime/venv/Scripts/python.exe'),'-I','-B','-c',code]))
         assert all(str(ROOT).lower() not in p.lower() for p in probe['sys_path'])
+        assert all('tools-venv' not in p.lower() for p in probe['sys_path'])
+        assert probe['sys_executable']==str(A/'runtime/venv/Scripts/python.exe')
         assert not (A/'.git').exists();write('sys_path_isolation',probe)
         # Capture failure evidence rather than treating historical start failure
         # as a current defect. Final acceptance requires successful lifecycle.
@@ -108,6 +110,9 @@ def main():
         assert {t['name'] for t in tools}==EXPECTED_TOOLS and len(tools)==6
         write('mcp_package_acceptance',{'startup_exit':mcp.returncode,'stdio_exit':raw.returncode,'tool_names':sorted(t['name'] for t in tools),'public_tool_count':len(tools),'responses':replies})
         sm=parse(command('sm-status',[str(A/'tw-market-security-master.cmd'),'status'],cmd=True))
+        assert sm['status']=='NOT_INITIALIZED'
+        assert init['installation']['security_master_root']==str(Path(env['TW_MARKET_STATE_ROOT'])/'security-master')
+        assert Path(init['installation']['temp_root']).is_relative_to(tmp)
         write('security_master_package_acceptance',sm)
         stop=parse(cli(A,'stop','stop','--json'));assert stop['status']=='STOPPED'
         write('lifecycle_acceptance',{'start':payload,'status':status,'doctor':doctor,'stop':stop})
@@ -117,7 +122,7 @@ def main():
         bad=cli(A,'invalid-cli','unknown-command',check=False);assert bad.returncode==2
         write('launcher_acceptance',{'unknown_command_exit':bad.returncode,'paths_with_spaces_and_non_ascii':True,'home':env['TW_MARKET_HOME'],'inherited_python_environment_cleared':True})
         beforemeta=(Path(env['TW_MARKET_HOME'])/'meta/installation.json').read_bytes()
-        settings=(Path(env['TW_MARKET_HOME'])/'config/settings.json')
+        settings=Path(init['installation']['settings_path'])
         settings_before=settings.read_bytes() if settings.exists() else b''
         bootstrap(B,'bootstrap-B');instrument(B)
         beforeB=fingerprint(B/'app')
@@ -135,7 +140,10 @@ def main():
         finally:env.clear();env.update(clean)
         assert stale.returncode!=0 and 'relocated' in stale.stderr;marker.write_bytes(saved)
         write('distribution_relocation_probe',{'name':'A3_DISTRIBUTION_RELOCATION_PROBE','APP_ROOT_A':str(A/'app'),'APP_ROOT_B':str(B/'app'),'same_installation_id':relocated['installation']['installation_id'],'same_state_root':relocated['installation']['state_root'],'settings_unchanged':True,'independent_local_venvs':True,'stale_marker_rejected':True,'app_B_immutable':True})
-        write('final_result',{'status':'PASS','sequence':sequence,'scope':'Python process/inherited Python; not OS-wide','provider_acquisition_attempts':0,'external_network_attempts':0,'source_commit':probe['source_commit']})
+        guard_log=run/'guard-events.jsonl'
+        events=[json.loads(line) for line in guard_log.read_text().splitlines()] if guard_log.exists() else []
+        assert not events, 'guard denied an operation; inspect guard-events.jsonl'
+        write('final_result',{'status':'PASS','sequence':sequence,'scope':'Python process/inherited Python; not OS-wide','guard_events':events,'provider_acquisition_attempts':0,'external_network_attempts':0,'source_commit':probe['source_commit']})
     except Exception as ex:
         write('final_result',{'status':'FAIL','error':str(ex),'sequence':sequence});raise
     finally:

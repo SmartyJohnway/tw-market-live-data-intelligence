@@ -30,8 +30,11 @@ _HOST_TOKENS = tuple(
 
 
 def _path_matches(data: bytes) -> list[str]:
-    text = data.decode("utf-8", errors="replace")
-    return [m.rstrip(".,;:)]}") for m in _PATH_RE.findall(text)]
+    texts = [data.decode("utf-8", errors="replace")]
+    for encoding, signature in [('utf-16-le', b':\x00'), ('utf-16-be', b'\x00:')]:
+        if signature in data:
+            texts.append(data.decode(encoding, errors='replace'))
+    return list(dict.fromkeys(m.rstrip(".,;:)]}") for text in texts for m in _PATH_RE.findall(text)))
 
 
 def _unsafe_member(name: str, info: zipfile.ZipInfo) -> bool:

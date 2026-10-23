@@ -52,3 +52,13 @@ def test_exact_wheel_hash_mismatch_fails_even_without_paths():
     result = scan_payload(name, _wheel(name, b"clean"))
     assert result["status"] == "FAIL"
     assert "exact_exception_hash_mismatch" in result["violations"]
+
+
+def test_utf16_host_path_is_blocking():
+    for encoding in ('utf-16-le', 'utf-16-be'):
+        assert scan_payload('app/a.txt', 'D:\\local\\path'.encode(encoding))['blocking']
+
+
+def test_root_only_unapproved_drive_example_is_blocking():
+    result = scan_payload('other.whl', _wheel('other.whl', b'example "d:\\\\"'))
+    assert result['blocking']

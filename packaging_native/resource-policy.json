@@ -864,7 +864,7 @@
       "source": "config/m5k_default_watchlist.json",
       "destination": "app/config/m5k_default_watchlist.json",
       "role": "runtime_resource",
-      "justification": "Runtime reference in scripts/m8a_official_eod_instrument_classifier.py"
+      "justification": "Exact legacy compatibility runtime template consumed by m5k_common and M8A bounded classifier; not an installation Persistent Watchlist or user state"
     },
     {
       "source": "config/m5l_live_source_adapter_matrix.json",
@@ -876,7 +876,7 @@
       "source": "config/m8a_official_eod_security_master.json",
       "destination": "app/config/m8a_official_eod_security_master.json",
       "role": "runtime_resource",
-      "justification": "Runtime reference in scripts/m8a_official_eod_instrument_classifier.py"
+      "justification": "Exact legacy bounded seed with incomplete classification metadata; read-only runtime resource, not canonical installed Security Master state"
     },
     {
       "source": "config/m8r_06_03_executor_registry_metadata.json",
