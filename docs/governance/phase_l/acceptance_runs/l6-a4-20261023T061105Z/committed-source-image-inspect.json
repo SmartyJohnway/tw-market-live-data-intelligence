@@ -1,0 +1,80 @@
+[
+    {
+        "Id": "sha256:0f79a6a4eb7135f6d17e28ac0e2a0fb2ec47069fac836b2fafc8153a05f8f3a0",
+        "RepoTags": [
+            "twmarket-l6-a4:20261023-committed-source"
+        ],
+        "RepoDigests": [
+            "twmarket-l6-a4@sha256:0f79a6a4eb7135f6d17e28ac0e2a0fb2ec47069fac836b2fafc8153a05f8f3a0"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-10-23T06:07:09.7170016Z",
+        "Config": {
+            "User": "10001:10001",
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Env": [
+                "PATH=/opt/tw-market/venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.13.17",
+                "PYTHON_SHA256=6020bd10aff3bf4821be16f088ebb1591beb7b811dcd8fab1da8f7c22a7b27e7",
+                "PYTHONPATH=/opt/tw-market/app",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1",
+                "PIP_NO_CACHE_DIR=1",
+                "TW_MARKET_HOME=/var/lib/tw-market/home",
+                "TW_MARKET_STATE_ROOT=/var/lib/tw-market/state"
+            ],
+            "Entrypoint": [
+                "python",
+                "-m",
+                "scripts.tw_market_docker"
+            ],
+            "Cmd": [
+                "serve"
+            ],
+            "WorkingDir": "/opt/tw-market/app",
+            "Labels": {
+                "org.opencontainers.image.source": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
+                "org.opencontainers.image.title": "TW-Market Local Service",
+                "org.twmarket.dependency-lock-sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88",
+                "org.twmarket.source-tree": "729708fb292565d1414ef432c5723f199eadd6de"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 525030758,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+                "sha256:631edff44224924165ce2b5f8b7c2a9d55cc06f8e15528ad70d475173bdb3b7d",
+                "sha256:8cd5f028b744bfcb850b4d8b8a5fec249e7938152e4c9e69da3691eb2f3fe641",
+                "sha256:1e6e26d9bf7ade604f81da062368f8b19e047e3db1ea78f27000bbb3fd23f490",
+                "sha256:7b04cc4c31dd965e65fab0c0a08866ec9c2e9651b9f7f73f63232280caae1e86",
+                "sha256:3cd979ec983a0b1a552995471c062df6d5d42c4f8adec42e998a7d3151057258",
+                "sha256:97e77592c1aa1998c0a44ae701078400e7a85f78ac463e7a46ec332c79265cb7",
+                "sha256:1f0b63cd43476b08b546b52a7bd91355a4e2b079c6f3d0fb85e88ccec28a52d3",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-23T06:07:15.9582537Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:0f79a6a4eb7135f6d17e28ac0e2a0fb2ec47069fac836b2fafc8153a05f8f3a0",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "mlitojd3nd015cvkdmkale3hj",
+                    "CreatedAt": "2026-10-23T06:07:20.3893798Z"
+                }
+            ]
+        }
+    }
+]

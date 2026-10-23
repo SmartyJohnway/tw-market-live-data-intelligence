@@ -1,0 +1,10 @@
+command: python scripts/run_test_profile.py default-ci
+result: FAIL with zero candidate-only regressions
+selected: 1294
+passed: 1246
+failed: 44
+skipped: 4
+deselected: 5
+candidate-only failures: 0
+base-only failures: 0
+Exact failed-node IDs are in default-ci-base-failed-nodes.txt and default-ci-candidate-failed-nodes.txt.

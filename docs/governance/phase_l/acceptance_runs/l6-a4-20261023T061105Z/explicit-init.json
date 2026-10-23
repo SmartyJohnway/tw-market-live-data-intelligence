@@ -1,0 +1,39 @@
+{
+  "duration_ms": 1014.25,
+  "identity": {
+    "root": "/var/lib/tw-market/state/security-master",
+    "status": "NOT_INITIALIZED"
+  },
+  "installation": {
+    "app_root": "/opt/tw-market/app",
+    "cache_root": "/var/lib/tw-market/home/cache",
+    "diagnostics": {
+      "home_source": "cli",
+      "settings_origins": {
+        "host": "env",
+        "port": "env"
+      },
+      "state_root_source": "metadata"
+    },
+    "effective_service_host": "127.0.0.1",
+    "effective_service_port": 8000,
+    "governed_root": "/var/lib/tw-market/state/governed",
+    "home": "/var/lib/tw-market/home",
+    "installation_id": "7d68c7d4-fc1d-4b3c-aeef-94d3bff0fa98",
+    "installation_metadata_path": "/var/lib/tw-market/home/meta/installation.json",
+    "installation_status": "READY",
+    "logs_root": "/var/lib/tw-market/home/logs",
+    "operational_event_path": "/var/lib/tw-market/home/logs/operational-events.jsonl",
+    "runtime_root": "/tmp/TW-Market/7d68c7d4-fc1d-4b3c-aeef-94d3bff0fa98/runtime",
+    "security_master_root": "/var/lib/tw-market/state/security-master",
+    "settings_path": "/var/lib/tw-market/home/config/settings.json",
+    "state_root": "/var/lib/tw-market/state",
+    "temp_root": "/tmp/TW-Market/7d68c7d4-fc1d-4b3c-aeef-94d3bff0fa98/temp",
+    "watchlist_root": "/var/lib/tw-market/state/watchlists"
+  },
+  "network_on_init": false,
+  "operation_id": "2a6a4cb6-b1f8-4c9d-9978-cc451df00c4e",
+  "started_at": "2026-10-23T06:07:42.201371+00:00",
+  "status": "INSTALLATION_READY",
+  "trace_id": "bd80c9b0-3011-4bbf-8b6a-2ace7eaca84d"
+}

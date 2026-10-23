@@ -1,0 +1,35 @@
+{
+  "base_image_digest": "sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741",
+  "dependency_manifest_sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88",
+  "distinct_rebuild": true,
+  "initial_source_image": {
+    "config_digest": "sha256:0f79a6a4eb7135f6d17e28ac0e2a0fb2ec47069fac836b2fafc8153a05f8f3a0",
+    "created": "2026-10-23T06:07:09.7170016Z",
+    "image_id": "sha256:0f79a6a4eb7135f6d17e28ac0e2a0fb2ec47069fac836b2fafc8153a05f8f3a0",
+    "labels": {
+      "org.opencontainers.image.source": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
+      "org.opencontainers.image.title": "TW-Market Local Service",
+      "org.twmarket.dependency-lock-sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88",
+      "org.twmarket.source-tree": "729708fb292565d1414ef432c5723f199eadd6de"
+    },
+    "manifest_list_digest": "sha256:0f79a6a4eb7135f6d17e28ac0e2a0fb2ec47069fac836b2fafc8153a05f8f3a0",
+    "tag": "twmarket-l6-a4:20261023-committed-source"
+  },
+  "platform": "linux/amd64",
+  "registry_published": false,
+  "replacement_image": {
+    "config_digest": "sha256:62522a1b9f5160d2f7cc20ee4817c4e48ae105d1c293b42d731eb0d6e82b3347",
+    "created": "2026-10-23T06:09:17.4028481Z",
+    "image_id": "sha256:62522a1b9f5160d2f7cc20ee4817c4e48ae105d1c293b42d731eb0d6e82b3347",
+    "labels": {
+      "org.opencontainers.image.source": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
+      "org.opencontainers.image.title": "TW-Market Local Service",
+      "org.twmarket.dependency-lock-sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88",
+      "org.twmarket.source-tree": "729708fb292565d1414ef432c5723f199eadd6de"
+    },
+    "manifest_list_digest": "sha256:62522a1b9f5160d2f7cc20ee4817c4e48ae105d1c293b42d731eb0d6e82b3347",
+    "tag": "twmarket-l6-a4:20261023-committed-replacement"
+  },
+  "source_commit": "5a747fad735527f349dfc2760366359ff5da67fd",
+  "source_tree": "729708fb292565d1414ef432c5723f199eadd6de"
+}

@@ -1,0 +1,312 @@
+[
+    {
+        "Id": "bc3b3e8f1391207fbc0fb0d9508101432f7bde6b483895dfb6ccc81fe025843b",
+        "Created": "2026-10-23T06:07:43.7155678Z",
+        "Path": "python",
+        "Args": [
+            "-m",
+            "scripts.tw_market_docker",
+            "serve"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 8916,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-23T06:07:43.7712581Z",
+            "FinishedAt": "0001-01-01T00:00:00Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-10-23T06:07:48.8847012Z",
+                        "End": "2026-10-23T06:07:49.4081715Z",
+                        "ExitCode": 1,
+                        "Output": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.13/urllib/request.py\", line 1331, in do_open\n    h.request(req.get_method(), req.selector, req.data, headers,\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n              encode_chunked=req.has_header('Transfer-encoding'))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/http/client.py\", line 1386, in request\n    self._send_request(method, url, body, headers, encode_chunked)\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/http/client.py\", line 1432, in _send_request\n    self.endheaders(body, encode_chunked=encode_chunked)\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/http/client.py\", line 1381, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/http/client.py\", line 1141, in _send_output\n    self.send(msg)\n    ~~~~~~~~~^^^^^\n  File \"/usr/local/lib/python3.13/http/client.py\", line 1085, in send\n    self.connect()\n    ~~~~~~~~~~~~^^\n  File \"/usr/local/lib/python3.13/http/client.py\", line 1051, in connect\n    self.sock = self._create_connection(\n                ~~~~~~~~~~~~~~~~~~~~~~~^\n        (self.host,self.port), self.timeout, self.source_address)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/socket.py\", line 868, in create_connection\n    raise exceptions[0]\n  File \"/usr/local/lib/python3.13/socket.py\", line 853, in create_connection\n    sock.connect(sa)\n    ~~~~~~~~~~~~^^^^\nConnectionRefusedError: [Errno 111] Connection refused\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"\u003cstring\u003e\", line 1, in \u003cmodule\u003e\n    import urllib.request; r=urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2); raise SystemExit(0 if r.status == 200 else 1)\n                             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/urllib/request.py\", line 189, in urlopen\n    return opener.open(url, data, timeout)\n           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/urllib/request.py\", line 489, in open\n    response = self._open(req, data)\n  File \"/usr/local/lib/python3.13/urllib/request.py\", line 506, in _open\n    result = self._call_chain(self.handle_open, protocol, protocol +\n                              '_open', req)\n  File \"/usr/local/lib/python3.13/urllib/request.py\", line 466, in _call_chain\n    result = func(*args)\n  File \"/usr/local/lib/python3.13/urllib/request.py\", line 1360, in http_open\n    return self.do_open(http.client.HTTPConnection, req)\n           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/urllib/request.py\", line 1334, in do_open\n    raise URLError(err)\nurllib.error.URLError: \u003curlopen error [Errno 111] Connection refused\u003e\n"
+                    },
+                    {
+                        "Start": "2026-10-23T06:07:54.4106721Z",
+                        "End": "2026-10-23T06:07:54.7844887Z",
+                        "ExitCode": 0,
+                        "Output": ""
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:0f79a6a4eb7135f6d17e28ac0e2a0fb2ec47069fac836b2fafc8153a05f8f3a0",
+        "ResolvConfPath": "/var/lib/docker/containers/bc3b3e8f1391207fbc0fb0d9508101432f7bde6b483895dfb6ccc81fe025843b/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/bc3b3e8f1391207fbc0fb0d9508101432f7bde6b483895dfb6ccc81fe025843b/hostname",
+        "HostsPath": "/var/lib/docker/containers/bc3b3e8f1391207fbc0fb0d9508101432f7bde6b483895dfb6ccc81fe025843b/hosts",
+        "LogPath": "/var/lib/docker/containers/bc3b3e8f1391207fbc0fb0d9508101432f7bde6b483895dfb6ccc81fe025843b/bc3b3e8f1391207fbc0fb0d9508101432f7bde6b483895dfb6ccc81fe025843b-json.log",
+        "Name": "/twmarket-l6-a4-source-5a747fad-local-service-1",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "twmarket-l6-a4-source-5a747fad_home:/var/lib/tw-market/home:rw",
+                "twmarket-l6-a4-source-5a747fad_state:/var/lib/tw-market/state:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "twmarket-l6-a4-source-5a747fad_default",
+            "PortBindings": {
+                "8000/tcp": [
+                    {
+                        "HostIp": "127.0.0.1",
+                        "HostPort": "18343"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": [
+                "ALL"
+            ],
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": [
+                "no-new-privileges:true"
+            ],
+            "Tmpfs": {
+                "/tmp": "rw,noexec,nosuid,nodev,size=64m,mode=1777"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": 128,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ],
+            "Init": true
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "twmarket-l6-a4-source-5a747fad_home",
+                "Source": "/var/lib/docker/volumes/twmarket-l6-a4-source-5a747fad_home/_data",
+                "Destination": "/var/lib/tw-market/home",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "twmarket-l6-a4-source-5a747fad_state",
+                "Source": "/var/lib/docker/volumes/twmarket-l6-a4-source-5a747fad_state/_data",
+                "Destination": "/var/lib/tw-market/state",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "bc3b3e8f1391",
+            "Domainname": "",
+            "User": "10001:10001",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "TW_MARKET_HOME=/var/lib/tw-market/home",
+                "TW_MARKET_STATE_ROOT=/var/lib/tw-market/state",
+                "TW_MARKET_HOST=127.0.0.1",
+                "TW_MARKET_PORT=8000",
+                "TW_MARKET_NETWORK_PROFILE=docker-local-service",
+                "UNIFIED_MARKET_EVIDENCE_SERVICE_URL=http://127.0.0.1:8000",
+                "PATH=/opt/tw-market/venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.13.17",
+                "PYTHON_SHA256=6020bd10aff3bf4821be16f088ebb1591beb7b811dcd8fab1da8f7c22a7b27e7",
+                "PYTHONPATH=/opt/tw-market/app",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1",
+                "PIP_NO_CACHE_DIR=1"
+            ],
+            "Cmd": [
+                "serve"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "python",
+                    "-c",
+                    "import urllib.request; r=urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2); raise SystemExit(0 if r.status == 200 else 1)"
+                ],
+                "Interval": 10000000000,
+                "Timeout": 3000000000,
+                "StartPeriod": 20000000000,
+                "Retries": 3
+            },
+            "Image": "twmarket-l6-a4:20261023-committed-source",
+            "Volumes": null,
+            "WorkingDir": "/opt/tw-market/app",
+            "Entrypoint": [
+                "python",
+                "-m",
+                "scripts.tw_market_docker"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "818b38d1fad55f637a468ab72dd1fc06621fb2b207c731053a79b4bee2c7e885",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:2f23e403a01e0414ec487ec08ba7c9aba5f751c08e357641213359493168d726",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "twmarket-l6-a4-source-5a747fad",
+                "com.docker.compose.project.config_files": "C:\\twmarket_temp\\l6-a4\\repo\\packaging_docker\\compose.yaml",
+                "com.docker.compose.project.working_dir": "C:\\twmarket_temp\\l6-a4\\repo\\packaging_docker",
+                "com.docker.compose.service": "local-service",
+                "com.docker.compose.version": "5.5.1",
+                "org.opencontainers.image.source": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
+                "org.opencontainers.image.title": "TW-Market Local Service",
+                "org.twmarket.dependency-lock-sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88",
+                "org.twmarket.source-tree": "729708fb292565d1414ef432c5723f199eadd6de"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "4416289f5e416725a10e79e7d8704928cbdec9859be4301f1a50dfd7cc5b7e4d",
+            "SandboxKey": "/var/run/docker/netns/4416289f5e41",
+            "Ports": {
+                "8000/tcp": [
+                    {
+                        "HostIp": "127.0.0.1",
+                        "HostPort": "18343"
+                    }
+                ]
+            },
+            "Networks": {
+                "twmarket-l6-a4-source-5a747fad_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "twmarket-l6-a4-source-5a747fad-local-service-1",
+                        "local-service"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "096b9e94cc310a8a828018f19f0fb94de5495283593c94f067174acff62d05ae",
+                    "EndpointID": "d3fd781904f074e9dcec73138213eaa477035200ef88d47bba3c75cfdb4e33c5",
+                    "Gateway": "172.20.0.1",
+                    "IPAddress": "172.20.0.2",
+                    "MacAddress": "52:d6:34:ba:21:ec",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "twmarket-l6-a4-source-5a747fad-local-service-1",
+                        "local-service",
+                        "bc3b3e8f1391"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:2f23e403a01e0414ec487ec08ba7c9aba5f751c08e357641213359493168d726",
+            "size": 2006,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

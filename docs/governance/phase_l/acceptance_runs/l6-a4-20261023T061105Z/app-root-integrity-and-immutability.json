@@ -1,0 +1,9 @@
+{
+  "app_file_count": 273,
+  "app_fingerprint": "c7e22449ca9f9906e0aeb1deb475a741c3777cff85b3c0e6122c8a5c2c27edc1",
+  "expected_errno_30": true,
+  "runtime_app_root_read_only": true,
+  "runtime_files_match_committed_resource_manifest": true,
+  "runtime_uid": 10001,
+  "write_guard_observation": "OSError 30 [Errno 30] Read-only file system: '/opt/tw-market/app/.l6-a4-write-probe'"
+}

@@ -1,0 +1,8 @@
+{
+  "cli_identity_label": "SERVICE_ALIVE / IDENTITY_NOT_INITIALIZED text reflects Security Master NOT_INITIALIZED; machine status reports installation READY, same installation ID, MCP READY; doctor warning is expected for fresh SM state",
+  "early_host_mcp_probe": "initial isolated host MCP installation lacked initialization; repeated after isolated host init; final initialize/tools/list PASS",
+  "initial_internal_network_attempt": "host-to-published-loopback reachability failed with Docker Desktop NAT on internal-only bridge; final topology uses isolated Compose bridge, narrow gateway-peer middleware admission, and host loopback-only publish",
+  "precommit_image_acceptance": "staged tree 491a7b72d49ae30c2996ea362e7bfa1567f4a332; superseded by committed-source fresh-volume acceptance in this run",
+  "prior_docker_runtime_blocker": "L6_A4_DOCKER_RUNTIME_UNAVAILABLE; Owner supplied recovery validation and current task independently used Docker Engine successfully",
+  "stale_python_3_13_slim_snapshot": "host-local Docker Desktop/containerd cache issue; not attributed to product; final base selected from Alpine musllinux wheel closure evidence"
+}

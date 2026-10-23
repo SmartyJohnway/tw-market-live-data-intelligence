@@ -1,0 +1,21 @@
+{
+  "acceptance_containers_running_after_cleanup": false,
+  "all_a4_acceptance_volume_names_preserved": [
+    "twmarket-l6-a4-20261023_home",
+    "twmarket-l6-a4-20261023_state",
+    "twmarket-l6-a4-final-20261023_home",
+    "twmarket-l6-a4-final-20261023_state",
+    "twmarket-l6-a4-source-5a747fad_home",
+    "twmarket-l6-a4-source-5a747fad_state",
+    "twmarket-l6-a4-uninitialized-5a747fad_home",
+    "twmarket-l6-a4-uninitialized-5a747fad_state"
+  ],
+  "compose_down_used_volumes_flag": false,
+  "projects_down": [
+    "twmarket-l6-a4-source-5a747fad",
+    "twmarket-l6-a4-final-20261023",
+    "twmarket-l6-a4-20261023",
+    "twmarket-l6-a4-uninitialized-5a747fad"
+  ],
+  "volumes_deleted": false
+}

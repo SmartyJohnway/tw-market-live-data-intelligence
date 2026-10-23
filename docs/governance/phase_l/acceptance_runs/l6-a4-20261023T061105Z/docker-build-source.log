@@ -1,0 +1,8 @@
+# Docker BuildKit result excerpt for the committed-source build.
+# Exact source command was executed with --no-cache --platform linux/amd64.
+# Candidate source tree: 729708fb292565d1414ef432c5723f199eadd6de
+# Dependency lock SHA-256: 4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88
+#15 exporting config sha256:ede455a6c506a7ac14734c0b0a64bc1f6f0b75b86f7fb5dc59858980ab4d57ed done
+#15 exporting manifest list sha256:0f79a6a4eb7135f6d17e28ac0e2a0fb2ec47069fac836b2fafc8153a05f8f3a0 done
+#15 naming to docker.io/library/twmarket-l6-a4:20261023-committed-source done
+#15 DONE

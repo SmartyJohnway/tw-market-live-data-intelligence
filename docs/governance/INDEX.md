@@ -11,6 +11,14 @@ The repository-level governance authority is intentionally small:
 - [HANDOFF.md](../../HANDOFF.md) — current operational state
 - [AGENTS.md](../../AGENTS.md) — repository working rules
 
+## Current Phase L / L6-A4 disposition (2026-10-23)
+
+L6-A4 Docker Local Service Packaging is technically complete; Owner acceptance
+is pending. P6 is `IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5`. L6-A5, L7 and
+Phase M remain unauthorized, and merge is not authorized. See the [A4 technical
+record](phase_l/PHASE_L_L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_2026-10-23.md) and
+[acceptance evidence](phase_l/acceptance_runs/l6-a4-20261023T061105Z/).
+
 ## Current runtime governance
 
 Phase J remains not started. The [G/H/I integrated Phase J readiness preflight](phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.md)

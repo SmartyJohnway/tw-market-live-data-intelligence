@@ -1,0 +1,43 @@
+{
+  "all_a4_acceptance_containers_running_after_cleanup": false,
+  "all_a4_acceptance_volumes_deleted": false,
+  "all_a4_test_volume_names_preserved_after_project_down": [
+    "twmarket-l6-a4-20261023_home",
+    "twmarket-l6-a4-20261023_state",
+    "twmarket-l6-a4-final-20261023_home",
+    "twmarket-l6-a4-final-20261023_state",
+    "twmarket-l6-a4-source-5a747fad_home",
+    "twmarket-l6-a4-source-5a747fad_state",
+    "twmarket-l6-a4-uninitialized-5a747fad_home",
+    "twmarket-l6-a4-uninitialized-5a747fad_state"
+  ],
+  "final_source_volume_names_after_stop_down": [
+    "twmarket-l6-a4-source-5a747fad_home",
+    "twmarket-l6-a4-source-5a747fad_state"
+  ],
+  "logical_mapping": {
+    "application": "replaceable read-only image at /opt/tw-market/app",
+    "installation metadata/settings/cache/logs": "home named volume at /var/lib/tw-market/home",
+    "runtime temp": "ephemeral /tmp tmpfs",
+    "security master/watchlists/governed and retained provenance": "state named volume at /var/lib/tw-market/state"
+  },
+  "project": "twmarket-l6-a4-source-5a747fad",
+  "volume_created_at_after": [
+    "2026-10-23T06:07:39Z",
+    "2026-10-23T06:07:39Z"
+  ],
+  "volume_created_at_before": [
+    "2026-10-23T06:07:39Z",
+    "2026-10-23T06:07:39Z"
+  ],
+  "volume_names_after_replacement": [
+    "twmarket-l6-a4-source-5a747fad_home",
+    "twmarket-l6-a4-source-5a747fad_state"
+  ],
+  "volume_names_before_replacement": [
+    "twmarket-l6-a4-source-5a747fad_home",
+    "twmarket-l6-a4-source-5a747fad_state"
+  ],
+  "volumes_retained_by_normal_down": true,
+  "volumes_used_as_backup_protocol": false
+}

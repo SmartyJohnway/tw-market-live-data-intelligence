@@ -1,0 +1,81 @@
+{
+  "cap_drop": [
+    "ALL"
+  ],
+  "container_health": "healthy",
+  "host_binding": {
+    "8000/tcp": [
+      {
+        "HostIp": "127.0.0.1",
+        "HostPort": "18343"
+      }
+    ]
+  },
+  "mcp_containerized": false,
+  "network": {
+    "container_networks": {
+      "twmarket-l6-a4-source-5a747fad_default": {
+        "Aliases": [
+          "twmarket-l6-a4-source-5a747fad-local-service-1",
+          "local-service"
+        ],
+        "DNSNames": [
+          "twmarket-l6-a4-source-5a747fad-local-service-1",
+          "local-service",
+          "ab3f969a94a5"
+        ],
+        "DriverOpts": null,
+        "EndpointID": "c0b2307454736f3dac2dd0c0469ee06537b842c3460228b67b3d5a9ab9d9efc5",
+        "Gateway": "172.20.0.1",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "GwPriority": 0,
+        "IPAMConfig": null,
+        "IPAddress": "172.20.0.2",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "Links": null,
+        "MacAddress": "0e:e8:64:c3:09:65",
+        "NetworkID": "a25e0192a510c7af7bd8cdc6603f4b0d099671e87fa39265cf9544b10acdb277"
+      }
+    },
+    "driver": "bridge",
+    "internal": false,
+    "ipam": {
+      "Config": [
+        {
+          "Gateway": "172.20.0.1",
+          "Subnet": "172.20.0.0/16"
+        }
+      ],
+      "Driver": "default",
+      "Options": null
+    },
+    "name": "twmarket-l6-a4-source-5a747fad_default"
+  },
+  "published_ports": {
+    "8000/tcp": [
+      {
+        "HostIp": "127.0.0.1",
+        "HostPort": "18343"
+      }
+    ]
+  },
+  "read_only_rootfs": true,
+  "rendered_compose_sha256": "5e5e8765f787d19343addedadcc7ad8869bdaf931d9d49b5227e43c7d40e483c",
+  "restart_background_service": false,
+  "restart_policy": {
+    "MaximumRetryCount": 0,
+    "Name": "no"
+  },
+  "security_opt": [
+    "no-new-privileges:true"
+  ],
+  "service_count": 1,
+  "service_name": "local-service",
+  "source_compose_sha256": "58bb739ebac21423a662ec8017fdab3b3ec257950e0c14629a871b682c03167b",
+  "tmpfs": {
+    "/tmp": "rw,noexec,nosuid,nodev,size=64m,mode=1777"
+  },
+  "user": "10001:10001"
+}

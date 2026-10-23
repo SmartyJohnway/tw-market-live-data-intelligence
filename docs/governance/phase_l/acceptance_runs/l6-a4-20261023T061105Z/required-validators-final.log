@@ -1,0 +1,22 @@
+=== validate_phase_h_v3_contracts.py ===
+phase_h_v3_contracts: PASS
+=== validate_portable_catalog_sync.py ===
+PASS: Portable Skill catalog is fully synchronized with Canonical Catalog SoT (Deep Equality Verified).
+=== validate_runtime_skill_guide_sync.py ===
+{"status": "PASS", "tool_count": 6, "tools": ["market_describe_capabilities", "market_export_ai_handoff", "market_fetch_evidence", "market_preview_request", "market_read_result", "market_validate_request"]}
+=== validate_product_version_consistency.py ===
+{"status": "PASS", "product_version": "1.0.0", "authority": "VERSION"}
+=== validate_v1_front_door.py ===
+PASS
+=== validate_source_registry.py ===
+{
+  "errors": [],
+  "ok": true
+}
+=== validate_release_hygiene.py ===
+{'status': 'PASS', 'checked': 'tracked docs and source files'}
+=== governance_forbidden_path_guard.py ===
+Running R5B Insecure Path Pattern Scanner...
+PASS: No insecure filesystem patterns found.
+=== compileall ===
+return_code=0
