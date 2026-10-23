@@ -1,0 +1,25 @@
+{
+  "docker_gateway_peer_is_explicit_and_private_subnet_checked": true,
+  "forwarded_headers_are_not_authority": true,
+  "host_loopback_health_http_status": 200,
+  "host_published_binding": "127.0.0.1:18343->8000/tcp",
+  "initial_internal_network_attempt": "FAILED host-published loopback reachability under Docker Desktop NAT; replaced with default isolated Compose bridge plus narrow gateway-peer admission; final host LAN/Wi-Fi/Tailscale probes unreachable",
+  "nonloopback_host_probe": [
+    {
+      "address": "172.17.96.1",
+      "interface": "vEthernet (WSL (Hyper-V firewall))",
+      "reachable": false
+    },
+    {
+      "address": "192.168.8.121",
+      "interface": "Wi-Fi",
+      "reachable": false
+    },
+    {
+      "address": "100.88.73.72",
+      "interface": "Tailscale",
+      "reachable": false
+    }
+  ],
+  "same_compose_peer_result": "HTTP 403 local_service_loopback_required"
+}

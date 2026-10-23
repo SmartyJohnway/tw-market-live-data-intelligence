@@ -1,0 +1,17 @@
+{
+  "acceptance_operations": [
+    "explicit installation init",
+    "container start",
+    "healthcheck",
+    "status",
+    "doctor",
+    "host MCP initialize",
+    "host MCP tools/list"
+  ],
+  "host_mcp_tool_calls": 0,
+  "production_user_state_mutations": 0,
+  "provider_like_operational_log_lines": 0,
+  "provider_or_market_acquisition_attempts": 0,
+  "runtime_package_install_attempts": 0,
+  "security_master_live_update_attempts": 0
+}

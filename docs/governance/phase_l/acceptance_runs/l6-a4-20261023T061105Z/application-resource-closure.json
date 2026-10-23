@@ -1,0 +1,11 @@
+{
+  "app_member_count": 273,
+  "app_root": "/opt/tw-market/app",
+  "git_tests_governance_scratch_secrets_or_state_bundled": false,
+  "manifest_file": "application-resource-manifest.json",
+  "manifest_sha256": "a0b9b3369ad6a3ddbe598cd26fc7fceb3e4fa30e72b4fa450fa4cd2e920e2d4a",
+  "resource_policy_sha256": "2e79df214195ecdb539cd057401d173197b5dbd20b06693da6f982dd20447151",
+  "source_commit": "5a747fad735527f349dfc2760366359ff5da67fd",
+  "source_tree": "729708fb292565d1414ef432c5723f199eadd6de",
+  "whole_repository_copy": false
+}

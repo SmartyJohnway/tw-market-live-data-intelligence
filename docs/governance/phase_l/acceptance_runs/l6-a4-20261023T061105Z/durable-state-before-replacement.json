@@ -1,0 +1,11 @@
+{
+  "/var/lib/tw-market/home/config": {
+    "settings.json": "250982c341a13eb7ce0d3aabbfeee37d5d60e7b80f830108bf55905c0c3647ae"
+  },
+  "/var/lib/tw-market/home/meta": {
+    "installation.json": "736a65b6807bea3fc49afa9b836390b53f841603e119059b81ba184f270a88ca"
+  },
+  "/var/lib/tw-market/state/governed": {},
+  "/var/lib/tw-market/state/security-master": {},
+  "/var/lib/tw-market/state/watchlists": {}
+}

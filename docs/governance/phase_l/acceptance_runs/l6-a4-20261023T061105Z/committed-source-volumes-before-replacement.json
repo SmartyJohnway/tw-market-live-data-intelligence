@@ -1,0 +1,30 @@
+[
+    {
+        "CreatedAt": "2026-10-23T06:07:39Z",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "30b757d96c185472f04084604a440b29d0c230d4fae5214235ffcfb87c0c0f6f",
+            "com.docker.compose.project": "twmarket-l6-a4-source-5a747fad",
+            "com.docker.compose.version": "5.5.1",
+            "com.docker.compose.volume": "home"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/twmarket-l6-a4-source-5a747fad_home/_data",
+        "Name": "twmarket-l6-a4-source-5a747fad_home",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-10-23T06:07:39Z",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "83e1114ab1d95eccfefae9f3c1c3a7cdeba074f653a520d1cdeb046cdde2811a",
+            "com.docker.compose.project": "twmarket-l6-a4-source-5a747fad",
+            "com.docker.compose.version": "5.5.1",
+            "com.docker.compose.volume": "state"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/twmarket-l6-a4-source-5a747fad_state/_data",
+        "Name": "twmarket-l6-a4-source-5a747fad_state",
+        "Options": null,
+        "Scope": "local"
+    }
+]

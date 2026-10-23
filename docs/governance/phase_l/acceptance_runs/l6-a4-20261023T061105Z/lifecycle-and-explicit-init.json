@@ -1,0 +1,19 @@
+{
+  "doctor_security_master_warning_expected": true,
+  "doctor_status": "WARN",
+  "explicit_init_network_on_init": false,
+  "explicit_init_status": "INSTALLATION_READY",
+  "installation_id": "7d68c7d4-fc1d-4b3c-aeef-94d3bff0fa98",
+  "mcp_readiness": "READY",
+  "metadata_absent_before_init": true,
+  "post_replacement_installation_id": "7d68c7d4-fc1d-4b3c-aeef-94d3bff0fa98",
+  "post_start_installation_status": "READY",
+  "preinit_reason_code": "INSTALLATION_NOT_INITIALIZED",
+  "security_master_status": "NOT_INITIALIZED",
+  "service_alive": true,
+  "startup_acquisition_or_migration": false,
+  "uninitialized_preinit_status": "INSTALLATION_NOT_INITIALIZED",
+  "uninitialized_start_does_not_create_metadata": true,
+  "uninitialized_start_exit_code": 1,
+  "wrapper_calls_canonical_lifecycle": true
+}

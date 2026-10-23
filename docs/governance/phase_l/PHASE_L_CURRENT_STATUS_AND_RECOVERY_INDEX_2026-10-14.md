@@ -1,6 +1,21 @@
 # Phase L — Current Status & Recovery Index
 
-## Current L6-A3 merged state (2026-10-23)
+## Current L6-A4 status (2026-10-23)
+
+L6-A0 through L6-A3 are OWNER-ACCEPTED AND MERGED. L6-A4 Docker Local Service
+packaging is technically complete under
+`L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_COMPLETE`; Owner acceptance is PENDING.
+Source commit `5a747fad735527f349dfc2760366359ff5da67fd`, tree
+`729708fb292565d1414ef432c5723f199eadd6de`, descends directly from the exact
+authorized base `ee316f784831fe684e21fa8d146512d96a888050`. See
+`PHASE_L_L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_2026-10-23.md` and evidence
+`acceptance_runs/l6-a4-20261023T061105Z/`.
+
+P6 is `IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5`, not final integrated
+P1-P6 acceptance. L6-A5, L7, Phase M and merge remain NOT AUTHORIZED. After PR
+opening, stop for independent review and Owner acceptance.
+
+## Historical L6-A3 merged snapshot (2026-10-23)
 
 L6-A0, L6-A1, L6-A2 and L6-A3 are OWNER-ACCEPTED AND MERGED. L6-A3 is the
 post-incident clean reimplementation of Native Application / Resource Distribution

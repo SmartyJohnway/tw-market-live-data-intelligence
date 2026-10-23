@@ -1,0 +1,43 @@
+name: ${TW_MARKET_COMPOSE_PROJECT:-tw-market}
+
+services:
+  local-service:
+    image: ${TW_MARKET_IMAGE:-tw-market-local-service:l6-a4}
+    platform: linux/amd64
+    init: true
+    restart: "no"
+    read_only: true
+    user: "10001:10001"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 128
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+    ports:
+      - "127.0.0.1:${TW_MARKET_DOCKER_HOST_PORT:-8000}:8000"
+    environment:
+      TW_MARKET_HOME: /var/lib/tw-market/home
+      TW_MARKET_STATE_ROOT: /var/lib/tw-market/state
+      TW_MARKET_HOST: 127.0.0.1
+      TW_MARKET_PORT: "8000"
+      TW_MARKET_NETWORK_PROFILE: docker-local-service
+      UNIFIED_MARKET_EVIDENCE_SERVICE_URL: http://127.0.0.1:8000
+    volumes:
+      - home:/var/lib/tw-market/home
+      - state:/var/lib/tw-market/state
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; r=urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2); raise SystemExit(0 if r.status == 200 else 1)"
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  home:
+  state:

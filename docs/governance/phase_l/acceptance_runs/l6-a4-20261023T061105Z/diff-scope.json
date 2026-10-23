@@ -1,0 +1,18 @@
+{
+  "changes": [
+    "packaging_docker/*",
+    "packaging_native/resource-policy.json",
+    "scripts/build_docker_context.py",
+    "scripts/run_unified_workbench.py",
+    "scripts/tw_market_docker.py",
+    "server/local_network_boundary.py",
+    "tests/unit/test_l6_a4_docker_*"
+  ],
+  "mcp_tool_count_changed": false,
+  "parent": "ee316f784831fe684e21fa8d146512d96a888050",
+  "public_http_request_result_audit_mcp_semantics_changed": false,
+  "scope_beyond_a4_started": false,
+  "source_commit": "5a747fad735527f349dfc2760366359ff5da67fd",
+  "source_tree": "729708fb292565d1414ef432c5723f199eadd6de",
+  "working_tree_clean_at_source_commit": true
+}

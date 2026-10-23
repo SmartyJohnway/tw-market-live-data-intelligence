@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "2026-10-23: L6-A0/A1/A2/A3 Owner-accepted and merged; L6-A3 PR #400 merge a40141f43f3a1bdeccbab61e67a4a5e161eb8f37; L6-A4/A5, Docker, installer, L7 and Phase M not authorized; Native Tier-1 Windows 11 x64 only"
+status_reconciled_through: "2026-10-23: L6-A0/A1/A2/A3 Owner-accepted and merged; L6-A4 Docker Local Service technically complete / Owner acceptance pending; P6 IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5; L6-A5, L7 and Phase M not authorized; Native Tier-1 Windows 11 x64 only"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -22,7 +22,16 @@ tags:
 
 # tw-market-live-data-intelligence
 
-## Current L6-A3 merged state (2026-10-23)
+## Current L6-A4 status (2026-10-23)
+
+L6-A0 through L6-A3 are Owner-accepted and merged. L6-A4 Docker Local Service
+Packaging is technically complete under
+`L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_COMPLETE`; Owner acceptance is pending.
+P6 is `IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5`. L6-A5, L7, Phase M and
+merge remain unauthorized. This progress note does not change durable Phase
+scope or claim final P1-P6 portability acceptance.
+
+## Historical L6-A3 merge snapshot (2026-10-23)
 
 L6-A0, L6-A1, L6-A2 and L6-A3 are OWNER-ACCEPTED AND MERGED. L6-A3 is the
 post-incident clean reimplementation of Native Application / Resource Distribution
@@ -49,9 +58,9 @@ FAIL at 1246 passed / 44 failed / 4 skipped / 5 deselected for both same-environ
 A2 and A3 candidate, with candidate-only failures = 0.
 
 A1-G07 is CLOSED; A1-G16 is CLOSED_A3. P1/P3 are materially improved but are not
-final integrated acceptance; P2/P4/P5 remain PARTIAL; P6 remains
-NOT_YET_IMPLEMENTED / A4. L6-A4, L6-A5, Docker, installer, L7 and Phase M remain
-NOT AUTHORIZED. No later phase is started by the A3 merge or by this reconciliation.
+final integrated acceptance; P2/P4/P5 remain PARTIAL. The P6/A4 disposition in
+this historical snapshot is superseded by the current status above. No later
+phase is started by the A3 merge or by this reconciliation.
 Earlier dated L6-A2/A3-candidate prose below is retained as historical entry context
 and is superseded by this current block; frozen evidence remains unchanged.
 

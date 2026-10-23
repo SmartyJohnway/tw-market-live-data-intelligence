@@ -1,0 +1,59 @@
+name: twmarket-l6-a4-source-5a747fad
+services:
+  local-service:
+    cap_drop:
+      - ALL
+    environment:
+      TW_MARKET_HOME: /var/lib/tw-market/home
+      TW_MARKET_HOST: 127.0.0.1
+      TW_MARKET_NETWORK_PROFILE: docker-local-service
+      TW_MARKET_PORT: "8000"
+      TW_MARKET_STATE_ROOT: /var/lib/tw-market/state
+      UNIFIED_MARKET_EVIDENCE_SERVICE_URL: http://127.0.0.1:8000
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; r=urllib.request.urlopen('http://127.0.0.1:8000/api/health',
+          timeout=2); raise SystemExit(0 if r.status == 200 else 1)
+      timeout: 3s
+      interval: 10s
+      retries: 3
+      start_period: 20s
+    image: twmarket-l6-a4:20261023-committed-replacement
+    init: true
+    networks:
+      default: null
+    pids_limit: 128
+    platform: linux/amd64
+    ports:
+      - mode: ingress
+        host_ip: 127.0.0.1
+        target: 8000
+        published: "18343"
+        protocol: tcp
+    read_only: true
+    restart: 'no'
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+    user: 10001:10001
+    volumes:
+      - type: volume
+        source: home
+        target: /var/lib/tw-market/home
+        volume: {}
+      - type: volume
+        source: state
+        target: /var/lib/tw-market/state
+        volume: {}
+networks:
+  default:
+    name: twmarket-l6-a4-source-5a747fad_default
+volumes:
+  home:
+    name: twmarket-l6-a4-source-5a747fad_home
+  state:
+    name: twmarket-l6-a4-source-5a747fad_state

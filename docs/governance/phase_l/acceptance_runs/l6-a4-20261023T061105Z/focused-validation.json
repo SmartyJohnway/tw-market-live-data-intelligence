@@ -1,0 +1,18 @@
+{
+  "compileall": "PASS",
+  "focused_tests": {
+    "command": "pytest: Docker A4 network/packaging, A3 resource/path/package integrity, A2 lifecycle/installation/Security Master, L4 A1 network, MCP server",
+    "failed": 0,
+    "passed": 179,
+    "result": "PASS"
+  },
+  "git_diff_check": "PASS",
+  "governance_forbidden_path_guard": "PASS",
+  "phase_h_v3_contract_validator": "PASS",
+  "portable_catalog_sync_validator": "PASS",
+  "product_version_consistency_validator": "PASS",
+  "release_hygiene_validator": "PASS",
+  "runtime_skill_guide_sync_validator": "PASS",
+  "source_registry_validator": "PASS",
+  "v1_front_door_validator": "PASS"
+}

@@ -1,0 +1,57 @@
+[
+    {
+        "Name": "twmarket-l6-a4-source-5a747fad_default",
+        "Id": "096b9e94cc310a8a828018f19f0fb94de5495283593c94f067174acff62d05ae",
+        "Created": "2026-10-23T06:07:39.7391134Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.20.0.0/16",
+                    "Gateway": "172.20.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {
+            "com.docker.compose.config-hash": "6b55adc28f72ec4eda68bcf3a0c2e0de21060e0e8dc263bbedcc5aaba2b53485",
+            "com.docker.compose.network": "default",
+            "com.docker.compose.project": "twmarket-l6-a4-source-5a747fad",
+            "com.docker.compose.version": "5.5.1"
+        },
+        "Containers": {
+            "bc3b3e8f1391207fbc0fb0d9508101432f7bde6b483895dfb6ccc81fe025843b": {
+                "Name": "twmarket-l6-a4-source-5a747fad-local-service-1",
+                "EndpointID": "d3fd781904f074e9dcec73138213eaa477035200ef88d47bba3c75cfdb4e33c5",
+                "MacAddress": "52:d6:34:ba:21:ec",
+                "IPv4Address": "172.20.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.20.0.0/16": {
+                        "IPsInUse": 4,
+                        "DynamicIPsAvailable": 65532
+                    }
+                }
+            }
+        }
+    }
+]

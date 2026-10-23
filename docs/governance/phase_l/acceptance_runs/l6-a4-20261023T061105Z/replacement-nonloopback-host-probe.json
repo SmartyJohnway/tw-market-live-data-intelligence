@@ -1,0 +1,17 @@
+[
+  {
+    "address": "172.17.96.1",
+    "interface": "vEthernet (WSL (Hyper-V firewall))",
+    "reachable": false
+  },
+  {
+    "address": "192.168.8.121",
+    "interface": "Wi-Fi",
+    "reachable": false
+  },
+  {
+    "address": "100.88.73.72",
+    "interface": "Tailscale",
+    "reachable": false
+  }
+]

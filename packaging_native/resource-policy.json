@@ -1687,6 +1687,12 @@
       "destination": "app/skills/tw-market-evidence-agent/assets/unified_capability_catalog_portable.json",
       "role": "runtime_resource",
       "justification": "Runtime evidence-agent skill linked usage and capability publication resource; preserve source bytes"
+    },
+    {
+      "source": "scripts/tw_market_docker.py",
+      "destination": "app/scripts/tw_market_docker.py",
+      "role": "application",
+      "justification": "Docker Local Service process adapter delegates initialization, status, stop, and health ownership to the canonical lifecycle"
     }
   ]
 }

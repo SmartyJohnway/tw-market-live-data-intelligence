@@ -1,0 +1,12 @@
+{
+  "authority": "USER_CHAT_2026-10-23_PHASE_L_L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_AUTHORIZATION",
+  "base_commit": "ee316f784831fe684e21fa8d146512d96a888050",
+  "base_tree": "81ffd2b114a0d4d5f880d9a0ce78a103ed13a608",
+  "branch": "phase-l/l6-a4-docker-local-service-packaging",
+  "candidate_commit_at_evidence_generation": null,
+  "implementation_commit_parent": "ee316f784831fe684e21fa8d146512d96a888050",
+  "implementation_source_commit": "5a747fad735527f349dfc2760366359ff5da67fd",
+  "implementation_source_tree": "729708fb292565d1414ef432c5723f199eadd6de",
+  "origin_main": "ee316f784831fe684e21fa8d146512d96a888050",
+  "scope": "L6-A4 Docker Local Service Packaging only"
+}
