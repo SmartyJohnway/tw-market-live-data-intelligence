@@ -1627,6 +1627,36 @@
       "destination": "app/scripts/m8r_05b_03/receipt.py",
       "role": "application",
       "justification": "Runtime Python package initializer and transitive import closure"
+    },
+    {
+      "source": "scripts/build_m5f_canonical_market_context_package.py",
+      "destination": "app/scripts/build_m5f_canonical_market_context_package.py",
+      "role": "application",
+      "justification": "Legacy validator runtime import dependency; builder functions shared with read-only package inspection"
+    },
+    {
+      "source": "scripts/generate_latest_market_snapshot.py",
+      "destination": "app/scripts/generate_latest_market_snapshot.py",
+      "role": "application",
+      "justification": "Legacy validator runtime import dependency; builder functions shared with read-only package inspection"
+    },
+    {
+      "source": "scripts/generate_watchlist_observations.py",
+      "destination": "app/scripts/generate_watchlist_observations.py",
+      "role": "application",
+      "justification": "Legacy validator runtime import dependency; builder functions shared with read-only package inspection"
+    },
+    {
+      "source": "scripts/generate_ai_context_pack.py",
+      "destination": "app/scripts/generate_ai_context_pack.py",
+      "role": "application",
+      "justification": "Legacy validator runtime import dependency; builder functions shared with read-only package inspection"
+    },
+    {
+      "source": "scripts/generate_chatgpt_briefing.py",
+      "destination": "app/scripts/generate_chatgpt_briefing.py",
+      "role": "application",
+      "justification": "Legacy validator runtime import dependency; builder functions shared with read-only package inspection"
     }
   ]
 }

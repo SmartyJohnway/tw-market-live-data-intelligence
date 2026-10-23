@@ -21,10 +21,10 @@ def main():
     guard=run/'acceptance_guard.py';shutil.copyfile(ROOT/'packaging_native/acceptance_guard.py',guard)
     # Guard is installed before any child creates runtime files. Propagation is
     # explicit and independent of PYTHONPATH, which launchers deliberately clear.
-    os.environ.update(TEMP=str(tmp),TMP=str(tmp),PYTHONDONTWRITEBYTECODE='1',TW_MARKET_ACCEPTANCE_GUARD='1')
+    os.environ.update(TEMP=str(tmp),TMP=str(tmp),PYTHONDONTWRITEBYTECODE='1',TW_MARKET_ACCEPTANCE_GUARD='1',TW_MARKET_GUARD_LOG=str(run/'guard-events.jsonl'))
     exec(compile(guard.read_text(encoding='utf-8-sig'),str(guard),'exec'),{'__file__':str(guard)})
     env={k:v for k,v in os.environ.items() if not k.startswith(('TW_MARKET_','UNIFIED_MARKET_','M8R_','PYTHON'))}
-    env.update(TEMP=str(tmp),TMP=str(tmp),PYTHONDONTWRITEBYTECODE='1',TW_MARKET_ACCEPTANCE_GUARD='1',
+    env.update(TEMP=str(tmp),TMP=str(tmp),PYTHONDONTWRITEBYTECODE='1',TW_MARKET_ACCEPTANCE_GUARD='1',TW_MARKET_GUARD_LOG=str(run/'guard-events.jsonl'),
                TW_MARKET_HOME=str(run/'home 非ASCII'),TW_MARKET_STATE_ROOT=str(run/'business state'),
                PATH=r'C:\Windows\System32;C:\Windows',PYTHONPATH='invalid-inherited-checkout',PYTHONHOME='invalid-inherited-home')
     # Select a free local port without contacting any provider.
@@ -35,7 +35,7 @@ def main():
         evidence[name]=value;(run/(name+'.json')).write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     def command(label,args,*,stdin=None,check=True,cmd=False):
         if cmd:
-            line='"'+str(args[0])+'"'+(' '+' '.join(args[1:]) if len(args)>1 else '')
+            line='"'+str(args[0])+'"'+(' '+subprocess.list2cmdline(args[1:]) if len(args)>1 else '')
             args='"C:\\Windows\\System32\\cmd.exe" /d /s /c "'+line+'"'
         proc=subprocess.run(args,cwd=cwd,env=env,input=stdin,text=True,encoding='utf-8',errors='replace',capture_output=True,timeout=150)
         record={'exit_code':proc.returncode,'stdout':proc.stdout,'stderr':proc.stderr}
@@ -79,6 +79,8 @@ def main():
         assert init['installation']['installation_status']=='READY'
         assert init['identity']['status']=='NOT_INITIALIZED'
         write('initialized_package_acceptance',init)
+        quoted=parse(cli(A,'quoted-cli-args','status','--json','--home',env['TW_MARKET_HOME'],'--state-root',env['TW_MARKET_STATE_ROOT']))
+        assert quoted['installation']['installation_id']==init['installation']['installation_id']
         code="import sys,json,os;sys.path.insert(0,"+repr(str(A/'app'))+");from scripts.tw_market_installation import resolve_installation;from scripts.product_version import product_version;from scripts.m8r_08g_security_master_releases import _commit;print(json.dumps({'sys_path':sys.path,'sys_executable':sys.executable,'version':product_version(),'installation':resolve_installation().as_dict(),'source_commit':_commit()}))"
         probe=parse(command('isolation-A',[str(A/'runtime/venv/Scripts/python.exe'),'-I','-B','-c',code]))
         assert all(str(ROOT).lower() not in p.lower() for p in probe['sys_path'])

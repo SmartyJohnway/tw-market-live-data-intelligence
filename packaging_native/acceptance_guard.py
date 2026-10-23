@@ -8,16 +8,19 @@ def normalized(p):
     if not isinstance(p,(str,bytes,os.PathLike)): return ''
     return os.path.normcase(os.path.abspath(os.fsdecode(p)))
 
-def reject(reason):
-    with _raw_open(LOG,'a',encoding='utf-8') as f: f.write('{"blocked":"'+reason+'"}\n')
+def reject(reason, path=None):
+    import json, traceback
+    record={'blocked':reason,'path':path,'pid':os.getpid(),
+            'stack':[{'file':f.filename,'line':f.lineno,'function':f.name} for f in traceback.extract_stack(limit=7)[:-1]]}
+    with _raw_open(os.environ.get('TW_MARKET_GUARD_LOG',LOG),'a',encoding='utf-8') as f: f.write(json.dumps(record)+'\n')
     raise PermissionError('acceptance guard: '+reason)
 
 def check(p,write=False):
     if isinstance(p, str) and p.lower() in {'nul', '\\\\.\\nul'}: return
     name=normalized(p)
-    if name.startswith('d:'): reject('D_DRIVE_ACCESS')
+    if name.startswith('d:'): reject('D_DRIVE_ACCESS',name)
     if write and name and name != BASE and not name.startswith(BASE+os.sep) and name not in {'nul','\\\\.\\nul'}:
-        reject('OUTSIDE_WRITE')
+        reject('OUTSIDE_WRITE',name)
 
 def audit(event,args):
     if event=='open':
