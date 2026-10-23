@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from scripts.tw_market_installation import InstallationError, resolve_installation
+from server.local_network_boundary import DOCKER_PROFILE, NETWORK_PROFILE_ENV
 
 def preload_governed_runtime() -> dict:
     """Activate accepted immutable Mode A authorities for this process only."""
@@ -101,7 +102,11 @@ def main():
         sys.exit(1)
 
     print("Starting Unified Workbench (Mode A) on localhost...")
-    uvicorn.run("server.main:app", host=args.host, port=args.port, reload=False)
+    # The Docker profile is an explicit Compose-only opt-in. Persisted service
+    # settings and the native CLI remain loopback-only; the network middleware
+    # separately admits only the container's bridge gateway.
+    bind_host = "0.0.0.0" if os.environ.get(NETWORK_PROFILE_ENV) == DOCKER_PROFILE else args.host
+    uvicorn.run("server.main:app", host=bind_host, port=args.port, reload=False)
 
 
 if __name__ == "__main__":
