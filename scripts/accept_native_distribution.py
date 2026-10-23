@@ -39,12 +39,14 @@ def main():
             args='"C:\\Windows\\System32\\cmd.exe" /d /s /c "'+line+'"'
         proc=subprocess.run(args,cwd=cwd,env=env,input=stdin,text=True,encoding='utf-8',errors='replace',capture_output=True,timeout=150)
         record={'exit_code':proc.returncode,'stdout':proc.stdout,'stderr':proc.stderr}
-        (logdir/(label+'.json')).write_text(json.dumps(record,indent=2,ensure_ascii=False)+'\n')
+        (logdir/(label+'.json')).write_text(json.dumps(record,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
         sequence.append({'label':label,'exit_code':proc.returncode})
         if check and proc.returncode:raise AssertionError(label+': '+proc.stdout[-1200:]+' '+proc.stderr[-1200:])
         return proc
     def cli(bundle,label,*args,check=True):return command(label,[str(bundle/'tw-market.cmd'),*args],check=check,cmd=True)
-    def parse(p):return json.loads(p.stdout)
+    def parse(p):
+        try:return json.loads(p.stdout)
+        except json.JSONDecodeError:return json.loads(p.stdout.strip().splitlines()[-1])
     def extract(label):
         location=run/label;location.mkdir()
         with zipfile.ZipFile(a.zip) as z:
