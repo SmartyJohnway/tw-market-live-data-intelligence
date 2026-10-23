@@ -1,0 +1,50 @@
+[
+  {
+    "script": "validate_phase_h_v3_contracts.py",
+    "returncode": 0,
+    "stdout": "phase_h_v3_contracts: PASS\n",
+    "stderr": ""
+  },
+  {
+    "script": "validate_portable_catalog_sync.py",
+    "returncode": 0,
+    "stdout": "PASS: Portable Skill catalog is fully synchronized with Canonical Catalog SoT (Deep Equality Verified).\n",
+    "stderr": ""
+  },
+  {
+    "script": "validate_runtime_skill_guide_sync.py",
+    "returncode": 0,
+    "stdout": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}\n",
+    "stderr": ""
+  },
+  {
+    "script": "validate_product_version_consistency.py",
+    "returncode": 0,
+    "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"authority\": \"VERSION\"}\n",
+    "stderr": ""
+  },
+  {
+    "script": "validate_v1_front_door.py",
+    "returncode": 0,
+    "stdout": "PASS\n",
+    "stderr": ""
+  },
+  {
+    "script": "validate_source_registry.py",
+    "returncode": 0,
+    "stdout": "{\n  \"errors\": [],\n  \"ok\": true\n}\n",
+    "stderr": ""
+  },
+  {
+    "script": "validate_release_hygiene.py",
+    "returncode": 0,
+    "stdout": "{'status': 'PASS', 'checked': 'tracked docs and source files'}\n",
+    "stderr": ""
+  },
+  {
+    "script": "governance_forbidden_path_guard.py",
+    "returncode": 0,
+    "stdout": "Running R5B Insecure Path Pattern Scanner...\nPASS: No insecure filesystem patterns found.\n",
+    "stderr": ""
+  }
+]

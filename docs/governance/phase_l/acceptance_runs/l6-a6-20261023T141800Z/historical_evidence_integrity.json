@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "records": [
+    {
+      "tranche": "A0",
+      "accepted_commit": "7ec798d682ac91db776608a5e9a6a98e179dd1ec",
+      "folder": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/",
+      "current_accepted_evidence_diff": [],
+      "status": "PASS",
+      "manifest_self_digest": "cd74076e02b0c47a6c0765d15eaa1310f07be231cc3e999573839dcf3aac3117",
+      "manifest_members_verified": 26,
+      "historical_content_ref": "c455267f8ebfd34a2d6fba85be03ec3f0a800786",
+      "method": "historical snapshots at their bound content commits; current front-door changes are permitted and not falsely compared to old front-door hashes"
+    },
+    {
+      "tranche": "A1",
+      "accepted_commit": "430f280f9c1b4f8d0f387503bb22044214126b39",
+      "folder": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/",
+      "current_accepted_evidence_diff": [],
+      "status": "PASS",
+      "manifest_self_digest": "fd0289fcbee62f5260c46a15ea78f3e3520f27a023ea68c84061ad0ab6b1a8f2",
+      "manifest_members_verified": 31,
+      "historical_content_ref": "1e83623558569838278cc1479fb4649268e669d1",
+      "method": "historical snapshots at their bound content commits; current front-door changes are permitted and not falsely compared to old front-door hashes"
+    },
+    {
+      "tranche": "A2",
+      "accepted_commit": "911a841b866795e8d0cd83d80b30b34701aa5980",
+      "folder": "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/",
+      "current_accepted_evidence_diff": [],
+      "status": "PASS",
+      "manifest_self_digest": "155cf5cbd4a7d97f9a4c83f3f43d004b977fdc63a7d52c57fea39a3983e978b6",
+      "manifest_members_verified": 120,
+      "historical_content_ref": "d4e9cfb97a05049dce794e8e87c79d8ab45ae839",
+      "method": "historical snapshots at their bound content commits; current front-door changes are permitted and not falsely compared to old front-door hashes"
+    },
+    {
+      "tranche": "A3",
+      "accepted_commit": "a40141f43f3a1bdeccbab61e67a4a5e161eb8f37",
+      "folder": "docs/governance/phase_l/acceptance_runs/l6-a3-clean-final-20261023T010756Z/",
+      "current_accepted_evidence_diff": [],
+      "status": "PASS",
+      "manifest_self_digest": "fe9ab8f07d18bb85feea1d266a2545e01a9ff68378ce1bc767c8e49f38660b8d",
+      "manifest_members_verified": 114,
+      "historical_content_ref": "60bbd1b5f6265afb7bb4b5a8af0e2de18021e64d",
+      "method": "historical snapshots at their bound content commits; current front-door changes are permitted and not falsely compared to old front-door hashes"
+    },
+    {
+      "tranche": "A4",
+      "accepted_commit": "85a4351f9be46efeb28794079ed7adfeeae0fc8a",
+      "folder": "docs/governance/phase_l/acceptance_runs/l6-a4-20261023T061105Z/",
+      "current_accepted_evidence_diff": [],
+      "status": "PASS",
+      "method": "no full evidence self-digest supplied; exact accepted Git subtree equality at normal merge, plus application-resource-manifest source blob/hash verification",
+      "evidence_tree": "b10b557ac57cebf20460568aec8a53b3823cd7a4",
+      "file_count": 74,
+      "application_members_verified": 273
+    },
+    {
+      "tranche": "A5",
+      "accepted_commit": "08bec63ec3d924d2c3b206ecc4fcc017b259ea75",
+      "folder": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/",
+      "current_accepted_evidence_diff": [],
+      "status": "PASS",
+      "manifest_self_digest": "3b415ab4172adda1f537b85f3afbe5db18acec1c509286c28b3fb3defc10563d",
+      "manifest_members_verified": 193
+    }
+  ],
+  "historical_evidence_changes": 0
+}

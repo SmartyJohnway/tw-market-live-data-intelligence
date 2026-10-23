@@ -1,0 +1,11 @@
+{
+  "token": "USER_CHAT_2026-10-23_PHASE_L_L6_A6_PACKAGING_PORTABILITY_TECHNICAL_EXIT_REVIEW_AUTHORIZATION",
+  "scope": "offline technical review, deterministic regression, new evidence/governance, commit/push/PR after PASS",
+  "product_repairs": false,
+  "merge": false,
+  "Owner_final_closure": false,
+  "L7": false,
+  "Phase_M": false,
+  "original_instruction_sha256": "5f8daf07ae8fe7a2e19d799af3d3cae48047b67de540f0ba1496ba85049f7da0",
+  "instruction_copy": "owner_authorization.md"
+}

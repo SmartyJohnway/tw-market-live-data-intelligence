@@ -1,0 +1,270 @@
+{
+  "rows": [
+    {
+      "criterion_id": "01",
+      "criterion": "application/state separation",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p1_relocation.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "02",
+      "criterion": "physical roots explicit/contained/backup-classified",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "03",
+      "criterion": "CLI > ENV > persisted user config > default consistently",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/configuration_precedence.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "04",
+      "criterion": "init/start/status/stop/doctor coherent; doctor read-only",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/lifecycle_ownership.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/doctor_read_only_guard.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "05",
+      "criterion": "fresh NOT_INITIALIZED state",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "06",
+      "criterion": "explicit SM acquisition only; acquisition outside replaceable tree",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/security_master_root_acceptance.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "07",
+      "criterion": "P1 relocation",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p1_relocation.json"
+      ],
+      "current_main_verification": "p1_p6_evidence_reverification.json: individual actual accepted run assertions inspected; current runtime identical",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "08",
+      "criterion": "P2 different user",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p2_distinct_user.json"
+      ],
+      "current_main_verification": "p1_p6_evidence_reverification.json: individual actual accepted run assertions inspected; current runtime identical",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "09",
+      "criterion": "P3 new Win11 machine/user/path/no runtime",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "p1_p6_evidence_reverification.json: individual actual accepted run assertions inspected; current runtime identical",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "10",
+      "criterion": "P4 durable restore",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "p1_p6_evidence_reverification.json: individual actual accepted run assertions inspected; current runtime identical",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "11",
+      "criterion": "P5 old supported state/new app/rollback",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p5_upgrade_rollback.json"
+      ],
+      "current_main_verification": "p1_p6_evidence_reverification.json: individual actual accepted run assertions inspected; current runtime identical",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "12",
+      "criterion": "P6 fresh Docker Local Service",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json"
+      ],
+      "current_main_verification": "p1_p6_evidence_reverification.json: individual actual accepted run assertions inspected; current runtime identical",
+      "status": "PASS",
+      "notes": "A5 replacement image limitation explicitly allowed by A6 section9"
+    },
+    {
+      "criterion_id": "13",
+      "criterion": "native package without .git and reproducible dependencies/resources",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_package_identity.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_distribution_manifest.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "14",
+      "criterion": "Docker durable mounts survive image replacement",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json"
+      ],
+      "current_main_verification": "p1_p6_evidence_reverification.json: individual actual accepted run assertions inspected; current runtime identical",
+      "status": "PASS",
+      "notes": "A5 replacement image limitation explicitly allowed by A6 section9"
+    },
+    {
+      "criterion_id": "15",
+      "criterion": "no hidden acquisition",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/hidden_acquisition_guard.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "16",
+      "criterion": "integration independence; host stdio MCP separate",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/integration_independence.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "17",
+      "criterion": "exact six MCP tools",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/exact_six_mcp.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "18",
+      "criterion": "Request/Result/Audit compatible",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/public_contract_regression.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "19",
+      "criterion": "no competing Catalog/Route/Executor",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/scope_diff_verification.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "20",
+      "criterion": "historical evidence immutable",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/manifest.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/manifest.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/manifest.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a3-clean-final-20261023T010756Z/manifest.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/manifest.json"
+      ],
+      "current_main_verification": "historical_evidence_integrity.json: all supplied self-digests and members; A4 accepted Git subtree/application hashes",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "21",
+      "criterion": "historical default-ci failures exact and candidate-only=0",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/failed_node_comparison.json"
+      ],
+      "current_main_verification": "failed_node_comparison.json: same-environment exact base/candidate failed-node comparison; candidate-only=0; A5 failure set reconciliation unchanged",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "22",
+      "criterion": "L7 boundary preserved",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/authority.json"
+      ],
+      "current_main_verification": "application_blob_integrity.json + acceptance_source_current_main_diff.json + focused/expanded validation",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "criterion_id": "23",
+      "criterion": "Windows 11 x64 Tier-1 acceptance",
+      "source_authority": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/candidate_l6_exit_criteria.json",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "p1_p6_evidence_reverification.json: individual actual accepted run assertions inspected; current runtime identical",
+      "status": "PASS",
+      "notes": "Windows11 prospective policy; no Win10 requirement"
+    }
+  ],
+  "pass_count": 23,
+  "pending_count": 0,
+  "blocked_count": 0
+}

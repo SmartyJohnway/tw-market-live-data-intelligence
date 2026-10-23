@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "adapter": "scripts/tw_market_l2_adapter.py",
+  "current_source_sha256": "51205b18d2c0a597acb22bc86af1d5286892b4dc10a8444c4f4d62658a946f16",
+  "accepted_records": [
+    "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json",
+    "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/cross_profile_probe.json"
+  ],
+  "explicit_members_only": true,
+  "canonical_L2_backup_verify_isolated_restore": true,
+  "destination_identity_preserved": true,
+  "source_identity_provenance_only": true,
+  "settings_bound": "A1 existing bounded2MiB JSON admission and exact endpoint-only settings validation",
+  "nonportable": [
+    "installation_metadata",
+    "PID",
+    "runtime",
+    "cache",
+    "logs",
+    "temp"
+  ],
+  "new_activation_or_migration_authority": false,
+  "remaining_L2_remainder": 0,
+  "explicit_override_use_not_automatic_restore_activation": "existing A1/A2 operator root ENV seams select verified isolated L2 state explicitly; NONCANONICAL_ROOT_OVERRIDE disclosed; no metadata rewrite, merge, activation engine or new configuration authority"
+}

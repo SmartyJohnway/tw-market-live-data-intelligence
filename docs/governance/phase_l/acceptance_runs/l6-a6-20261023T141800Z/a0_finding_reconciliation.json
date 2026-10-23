@@ -1,0 +1,1006 @@
+{
+  "status": "PASS",
+  "unresolved_A0_findings": 0,
+  "rows": [
+    {
+      "finding_id": "C1",
+      "original_finding": {
+        "behavior": "__file__ root, sys.path and subprocess cwd",
+        "files": [
+          "scripts/tw_market.py",
+          "scripts/tw_market_lifecycle.py",
+          "scripts/run_unified_workbench.py",
+          "scripts/run_unified_market_evidence_mcp.py"
+        ],
+        "id": "C1",
+        "implication": "bundle must preserve/replace root resolution",
+        "surface": "Python app root"
+      },
+      "closing_tranche": "A3/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p1_relocation.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "C2",
+      "original_finding": {
+        "behavior": "checkout data default; repo config pointer and schema resources",
+        "files": [
+          "scripts/m8r_08g_security_master_releases.py",
+          "scripts/m8r_06_01c2_mode_a_security_master_loader.py"
+        ],
+        "id": "C2",
+        "implication": "installation root mapping",
+        "surface": "Security Master authority"
+      },
+      "closing_tranche": "A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/security_master_root_acceptance.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "C3",
+      "original_finding": {
+        "behavior": "fixed REPO_ROOT/data bundle path despite --root",
+        "files": [
+          "scripts/m8r_06_01b_materialize_production_inputs.py",
+          "scripts/m8r_06_security_master_candidate_paths.py",
+          "scripts/manage_security_master.py"
+        ],
+        "id": "C3",
+        "implication": "critical relocation blocker",
+        "surface": "SM acquired source bundles"
+      },
+      "closing_tranche": "A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/security_master_root_acceptance.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "C4",
+      "original_finding": {
+        "behavior": "checkout data default or ENV",
+        "files": [
+          "scripts/m8r_09_persistent_watchlists.py"
+        ],
+        "id": "C4",
+        "implication": "replaceable tree currently includes durable DB",
+        "surface": "Watchlist"
+      },
+      "closing_tranche": "A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/watchlist_root_acceptance.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "C5",
+      "original_finding": {
+        "behavior": "checkout artifacts default or ENV",
+        "files": [
+          "server/services/unified_mode_b2.py",
+          "server/services/unified_mode_c.py"
+        ],
+        "id": "C5",
+        "implication": "durable governed data in replaceable tree",
+        "surface": "control/evidence"
+      },
+      "closing_tranche": "A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/governed_root_acceptance.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "C6",
+      "original_finding": {
+        "behavior": "authority files rooted in app checkout",
+        "files": [
+          "server/services/unified_mode_a.py",
+          "server/services/unified_local_service.py",
+          "scripts/m8r_06_03_production_adapter.py"
+        ],
+        "id": "C6",
+        "implication": "package resources move in lockstep",
+        "surface": "schemas/Catalog/Route/executor metadata"
+      },
+      "closing_tranche": "A3/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_distribution_manifest.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "C7",
+      "original_finding": {
+        "behavior": "repository-relative assets and classifier references",
+        "files": [
+          "server/main.py",
+          "scripts/m8r_06_01b_materialize_production_inputs.py"
+        ],
+        "id": "C7",
+        "implication": "bundle must preserve complete resources",
+        "surface": "frontend/skills/classifier resources"
+      },
+      "closing_tranche": "A3/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_distribution_manifest.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "C8",
+      "original_finding": {
+        "behavior": "source-root metadata",
+        "files": [
+          "scripts/product_version.py",
+          "VERSION",
+          "requirements.txt",
+          "requirements-lock.txt"
+        ],
+        "id": "C8",
+        "implication": "release bundle must bind version/lock",
+        "surface": "version/dependencies"
+      },
+      "closing_tranche": "A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_package_identity.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/docker_build_metadata.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "C9",
+      "original_finding": {
+        "behavior": "temporary path hashes checkout root",
+        "files": [
+          "scripts/tw_market_lifecycle.py"
+        ],
+        "id": "C9",
+        "implication": "relocation changes ephemeral lifecycle identity",
+        "surface": "owned process marker"
+      },
+      "closing_tranche": "A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/lifecycle_ownership.json"
+      ],
+      "current_main_verification": "all affected runtime files equal accepted A5 source; L6/L2 focused and full expanded outcomes retained; relevant application members independently hash verified",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "P1",
+      "original_finding": {
+        "acceptance": "switch app path, prove state roots unchanged and lifecycle works",
+        "evidence": "ROOT-relative resources and checkout-hash owner marker; ENV seams exist",
+        "gap": "stable external roots through arbitrary app relocation",
+        "id": "P1",
+        "name": "relocation same machine",
+        "status": "PARTIAL",
+        "tranche": "A2/A3"
+      },
+      "closing_tranche": "A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p1_relocation.json"
+      ],
+      "current_main_verification": "accepted actual physical run reverified, no relevant current product drift",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "P2",
+      "original_finding": {
+        "acceptance": "fresh Win11 user, no inherited profile runtime",
+        "evidence": "ENV/temp support only, no user-config/ACL contract",
+        "gap": "per-user/shared ownership, config location and permissions",
+        "id": "P2",
+        "name": "different Windows user",
+        "status": "GAP",
+        "tranche": "A1/A2"
+      },
+      "closing_tranche": "A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p2_distinct_user.json"
+      ],
+      "current_main_verification": "accepted actual physical run reverified, no relevant current product drift",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "P3",
+      "original_finding": {
+        "acceptance": "clean Win11 VM, arbitrary path, no Python/.git/state; initialize explicitly",
+        "evidence": "fresh service supports NOT_INITIALIZED and startup no acquisition",
+        "gap": "app/dependencies/resources/init and state provisioning",
+        "id": "P3",
+        "name": "new machine/user/path/zero inherited runtime",
+        "status": "GAP",
+        "tranche": "A1-A3"
+      },
+      "closing_tranche": "A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "accepted actual physical run reverified, no relevant current product drift",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "P4",
+      "original_finding": {
+        "acceptance": "restore/verify then explicit activation, no acquisition",
+        "evidence": "L2 verified backup/restore into caller-selected root",
+        "gap": "mapping restored logical roots to install identity and activation",
+        "id": "P4",
+        "name": "restore durable state to new install",
+        "status": "PARTIAL",
+        "tranche": "A1/A2/A5"
+      },
+      "closing_tranche": "A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "accepted actual physical run reverified, no relevant current product drift",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "P5",
+      "original_finding": {
+        "acceptance": "old supported state cases and migration/rollback on newer app",
+        "evidence": "L2 compatibility attestations and explicit migration lifecycle",
+        "gap": "release-to-state matrix and shipped upgrade/rollback flow",
+        "id": "P5",
+        "name": "newer app on supported old state",
+        "status": "PARTIAL",
+        "tranche": "A2/A3/A5; release policy L7"
+      },
+      "closing_tranche": "A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p5_upgrade_rollback.json"
+      ],
+      "current_main_verification": "accepted actual physical run reverified, no relevant current product drift",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "P6",
+      "original_finding": {
+        "acceptance": "fresh mounted deployment; replace image; verify state and host stdio connection",
+        "evidence": "L0 profile only; no Dockerfile/Compose; Windows-only lock",
+        "gap": "Linux dependencies, listener, mounts, host lifecycle",
+        "id": "P6",
+        "name": "fresh Docker",
+        "status": "NOT_YET_IMPLEMENTED",
+        "tranche": "A4/A5"
+      },
+      "closing_tranche": "A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json"
+      ],
+      "current_main_verification": "accepted actual physical run reverified, no relevant current product drift",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D1",
+      "original_finding": {
+        "class": "OWNER_SUPERSEDED",
+        "id": "D1",
+        "topic": "Windows 11-only Tier-1"
+      },
+      "closing_tranche": "Owner prospective Windows11 policy",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D2",
+      "original_finding": {
+        "class": "DECISION_REQUIRED",
+        "id": "D2",
+        "topic": "installation identity/home"
+      },
+      "closing_tranche": "A1/A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/installation_identity_contract.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D3",
+      "original_finding": {
+        "class": "DECISION_REQUIRED",
+        "id": "D3",
+        "topic": "physical state roots"
+      },
+      "closing_tranche": "A1/A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D4",
+      "original_finding": {
+        "class": "DECISION_REQUIRED",
+        "id": "D4",
+        "topic": "persisted user config"
+      },
+      "closing_tranche": "A1/A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/configuration_authority_contract.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/configuration_precedence.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D5",
+      "original_finding": {
+        "class": "DECISION_REQUIRED",
+        "id": "D5",
+        "topic": "SM bundle/materializer relocation"
+      },
+      "closing_tranche": "A1/A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/security_master_relocation_contract.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/security_master_root_acceptance.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D6",
+      "original_finding": {
+        "class": "DECISION_REQUIRED",
+        "id": "D6",
+        "topic": "control/Result/Audit root"
+      },
+      "closing_tranche": "A1/A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/governed_state_contract.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D7",
+      "original_finding": {
+        "class": "CAN_BE_DERIVED",
+        "id": "D7",
+        "topic": "operational log/runtime placement"
+      },
+      "closing_tranche": "A1/A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/runtime_log_temp_contract.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/lifecycle_ownership.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D8",
+      "original_finding": {
+        "class": "CAN_BE_DERIVED",
+        "id": "D8",
+        "topic": "init responsibilities"
+      },
+      "closing_tranche": "A1/A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/init_contract.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D9",
+      "original_finding": {
+        "class": "DECISION_REQUIRED",
+        "id": "D9",
+        "topic": "minimum native package C recommendation"
+      },
+      "closing_tranche": "A3/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_package_identity.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D10",
+      "original_finding": {
+        "class": "DECISION_REQUIRED",
+        "id": "D10",
+        "topic": "Docker persistent mounts"
+      },
+      "closing_tranche": "A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D11",
+      "original_finding": {
+        "class": "DECISION_REQUIRED",
+        "id": "D11",
+        "topic": "Docker lifecycle integration"
+      },
+      "closing_tranche": "A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D12",
+      "original_finding": {
+        "class": "ALREADY_FROZEN",
+        "id": "D12",
+        "topic": "upgrade/state relationship"
+      },
+      "closing_tranche": "L0/L2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p5_upgrade_rollback.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D13",
+      "original_finding": {
+        "class": "CAN_BE_DERIVED",
+        "id": "D13",
+        "topic": "P1-P6 acceptance approach"
+      },
+      "closing_tranche": "A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/final_acceptance_review.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "D14",
+      "original_finding": {
+        "class": "OUT_OF_SCOPE",
+        "id": "D14",
+        "topic": "MSI/MSIX/installer"
+      },
+      "closing_tranche": "retained out of L6",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/authority.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": "D14/D15 are explicit non-L6 boundaries, not implemented features"
+    },
+    {
+      "finding_id": "D15",
+      "original_finding": {
+        "class": "DEFER_L7",
+        "id": "D15",
+        "topic": "build/release signing/CI"
+      },
+      "closing_tranche": "deferred L7",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/authority.json"
+      ],
+      "current_main_verification": "authority/source and current deterministic validation reviewed",
+      "status": "PASS",
+      "notes": "D14/D15 are explicit non-L6 boundaries, not implemented features"
+    },
+    {
+      "finding_id": "ROOT1",
+      "original_finding": {
+        "CLI": "manage_security_master.py --root",
+        "ENV": "TW_MARKET_SECURITY_MASTER_ROOT",
+        "authority": "scripts/m8r_08g_security_master_releases.py; scripts/m8r_06_01c2_mode_a_security_master_loader.py",
+        "backup": "core durable",
+        "checkout": "ACTIVE PRODUCT COUPLING",
+        "class": "Security Master durable authority",
+        "default": "<checkout>/data/security_master",
+        "docker": "explicit persistent mount",
+        "io": "explicit update creates candidate/release; runtime reads active release",
+        "kind": "durable user state",
+        "user_config": "none"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "<STATE_ROOT>/security-master",
+      "current_backup_classification": "CORE; qualified authority and retained provenance",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT2",
+      "original_finding": {
+        "CLI/ENV": "none for staging root",
+        "authority": "scripts/m8r_06_01b_materialize_production_inputs.py; scripts/m8r_06_security_master_candidate_paths.py; scripts/manage_security_master.py",
+        "backup": "governed retained source provenance, not plain cache",
+        "checkout": "ACTIVE PRODUCT COUPLING",
+        "class": "SM acquisition/materialization bundle",
+        "default": "<checkout>/data/security_master/input_bundles",
+        "docker": "must be external to replaceable image",
+        "io": "explicit materialization writes raw_payloads, snapshots, candidate data and reports",
+        "kind": "mixed staging + durable governed artifacts"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "%TEMP%/TW-Market/<installation-id>/temp/security-master staging; finalized <SM>/source-bundles/<candidate>",
+      "current_backup_classification": "staging excluded; only qualified retained provenance governed",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT3",
+      "original_finding": {
+        "authority": "scripts/m8r_06_security_master_candidate_paths.py",
+        "backup": "rebuildable",
+        "checkout": "build-path coupling",
+        "class": "derived runtime identity index",
+        "default": "<checkout>/data/security_master/runtime_identity_indexes/<candidate>",
+        "docker": "not canonical durable mount",
+        "io": "candidate build writes; ordinary lookup may be process memory",
+        "kind": "derived"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "<HOME>/cache/security-master/<candidate>",
+      "current_backup_classification": "derived/rebuildable; excludedCORE",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT4",
+      "original_finding": {
+        "CLI": "caller injection only",
+        "ENV": "TW_MARKET_WATCHLIST_ROOT",
+        "authority": "scripts/m8r_09_persistent_watchlists.py",
+        "backup": "core durable",
+        "checkout": "ACTIVE PRODUCT COUPLING",
+        "class": "Watchlists",
+        "default": "<checkout>/data/watchlists",
+        "docker": "persistent mount",
+        "io": "explicit mutations create SQLite store",
+        "kind": "durable user state"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "<STATE_ROOT>/watchlists",
+      "current_backup_classification": "CORE consistent SQLite canonical L2 handling",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT5",
+      "original_finding": {
+        "CLI": "none in lifecycle",
+        "ENV": "M8R_06_03_CONTROL_ROOT",
+        "authority": "server/services/unified_mode_b2.py; unified_mode_c.py; scripts/m8r_06_03_execute_once.py",
+        "backup": "full governed backup per L0/L2 classifications",
+        "checkout": "ACTIVE PRODUCT COUPLING",
+        "class": "control/auth/claim/Result/Audit",
+        "default": "<checkout>/artifacts/m8r_06_03_workbench",
+        "docker": "persistent mount",
+        "io": "explicit authorized execution writes packages and projections",
+        "kind": "governed evidence + control"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "<STATE_ROOT>/governed",
+      "current_backup_classification": "FULL_GOVERNED exact retained Result/Audit/control lineage",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT6",
+      "original_finding": {
+        "ENV": "TW_MARKET_HOST; TW_MARKET_PORT",
+        "authority": "scripts/tw_market_lifecycle.py:_owner_path",
+        "backup": "excluded",
+        "checkout": "active hash coupling",
+        "class": "runtime ownership/PID",
+        "default": "OS temp/tw-market-runtime/<checkout-hash>/service-<port>.json",
+        "docker": "container lifecycle mapping decision",
+        "io": "lifecycle start/update/stop; ephemeral",
+        "kind": "ephemeral"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "%TEMP%/TW-Market/<installation-id>/runtime",
+      "current_backup_classification": "ephemeral PID ownership; never transferable",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT7",
+      "original_finding": {
+        "ENV": "TW_MARKET_OPERATIONAL_EVENT_PATH",
+        "authority": "scripts/tw_market_lifecycle.py; server/operational_diagnostics.py",
+        "backup": "excluded",
+        "checkout": "active default hash coupling",
+        "class": "operational events",
+        "default": "same OS temp install-hash directory",
+        "docker": "stdout/stderr or sink decision",
+        "io": "bounded JSONL, only if parent exists",
+        "kind": "ephemeral bounded diagnostics"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "<HOME>/logs/operational-events.jsonl",
+      "current_backup_classification": "diagnostic noncanonical; excludedCORE default",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT8",
+      "original_finding": {
+        "authority": "Mode A loader; Local Service; benchmark scripts",
+        "backup": "excluded/rebuildable",
+        "checkout": "benchmark only",
+        "class": "cache/derived process state",
+        "default": "process memory; developer benchmarks under artifacts",
+        "docker": "not durable",
+        "io": "process-lifetime runtime cache; benchmark output is not product runtime",
+        "kind": "derived"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "<HOME>/cache",
+      "current_backup_classification": "derived/rebuildable; excludedCORE",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT9",
+      "original_finding": {
+        "authority": "tw_market_lifecycle.py; unified_backup.py; unified_restore.py; unified_migration.py",
+        "backup": "unfinished staging excluded; completed backup caller-selected",
+        "checkout": "path/caller dependent",
+        "class": "temporary/staging",
+        "default": "OS temp; backup/restore/migration staging beside caller-selected destination",
+        "docker": "scratch distinct from durable mount",
+        "io": "staging then atomic rename",
+        "kind": "ephemeral until finalized"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "%TEMP%/TW-Market/<installation-id>/temp",
+      "current_backup_classification": "ephemeral/excluded",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT10",
+      "original_finding": {
+        "CLI": "partial, e.g. --root",
+        "ENV": "multiple roots/endpoints",
+        "authority": "no single authority; individual seams",
+        "backup": "L0 intends config in core backup; gap",
+        "checkout": "active pointer coupling",
+        "class": "user product config",
+        "default": "no unified persisted user-config root; Mode A pointer in <checkout>/config/",
+        "docker": "must be supplied deliberately",
+        "io": "repo-local pointer only; no general config store",
+        "kind": "durable contract gap"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "<HOME>/config/settings.json and separate local <HOME>/meta/installation.json",
+      "current_backup_classification": "settings portable endpoint-only; metadata local, source ID provenance only",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "ROOT11",
+      "original_finding": {
+        "authority": "unified_backup.py; unified_restore.py; unified_migration.py",
+        "backup": "L2 authority",
+        "checkout": "not inherently checkout bound",
+        "class": "backup/restore and migration/checkpoint targets",
+        "default": "none; caller chooses paths; migration checkpoint binds verified backup",
+        "docker": "explicit host/state destination",
+        "io": "backup/restore/migration stage beside selected target then finalize",
+        "kind": "external durable/caller selected"
+      },
+      "closing_tranche": "A1/A2/A3/A4/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/state_classification_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/app_root_write_guard.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "A1 fixed ownership roles, current A2 root tests and immutable A5 state/backup package evidence; unchanged relevant source bytes",
+      "status": "PASS",
+      "notes": "",
+      "current_ownership": "existing L2 explicit caller-selected bounded backup output/isolated restore/migration checkpoint",
+      "current_backup_classification": "existing L2 authority; no new activation or discovery",
+      "current_code_authority": [
+        "scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state",
+        "scripts/m8r_06_security_master_candidate_paths.py",
+        "scripts/tw_market_l2_adapter.py"
+      ]
+    },
+    {
+      "finding_id": "CONFIG_AUTHORITY",
+      "original_finding": {
+        "cli_env_precedence": "implemented at selected seams only; no centralized persisted config",
+        "conclusion": "User-config precedence layer is absent. Individual values split across CLI, ENV and repository defaults; Mode A pointer is authority-specific repo config, not a general config authority.",
+        "configuration_conflict": "Runtime loader/lifecycle may use TW_MARKET_SECURITY_MASTER_ROOT while direct management command defaults to checkout SECURITY_MASTER_ROOT unless --root is supplied; no persisted setting joins them.",
+        "evidence_run": "l6-a0-20261021T092005Z",
+        "precedence": [
+          "explicit CLI argument",
+          "environment variable",
+          "user configuration",
+          "product default"
+        ],
+        "seams": [
+          {
+            "class": "current product",
+            "cli": "manage_security_master --root",
+            "default": "<checkout>/data/security_master",
+            "manager_cli_detail": "--root is the explicit management override; manage_security_master default is SECURITY_MASTER_ROOT and does not itself read TW_MARKET_SECURITY_MASTER_ROOT. Lifecycle/loader ENV selection and management CLI root are separate seams.",
+            "name": "TW_MARKET_SECURITY_MASTER_ROOT",
+            "source": "scripts/m8r_06_01c2_mode_a_security_master_loader.py; scripts/tw_market_lifecycle.py"
+          },
+          {
+            "class": "current product",
+            "cli": "caller injection only",
+            "default": "<checkout>/data/watchlists",
+            "name": "TW_MARKET_WATCHLIST_ROOT",
+            "source": "scripts/m8r_09_persistent_watchlists.py"
+          },
+          {
+            "class": "current product",
+            "cli": "none at lifecycle",
+            "default": "<checkout>/artifacts/m8r_06_03_workbench",
+            "name": "M8R_06_03_CONTROL_ROOT",
+            "source": "server/services/unified_mode_b2.py; scripts/m8r_06_03_execute_once.py"
+          },
+          {
+            "class": "current product",
+            "cli": "--host / --port",
+            "default": "127.0.0.1:8000",
+            "name": "TW_MARKET_HOST / TW_MARKET_PORT",
+            "source": "scripts/tw_market_lifecycle.py"
+          },
+          {
+            "class": "current integration",
+            "cli": "--service-url",
+            "default": "loopback service",
+            "name": "UNIFIED_MARKET_EVIDENCE_SERVICE_URL",
+            "source": "scripts/run_unified_market_evidence_mcp.py"
+          },
+          {
+            "class": "diagnostics",
+            "cli": "none",
+            "default": "no sink unless explicitly selected",
+            "name": "TW_MARKET_OPERATIONAL_EVENT_PATH",
+            "source": "server/operational_diagnostics.py"
+          },
+          {
+            "class": "correlation",
+            "cli": "none",
+            "default": "generated/absent",
+            "name": "TW_MARKET_OPERATIONAL_TRACE_ID",
+            "source": "server/operational_diagnostics.py"
+          },
+          {
+            "class": "narrow explicit-source/test seam",
+            "cli": "source utilities --ssl-policy",
+            "default": "strict",
+            "name": "TW_MARKET_SSL_POLICY",
+            "source": "scripts/ssl_policy.py; scripts/run_m5k_live_observation.py"
+          }
+        ],
+        "single_persisted_user_config_authority": false,
+        "test_only": [
+          "M8R_06_03_EXECUTION_ENVIRONMENT",
+          "M8R_06_03_TEST_*",
+          "TW_MARKET_* set only by acceptance harnesses"
+        ]
+      },
+      "closing_tranche": "A1/A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/configuration_precedence.json"
+      ],
+      "current_main_verification": "actual CLI/ENV/settings/default and conflict rejection plus unchanged resolver tests",
+      "status": "PASS",
+      "notes": ""
+    },
+    {
+      "finding_id": "SM_MATERIALIZER",
+      "original_finding": {
+        "confirmed": true,
+        "confirmed_manager_loader_split": true,
+        "decision": "DECISION_REQUIRED for future A1 contract and authorized implementation",
+        "evidence": [
+          "scripts/m8r_08g_security_master_releases.py:SECURITY_MASTER_ROOT",
+          "scripts/manage_security_master.py:--root and REPO_ROOT bundle glob",
+          "scripts/m8r_06_01b_materialize_production_inputs.py:BUNDLE_BASE",
+          "scripts/m8r_06_security_master_candidate_paths.py:input_bundle_dir"
+        ],
+        "evidence_run": "l6-a0-20261021T092005Z",
+        "formal_root": "TW_MARKET_SECURITY_MASTER_ROOT / manage_security_master.py --root",
+        "formal_root_detail": "Runtime loader uses TW_MARKET_SECURITY_MASTER_ROOT; management uses explicit --root or checkout SECURITY_MASTER_ROOT default and does not read that ENV directly.",
+        "init_start_doctor": "must remain offline; init only layout/config/marker/writable validation; start accepts NOT_INITIALIZED; doctor read-only",
+        "logical_state_class": "mixed acquisition staging and retained governed source provenance; raw payloads/manifests/snapshot inputs persist, so not merely temp/cache",
+        "materializer_root": "<REPO_ROOT>/data/security_master/input_bundles",
+        "minimum_contract": [
+          "selected installation identity maps formal root and bundle root together",
+          "separate in-progress temp staging from finalized governed source bundle",
+          "manifest paths are installation-relative/content-bound, never app absolute",
+          "explicit bounded update remains only acquisition trigger"
+        ],
+        "outside_replaceable_tree": "bundle and report must live in external installation state, outside versioned application root"
+      },
+      "closing_tranche": "A1/A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/security_master_root_acceptance.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "A2 acquisition-root containment tests and accepted guest deterministic explicit SM activation; no new live request",
+      "status": "PASS",
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "identity": "6772e8c3550525ff0d952929c7e36cef4833e265936b0009b6d517152ab74e04",
+  "members": 338,
+  "Windows_wheels": 49,
+  "local_accepted_ZIP_hash_and_all_manifested_members_reverified": true,
+  "rebuilt": false,
+  "explicit_installed_CPython_prerequisite": true,
+  "derived_bundle_local_venv": true,
+  "external_state": true,
+  "arbitrary_paths_evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p1_relocation.json",
+  "bootstrap_evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/raw/evidence-bootstrap/",
+  "no_checkout_or_git_dependency": true,
+  "installer_required_for_L6": false
+}

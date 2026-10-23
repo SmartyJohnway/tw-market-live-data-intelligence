@@ -1,0 +1,15 @@
+import json,pathlib,subprocess
+R=pathlib.Path(r'C:\twmarket_temp\l6-a6');P=R/'repo';E=P/'docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z'
+def read(n):return json.loads((E/(n+'.json')).read_text())
+def save(n,d):(E/(n+'.json')).write_bytes((json.dumps(d,ensure_ascii=False,indent=2)+'\n').encode())
+roots=[('<STATE_ROOT>/security-master','CORE; qualified authority and retained provenance'),('%TEMP%/TW-Market/<installation-id>/temp/security-master staging; finalized <SM>/source-bundles/<candidate>','staging excluded; only qualified retained provenance governed'),('<HOME>/cache/security-master/<candidate>','derived/rebuildable; excludedCORE'),('<STATE_ROOT>/watchlists','CORE consistent SQLite canonical L2 handling'),('<STATE_ROOT>/governed','FULL_GOVERNED exact retained Result/Audit/control lineage'),('%TEMP%/TW-Market/<installation-id>/runtime','ephemeral PID ownership; never transferable'),('<HOME>/logs/operational-events.jsonl','diagnostic noncanonical; excludedCORE default'),('<HOME>/cache','derived/rebuildable; excludedCORE'),('%TEMP%/TW-Market/<installation-id>/temp','ephemeral/excluded'),('<HOME>/config/settings.json and separate local <HOME>/meta/installation.json','settings portable endpoint-only; metadata local, source ID provenance only'),('existing L2 explicit caller-selected bounded backup output/isolated restore/migration checkpoint','existing L2 authority; no new activation or discovery')]
+d=read('a0_finding_reconciliation')
+for row in d['rows']:
+    if row['finding_id'].startswith('ROOT'):
+        root,classification=roots[int(row['finding_id'][4:])-1];row.update(current_ownership=root,current_backup_classification=classification,current_code_authority=['scripts/tw_market_installation.py:resolve_installation/enumerate_installation_state','scripts/m8r_06_security_master_candidate_paths.py','scripts/tw_market_l2_adapter.py'])
+save('a0_finding_reconciliation',d)
+paths=['docs/governance/phase_l/PHASE_L_L0_PRODUCTION_BOUNDARY_AND_ARCHITECTURE_CONTRACT_2026-10-13.md','docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md']
+delta=subprocess.check_output(['git','diff','--name-only','7ec798d682ac91db776608a5e9a6a98e179dd1ec','HEAD','--',*paths],cwd=P,text=True);assert not delta
+d=read('l0_obligation_review');d['frozen_L0_and_Win11_policy_unchanged_since_A0_merge']=True;save('l0_obligation_review',d)
+save('offline_activity_boundary',{'D_drive_access_commands':0,'live_provider_requests':0,'market_acquisition_attempts':0,'Security_Master_live_updates':0,'production_state_mutations':0,'Sandbox_launches':0,'Docker_mutations':0,'external_operations':'Git/GitHub only','CI_guard':'harness/guard.py; D path read/stat/list/write, outside writes, external socket access blocked, Python descendants instrumented; explicit owner production HOME read/write denial','CI_guard_rejection_log_existed':(R/'ci/guard-blocks.jsonl').exists(),'production_owner_root_never_used_as_runtime':True})
+print('explicit root ownership and frozen policy review complete')

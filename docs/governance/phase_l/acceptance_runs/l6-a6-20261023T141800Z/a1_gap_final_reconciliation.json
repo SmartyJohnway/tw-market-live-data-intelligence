@@ -1,0 +1,303 @@
+{
+  "status": "PASS",
+  "gap_count": 16,
+  "unresolved_A1_gaps": 0,
+  "rows": [
+    {
+      "gap_id": "A1-G01",
+      "original_category": "HOME resolver absent",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G01",
+        "original_category": "HOME resolver absent",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G02",
+      "original_category": "STATE_ROOT resolver absent",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G02",
+        "original_category": "STATE_ROOT resolver absent",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G03",
+      "original_category": "persisted settings absent",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G03",
+        "original_category": "persisted settings absent",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G04",
+      "original_category": "installation metadata absent",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G04",
+        "original_category": "installation metadata absent",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G05",
+      "original_category": "SM formal checkout default",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G05",
+        "original_category": "SM formal checkout default",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G06",
+      "original_category": "SM checkout acquisition bundles",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G06",
+        "original_category": "SM checkout acquisition bundles",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G07",
+      "original_category": "checkout-local identity indexes/pointer",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2_PART / REMAINDER_DEFER_A3",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G07",
+        "original_category": "checkout-local identity indexes/pointer",
+        "remaining": "application/resource distribution"
+      },
+      "final_closing_tranche": "A2/A3/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_distribution_manifest.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p1_relocation.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "A3 replaceable application/resource distribution and per-bundle derived venv; A5 actual packaged arbitrary-path guest/relocation;277 current blobs verified",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G08",
+      "original_category": "Watchlist checkout default",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G08",
+        "original_category": "Watchlist checkout default",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G09",
+      "original_category": "governed checkout default",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G09",
+        "original_category": "governed checkout default",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G10",
+      "original_category": "checkout-hash runtime identity",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G10",
+        "original_category": "checkout-hash runtime identity",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G11",
+      "original_category": "operational event placement",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G11",
+        "original_category": "operational event placement",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G12",
+      "original_category": "init command absent",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G12",
+        "original_category": "init command absent",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G13",
+      "original_category": "NOT_INITIALIZED semantic compression",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G13",
+        "original_category": "NOT_INITIALIZED semantic compression",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G14",
+      "original_category": "legacy root overrides",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G14",
+        "original_category": "legacy root overrides",
+        "remaining": null
+      },
+      "final_closing_tranche": "A2",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json"
+      ],
+      "current_main_verification": "accepted A2 closure retained; current A2 tests pass and runtime bytes unchanged from A5",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G15",
+      "original_category": "L2 A1 settings/metadata integration",
+      "A2_historical_disposition": {
+        "disposition": "CLOSED_A2_PART / REMAINDER_DEFER_A5",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G15",
+        "original_category": "L2 A1 settings/metadata integration",
+        "remaining": "full L2 backup/restore portability and P4"
+      },
+      "final_closing_tranche": "A2/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/cross_profile_probe.json"
+      ],
+      "current_main_verification": "explicit-member adapter delegates canonical L2; CORE/FULL_GOVERNED isolated restore and explicit supported use; destination identity preserved, source metadata/PID never adopted",
+      "status": "PASS",
+      "remaining": null
+    },
+    {
+      "gap_id": "A1-G16",
+      "original_category": "application/resource lookup remains rooted in source tree",
+      "A2_historical_disposition": {
+        "disposition": "DEFER_A3",
+        "evidence": "focused_test_results.json; implementation_scope.json",
+        "gap_id": "A1-G16",
+        "original_category": "application/resource lookup remains rooted in source tree",
+        "remaining": "application/resource distribution"
+      },
+      "final_closing_tranche": "A2/A3/A5",
+      "accepted_closure_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/gap_closure_matrix.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_distribution_manifest.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p1_relocation.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "A3 replaceable application/resource distribution and per-bundle derived venv; A5 actual packaged arbitrary-path guest/relocation;277 current blobs verified",
+      "status": "PASS",
+      "remaining": null
+    }
+  ]
+}

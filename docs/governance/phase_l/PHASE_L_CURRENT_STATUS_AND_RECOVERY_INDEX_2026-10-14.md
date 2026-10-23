@@ -1,6 +1,26 @@
 # Phase L — Current Status & Recovery Index
 
-## Current L6-A5 merged state (2026-10-23)
+## Current L6-A6 technical exit review (2026-10-23)
+
+L6-A0 through L6-A5 are OWNER-ACCEPTED AND MERGED.
+L6-A6 technical disposition: `PHASE_L_L6_EXIT_REVIEW_PASS`.
+All 23 exit criteria PASS; unresolved A0 findings=0; unresolved A1 gaps=0.
+Accepted P1–P6 actual portability evidence remains valid and relevant current
+product bytes match A5 source `3707c553497240f6ff0f7e5358301395fd60205a`.
+Default CI remains FAIL: base/candidate1245 passed,45 failed,4 skipped,5 deselected;
+candidate-only failed nodes=0. Expanded validation remains525 passed/2 historical
+L5 scope-assertion failures; neither inherited suite is reported overall PASS.
+
+L6: **TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED**.
+Owner final closure: **PENDING**. Phase L is not closed.
+Merge/auto-merge, L7, Phase M, release/signing/image publication and installer
+implementation remain **NOT AUTHORIZED**. Stop for independent review/Owner action.
+
+Review: `docs/governance/phase_l/PHASE_L_L6_A6_PACKAGING_PORTABILITY_TECHNICAL_EXIT_REVIEW_2026-10-23.md`.
+Evidence: `docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z/`.
+
+
+## Historical L6-A5 merged state (2026-10-23)
 
 L6-A5 is **OWNER-ACCEPTED AND MERGED**. Technical disposition is
 `L6_A5_INTEGRATED_P1_P6_PORTABILITY_ACCEPTANCE_PASS`; independent review is

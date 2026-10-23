@@ -1,0 +1,114 @@
+{
+  "status": "PASS",
+  "missing_tranches": 0,
+  "rows": [
+    {
+      "tranche": "A0",
+      "commit": "7ec798d682ac91db776608a5e9a6a98e179dd1ec",
+      "tree": "a34cb171f206675e1731f8bf7da6c3bcc407c709",
+      "parents": [
+        "c546232ed24fdb781a605e4403961d7ffb16a339",
+        "b6ec2e3207c90172d35a1e14953011c9036c46a6"
+      ],
+      "ancestor": true,
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a0-20261021T092005Z/",
+      "status": "PASS"
+    },
+    {
+      "tranche": "A1",
+      "commit": "430f280f9c1b4f8d0f387503bb22044214126b39",
+      "tree": "dc82faea6c08b94231b2fb4deec0ec6319bf6a38",
+      "parents": [
+        "7ec798d682ac91db776608a5e9a6a98e179dd1ec",
+        "2baa637691715c9c32c789a3a1ab75e0a4e675b7"
+      ],
+      "ancestor": true,
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/",
+      "status": "PASS"
+    },
+    {
+      "tranche": "A2",
+      "commit": "911a841b866795e8d0cd83d80b30b34701aa5980",
+      "tree": "72234b87fb3d47758c196c2ac80cc88549463837",
+      "parents": [
+        "430f280f9c1b4f8d0f387503bb22044214126b39",
+        "874be1878d00165be0f61d10cb91684c81ea325d"
+      ],
+      "ancestor": true,
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a2-20261021T142354Z/",
+      "status": "PASS"
+    },
+    {
+      "tranche": "A3",
+      "commit": "a40141f43f3a1bdeccbab61e67a4a5e161eb8f37",
+      "tree": "84152aeb9b0ded744a6a55a96c0ffc888dd745b7",
+      "parents": [
+        "911a841b866795e8d0cd83d80b30b34701aa5980",
+        "b3792975941957d37f2e4f4470c742e1ce6594e2"
+      ],
+      "ancestor": true,
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a3-clean-final-20261023T010756Z/",
+      "status": "PASS"
+    },
+    {
+      "tranche": "A3 reconciliation",
+      "commit": "ee316f784831fe684e21fa8d146512d96a888050",
+      "tree": "81ffd2b114a0d4d5f880d9a0ce78a103ed13a608",
+      "parents": [
+        "a40141f43f3a1bdeccbab61e67a4a5e161eb8f37",
+        "d5cf2a18dde40284f6913ee15fe9f5a61d9a5267"
+      ],
+      "ancestor": true,
+      "evidence": null,
+      "status": "PASS"
+    },
+    {
+      "tranche": "A4",
+      "commit": "85a4351f9be46efeb28794079ed7adfeeae0fc8a",
+      "tree": "1d11660978b1952ef5fe8301fa9a3f6fd0e63e33",
+      "parents": [
+        "ee316f784831fe684e21fa8d146512d96a888050",
+        "99f756f8f5b0a6582ec47c1c5de390ec6d1f8f9b"
+      ],
+      "ancestor": true,
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a4-20261023T061105Z/",
+      "status": "PASS"
+    },
+    {
+      "tranche": "A4 reconciliation",
+      "commit": "d5dac702c25e9728db86e9ef32f4fe8185086b89",
+      "tree": "43aa778bbdc8a2bff016520d0cd1aff04a83b953",
+      "parents": [
+        "85a4351f9be46efeb28794079ed7adfeeae0fc8a",
+        "da317454517804c9a28361660e1a07b1d9c9e126"
+      ],
+      "ancestor": true,
+      "evidence": null,
+      "status": "PASS"
+    },
+    {
+      "tranche": "A5",
+      "commit": "08bec63ec3d924d2c3b206ecc4fcc017b259ea75",
+      "tree": "041f7c660a3fba40b84d5fbab869c2ee353919ac",
+      "parents": [
+        "d5dac702c25e9728db86e9ef32f4fe8185086b89",
+        "32bc480cccdd7eb394062ccfe34a44958fc56bf1"
+      ],
+      "ancestor": true,
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/",
+      "status": "PASS"
+    },
+    {
+      "tranche": "A5 reconciliation",
+      "commit": "365ea26e76e24aa0171945d29ba2b21f79c3a8db",
+      "tree": "811985144e835e24dc01f8a130c8b959f83c5f0d",
+      "parents": [
+        "08bec63ec3d924d2c3b206ecc4fcc017b259ea75",
+        "5e3ce971540c05d1fec08b0a4ce74a3ffe33c04a"
+      ],
+      "ancestor": true,
+      "evidence": null,
+      "status": "PASS"
+    }
+  ]
+}

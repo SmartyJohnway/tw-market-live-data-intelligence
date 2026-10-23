@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "base": "python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741",
+  "source_image": "sha256:2b25c1e54879b0761d3c0a3591236cb2a1f820c1530fee25f643ec93cf962675",
+  "replacement_image": "sha256:98bafa33505e0d5f4c088e58949e388768b21b0a0741f4da5649eff539f91323",
+  "accepted_evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json",
+  "network_boundary": {
+    "host_binding": {
+      "8000/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "18456"
+        }
+      ]
+    },
+    "non_gateway_peer_http_status": 403,
+    "windows_nonloopback_interface_probes": [
+      {
+        "address_sha256": "4221df405b7de60ecc3c4c6ed7ab9eaf722d48963fe20016d9f3cc547007b106",
+        "reachable": false
+      },
+      {
+        "address_sha256": "281acdcb3246aec7ca02f6718ed9756a0e9d467ca4b1eb557e57a046b6f6a5f5",
+        "reachable": false
+      },
+      {
+        "address_sha256": "88ec1bcb56eedf052a737729724ec460d61c408076d5c335ea65cf8a8d239c5d",
+        "reachable": false
+      },
+      {
+        "address_sha256": "e82194478fbe2f2b1234fab42bfe0424f0f734dead72f52cc70495d690198f09",
+        "reachable": false
+      },
+      {
+        "address_sha256": "41aa49b428531fc0817befbe1a4b252c1238bb7525a951dcc113a11104ec828e",
+        "reachable": false
+      },
+      {
+        "address_sha256": "fa4e8822c7622e3909adb38f70421aa25cb8f3be0eb726e9433e0f5e0ede3fb4",
+        "reachable": false
+      },
+      {
+        "address_sha256": "f83336a3dfb5acdfde1be5f6dd6fc0fcc3f364aeeb806b55942267b97014c1d9",
+        "reachable": false
+      }
+    ],
+    "status": "PASS"
+  },
+  "state_survived": true,
+  "image_state_exclusion": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/docker_state_exclusion.json",
+  "one_local_service": true,
+  "host_stdio_MCP_separate": true,
+  "image_identity_is_installation_identity": false,
+  "historical_image_not_reconstructed": true
+}

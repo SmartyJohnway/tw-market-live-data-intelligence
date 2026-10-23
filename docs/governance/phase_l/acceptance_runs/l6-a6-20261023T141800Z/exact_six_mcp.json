@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "tool_count": 6,
+  "tools": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ],
+  "accepted_host_MCP_evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json#host_mcp",
+  "current_main_runtime_and_tests_unchanged": true,
+  "current_validator": "required_validators.json"
+}

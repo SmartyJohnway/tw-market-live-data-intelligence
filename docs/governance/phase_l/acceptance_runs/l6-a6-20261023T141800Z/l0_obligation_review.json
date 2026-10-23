@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "rows": [
+    {
+      "authority": "L0-D04",
+      "obligation": "Native primary; Docker packaging; host stdio separate",
+      "accepted_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    },
+    {
+      "authority": "L0-D05/D06",
+      "obligation": "replaceable app and actual distinct P1-P6 profiles",
+      "accepted_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/final_acceptance_review.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    },
+    {
+      "authority": "L0-D07",
+      "obligation": "durable/governed/derived/ephemeral ownership and backup classification",
+      "accepted_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a1-20261021T130000Z/physical_state_layout.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    },
+    {
+      "authority": "L0-D08",
+      "obligation": "CLI > ENV > user settings > default",
+      "accepted_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/configuration_precedence.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    },
+    {
+      "authority": "L0-D09",
+      "obligation": "coherent init/start/status/stop/doctor, read-only/no hidden acquisition",
+      "accepted_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/lifecycle_ownership.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    },
+    {
+      "authority": "L0-D10",
+      "obligation": "supported schema1/rollback; explicit sole L2 migration; no silent incompatible migration",
+      "accepted_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p5_upgrade_rollback.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/l2_boundary_verification.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    },
+    {
+      "authority": "L0-D11",
+      "obligation": "CORE/FULL_GOVERNED canonical backup, isolated verify/restore excludes runtime",
+      "accepted_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    },
+    {
+      "authority": "L0-D12",
+      "obligation": "Agent/tunnel/model integration independent core",
+      "accepted_evidence": [
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/integration_independence.json",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    },
+    {
+      "authority": "L0-D03 prospective supersession",
+      "obligation": "Win11 x64 only release-blocking from L6; historical L0 unchanged",
+      "accepted_evidence": [
+        "docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md",
+        "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+      ],
+      "current_main_verification": "accepted bytes verified; current source unchanged, deterministic domain tests recorded",
+      "status": "PASS"
+    }
+  ],
+  "frozen_L0_modified": false,
+  "violations": 0,
+  "frozen_L0_and_Win11_policy_unchanged_since_A0_merge": true
+}

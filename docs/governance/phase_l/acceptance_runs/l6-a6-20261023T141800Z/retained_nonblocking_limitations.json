@@ -1,0 +1,71 @@
+{
+  "rows": [
+    {
+      "limitation": "Default CI inherited45 failures",
+      "why_nonblocking_for_L6": "A6 compares exact same-environment failure nodes; does not certify global CI green",
+      "authority": "A6 sections19/21",
+      "reconsider_when": "separately authorized historical-CI repair"
+    },
+    {
+      "limitation": "Expanded two historical L5 no-change assertions",
+      "why_nonblocking_for_L6": "exact same tests and unchanged failure meaning; 525 other checks pass; overallFAIL retained",
+      "authority": "A6 section18",
+      "reconsider_when": "new failure meaning or product-contract drift"
+    },
+    {
+      "limitation": "Replacement Docker image no longer locally resolvable",
+      "why_nonblocking_for_L6": "accepted complete evidence and current source bytes verified; no reconstruction required",
+      "authority": "A6 section9",
+      "reconsider_when": "contradictory runtime evidence or subsequent product change"
+    },
+    {
+      "limitation": "Installed supported CPython prerequisite",
+      "why_nonblocking_for_L6": "accepted Package C offline wheel bootstrap explicitly uses guest-only verified prerequisite",
+      "authority": "A3/A5 and A6 section13",
+      "reconsider_when": "separately authorized packaging architecture change"
+    },
+    {
+      "limitation": "Native ZIP instead of MSI/MSIX",
+      "why_nonblocking_for_L6": "installer is explicitly outside accepted L6 architecture",
+      "authority": "A6 sections13/22",
+      "reconsider_when": "separate installer authority"
+    },
+    {
+      "limitation": "Docker registry not published",
+      "why_nonblocking_for_L6": "local packaging profile accepted; publication is L7",
+      "authority": "A6 sections14/22",
+      "reconsider_when": "L7 authorization"
+    },
+    {
+      "limitation": "No release signing/publication",
+      "why_nonblocking_for_L6": "technical exit is not a release",
+      "authority": "A6 section22",
+      "reconsider_when": "L7 authorization"
+    },
+    {
+      "limitation": "Windows10 not release blocking",
+      "why_nonblocking_for_L6": "prospective Owner policy applies Win11x64 fromL6; historical L0 unchanged",
+      "authority": "prospective Win11 policy and A6 section12",
+      "reconsider_when": "explicit platform promotion"
+    },
+    {
+      "limitation": "No live provider certification",
+      "why_nonblocking_for_L6": "offline review deliberately performs no live market activity",
+      "authority": "A6 section23",
+      "reconsider_when": "separate bounded live authority"
+    },
+    {
+      "limitation": "SM refresh separate install/start",
+      "why_nonblocking_for_L6": "explicit acquisition only preserves frozen no-hidden-refresh boundary",
+      "authority": "L0-D09 and A1-D09",
+      "reconsider_when": "explicit operator SM update"
+    },
+    {
+      "limitation": "P4 explicit isolated-restore use via existing root seams",
+      "why_nonblocking_for_L6": "canonical L2 restore remains isolated; existing explicit overrides disclosed, destination metadata preserved; no second activation authority",
+      "authority": "accepted A5 P4 and A6 sections9/16",
+      "reconsider_when": "separately authorized canonical activation UX; never automatic adoption"
+    }
+  ],
+  "frozen_L0_violations": 0
+}
