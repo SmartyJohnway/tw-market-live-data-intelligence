@@ -1,18 +1,23 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current L6-A4 status (2026-10-23)
+## Current L6-A4 merged state (2026-10-23)
 
-L6-A0, L6-A1, L6-A2 and L6-A3 are OWNER-ACCEPTED AND MERGED. L6-A4 Docker Local
-Service packaging is technically complete under
-`L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_COMPLETE`; Owner acceptance is PENDING.
-The technical candidate is source commit `5a747fad735527f349dfc2760366359ff5da67fd`,
-tree `729708fb292565d1414ef432c5723f199eadd6de`, based directly on authorized
-`ee316f784831fe684e21fa8d146512d96a888050`. The dedicated record and acceptance
-evidence are linked from `docs/governance/INDEX.md`.
+L6-A0 through L6-A4 are OWNER-ACCEPTED AND MERGED. L6-A4 Docker Local Service
+Packaging completed under `L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_COMPLETE`, passed
+independent review under `L6_A4_INDEPENDENT_TECHNICAL_REVIEW_PASS`, and was Owner-accepted
+under `L6_A4_OWNER_ACCEPTED_FOR_MERGE`. PR #402 normal-merged exact accepted head
+`99f756f8f5b0a6582ec47c1c5de390ec6d1f8f9b` at merge commit `85a4351f9be46efeb28794079ed7adfeeae0fc8a`, tree
+`1d11660978b1952ef5fe8301fa9a3f6fd0e63e33`. The merge parents are the prior canonical main
+`ee316f784831fe684e21fa8d146512d96a888050` and the accepted A4 candidate. GitHub merge verification is valid.
 
-P6 is `IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5`; this is not final integrated
-P1-P6 acceptance. L6-A5, L7 and Phase M remain NOT AUTHORIZED. Merge remains
-NOT AUTHORIZED; stop for independent review and Owner acceptance after PR opening.
+The Docker application payload remains bound to implementation source commit `5a747fad735527f349dfc2760366359ff5da67fd`,
+tree `729708fb292565d1414ef432c5723f199eadd6de`. Accepted evidence remains `docs/governance/phase_l/acceptance_runs/l6-a4-20261023T061105Z/`.
+Post-merge governance reconciliation is recorded in `docs/governance/phase_l/PHASE_L_L6_A4_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-23.md`.
+
+P6 remains `IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5`; this is not final integrated
+P1-P6 portability acceptance. L6-A5, L7, Phase M, installer work and image publication
+remain NOT AUTHORIZED. No later phase is implicitly authorized or started by the A4 merge
+or by this reconciliation.
 
 ## Historical L6-A3 merged state (2026-10-23)
 
