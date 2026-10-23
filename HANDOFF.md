@@ -1,28 +1,37 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current L6-A3 clean candidate (2026-10-23)
+## Current L6-A3 merged state (2026-10-23)
 
-L6-A0, L6-A1 and L6-A2 are OWNER-ACCEPTED AND MERGED (A2: PR #399,
-`911a841b866795e8d0cd83d80b30b34701aa5980`). L6-A3 is a CLEAN REIMPLEMENTATION
-TECHNICAL CANDIDATE; technical acceptance passes, OWNER ACCEPTANCE PENDING.
-It uses Package C: versioned application bundle plus per-bundle isolated venv.
-The original pre-incident A3 is ABANDONED / LOST LOCAL CANDIDATE / NOT MERGED.
+L6-A0, L6-A1, L6-A2 and L6-A3 are OWNER-ACCEPTED AND MERGED. L6-A3 is the
+post-incident clean reimplementation of Native Application / Resource Distribution
+Packaging using Package C (versioned application bundle plus per-bundle isolated
+Python venv). PR #400 accepted exact candidate
+`b3792975941957d37f2e4f4470c742e1ce6594e2` and was normal-merged at
+`a40141f43f3a1bdeccbab61e67a4a5e161eb8f37`, tree
+`84152aeb9b0ded744a6a55a96c0ffc888dd745b7`. The merge commit parents are the
+accepted A2 base `911a841b866795e8d0cd83d80b30b34701aa5980` and the accepted A3 candidate.
 
-Current authority: `docs/governance/phase_l/PHASE_L_L6_A3_NATIVE_APPLICATION_RESOURCE_DISTRIBUTION_PACKAGING_2026-10-22.md`;
-final evidence `l6-a3-clean-final-20261023T010756Z`. Exact upstream-path exceptions are limited to eight
-unchanged wheel identities under the 2026-10-23 Owner authority and pytest addendum.
-Default CI remains FAIL: 1246 passed / 44 failed / 4 skipped / 5 deselected;
-exact same current-environment A2 failure set, candidate-only failures = 0.
-The 44 include the historical 41 plus three isolated uninitialized-HOME-sensitive
-legacy tests, reconciled by controlled unchanged-A2 probes.
-A1-G07 CLOSED; A1-G16 CLOSED_A3. P1/P3 materially improved but not final;
-P2/P4/P5 PARTIAL; P6 NOT_YET_IMPLEMENTED / A4. Full P1-P6 is not accepted.
+Technical disposition: `L6_A3_NATIVE_APPLICATION_RESOURCE_DISTRIBUTION_PACKAGING_COMPLETE`.
+Independent review: `L6_A3_INDEPENDENT_OWNER_REVIEW_PASS`. Owner disposition:
+`L6_A3_OWNER_ACCEPTED_FOR_MERGE`. Current A3 authority remains
+`docs/governance/phase_l/PHASE_L_L6_A3_NATIVE_APPLICATION_RESOURCE_DISTRIBUTION_PACKAGING_2026-10-22.md`;
+final acceptance evidence is `l6-a3-clean-final-20261023T010756Z`; post-merge
+reconciliation is recorded in
+`docs/governance/phase_l/PHASE_L_L6_A3_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-23.md`.
 
-L6-A4, L6-A5, Docker, installer, L7, Phase M and merge/auto-merge remain
-NOT AUTHORIZED. Authorized delivery ends after push and opening a PR for review.
-Earlier dated L6-A2 candidate / A3-not-authorized prose below is retained entry
-history and is superseded by this current block; frozen evidence is unchanged.
+Accepted ZIP identity remains `TW-Market-1.0.0-windows-x64.zip`, SHA-256
+`14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d`,
+333 archive members and 49 locked wheels. Exact upstream embedded-path exceptions
+remain limited to eight approved unchanged wheel identities. Default CI remains
+FAIL at 1246 passed / 44 failed / 4 skipped / 5 deselected for both same-environment
+A2 and A3 candidate, with candidate-only failures = 0.
 
+A1-G07 is CLOSED; A1-G16 is CLOSED_A3. P1/P3 are materially improved but are not
+final integrated acceptance; P2/P4/P5 remain PARTIAL; P6 remains
+NOT_YET_IMPLEMENTED / A4. L6-A4, L6-A5, Docker, installer, L7 and Phase M remain
+NOT AUTHORIZED. No later phase is started by the A3 merge or by this reconciliation.
+Earlier dated L6-A2/A3-candidate prose below is retained as historical entry context
+and is superseded by this current block; frozen evidence remains unchanged.
 
 Historical L6-A2 entry authority (superseded above): `docs/governance/phase_l/PHASE_L_L6_A2_NATIVE_INSTALLATION_LIFECYCLE_INTEGRATION_2026-10-21.md`; evidence `l6-a2-20261021T142354Z`. Native packaging, Docker and installer implementation remain NOT AUTHORIZED.
 

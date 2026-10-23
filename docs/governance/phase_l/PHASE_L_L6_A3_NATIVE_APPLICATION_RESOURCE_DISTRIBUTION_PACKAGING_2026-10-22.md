@@ -2,9 +2,10 @@
 
 POST-INCIDENT CLEAN REIMPLEMENTATION FROM MERGED A2.
 
-Technical acceptance: PASS. Delivery: governance publication / push / PR pending at
-this evidence commit. The final candidate commit/tree and delivered disposition are
-recorded in the PR body. Owner acceptance: PENDING. No merge is authorized.
+Technical acceptance: PASS. Independent review: `L6_A3_INDEPENDENT_OWNER_REVIEW_PASS`.
+Owner acceptance: `L6_A3_OWNER_ACCEPTED_FOR_MERGE`. PR #400 was normal-merged on
+2026-10-23 at `a40141f43f3a1bdeccbab61e67a4a5e161eb8f37`. L6-A3 is
+OWNER-ACCEPTED AND MERGED. A4/A5/L7/Phase M remain unauthorized.
 
 ## Authority and identity
 
@@ -17,6 +18,18 @@ Final package implementation/content commit `0c1850ac23db5a9a4e25a5196ca62dedf17
 Final run `l6-a3-clean-final-20261023T010756Z`. All final consumer evidence binds this committed source and its exact ZIP.
 The source/evidence preservation commit `3d7b905e8aaac979d41ded638624f9188dfdedd0` is not the accepted package source. Its blocked run is retained as intermediate history.
 Lost original A3 commit/tree `3f4965bf55155c1e176e128c57c05ac0b69fefe8` / `5903859c136afc05201346100b4f4619e9966fb7` are HISTORICAL REFERENCE ONLY. Original A3 was not recovered or merged.
+
+## Owner acceptance and merge
+
+Accepted candidate commit `b3792975941957d37f2e4f4470c742e1ce6594e2`, tree
+`84152aeb9b0ded744a6a55a96c0ffc888dd745b7`, was independently reviewed under
+`L6_A3_INDEPENDENT_OWNER_REVIEW_PASS` and Owner-accepted under
+`L6_A3_OWNER_ACCEPTED_FOR_MERGE`. PR #400 was merged with normal merge commit
+`a40141f43f3a1bdeccbab61e67a4a5e161eb8f37`; its parents are A2
+`911a841b866795e8d0cd83d80b30b34701aa5980` and the accepted A3 candidate.
+GitHub marks the merge commit verified. The merged tree equals the accepted candidate
+tree, so governance-only delivery did not alter package/product content after acceptance.
+
 
 ## Package C and resources
 
@@ -103,6 +116,7 @@ bounded HOME. Tests and historical evidence were not weakened or rewritten.
 A1-G07 CLOSED; A1-G16 CLOSED_A3 for packaged application/resource lookup. P1/P3
 are materially improved but not final; P2/P4/P5 PARTIAL; P6 NOT_YET_IMPLEMENTED/A4.
 No full P1-P6, Phase L completion, A4/A5, Docker, installer, L7 or Phase M claim.
-Signing/release/final SBOM are future work. Current front doors point here; frozen
-A0/A1/A2 evidence is unchanged. Push/PR is authorized after clean evidence
-publication; PR creation is the stopping point. Owner/independent review pending.
+Signing/release/final SBOM are future work. Frozen A0/A1/A2 evidence is unchanged.
+The accepted A3 candidate is merged through PR #400. Post-merge governance
+reconciliation updates only current status/front-door records; it does not alter the
+accepted package source, package ZIP, acceptance evidence, or authorize A4/A5/L7/Phase M.
