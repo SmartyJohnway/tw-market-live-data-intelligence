@@ -1,0 +1,19 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "exec",
+    "-T",
+    "local-service",
+    "python",
+    "-c",
+    "from pathlib import Path;p=Path('/tmp/a5-guard-events.jsonl'); print(p.read_text() if p.exists() else '')"
+  ],
+  "returncode": 0,
+  "stdout": "\n",
+  "stderr": ""
+}

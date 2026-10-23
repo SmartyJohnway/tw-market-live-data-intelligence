@@ -1,0 +1,21 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "exec",
+    "-T",
+    "local-service",
+    "python",
+    "-m",
+    "scripts.tw_market",
+    "status",
+    "--json"
+  ],
+  "returncode": 0,
+  "stdout": "{\"checks\": [], \"configuration\": {\"host\": \"127.0.0.1\", \"port\": 8000, \"sources\": {\"host\": \"env\", \"port\": \"env\"}}, \"duration_ms\": 4299.15, \"identity\": {\"root\": \"/var/lib/tw-market/state/security-master\", \"status\": \"NOT_INITIALIZED\"}, \"installation\": {\"app_root\": \"/opt/tw-market/app\", \"cache_root\": \"/var/lib/tw-market/home/cache\", \"diagnostics\": {\"home_source\": \"env\", \"settings_origins\": {\"host\": \"env\", \"port\": \"env\"}, \"state_root_source\": \"metadata\"}, \"effective_service_host\": \"127.0.0.1\", \"effective_service_port\": 8000, \"governed_root\": \"/var/lib/tw-market/state/governed\", \"home\": \"/var/lib/tw-market/home\", \"installation_id\": \"31ef5868-c0c2-481b-aa85-437d6a4b1b2a\", \"installation_metadata_path\": \"/var/lib/tw-market/home/meta/installation.json\", \"installation_status\": \"READY\", \"logs_root\": \"/var/lib/tw-market/home/logs\", \"operational_event_path\": \"/var/lib/tw-market/home/logs/operational-events.jsonl\", \"runtime_root\": \"/tmp/TW-Market/31ef5868-c0c2-481b-aa85-437d6a4b1b2a/runtime\", \"security_master_root\": \"/var/lib/tw-market/state/security-master\", \"settings_path\": \"/var/lib/tw-market/home/config/settings.json\", \"state_root\": \"/var/lib/tw-market/state\", \"temp_root\": \"/tmp/TW-Market/31ef5868-c0c2-481b-aa85-437d6a4b1b2a/temp\", \"watchlist_root\": \"/var/lib/tw-market/state/watchlists\"}, \"mcp\": {\"local_service_reachable\": true, \"sdk_compatible\": true, \"service_url\": \"http://127.0.0.1:8000\", \"status\": \"READY\"}, \"operation_id\": \"b2c1a867-ff10-4c40-9677-2baf95d61585\", \"paths\": {\"control_root\": \"/var/lib/tw-market/state/governed\", \"operational_event_path\": \"/var/lib/tw-market/home/logs/operational-events.jsonl\", \"ownership_file\": \"/tmp/TW-Market/31ef5868-c0c2-481b-aa85-437d6a4b1b2a/runtime/service-8000.json\", \"security_master_root\": \"/var/lib/tw-market/state/security-master\", \"watchlist_root\": \"/var/lib/tw-market/state/watchlists\"}, \"readiness\": {\"preload\": \"READY\", \"routes\": {\"capability_count\": 14, \"projection\": \"READY\"}, \"schema_catalog\": \"READY\"}, \"resources\": {\"application_root_disk_free_bytes\": 463269257216, \"managed_service_process_memory_bytes\": 61100032, \"runtime_root_disk_free_bytes\": 67104768}, \"service\": {\"alive\": true, \"health\": {\"status\": \"healthy\"}, \"host\": \"127.0.0.1\", \"port\": 8000, \"process\": \"RUNNING\", \"url\": \"http://127.0.0.1:8000\"}, \"started_at\": \"2026-10-23T13:11:30.288225+00:00\", \"status\": \"SERVICE_ALIVE / IDENTITY_NOT_INITIALIZED\", \"trace_id\": \"da9ffc59-652e-4bf7-a681-9b38172d8046\"}\n",
+  "stderr": ""
+}

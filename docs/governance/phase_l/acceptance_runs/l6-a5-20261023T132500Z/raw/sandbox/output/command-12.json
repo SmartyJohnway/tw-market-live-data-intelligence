@@ -1,0 +1,45 @@
+{
+  "command": "start",
+  "returncode": 0,
+  "result": {
+    "duration_ms": 3084.76,
+    "installation": {
+      "app_root": "C:\\A5\\Unicode 路徑\\deeper app\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\cache",
+      "diagnostics": {
+        "home_source": "platform_default",
+        "settings_origins": {
+          "host": "settings",
+          "port": "cli"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 18453,
+      "governed_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\governed",
+      "home": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market",
+      "installation_id": "270e85d8-595c-4331-845c-c37077cdacbd",
+      "installation_metadata_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs",
+      "operational_event_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\runtime",
+      "security_master_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "settings_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\config\\settings.json",
+      "state_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state",
+      "temp_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\temp",
+      "watchlist_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\watchlists"
+    },
+    "operation_id": "6fc9a5d5-1cc5-4179-ac93-516dd21ba260",
+    "pid": 7388,
+    "service": {
+      "host": "127.0.0.1",
+      "port": 18453,
+      "url": "http://127.0.0.1:18453"
+    },
+    "started_at": "2026-10-23T13:05:31.384682+00:00",
+    "status": "STARTED",
+    "trace_id": "7e147177-0e22-4c03-9a9c-fbcb1ed1738a"
+  },
+  "stderr": ""
+}

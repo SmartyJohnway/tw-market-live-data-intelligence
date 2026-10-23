@@ -1,0 +1,46 @@
+{
+  "command": "init",
+  "bundle": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\App A\\TW-Market-1.0.0-windows-x64",
+  "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4",
+  "returncode": 0,
+  "result": {
+    "duration_ms": 2136.32,
+    "identity": {
+      "root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\security-master",
+      "status": "NOT_INITIALIZED"
+    },
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\App A\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\cache",
+      "diagnostics": {
+        "home_source": "cli",
+        "settings_origins": {
+          "host": "settings",
+          "port": "settings"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 8000,
+      "governed_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\governed",
+      "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4",
+      "installation_id": "2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5",
+      "installation_metadata_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4",
+      "temp_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\watchlists"
+    },
+    "network_on_init": false,
+    "operation_id": "828cdc0d-7ed2-4fdb-b3ec-42c7cc556abb",
+    "started_at": "2026-10-23T12:58:37.239451+00:00",
+    "status": "INSTALLATION_READY",
+    "trace_id": "1c9b2062-06ab-4588-9ed0-e5adc3c8bd43"
+  },
+  "stderr": ""
+}

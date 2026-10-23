@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "records": [
+    "p1_relocation.json",
+    "p3_fresh_win11.json",
+    "p6_docker_portability.json"
+  ],
+  "status_doctor_before_init_no_state_creation": true
+}

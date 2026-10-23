@@ -1,0 +1,44 @@
+{
+  "command": "init",
+  "returncode": 0,
+  "result": {
+    "duration_ms": 807.34,
+    "identity": {
+      "root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "status": "NOT_INITIALIZED"
+    },
+    "installation": {
+      "app_root": "C:\\A5\\Unicode 路徑\\deeper app\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\cache",
+      "diagnostics": {
+        "home_source": "cli",
+        "settings_origins": {
+          "host": "settings",
+          "port": "settings"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 8000,
+      "governed_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\governed",
+      "home": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market",
+      "installation_id": "270e85d8-595c-4331-845c-c37077cdacbd",
+      "installation_metadata_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs",
+      "operational_event_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\runtime",
+      "security_master_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "settings_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\config\\settings.json",
+      "state_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state",
+      "temp_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\temp",
+      "watchlist_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\watchlists"
+    },
+    "network_on_init": false,
+    "operation_id": "f2e2587b-6e42-40d9-a05c-1a57d4fd8645",
+    "started_at": "2026-10-23T13:04:25.257516+00:00",
+    "status": "INSTALLATION_READY",
+    "trace_id": "820f1b0e-b714-4b04-982d-3641bd2674f1"
+  },
+  "stderr": ""
+}

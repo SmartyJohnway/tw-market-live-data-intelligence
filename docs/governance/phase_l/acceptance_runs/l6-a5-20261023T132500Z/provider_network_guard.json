@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "guard_sources": [
+    "harness/host_guard.py",
+    "harness/python_guard.py",
+    "harness/sandbox/runtime_guard.py"
+  ],
+  "provider_attempts": 0,
+  "Docker_boundary": "host-loopback published only; peer403; nonloopback TCP unreachable"
+}

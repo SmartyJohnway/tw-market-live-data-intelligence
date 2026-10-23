@@ -1,0 +1,5 @@
+{
+  "status": "PASS",
+  "record": "configuration_precedence.json",
+  "order": "CLI > ENV > persisted settings > product defaults"
+}

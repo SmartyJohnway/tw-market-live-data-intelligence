@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "records": [
+    "p4_state_portability.json",
+    "cross_profile_probe.json"
+  ],
+  "canonical_L2_only": true,
+  "CORE_FULL_GOVERNED_verified": true,
+  "restore": "isolated only; explicit existing A1/A2 root override for supported use; NONCANONICAL_ROOT_OVERRIDE disclosed",
+  "new_activation_engine": false,
+  "source_identity_provenance_only": true
+}

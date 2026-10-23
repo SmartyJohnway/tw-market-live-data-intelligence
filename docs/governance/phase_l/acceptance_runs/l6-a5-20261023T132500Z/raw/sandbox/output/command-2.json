@@ -1,0 +1,51 @@
+{
+  "command": "doctor",
+  "returncode": 0,
+  "result": {
+    "checks": [
+      {
+        "name": "installation",
+        "reason_code": "INSTALLATION_NOT_INITIALIZED",
+        "status": "WARN"
+      }
+    ],
+    "duration_ms": 14.44,
+    "identity": {
+      "reason_code": "INSTALLATION_NOT_INITIALIZED",
+      "status": "UNKNOWN"
+    },
+    "installation": {
+      "app_root": "C:\\A5\\Unicode 路徑\\deeper app\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\cache",
+      "diagnostics": {
+        "home_source": "platform_default",
+        "settings_origins": {
+          "host": "product_default",
+          "port": "product_default"
+        },
+        "state_root_source": "cli_or_env_or_default"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 8000,
+      "governed_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\governed",
+      "home": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market",
+      "installation_id": null,
+      "installation_metadata_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\meta\\installation.json",
+      "installation_status": "INSTALLATION_NOT_INITIALIZED",
+      "logs_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs",
+      "operational_event_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs\\operational-events.jsonl",
+      "runtime_root": null,
+      "security_master_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "settings_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\config\\settings.json",
+      "state_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state",
+      "temp_root": null,
+      "watchlist_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\watchlists"
+    },
+    "operation_id": "75df9efe-c315-4d32-9d1a-d53480c862e5",
+    "reason_code": "INSTALLATION_NOT_INITIALIZED",
+    "started_at": "2026-10-23T13:04:21.117287+00:00",
+    "status": "INSTALLATION_NOT_INITIALIZED",
+    "trace_id": "10609e91-3174-4695-b29a-f7f67c00a403"
+  },
+  "stderr": ""
+}

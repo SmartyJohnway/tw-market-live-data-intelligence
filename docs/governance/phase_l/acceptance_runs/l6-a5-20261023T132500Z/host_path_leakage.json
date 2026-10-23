@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "scope": "decompressed first-party Native members plus exact Git-blob Docker application members",
+  "first_party_members": 289,
+  "forbidden_member_names": [],
+  "host_path_matches": [],
+  "third_party_adjudication": "native_package_identity.json",
+  "raw_compressed_bytes_authoritative": false
+}

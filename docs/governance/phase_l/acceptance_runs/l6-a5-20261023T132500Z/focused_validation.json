@@ -1,0 +1,17 @@
+{
+  "A5_L2_tests": {
+    "passed": 61,
+    "failed": 0
+  },
+  "expanded": {
+    "passed": 525,
+    "failed": 2,
+    "overall": "FAIL"
+  },
+  "historical_failures": [
+    "test_72_dimension_cells_keep_exact_frozen_classifications",
+    "test_entire_validator_is_offline_and_does_not_write"
+  ],
+  "applicability": "historical L5-A5 assertion forbids any protected product changes after 09d6; exact entry already fails both after accepted A4. Later explicit A5 authorizes bounded L2 adapter. Tests unchanged; not a current contract regression. Current applicable 525 checks pass.",
+  "base_reproduction": "raw/base-historical-l5.xml"
+}

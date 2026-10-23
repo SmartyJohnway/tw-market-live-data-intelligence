@@ -1,0 +1,326 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "label": "settings",
+      "result": {
+        "checks": [],
+        "configuration": {
+          "host": "127.0.0.1",
+          "port": 18461,
+          "sources": {
+            "host": "settings",
+            "port": "settings"
+          }
+        },
+        "duration_ms": 5614.51,
+        "identity": {
+          "root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "status": "NOT_INITIALIZED"
+        },
+        "installation": {
+          "app_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\app",
+          "cache_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\cache",
+          "diagnostics": {
+            "home_source": "cli",
+            "settings_origins": {
+              "host": "settings",
+              "port": "settings"
+            },
+            "state_root_source": "metadata"
+          },
+          "effective_service_host": "127.0.0.1",
+          "effective_service_port": 18461,
+          "governed_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\governed",
+          "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home",
+          "installation_id": "62dc3a69-9d61-46b4-8254-842ff3794126",
+          "installation_metadata_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\meta\\installation.json",
+          "installation_status": "READY",
+          "logs_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs",
+          "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs\\operational-events.jsonl",
+          "runtime_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\runtime",
+          "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "settings_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\config\\settings.json",
+          "state_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state",
+          "temp_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\temp",
+          "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\watchlists"
+        },
+        "mcp": {
+          "local_service_reachable": false,
+          "sdk_compatible": true,
+          "service_url": "http://127.0.0.1:18461",
+          "status": "SERVICE_UNREACHABLE"
+        },
+        "operation_id": "6d76cf73-deaa-40db-824b-a7fb6e9852b6",
+        "paths": {
+          "control_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\governed",
+          "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs\\operational-events.jsonl",
+          "ownership_file": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\runtime\\service-18461.json",
+          "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\watchlists"
+        },
+        "readiness": {
+          "preload": "READY",
+          "routes": {
+            "projection": "UNKNOWN_SERVICE_UNAVAILABLE"
+          },
+          "schema_catalog": "READY"
+        },
+        "resources": {
+          "application_root_disk_free_bytes": 127079813120,
+          "managed_service_process_memory_bytes": null,
+          "runtime_root_disk_free_bytes": 127079813120
+        },
+        "service": {
+          "alive": false,
+          "health": null,
+          "host": "127.0.0.1",
+          "port": 18461,
+          "process": "NOT_RUNNING",
+          "url": "http://127.0.0.1:18461"
+        },
+        "started_at": "2026-10-23T13:25:23.771751+00:00",
+        "status": "NOT_RUNNING",
+        "trace_id": "b13f6b00-1b60-41bf-af09-64846289884d"
+      },
+      "stderr": ""
+    },
+    {
+      "label": "environment",
+      "result": {
+        "checks": [],
+        "configuration": {
+          "host": "localhost",
+          "port": 18462,
+          "sources": {
+            "host": "env",
+            "port": "env"
+          }
+        },
+        "duration_ms": 2969.36,
+        "identity": {
+          "root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "status": "NOT_INITIALIZED"
+        },
+        "installation": {
+          "app_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\app",
+          "cache_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\cache",
+          "diagnostics": {
+            "home_source": "env",
+            "settings_origins": {
+              "host": "env",
+              "port": "env"
+            },
+            "state_root_source": "metadata"
+          },
+          "effective_service_host": "localhost",
+          "effective_service_port": 18462,
+          "governed_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\governed",
+          "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home",
+          "installation_id": "62dc3a69-9d61-46b4-8254-842ff3794126",
+          "installation_metadata_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\meta\\installation.json",
+          "installation_status": "READY",
+          "logs_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs",
+          "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs\\operational-events.jsonl",
+          "runtime_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\runtime",
+          "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "settings_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\config\\settings.json",
+          "state_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state",
+          "temp_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\temp",
+          "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\watchlists"
+        },
+        "mcp": {
+          "local_service_reachable": false,
+          "sdk_compatible": true,
+          "service_url": "http://127.0.0.1:18462",
+          "status": "SERVICE_UNREACHABLE"
+        },
+        "operation_id": "d37fac46-c30c-49e2-8f74-1082b167f94c",
+        "paths": {
+          "control_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\governed",
+          "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs\\operational-events.jsonl",
+          "ownership_file": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\runtime\\service-18462.json",
+          "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\watchlists"
+        },
+        "readiness": {
+          "preload": "READY",
+          "routes": {
+            "projection": "UNKNOWN_SERVICE_UNAVAILABLE"
+          },
+          "schema_catalog": "READY"
+        },
+        "resources": {
+          "application_root_disk_free_bytes": 127079690240,
+          "managed_service_process_memory_bytes": null,
+          "runtime_root_disk_free_bytes": 127079690240
+        },
+        "service": {
+          "alive": false,
+          "health": null,
+          "host": "localhost",
+          "port": 18462,
+          "process": "NOT_RUNNING",
+          "url": "http://localhost:18462"
+        },
+        "started_at": "2026-10-23T13:25:31.813642+00:00",
+        "status": "NOT_RUNNING",
+        "trace_id": "c1913f30-c2d0-49d2-83e0-7963430d6433"
+      },
+      "stderr": ""
+    },
+    {
+      "label": "CLI",
+      "result": {
+        "checks": [],
+        "configuration": {
+          "host": "::1",
+          "port": 18463,
+          "sources": {
+            "host": "cli",
+            "port": "cli"
+          }
+        },
+        "duration_ms": 3165.74,
+        "identity": {
+          "root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "status": "NOT_INITIALIZED"
+        },
+        "installation": {
+          "app_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\app",
+          "cache_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\cache",
+          "diagnostics": {
+            "home_source": "cli",
+            "settings_origins": {
+              "host": "cli",
+              "port": "cli"
+            },
+            "state_root_source": "metadata"
+          },
+          "effective_service_host": "::1",
+          "effective_service_port": 18463,
+          "governed_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\governed",
+          "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home",
+          "installation_id": "62dc3a69-9d61-46b4-8254-842ff3794126",
+          "installation_metadata_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\meta\\installation.json",
+          "installation_status": "READY",
+          "logs_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs",
+          "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs\\operational-events.jsonl",
+          "runtime_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\runtime",
+          "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "settings_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\config\\settings.json",
+          "state_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state",
+          "temp_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\temp",
+          "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\watchlists"
+        },
+        "mcp": {
+          "local_service_reachable": false,
+          "sdk_compatible": true,
+          "service_url": "UNAVAILABLE",
+          "status": "SERVICE_UNREACHABLE"
+        },
+        "operation_id": "5fda1483-f8c6-486d-959a-0f8f0fb6b646",
+        "paths": {
+          "control_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\governed",
+          "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs\\operational-events.jsonl",
+          "ownership_file": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\runtime\\service-18463.json",
+          "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+          "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\watchlists"
+        },
+        "readiness": {
+          "preload": "READY",
+          "routes": {
+            "projection": "UNKNOWN_SERVICE_UNAVAILABLE"
+          },
+          "schema_catalog": "READY"
+        },
+        "resources": {
+          "application_root_disk_free_bytes": 127079542784,
+          "managed_service_process_memory_bytes": null,
+          "runtime_root_disk_free_bytes": 127079542784
+        },
+        "service": {
+          "alive": false,
+          "health": null,
+          "host": "::1",
+          "port": 18463,
+          "process": "NOT_RUNNING",
+          "url": "http://::1:18463"
+        },
+        "started_at": "2026-10-23T13:25:37.208909+00:00",
+        "status": "NOT_RUNNING",
+        "trace_id": "d12c7d6a-f50f-4d24-a182-5e2bfb76ab06"
+      },
+      "stderr": ""
+    },
+    {
+      "label": "product-default",
+      "result": {
+        "checks": [
+          {
+            "name": "installation",
+            "reason_code": "INSTALLATION_NOT_INITIALIZED",
+            "status": "WARN"
+          }
+        ],
+        "duration_ms": 17.3,
+        "identity": {
+          "reason_code": "INSTALLATION_NOT_INITIALIZED",
+          "status": "UNKNOWN"
+        },
+        "installation": {
+          "app_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\app",
+          "cache_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\cache",
+          "diagnostics": {
+            "home_source": "cli",
+            "settings_origins": {
+              "host": "product_default",
+              "port": "product_default"
+            },
+            "state_root_source": "cli_or_env_or_default"
+          },
+          "effective_service_host": "127.0.0.1",
+          "effective_service_port": 8000,
+          "governed_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\state\\governed",
+          "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default",
+          "installation_id": null,
+          "installation_metadata_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\meta\\installation.json",
+          "installation_status": "INSTALLATION_NOT_INITIALIZED",
+          "logs_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\logs",
+          "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\logs\\operational-events.jsonl",
+          "runtime_root": null,
+          "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\state\\security-master",
+          "settings_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\config\\settings.json",
+          "state_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\state",
+          "temp_root": null,
+          "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\not-initialized-default\\state\\watchlists"
+        },
+        "operation_id": "4467709c-804d-445a-b499-59316a67e3fe",
+        "reason_code": "INSTALLATION_NOT_INITIALIZED",
+        "started_at": "2026-10-23T13:25:42.731089+00:00",
+        "status": "INSTALLATION_NOT_INITIALIZED",
+        "trace_id": "58636e29-ac9b-4e81-9376-041844e57d1c"
+      },
+      "stderr": ""
+    }
+  ],
+  "home_CLI_over_ENV": true,
+  "ENV_home_selection": true,
+  "Windows_default_HOME_evidence": "Sandbox p2/p3 actual profile; no host production HOME used",
+  "state_root_conflict": {
+    "command": "status",
+    "bundle": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64",
+    "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home",
+    "returncode": 1,
+    "result": {
+      "duration_ms": 9.77,
+      "operation_id": "958d020e-6458-4577-ba57-21421165d681",
+      "reason_code": "STATE_ROOT_CONFLICT",
+      "started_at": "2026-10-23T13:25:45.130026+00:00",
+      "status": "FAIL",
+      "trace_id": "e0175511-b758-43de-81d5-bd99e3de931e"
+    },
+    "stderr": ""
+  },
+  "installation_id_stable_across_ports": true
+}

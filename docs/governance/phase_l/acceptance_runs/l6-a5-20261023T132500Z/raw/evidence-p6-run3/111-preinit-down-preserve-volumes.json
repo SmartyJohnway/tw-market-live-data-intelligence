@@ -1,0 +1,14 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "down"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": " Network twmarket-l6-a5-preinit-3707c553_default Removing \n Network twmarket-l6-a5-preinit-3707c553_default Removed \n"
+}

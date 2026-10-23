@@ -1,0 +1,9 @@
+{
+  "application_member_count": 277,
+  "candidate_commit": "3707c553497240f6ff0f7e5358301395fd60205a",
+  "candidate_tree": "946e765b26b2520f623672dc49a51c913139f44f",
+  "context": "C:\\twmarket_temp\\l6-a5\\final-run\\build\\docker-final",
+  "dependency_lock_sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88",
+  "status": "PASS",
+  "wheel_count": 48
+}

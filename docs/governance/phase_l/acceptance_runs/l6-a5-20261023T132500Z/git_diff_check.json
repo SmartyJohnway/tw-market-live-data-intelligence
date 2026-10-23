@@ -1,0 +1,5 @@
+{
+  "status": "PASS",
+  "command": "git diff --cached --check",
+  "evidence": "verified after evidence text normalization and final staging; required before commit"
+}

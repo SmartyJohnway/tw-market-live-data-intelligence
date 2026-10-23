@@ -1,0 +1,181 @@
+{
+  "command": "doctor",
+  "returncode": 0,
+  "result": {
+    "checks": [
+      {
+        "detail": {
+          "version": "3.13.9"
+        },
+        "name": "python",
+        "status": "PASS"
+      },
+      {
+        "name": "dependencies",
+        "status": "PASS"
+      },
+      {
+        "name": "environment_verification",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "security_master_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "watchlist_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "control_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "event_file_exists": false,
+          "parent_ready": true
+        },
+        "name": "operational_event_sink",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "application_root_disk_free_bytes": 82594340864,
+          "managed_service_process_memory_bytes": null,
+          "runtime_root_disk_free_bytes": 82594340864
+        },
+        "name": "resource_snapshot",
+        "status": "PASS"
+      },
+      {
+        "name": "security_master",
+        "reason_code": "SECURITY_MASTER_NOT_INITIALIZED",
+        "status": "WARN"
+      },
+      {
+        "name": "process_ownership",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "security_master_status": "NOT_INITIALIZED",
+          "status": "not_initialized"
+        },
+        "name": "workbench_preload",
+        "status": "PASS"
+      },
+      {
+        "name": "local_service",
+        "reason_code": "SERVICE_UNREACHABLE",
+        "status": "WARN"
+      },
+      {
+        "name": "route_capability_projection",
+        "reason_code": "SERVICE_UNREACHABLE",
+        "status": "WARN"
+      },
+      {
+        "detail": {
+          "tool_count": 6
+        },
+        "name": "mcp_tool_contract",
+        "status": "PASS"
+      },
+      {
+        "name": "mcp_startup_check",
+        "reason_code": "SERVICE_UNREACHABLE",
+        "status": "WARN"
+      }
+    ],
+    "configuration": {
+      "host": "127.0.0.1",
+      "port": 8000,
+      "sources": {
+        "host": "settings",
+        "port": "settings"
+      }
+    },
+    "duration_ms": 13433.86,
+    "identity": {
+      "root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "status": "NOT_INITIALIZED"
+    },
+    "installation": {
+      "app_root": "C:\\A5\\Unicode 路徑\\deeper app\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\cache",
+      "diagnostics": {
+        "home_source": "platform_default",
+        "settings_origins": {
+          "host": "settings",
+          "port": "settings"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 8000,
+      "governed_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\governed",
+      "home": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market",
+      "installation_id": "270e85d8-595c-4331-845c-c37077cdacbd",
+      "installation_metadata_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs",
+      "operational_event_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\runtime",
+      "security_master_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "settings_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\config\\settings.json",
+      "state_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state",
+      "temp_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\temp",
+      "watchlist_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\watchlists"
+    },
+    "mcp": {
+      "local_service_reachable": false,
+      "sdk_compatible": true,
+      "service_url": "http://127.0.0.1:8000",
+      "status": "SERVICE_UNREACHABLE"
+    },
+    "operation_id": "cf2b6a30-392e-4f87-805a-c2334dd4f508",
+    "paths": {
+      "control_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\governed",
+      "operational_event_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs\\operational-events.jsonl",
+      "ownership_file": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\runtime\\service-8000.json",
+      "security_master_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "watchlist_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\watchlists"
+    },
+    "readiness": {
+      "preload": "READY",
+      "routes": {
+        "projection": "UNKNOWN_SERVICE_UNAVAILABLE"
+      },
+      "schema_catalog": "READY"
+    },
+    "resources": {
+      "application_root_disk_free_bytes": 82594340864,
+      "managed_service_process_memory_bytes": null,
+      "runtime_root_disk_free_bytes": 82594340864
+    },
+    "service": {
+      "alive": false,
+      "health": null,
+      "host": "127.0.0.1",
+      "port": 8000,
+      "process": "NOT_RUNNING",
+      "url": "http://127.0.0.1:8000"
+    },
+    "started_at": "2026-10-23T13:04:36.796921+00:00",
+    "status": "WARN",
+    "trace_id": "26c3e416-23e0-4e08-b5b4-2961ab265313"
+  },
+  "stderr": ""
+}

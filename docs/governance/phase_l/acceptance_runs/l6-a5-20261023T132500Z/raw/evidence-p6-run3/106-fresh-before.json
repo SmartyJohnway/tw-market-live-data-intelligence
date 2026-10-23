@@ -1,0 +1,22 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "run",
+    "--rm",
+    "--no-deps",
+    "--entrypoint",
+    "python",
+    "local-service",
+    "-B",
+    "-c",
+    "import pathlib,json,hashlib; print(json.dumps({k:{'files':{p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()},'directories':sorted(p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_dir())} for k,root in {'home':pathlib.Path('/var/lib/tw-market/home'),'state':pathlib.Path('/var/lib/tw-market/state')}.items()}))"
+  ],
+  "returncode": 0,
+  "stdout": "{\"home\": {\"files\": {}, \"directories\": []}, \"state\": {\"files\": {}, \"directories\": []}}\n",
+  "stderr": " Volume twmarket-l6-a5-preinit-3707c553_state Creating \n Volume twmarket-l6-a5-preinit-3707c553_state Creating \n Volume twmarket-l6-a5-preinit-3707c553_home Creating \n Network twmarket-l6-a5-preinit-3707c553_default Creating \n Volume twmarket-l6-a5-preinit-3707c553_home Creating \n Network twmarket-l6-a5-preinit-3707c553_default Creating \n Volume twmarket-l6-a5-preinit-3707c553_state Created \n Volume twmarket-l6-a5-preinit-3707c553_state Created \n Volume twmarket-l6-a5-preinit-3707c553_home Created \n Volume twmarket-l6-a5-preinit-3707c553_home Created \n Network twmarket-l6-a5-preinit-3707c553_default Created \n Network twmarket-l6-a5-preinit-3707c553_default Created \n Container twmarket-l6-a5-preinit-3707c553-local-service-run-54d57882ac15 Creating \n Container twmarket-l6-a5-preinit-3707c553-local-service-run-54d57882ac15 Created \n"
+}

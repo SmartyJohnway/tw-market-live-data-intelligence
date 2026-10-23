@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "changed_source_files": [
+    "packaging_native/resource-policy.json",
+    "scripts/build_docker_context.py",
+    "scripts/build_native_distribution.py",
+    "scripts/tw_market_l2_adapter.py",
+    "server/services/unified_backup.py",
+    "tests/unit/test_l6_a5_build_entry.py",
+    "tests/unit/test_l6_a5_l2_adapter.py"
+  ],
+  "dependency_version_changes": 0,
+  "historical_evidence_modified": false,
+  "D_drive_access_commands": 0,
+  "production_state_mutations": 0,
+  "live_provider_attempts": 0
+}

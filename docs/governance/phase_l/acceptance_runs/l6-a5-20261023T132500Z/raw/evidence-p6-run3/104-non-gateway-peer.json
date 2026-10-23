@@ -1,0 +1,19 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--read-only",
+    "--network",
+    "twmarket-l6-a5-3707c553-r3_default",
+    "--entrypoint",
+    "python",
+    "tw-market-local-service:l6-a5-3707c553-replacement",
+    "-B",
+    "-c",
+    "import urllib.request,urllib.error\nopener=urllib.request.build_opener(urllib.request.ProxyHandler({}))\ntry:opener.open('http://172.18.0.2:8000/api/health',timeout=5);raise AssertionError('non-gateway peer admitted')\nexcept urllib.error.HTTPError as e:print(e.code);assert e.code==403"
+  ],
+  "returncode": 0,
+  "stdout": "403\n",
+  "stderr": ""
+}

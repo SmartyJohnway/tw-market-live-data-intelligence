@@ -1,0 +1,22 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "run",
+    "--rm",
+    "--no-deps",
+    "--entrypoint",
+    "python",
+    "local-service",
+    "-B",
+    "-c",
+    "import os,sys,runpy; exec(compile(os.environ[\"A5_PYTHON_GUARD_SOURCE\"],\"<a5_guard>\",\"exec\")); sys.argv=['scripts.tw_market','status','--json']; runpy.run_module('scripts.tw_market',run_name='__main__')"
+  ],
+  "returncode": 0,
+  "stdout": "{\"checks\": [{\"name\": \"installation\", \"reason_code\": \"INSTALLATION_NOT_INITIALIZED\", \"status\": \"WARN\"}], \"duration_ms\": 5.66, \"identity\": {\"reason_code\": \"INSTALLATION_NOT_INITIALIZED\", \"status\": \"UNKNOWN\"}, \"installation\": {\"app_root\": \"/opt/tw-market/app\", \"cache_root\": \"/var/lib/tw-market/home/cache\", \"diagnostics\": {\"home_source\": \"env\", \"settings_origins\": {\"host\": \"env\", \"port\": \"env\"}, \"state_root_source\": \"cli_or_env_or_default\"}, \"effective_service_host\": \"127.0.0.1\", \"effective_service_port\": 8000, \"governed_root\": \"/var/lib/tw-market/state/governed\", \"home\": \"/var/lib/tw-market/home\", \"installation_id\": null, \"installation_metadata_path\": \"/var/lib/tw-market/home/meta/installation.json\", \"installation_status\": \"INSTALLATION_NOT_INITIALIZED\", \"logs_root\": \"/var/lib/tw-market/home/logs\", \"operational_event_path\": \"/var/lib/tw-market/home/logs/operational-events.jsonl\", \"runtime_root\": null, \"security_master_root\": \"/var/lib/tw-market/state/security-master\", \"settings_path\": \"/var/lib/tw-market/home/config/settings.json\", \"state_root\": \"/var/lib/tw-market/state\", \"temp_root\": null, \"watchlist_root\": \"/var/lib/tw-market/state/watchlists\"}, \"operation_id\": \"0a0e8568-fdb8-452d-af08-a02a39a8328c\", \"reason_code\": \"INSTALLATION_NOT_INITIALIZED\", \"started_at\": \"2026-10-23T13:09:40.829966+00:00\", \"status\": \"INSTALLATION_NOT_INITIALIZED\", \"trace_id\": \"d6686ca9-c446-4e8b-9d6a-7b495b6da7af\"}\n",
+  "stderr": " Volume twmarket-l6-a5-3707c553-r3_state Creating \n Volume twmarket-l6-a5-3707c553-r3_state Creating \n Volume twmarket-l6-a5-3707c553-r3_home Creating \n Volume twmarket-l6-a5-3707c553-r3_home Creating \n Network twmarket-l6-a5-3707c553-r3_default Creating \n Network twmarket-l6-a5-3707c553-r3_default Creating \n Volume twmarket-l6-a5-3707c553-r3_state Created \n Volume twmarket-l6-a5-3707c553-r3_state Created \n Volume twmarket-l6-a5-3707c553-r3_home Created \n Volume twmarket-l6-a5-3707c553-r3_home Created \n Network twmarket-l6-a5-3707c553-r3_default Created \n Network twmarket-l6-a5-3707c553-r3_default Created \n Container twmarket-l6-a5-3707c553-r3-local-service-run-71745eb84bad Creating \n Container twmarket-l6-a5-3707c553-r3-local-service-run-71745eb84bad Created \n"
+}

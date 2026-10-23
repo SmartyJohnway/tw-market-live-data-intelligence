@@ -1,6 +1,23 @@
 # Phase L — Current Status & Recovery Index
 
-## Current L6-A4 merged state (2026-10-23)
+## Current L6-A5 technical acceptance (2026-10-23)
+
+L6-A5 is `L6_A5_INTEGRATED_P1_P6_PORTABILITY_ACCEPTANCE_PASS`:
+P1=PASS, P2=PASS, P3=PASS, P4=PASS, P5=PASS, P6=PASS.
+Actual fresh Windows Sandbox provides separate P2/P3 evidence. Native and Docker
+acceptance source is `3707c553497240f6ff0f7e5358301395fd60205a`, tree
+`946e765b26b2520f623672dc49a51c913139f44f`. L6-A0 through A4 remain
+Owner-accepted and merged; A5 independent review/Owner acceptance is PENDING.
+Default CI remains 1245 passed/45 failed on exact base and candidate; new failed
+nodes=0. Historical L5 tranche no-change assertions remain recorded failures.
+Phase L/L6 is not closed. Merge, A6, L7, Phase M, installers/releases and image
+publication are NOT AUTHORIZED. Next action: independent review of the A5 PR.
+
+See `docs/governance/phase_l/PHASE_L_L6_A5_INTEGRATED_P1_P6_PORTABILITY_ACCEPTANCE_2026-10-23.md`
+and `docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/`.
+
+
+## Historical L6-A4 merged state (2026-10-23)
 
 L6-A0 through L6-A4 are OWNER-ACCEPTED AND MERGED. L6-A4 Docker Local Service
 Packaging completed under `L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_COMPLETE`, passed

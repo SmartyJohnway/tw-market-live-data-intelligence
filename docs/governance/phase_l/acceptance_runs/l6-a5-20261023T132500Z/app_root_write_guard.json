@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "records": [
+    "p1_relocation.json",
+    "p3_fresh_win11.json",
+    "p4_state_portability.json",
+    "p6_docker_portability.json",
+    "lifecycle_ownership.json"
+  ],
+  "Native": "fingerprint unchanged, propagated audit write guard",
+  "Docker": "read-only rootfs EROFS30"
+}

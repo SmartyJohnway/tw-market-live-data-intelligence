@@ -1,0 +1,89 @@
+{
+  "command": "status",
+  "returncode": 0,
+  "result": {
+    "checks": [],
+    "configuration": {
+      "host": "127.0.0.1",
+      "port": 18453,
+      "sources": {
+        "host": "settings",
+        "port": "cli"
+      }
+    },
+    "duration_ms": 3556.06,
+    "identity": {
+      "release_id": "security-master-20261023T000000Z",
+      "root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "status": "ACTIVE"
+    },
+    "installation": {
+      "app_root": "C:\\A5\\Unicode 路徑\\deeper app\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\cache",
+      "diagnostics": {
+        "home_source": "platform_default",
+        "settings_origins": {
+          "host": "settings",
+          "port": "cli"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 18453,
+      "governed_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\governed",
+      "home": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market",
+      "installation_id": "270e85d8-595c-4331-845c-c37077cdacbd",
+      "installation_metadata_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs",
+      "operational_event_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\runtime",
+      "security_master_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "settings_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\config\\settings.json",
+      "state_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state",
+      "temp_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\temp",
+      "watchlist_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\watchlists"
+    },
+    "mcp": {
+      "local_service_reachable": true,
+      "sdk_compatible": true,
+      "service_url": "http://127.0.0.1:18453",
+      "status": "READY"
+    },
+    "operation_id": "c24f5e25-2380-4a8c-84ad-2a34459772d6",
+    "paths": {
+      "control_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\governed",
+      "operational_event_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs\\operational-events.jsonl",
+      "ownership_file": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\runtime\\service-18453.json",
+      "security_master_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "watchlist_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\watchlists"
+    },
+    "readiness": {
+      "preload": "READY",
+      "routes": {
+        "capability_count": 14,
+        "projection": "READY"
+      },
+      "schema_catalog": "READY"
+    },
+    "resources": {
+      "application_root_disk_free_bytes": 82594291712,
+      "managed_service_process_memory_bytes": 4009984,
+      "runtime_root_disk_free_bytes": 82594291712
+    },
+    "service": {
+      "alive": true,
+      "health": {
+        "status": "healthy"
+      },
+      "host": "127.0.0.1",
+      "port": 18453,
+      "process": "RUNNING",
+      "url": "http://127.0.0.1:18453"
+    },
+    "started_at": "2026-10-23T13:05:37.182578+00:00",
+    "status": "SERVICE_ALIVE",
+    "trace_id": "1be596b4-c11e-4328-b3a9-dadf5ba04ed6"
+  },
+  "stderr": ""
+}

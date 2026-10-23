@@ -1,0 +1,9 @@
+<Configuration>
+  <Networking>Disable</Networking>
+  <ClipboardRedirection>Disable</ClipboardRedirection>
+  <MappedFolders>
+    <MappedFolder><HostFolder>C:\twmarket_temp\l6-a5\final-run\sandbox\input</HostFolder><ReadOnly>true</ReadOnly></MappedFolder>
+    <MappedFolder><HostFolder>C:\twmarket_temp\l6-a5\final-run\sandbox\output</HostFolder><ReadOnly>false</ReadOnly></MappedFolder>
+  </MappedFolders>
+  <LogonCommand><Command>powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\WDAGUtilityAccount\Desktop\input\fresh.ps1</Command></LogonCommand>
+</Configuration>

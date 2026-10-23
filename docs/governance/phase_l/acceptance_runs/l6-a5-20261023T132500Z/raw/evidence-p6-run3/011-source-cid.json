@@ -1,0 +1,14 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "ps",
+    "-q",
+    "local-service"
+  ],
+  "returncode": 0,
+  "stdout": "a34b1ba261ecea7cdc860c200c1386928b323dc0c3942a6c00a64790a3cd56cb\n",
+  "stderr": ""
+}

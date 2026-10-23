@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "source_profile": "Native Windows Package C",
+  "destination_profile": "Linux/amd64 Docker Local Service",
+  "tier": "CORE",
+  "backup_manifest_sha256": "435fd6f2b681388c62263131d24a25464f87538544b09659a894a4c9bee37cbd",
+  "source_installation_id": "fedac4a9-1cd0-4062-83a6-e5a5af136d34",
+  "destination_installation_id": "55c9e8ad-cb8b-4843-a396-a6836d507582",
+  "destination_metadata_sha256": "35df25c478ef301769be41b8a925816092c2a4992f3863a1eae06995fe955d3c",
+  "restore": {
+    "restore_status": "RESTORE_COMPLETED",
+    "status": "RESTORED_STATE_VERIFIED",
+    "restore_path": "/tmp/isolated-restore",
+    "restore_scope": "EXPLICIT_DECLARED_MEMBERS_ONLY",
+    "restore_id": "a5-cross-profile",
+    "backup_id": "a5-CORE",
+    "member_count": 7,
+    "total_size_bytes": 53739
+  },
+  "explicit_use": "existing SM loader and Watchlist reader",
+  "source_id_provenance_only": true,
+  "network": "none",
+  "provider_attempts": 0,
+  "canonical_L2_transfer": true,
+  "transport_only": "exact manifest + declared backup files through stdin; no direct active-state or volume copying"
+}

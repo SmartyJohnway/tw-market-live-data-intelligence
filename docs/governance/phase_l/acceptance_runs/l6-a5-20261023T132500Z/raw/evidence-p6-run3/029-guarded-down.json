@@ -1,0 +1,14 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "down"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": " Container twmarket-l6-a5-3707c553-r3-local-service-1 Stopping \n Container twmarket-l6-a5-3707c553-r3-local-service-1 Stopped \n Container twmarket-l6-a5-3707c553-r3-local-service-1 Removing \n Container twmarket-l6-a5-3707c553-r3-local-service-1 Removed \n Network twmarket-l6-a5-3707c553-r3_default Removing \n Network twmarket-l6-a5-3707c553-r3_default Removed \n"
+}

@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "source_commit": "3707c553497240f6ff0f7e5358301395fd60205a",
+  "source_tree": "946e765b26b2520f623672dc49a51c913139f44f",
+  "source_image": "sha256:2b25c1e54879b0761d3c0a3591236cb2a1f820c1530fee25f643ec93cf962675",
+  "replacement_image": "sha256:98bafa33505e0d5f4c088e58949e388768b21b0a0741f4da5649eff539f91323",
+  "base": "python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741",
+  "application_member_count": 277,
+  "post_reboot_note": "source image retained; replacement image ID no longer locally resolvable after reboot; completed persisted runtime evidence retained",
+  "publication": false
+}

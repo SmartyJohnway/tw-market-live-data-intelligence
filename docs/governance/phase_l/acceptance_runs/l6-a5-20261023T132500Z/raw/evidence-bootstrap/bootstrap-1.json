@@ -1,0 +1,14 @@
+{
+  "returncode": 0,
+  "stdout": "No broken requirements found.\r\n{\"bundle_root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\native-run4\\\\\\u6df1\\u5c64 \\u8def\\u5f91\\\\application B\\\\deeper\\\\TW-Market-1.0.0-windows-x64\", \"dependency_count\": 49, \"manifest_canonical_sha256\": \"74a956ecdfeeccd3f7e1325223177bfbed4ce55eaa3dd1cf4d8c369c1e72f307\", \"python\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\native-run4\\\\\\u6df1\\u5c64 \\u8def\\u5f91\\\\application B\\\\deeper\\\\TW-Market-1.0.0-windows-x64\\\\runtime\\\\venv\\\\Scripts\\\\python.exe\", \"status\": \"verified-existing\"}\r\n",
+  "stderr": "",
+  "stdout_decode": "utf-8",
+  "stdout_raw_sha256": "70a889dd4567944426edbfb0532840c164d7325d89e7dc5c68660761b5f5e3dd",
+  "summary": {
+    "bundle_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64",
+    "dependency_count": 49,
+    "manifest_canonical_sha256": "74a956ecdfeeccd3f7e1325223177bfbed4ce55eaa3dd1cf4d8c369c1e72f307",
+    "python": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Scripts\\python.exe",
+    "status": "verified-existing"
+  }
+}

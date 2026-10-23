@@ -1,0 +1,9 @@
+{
+  "commit": "3707c553497240f6ff0f7e5358301395fd60205a",
+  "tree": "946e765b26b2520f623672dc49a51c913139f44f",
+  "entry": "d5dac702c25e9728db86e9ef32f4fe8185086b89",
+  "source_frozen_before_final_builds": true,
+  "final_governance_identity": "containing Git commit/tree, recorded explicitly in PR; not the acceptance-source commit",
+  "superseded_source": "c50bb7afe7d4451ddad46502fc69225b688be75c",
+  "repair": "reuse canonical bounded 2 MiB A1 JSON admission; all final runtime evidence rebuilt from 3707"
+}

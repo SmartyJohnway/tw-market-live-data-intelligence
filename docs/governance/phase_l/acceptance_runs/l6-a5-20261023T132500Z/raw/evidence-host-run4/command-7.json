@@ -1,0 +1,183 @@
+{
+  "command": "doctor",
+  "bundle": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\App A\\TW-Market-1.0.0-windows-x64",
+  "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4",
+  "returncode": 0,
+  "result": {
+    "checks": [
+      {
+        "detail": {
+          "version": "3.13.7"
+        },
+        "name": "python",
+        "status": "PASS"
+      },
+      {
+        "name": "dependencies",
+        "status": "PASS"
+      },
+      {
+        "name": "environment_verification",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "security_master_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "watchlist_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "control_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "event_file_exists": true,
+          "parent_ready": true
+        },
+        "name": "operational_event_sink",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "application_root_disk_free_bytes": 129962340352,
+          "managed_service_process_memory_bytes": 4304896,
+          "runtime_root_disk_free_bytes": 129962340352
+        },
+        "name": "resource_snapshot",
+        "status": "PASS"
+      },
+      {
+        "name": "security_master",
+        "reason_code": "SECURITY_MASTER_NOT_INITIALIZED",
+        "status": "WARN"
+      },
+      {
+        "name": "process_ownership",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "security_master_status": "NOT_INITIALIZED",
+          "status": "not_initialized"
+        },
+        "name": "workbench_preload",
+        "status": "PASS"
+      },
+      {
+        "name": "local_service",
+        "status": "PASS"
+      },
+      {
+        "name": "route_capability_projection",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "tool_count": 6
+        },
+        "name": "mcp_tool_contract",
+        "status": "PASS"
+      },
+      {
+        "name": "mcp_startup_check",
+        "status": "PASS"
+      }
+    ],
+    "configuration": {
+      "host": "127.0.0.1",
+      "port": 18451,
+      "sources": {
+        "host": "settings",
+        "port": "cli"
+      }
+    },
+    "duration_ms": 17229.73,
+    "identity": {
+      "root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\security-master",
+      "status": "NOT_INITIALIZED"
+    },
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\App A\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\cache",
+      "diagnostics": {
+        "home_source": "cli",
+        "settings_origins": {
+          "host": "settings",
+          "port": "cli"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 18451,
+      "governed_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\governed",
+      "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4",
+      "installation_id": "2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5",
+      "installation_metadata_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4",
+      "temp_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\watchlists"
+    },
+    "mcp": {
+      "local_service_reachable": true,
+      "sdk_compatible": true,
+      "service_url": "http://127.0.0.1:18451",
+      "status": "READY"
+    },
+    "operation_id": "848cafeb-fcc0-41b4-9fca-556c5c4c668d",
+    "paths": {
+      "control_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\governed",
+      "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\logs\\operational-events.jsonl",
+      "ownership_file": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5\\runtime\\service-18451.json",
+      "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\security-master",
+      "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\watchlists"
+    },
+    "readiness": {
+      "preload": "READY",
+      "routes": {
+        "capability_count": 14,
+        "projection": "READY"
+      },
+      "schema_catalog": "READY"
+    },
+    "resources": {
+      "application_root_disk_free_bytes": 129962340352,
+      "managed_service_process_memory_bytes": 4304896,
+      "runtime_root_disk_free_bytes": 129962340352
+    },
+    "service": {
+      "alive": true,
+      "health": {
+        "status": "healthy"
+      },
+      "host": "127.0.0.1",
+      "port": 18451,
+      "process": "RUNNING",
+      "url": "http://127.0.0.1:18451"
+    },
+    "started_at": "2026-10-23T12:58:58.484720+00:00",
+    "status": "WARN",
+    "trace_id": "09eec5e7-4ad9-4335-a13b-acaf2939d323"
+  },
+  "stderr": ""
+}

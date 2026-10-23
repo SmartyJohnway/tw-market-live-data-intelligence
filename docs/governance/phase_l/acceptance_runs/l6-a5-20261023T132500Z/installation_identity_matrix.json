@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "records": {
+    "p1_relocation": "evidence-host-run4/p1_relocation.json",
+    "p2_distinct_user": "sandbox/output/p2_distinct_user.json",
+    "p3_fresh_win11": "sandbox/output/p3_fresh_win11.json",
+    "p4_state_portability": "evidence-p4/p4_state_portability.json",
+    "p5_upgrade_rollback": "p5_upgrade_rollback.json",
+    "p6_docker_portability": "evidence-p6-run3/p6_docker_portability.json",
+    "configuration_precedence": "evidence-configuration/configuration_precedence.json",
+    "lifecycle_ownership": "evidence-configuration/lifecycle_ownership.json",
+    "cross_profile_probe": "cross_profile_probe.json"
+  },
+  "rule": "P1 same identity; P2/P3 fresh guest; P4 fresh destination independent source; P5 unchanged old/new/rollback; P6 unchanged replacement"
+}

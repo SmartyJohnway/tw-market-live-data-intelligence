@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "records": [
+    "p1_relocation.json",
+    "p3_fresh_win11.json",
+    "p4_state_portability.json",
+    "p5_upgrade_rollback.json",
+    "p6_docker_portability.json"
+  ],
+  "tools": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ]
+}

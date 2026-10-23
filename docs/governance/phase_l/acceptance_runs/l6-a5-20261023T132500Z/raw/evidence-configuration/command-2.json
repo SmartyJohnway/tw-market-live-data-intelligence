@@ -1,0 +1,15 @@
+{
+  "command": "status",
+  "bundle": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64",
+  "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home",
+  "returncode": 1,
+  "result": {
+    "duration_ms": 9.77,
+    "operation_id": "958d020e-6458-4577-ba57-21421165d681",
+    "reason_code": "STATE_ROOT_CONFLICT",
+    "started_at": "2026-10-23T13:25:45.130026+00:00",
+    "status": "FAIL",
+    "trace_id": "e0175511-b758-43de-81d5-bd99e3de931e"
+  },
+  "stderr": ""
+}
