@@ -1,0 +1,7 @@
+{
+  "strategy": "POST-INCIDENT CLEAN REIMPLEMENTATION FROM MERGED A2",
+  "lost_commit": "3f4965bf55155c1e176e128c57c05ac0b69fefe8",
+  "lost_tree": "5903859c136afc05201346100b4f4619e9966fb7",
+  "classification": "historical reference only",
+  "old_artifacts_used_as_source": false
+}

@@ -1,0 +1,11 @@
+{
+  "base": "911a841b866795e8d0cd83d80b30b34701aa5980",
+  "base_tree": "72234b87fb3d47758c196c2ac80cc88549463837",
+  "fetch_verified": true,
+  "branch": "phase-l/l6-a3-native-distribution-packaging-clean",
+  "implementation_commits": [
+    "3e0eca3e2bf483bff9626c67c95586ea84658f64",
+    "03774040265dcfd8d78fba9abbb26740b7d90514"
+  ],
+  "implementation_tree": "596e0075806e263d6f1424ed5450c45407f73126"
+}

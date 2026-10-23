@@ -1,0 +1,21 @@
+{
+  "status": "BLOCKED",
+  "disposition": "L6_A3_DEPENDENCY_CLOSURE_BLOCKED",
+  "basis": [
+    "section 18 dependency authority unchanged",
+    "section 33 literal no D drive strings in portable payload",
+    "section 50.27 zero host-path leakage",
+    "section 51 stop condition"
+  ],
+  "finding": "Unchanged upstream wheels contain embedded build/debug paths or examples. They are not evidence of local D access. No exception inferred.",
+  "scanner_limitation": "Builder scans compressed wheel bytes and can false-positive. Separate decompressed-member scan confirms actual strings; 213 matches across 7 wheels/80 members, not all in cryptography.",
+  "other_unresolved_findings": [
+    "Runtime AST closure omitted package-initializer imports controlled_dispatch/orchestrator and transitive closure.",
+    "Bootstrap, lifecycle, MCP, SM, relocation, immutability and offline acceptance not run.",
+    "Current-environment baseline does not reproduce historical 1249/41 counts; no candidate-only comparison completed.",
+    "Initial delegated smoke-test TEMP/TMP confinement was not retained in parent evidence; do not assert a complete OS-wide or all-process filesystem-write proof."
+  ],
+  "package_produced": false,
+  "pr_opened": false,
+  "owner_acceptance": "PENDING"
+}

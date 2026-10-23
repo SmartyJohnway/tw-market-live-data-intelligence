@@ -1,0 +1,817 @@
+{
+  "classification": "upstream_dependency_embedded_paths_not_local_D_access",
+  "scope": "uncompressed wheel member byte scan; regex can also match documentation examples",
+  "total_matches": 213,
+  "affected_wheels": 7,
+  "records": [
+    {
+      "wheel_filename": "cryptography-50.0.1-cp311-abi3-win_amd64.whl",
+      "wheel_sha256": "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648",
+      "member": "cryptography/hazmat/bindings/_rust.pyd",
+      "member_sha256": "6a42262974f0e086c1f2defaff4ccd9fb25046cf193422135e2dda5b4b29b2a2",
+      "match_count": 94,
+      "examples": [
+        "D:\\a\\cryptography\\cryptography\\wheelhouse\\.tmpmxvUr3\\cryptography-50.0.1\\target\\release\\build\\cryptography-cffi-f8b77b32520603a8\\out\\_openssl.c",
+        "D:\\a\\infra\\infra\\openssl-4.0.2\\crypto\\err\\err_local.h",
+        "D:\\a\\infra\\infra\\openssl-4.0.2\\include\\internal/packet.h"
+      ]
+    },
+    {
+      "wheel_filename": "cryptography-50.0.1-cp311-abi3-win_amd64.whl",
+      "wheel_sha256": "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648",
+      "member": "cryptography-50.0.1.dist-info/sboms/cryptography-rust.cyclonedx.json",
+      "member_sha256": "ca81fd6162fbb9c39d1c4530c4beb49dd3f938a77cb867f82ce788def949e3ce",
+      "match_count": 28,
+      "examples": [
+        "D:/a/cryptography/cryptography/wheelhouse/.tmpmxvUr3/cryptography-50.0.1/src/rust",
+        "D:/a/cryptography/cryptography/wheelhouse/.tmpmxvUr3/cryptography-50.0.1/src/rust/cryptography-cffi",
+        "D:/a/cryptography/cryptography/wheelhouse/.tmpmxvUr3/cryptography-50.0.1/src/rust/cryptography-crypto"
+      ]
+    },
+    {
+      "wheel_filename": "numpy-2.4.6-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+      "member": "numpy/__config__.py",
+      "member_sha256": "f5c32a098061ba3aab277d40752c94204bf3ee71118bb0553061127923f9f906",
+      "match_count": 2,
+      "examples": [
+        "D:/a/numpy-release/numpy-release/.openblas"
+      ]
+    },
+    {
+      "wheel_filename": "numpy-2.4.6-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+      "member": "numpy/random/lib/npyrandom.lib",
+      "member_sha256": "7d5fb6c8c1058e3aa6fa3dc96edb2a5a946fda29287e8ad34b4a677170fef58f",
+      "match_count": 5,
+      "examples": [
+        "D:\\a\\numpy-release\\numpy-release\\numpy-src\\build\\numpy\\random\\npyrandom.lib.p\\src_distributions_random_hypergeometric.c.obj",
+        "D:\\a\\numpy-release\\numpy-release\\numpy-src\\build\\numpy\\random\\npyrandom.lib.p\\src_distributions_random_mvhg_marginals.c.obj",
+        "D:\\a\\numpy-release\\numpy-release\\numpy-src\\build\\numpy\\random\\npyrandom.lib.p\\src_distributions_random_mvhg_count.c.obj"
+      ]
+    },
+    {
+      "wheel_filename": "numpy-2.4.6-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+      "member": "numpy/_core/lib/npymath.lib",
+      "member_sha256": "32fc8668c11000ef36fa89193fc29dc789a2c0cb8ed1f513f884695dddf1951c",
+      "match_count": 4,
+      "examples": [
+        "D:\\a\\numpy-release\\numpy-release\\numpy-src\\build\\numpy\\_core\\npymath.lib.p\\src_npymath_npy_math.c.obj",
+        "D:\\a\\numpy-release\\numpy-release\\numpy-src\\build\\numpy\\_core\\npymath.lib.p\\src_npymath_halffloat.cpp.obj",
+        "D:\\a\\numpy-release\\numpy-release\\numpy-src\\build\\numpy\\_core\\npymath.lib.p\\meson-generated_npy_math_complex.c.obj"
+      ]
+    },
+    {
+      "wheel_filename": "numpy-2.4.6-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+      "member": "numpy.libs/msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+      "member_sha256": "a4c2229bdc2a2a630acdc095b4d86008e5c3e3bc7773174354f3da4f5beb9cde",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\_work\\1\\s\\binaries\\amd64ret\\bin\\amd64"
+      ]
+    },
+    {
+      "wheel_filename": "numpy-2.4.6-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+      "member": "numpy-2.4.6.dist-info/DELVEWHEEL",
+      "member_sha256": "f1c8e83ae424ac6d3fced40c48a70e38be1148b225114d34291e145c9de50c00",
+      "match_count": 1,
+      "examples": [
+        "D:/a/numpy-release/numpy-release/.openblas/lib"
+      ]
+    },
+    {
+      "wheel_filename": "pandas-3.0.5-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "0d298e951f23016ce4699951d044ae6418dbc91bf68cefca0f77666fcbb4e5c6",
+      "member": "pandas.libs/msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+      "member_sha256": "a4c2229bdc2a2a630acdc095b4d86008e5c3e3bc7773174354f3da4f5beb9cde",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\_work\\1\\s\\binaries\\amd64ret\\bin\\amd64"
+      ]
+    },
+    {
+      "wheel_filename": "pydantic_core-2.46.5-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "15f4a94963c95accac15b7b657bb177d3ad82bb90b0d0526d9a9b85079925db5",
+      "member": "pydantic_core-2.46.5.dist-info/sboms/pydantic-core.cyclonedx.json",
+      "member_sha256": "506f113865788d0824eb187ec6b0ed9cbd7ac91db2aab63931d98342025b2c46",
+      "match_count": 3,
+      "examples": [
+        "D:/a/pydantic/pydantic/pydantic-core"
+      ]
+    },
+    {
+      "wheel_filename": "pygments-2.21.0-py3-none-any.whl",
+      "wheel_sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+      "member": "pygments/lexers/configs.py",
+      "member_sha256": "f5ebf4c88cc7c0cf6b566c873dca88e5a022e4492594ffbcd2f4813904f7af64",
+      "match_count": 2,
+      "examples": [
+        "d:\\d\\d",
+        "d:\\d\\d "
+      ]
+    },
+    {
+      "wheel_filename": "pygments-2.21.0-py3-none-any.whl",
+      "wheel_sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+      "member": "pygments/lexers/ul4.py",
+      "member_sha256": "8e833e512d3ed811164471cae9ec99f98fbedf4e9881b32b7af318d2183c4136",
+      "match_count": 1,
+      "examples": [
+        "d:\\d\\d"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "isapi/PyISAPI_loader.dll",
+      "member_sha256": "6902acb975bd660e47442c6c3a165211c2b8ff0ef5aa939c513b746695ac5c7d",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\PyISAPI_loader.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "pythonwin/Pythonwin.exe",
+      "member_sha256": "6e5ea57e8ea674aebee98adcfdf6eb9213ea1b61de99c5d7edf4aa3a82a1ba5b",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\Pythonwin.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "pythonwin/dde.pyd",
+      "member_sha256": "3f7c040e7134d2e68054e7ae9ba8cb23da0d2399729433eb482fbcba88322096",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\dde.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "pythonwin/scintilla.dll",
+      "member_sha256": "e7ba682026f85ba00e87aa696293eb308fc2b529b26ddc83d422a88337223d41",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\scintilla\\Scintilla.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "pythonwin/win32ui.pyd",
+      "member_sha256": "d971a1a5d67b9fc76a64cbef70ed067e2564f6e7ba4caeddbf204389f1a0a28d",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32ui.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "pythonwin/win32uiole.pyd",
+      "member_sha256": "83939383c18c2f133e386a439538ca45129cf6b2ee2d050475625424b01a7eb4",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32uiole.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "pywin32_system32/pythoncom313.dll",
+      "member_sha256": "6187b4a97238f5dced3c6834e7dbae6f58ddccea79d6bbc9d5ca61b12b3c46a2",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\pythoncom.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "pywin32_system32/pywintypes313.dll",
+      "member_sha256": "ea82e185e0bed58485a8df23712b62224f5e486dbb84d946115cad17512065cb",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\pywintypes.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/_win32sysloader.pyd",
+      "member_sha256": "edbf9272f4b04e1ca6d076e5e5c713a730e0c3899e42157bee5b32c3847c1e05",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\_win32sysloader.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/_winxptheme.pyd",
+      "member_sha256": "8303ca324eafdea8dbc81e4023b61bbff1b9f280b1a3690b516d09fcbc423836",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\_winxptheme.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/mmapfile.pyd",
+      "member_sha256": "812c9fc8a38e0ee17da55145646f38545f7b91cb4d61e8d88de84cadda26835e",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\mmapfile.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/odbc.pyd",
+      "member_sha256": "d213d4a526d4b497ab911b2621e870ec31fc453060cf6c6d8e86c56cd5c7ee06",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\odbc.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/perfmon.pyd",
+      "member_sha256": "1d671d14197d3e41bbde63143eb70c5ec8663e42a99deb3c9cabbeb0f8a6c9b6",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\perfmon.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/perfmondata.dll",
+      "member_sha256": "276cc94a4a4238b9067db1730bb42f5534d353b33d58355edc734042e4684d82",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\perfmondata.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/pythonservice.exe",
+      "member_sha256": "7c358920f965ce19bd4490fd618c6768d199182cabe4ff8fa90b23aa8758fbc7",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\pythonservice.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/servicemanager.pyd",
+      "member_sha256": "65309ae981b02cf2e83f0e2e1260a3ef3cbd93bb7147c6df966eea4b9a0b6925",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\servicemanager.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/timer.pyd",
+      "member_sha256": "b9346739b8817c166d6d8ea61e847e926e6c91fe6f0263a2d44dc00701134451",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\timer.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32api.pyd",
+      "member_sha256": "040d6a9ce12555d2585f89dce2aa4e25265c27dfa827eb9cae4c922e12ec731c",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32api.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32clipboard.pyd",
+      "member_sha256": "6923de81e3bdb90be043b66bb6ddd91c7db0be3aa221eeff5ecfc1077cbf92ba",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32clipboard.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32console.pyd",
+      "member_sha256": "3e6f7ef7c2a47ca57022a61f5ea9e985b3187e0dce177ed65a0aaf54c55049ee",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32console.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32cred.pyd",
+      "member_sha256": "48fce8c1630459a1819fb619a5cd4465aeb91b15aa76a0311ef02a57a1c8b5d6",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32cred.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32crypt.pyd",
+      "member_sha256": "773c9f0ef15a6b4fffb3d8748ceb3d1e062616f29aa18fbccfb5f6df23493a46",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32crypt.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32event.pyd",
+      "member_sha256": "23201e42d29c91e810ce8f697ed0df0bc48a1dc549af006a610b77aaee5a553e",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32event.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32evtlog.pyd",
+      "member_sha256": "842db19e698bfef74cb030025dff516cee8848339ca89eae9bdc15a15172219c",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32evtlog.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32file.pyd",
+      "member_sha256": "2273f01d0b168b6b73b124e8c5509b79499d661b9fdfc2d84de40ebfdb566170",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32file.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32gui.pyd",
+      "member_sha256": "b021c6ab915fd9370c659aebc90db1b52b3da7ccf61420687d40ff7eb813f20e",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32gui.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32help.pyd",
+      "member_sha256": "dcb1e262b78c2f589b4bd02e07fdcf74148aab097abced2b13070fcbff6d2a39",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32help.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32inet.pyd",
+      "member_sha256": "28a375e47f2798ae0b9b78d4491ba8830750792e5cf2e97afdcd7cc1950120e9",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32inet.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32job.pyd",
+      "member_sha256": "4e5b18813e4fa5272b1c0440203bb1b4dbc15d9aaec43027779447a9da93195d",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32job.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32lz.pyd",
+      "member_sha256": "e0a43500b637d0905cabbd3824bf54ca11b4342780717ece321b270f3ff60992",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32lz.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32net.pyd",
+      "member_sha256": "4c374173c5cc15ba05eb7f88e91410bff0ba371a4793d477cba73d0b19a0ab16",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32net.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32pdh.pyd",
+      "member_sha256": "4e2c853b25354e58e1d66f49c388d862d1b405d0e4494116cfdc2f5808707829",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32pdh.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32pipe.pyd",
+      "member_sha256": "8095251b9018c130220601d2c0c19b3c84896f0a396cf0a8e7a7bf1a1351ea52",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32pipe.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32print.pyd",
+      "member_sha256": "7049ade78290ef65957b81853e74885a90a1724b9e8c6464a407a029373bf45e",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32print.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32process.pyd",
+      "member_sha256": "05dc1c58c825d0282194b34ff519b3fe29083324b59e0ff06d73f0ed8c890c98",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32process.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32profile.pyd",
+      "member_sha256": "3eb4bdf12ef77e07b062aeb93b358068aea87c0c1ba0e8b08b07b8929c9104a4",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32profile.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32ras.pyd",
+      "member_sha256": "a8b69dc6948cb7435e20da7d1455efb1e02c05066f77d14c0f7c5d7b94045af7",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32ras.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32security.pyd",
+      "member_sha256": "b3440637936125aef9ad9b78c5f8f5041347a3d15b570abd69946b7a7eb8a1e4",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32security.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32service.pyd",
+      "member_sha256": "d96382dc23bfe1024feae356d171ad0f00dbc77861dd08c793f4c545b1cc673e",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32service.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32trace.pyd",
+      "member_sha256": "e9259986297a44c5fabf1261cd18764a0e012d1637cde7f1b3054c687d20aeb8",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32trace.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32transaction.pyd",
+      "member_sha256": "797a66b6d6bc18b9641694e24d2ace2d425a7a6ae5027a5efae8bcaab56e36cf",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32transaction.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32ts.pyd",
+      "member_sha256": "608de030bdb66e763c90ef09bce23807b64b2b47db2c4cf6691a93cf107b4b2f",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32ts.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/win32wnet.pyd",
+      "member_sha256": "8ff518238f141dc30f6c5749b85ccf25f5af49be9139ea24ecd0e5ac6231a3ad",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\win32wnet.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/Demos/win32wnet/winnetwk.py",
+      "member_sha256": "07fee2cd99574c7de4b0f960127c3d53b874a53d9a6f830450336f3913396938",
+      "match_count": 1,
+      "examples": [
+        "d:\\mssdk\\include\\winnetwk.h"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/lib/mmsystem.py",
+      "member_sha256": "48556ff02d8208dc44af3ecd845128a22d2a47d690f21a21a6e882e321203c84",
+      "match_count": 1,
+      "examples": [
+        "d:/msdev/include/mmsystem.h"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/lib/win32con.py",
+      "member_sha256": "9f5fd728d5fde234a3d9c0bac893d77958efeb37864b4441ad28c0422a67dad6",
+      "match_count": 1,
+      "examples": [
+        "d:\\msdev\\include\\richedit.h"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32/lib/win32netcon.py",
+      "member_sha256": "ea00857b02100ce991ce620fa6438c6569136f642e844fc742dfa6f6b4e1e0d9",
+      "match_count": 1,
+      "examples": [
+        "d:\\mssdk\\include\\winnetwk.h"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32com/HTML/GeneratedSupport.html",
+      "member_sha256": "f02e05a309d8323ea6ec61bee0ed2004f700b93d1b02e7a38814a890cab694bf",
+      "match_count": 1,
+      "examples": [
+        "D:\\Program Files\\Microsoft Office\\Office\\html.dot"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32com/HTML/PythonCOM.html",
+      "member_sha256": "dd7ffdc3597c0ff6263f0b46554821edbe4085eb11bfe645dac4acb71f66c09d",
+      "match_count": 1,
+      "examples": [
+        "D:\\Program Files\\Microsoft Office\\Office\\html.dot"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32com/HTML/QuickStartClientCom.html",
+      "member_sha256": "885b116d105dab4c54544ba1b10f46958a9439734e8ab88be45c7355b361098a",
+      "match_count": 1,
+      "examples": [
+        "D:\\Program Files\\Microsoft Office\\Office\\html.dot"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32com/HTML/QuickStartServerCom.html",
+      "member_sha256": "a14257114b60f83241b82fa530638bc69a96140b1d1e90c26c548a3310e45b35",
+      "match_count": 1,
+      "examples": [
+        "D:\\Program Files\\Microsoft Office\\Office\\html.dot"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32com/HTML/docindex.html",
+      "member_sha256": "ea58b50bacda425fdccac2e4a43bc20f2531564ab54b70791608d74cd24529df",
+      "match_count": 1,
+      "examples": [
+        "D:\\Program Files\\Microsoft Office\\Office\\html.dot"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32com/HTML/misc.html",
+      "member_sha256": "007bd42512a93d75ae1be61e333e36fe52c86475dcd7e6d1678a7aebd6946895",
+      "match_count": 1,
+      "examples": [
+        "D:\\Program Files\\Microsoft Office\\Office\\HTML.DOT"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32com/HTML/package.html",
+      "member_sha256": "255c63805520be1c31967e0cbeda29c8ab72f3a2b35e8807b4de07200682f85f",
+      "match_count": 1,
+      "examples": [
+        "D:\\Program Files\\Microsoft Office\\Office\\html.dot"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/adsi/adsi.pyd",
+      "member_sha256": "6e2226d29475975aeb9602319423fc0df0c45d59f228eabe4433b0a02eabb782",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\adsi.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/authorization/authorization.pyd",
+      "member_sha256": "8ced2cd75db7de03ab6e418a3c6510b0bfaa8f916120c90531451bd3da834bf9",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\authorization.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/axcontrol/axcontrol.pyd",
+      "member_sha256": "ae193e0c2f24be9e7b90a1f2a938af0434f3ee57edab2e16e9d9288457b9375c",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\axcontrol.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/axdebug/axdebug.pyd",
+      "member_sha256": "3ffc3560bf9d8feb0b295587b5ea6120a90283584ac631d71a6e85fbe05ad073",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\axdebug.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/axscript/axscript.pyd",
+      "member_sha256": "518de9b3f585d3798103be6df107bdfbc1ed15e4fa30f941352262ed625ff662",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\axscript.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/bits/bits.pyd",
+      "member_sha256": "0d6cd76767bfb4863367b048bfe4a135ce2d101a674376c6102dd2b7ffb4c4a0",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\bits.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/directsound/directsound.pyd",
+      "member_sha256": "fc30d6a3523db5878312e4a55a4558eb7df05c44a209f9e41765dfb403331552",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\directsound.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/ifilter/ifilter.pyd",
+      "member_sha256": "8d39e302dba21c25d829277823e28a8907a473275ca1c884de2d0215e067fd69",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\ifilter.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/internet/internet.pyd",
+      "member_sha256": "d3bd70ad90106e340f2bcd77ef7e23c8fc2ef915c18b028a3ea3a661d2c57ab5",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\internet.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/mapi/exchange.pyd",
+      "member_sha256": "5e70c233a22f71030e1e3035dd83e2d61b0f38f5b29634261b2603daba6ed9c2",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\exchange.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/mapi/mapi.pyd",
+      "member_sha256": "0cd053c530666ac1984c6e393707b25f7cf00c893331b257fc8e6f16396a029a",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\mapi.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/propsys/propsys.pyd",
+      "member_sha256": "84283f2428c4c50eef689ecaba7d4eb57c4d81fd32808fbb261677a8ed1f6190",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\propsys.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/shell/shell.pyd",
+      "member_sha256": "5ff79abac35147b839ca7b48f79cbb24a137e357a27ee7f750e557e3d986b95a",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\shell.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "pywin32-312-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+      "member": "win32comext/taskscheduler/taskscheduler.pyd",
+      "member_sha256": "019221d89a506966f74d32d50a459074ce04763cc9a076b0b798b3816fee23cd",
+      "match_count": 1,
+      "examples": [
+        "D:\\a\\pywin32\\pywin32\\build\\temp.win-amd64-cpython-313\\Release\\taskscheduler.pdb"
+      ]
+    },
+    {
+      "wheel_filename": "rpds_py-2026.6.3-cp313-cp313-win_amd64.whl",
+      "wheel_sha256": "9250a9a0a6fd4648b3f868da8d91a4c52b5811a62df58e753d50ae4454a36f80",
+      "member": "rpds_py-2026.6.3.dist-info/sboms/rpds-py.cyclonedx.json",
+      "member_sha256": "5fa8e62b8f860c23a9da6ddb19c215184397d1a7f2cd3d93055898d119ba0e40",
+      "match_count": 3,
+      "examples": [
+        "D:/a/rpds/rpds"
+      ]
+    }
+  ]
+}
