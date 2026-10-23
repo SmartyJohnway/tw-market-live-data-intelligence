@@ -1,0 +1,18 @@
+﻿{
+    "timestamp":  "2026-10-23T12:55:32.2340772Z",
+    "username":  "E57CD39B-5D8A-4\\WDAGUtilityAccount",
+    "sid":  "S-1-5-21-2047949552-857980807-821054962-504",
+    "profile":  "C:\\Users\\WDAGUtilityAccount",
+    "localappdata":  "C:\\Users\\WDAGUtilityAccount\\AppData\\Local",
+    "computer":  "E57CD39B-5D8A-4",
+    "os":  {
+               "Caption":  "Microsoft Windows 11 Enterprise",
+               "Version":  "10.0.26100",
+               "BuildNumber":  "26100",
+               "OSArchitecture":  "64-bit"
+           },
+    "twmarket_home_existed":  false,
+    "python_on_path":  false,
+    "git_on_path":  false,
+    "guest_prerequisite_existed":  false
+}

@@ -1,0 +1,40 @@
+{
+  "command": "stop",
+  "returncode": 0,
+  "result": {
+    "duration_ms": 217.82,
+    "installation": {
+      "app_root": "C:\\A5\\Unicode 路徑\\deeper app\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\cache",
+      "diagnostics": {
+        "home_source": "platform_default",
+        "settings_origins": {
+          "host": "settings",
+          "port": "cli"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 18453,
+      "governed_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\governed",
+      "home": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market",
+      "installation_id": "270e85d8-595c-4331-845c-c37077cdacbd",
+      "installation_metadata_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs",
+      "operational_event_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\runtime",
+      "security_master_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\security-master",
+      "settings_path": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\config\\settings.json",
+      "state_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state",
+      "temp_root": "C:\\A5\\Temp\\TW-Market\\270e85d8-595c-4331-845c-c37077cdacbd\\temp",
+      "watchlist_root": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local\\TW-Market\\state\\watchlists"
+    },
+    "operation_id": "dcf14552-38ce-4c32-aa4c-bc8bfb2385f2",
+    "reason_code": "STOPPED",
+    "started_at": "2026-10-23T13:05:25.773899+00:00",
+    "status": "STOPPED",
+    "trace_id": "dcc6cf2b-0fc9-4459-9031-659b273a29c2"
+  },
+  "stderr": ""
+}

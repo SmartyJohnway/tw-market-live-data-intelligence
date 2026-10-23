@@ -1,0 +1,15 @@
+{
+  "command": [
+    "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\bootstrap\\launch.py",
+    "market",
+    "init",
+    "--home",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p6-host-mcp",
+    "--json"
+  ],
+  "returncode": 0,
+  "stdout": "{\"duration_ms\": 1306.76, \"identity\": {\"root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\state\\\\security-master\", \"status\": \"NOT_INITIALIZED\"}, \"installation\": {\"app_root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\native-run4\\\\深層 路徑\\\\application B\\\\deeper\\\\TW-Market-1.0.0-windows-x64\\\\app\", \"cache_root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\cache\", \"diagnostics\": {\"home_source\": \"cli\", \"settings_origins\": {\"host\": \"settings\", \"port\": \"settings\"}, \"state_root_source\": \"metadata\"}, \"effective_service_host\": \"127.0.0.1\", \"effective_service_port\": 8000, \"governed_root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\state\\\\governed\", \"home\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\", \"installation_id\": \"a72aaf69-0e8a-4603-a791-4892a9c70d5d\", \"installation_metadata_path\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\meta\\\\installation.json\", \"installation_status\": \"READY\", \"logs_root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\logs\", \"operational_event_path\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\logs\\\\operational-events.jsonl\", \"runtime_root\": \"C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Temp\\\\TW-Market\\\\a72aaf69-0e8a-4603-a791-4892a9c70d5d\\\\runtime\", \"security_master_root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\state\\\\security-master\", \"settings_path\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\config\\\\settings.json\", \"state_root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\state\", \"temp_root\": \"C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Temp\\\\TW-Market\\\\a72aaf69-0e8a-4603-a791-4892a9c70d5d\\\\temp\", \"watchlist_root\": \"C:\\\\twmarket_temp\\\\l6-a5\\\\final-run\\\\installations\\\\p6-host-mcp\\\\state\\\\watchlists\"}, \"network_on_init\": false, \"operation_id\": \"734c07b1-ff66-48c4-af25-d1d8d89130ef\", \"started_at\": \"2026-10-23T13:10:35.049329+00:00\", \"status\": \"INSTALLATION_READY\", \"trace_id\": \"0a280975-6df5-46b2-ac99-aa6515b5553d\"}\n",
+  "stderr": ""
+}

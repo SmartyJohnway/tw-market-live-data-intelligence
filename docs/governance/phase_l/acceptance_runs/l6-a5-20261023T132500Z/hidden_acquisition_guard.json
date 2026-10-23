@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "records": [
+    "p3_fresh_win11.json",
+    "p4_state_portability.json",
+    "p5_upgrade_rollback.json",
+    "p6_docker_portability.json"
+  ],
+  "provider_attempts": 0,
+  "offline_fixture_only": true
+}

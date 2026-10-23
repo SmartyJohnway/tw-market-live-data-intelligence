@@ -1,0 +1,8 @@
+{
+  "signature_status": "Valid",
+  "version": "3.13.9",
+  "sha256": "200ddff856bbff949d2cc1be42e8807c07538abd6b6966d5113a094cf628c5c5",
+  "signer": "CN=Python Software Foundation, O=Python Software Foundation, L=Beaverton, S=Oregon, C=US",
+  "scope": "disposable guest only",
+  "url": "https://www.python.org/ftp/python/3.13.9/python-3.13.9-amd64.exe"
+}

@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "exact_source_commit": "3707c553497240f6ff0f7e5358301395fd60205a",
+  "member_count": 277,
+  "Native_manifest_equals_Docker_build_equals_actual_guest_APP_ROOT": true
+}

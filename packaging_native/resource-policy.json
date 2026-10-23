@@ -1693,6 +1693,30 @@
       "destination": "app/scripts/tw_market_docker.py",
       "role": "application",
       "justification": "Docker Local Service process adapter delegates initialization, status, stop, and health ownership to the canonical lifecycle"
+    },
+    {
+      "source": "scripts/tw_market_l2_adapter.py",
+      "destination": "app/scripts/tw_market_l2_adapter.py",
+      "role": "application",
+      "justification": "A1-D15 explicit-member integration with existing canonical L2 backup, verification and isolated restore; no activation"
+    },
+    {
+      "source": "server/services/unified_backup.py",
+      "destination": "app/server/services/unified_backup.py",
+      "role": "application",
+      "justification": "A1-D15 explicit-member integration with existing canonical L2 backup, verification and isolated restore; no activation"
+    },
+    {
+      "source": "server/services/unified_restore.py",
+      "destination": "app/server/services/unified_restore.py",
+      "role": "application",
+      "justification": "A1-D15 explicit-member integration with existing canonical L2 backup, verification and isolated restore; no activation"
+    },
+    {
+      "source": "server/services/unified_retention_inventory.py",
+      "destination": "app/server/services/unified_retention_inventory.py",
+      "role": "application",
+      "justification": "A1-D15 explicit-member integration with existing canonical L2 backup, verification and isolated restore; no activation"
     }
   ]
 }

@@ -1,0 +1,47 @@
+{
+  "command": "start",
+  "bundle": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64",
+  "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4",
+  "returncode": 0,
+  "result": {
+    "duration_ms": 4937.71,
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\cache",
+      "diagnostics": {
+        "home_source": "cli",
+        "settings_origins": {
+          "host": "settings",
+          "port": "cli"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 18451,
+      "governed_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\governed",
+      "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4",
+      "installation_id": "2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5",
+      "installation_metadata_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-home-run4\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4",
+      "temp_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\2ff2cdfc-2556-4be4-a11a-8469c2ddb9c5\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\p1-state-run4\\watchlists"
+    },
+    "operation_id": "c61dbb3f-cb6f-43cc-8e9e-e18549bb959c",
+    "pid": 35104,
+    "service": {
+      "host": "127.0.0.1",
+      "port": 18451,
+      "url": "http://127.0.0.1:18451"
+    },
+    "started_at": "2026-10-23T12:59:47.135199+00:00",
+    "status": "STARTED",
+    "trace_id": "9cb149fd-626f-467a-98a1-745d61eac889"
+  },
+  "stderr": ""
+}

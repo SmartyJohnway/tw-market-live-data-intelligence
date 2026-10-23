@@ -1,0 +1,10 @@
+{
+  "token": "USER_CHAT_2026-10-23_PHASE_L_L6_A5_INTEGRATED_P1_P6_PORTABILITY_ACCEPTANCE_AUTHORIZATION",
+  "scope": "implementation, actual P1-P6, evidence, commit, push, PR after technical PASS",
+  "sandbox_supplemental_authority": true,
+  "merge_authorized": false,
+  "A6_L7_PhaseM_authorized": false,
+  "original_instruction_sha256": "509ec52da8bd6754d73dbb5e3a83b1234c4c70655a8c42ef638c241fa9532c39",
+  "original_instruction": "authority_owner_instruction.md",
+  "supplement": "Owner authorized Sandbox enablement for genuine P2/P3; later confirmed runtime availability, forbade duplicate instances and instructed continuation after accidental reboot"
+}

@@ -1,0 +1,44 @@
+{
+  "command": "stop",
+  "bundle": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64",
+  "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home",
+  "returncode": 1,
+  "result": {
+    "duration_ms": 38.7,
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l6-a5\\final-run\\native-run4\\深層 路徑\\application B\\deeper\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\cache",
+      "diagnostics": {
+        "home_source": "cli",
+        "settings_origins": {
+          "host": "settings",
+          "port": "cli"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 18464,
+      "governed_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\governed",
+      "home": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home",
+      "installation_id": "62dc3a69-9d61-46b4-8254-842ff3794126",
+      "installation_metadata_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state",
+      "temp_root": "C:\\twmarket_temp\\l6-a5\\final-run\\temp\\TW-Market\\62dc3a69-9d61-46b4-8254-842ff3794126\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l6-a5\\final-run\\installations\\configuration-home\\state\\watchlists"
+    },
+    "metadata_cleaned": true,
+    "operation_id": "0422c2a8-95b2-4b0e-9fc8-ba13c37e1fab",
+    "port_status": "PORT_OCCUPIED_NOT_OWNED",
+    "reason_code": "STALE_PROCESS_OWNERSHIP",
+    "started_at": "2026-10-23T13:25:58.403350+00:00",
+    "status": "STALE_PROCESS_OWNERSHIP",
+    "trace_id": "78e09331-f409-4534-ad5c-53b4ddad355a"
+  },
+  "stderr": ""
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "up",
+    "-d",
+    "local-service"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": " Network twmarket-l6-a5-3707c553-r3_default Creating \n Network twmarket-l6-a5-3707c553-r3_default Creating \n Network twmarket-l6-a5-3707c553-r3_default Created \n Network twmarket-l6-a5-3707c553-r3_default Created \n Container twmarket-l6-a5-3707c553-r3-local-service-1 Creating \n Container twmarket-l6-a5-3707c553-r3-local-service-1 Created \n Container twmarket-l6-a5-3707c553-r3-local-service-1 Starting \n Container twmarket-l6-a5-3707c553-r3-local-service-1 Started \n"
+}

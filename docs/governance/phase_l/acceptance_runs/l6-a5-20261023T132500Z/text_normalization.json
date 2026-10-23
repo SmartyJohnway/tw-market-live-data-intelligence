@@ -1,0 +1,37 @@
+{
+  "members": {
+    "raw/base-default-ci.xml": {
+      "original_sha256": "c16a2621c742d82306df03a3f798898c3584b5aee8dd4f88ee850f0316af469e",
+      "committed_sha256": "026af71f579630e2aa43102b76e429d387aa2f3c8cf54234b7226b570e715d40"
+    },
+    "raw/base-historical-l5.xml": {
+      "original_sha256": "f486c60ea59da20db90b399cb6518b76bf93004553d4b985c85263ce4f80bb8d",
+      "committed_sha256": "09213de989d9264f0864bc83d6bb28226a071c3e64f78f438cdc1cb4c722c4ba"
+    },
+    "raw/candidate-3707-source-default-ci.xml": {
+      "original_sha256": "560ff47b39c4c911332f71e74f5fb1887e42c5339357f1f73d573bcd981c0b79",
+      "committed_sha256": "d4f8771fb696b2f9d4faedaab8cf7c23b681a384151de2ac49b8945669268d69"
+    },
+    "raw/candidate-final-default-ci.xml": {
+      "original_sha256": "c2826427e25083f2c4318399a0c111e286184abe912f9606829c6dac17ca1ef5",
+      "committed_sha256": "445f57d95c626a8362e6d1cbd2d0000eb34feeebcc33cd69d58623081b017931"
+    },
+    "raw/docker-build-source.log": {
+      "original_sha256": "69b877801f1b67341bd8ad03b2dddd910110be51cb5eea692ed0c6ca03ad36a3",
+      "committed_sha256": "a2735690e952915fd7607c563eafe803b6d815b03183b98af135d3dede69660d"
+    },
+    "raw/focused.log": {
+      "original_sha256": "8b4954941cb6969532fbae2afa2ab37c6cd52654f57ce97d04e60622883b82bb",
+      "committed_sha256": "d14838c115981001194c647cd97dee91a4f5866ade4853e3f5f71481fb52db9e"
+    },
+    "raw/focused.xml": {
+      "original_sha256": "4a6d3bb5f6af343781d52e4786940dd68cd85a1fc489aa9233af70ae66f374de",
+      "committed_sha256": "4c0346757a71266c9e1a7f0dab856125b1b4110bfe72cc0519d55df608cc53ae"
+    },
+    "raw/sandbox/output/python-install.log": {
+      "original_sha256": "0f742aa2de9b8fd4b3b57112a5b2d815318f58040a349df8610ee24bfecdacc8",
+      "committed_sha256": "7c53101c0779f8e3fc4028f77cd397ad1c469cebeec2ae3751fc2039c37aacc4"
+    }
+  },
+  "policy": "Evidence text copies only: LF and removal of line-end spaces/tabs; source logs retained outside repository; test outcomes/content otherwise unchanged."
+}

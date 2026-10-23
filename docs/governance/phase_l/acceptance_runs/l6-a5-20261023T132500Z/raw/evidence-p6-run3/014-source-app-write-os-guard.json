@@ -1,0 +1,19 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "exec",
+    "-T",
+    "local-service",
+    "python",
+    "-c",
+    "import errno;from pathlib import Path\ntry:Path('/opt/tw-market/app/.a5-write-probe').write_text('reject')\nexcept OSError as e:print(e.errno);assert e.errno==errno.EROFS\nelse:raise AssertionError('APP_ROOT writable')"
+  ],
+  "returncode": 0,
+  "stdout": "30\n",
+  "stderr": ""
+}

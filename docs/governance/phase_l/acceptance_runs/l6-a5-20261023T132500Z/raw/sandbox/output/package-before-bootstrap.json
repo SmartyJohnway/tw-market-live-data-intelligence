@@ -1,0 +1,8 @@
+﻿{
+    "installer_exit_code":  0,
+    "git_existed":  false,
+    "bundle":  "C:\\A5\\Unicode 路徑\\deeper app\\TW-Market-1.0.0-windows-x64",
+    "zip_sha256":  "6772e8c3550525ff0d952929c7e36cef4833e265936b0009b6d517152ab74e04",
+    "venv_existed_before":  false,
+    "python_installer_sha256":  "200ddff856bbff949d2cc1be42e8807c07538abd6b6966d5113a094cf628c5c5"
+}

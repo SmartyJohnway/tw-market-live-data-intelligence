@@ -1,0 +1,22 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "run",
+    "--rm",
+    "--no-deps",
+    "--entrypoint",
+    "python",
+    "local-service",
+    "-B",
+    "-c",
+    "import pathlib,json,hashlib; print(json.dumps({k:{'files':{p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()},'directories':sorted(p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_dir())} for k,root in {'home':pathlib.Path('/var/lib/tw-market/home'),'state':pathlib.Path('/var/lib/tw-market/state')}.items()}))"
+  ],
+  "returncode": 0,
+  "stdout": "{\"home\": {\"files\": {}, \"directories\": []}, \"state\": {\"files\": {}, \"directories\": []}}\n",
+  "stderr": " Container twmarket-l6-a5-preinit-3707c553-local-service-run-5342ec82707f Creating \n Container twmarket-l6-a5-preinit-3707c553-local-service-run-5342ec82707f Created \n"
+}

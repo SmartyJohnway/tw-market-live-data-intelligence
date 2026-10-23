@@ -1,0 +1,8 @@
+{
+  "Native": "Windows host CPython 3.13, isolated bundle venv",
+  "P2_P3": "genuine fresh Windows Sandbox Windows 11 Enterprise 26100 x64, guest-only official CPython 3.13.9",
+  "Docker": "Linux amd64 Alpine Python 3.13.17",
+  "reboot_recovery": "persisted completed guest evidence verified; unfinished host supplemental configuration/ownership probe rerun successfully",
+  "sandbox_input_read_only": true,
+  "sandbox_network_disabled": true
+}

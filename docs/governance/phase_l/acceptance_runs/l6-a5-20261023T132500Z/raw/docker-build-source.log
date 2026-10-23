@@ -1,0 +1,120 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 DONE 0.0s
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.93kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [dependencies 1/5] FROM docker.io/library/python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741
+#4 resolve docker.io/library/python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741 0.0s done
+#4 CACHED
+
+#5 [internal] load build context
+#5 ...
+
+#6 [runtime 2/6] RUN addgroup -S -g 10001 twmarket     && adduser -S -D -H -u 10001 -G twmarket twmarket     && mkdir -p /opt/tw-market/app /var/lib/tw-market/home /var/lib/tw-market/state     && chown -R 10001:10001 /var/lib/tw-market
+#6 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 47.38MB 1.2s done
+#5 DONE 1.2s
+
+#7 [dependencies 2/5] COPY requirements-linux-amd64-cp313.txt /tmp/requirements.txt
+#7 DONE 0.1s
+
+#8 [dependencies 3/5] COPY dependency-lock-linux-amd64-cp313.json /tmp/dependency-lock.json
+#8 DONE 0.0s
+
+#9 [dependencies 4/5] COPY wheelhouse/ /tmp/wheelhouse/
+#9 DONE 0.1s
+
+#10 [dependencies 5/5] RUN python -m venv /opt/tw-market/venv     && /opt/tw-market/venv/bin/python -m pip install        --disable-pip-version-check --no-cache-dir --no-compile --no-index        --find-links=/tmp/wheelhouse --only-binary=:all: --require-hashes        -r /tmp/requirements.txt     && /opt/tw-market/venv/bin/python -m pip check
+#10 5.966 Looking in links: /tmp/wheelhouse
+#10 5.971 Processing ./tmp/wheelhouse/annotated_doc-0.0.5-py3-none-any.whl (from -r /tmp/requirements.txt (line 1))
+#10 5.978 Processing ./tmp/wheelhouse/annotated_types-0.8.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 2))
+#10 5.983 Processing ./tmp/wheelhouse/anyio-4.15.1-py3-none-any.whl (from -r /tmp/requirements.txt (line 3))
+#10 5.991 Processing ./tmp/wheelhouse/attrs-26.1.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 4))
+#10 5.997 Processing ./tmp/wheelhouse/certifi-2026.7.22-py3-none-any.whl (from -r /tmp/requirements.txt (line 5))
+#10 6.003 Processing ./tmp/wheelhouse/cffi-2.1.1-cp313-cp313-musllinux_1_2_x86_64.whl (from -r /tmp/requirements.txt (line 6))
+#10 6.008 Processing ./tmp/wheelhouse/charset_normalizer-3.5.1-cp313-cp313-musllinux_1_2_x86_64.whl (from -r /tmp/requirements.txt (line 7))
+#10 6.018 Processing ./tmp/wheelhouse/click-8.5.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 8))
+#10 6.023 Processing ./tmp/wheelhouse/colorama-0.4.6-py2.py3-none-any.whl (from -r /tmp/requirements.txt (line 9))
+#10 6.029 Processing ./tmp/wheelhouse/cryptography-50.0.1-cp311-abi3-musllinux_1_2_x86_64.whl (from -r /tmp/requirements.txt (line 10))
+#10 6.066 Processing ./tmp/wheelhouse/fastapi-0.141.1-py3-none-any.whl (from -r /tmp/requirements.txt (line 11))
+#10 6.075 Processing ./tmp/wheelhouse/h11-0.16.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 12))
+#10 6.080 Processing ./tmp/wheelhouse/httpcore-1.0.9-py3-none-any.whl (from -r /tmp/requirements.txt (line 13))
+#10 6.088 Processing ./tmp/wheelhouse/httpx-0.28.1-py3-none-any.whl (from -r /tmp/requirements.txt (line 14))
+#10 6.094 Processing ./tmp/wheelhouse/httpx_sse-0.4.3-py3-none-any.whl (from -r /tmp/requirements.txt (line 15))
+#10 6.098 Processing ./tmp/wheelhouse/idna-3.19-py3-none-any.whl (from -r /tmp/requirements.txt (line 16))
+#10 6.103 Processing ./tmp/wheelhouse/iniconfig-2.3.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 17))
+#10 6.106 Processing ./tmp/wheelhouse/jsonschema-4.26.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 18))
+#10 6.113 Processing ./tmp/wheelhouse/jsonschema_specifications-2025.9.1-py3-none-any.whl (from -r /tmp/requirements.txt (line 19))
+#10 6.117 Processing ./tmp/wheelhouse/mcp-1.29.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 20))
+#10 6.124 Processing ./tmp/wheelhouse/numpy-2.4.6-cp313-cp313-musllinux_1_2_x86_64.whl (from -r /tmp/requirements.txt (line 21))
+#10 6.250 Processing ./tmp/wheelhouse/packaging-26.3-py3-none-any.whl (from -r /tmp/requirements.txt (line 22))
+#10 6.255 Processing ./tmp/wheelhouse/pandas-3.0.5-cp313-cp313-musllinux_1_2_x86_64.whl (from -r /tmp/requirements.txt (line 23))
+#10 6.387 Processing ./tmp/wheelhouse/pluggy-1.6.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 24))
+#10 6.392 Processing ./tmp/wheelhouse/pycparser-3.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 25))
+#10 6.397 Processing ./tmp/wheelhouse/pydantic-2.13.5-py3-none-any.whl (from -r /tmp/requirements.txt (line 26))
+#10 6.410 Processing ./tmp/wheelhouse/pydantic_core-2.46.5-cp313-cp313-musllinux_1_1_x86_64.whl (from -r /tmp/requirements.txt (line 27))
+#10 6.431 Processing ./tmp/wheelhouse/pydantic_settings-2.15.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 28))
+#10 6.438 Processing ./tmp/wheelhouse/pygments-2.21.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 29))
+#10 6.453 Processing ./tmp/wheelhouse/pyjwt-2.13.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 30))
+#10 6.457 Processing ./tmp/wheelhouse/pytest-9.1.1-py3-none-any.whl (from -r /tmp/requirements.txt (line 31))
+#10 6.468 Processing ./tmp/wheelhouse/pytest_mock-3.15.1-py3-none-any.whl (from -r /tmp/requirements.txt (line 32))
+#10 6.472 Processing ./tmp/wheelhouse/python_dateutil-2.9.0.post0-py2.py3-none-any.whl (from -r /tmp/requirements.txt (line 33))
+#10 6.479 Processing ./tmp/wheelhouse/python_dotenv-1.2.3-py3-none-any.whl (from -r /tmp/requirements.txt (line 34))
+#10 6.487 Processing ./tmp/wheelhouse/python_multipart-0.0.32-py3-none-any.whl (from -r /tmp/requirements.txt (line 35))
+#10 6.491 Processing ./tmp/wheelhouse/pyyaml-6.0.3-cp313-cp313-musllinux_1_2_x86_64.whl (from -r /tmp/requirements.txt (line 36))
+#10 6.502 Processing ./tmp/wheelhouse/referencing-0.37.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 37))
+#10 6.506 Processing ./tmp/wheelhouse/requests-2.34.2-py3-none-any.whl (from -r /tmp/requirements.txt (line 38))
+#10 6.511 Processing ./tmp/wheelhouse/responses-0.26.3-py3-none-any.whl (from -r /tmp/requirements.txt (line 39))
+#10 6.520 Processing ./tmp/wheelhouse/rpds_py-2026.6.3-cp313-cp313-musllinux_1_2_x86_64.whl (from -r /tmp/requirements.txt (line 40))
+#10 6.527 Processing ./tmp/wheelhouse/six-1.17.0-py2.py3-none-any.whl (from -r /tmp/requirements.txt (line 41))
+#10 6.532 Processing ./tmp/wheelhouse/sse_starlette-3.4.11-py3-none-any.whl (from -r /tmp/requirements.txt (line 42))
+#10 6.539 Processing ./tmp/wheelhouse/starlette-1.6.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 43))
+#10 6.544 Processing ./tmp/wheelhouse/typing_extensions-4.16.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 44))
+#10 6.550 Processing ./tmp/wheelhouse/typing_inspection-0.4.4-py3-none-any.whl (from -r /tmp/requirements.txt (line 45))
+#10 6.555 Processing ./tmp/wheelhouse/tzdata-2026.3-py2.py3-none-any.whl (from -r /tmp/requirements.txt (line 46))
+#10 6.568 Processing ./tmp/wheelhouse/urllib3-2.7.0-py3-none-any.whl (from -r /tmp/requirements.txt (line 47))
+#10 6.575 Processing ./tmp/wheelhouse/uvicorn-0.52.4-py3-none-any.whl (from -r /tmp/requirements.txt (line 48))
+#10 6.849 Installing collected packages: urllib3, tzdata, typing_extensions, six, rpds-py, PyYAML, python-multipart, python-dotenv, PyJWT, Pygments, pycparser, pluggy, packaging, numpy, iniconfig, idna, httpx-sse, h11, colorama, click, charset-normalizer, certifi, attrs, annotated-types, annotated-doc, uvicorn, typing-inspection, requests, referencing, python-dateutil, pytest, pydantic_core, httpcore, cffi, anyio, starlette, responses, pytest-mock, pydantic, pandas, jsonschema-specifications, httpx, cryptography, sse-starlette, pydantic-settings, jsonschema, fastapi, mcp
+#10 9.557
+#10 9.568 Successfully installed PyJWT-2.13.0 PyYAML-6.0.3 Pygments-2.21.0 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 attrs-26.1.0 certifi-2026.7.22 cffi-2.1.1 charset-normalizer-3.5.1 click-8.5.0 colorama-0.4.6 cryptography-50.0.1 fastapi-0.141.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.19 iniconfig-2.3.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 mcp-1.29.0 numpy-2.4.6 packaging-26.3 pandas-3.0.5 pluggy-1.6.0 pycparser-3.0 pydantic-2.13.5 pydantic-settings-2.15.0 pydantic_core-2.46.5 pytest-9.1.1 pytest-mock-3.15.1 python-dateutil-2.9.0.post0 python-dotenv-1.2.3 python-multipart-0.0.32 referencing-0.37.0 requests-2.34.2 responses-0.26.3 rpds-py-2026.6.3 six-1.17.0 sse-starlette-3.4.11 starlette-1.6.0 typing-inspection-0.4.4 typing_extensions-4.16.0 tzdata-2026.3 urllib3-2.7.0 uvicorn-0.52.4
+#10 10.11 No broken requirements found.
+#10 DONE 11.0s
+
+#11 [runtime 3/6] COPY --from=dependencies /opt/tw-market/venv /opt/tw-market/venv
+#11 DONE 1.1s
+
+#12 [runtime 4/6] COPY app/ /opt/tw-market/app/
+#12 DONE 0.1s
+
+#13 [runtime 5/6] RUN chmod -R a-w /opt/tw-market/app /opt/tw-market/venv
+#13 DONE 5.4s
+
+#14 [runtime 6/6] WORKDIR /opt/tw-market/app
+#14 DONE 0.1s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 7.8s done
+#15 exporting manifest sha256:23e8921435f27018b0dcb3f49d1928a43398ca0ed275ef975de8e7ca7b04e942 done
+#15 exporting config sha256:7a9d5e9faaa41d8a634166f560cd4c273a1be6636448290097a3581e148c6441 done
+#15 exporting attestation manifest sha256:479e6e06bc3d6b03286fd4c9d09960c79ac2114da6e87e07daea7aeee800375c done
+#15 exporting manifest list sha256:2b25c1e54879b0761d3c0a3591236cb2a1f820c1530fee25f643ec93cf962675 done
+#15 naming to docker.io/library/tw-market-local-service:l6-a5-3707c553 done
+#15 unpacking to docker.io/library/tw-market-local-service:l6-a5-3707c553
+#15 unpacking to docker.io/library/tw-market-local-service:l6-a5-3707c553 4.0s done
+#15 DONE 11.9s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ldfhjemj9j4g8fz8p7noi6039

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "docker",
+    "volume",
+    "inspect",
+    "twmarket-l6-a5-3707c553-r3_home",
+    "twmarket-l6-a5-3707c553-r3_state"
+  ],
+  "returncode": 0,
+  "stdout": "[\n    {\n        \"CreatedAt\": \"2026-10-23T13:09:39Z\",\n        \"Driver\": \"local\",\n        \"Labels\": {\n            \"com.docker.compose.config-hash\": \"e2ce885c228278df98c3307a80d21bba57f507d2198f50004810203f41f15a8c\",\n            \"com.docker.compose.project\": \"twmarket-l6-a5-3707c553-r3\",\n            \"com.docker.compose.version\": \"5.5.1\",\n            \"com.docker.compose.volume\": \"home\"\n        },\n        \"Mountpoint\": \"/var/lib/docker/volumes/twmarket-l6-a5-3707c553-r3_home/_data\",\n        \"Name\": \"twmarket-l6-a5-3707c553-r3_home\",\n        \"Options\": null,\n        \"Scope\": \"local\"\n    },\n    {\n        \"CreatedAt\": \"2026-10-23T13:09:39Z\",\n        \"Driver\": \"local\",\n        \"Labels\": {\n            \"com.docker.compose.config-hash\": \"3f60a6429c200a78b77aec7b4fa99129204ac5f2399ff70dc1ce28fe4bbbac90\",\n            \"com.docker.compose.project\": \"twmarket-l6-a5-3707c553-r3\",\n            \"com.docker.compose.version\": \"5.5.1\",\n            \"com.docker.compose.volume\": \"state\"\n        },\n        \"Mountpoint\": \"/var/lib/docker/volumes/twmarket-l6-a5-3707c553-r3_state/_data\",\n        \"Name\": \"twmarket-l6-a5-3707c553-r3_state\",\n        \"Options\": null,\n        \"Scope\": \"local\"\n    }\n]\n",
+  "stderr": ""
+}

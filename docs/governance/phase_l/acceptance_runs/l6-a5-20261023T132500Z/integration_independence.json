@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "records": [
+    "p3_fresh_win11.json",
+    "docker_state_exclusion.json"
+  ],
+  "required_external_hosts": [],
+  "git_checkout_required": false,
+  "developer_venv_required": false,
+  "Secure_MCP_Tunnel_required": false,
+  "Codex_Hermes_Antigravity_required": false
+}

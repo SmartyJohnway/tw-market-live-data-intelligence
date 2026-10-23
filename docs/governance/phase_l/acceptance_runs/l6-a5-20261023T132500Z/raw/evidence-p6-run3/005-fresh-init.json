@@ -1,0 +1,22 @@
+{
+  "command": [
+    "docker",
+    "compose",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\repo\\packaging_docker\\compose.yaml",
+    "-f",
+    "C:\\twmarket_temp\\l6-a5\\final-run\\docker-guard-override.json",
+    "run",
+    "--rm",
+    "--no-deps",
+    "--entrypoint",
+    "python",
+    "local-service",
+    "-B",
+    "-c",
+    "import os,sys,runpy; exec(compile(os.environ[\"A5_PYTHON_GUARD_SOURCE\"],\"<a5_guard>\",\"exec\")); sys.argv=['scripts.tw_market','init','--json']; runpy.run_module('scripts.tw_market',run_name='__main__')"
+  ],
+  "returncode": 0,
+  "stdout": "{\"duration_ms\": 1179.73, \"identity\": {\"root\": \"/var/lib/tw-market/state/security-master\", \"status\": \"NOT_INITIALIZED\"}, \"installation\": {\"app_root\": \"/opt/tw-market/app\", \"cache_root\": \"/var/lib/tw-market/home/cache\", \"diagnostics\": {\"home_source\": \"cli\", \"settings_origins\": {\"host\": \"env\", \"port\": \"env\"}, \"state_root_source\": \"metadata\"}, \"effective_service_host\": \"127.0.0.1\", \"effective_service_port\": 8000, \"governed_root\": \"/var/lib/tw-market/state/governed\", \"home\": \"/var/lib/tw-market/home\", \"installation_id\": \"31ef5868-c0c2-481b-aa85-437d6a4b1b2a\", \"installation_metadata_path\": \"/var/lib/tw-market/home/meta/installation.json\", \"installation_status\": \"READY\", \"logs_root\": \"/var/lib/tw-market/home/logs\", \"operational_event_path\": \"/var/lib/tw-market/home/logs/operational-events.jsonl\", \"runtime_root\": \"/tmp/TW-Market/31ef5868-c0c2-481b-aa85-437d6a4b1b2a/runtime\", \"security_master_root\": \"/var/lib/tw-market/state/security-master\", \"settings_path\": \"/var/lib/tw-market/home/config/settings.json\", \"state_root\": \"/var/lib/tw-market/state\", \"temp_root\": \"/tmp/TW-Market/31ef5868-c0c2-481b-aa85-437d6a4b1b2a/temp\", \"watchlist_root\": \"/var/lib/tw-market/state/watchlists\"}, \"network_on_init\": false, \"operation_id\": \"737041ea-9367-4e4c-8ec8-fcab1acc520b\", \"started_at\": \"2026-10-23T13:09:46.801907+00:00\", \"status\": \"INSTALLATION_READY\", \"trace_id\": \"e8a89c73-b561-43e8-b368-234b8b29fb48\"}\n",
+  "stderr": " Container twmarket-l6-a5-3707c553-r3-local-service-run-ad6242ffa239 Creating \n Container twmarket-l6-a5-3707c553-r3-local-service-run-ad6242ffa239 Created \n"
+}
