@@ -1,12 +1,17 @@
 # Phase L / L6-A5 — Integrated P1–P6 Portability Acceptance
 
 Technical disposition: `L6_A5_INTEGRATED_P1_P6_PORTABILITY_ACCEPTANCE_PASS`.
-Owner acceptance and independent review: **PENDING**. This is not Phase L/L6 closure.
+Independent review: `L6_A5_INDEPENDENT_TECHNICAL_REVIEW_PASS`.
+Owner disposition: `L6_A5_OWNER_ACCEPTED_FOR_MERGE`.
+PR #404 normal-merged exact accepted candidate `32bc480cccdd7eb394062ccfe34a44958fc56bf1` at
+`08bec63ec3d924d2c3b206ecc4fcc017b259ea75`, merged tree `041f7c660a3fba40b84d5fbab869c2ee353919ac`. Merge parents are
+`d5dac702c25e9728db86e9ef32f4fe8185086b89` and the accepted A5 candidate; GitHub merge verification is valid.
+This is not Phase L/L6 closure.
 
 Authority: `USER_CHAT_2026-10-23_PHASE_L_L6_A5_INTEGRATED_P1_P6_PORTABILITY_ACCEPTANCE_AUTHORIZATION`,
 including supplemental Windows Sandbox enablement/environment authority and the
-instruction to continue after reboot. Merge, A6, L7, Phase M, installer/release
-work and image publication remain NOT AUTHORIZED.
+instruction to continue after reboot. L6-A6, L7, Phase M, installer/release work
+and image publication remain NOT AUTHORIZED.
 
 ## Candidate binding
 
@@ -16,10 +21,10 @@ it remains the exact entry. No rebase or base substitution occurred.
 
 All final product/runtime acceptance uses committed source
 `3707c553497240f6ff0f7e5358301395fd60205a`, tree
-`946e765b26b2520f623672dc49a51c913139f44f`. The final governance candidate
-is the Git commit containing this evidence and front-door update; its exact
-commit/tree are recorded in the PR. Do not confuse the acceptance-source
-identity with the containing final governance commit.
+`946e765b26b2520f623672dc49a51c913139f44f`. The accepted final governance candidate is
+`32bc480cccdd7eb394062ccfe34a44958fc56bf1`, tree `041f7c660a3fba40b84d5fbab869c2ee353919ac`; PR #404 normal-merged that exact candidate at
+`08bec63ec3d924d2c3b206ecc4fcc017b259ea75`. Do not confuse the acceptance-source identity with the accepted
+candidate or merge commit.
 
 Native ZIP SHA-256:
 `6772e8c3550525ff0d952929c7e36cef4833e265936b0009b6d517152ab74e04`.
@@ -121,5 +126,7 @@ repository whitespace gate passes. `text_normalization.json` retains the
 pre-normalization copy hashes; original logs remain in the bounded acceptance
 workspace. Test outcomes and recorded assertions are unchanged.
 
-After technical checks, commit/push/open PR only. Stop for independent review and
-Owner acceptance. Merge and all later phases remain unauthorized.
+Technical checks completed, independent review passed, and explicit Owner acceptance
+was recorded against exact candidate `32bc480cccdd7eb394062ccfe34a44958fc56bf1`. PR #404 was then normal-merged at
+`08bec63ec3d924d2c3b206ecc4fcc017b259ea75`. This merge closes A5 only; L6-A6, L7, Phase M, installer/release work
+and image publication remain unauthorized pending separate Owner authority.
