@@ -1603,6 +1603,30 @@
       "destination": "app/skills/tw-security-master-classifier/references/source-contract.md",
       "role": "runtime_resource",
       "justification": "Exact producer compute_skill_contract_hash input; preserve accepted provenance semantics"
+    },
+    {
+      "source": "scripts/m8r_05b_03/controlled_dispatch.py",
+      "destination": "app/scripts/m8r_05b_03/controlled_dispatch.py",
+      "role": "application",
+      "justification": "Runtime Python package initializer and transitive import closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/evidence_aggregation.py",
+      "destination": "app/scripts/m8r_05b_03/evidence_aggregation.py",
+      "role": "application",
+      "justification": "Runtime Python package initializer and transitive import closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/orchestrator.py",
+      "destination": "app/scripts/m8r_05b_03/orchestrator.py",
+      "role": "application",
+      "justification": "Runtime Python package initializer and transitive import closure"
+    },
+    {
+      "source": "scripts/m8r_05b_03/receipt.py",
+      "destination": "app/scripts/m8r_05b_03/receipt.py",
+      "role": "application",
+      "justification": "Runtime Python package initializer and transitive import closure"
     }
   ]
 }

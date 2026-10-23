@@ -4,7 +4,7 @@ Requires Windows 11 x64 and CPython 3.13 x64. Extract this complete bundle to
 a writable application location. From PowerShell, run:
 
 ```powershell
-& .\bootstrap\bootstrap.ps1 -Python 'C:\Path\To\Python313\python.exe'
+& .\bootstrap\bootstrap.ps1
 .\tw-market.cmd status --json
 .\tw-market.cmd init
 ```

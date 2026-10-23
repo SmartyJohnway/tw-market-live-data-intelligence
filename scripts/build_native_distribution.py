@@ -20,6 +20,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from packaging_native.bootstrap.package_integrity import canonical_digest, verify_bundle, _safe_relative
+from packaging_native.path_scan import scan_payload
 
 BASE = "911a841b866795e8d0cd83d80b30b34701aa5980"
 PROFILE = "native-package-c-windows-cp313-x64"
@@ -103,8 +104,8 @@ def check_member(path: str, data: bytes) -> None:
         raise ValueError(f"state or governance member: {path}")
     # Scan bytes without logging matching contents. Wheels are opaque dependency
     # archives; their own members are scanned separately below.
-    lowered = data.lower().replace(b"\\\\", b"\\")
-    if any(token in lowered for token in (b"c:\\users\\weitang", b"c:/users/weitang", b"c:\\twmarket_temp", b"c:/twmarket_temp", b"d:\\", b"d:/", b"codex-workspace")):
+    scan = scan_payload(path, data)
+    if scan['blocking']:
         raise ValueError(f"host-path leakage in {path}")
     if re.search(rb"(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|sk-[A-Za-z0-9]{32,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)", data):
         raise ValueError(f"secret-shaped payload in {path}")
@@ -143,8 +144,12 @@ def build(output: Path, wheelhouse: Path) -> dict:
     payload["dependency-manifest.json"] = (json.dumps({"schema_version": 1, "dependencies": dependencies}, indent=2, sort_keys=True).encode(), "metadata")
     requirements = "".join(f"{d['name']}=={d['version']} --hash=sha256:{d['wheel_sha256']}\n" for d in dependencies)
     payload["bootstrap/requirements-wheelhouse.txt"] = (requirements.encode(), "metadata")
+    scans = []
     for path, (data, _) in payload.items():
         check_member(path, data)
+        report = scan_payload(path, data)
+        if report['matches']:
+            scans.append({'relative_path': path, **report})
     manifest = {"schema_version": 1, "product_name": "TW-Market", "product_version": version,
                 "source_commit": commit, "source_tree": tree, "target_os": "windows", "target_arch": "x64",
                 "python_requirement": "CPython 3.13 x64", "package_profile": PROFILE,
@@ -169,7 +174,7 @@ def build(output: Path, wheelhouse: Path) -> dict:
             "sha256": digest(archive_path.read_bytes()), "source_commit": commit, "source_tree": tree,
             "manifest_canonical_sha256": manifest["manifest_canonical_sha256"],
             "member_count": len(payload), "manifested_member_count": manifest["member_count"],
-            "wheel_count": len(dependencies), "product_version": version}
+            "wheel_count": len(dependencies), "product_version": version, 'path_scan_evidence': scans}
 
 
 if __name__ == "__main__":
