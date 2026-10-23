@@ -1,25 +1,30 @@
 # PROJECT.md — Current Project Authority
 
-## Current L7-A0 inventory / governance contract (2026-10-24)
+## Current L7-A0 merged state (2026-10-24)
 
 L6 remains **CLOSED** under `PHASE_L_L6_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
-L7 is **STARTED**. L7-A0 is **TECHNICAL INVENTORY / GOVERNANCE CONTRACT COMPLETE**;
-**OWNER ACCEPTANCE PENDING** under
+L7 is **STARTED**. L7-A0 is **OWNER-ACCEPTED AND MERGED** under
 `L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_FROZEN`.
-**L7-A1+ NOT AUTHORIZED. Stable release / publication NOT AUTHORIZED.
-Phase M NOT AUTHORIZED. Phase L NOT CLOSED.** Merge/auto-merge are not authorized.
+Independent re-review disposition is `L7_A0_INDEPENDENT_REVIEW_PASS`; Owner disposition is
+`L7_A0_OWNER_ACCEPTED_FOR_MERGE`.
 
-The 15-obligation inventory freezes the proposed A1-A7 sequence and canonical
-29-item final exit contract, with 21 owned gaps. Default CI remains overall FAIL
-(1245 passed / 45 failed / 4 skipped / 5 deselected; candidate-only failures=0);
-expanded evidence remains FAIL (525 passed / 2 historical assertions). A0 changes
-no product, tests, workflows, dependencies, VERSION or GitHub settings. Python,
-SDK compatibility, final version and publication decisions remain later work.
+PR #408 normal-merged accepted head `15d601a8ca98c4fd49577d7b1c7f8d038ad2b01f`,
+tree `34da9233c4f3acee39afe92c1e8c288d8544ca89`, at merge commit
+`37b6a836fd80addfd6a8cf03c3c6f19848b3e143`. Merge parents are prior canonical main
+`125188604126bcdbfcfea0f6421eae6a160e9085` and the exact accepted A0 head; GitHub merge verification is valid.
 
-Authority/report: `docs/governance/phase_l/PHASE_L_L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_2026-10-23.md`.
+The accepted A0 contract retains 15 L7 obligations, 21 owned gaps / 0 unowned gaps, and the
+canonical 29-item L7 exit contract. Default CI remains overall FAIL at 1245 passed / 45 failed /
+4 skipped / 5 deselected; expanded evidence remains overall FAIL at 525 passed / 2 historical
+assertions. Windows 11 x64 remains the release-blocking Native Tier-1 for L6/L7 under the accepted
+prospective supersession; historical L0-D03 remains unchanged.
+
+**L7-A1+ remains NOT AUTHORIZED. Stable release/publication remains NOT AUTHORIZED.
+Phase M remains NOT AUTHORIZED. Phase L remains NOT CLOSED.**
+
+Report: `docs/governance/phase_l/PHASE_L_L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_2026-10-23.md`.
+Reconciliation: `docs/governance/phase_l/PHASE_L_L7_A0_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-24.md`.
 Evidence: `docs/governance/phase_l/acceptance_runs/l7-a0-20261023T164344Z/`.
-The following L6 closure text is historical authority for L6; its former L7
-authorization boundary is superseded only by this bounded A0 authorization.
 
 ## Historical L6 closure state ? CLOSED (2026-10-23)
 

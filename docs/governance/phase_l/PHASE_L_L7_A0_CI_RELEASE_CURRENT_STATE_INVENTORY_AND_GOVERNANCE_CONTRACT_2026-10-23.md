@@ -1,6 +1,6 @@
 # L7-A0 — CI / Release Current-State Inventory & Governance Contract
 
-Status: **TECHNICAL INVENTORY / GOVERNANCE CONTRACT COMPLETE; OWNER ACCEPTANCE PENDING**.
+Status: **OWNER-ACCEPTED AND MERGED**.
 Technical disposition: `L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_FROZEN`.
 Review completed on 2026-10-24 Asia/Taipei; authorization date retained in filename.
 
@@ -19,6 +19,18 @@ L6 remains **CLOSED** under `PHASE_L_L6_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
 L7 is **STARTED**. A1+ implementation, stable release/publication, merge/auto-merge,
 and Phase M are **NOT AUTHORIZED**. Phase L is **NOT CLOSED**.
 This disposition does not certify green CI or approve a stable release.
+
+## Post-merge Owner acceptance and provenance
+
+Independent re-review: `L7_A0_INDEPENDENT_REVIEW_PASS` (review `5631763157`).
+Owner acceptance: `L7_A0_OWNER_ACCEPTED_FOR_MERGE` (review `5631803962`).
+PR #408 normal-merged accepted head `15d601a8ca98c4fd49577d7b1c7f8d038ad2b01f`,
+tree `34da9233c4f3acee39afe92c1e8c288d8544ca89`, at merge commit
+`37b6a836fd80addfd6a8cf03c3c6f19848b3e143`. Merge parents are prior main
+`125188604126bcdbfcfea0f6421eae6a160e9085` and the exact accepted head; GitHub verification is valid.
+
+This post-merge reconciliation does not modify the accepted A0 inventory/evidence contract.
+L7-A1+, stable release/publication, Phase M, and Phase L closure remain separately authorized work.
 
 ## Current evidence and authority
 
