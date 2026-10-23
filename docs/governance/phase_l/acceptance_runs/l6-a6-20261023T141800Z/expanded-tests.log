@@ -1,0 +1,52 @@
+........................................................................ [ 13%]
+................................................F....F.................. [ 27%]
+........................................................................ [ 40%]
+........................................................................ [ 54%]
+........................................................................ [ 68%]
+........................................................................ [ 81%]
+........................................................................ [ 95%]
+.......................                                                  [100%]
+================================== FAILURES ===================================
+__________ test_72_dimension_cells_keep_exact_frozen_classifications __________
+
+snapshot = {'catalog': {'available_source_families': [{'activation_status': 'active', 'known_limitations': ['no continuous pollin...research_executor', 'expected_evidence_contract': 'phase_g_material_disclosure_operation_evidence.v1', ...}, ...], ...}
+
+    def test_72_dimension_cells_keep_exact_frozen_classifications(snapshot):
+        assert len(dimension_matrix()) == 72
+>       assert validate_snapshot(snapshot) == []
+E       assert [{'code': 'A5...mode_c.py']"}] == []
+E
+E         Left contains one more item: {'code': 'A5_NEW_FAMILY_DETECTED', 'detail': "A5 requires unchanged product authority: ['server/local_network_boundary.py', 'server/services/unified_backup.py', 'server/services/unified_mode_b2.py', 'server/services/unified_mode_c.py']"}
+E         Use -v to get more diff
+
+tests\unit\test_l5_a5_existing_family_conformance.py:152: AssertionError
+_____________ test_entire_validator_is_offline_and_does_not_write _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E6A13AFAF0>
+
+    def test_entire_validator_is_offline_and_does_not_write(monkeypatch):
+        from pathlib import Path
+        def forbidden(*args, **kwargs):
+            raise AssertionError("provider/socket or write forbidden in acceptance validator")
+        monkeypatch.setattr(socket, "create_connection", forbidden)
+        monkeypatch.setattr(socket.socket, "connect", forbidden)
+        monkeypatch.setattr(Path, "write_text", forbidden)
+        monkeypatch.setattr(Path, "write_bytes", forbidden)
+>       assert build_evidence()["status"] == "PASS"
+E       AssertionError: assert 'FAIL' == 'PASS'
+E
+E         - PASS
+E         + FAIL
+
+tests\unit\test_l5_a5_existing_family_conformance.py:197: AssertionError
+============================== warnings summary ===============================
+tests/unit/test_phase_l_l4_a6_r1_repairs.py: 27 warnings
+tests/unit/test_phase_l_l4_a6_resource_boundaries.py: 19 warnings
+  C:\twmarket_temp\l6-a6\repo\scripts\m8r_09_persistent_watchlists.py:102: DeprecationWarning: jsonschema.RefResolver is deprecated as of v4.18.0, in favor of the https://github.com/python-jsonschema/referencing library, which provides more compliant referencing behavior as well as more flexible APIs for customization. A future release will remove RefResolver. Please file a feature request (on referencing) if you are missing an API for the kind of customization you need.
+    resolver = jsonschema.RefResolver.from_schema(schema, store=_SCHEMA_CACHE)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/unit/test_l5_a5_existing_family_conformance.py::test_72_dimension_cells_keep_exact_frozen_classifications
+FAILED tests/unit/test_l5_a5_existing_family_conformance.py::test_entire_validator_is_offline_and_does_not_write
+2 failed, 525 passed, 46 warnings in 66.37s (0:01:06)

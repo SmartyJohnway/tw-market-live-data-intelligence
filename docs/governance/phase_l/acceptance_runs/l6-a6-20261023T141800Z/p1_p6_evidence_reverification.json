@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "method": "inspect immutable accepted records and exact current-main blob equality, not operational rerun",
+  "records": [
+    {
+      "profile": "P1",
+      "status": "PASS",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p1_relocation.json"
+    },
+    {
+      "profile": "P2",
+      "status": "PASS",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p2_distinct_user.json"
+    },
+    {
+      "profile": "P3",
+      "status": "PASS",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p3_fresh_win11.json"
+    },
+    {
+      "profile": "P4",
+      "status": "PASS",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p4_state_portability.json"
+    },
+    {
+      "profile": "P5",
+      "status": "PASS",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p5_upgrade_rollback.json"
+    },
+    {
+      "profile": "P6",
+      "status": "PASS",
+      "evidence": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/p6_docker_portability.json"
+    }
+  ],
+  "new_Sandbox_launches": 0,
+  "new_Docker_containers_or_builds": 0,
+  "guest_principal": {
+    "timestamp": "2026-10-23T12:55:32.2340772Z",
+    "username": "E57CD39B-5D8A-4\\WDAGUtilityAccount",
+    "sid": "S-1-5-21-2047949552-857980807-821054962-504",
+    "profile": "C:\\Users\\WDAGUtilityAccount",
+    "localappdata": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local",
+    "computer": "E57CD39B-5D8A-4",
+    "os": {
+      "Caption": "Microsoft Windows 11 Enterprise",
+      "Version": "10.0.26100",
+      "BuildNumber": "26100",
+      "OSArchitecture": "64-bit"
+    },
+    "twmarket_home_existed": false,
+    "python_on_path": false,
+    "git_on_path": false,
+    "guest_prerequisite_existed": false
+  },
+  "P4_explicit_use": "existing A1/A2 operator root ENV seams select verified isolated L2 state explicitly; NONCANONICAL_ROOT_OVERRIDE disclosed; no metadata rewrite, merge, activation engine or new configuration authority",
+  "P5_compatibility": "SUPPORTED_NO_MIGRATION_REQUIRED",
+  "replacement_reference_limitation": "accepted completed evidence intact; no need to reconstruct historical image"
+}

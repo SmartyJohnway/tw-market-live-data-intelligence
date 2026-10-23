@@ -1,0 +1,13 @@
+{
+  "overall": "FAIL",
+  "passed": 525,
+  "failed": 2,
+  "failed_node_ids": [
+    "tests/unit/test_l5_a5_existing_family_conformance.py::test_72_dimension_cells_keep_exact_frozen_classifications",
+    "tests/unit/test_l5_a5_existing_family_conformance.py::test_entire_validator_is_offline_and_does_not_write"
+  ],
+  "same_failed_nodes_as_accepted_A5": true,
+  "meaning_unchanged": "historical L5 no-protected-product-change since09d6; accepted A4/A5 protected files remain byte-identical after A5 source",
+  "tests_modified_deleted_or_reclassified": false,
+  "authoritative_applicability": "A6 Owner authorization section18 explicitly retains these historical scope failures; no new L6 defects inferred from them"
+}

@@ -1,0 +1,33 @@
+{
+  "members": {
+    "base-default-ci.xml": {
+      "pre_normalization_copy_sha256": "f84257a427cbe17edef6dd1c4b290502d2c1bc98bc983309420cf0885bc7cebe",
+      "committed_sha256": "ae11e84eba170d3f60a4cf572bc54cd4fbb9d61d2e732543fbf8f800f9422a88"
+    },
+    "candidate-default-ci.xml": {
+      "pre_normalization_copy_sha256": "ad8d13499a7d289a06e90f04faa2373ad2d295cd8f11bcc9b03a4b052eb8c4e6",
+      "committed_sha256": "2e537b47f47b4e45d6d55ddaa23d15f5b793d600c935f0d93ac9fda45cb4d12f"
+    },
+    "candidate-prefrontdoor-default-ci.json": {
+      "pre_normalization_copy_sha256": "1312644551b5dc27457606c742a1c5ebe9a8bd7e69230338bd7cbf84372233ec",
+      "committed_sha256": "face75d63f35c032db5aac011c4f79f01d767c991916dff31e29e40e1efe98dd"
+    },
+    "candidate-prefrontdoor-report.xml": {
+      "pre_normalization_copy_sha256": "eda20aecebad9ecd383a9d49013a503ec2890327a8c40c9510b1b05e58a90aa8",
+      "committed_sha256": "cb588ef411fa0500505c0b56f9f20b14af2c9ccc83002738b7e6e9361204cf23"
+    },
+    "expanded-report.xml": {
+      "pre_normalization_copy_sha256": "b51f75066d77eb33a95d87f5e0cecacac989ff62a4b1567cafa6c4b0aea446ae",
+      "committed_sha256": "cbd385d1ec7a86e4bc26ee8892643cf7881804a94507ce86a9ca9c76d039ab3c"
+    },
+    "expanded-tests.log": {
+      "pre_normalization_copy_sha256": "58bc5fd693464e2fecabdac8781f059d11a9f96964589fa7de2cf153d0a60550",
+      "committed_sha256": "7c330bea2f4c609501a7e02bdf519813d9490814dc7bb76eade2655877b1ac35"
+    },
+    "owner_authorization.md": {
+      "pre_normalization_copy_sha256": "5f8daf07ae8fe7a2e19d799af3d3cae48047b67de540f0ba1496ba85049f7da0",
+      "committed_sha256": "a2a971016172dd2bc36649a42fcebc7dfd908c5f3451cde30cb0b8ed395ffacf"
+    }
+  },
+  "policy": "New review text copies only: normalize LF and line-end whitespace; original logs retained in bounded A6 workspace; historical repository evidence never altered."
+}
