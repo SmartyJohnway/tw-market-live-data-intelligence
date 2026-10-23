@@ -52,3 +52,16 @@ def test_local_identity_and_ephemeral_roles_are_never_portable(tmp_path, role):
     member=DeclaredInstallationMember('local',role,'anything','user_product_settings',A1_SETTINGS_BINDING,'0'*64)
     with pytest.raises(ValueError,match='INSTALLATION_MEMBER_NOT_PORTABLE'):
         installation_backup_plan(source,members=(member,),backup_tier='CORE',max_total_bytes=10000)
+
+
+def test_oversized_settings_are_rejected_before_json_parsing(tmp_path, monkeypatch):
+    from server.services.unified_backup import validate_a1_portable_settings
+    path = tmp_path/'oversized.json'
+    with path.open('wb') as handle:
+        handle.seek(2*1024*1024)
+        handle.write(b' ')
+    def forbidden_parse(*args, **kwargs):
+        raise AssertionError('oversized settings reached JSON parser')
+    monkeypatch.setattr(json, 'loads', forbidden_parse)
+    with pytest.raises(BackupError, match='A1_PORTABLE_SETTINGS_INVALID'):
+        validate_a1_portable_settings(path)

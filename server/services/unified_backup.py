@@ -57,9 +57,10 @@ class BackupError(RuntimeError):
 
 def validate_a1_portable_settings(path: Path) -> None:
     """A1-D15 adapter: v1 endpoint preferences only; no paths or identity."""
+    from scripts.tw_market_installation import _json
     try:
-        data = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_strict_object,
-                          parse_constant=_reject_json_constant)
+        # Reuse A1's reparse checks, duplicate-key rejection and 2 MiB reader.
+        data = _json(path, kind="settings")
         service = data["service"]
         if (set(data) != {"schema_version", "service"} or type(data["schema_version"]) is not int
                 or data["schema_version"] != 1 or not isinstance(service, dict)
