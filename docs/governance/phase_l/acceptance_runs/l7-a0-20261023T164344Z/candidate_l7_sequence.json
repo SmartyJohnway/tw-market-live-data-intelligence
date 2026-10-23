@@ -1,0 +1,54 @@
+{
+  "phase_L_closure": "separate explicit Owner acceptance required",
+  "refinement": "A2 integrates release validation using current accepted dependencies; A3/A4 decisions must feed repeat validation before A6. A7 technical exit does not itself confer Owner Phase L closure.",
+  "sequence": [
+    {
+      "entry_condition": "current inventory authorization only",
+      "implementation_authorized": false,
+      "title": "CI / Release Current-State Inventory & Release Governance Contract",
+      "tranche": "L7-A0"
+    },
+    {
+      "entry_condition": "A0 Owner acceptance and merge plus separate tranche authorization",
+      "implementation_authorized": false,
+      "title": "Deterministic Required CI Profile & Historical Failure Classification",
+      "tranche": "L7-A1"
+    },
+    {
+      "entry_condition": "A0 Owner acceptance and merge plus separate tranche authorization",
+      "implementation_authorized": false,
+      "title": "Fresh Clone / Windows / Native / Docker Release Validation Integration",
+      "tranche": "L7-A2"
+    },
+    {
+      "entry_condition": "A0 Owner acceptance and merge plus separate tranche authorization",
+      "implementation_authorized": false,
+      "title": "Dependency / Reproducibility / Supply-Chain Contract",
+      "tranche": "L7-A3"
+    },
+    {
+      "entry_condition": "A0 Owner acceptance and merge plus separate tranche authorization",
+      "implementation_authorized": false,
+      "title": "Public Compatibility / MCP SDK Range / Stable Version Decision",
+      "tranche": "L7-A4"
+    },
+    {
+      "entry_condition": "A0 Owner acceptance and merge plus separate tranche authorization",
+      "implementation_authorized": false,
+      "title": "Bounded Live Release Acceptance",
+      "tranche": "L7-A5"
+    },
+    {
+      "entry_condition": "A0 Owner acceptance and merge plus separate tranche authorization",
+      "implementation_authorized": false,
+      "title": "Release Candidate Freeze / Manifest / Artifact / Publication Preflight",
+      "tranche": "L7-A6"
+    },
+    {
+      "entry_condition": "A0 Owner acceptance and merge plus separate tranche authorization",
+      "implementation_authorized": false,
+      "title": "Stable Release / Post-Release Verification / L7 Technical Exit & Phase L Closure",
+      "tranche": "L7-A7"
+    }
+  ]
+}

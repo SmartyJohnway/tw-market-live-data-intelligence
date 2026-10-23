@@ -1,0 +1,29 @@
+{
+  "behavior_dependencies": [
+    "FastMCP/Server tool registration and exact-six list",
+    "JSON schema validation and input rejection",
+    "CallToolResult/isError serialization and envelopes",
+    "stdio framing, session initialization and lifecycle",
+    "no SDK-triggered acquisition or extra tool surface"
+  ],
+  "compatibility": "COMPATIBILITY_RANGE_NOT_YET_DECIDED",
+  "current_tests": [
+    "tests/acceptance/test_m8r_08b_mcp_safe_surface.py",
+    "tests/integration/test_m8r_08b_mcp_stdio_local_service.py",
+    "tests/unit/test_m8r_08b_mcp_error_mapping.py",
+    "tests/unit/test_m8r_08b_mcp_tool_contracts.py",
+    "tests/unit/test_mcp_server.py"
+  ],
+  "declarations": [
+    "mcp==1.29.0",
+    "mcp==1.29.0"
+  ],
+  "exact_pin_risk": "security/compatibility fixes require explicit update; reproducibility alone is not ongoing security support",
+  "existing_upstream_evidence": "Committed official wheel metadata/digests for 1.29.0; accepted local exact-pin tests. No accepted multi-version range proof found in reviewed L1/L4/L6 authority.",
+  "owner": "A4",
+  "packaging_constraints": "49 Windows and 48 Linux exact dependency artifacts include SDK closure; widening requires resolved/platform hash evidence, not requirements-only edit",
+  "range_risk": "resolver drift and SDK parser/schema/transport changes can invalidate exact-six and error semantics",
+  "source": "scripts/run_unified_market_evidence_mcp.py",
+  "status": "CURRENT_EXACT_PIN",
+  "why": "L1 startup validates expected SDK and canonical tool-schema/capability snapshot; L4 stdio/session/parser behavior was accepted against exact SDK."
+}

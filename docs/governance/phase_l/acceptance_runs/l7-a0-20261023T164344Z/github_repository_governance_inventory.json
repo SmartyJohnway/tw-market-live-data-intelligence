@@ -1,0 +1,32 @@
+{
+  "actions_permissions": {
+    "allowed_actions": "all",
+    "enabled": true,
+    "sha_pinning_required": false
+  },
+  "deletion_protection": false,
+  "evidence": "github_raw_*.json",
+  "force_push_protection": false,
+  "interpretation": "No branch/ruleset enforcement observed; this does not describe individual account privileges. 404 explicitly says Branch not protected and agrees with successful branch/rules queries.",
+  "linear_history_required": false,
+  "main_protected": false,
+  "main_rules": [],
+  "merge_methods": {
+    "allow_auto_merge": false,
+    "allow_merge_commit": true,
+    "allow_rebase_merge": true,
+    "allow_squash_merge": true
+  },
+  "permission_limitations": [],
+  "protection_endpoint": {
+    "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+    "message": "Branch not protected",
+    "status": "404"
+  },
+  "required_PR": false,
+  "required_reviews": false,
+  "required_status_checks": [],
+  "rulesets": [],
+  "settings_mutations": 0,
+  "signed_commits_required": false
+}

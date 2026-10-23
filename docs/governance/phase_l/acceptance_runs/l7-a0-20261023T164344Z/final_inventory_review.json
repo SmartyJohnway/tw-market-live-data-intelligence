@@ -1,0 +1,21 @@
+{
+  "A1_plus_authorized": false,
+  "CI_overall": "FAIL retained",
+  "candidate_binding": "Containing Git commit/tree; source inventory separately binds exact entry. PR records final candidate commit/tree.",
+  "default_failed_nodes": 45,
+  "exit_criteria": 29,
+  "expanded_failed_nodes": 2,
+  "historical_integrity": "PASS",
+  "merge_authorized": false,
+  "no_large_matrix_rerun": true,
+  "obligations": 15,
+  "owned_gaps": 22,
+  "owner_acceptance": "PENDING",
+  "profiles": 23,
+  "required_validators": "8 PASS",
+  "scope": "governance/evidence/front-door only",
+  "status": "PASS",
+  "technical_disposition": "L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_FROZEN",
+  "unowned_material_gaps": 0,
+  "workflows": 5
+}

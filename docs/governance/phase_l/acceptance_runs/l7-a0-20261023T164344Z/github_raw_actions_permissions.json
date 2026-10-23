@@ -1,0 +1,13 @@
+{
+  "data": {
+    "allowed_actions": "all",
+    "enabled": true,
+    "sha_pinning_required": false
+  },
+  "endpoint": "repos/SmartyJohnway/tw-market-live-data-intelligence/actions/permissions",
+  "method": "GET",
+  "observation": "OBSERVED",
+  "returncode": 0,
+  "stderr": "",
+  "timestamp_utc": "2026-10-23T15:25:12.922089+00:00"
+}

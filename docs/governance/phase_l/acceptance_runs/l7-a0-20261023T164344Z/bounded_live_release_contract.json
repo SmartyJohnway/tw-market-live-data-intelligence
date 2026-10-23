@@ -1,0 +1,18 @@
+{
+  "authorized_now": false,
+  "current_live_requests": 0,
+  "mandatory": [
+    "explicit fresh Owner authorization tied to source commit/tree and acceptance ID",
+    "exact allowlisted providers/routes/targets",
+    "hard request count including attempted requests",
+    "explicit time window/timeout",
+    "one-shot or narrowly bounded; zero retries unless explicitly budgeted",
+    "isolated disposable HOME/STATE; production refresh prohibited",
+    "no background polling, hidden fallback, or scope expansion",
+    "request/response/provenance hashes and redacted retention with source/target/time/result status",
+    "separate deterministic contract/schema failure from transport blocked/degraded/partial",
+    "record actual attempts and cleanup; consumed authority cannot be reused"
+  ],
+  "owner": "A5",
+  "transport_outcome": "degraded/partial can be honestly retained; release acceptance of limitations requires explicit adjudication; deterministic contract drift blocks"
+}

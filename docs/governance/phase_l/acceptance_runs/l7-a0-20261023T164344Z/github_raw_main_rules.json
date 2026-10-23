@@ -1,0 +1,9 @@
+{
+  "data": [],
+  "endpoint": "repos/SmartyJohnway/tw-market-live-data-intelligence/rules/branches/main",
+  "method": "GET",
+  "observation": "OBSERVED",
+  "returncode": 0,
+  "stderr": "",
+  "timestamp_utc": "2026-10-23T15:25:11.605327+00:00"
+}

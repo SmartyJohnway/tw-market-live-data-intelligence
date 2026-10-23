@@ -1,0 +1,58 @@
+{
+  "decision_owner": "A3",
+  "distinctions": {
+    "artifact_signing": "signature over bytes",
+    "integrity": "hash equality",
+    "provenance": "verifiable source/dependency/build linkage",
+    "publisher_identity": "trusted issuer/key ownership"
+  },
+  "no_signing_or_secrets_configuration": true,
+  "prepublication_owner": "A6",
+  "rows": [
+    {
+      "evidence": "GitHub GET verifies entry merge commit, reason valid; not proof every candidate commit signed",
+      "status": "PRESENT",
+      "surface": "Git entry verification"
+    },
+    {
+      "evidence": "three tag identities observed; tag signature verification not established",
+      "status": "PARTIAL",
+      "surface": "tags"
+    },
+    {
+      "evidence": "historical release metadata and assets observed",
+      "status": "PRESENT",
+      "surface": "GitHub Release"
+    },
+    {
+      "evidence": "historical MCPB .sha256 asset and GitHub asset digests; L6 manifests carry hashes",
+      "status": "PRESENT",
+      "surface": "checksums / publication"
+    },
+    {
+      "evidence": "no signature asset or signing step in inspected release/build contracts",
+      "status": "ABSENT",
+      "surface": "release manifest signatures"
+    },
+    {
+      "evidence": "not established from metadata; historical binaries not downloaded/Authenticode checked; no L7 signing policy",
+      "status": "DECISION_REQUIRED",
+      "surface": "Windows artifact signing"
+    },
+    {
+      "evidence": "OCI source/lock labels and accepted build metadata; no published registry signature/attestation in reviewed contract",
+      "status": "PARTIAL",
+      "surface": "Docker signing / provenance"
+    },
+    {
+      "evidence": "wheel graph manifests exist but no accepted cross-artifact release SBOM contract; upstream embedded SBOM is not first-party release SBOM",
+      "status": "ABSENT",
+      "surface": "first-party release SBOM"
+    },
+    {
+      "evidence": "no generation/publication step in five current workflows",
+      "status": "ABSENT",
+      "surface": "SLSA attestation"
+    }
+  ]
+}

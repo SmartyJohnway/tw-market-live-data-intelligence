@@ -1,0 +1,7 @@
+{
+  "A1_plus_authorized": false,
+  "merge_authorized": false,
+  "owner_acceptance": "PENDING",
+  "scope": "inventory and governance only; commit/push/PR after technical PASS; STOP after PR",
+  "token": "USER_CHAT_2026-10-23_PHASE_L_L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_AUTHORIZATION"
+}

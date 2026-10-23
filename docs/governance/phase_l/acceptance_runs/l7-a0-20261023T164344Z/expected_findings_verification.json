@@ -1,0 +1,75 @@
+{
+  "additional_finding": "GitHub has one historical workflow registration absent from current tree.",
+  "rows": [
+    {
+      "hypothesis": "VERSION = 1.0.0",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "L0 provisional target v1.5.0",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "mcp exact pin 1.29.0",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "five current CI YAML use Python 3.11",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "L6 Native/Docker use Python 3.13",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "CI primary install requirements.txt",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "main no branch protection/rulesets",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "accepted default CI 45 inherited failures",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "expanded 2 historical L5 assertions",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "checklist requires DEFAULT_CI and FULL_NON_NETWORK PASS",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "release gate local/fixture only",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "no current L7 controlled live authority",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "release-validation includes published trigger",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    },
+    {
+      "hypothesis": "no v1.5.0 tag/release in observed complete GitHub lists",
+      "qualification": "inventory of exact entry and accepted evidence; no new CI/live run",
+      "status": "VERIFIED"
+    }
+  ]
+}

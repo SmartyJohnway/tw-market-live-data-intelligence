@@ -1,0 +1,18 @@
+{
+  "data": {
+    "sha": "125188604126bcdbfcfea0f6421eae6a160e9085",
+    "verification": {
+      "payload": "tree 604c2e973a443c92ee274daa2f0d92a564a7cb44\nparent 5a071013a5d0d333f32e1928a4d081904078197a\nparent 3a23b90b656719981e80de2687a38494457dc851\nauthor Johnway <johnway0219@gmail.com> 1792768119 +0800\ncommitter GitHub <noreply@github.com> 1792768119 +0800\n\nMerge pull request #407 from SmartyJohnway/phase-l/l6-owner-final-closure\n\nRecord Phase L6 Owner final closure",
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJq23h3CRC1aQ7uu5UhlAAAA/gQAFDmTA51e0XDmQ17+ZOnHFgv\nKqPhTgsTHrYd93vJvO6VOuaMLRZ6GIpUSKgApVPGQ4NpZGzvlqDIszcfsbFdFdOx\nF+ZGRQaxhanz4zvPFEOymKj+0BCO4FRXTD7994N4ghCvg2Cw2pNjgNDr4jXrVYnO\nhhs2CIQO9T+B+IrmZ8c608mqBPMQ5CioggSY+Am56LzJQW0y65KzEgXS5W8vIXWN\njU6dOdTnJ3FIZZ43d3MeNzjSXrW5/D1hzRr4I0My4Bkk2Poq2qNO55rk+ZCzT6vM\nPvH6WdIy+qPuh5n6J6hejFPQZpg4KOU8bvNxTCN+y9yNzN4C11uUWDX+QUjbkQff\nXcwjL3QKvFXBVXnm3S/iba32+ZB16bLeMvvlXzK7F0nMOeOC0iLo6fhpjVKQwIw/\nZIouo6adxZmvSWZwdmLtgGNGqUQMQS6UwlSWI00CChVVWkaj9NiPLEkuwBNTOonL\nrzoeSU255+pp9mC4ujxX1/rjHZaMfqqYkod2Zyr+QyEr3iXNvHl689xylZJL4dYp\nIDDa8dZBOCGd2vXtlGSQrb8pJyb27bJ+nDtlNsEK1m6rJe46FPTqkk9U47JGCkPt\nbqHrAwyYOQiGNLLBcFU0H6twkxYRRvB7JhXFuTDRAZg9aitsaRFTFlkUNdFpFv13\nPx5Z6BASTOhw2iRLzf/r\n=jjWk\n-----END PGP SIGNATURE-----\n",
+      "verified": true,
+      "verified_at": "2026-10-23T15:08:40Z"
+    }
+  },
+  "endpoint": "repos/SmartyJohnway/tw-market-live-data-intelligence/commits/125188604126bcdbfcfea0f6421eae6a160e9085",
+  "method": "GET",
+  "observation": "OBSERVED",
+  "returncode": 0,
+  "stderr": "",
+  "timestamp_utc": "2026-10-23T15:25:15.653465+00:00"
+}

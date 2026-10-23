@@ -1,0 +1,154 @@
+{
+  "count": 5,
+  "github_registry_only_entries": [
+    {
+      "badge_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/workflows/Phase%20H%20H-ACT-H1%20Rollback%20Check/badge.svg",
+      "created_at": "2026-09-23T00:37:13.000+08:00",
+      "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/.github/workflows/phase-h-h-act-h1-rollback-check.yml",
+      "id": 364409585,
+      "name": "Phase H H-ACT-H1 Rollback Check",
+      "node_id": "W_kwDOS8-kvM4VuHLx",
+      "path": ".github/workflows/phase-h-h-act-h1-rollback-check.yml",
+      "state": "active",
+      "updated_at": "2026-09-23T00:37:13.000+08:00",
+      "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/actions/workflows/364409585"
+    }
+  ],
+  "no_current_PR_trigger": true,
+  "registry_only_interpretation": "Historical Actions registration is not a workflow in the exact current tree; no deletion/settings mutation performed.",
+  "workflows": [
+    {
+      "artifact_outputs": [],
+      "automatic": false,
+      "commands_yaml": "name: Browser Operator E2E\n\non:\n  workflow_dispatch:\n\njobs:\n  browser-operator-e2e:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.11\"\n      - name: Install application dependencies\n        run: python -m pip install -r requirements.txt\n      - name: Install browser E2E dependencies\n        run: python -m pip install -r requirements-browser-e2e.txt\n      - name: Install Chromium and OS browser dependencies\n        run: python -m playwright install --with-deps chromium\n      - name: Run BROWSER_E2E profile\n        run: python scripts/run_test_profile.py browser-e2e --json\n",
+      "current_blocking_status": "not a required GitHub check",
+      "deficiencies": [
+        "no pull_request trigger",
+        "Python 3.11 differs from accepted cp313 packaging",
+        "ranges do not freeze resolved CI graph",
+        "runner latest and action major tags mutable"
+      ],
+      "dependency_installation": "requirements.txt ranges; browser workflow additionally requirements-browser-e2e.txt -> requirements-lock.txt",
+      "name": "Browser Operator E2E",
+      "network_assumptions": "Actions checkout/setup and pip downloads use network; marker exclusion is not an OS network-denial guard; browser installation downloads browser/OS prerequisites where present.",
+      "path": ".github/workflows/browser-operator-e2e.yml",
+      "python_versions": [
+        "3.11"
+      ],
+      "release_relevance": "legacy deterministic/compatibility acceptance; no Native/Docker release assembly",
+      "runners": [
+        "ubuntu-latest"
+      ],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "artifact_outputs": [],
+      "automatic": false,
+      "commands_yaml": "name: Default CI\n\non:\n  workflow_dispatch:\n\njobs:\n  default-ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.11\"\n      - name: Install dependencies\n        run: |\n          python -m pip install --upgrade pip\n          python -m pip install -r requirements.txt\n      - name: Compile Python files\n        run: python -m compileall scripts server tests\n      - name: Run DEFAULT_CI profile\n        run: python scripts/run_test_profile.py default-ci --json\n",
+      "current_blocking_status": "not a required GitHub check",
+      "deficiencies": [
+        "no pull_request trigger",
+        "Python 3.11 differs from accepted cp313 packaging",
+        "ranges do not freeze resolved CI graph",
+        "runner latest and action major tags mutable"
+      ],
+      "dependency_installation": "requirements.txt ranges; browser workflow additionally requirements-browser-e2e.txt -> requirements-lock.txt",
+      "name": "Default CI",
+      "network_assumptions": "Actions checkout/setup and pip downloads use network; marker exclusion is not an OS network-denial guard; browser installation downloads browser/OS prerequisites where present.",
+      "path": ".github/workflows/ci.yml",
+      "python_versions": [
+        "3.11"
+      ],
+      "release_relevance": "legacy deterministic/compatibility acceptance; no Native/Docker release assembly",
+      "runners": [
+        "ubuntu-latest"
+      ],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "artifact_outputs": [],
+      "automatic": false,
+      "commands_yaml": "name: Full Non-Network Regression\n\non:\n  workflow_dispatch:\n\njobs:\n  full-non-network:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.11\"\n      - name: Install dependencies\n        run: python -m pip install -r requirements.txt\n      - name: Compile Python files\n        run: python -m compileall scripts server tests\n      - name: Run FULL_NON_NETWORK profile\n        run: python scripts/run_test_profile.py full-non-network --json\n",
+      "current_blocking_status": "not a required GitHub check",
+      "deficiencies": [
+        "no pull_request trigger",
+        "Python 3.11 differs from accepted cp313 packaging",
+        "ranges do not freeze resolved CI graph",
+        "runner latest and action major tags mutable"
+      ],
+      "dependency_installation": "requirements.txt ranges; browser workflow additionally requirements-browser-e2e.txt -> requirements-lock.txt",
+      "name": "Full Non-Network Regression",
+      "network_assumptions": "Actions checkout/setup and pip downloads use network; marker exclusion is not an OS network-denial guard; browser installation downloads browser/OS prerequisites where present.",
+      "path": ".github/workflows/non-network-ci.yml",
+      "python_versions": [
+        "3.11"
+      ],
+      "release_relevance": "legacy deterministic/compatibility acceptance; no Native/Docker release assembly",
+      "runners": [
+        "ubuntu-latest"
+      ],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "artifact_outputs": [],
+      "automatic": true,
+      "commands_yaml": "name: Release Validation\n\non:\n  workflow_dispatch:\n  release:\n    types: [published]\n\njobs:\n  default-ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.11\"\n      - name: Install dependencies\n        run: python -m pip install -r requirements.txt\n      - name: Compile Python files\n        run: python -m compileall scripts server tests\n      - name: Run DEFAULT_CI profile\n        run: python scripts/run_test_profile.py default-ci --json\n  full-non-network:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.11\"\n      - name: Install dependencies\n        run: python -m pip install -r requirements.txt\n      - name: Compile Python files\n        run: python -m compileall scripts server tests\n      - name: Run FULL_NON_NETWORK profile\n        run: python scripts/run_test_profile.py full-non-network --json\n  windows-compatibility:\n    runs-on: windows-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.11\"\n      - name: Install test dependencies\n        run: python -m pip install -r requirements.txt\n      - name: Compile Windows compatibility surfaces\n        run: python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py\n      - name: Run Windows non-network compatibility smoke tests\n        run: pytest -m \"not network\" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py -q\n      - name: Validate M5F package\n        run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01\n      - name: M5IJ Windows acceptance\n        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only\n      - name: MCP startup check\n        run: python server/mcp_server.py --startup-check\n",
+      "current_blocking_status": "not a required GitHub check",
+      "deficiencies": [
+        "no pull_request trigger",
+        "Python 3.11 differs from accepted cp313 packaging",
+        "ranges do not freeze resolved CI graph",
+        "runner latest and action major tags mutable",
+        "published trigger occurs after publication, cannot be pre-publication gate"
+      ],
+      "dependency_installation": "requirements.txt ranges; browser workflow additionally requirements-browser-e2e.txt -> requirements-lock.txt",
+      "name": "Release Validation",
+      "network_assumptions": "Actions checkout/setup and pip downloads use network; marker exclusion is not an OS network-denial guard; browser installation downloads browser/OS prerequisites where present.",
+      "path": ".github/workflows/release-validation.yml",
+      "python_versions": [
+        "3.11"
+      ],
+      "release_relevance": "legacy deterministic/compatibility acceptance; no Native/Docker release assembly",
+      "runners": [
+        "ubuntu-latest",
+        "windows-latest"
+      ],
+      "triggers": [
+        "workflow_dispatch",
+        "release: published"
+      ]
+    },
+    {
+      "artifact_outputs": [],
+      "automatic": false,
+      "commands_yaml": "name: Windows Compatibility Smoke\n\non:\n  workflow_dispatch:\n\njobs:\n  windows-compatibility-smoke:\n    runs-on: windows-latest\n    steps:\n      - uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n      - uses: actions/setup-python@v5\n        with:\n          python-version: \"3.11\"\n      - name: Install test dependencies\n        run: python -m pip install -r requirements.txt\n      - name: Compile Windows compatibility surfaces\n        run: python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py\n      - name: Run Windows non-network compatibility smoke tests\n        run: pytest -m \"not network\" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py -q\n      - name: Validate M5F package\n        run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01\n      - name: M5IJ Windows acceptance\n        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only\n      - name: MCP startup check\n        run: python server/mcp_server.py --startup-check\n",
+      "current_blocking_status": "not a required GitHub check",
+      "deficiencies": [
+        "no pull_request trigger",
+        "Python 3.11 differs from accepted cp313 packaging",
+        "ranges do not freeze resolved CI graph",
+        "runner latest and action major tags mutable"
+      ],
+      "dependency_installation": "requirements.txt ranges; browser workflow additionally requirements-browser-e2e.txt -> requirements-lock.txt",
+      "name": "Windows Compatibility Smoke",
+      "network_assumptions": "Actions checkout/setup and pip downloads use network; marker exclusion is not an OS network-denial guard; browser installation downloads browser/OS prerequisites where present.",
+      "path": ".github/workflows/windows-compatibility-smoke.yml",
+      "python_versions": [
+        "3.11"
+      ],
+      "release_relevance": "legacy deterministic/compatibility acceptance; no Native/Docker release assembly",
+      "runners": [
+        "windows-latest"
+      ],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    }
+  ]
+}

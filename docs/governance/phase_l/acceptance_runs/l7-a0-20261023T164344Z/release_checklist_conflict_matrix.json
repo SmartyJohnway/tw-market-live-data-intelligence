@@ -1,0 +1,34 @@
+{
+  "checklist_modified": false,
+  "rows": [
+    {
+      "actual": "1245/45/4/5 overall FAIL",
+      "conflict": true,
+      "decision": "A1 green required profile and accepted historical separation; preserve evidence",
+      "owner": "A1",
+      "promise": "DEFAULT_CI passes"
+    },
+    {
+      "actual": "No fresh complete profile PASS established; 525/2 is expanded subset only",
+      "conflict": "unfulfilled proof, not proven identical failure set",
+      "decision": "A1 define selection; A2 run release integration",
+      "owner": "A1",
+      "promise": "FULL_NON_NETWORK passes"
+    },
+    {
+      "actual": "manual only YAML; no label trigger",
+      "conflict": true,
+      "decision": "A2 reconcile checklist and actual trigger after authorization",
+      "owner": "A2",
+      "promise": "windows-smoke label or manual trigger"
+    },
+    {
+      "actual": "L7 release live requires separate exact Owner authorization",
+      "conflict": "legacy wording insufficient for new release",
+      "decision": "A5 explicit bounded contract",
+      "owner": "A5",
+      "promise": "bounded live optional operator intent"
+    }
+  ],
+  "source": "docs/release/RELEASE_CHECKLIST.md"
+}

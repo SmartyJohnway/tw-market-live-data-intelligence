@@ -1,0 +1,127 @@
+{
+  "L6_docker": {
+    "application_member_count": 277,
+    "base": "python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741",
+    "post_reboot_note": "source image retained; replacement image ID no longer locally resolvable after reboot; completed persisted runtime evidence retained",
+    "publication": false,
+    "replacement_image": "sha256:98bafa33505e0d5f4c088e58949e388768b21b0a0741f4da5649eff539f91323",
+    "source_commit": "3707c553497240f6ff0f7e5358301395fd60205a",
+    "source_image": "sha256:2b25c1e54879b0761d3c0a3591236cb2a1f820c1530fee25f643ec93cf962675",
+    "source_tree": "946e765b26b2520f623672dc49a51c913139f44f",
+    "status": "PASS"
+  },
+  "L6_native": {
+    "bytes": 40639272,
+    "filename": "TW-Market-1.0.0-windows-x64.zip",
+    "full_evidence_source": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_package_identity.json",
+    "manifest_canonical_sha256": "74a956ecdfeeccd3f7e1325223177bfbed4ce55eaa3dd1cf4d8c369c1e72f307",
+    "manifested_member_count": 337,
+    "member_count": 338,
+    "product_version": "1.0.0",
+    "sha256": "6772e8c3550525ff0d952929c7e36cef4833e265936b0009b6d517152ab74e04",
+    "source_commit": "3707c553497240f6ff0f7e5358301395fd60205a",
+    "source_tree": "946e765b26b2520f623672dc49a51c913139f44f",
+    "wheel_count": 49
+  },
+  "classes": {
+    "L6_acceptance": "Native C ZIP / Docker image identities are portability evidence, not stable release approval",
+    "future_L7_release_candidate": "not created or authorized",
+    "historical_stable": "published v1.0.0 MCPB + checksum + manifest; v0.1.0 release",
+    "local_release_candidate": "historical V1 RC documentation; published prerelease v1.0.0-rc.1 manifest",
+    "published_L7_stable": "none observed; no v1.5.0/v2.0.0 tag/release in complete observed lists"
+  },
+  "no_download_or_rebuild": true,
+  "published_releases": [
+    {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb",
+          "digest": "sha256:c60f2fbbfb2b4d34191d84bc5631dc7df27f39aaa7dd61c0a94f41465b7e529b",
+          "name": "tw-market-unified-mcp-v1.0.0-win-x64.mcpb",
+          "size": 44269509
+        },
+        {
+          "browser_download_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256",
+          "digest": "sha256:aa549b5222978ac40adec126009f5a57a8f2317ae959fc0d5c01249a8189a337",
+          "name": "tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256",
+          "size": 107
+        },
+        {
+          "browser_download_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/v1_release_manifest.json",
+          "digest": "sha256:14ca64d13f400d4365884f442f9e8a2bd4c7eecedeb7ec3b108715508af2124c",
+          "name": "v1_release_manifest.json",
+          "size": 585
+        }
+      ],
+      "draft": false,
+      "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0",
+      "id": 388106283,
+      "name": "v1.0.0 — Governed Taiwan Market Evidence Workbench",
+      "prerelease": false,
+      "published_at": "2026-09-14T01:58:31Z",
+      "tag_name": "v1.0.0",
+      "target_commitish": "main"
+    },
+    {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0-rc.1/v1_release_manifest.json",
+          "digest": "sha256:4b91b025899bd9cdec2a077fd95fcb3f7a38d2a4b1082b834aea7d768e9c4ab1",
+          "name": "v1_release_manifest.json",
+          "size": 590
+        }
+      ],
+      "draft": false,
+      "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1",
+      "id": 387896180,
+      "name": "v1.0.0-rc.1 — Governed Taiwan Market Evidence Workbench",
+      "prerelease": true,
+      "published_at": "2026-09-13T12:40:12Z",
+      "tag_name": "v1.0.0-rc.1",
+      "target_commitish": "main"
+    },
+    {
+      "assets": [],
+      "draft": false,
+      "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v0.1.0",
+      "id": 346781855,
+      "name": "v0.1.0 – Initial Local-first Preview",
+      "prerelease": false,
+      "published_at": "2026-06-30T11:21:07Z",
+      "tag_name": "v0.1.0",
+      "target_commitish": "main"
+    }
+  ],
+  "tags": [
+    {
+      "commit": {
+        "sha": "e02bcb125999f542308a75f349c212f0ff3fee83",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/e02bcb125999f542308a75f349c212f0ff3fee83"
+      },
+      "name": "v1.0.0",
+      "node_id": "REF_kwDOS8-kvLByZWZzL3RhZ3MvdjEuMC4w",
+      "tarball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/tarball/refs/tags/v1.0.0",
+      "zipball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/zipball/refs/tags/v1.0.0"
+    },
+    {
+      "commit": {
+        "sha": "2c03b03f0853a509791f755daa0bb8f2be181dca",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/2c03b03f0853a509791f755daa0bb8f2be181dca"
+      },
+      "name": "v1.0.0-rc.1",
+      "node_id": "REF_kwDOS8-kvLVyZWZzL3RhZ3MvdjEuMC4wLXJjLjE",
+      "tarball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/tarball/refs/tags/v1.0.0-rc.1",
+      "zipball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/zipball/refs/tags/v1.0.0-rc.1"
+    },
+    {
+      "commit": {
+        "sha": "804496ca1b015fc8e6340a8ba8c524106fb9d4a2",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/804496ca1b015fc8e6340a8ba8c524106fb9d4a2"
+      },
+      "name": "v0.1.0",
+      "node_id": "REF_kwDOS8-kvLByZWZzL3RhZ3MvdjAuMS4w",
+      "tarball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/tarball/refs/tags/v0.1.0",
+      "zipball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/zipball/refs/tags/v0.1.0"
+    }
+  ]
+}

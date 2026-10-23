@@ -1,0 +1,56 @@
+{
+  "current": {
+    "current_allowed_level": "local_only_fixture_only",
+    "gates": [
+      {
+        "allowed": true,
+        "gate": "local-only development"
+      },
+      {
+        "allowed": true,
+        "gate": "fixture replay"
+      },
+      {
+        "allowed": false,
+        "gate": "staging write authorization"
+      },
+      {
+        "allowed": false,
+        "gate": "controlled live probe authorization"
+      },
+      {
+        "allowed": false,
+        "gate": "frontend publication authorization"
+      },
+      {
+        "allowed": false,
+        "gate": "production refresh authorization"
+      }
+    ]
+  },
+  "future_transitions": [
+    {
+      "gate": "one-shot release live",
+      "owner": "A5",
+      "requires": "fresh explicit Owner source/count/window authority"
+    },
+    {
+      "gate": "RC preflight",
+      "owner": "A6",
+      "requires": "accepted A1-A5 evidence and frozen manifest"
+    },
+    {
+      "gate": "stable publication",
+      "owner": "A7",
+      "requires": "explicit Owner publication approval"
+    },
+    {
+      "gate": "production refresh",
+      "owner": "OUTSIDE_L7",
+      "requires": "separate product authority, not stable publication"
+    }
+  ],
+  "interpretation": "Historical generic local/fixture gate does not revoke later specifically accepted/consumed L3/I live evidence; no current L7 live authority.",
+  "source": "docs/release/release_gate_matrix.json",
+  "transitions_performed": 0
+}

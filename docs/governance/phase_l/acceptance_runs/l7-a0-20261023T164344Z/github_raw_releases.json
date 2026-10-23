@@ -1,0 +1,69 @@
+{
+  "data": [
+    {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb",
+          "digest": "sha256:c60f2fbbfb2b4d34191d84bc5631dc7df27f39aaa7dd61c0a94f41465b7e529b",
+          "name": "tw-market-unified-mcp-v1.0.0-win-x64.mcpb",
+          "size": 44269509
+        },
+        {
+          "browser_download_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256",
+          "digest": "sha256:aa549b5222978ac40adec126009f5a57a8f2317ae959fc0d5c01249a8189a337",
+          "name": "tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256",
+          "size": 107
+        },
+        {
+          "browser_download_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/v1_release_manifest.json",
+          "digest": "sha256:14ca64d13f400d4365884f442f9e8a2bd4c7eecedeb7ec3b108715508af2124c",
+          "name": "v1_release_manifest.json",
+          "size": 585
+        }
+      ],
+      "draft": false,
+      "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0",
+      "id": 388106283,
+      "name": "v1.0.0 — Governed Taiwan Market Evidence Workbench",
+      "prerelease": false,
+      "published_at": "2026-09-14T01:58:31Z",
+      "tag_name": "v1.0.0",
+      "target_commitish": "main"
+    },
+    {
+      "assets": [
+        {
+          "browser_download_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0-rc.1/v1_release_manifest.json",
+          "digest": "sha256:4b91b025899bd9cdec2a077fd95fcb3f7a38d2a4b1082b834aea7d768e9c4ab1",
+          "name": "v1_release_manifest.json",
+          "size": 590
+        }
+      ],
+      "draft": false,
+      "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1",
+      "id": 387896180,
+      "name": "v1.0.0-rc.1 — Governed Taiwan Market Evidence Workbench",
+      "prerelease": true,
+      "published_at": "2026-09-13T12:40:12Z",
+      "tag_name": "v1.0.0-rc.1",
+      "target_commitish": "main"
+    },
+    {
+      "assets": [],
+      "draft": false,
+      "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v0.1.0",
+      "id": 346781855,
+      "name": "v0.1.0 – Initial Local-first Preview",
+      "prerelease": false,
+      "published_at": "2026-06-30T11:21:07Z",
+      "tag_name": "v0.1.0",
+      "target_commitish": "main"
+    }
+  ],
+  "endpoint": "repos/SmartyJohnway/tw-market-live-data-intelligence/releases?per_page=100",
+  "method": "GET",
+  "observation": "OBSERVED",
+  "returncode": 0,
+  "stderr": "",
+  "timestamp_utc": "2026-10-23T15:25:14.102978+00:00"
+}

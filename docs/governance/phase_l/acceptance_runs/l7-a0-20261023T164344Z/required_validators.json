@@ -1,0 +1,62 @@
+{
+  "boundary": "isolated HOME/STATE/TEMP/TMP/LOCALAPPDATA; Python audit denies network, D-drive opens, writes outside task root; subprocesses are reviewed deterministic Git checks",
+  "checks": [
+    {
+      "returncode": 0,
+      "script": "validate_phase_h_v3_contracts.py",
+      "script_sha256": "a7fae3f87ae8daa02f8eda1cbbb35696227a1fa45617808de5932a7bc88600f3",
+      "stderr": "",
+      "stdout": "phase_h_v3_contracts: PASS\n"
+    },
+    {
+      "returncode": 0,
+      "script": "validate_portable_catalog_sync.py",
+      "script_sha256": "a7d02dbb99eab77a9905d4416e1c3f061c382acd7d883448bac5dba61417457b",
+      "stderr": "",
+      "stdout": "PASS: Portable Skill catalog is fully synchronized with Canonical Catalog SoT (Deep Equality Verified).\n"
+    },
+    {
+      "returncode": 0,
+      "script": "validate_runtime_skill_guide_sync.py",
+      "script_sha256": "47da4265d51799650995819caa376b4fbd08542047261c71273e70a6f0fb6233",
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}\n"
+    },
+    {
+      "returncode": 0,
+      "script": "validate_product_version_consistency.py",
+      "script_sha256": "1c0c7df8fd64002ac0440397b144a6a48a0859222f57c8535acad2c8d9fa1e4f",
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"authority\": \"VERSION\"}\n"
+    },
+    {
+      "returncode": 0,
+      "script": "validate_v1_front_door.py",
+      "script_sha256": "fe3d8c62a0dd28ab80bd75ebf62a7a265ac5e3389a7aec5ac6b8bba0e8a74b5f",
+      "stderr": "",
+      "stdout": "PASS\n"
+    },
+    {
+      "returncode": 0,
+      "script": "validate_source_registry.py",
+      "script_sha256": "fb8c9b36ff0ef4b2a7b6362035f5542a05931249beea7f46023d46f215b84d8d",
+      "stderr": "",
+      "stdout": "{\n  \"errors\": [],\n  \"ok\": true\n}\n"
+    },
+    {
+      "returncode": 0,
+      "script": "validate_release_hygiene.py",
+      "script_sha256": "1ce2dcac3e375e8ccc3a0fa7f7b088c66ba691740ed7397171e208695a917d89",
+      "stderr": "",
+      "stdout": "{'status': 'PASS', 'checked': 'tracked docs and source files'}\n"
+    },
+    {
+      "returncode": 0,
+      "script": "governance_forbidden_path_guard.py",
+      "script_sha256": "3cb28769ffab50423a9bcec30570ffa6cffc9cdca9a0be0c53094cb25bfd4e26",
+      "stderr": "",
+      "stdout": "Running R5B Insecure Path Pattern Scanner...\nPASS: No insecure filesystem patterns found.\n"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,116 @@
+{
+  "builder_defaults": "Hashes VERSION, requirements-lock.txt, v1_public_contracts.json from exact HEAD; no default Native ZIP/Docker digest/runtime/live/signature metadata",
+  "existing_schema": {
+    "$id": "v1_release_manifest.v1.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "artifact_hashes": {
+        "additionalProperties": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "generated_at": {
+        "format": "date-time",
+        "type": "string"
+      },
+      "product_version": {
+        "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$",
+        "type": "string"
+      },
+      "release_commit": {
+        "pattern": "^[0-9a-f]{40}$",
+        "type": "string"
+      },
+      "release_tree_sha": {
+        "pattern": "^[0-9a-f]{40}$",
+        "type": "string"
+      },
+      "schema_version": {
+        "const": "v1_release_manifest.v1"
+      }
+    },
+    "required": [
+      "schema_version",
+      "product_version",
+      "release_commit",
+      "release_tree_sha",
+      "artifact_hashes",
+      "generated_at"
+    ],
+    "type": "object"
+  },
+  "field_matrix": [
+    {
+      "field": "source commit/tree",
+      "owner": "A6",
+      "support": "FIRST_CLASS"
+    },
+    {
+      "field": "version",
+      "owner": "A6",
+      "support": "FIRST_CLASS"
+    },
+    {
+      "field": "Native artifact hash",
+      "owner": "A6",
+      "support": "OPAQUE_ARTIFACT_HASH_ONLY"
+    },
+    {
+      "field": "Docker image digest",
+      "owner": "A6",
+      "support": "OPAQUE_ARTIFACT_HASH_ONLY"
+    },
+    {
+      "field": "dependency lock identity",
+      "owner": "A6",
+      "support": "OPAQUE_ARTIFACT_HASH_ONLY"
+    },
+    {
+      "field": "Python/runtime identity",
+      "owner": "A6",
+      "support": "NO_TYPED_FIELD"
+    },
+    {
+      "field": "public contract version",
+      "owner": "A6",
+      "support": "NO_TYPED_FIELD"
+    },
+    {
+      "field": "compatibility declaration",
+      "owner": "A6",
+      "support": "NO_TYPED_FIELD"
+    },
+    {
+      "field": "test/CI evidence",
+      "owner": "A6",
+      "support": "NO_TYPED_FIELD"
+    },
+    {
+      "field": "bounded-live evidence",
+      "owner": "A6",
+      "support": "NO_TYPED_FIELD"
+    },
+    {
+      "field": "signing/provenance",
+      "owner": "A6",
+      "support": "NO_TYPED_FIELD"
+    },
+    {
+      "field": "publication location",
+      "owner": "A6",
+      "support": "NO_TYPED_FIELD"
+    }
+  ],
+  "gap": "additionalProperties=false; typed cross-artifact evidence/runtime/compatibility/publication linkage requires later governed design, not silent schema expansion",
+  "no_schema_replacement": true,
+  "related_authorities": [
+    "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/native_distribution_manifest.json",
+    "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/docker_build_metadata.json",
+    "packaging_docker/dependency-lock-linux-amd64-cp313.json",
+    "scripts/build_v1_release_manifest.py",
+    "docs/contracts/v1_public_contracts.json"
+  ]
+}

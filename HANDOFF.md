@@ -1,6 +1,27 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current L6 state ? CLOSED (2026-10-23)
+## Current L7-A0 inventory / governance contract (2026-10-24)
+
+L6 remains **CLOSED** under `PHASE_L_L6_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
+L7 is **STARTED**. L7-A0 is **TECHNICAL INVENTORY / GOVERNANCE CONTRACT COMPLETE**;
+**OWNER ACCEPTANCE PENDING** under
+`L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_FROZEN`.
+**L7-A1+ NOT AUTHORIZED. Stable release / publication NOT AUTHORIZED.
+Phase M NOT AUTHORIZED. Phase L NOT CLOSED.** Merge/auto-merge are not authorized.
+
+The 15-obligation inventory freezes the proposed A1-A7 sequence and canonical
+29-item final exit contract, with 22 owned gaps. Default CI remains overall FAIL
+(1245 passed / 45 failed / 4 skipped / 5 deselected; candidate-only failures=0);
+expanded evidence remains FAIL (525 passed / 2 historical assertions). A0 changes
+no product, tests, workflows, dependencies, VERSION or GitHub settings. Python,
+SDK compatibility, final version and publication decisions remain later work.
+
+Authority/report: `docs/governance/phase_l/PHASE_L_L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_2026-10-23.md`.
+Evidence: `docs/governance/phase_l/acceptance_runs/l7-a0-20261023T164344Z/`.
+The following L6 closure text is historical authority for L6; its former L7
+authorization boundary is superseded only by this bounded A0 authorization.
+
+## Historical L6 closure state ? CLOSED (2026-10-23)
 
 L6 is **CLOSED** under `PHASE_L_L6_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following
 technical exit `PHASE_L_L6_EXIT_REVIEW_PASS`. L6-A6 is OWNER-ACCEPTED AND MERGED

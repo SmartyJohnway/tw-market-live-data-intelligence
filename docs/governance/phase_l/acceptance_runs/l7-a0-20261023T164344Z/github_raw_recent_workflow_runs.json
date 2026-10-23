@@ -1,0 +1,113 @@
+{
+  "data": {
+    "total_count": 863,
+    "workflow_runs": [
+      {
+        "conclusion": "success",
+        "created_at": "2026-09-24T01:16:07Z",
+        "event": "workflow_dispatch",
+        "head_sha": "b0abbcb0977dc2862e5e6c55076cd5193847542a",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35942166116",
+        "id": 35942166116,
+        "name": "Default CI",
+        "status": "completed"
+      },
+      {
+        "conclusion": "failure",
+        "created_at": "2026-09-24T01:15:54Z",
+        "event": "workflow_dispatch",
+        "head_sha": "b0abbcb0977dc2862e5e6c55076cd5193847542a",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35942150510",
+        "id": 35942150510,
+        "name": "Full Non-Network Regression",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "created_at": "2026-09-23T14:08:51Z",
+        "event": "workflow_dispatch",
+        "head_sha": "42d88f8af3f6c12544751405069d2ada039933cb",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35872048291",
+        "id": 35872048291,
+        "name": "Default CI",
+        "status": "completed"
+      },
+      {
+        "conclusion": "failure",
+        "created_at": "2026-09-23T14:08:38Z",
+        "event": "workflow_dispatch",
+        "head_sha": "42d88f8af3f6c12544751405069d2ada039933cb",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35872021703",
+        "id": 35872021703,
+        "name": "Full Non-Network Regression",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "created_at": "2026-09-23T12:55:00Z",
+        "event": "workflow_dispatch",
+        "head_sha": "1052ed074c8f1407bc2ed1678b9bbbe680d02ca6",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35863540621",
+        "id": 35863540621,
+        "name": "Default CI",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "created_at": "2026-09-23T12:54:47Z",
+        "event": "workflow_dispatch",
+        "head_sha": "1052ed074c8f1407bc2ed1678b9bbbe680d02ca6",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35863516664",
+        "id": 35863516664,
+        "name": "Windows Compatibility Smoke",
+        "status": "completed"
+      },
+      {
+        "conclusion": "failure",
+        "created_at": "2026-09-23T12:54:33Z",
+        "event": "workflow_dispatch",
+        "head_sha": "1052ed074c8f1407bc2ed1678b9bbbe680d02ca6",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35863494074",
+        "id": 35863494074,
+        "name": "Full Non-Network Regression",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "created_at": "2026-09-23T12:32:04Z",
+        "event": "workflow_dispatch",
+        "head_sha": "aa741c902510645484df3eb07ed45c2f0307d861",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35861071628",
+        "id": 35861071628,
+        "name": "Windows Compatibility Smoke",
+        "status": "completed"
+      },
+      {
+        "conclusion": "failure",
+        "created_at": "2026-09-23T12:31:45Z",
+        "event": "workflow_dispatch",
+        "head_sha": "aa741c902510645484df3eb07ed45c2f0307d861",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35861036553",
+        "id": 35861036553,
+        "name": "Full Non-Network Regression",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "created_at": "2026-09-23T12:31:26Z",
+        "event": "workflow_dispatch",
+        "head_sha": "aa741c902510645484df3eb07ed45c2f0307d861",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/35861003669",
+        "id": 35861003669,
+        "name": "Default CI",
+        "status": "completed"
+      }
+    ]
+  },
+  "endpoint": "repos/SmartyJohnway/tw-market-live-data-intelligence/actions/runs?per_page=10",
+  "method": "GET",
+  "observation": "OBSERVED",
+  "returncode": 0,
+  "stderr": "",
+  "timestamp_utc": "2026-10-23T15:25:16.635694+00:00"
+}

@@ -1,0 +1,32 @@
+{
+  "failed": 2,
+  "nodes": [
+    {
+      "A0_exemption": false,
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "failure_text_sha256": "2bc684a3830e244a5a46617ce8a864fd06202c428cb1813d7b16804c093f0c6d",
+      "future_role": "HISTORICAL_DIAGNOSTIC only after accepted A1 adjudication and current equivalent coverage",
+      "message": "assert [{'code': 'A5...mode_c.py']\"}] == []\n  \n  Left contains one more item: {'code': 'A5_NEW_FAMILY_DETECTED', 'detail': \"A5 requires unchanged product authority: ['server/local_network_boundary.py', 'server/services/unified_backup.py', 'server/services/unified_mode_b2.py', 'server/services/unified_mode_c.py']\"}\n  Use -v to get more diff",
+      "nodeid": "tests/unit/test_l5_a5_existing_family_conformance.py::test_72_dimension_cells_keep_exact_frozen_classifications",
+      "owner": "A1",
+      "provisional": true,
+      "rationale": "L5 frozen scope validator reports A5_NEW_FAMILY_DETECTED for later accepted L6 network/backup/mode resource files; this is not new evidence-family authorization.",
+      "xml_source": "docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z/expanded-report.xml"
+    },
+    {
+      "A0_exemption": false,
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "failure_text_sha256": "a58966135536a3592c950de17f2541b28ad97684ed4935b76b4aaf730e1411f4",
+      "future_role": "HISTORICAL_DIAGNOSTIC only after accepted A1 adjudication and current equivalent coverage",
+      "message": "AssertionError: assert 'FAIL' == 'PASS'\n  \n  - PASS\n  + FAIL",
+      "nodeid": "tests/unit/test_l5_a5_existing_family_conformance.py::test_entire_validator_is_offline_and_does_not_write",
+      "owner": "A1",
+      "provisional": true,
+      "rationale": "L5 frozen scope validator reports A5_NEW_FAMILY_DETECTED for later accepted L6 network/backup/mode resource files; this is not new evidence-family authorization.",
+      "xml_source": "docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z/expanded-report.xml"
+    }
+  ],
+  "not_full_non_network": true,
+  "overall": "FAIL",
+  "passed": 525
+}

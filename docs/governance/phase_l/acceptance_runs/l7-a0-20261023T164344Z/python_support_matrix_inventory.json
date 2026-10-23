@@ -1,0 +1,45 @@
+{
+  "candidate_future_policy": "3.13 canonical release and required CI; 3.11/3.12 compatibility only if justified by tests and dependency support",
+  "compatibility_review_owner": "A4",
+  "decision_status": "DECISION_REQUIRED",
+  "not_accepted_support_change": true,
+  "owner": "A3",
+  "platform_obligation": "L0-D03 retains Windows 10 x64 AND Windows 11 x64 Tier-1; L6 Native package specifically requires Windows 11. A2 must reconcile Windows 10 coverage/support before final release, with explicit Owner adjudication if narrowing is proposed.",
+  "release_requirement": "Resolve CI/runtime mismatch before release; keep current declared support unchanged in A0",
+  "surfaces": [
+    {
+      "current_authority": ".github/workflows/*.yml",
+      "current_version": "3.11",
+      "surface": "GitHub CI"
+    },
+    {
+      "current_authority": "packaging_native/README-PACKAGE.md",
+      "current_version": "CPython 3.13 x64 / cp313",
+      "surface": "Native Package C / wheelhouse"
+    },
+    {
+      "current_authority": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/environment_matrix.json",
+      "current_version": "official CPython 3.13.9 Windows 11 x64",
+      "surface": "Sandbox acceptance"
+    },
+    {
+      "current_authority": "packaging_docker/Dockerfile",
+      "current_version": "3.13.17 Alpine linux/amd64",
+      "surface": "Docker"
+    },
+    {
+      "current_authority": "requirements-lock.txt",
+      "current_version": "CPython 3.11.15 Windows x86_64; pip 26.2.1",
+      "surface": "developer lock generation"
+    },
+    {
+      "current_authority": [
+        "scripts/verify_environment.py SUPPORTED={(3,11),(3,13)}",
+        "docs/runbooks/DEVELOPER_ONBOARDING_LOCAL_FIRST.md"
+      ],
+      "current_version": "3.11 or 3.13 (not 3.12)",
+      "release_requirement": "Preserve existing supported versions until explicit compatibility decision; canonical 3.13 does not silently remove 3.11",
+      "surface": "developer supported runtime contract"
+    }
+  ]
+}

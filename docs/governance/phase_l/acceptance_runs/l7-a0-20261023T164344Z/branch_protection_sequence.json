@@ -1,0 +1,19 @@
+{
+  "constraint": "Never require current red historical default profile unchanged; no test hiding to manufacture green; settings authority separate from inventory approval",
+  "current_mutations": 0,
+  "future_GitHub_mutations": [
+    "pull_request workflow trigger changes",
+    "required status check names and up-to-date policy",
+    "required PR/reviews and bypass policy",
+    "force-push/deletion restrictions",
+    "signed commit / linear history / merge method decisions if adopted"
+  ],
+  "order": [
+    "A1 define trustworthy release-blocking composition",
+    "A1 prove green/stable on exact candidate and declared environment",
+    "A1/A2 add PR triggers only under later implementation authority",
+    "observe actual hosted check names/stability",
+    "A6 authorize/apply required status checks",
+    "A6 authorize/apply branch/ruleset protections as appropriate"
+  ]
+}

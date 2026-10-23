@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "commit": {
+        "sha": "e02bcb125999f542308a75f349c212f0ff3fee83",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/e02bcb125999f542308a75f349c212f0ff3fee83"
+      },
+      "name": "v1.0.0",
+      "node_id": "REF_kwDOS8-kvLByZWZzL3RhZ3MvdjEuMC4w",
+      "tarball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/tarball/refs/tags/v1.0.0",
+      "zipball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/zipball/refs/tags/v1.0.0"
+    },
+    {
+      "commit": {
+        "sha": "2c03b03f0853a509791f755daa0bb8f2be181dca",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/2c03b03f0853a509791f755daa0bb8f2be181dca"
+      },
+      "name": "v1.0.0-rc.1",
+      "node_id": "REF_kwDOS8-kvLVyZWZzL3RhZ3MvdjEuMC4wLXJjLjE",
+      "tarball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/tarball/refs/tags/v1.0.0-rc.1",
+      "zipball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/zipball/refs/tags/v1.0.0-rc.1"
+    },
+    {
+      "commit": {
+        "sha": "804496ca1b015fc8e6340a8ba8c524106fb9d4a2",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/804496ca1b015fc8e6340a8ba8c524106fb9d4a2"
+      },
+      "name": "v0.1.0",
+      "node_id": "REF_kwDOS8-kvLByZWZzL3RhZ3MvdjAuMS4w",
+      "tarball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/tarball/refs/tags/v0.1.0",
+      "zipball_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/zipball/refs/tags/v0.1.0"
+    }
+  ],
+  "endpoint": "repos/SmartyJohnway/tw-market-live-data-intelligence/tags?per_page=100",
+  "method": "GET",
+  "observation": "OBSERVED",
+  "returncode": 0,
+  "stderr": "",
+  "timestamp_utc": "2026-10-23T15:25:14.732116+00:00"
+}

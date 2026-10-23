@@ -1,0 +1,85 @@
+{
+  "data": {
+    "total_count": 6,
+    "workflows": [
+      {
+        "badge_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/workflows/Default%20CI/badge.svg",
+        "created_at": "2026-06-18T16:47:29.000+08:00",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/.github/workflows/ci.yml",
+        "id": 298128287,
+        "name": "Default CI",
+        "node_id": "W_kwDOS8-kvM4RxROf",
+        "path": ".github/workflows/ci.yml",
+        "state": "active",
+        "updated_at": "2026-07-05T11:39:23.000+08:00",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/actions/workflows/298128287"
+      },
+      {
+        "badge_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/workflows/Full%20Non-Network%20Regression/badge.svg",
+        "created_at": "2026-06-27T00:38:33.000+08:00",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/.github/workflows/non-network-ci.yml",
+        "id": 302838628,
+        "name": "Full Non-Network Regression",
+        "node_id": "W_kwDOS8-kvM4SDPNk",
+        "path": ".github/workflows/non-network-ci.yml",
+        "state": "active",
+        "updated_at": "2026-07-05T11:39:23.000+08:00",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/actions/workflows/302838628"
+      },
+      {
+        "badge_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/workflows/Windows%20Compatibility%20Smoke/badge.svg",
+        "created_at": "2026-07-05T11:29:22.000+08:00",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/.github/workflows/windows-compatibility-smoke.yml",
+        "id": 307341833,
+        "name": "Windows Compatibility Smoke",
+        "node_id": "W_kwDOS8-kvM4SUaoJ",
+        "path": ".github/workflows/windows-compatibility-smoke.yml",
+        "state": "active",
+        "updated_at": "2026-07-05T11:39:23.000+08:00",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/actions/workflows/307341833"
+      },
+      {
+        "badge_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/workflows/Browser%20Operator%20E2E/badge.svg",
+        "created_at": "2026-07-05T11:39:23.000+08:00",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/.github/workflows/browser-operator-e2e.yml",
+        "id": 307344160,
+        "name": "Browser Operator E2E",
+        "node_id": "W_kwDOS8-kvM4SUbMg",
+        "path": ".github/workflows/browser-operator-e2e.yml",
+        "state": "active",
+        "updated_at": "2026-07-05T11:39:23.000+08:00",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/actions/workflows/307344160"
+      },
+      {
+        "badge_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/workflows/Release%20Validation/badge.svg",
+        "created_at": "2026-07-17T01:31:21.000+08:00",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/.github/workflows/release-validation.yml",
+        "id": 314606367,
+        "name": "Release Validation",
+        "node_id": "W_kwDOS8-kvM4SwIMf",
+        "path": ".github/workflows/release-validation.yml",
+        "state": "active",
+        "updated_at": "2026-07-17T01:31:21.000+08:00",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/actions/workflows/314606367"
+      },
+      {
+        "badge_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/workflows/Phase%20H%20H-ACT-H1%20Rollback%20Check/badge.svg",
+        "created_at": "2026-09-23T00:37:13.000+08:00",
+        "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/.github/workflows/phase-h-h-act-h1-rollback-check.yml",
+        "id": 364409585,
+        "name": "Phase H H-ACT-H1 Rollback Check",
+        "node_id": "W_kwDOS8-kvM4VuHLx",
+        "path": ".github/workflows/phase-h-h-act-h1-rollback-check.yml",
+        "state": "active",
+        "updated_at": "2026-09-23T00:37:13.000+08:00",
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/actions/workflows/364409585"
+      }
+    ]
+  },
+  "endpoint": "repos/SmartyJohnway/tw-market-live-data-intelligence/actions/workflows",
+  "method": "GET",
+  "observation": "OBSERVED",
+  "returncode": 0,
+  "stderr": "",
+  "timestamp_utc": "2026-10-23T15:25:12.256803+00:00"
+}

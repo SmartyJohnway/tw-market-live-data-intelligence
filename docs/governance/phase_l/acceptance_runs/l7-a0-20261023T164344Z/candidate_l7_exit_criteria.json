@@ -1,0 +1,209 @@
+{
+  "canonical_list": true,
+  "criteria": [
+    {
+      "criterion": "canonical release-blocking CI defined",
+      "id": "L7-EXIT-01",
+      "owner": "A1",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "release-blocking deterministic CI green",
+      "id": "L7-EXIT-02",
+      "owner": "A1",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "no hidden network in deterministic CI",
+      "id": "L7-EXIT-03",
+      "owner": "A1",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "fresh-clone acceptance",
+      "id": "L7-EXIT-04",
+      "owner": "A2",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "Windows 11 x64 release acceptance",
+      "id": "L7-EXIT-05",
+      "owner": "A2",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "Native release artifact acceptance",
+      "id": "L7-EXIT-06",
+      "owner": "A2",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "Docker release artifact acceptance",
+      "id": "L7-EXIT-07",
+      "owner": "A2",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "exact-six MCP preserved",
+      "id": "L7-EXIT-08",
+      "owner": "A4",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "Request/Result/Audit compatibility preserved",
+      "id": "L7-EXIT-09",
+      "owner": "A4",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "persistent-state compatibility/migration policy declared",
+      "id": "L7-EXIT-10",
+      "owner": "A4",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "dependency authority frozen",
+      "id": "L7-EXIT-11",
+      "owner": "A3",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "dependency lock reproducible",
+      "id": "L7-EXIT-12",
+      "owner": "A3",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "Python runtime/support policy frozen",
+      "id": "L7-EXIT-13",
+      "owner": "A3",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "MCP SDK compatibility policy frozen",
+      "id": "L7-EXIT-14",
+      "owner": "A4",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "release version formally decided",
+      "id": "L7-EXIT-15",
+      "owner": "A4",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "release manifest complete",
+      "id": "L7-EXIT-16",
+      "owner": "A6",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "Native artifact reproducibility/provenance accepted",
+      "id": "L7-EXIT-17",
+      "owner": "A3",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "Docker artifact reproducibility/provenance accepted",
+      "id": "L7-EXIT-18",
+      "owner": "A3",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "bounded-live release acceptance completed",
+      "id": "L7-EXIT-19",
+      "owner": "A5",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "release notes / retained limitations complete",
+      "id": "L7-EXIT-20",
+      "owner": "A6",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "branch/merge protection decision applied where appropriate",
+      "id": "L7-EXIT-21",
+      "owner": "A6",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "no release-blocking secrets/path leakage",
+      "id": "L7-EXIT-22",
+      "owner": "A6",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "stable release source commit/tree frozen",
+      "id": "L7-EXIT-23",
+      "owner": "A6",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "stable artifact hashes/digests frozen",
+      "id": "L7-EXIT-24",
+      "owner": "A6",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "publication only under explicit Owner authority",
+      "id": "L7-EXIT-25",
+      "owner": "A7",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "post-release verification passed",
+      "id": "L7-EXIT-26",
+      "owner": "A7",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "historical failures accurately retained/classified",
+      "id": "L7-EXIT-27",
+      "owner": "A1",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "no unauthorized product capability introduced",
+      "id": "L7-EXIT-28",
+      "owner": "A7",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    },
+    {
+      "criterion": "Phase L final architecture obligations satisfied",
+      "id": "L7-EXIT-29",
+      "owner": "A7",
+      "required_proof": "Exact release candidate evidence, immutable hashes and explicit acceptance; inherited L6 proof alone does not certify the new release",
+      "status": "NOT_YET_ACCEPTED_FOR_L7_RELEASE"
+    }
+  ],
+  "final_closure": "Owner acceptance required separately"
+}

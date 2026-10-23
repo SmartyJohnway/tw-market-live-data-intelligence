@@ -1,0 +1,8 @@
+{
+  "files": [
+    "review_inventory.py",
+    "validator_wrapper.py"
+  ],
+  "method": "builtin compile without execution or pycache writes",
+  "status": "PASS"
+}

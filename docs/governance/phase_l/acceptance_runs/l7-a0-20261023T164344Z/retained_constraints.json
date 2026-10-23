@@ -1,0 +1,27 @@
+{
+  "count_basis": "Task command/action ledger and changed-path containment, not a claim of system-wide OS telemetry",
+  "unchanged": [
+    "exact-six MCP",
+    "Request V1/V2/V3 and Result/Audit compatibility",
+    "L2 sole backup/verify/isolated restore/migration authority",
+    "no hidden acquisition",
+    "no new evidence families",
+    "L6 CLOSED",
+    "Phase L NOT CLOSED",
+    "Phase M NOT AUTHORIZED",
+    "merge/auto-merge NOT AUTHORIZED",
+    "A1+ NOT AUTHORIZED"
+  ],
+  "zero_counts": {
+    "D_drive_access_commands": 0,
+    "GitHub_settings_mutations": 0,
+    "VERSION_changes": 0,
+    "dependency_changes": 0,
+    "live_provider_requests": 0,
+    "product_runtime_changes": 0,
+    "production_state_mutations": 0,
+    "release_publication_actions": 0,
+    "test_semantic_changes": 0,
+    "workflow_behavioral_changes": 0
+  }
+}
