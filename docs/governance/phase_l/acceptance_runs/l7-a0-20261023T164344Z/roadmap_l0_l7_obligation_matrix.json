@@ -1,0 +1,103 @@
+{
+  "mapping": "Historical L.8 CI / Release Governance = current L7; historical L.7 extension = current L5",
+  "platform_authority_reconciliation": {
+    "A2_scope": "implement/validate accepted Windows 11 policy, no platform re-decision",
+    "current": "L6/L7 release-blocking Native Tier-1 = Windows 11 x64 only",
+    "historical": "L0-D03 immutable historical Windows 10/11 decision",
+    "source": "docs/governance/phase_l/PHASE_L_L6_WINDOWS11_TIER1_PROSPECTIVE_POLICY_SUPERSESSION_2026-10-21.md",
+    "token": "USER_CHAT_2026-10-21_WINDOWS11_NATIVE_TIER1_BASELINE_SUPERSESSION"
+  },
+  "roadmap_source": "ROADMAP.md",
+  "rows": [
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "required CI profile",
+      "owner": "A1",
+      "status": "CONFLICTING"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "deterministic non-network CI",
+      "owner": "A1",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "fresh clone / fresh installation profile",
+      "owner": "A2",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Accepted prospective Windows 11 x64-only policy; L6 portability evidence exists, but L7 release validation integration remains future A2 work. Windows 10 is not release-blocking.",
+      "obligation": "Windows compatibility",
+      "owner": "A2",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Accepted prospective Windows 11 x64-only policy; L6 portability evidence exists, but L7 release validation integration remains future A2 work. Windows 10 is not release-blocking.",
+      "obligation": "Native Windows release validation",
+      "owner": "A2",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "Docker Local Service release validation",
+      "owner": "A2",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "bounded network/live release acceptance",
+      "owner": "A5",
+      "status": "DEFERRED_TO_LATER_L7_TRANCHE"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "dependency lock",
+      "owner": "A3",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "release manifest",
+      "owner": "A6",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "release reproducibility",
+      "owner": "A3",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "branch / merge protection where appropriate",
+      "owner": "A6",
+      "status": "MISSING"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "compatibility-range review",
+      "owner": "A4",
+      "status": "DEFERRED_TO_LATER_L7_TRANCHE"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "current exact MCP SDK pin review",
+      "owner": "A4",
+      "status": "PARTIAL"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "final v1.5.0 versus v2.0.0 decision",
+      "owner": "A4",
+      "status": "DEFERRED_TO_LATER_L7_TRANCHE"
+    },
+    {
+      "evidence": "Corresponding named A0 inventory; current contracts partially exist but release-specific proof/policy incomplete",
+      "obligation": "stable release publication governance",
+      "owner": "A7",
+      "status": "PARTIAL"
+    }
+  ]
+}

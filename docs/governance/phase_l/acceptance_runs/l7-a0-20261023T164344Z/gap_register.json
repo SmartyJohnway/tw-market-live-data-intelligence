@@ -1,0 +1,191 @@
+{
+  "by_owner": {
+    "A1": 4,
+    "A2": 4,
+    "A3": 5,
+    "A4": 2,
+    "A5": 1,
+    "A6": 3,
+    "A7": 1,
+    "OUTSIDE_L7": 1
+  },
+  "by_severity": {
+    "DECISION_REQUIRED": 4,
+    "HARDENING_RECOMMENDED": 1,
+    "HISTORICAL_DEBT": 1,
+    "NONBLOCKING_LIMITATION": 2,
+    "PRE_RELEASE_REQUIRED": 7,
+    "RELEASE_BLOCKER": 6
+  },
+  "gaps": [
+    {
+      "A0_implementation": false,
+      "gap": "Default CI 45 failures and required profile unresolved",
+      "id": "L7-GAP-01",
+      "owner": "A1",
+      "severity": "RELEASE_BLOCKER",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Historical 12 default + 2 expanded assertions need accepted separation/current equivalents",
+      "id": "L7-GAP-02",
+      "owner": "A1",
+      "severity": "HISTORICAL_DEBT",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Non-network markers do not establish observed zero acquisition",
+      "id": "L7-GAP-03",
+      "owner": "A1",
+      "severity": "RELEASE_BLOCKER",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Release checklist promises exceed actual green evidence",
+      "id": "L7-GAP-04",
+      "owner": "A1",
+      "severity": "RELEASE_BLOCKER",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Fresh release integration not automated for Native/Docker/Win11",
+      "id": "L7-GAP-05",
+      "owner": "A2",
+      "severity": "PRE_RELEASE_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Windows label trigger documented but absent",
+      "id": "L7-GAP-06",
+      "owner": "A2",
+      "severity": "PRE_RELEASE_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Post-publication validation cannot gate publication",
+      "id": "L7-GAP-07",
+      "owner": "A2",
+      "severity": "RELEASE_BLOCKER",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Python support mismatch requires explicit policy",
+      "id": "L7-GAP-08",
+      "owner": "A3",
+      "severity": "DECISION_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Canonical per-consumer dependency and browser/system artifact authority",
+      "id": "L7-GAP-09",
+      "owner": "A3",
+      "severity": "RELEASE_BLOCKER",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Byte reproducibility/toolchain and provenance limits",
+      "id": "L7-GAP-10",
+      "owner": "A3",
+      "severity": "PRE_RELEASE_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Signing/SBOM/publisher identity policy",
+      "id": "L7-GAP-11",
+      "owner": "A3",
+      "severity": "DECISION_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Mutable action major tags and runner image provenance",
+      "id": "L7-GAP-12",
+      "owner": "A3",
+      "severity": "HARDENING_RECOMMENDED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "MCP exact-pin versus range decision",
+      "id": "L7-GAP-13",
+      "owner": "A4",
+      "severity": "DECISION_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Final version / public/state compatibility decision",
+      "id": "L7-GAP-14",
+      "owner": "A4",
+      "severity": "DECISION_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Release bounded-live acceptance absent and unauthorized",
+      "id": "L7-GAP-15",
+      "owner": "A5",
+      "severity": "PRE_RELEASE_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Typed release manifest cross-artifact/runtime/evidence gaps",
+      "id": "L7-GAP-16",
+      "owner": "A6",
+      "severity": "RELEASE_BLOCKER",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Main unprotected; explicit settings/check sequencing decision",
+      "id": "L7-GAP-17",
+      "owner": "A6",
+      "severity": "PRE_RELEASE_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Release source/artifact identity freeze and notes",
+      "id": "L7-GAP-18",
+      "owner": "A6",
+      "severity": "PRE_RELEASE_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Stable publication and post-release proof not authorized/completed",
+      "id": "L7-GAP-19",
+      "owner": "A7",
+      "severity": "PRE_RELEASE_REQUIRED",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Historical replacement image not locally resolvable after reboot",
+      "id": "L7-GAP-20",
+      "owner": "A2",
+      "severity": "NONBLOCKING_LIMITATION",
+      "status": "OPEN_OWNED"
+    },
+    {
+      "A0_implementation": false,
+      "gap": "Production refresh remains outside release authority",
+      "id": "L7-GAP-21",
+      "owner": "OUTSIDE_L7",
+      "severity": "NONBLOCKING_LIMITATION",
+      "status": "OPEN_OWNED"
+    }
+  ],
+  "unowned_material_gaps": 0
+}

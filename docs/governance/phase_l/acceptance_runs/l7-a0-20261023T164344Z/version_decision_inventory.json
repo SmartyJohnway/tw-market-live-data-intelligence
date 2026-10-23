@@ -1,0 +1,39 @@
+{
+  "CURRENT_VERSION": "1.0.0",
+  "FINAL_VERSION_DECISION": "DEFERRED_TO_L7_A4",
+  "PROVISIONAL_L7_TARGET": "1.5.0",
+  "V2_ESCALATION_TRIGGER_PRESENT": false,
+  "matrix": [
+    {
+      "current_evidence": "Accepted L6 public contract/L2 review preserves compatibility; no intentional removal identified",
+      "decision": "A4 must confirm before version freeze",
+      "trigger": "Request V1/V2/V3 removal"
+    },
+    {
+      "current_evidence": "Accepted L6 public contract/L2 review preserves compatibility; no intentional removal identified",
+      "decision": "A4 must confirm before version freeze",
+      "trigger": "MCP schema/tool incompatibility"
+    },
+    {
+      "current_evidence": "Accepted L6 public contract/L2 review preserves compatibility; no intentional removal identified",
+      "decision": "A4 must confirm before version freeze",
+      "trigger": "historical Result/Audit unreadable"
+    },
+    {
+      "current_evidence": "Accepted L6 public contract/L2 review preserves compatibility; no intentional removal identified",
+      "decision": "A4 must confirm before version freeze",
+      "trigger": "persistent state incompatible without migration bridge"
+    },
+    {
+      "current_evidence": "Accepted L6 public contract/L2 review preserves compatibility; no intentional removal identified",
+      "decision": "A4 must confirm before version freeze",
+      "trigger": "canonical execution semantics broken"
+    }
+  ],
+  "qualification": "No known intentional breaking trigger in accepted L1-L6 review; not a complete new compatibility certification. Unresolved default tests require A1 adjudication.",
+  "release_approval": false,
+  "sources": [
+    "docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z/public_contract_review.json",
+    "docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z/l2_boundary_review.json"
+  ]
+}

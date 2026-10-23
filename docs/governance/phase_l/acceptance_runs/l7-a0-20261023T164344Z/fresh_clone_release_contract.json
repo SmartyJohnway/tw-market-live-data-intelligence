@@ -1,0 +1,21 @@
+{
+  "L6_reuse": "Accepted portability evidence supplies design/fixtures; future release source needs fresh release validation, not relabeling L6 artifacts",
+  "criteria": [
+    "exact clean source commit/tree",
+    "no developer venv",
+    "no inherited HOME/STATE",
+    "exact release dependencies",
+    "Native build",
+    "offline Native bootstrap/init and pre-init read-only errors",
+    "Windows 11 x64 genuine fresh environment",
+    "Docker build from pinned base",
+    "Docker fresh isolated volume and replacement/state survival",
+    "exact-six MCP and Request/Result/Audit regression",
+    "zero hidden acquisition with observed guards",
+    "no secret/developer host-path leakage; exact approved upstream exceptions only",
+    "artifact hashes, dependency/runtime and provenance identities"
+  ],
+  "dependency": "A3 final dependency authority must be integrated/revalidated before RC freeze; A2 early integration is not final release certification",
+  "execution_in_A0": false,
+  "owner": "A2"
+}

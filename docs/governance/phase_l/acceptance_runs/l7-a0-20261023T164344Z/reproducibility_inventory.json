@@ -1,0 +1,58 @@
+{
+  "rebuilds": 0,
+  "rows": [
+    {
+      "classification": "MOSTLY_REPRODUCIBLE",
+      "evidence": "committed allowlist/source hashes, fixed ZIP member timestamps; same-source repeated cross-host archive-hash equality not established here",
+      "owner": "A3",
+      "surface": "Native source -> package"
+    },
+    {
+      "classification": "REPRODUCIBLE",
+      "evidence": "exact published wheel hashes, consumer offline bootstrap",
+      "owner": "A3",
+      "surface": "Native wheelhouse"
+    },
+    {
+      "classification": "REPRODUCIBLE",
+      "evidence": "337 member manifest + self digest; source commit/tree",
+      "owner": "A3",
+      "surface": "Native package members"
+    },
+    {
+      "classification": "UNPROVEN",
+      "evidence": "fixed ordering/timestamps do not by themselves prove compressor/toolchain byte determinism",
+      "owner": "A3",
+      "surface": "Native artifact hash across environments"
+    },
+    {
+      "classification": "MOSTLY_REPRODUCIBLE",
+      "evidence": "exact source tree/base digest and 48 artifact hashes; accepted 277 same Git blobs",
+      "owner": "A3",
+      "surface": "Docker source/base/dependency inputs"
+    },
+    {
+      "classification": "UNPROVEN",
+      "evidence": "source and replacement images intentionally different; timestamps/build metadata/toolchain may vary; state survival != image reproducibility",
+      "owner": "A3",
+      "surface": "Docker image/config digest rebuild equality"
+    },
+    {
+      "classification": "REPRODUCIBLE",
+      "evidence": "accepted P6 runtime evidence; replacement image no longer locally resolvable retained limitation",
+      "owner": "A3",
+      "surface": "Docker replacement behavior"
+    },
+    {
+      "classification": "NONDETERMINISTIC",
+      "evidence": "latest runner, Python minor selector, ranges, action major tags, online install",
+      "owner": "A3",
+      "surface": "CI OS / Python / dependency / actions"
+    }
+  ],
+  "sources": [
+    "scripts/build_native_distribution.py",
+    "scripts/build_docker_context.py",
+    "docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z/docker_packaging_review.json"
+  ]
+}

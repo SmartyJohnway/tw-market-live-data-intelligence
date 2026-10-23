@@ -1,0 +1,112 @@
+{
+  "data": {
+    "_links": {
+      "html": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/tree/main",
+      "self": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/branches/main"
+    },
+    "commit": {
+      "author": {
+        "avatar_url": "https://avatars.githubusercontent.com/u/190353652?v=4",
+        "events_url": "https://api.github.com/users/SmartyJohnway/events{/privacy}",
+        "followers_url": "https://api.github.com/users/SmartyJohnway/followers",
+        "following_url": "https://api.github.com/users/SmartyJohnway/following{/other_user}",
+        "gists_url": "https://api.github.com/users/SmartyJohnway/gists{/gist_id}",
+        "gravatar_id": "",
+        "html_url": "https://github.com/SmartyJohnway",
+        "id": 190353652,
+        "login": "SmartyJohnway",
+        "node_id": "U_kgDOC1iQ9A",
+        "organizations_url": "https://api.github.com/users/SmartyJohnway/orgs",
+        "received_events_url": "https://api.github.com/users/SmartyJohnway/received_events",
+        "repos_url": "https://api.github.com/users/SmartyJohnway/repos",
+        "site_admin": false,
+        "starred_url": "https://api.github.com/users/SmartyJohnway/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/SmartyJohnway/subscriptions",
+        "type": "User",
+        "url": "https://api.github.com/users/SmartyJohnway",
+        "user_view_type": "public"
+      },
+      "comments_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/125188604126bcdbfcfea0f6421eae6a160e9085/comments",
+      "commit": {
+        "author": {
+          "date": "2026-10-23T15:08:39Z",
+          "email": "johnway0219@gmail.com",
+          "name": "Johnway"
+        },
+        "comment_count": 0,
+        "committer": {
+          "date": "2026-10-23T15:08:39Z",
+          "email": "noreply@github.com",
+          "name": "GitHub"
+        },
+        "message": "Merge pull request #407 from SmartyJohnway/phase-l/l6-owner-final-closure\n\nRecord Phase L6 Owner final closure",
+        "tree": {
+          "sha": "604c2e973a443c92ee274daa2f0d92a564a7cb44",
+          "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/git/trees/604c2e973a443c92ee274daa2f0d92a564a7cb44"
+        },
+        "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/git/commits/125188604126bcdbfcfea0f6421eae6a160e9085",
+        "verification": {
+          "payload": "tree 604c2e973a443c92ee274daa2f0d92a564a7cb44\nparent 5a071013a5d0d333f32e1928a4d081904078197a\nparent 3a23b90b656719981e80de2687a38494457dc851\nauthor Johnway <johnway0219@gmail.com> 1792768119 +0800\ncommitter GitHub <noreply@github.com> 1792768119 +0800\n\nMerge pull request #407 from SmartyJohnway/phase-l/l6-owner-final-closure\n\nRecord Phase L6 Owner final closure",
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJq23h3CRC1aQ7uu5UhlAAAA/gQAFDmTA51e0XDmQ17+ZOnHFgv\nKqPhTgsTHrYd93vJvO6VOuaMLRZ6GIpUSKgApVPGQ4NpZGzvlqDIszcfsbFdFdOx\nF+ZGRQaxhanz4zvPFEOymKj+0BCO4FRXTD7994N4ghCvg2Cw2pNjgNDr4jXrVYnO\nhhs2CIQO9T+B+IrmZ8c608mqBPMQ5CioggSY+Am56LzJQW0y65KzEgXS5W8vIXWN\njU6dOdTnJ3FIZZ43d3MeNzjSXrW5/D1hzRr4I0My4Bkk2Poq2qNO55rk+ZCzT6vM\nPvH6WdIy+qPuh5n6J6hejFPQZpg4KOU8bvNxTCN+y9yNzN4C11uUWDX+QUjbkQff\nXcwjL3QKvFXBVXnm3S/iba32+ZB16bLeMvvlXzK7F0nMOeOC0iLo6fhpjVKQwIw/\nZIouo6adxZmvSWZwdmLtgGNGqUQMQS6UwlSWI00CChVVWkaj9NiPLEkuwBNTOonL\nrzoeSU255+pp9mC4ujxX1/rjHZaMfqqYkod2Zyr+QyEr3iXNvHl689xylZJL4dYp\nIDDa8dZBOCGd2vXtlGSQrb8pJyb27bJ+nDtlNsEK1m6rJe46FPTqkk9U47JGCkPt\nbqHrAwyYOQiGNLLBcFU0H6twkxYRRvB7JhXFuTDRAZg9aitsaRFTFlkUNdFpFv13\nPx5Z6BASTOhw2iRLzf/r\n=jjWk\n-----END PGP SIGNATURE-----\n",
+          "verified": true,
+          "verified_at": "2026-10-23T15:08:40Z"
+        }
+      },
+      "committer": {
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "gravatar_id": "",
+        "html_url": "https://github.com/web-flow",
+        "id": 19864447,
+        "login": "web-flow",
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "site_admin": false,
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "type": "User",
+        "url": "https://api.github.com/users/web-flow",
+        "user_view_type": "public"
+      },
+      "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/commit/125188604126bcdbfcfea0f6421eae6a160e9085",
+      "node_id": "C_kwDOS8-kvNoAKDEyNTE4ODYwNDEyNmJjZGJmY2ZlYTBmNjQyMWVhZTZhMTYwZTkwODU",
+      "parents": [
+        {
+          "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/commit/5a071013a5d0d333f32e1928a4d081904078197a",
+          "sha": "5a071013a5d0d333f32e1928a4d081904078197a",
+          "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/5a071013a5d0d333f32e1928a4d081904078197a"
+        },
+        {
+          "html_url": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence/commit/3a23b90b656719981e80de2687a38494457dc851",
+          "sha": "3a23b90b656719981e80de2687a38494457dc851",
+          "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/3a23b90b656719981e80de2687a38494457dc851"
+        }
+      ],
+      "sha": "125188604126bcdbfcfea0f6421eae6a160e9085",
+      "url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/commits/125188604126bcdbfcfea0f6421eae6a160e9085"
+    },
+    "name": "main",
+    "protected": false,
+    "protection": {
+      "enabled": false,
+      "required_status_checks": {
+        "checks": [],
+        "contexts": [],
+        "enforcement_level": "off"
+      }
+    },
+    "protection_url": "https://api.github.com/repos/SmartyJohnway/tw-market-live-data-intelligence/branches/main/protection"
+  },
+  "endpoint": "repos/SmartyJohnway/tw-market-live-data-intelligence/branches/main",
+  "method": "GET",
+  "observation": "OBSERVED",
+  "returncode": 0,
+  "stderr": "",
+  "timestamp_utc": "2026-10-23T15:25:06.899152+00:00"
+}

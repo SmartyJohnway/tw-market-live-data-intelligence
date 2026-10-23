@@ -1,0 +1,18 @@
+{
+  "historical_files_modified": 0,
+  "manifests": [
+    {
+      "members": 49,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z",
+      "self_digest": "5f885170309cb2fdf025f7066e8c417f201157e29b2f74797673007b3248d0ac",
+      "status": "PASS"
+    },
+    {
+      "members": 193,
+      "path": "docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z",
+      "self_digest": "3b415ab4172adda1f537b85f3afbe5db18acec1c509286c28b3fb3defc10563d",
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS"
+}
