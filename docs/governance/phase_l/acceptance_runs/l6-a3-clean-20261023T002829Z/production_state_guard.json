@@ -1,0 +1,10 @@
+{
+  "actual_product_flows_run": false,
+  "provider_acquisition_executed": false,
+  "production_state_mutation_observed": false,
+  "D_drive_commands_issued": false,
+  "scope": "tool command review and Python process guard where installed; not OS-wide",
+  "initial_delegated_temp_confinement": "NOT_EVIDENCED",
+  "guard_source": "C-only build/tools-venv/Lib/site-packages/sitecustomize.py",
+  "guard_log_present": false
+}

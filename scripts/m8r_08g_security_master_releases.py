@@ -121,6 +121,19 @@ def _hashes():
 
 
 def _commit():
+    # Package C retains the committed producer identity without requiring Git.
+    # A malformed package must never fall back to an unrelated parent checkout.
+    manifest = REPO_ROOT.parent / "distribution-manifest.json"
+    if REPO_ROOT.name == "app" and manifest.exists():
+        try:
+            import importlib.util
+            verifier = REPO_ROOT.parent / "bootstrap" / "package_integrity.py"
+            spec = importlib.util.spec_from_file_location("_native_integrity", verifier)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            return module.verify_bundle(REPO_ROOT.parent)["manifest"]["source_commit"]
+        except Exception as e:
+            raise LocalSecurityMasterError("repository_commit_unavailable") from e
     try:
         return subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True

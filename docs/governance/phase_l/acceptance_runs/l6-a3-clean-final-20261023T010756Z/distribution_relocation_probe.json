@@ -1,0 +1,15 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "name": "A3_DISTRIBUTION_RELOCATION_PROBE",
+  "APP_ROOT_A": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\Location A With Spaces \u975eASCII\\TW-Market-1.0.0-windows-x64\\app",
+  "APP_ROOT_B": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\Location-B\\TW-Market-1.0.0-windows-x64\\app",
+  "same_installation_id": "b0df2966-1374-46de-9b12-5ccfa839e8fe",
+  "same_state_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\business state",
+  "settings_unchanged": true,
+  "independent_local_venvs": true,
+  "stale_marker_rejected": true,
+  "app_B_immutable": true
+}

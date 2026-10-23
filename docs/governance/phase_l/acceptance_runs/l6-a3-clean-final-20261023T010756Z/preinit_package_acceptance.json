@@ -1,0 +1,53 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "payload": {
+    "checks": [
+      {
+        "name": "installation",
+        "reason_code": "INSTALLATION_NOT_INITIALIZED",
+        "status": "WARN"
+      }
+    ],
+    "duration_ms": 8.85,
+    "identity": {
+      "reason_code": "INSTALLATION_NOT_INITIALIZED",
+      "status": "UNKNOWN"
+    },
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\Location A With Spaces \u975eASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\home \u975eASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "product_default",
+          "port": "env"
+        },
+        "state_root_source": "cli_or_env_or_default"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 10496,
+      "governed_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\business state\\governed",
+      "home": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\home \u975eASCII",
+      "installation_id": null,
+      "installation_metadata_path": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\home \u975eASCII\\meta\\installation.json",
+      "installation_status": "INSTALLATION_NOT_INITIALIZED",
+      "logs_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\home \u975eASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\home \u975eASCII\\logs\\operational-events.jsonl",
+      "runtime_root": null,
+      "security_master_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\home \u975eASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\business state",
+      "temp_root": null,
+      "watchlist_root": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\business state\\watchlists"
+    },
+    "operation_id": "a5bacab3-ccd3-4ed8-a031-d92c3219f50c",
+    "reason_code": "INSTALLATION_NOT_INITIALIZED",
+    "started_at": "2026-10-23T00:57:43.076831+00:00",
+    "status": "INSTALLATION_NOT_INITIALIZED",
+    "trace_id": "799fa527-df97-4090-bd83-5a15d37b59fc"
+  },
+  "home_created": false
+}

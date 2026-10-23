@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\twmarket_temp\l6-a3-clean\repo\scripts\build_native_distribution.py", line 180, in <module>
+    print(json.dumps(build(args.output.resolve(), args.wheelhouse.resolve()), indent=2))
+                     ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\twmarket_temp\l6-a3-clean\repo\scripts\build_native_distribution.py", line 147, in build
+    check_member(path, data)
+    ~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\twmarket_temp\l6-a3-clean\repo\scripts\build_native_distribution.py", line 108, in check_member
+    raise ValueError(f"host-path leakage in {path}")
+ValueError: host-path leakage in wheelhouse/cryptography-50.0.1-cp311-abi3-win_amd64.whl

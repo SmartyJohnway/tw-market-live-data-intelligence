@@ -1,0 +1,18 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "status": "PASS_FOR_FINAL_BOUNDED_ACCEPTANCE",
+  "HOME": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\home \u975eASCII",
+  "STATE_ROOT": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\business state",
+  "TEMP": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\tmp",
+  "TMP": "C:\\twmarket_temp\\acceptance\\a3-accepted-20261023\\tmp",
+  "guard_events": [],
+  "app_root_normal_flow_mutation": 0,
+  "default_user_HOME_targeted": false,
+  "D_drive_commands_issued": false,
+  "D_drive_writes_observed": 0,
+  "scope": "Python/inherited Python instrumentation plus command review; not OS-wide telemetry",
+  "early_smoke_evidence_gap": "preserved as historical; not used or retroactively marked PASS"
+}

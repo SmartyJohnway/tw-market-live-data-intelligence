@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "package_integrity_failed: manifest unreadable: Extra data: line 2007 column 3 (char 75794)\n"
+}

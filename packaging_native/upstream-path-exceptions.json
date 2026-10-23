@@ -1,0 +1,15 @@
+{
+  "classification": "THIRD_PARTY_UPSTREAM_EMBEDDED_PATH_PROVENANCE_EXCEPTION",
+  "wheels": {
+    "cryptography-50.0.1-cp311-abi3-win_amd64.whl": "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648",
+    "numpy-2.4.6-cp313-cp313-win_amd64.whl": "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+    "pandas-3.0.5-cp313-cp313-win_amd64.whl": "0d298e951f23016ce4699951d044ae6418dbc91bf68cefca0f77666fcbb4e5c6",
+    "pydantic_core-2.46.5-cp313-cp313-win_amd64.whl": "15f4a94963c95accac15b7b657bb177d3ad82bb90b0d0526d9a9b85079925db5",
+    "pygments-2.21.0-py3-none-any.whl": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "pywin32-312-cp313-cp313-win_amd64.whl": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+    "rpds_py-2026.6.3-cp313-cp313-win_amd64.whl": "9250a9a0a6fd4648b3f868da8d91a4c52b5811a62df58e753d50ae4454a36f80",
+    "pytest-9.1.1-py3-none-any.whl": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c"
+  },
+  "authority": "USER_CHAT_2026-10-23_L6_A3_THIRD_PARTY_UPSTREAM_EMBEDDED_PATH_EXCEPTION_AUTHORIZATION",
+  "addendum": "USER_CHAT_2026-10-23_L6_A3_PYTEST_UPSTREAM_EMBEDDED_PATH_EXCEPTION_ADDENDUM"
+}

@@ -1,0 +1,16 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "filename": "TW-Market-1.0.0-windows-x64.zip",
+  "bytes": 40613350,
+  "sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "manifest_canonical_sha256": "d6a5f3ef948f6d2d022bc4db3c90032fb4ca5137eca2254324bbd4fd78b07445",
+  "member_count": 333,
+  "manifested_member_count": 332,
+  "wheel_count": 49,
+  "product_version": "1.0.0"
+}

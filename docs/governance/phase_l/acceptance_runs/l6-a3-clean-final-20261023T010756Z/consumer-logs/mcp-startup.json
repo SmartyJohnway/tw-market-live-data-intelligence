@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "startup_check=ok adapter=unified_market_evidence_mcp_adapter.v2 mcp=1.29.0\n"
+}

@@ -1,0 +1,13 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "base": "911a841b866795e8d0cd83d80b30b34701aa5980",
+  "base_tree": "72234b87fb3d47758c196c2ac80cc88549463837",
+  "fetch_verified": true,
+  "branch": "phase-l/l6-a3-native-distribution-packaging-clean",
+  "fresh_clone": true,
+  "source_dirty_rejected_by_builder": true,
+  "source_identity_from_clean_committed_blobs": true
+}

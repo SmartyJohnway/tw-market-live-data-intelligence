@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "passed": 40,
+  "failed": 0,
+  "command": "tools-venv Python -B -m pytest tests/unit/test_l6_a3_package_integrity.py -q --basetemp <C workspace>/tmp/a3-focused",
+  "scope": "integrity, path validation, exclusion, allowlist, missing bootstrap resources; not full package acceptance",
+  "source": "pre-implementation-commit focused run; later builder mode fix not covered"
+}

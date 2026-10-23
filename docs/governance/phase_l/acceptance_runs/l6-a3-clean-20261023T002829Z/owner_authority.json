@@ -1,0 +1,6 @@
+{
+  "authority": "USER_CHAT_2026-10-22_PHASE_L_L6_A3_CLEAN_REIMPLEMENTATION_FROM_MERGED_A2_AUTHORIZATION",
+  "scope": "clean implementation; push/open PR only after technical acceptance; no merge",
+  "resumed": "2026-10-23 Asia/Taipei",
+  "pending_clarification": "upstream third-party build/debug path strings under literal section 33"
+}

@@ -1,0 +1,17 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "status": "RESOLVED_CURRENT_CLEAN_CANDIDATE",
+  "historical_lost_A3_root_cause": "not proven from lost original candidate; not assumed identical",
+  "current_clean_reproduction": {
+    "source": "c10713e7",
+    "outcome": "SERVICE_EXITED_DURING_START",
+    "confirmed_root_cause": "ModuleNotFoundError build_m5f_canonical_market_context_package imported by legacy runtime validator",
+    "diagnostic": "intermediate-clean-start-failure.json"
+  },
+  "fix": "five exact legacy import modules added; four package-initializer import modules also included; no A2 lifecycle code redesign",
+  "final_start": "STARTED",
+  "ownership_environment_cwd_resources_inspected": true
+}

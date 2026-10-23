@@ -1,0 +1,26 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "status": "TECHNICAL_ACCEPTANCE_PASS_DELIVERY_PENDING",
+  "source_review": "read-only engineering and sol architecture/governance reviews; issues fixed with evidence; Owner/independent acceptance pending",
+  "all_runtime_completion_gates": "PASS",
+  "focused": "101 passed",
+  "default_ci": "FAIL; exact same current-environment inherited 44-node set; candidate-only failures 0",
+  "new_source_identity": {
+    "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+    "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+    "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+    "evidence_run": "l6-a3-clean-final-20261023T010756Z"
+  },
+  "no_ninth_wheel_exception": true,
+  "remaining_limits": [
+    "Python/inherited-Python guard scope, not OS-wide",
+    "No retroactive claim for early unconfined smoke",
+    "Historical artifact readers remain unavailable without their excluded artifacts",
+    "No installer, signing, final SBOM, Docker, full P1-P6 or A5 integrated acceptance"
+  ],
+  "delivery": "commit governance/evidence, commit and verify governance manifest, clean worktree, push branch, create PR, then STOP",
+  "owner_acceptance": "PENDING"
+}

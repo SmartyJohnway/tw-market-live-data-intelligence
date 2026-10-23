@@ -1,0 +1,31 @@
+{
+  "package_source_commit": "0c1850ac23db5a9a4e25a5196ca62dedf17ece2a",
+  "package_source_tree": "e2a2b27733f16a167facc265012c5b4dadedefe6",
+  "zip_sha256": "14dfd36c61ccf173999836932031304e151d93e9b342482bf3cd3d467b48ff7d",
+  "evidence_run": "l6-a3-clean-final-20261023T010756Z",
+  "outer_archive_files": 333,
+  "forbidden_first_party_members": [],
+  "method": "builder exact-file policy, regular Git blobs, check_member forbidden segments/state/secret scan; entire public source tracked at source commit",
+  "exact_exceptions": [
+    {
+      "source": "config/m5k_default_watchlist.json",
+      "destination": "app/config/m5k_default_watchlist.json",
+      "role": "runtime_resource",
+      "justification": "Exact legacy compatibility runtime template consumed by m5k_common and M8A bounded classifier; not an installation Persistent Watchlist or user state"
+    },
+    {
+      "source": "config/m8a_official_eod_security_master.json",
+      "destination": "app/config/m8a_official_eod_security_master.json",
+      "role": "runtime_resource",
+      "justification": "Exact legacy bounded seed with incomplete classification metadata; read-only runtime resource, not canonical installed Security Master state"
+    },
+    {
+      "source": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+      "destination": "app/docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+      "role": "runtime_resource",
+      "justification": "Exact governance exception: frozen source contract loaded by active I3 adapter; immutable authority"
+    }
+  ],
+  "dependency_wheels": "unchanged locked upstream files; their nested vendor tests/documentation are not first-party repository test/state payload",
+  "canonical_installation_state_in_archive": false
+}

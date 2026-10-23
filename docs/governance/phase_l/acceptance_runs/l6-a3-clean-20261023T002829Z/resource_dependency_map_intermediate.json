@@ -1,0 +1,266 @@
+[
+  {
+    "source": "scripts/m5k_common.py",
+    "reference": "config/m5k_default_watchlist.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m5k_common.py",
+    "reference": "config/m5l_live_source_adapter_matrix.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8a_official_eod_instrument_classifier.py",
+    "reference": "config/canonical_security_master.json",
+    "exists": false,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8a_official_eod_instrument_classifier.py",
+    "reference": "config/m5k_default_watchlist.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8a_official_eod_instrument_classifier.py",
+    "reference": "config/m8a_official_eod_security_master.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8a_official_eod_instrument_classifier.py",
+    "reference": "docs/data_capabilities/canonical_security_master.json",
+    "exists": false,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_03c_contracts.py",
+    "reference": "docs/data_capabilities/m8r_03b_conversation_scope_contract.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_03c_contracts.py",
+    "reference": "docs/data_capabilities/m8r_03b_evidence_bundle_contracts.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_05b_01/planner.py",
+    "reference": "schemas/unified_market_evidence_orchestration_plan.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_05b_01/planner.py",
+    "reference": "schemas/unified_market_evidence_request_validation.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_05b_02/consumption_binding.py",
+    "reference": "schemas/unified_market_evidence_authorization_consumption_binding.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_05b_02/validator.py",
+    "reference": "schemas/unified_market_evidence_execution_authorization.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_06_01c1b_compact_runtime_identity_index.py",
+    "reference": "data/security_master/runtime_identity_indexes/",
+    "exists": false,
+    "classification": "DURABLE_STATE_OR_LEGACY_FALLBACK_EXCLUDE"
+  },
+  {
+    "source": "scripts/m8r_06_02_mode_b1_preview.py",
+    "reference": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v2.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_06_02_mode_b1_preview.py",
+    "reference": "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_06_02_mode_b1_preview.py",
+    "reference": "docs/data_capabilities/m8r_05b_orchestration_handoff_contract.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_06_02_mode_b1_preview.py",
+    "reference": "docs/data_capabilities/unified_market_evidence_capability_catalog.v2.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_06_02_mode_b1_preview.py",
+    "reference": "schemas/unified_market_evidence_preview_response.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_06_03_production_adapter.py",
+    "reference": "docs/data_capabilities/m8_source_capability_registry.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_bounded_market_context_request.py",
+    "reference": "docs/data_capabilities/m8_source_capability_registry.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/m8r_bounded_market_context_request.py",
+    "reference": "frontend/public",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/observation_contract.py",
+    "reference": "docs/protocol/M7A_TWSE_MIS_RICH_FACTS_FINAL_ACCEPTANCE.md",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "config/m8r_06_03_executor_registry_metadata.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "config/phase_h_h1_dormant_source_descriptors.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "docs/data_capabilities/m8r_05b_existing_orchestrator_disposition.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "schemas/trading_status_context_composite.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "schemas/trading_status_context_evidence.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "schemas/trading_status_context_evidence.v2.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "schemas/unified_market_evidence_audit_package.v3.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "schemas/unified_market_evidence_request.v3.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "scripts/validate_phase_h_v3_contracts.py",
+    "reference": "schemas/unified_market_evidence_result.v3.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/main.py",
+    "reference": "config/m5l_live_source_adapter_matrix.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/services/phase_h_h1_tpex_composite.py",
+    "reference": "config/phase_h_h1_dormant_source_descriptors.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/services/phase_h_h2_twse_exright_executor.py",
+    "reference": "schemas/{contract}.schema.json",
+    "exists": false,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/services/phase_h_h2_twse_exright_executor.py",
+    "reference": "schemas/discontinuity_safety_evidence.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/services/phase_i_i2_production_candidate.py",
+    "reference": "schemas/unified_market_evidence_execution_request.v2.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/services/phase_i_i2_production_candidate.py",
+    "reference": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+    "reference": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_EXCEPTION"
+  },
+  {
+    "source": "server/services/phase_i_i3_cash_institutional_flow_adapters.py",
+    "reference": "schemas/cash_institutional_flow_context_evidence.v1.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+    "reference": "schemas/unified_market_evidence_operation_result.v2.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  },
+  {
+    "source": "server/services/phase_i_i3_cash_institutional_flow_v2_evidence.py",
+    "reference": "schemas/cash_institutional_flow_context_evidence.v2.schema.json",
+    "exists": true,
+    "classification": "RUNTIME_REQUIRED_RESOURCE"
+  }
+]
