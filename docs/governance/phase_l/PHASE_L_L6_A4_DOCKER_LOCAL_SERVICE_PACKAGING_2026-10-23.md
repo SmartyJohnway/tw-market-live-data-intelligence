@@ -3,10 +3,11 @@
 **Date:** 2026-10-23
 **Authority:** `USER_CHAT_2026-10-23_PHASE_L_L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_AUTHORIZATION`
 **Technical disposition:** `L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_COMPLETE`
-**Owner acceptance:** PENDING
+**Independent review:** `L6_A4_INDEPENDENT_TECHNICAL_REVIEW_PASS`
+**Owner acceptance:** `L6_A4_OWNER_ACCEPTED_FOR_MERGE`
 **P6 disposition:** `IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5`
 
-L6-A4 packages the existing Local Service as one Linux/amd64 Docker Compose service. The Windows host continues to own the stdio MCP adapter. This record does not claim final P1-P6 portability acceptance and does not authorize L6-A5, L7, Phase M, image publication, or merge.
+L6-A4 packages the existing Local Service as one Linux/amd64 Docker Compose service. The Windows host continues to own the stdio MCP adapter. This record does not claim final P1-P6 portability acceptance. PR #402 was subsequently Owner-accepted and normal-merged; L6-A5, L7, Phase M, image publication and installer work remain unauthorized.
 
 ## Candidate identity
 
@@ -14,7 +15,7 @@ L6-A4 packages the existing Local Service as one Linux/amd64 Docker Compose serv
 - Implementation source commit/tree: `5a747fad735527f349dfc2760366359ff5da67fd` / `729708fb292565d1414ef432c5723f199eadd6de`. The implementation commit is a direct child of the exact base.
 - Docker context was rebuilt from the clean, committed source commit. The context manifest binds all 273 application files to the A3 resource policy and their Git blob IDs.
 - Dependency manifest SHA-256: `4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88`.
-- Final governance/evidence-binding commit is the candidate head that contains this record and its acceptance evidence. Its exact commit and tree were read back from Git after commit and are included in the PR description. The Docker application payload remains the source commit/tree above; governance-only files were added afterward.
+- Final governance/evidence candidate commit/tree: `99f756f8f5b0a6582ec47c1c5de390ec6d1f8f9b` / `1d11660978b1952ef5fe8301fa9a3f6fd0e63e33`. The Docker application payload remains the source commit/tree above; governance/evidence files were added afterward.
 
 ## Platform and dependencies
 
@@ -57,6 +58,9 @@ Default CI is **FAIL with zero candidate-only regressions**. Exact-base and cand
 Machine-readable evidence is in [`acceptance_runs/l6-a4-20261023T061105Z/`](acceptance_runs/l6-a4-20261023T061105Z/), including base/engine/image/Compose identities, dependency hashes and path adjudication, resource manifest, pre-init/init/lifecycle records, loopback and peer probes, volume/image replacement hashes, MCP exact-six results, APP_ROOT guard, leakage/acquisition guards, focused validators, and base/candidate default-CI failed-node lists. `intermediate-attempts.json` preserves the resolved host Docker cache issue, the rejected internal-only bridge attempt, and the earlier isolated-MCP initialization correction; those are not recorded as product acceptance failures.
 
 **Final A4 disposition:** `L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_COMPLETE`.
-**Owner acceptance:** PENDING independent review.
+**Independent review:** `L6_A4_INDEPENDENT_TECHNICAL_REVIEW_PASS`.
+**Owner acceptance:** `L6_A4_OWNER_ACCEPTED_FOR_MERGE`.
+**PR #402 normal merge:** `85a4351f9be46efeb28794079ed7adfeeae0fc8a`; merged tree `1d11660978b1952ef5fe8301fa9a3f6fd0e63e33`; parents `ee316f784831fe684e21fa8d146512d96a888050` + `99f756f8f5b0a6582ec47c1c5de390ec6d1f8f9b`; GitHub verification valid.
 **P6:** `IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5`.
-**L6-A5, L7, Phase M and merge:** NOT AUTHORIZED.
+**L6-A5, L7, Phase M, image publication and installer work:** NOT AUTHORIZED.
+**Post-merge reconciliation:** `docs/governance/phase_l/PHASE_L_L6_A4_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-23.md`.
