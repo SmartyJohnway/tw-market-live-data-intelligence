@@ -1,24 +1,31 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current L6-A6 technical exit review (2026-10-23)
+## Current L6 state ? CLOSED (2026-10-23)
 
-L6-A0 through L6-A5 are OWNER-ACCEPTED AND MERGED.
-L6-A6 technical disposition: `PHASE_L_L6_EXIT_REVIEW_PASS`.
-All 23 exit criteria PASS; unresolved A0 findings=0; unresolved A1 gaps=0.
-Accepted P1–P6 actual portability evidence remains valid and relevant current
-product bytes match A5 source `3707c553497240f6ff0f7e5358301395fd60205a`.
-Default CI remains FAIL: base/candidate1245 passed,45 failed,4 skipped,5 deselected;
-candidate-only failed nodes=0. Expanded validation remains525 passed/2 historical
-L5 scope-assertion failures; neither inherited suite is reported overall PASS.
+L6 is **CLOSED** under `PHASE_L_L6_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following
+technical exit `PHASE_L_L6_EXIT_REVIEW_PASS`. L6-A6 is OWNER-ACCEPTED AND MERGED
+via PR #406 at normal merge `5a071013a5d0d333f32e1928a4d081904078197a`, tree
+`e29ff3fd71805fdeedcd647004e44434ae26f171`; the accepted A6 candidate is
+`4bf95ca87211e16e9c53a1a935cf731bdca5ebd3`. Independent review disposition is
+`L6_A6_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
+`L6_A6_OWNER_ACCEPTED_FOR_MERGE`.
 
-L6: **TECHNICAL EXIT PASS / NOT YET OWNER-CLOSED**.
-Owner final closure: **PENDING**. Phase L is not closed.
-Merge/auto-merge, L7, Phase M, release/signing/image publication and installer
-implementation remain **NOT AUTHORIZED**. Stop for independent review/Owner action.
+The accepted exit retains 23/23 L6 criteria PASS, unresolved A0 findings=0,
+unresolved A1 gaps=0, P1?P6 PASS, post-A5 product drift=0, exact-six MCP, and L2
+as the sole backup/verify/isolated-restore/migration authority. Default CI remains
+overall FAIL at 1245 passed / 45 failed / 4 skipped / 5 deselected on both base
+and candidate with candidate-only failures=0; expanded validation remains overall
+FAIL at 525 passed / 2 unchanged historical L5 scope assertions. Retained A6
+limitations remain visible and unchanged.
 
-Review: `docs/governance/phase_l/PHASE_L_L6_A6_PACKAGING_PORTABILITY_TECHNICAL_EXIT_REVIEW_2026-10-23.md`.
+No L6-A7 is created or authorized. **L7 remains NOT AUTHORIZED. Phase M remains
+NOT AUTHORIZED.** Release/signing/publication, image publication, installer work,
+and any new product capability remain outside this closure. Phase L itself is not
+closed because L7 has not been authorized or completed.
+
+Closure: `docs/governance/phase_l/PHASE_L_L6_OWNER_FINAL_CLOSURE_2026-10-23.md`.
+Technical review: `docs/governance/phase_l/PHASE_L_L6_A6_PACKAGING_PORTABILITY_TECHNICAL_EXIT_REVIEW_2026-10-23.md`.
 Evidence: `docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z/`.
-
 
 ## Historical L6-A5 merged state (2026-10-23)
 
