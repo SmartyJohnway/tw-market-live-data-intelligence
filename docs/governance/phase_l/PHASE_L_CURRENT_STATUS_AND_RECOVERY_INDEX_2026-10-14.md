@@ -1,24 +1,33 @@
 # Phase L — Current Status & Recovery Index
 
-## Current L7-A2 technical state (2026-10-24)
+## Current L7-A2 merged state (2026-10-25)
 
 L6 remains **CLOSED**. L7-A0 and L7-A1 remain **OWNER-ACCEPTED AND MERGED**;
 A1 post-merge governance is reconciled at canonical entry `0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5`.
-L7-A2 is **TECHNICAL PASS / OWNER ACCEPTANCE PENDING** under
+L7-A2 is **OWNER-ACCEPTED AND MERGED** under
 `L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_PASS`.
+Independent review disposition is `L7_A2_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
+`L7_A2_OWNER_ACCEPTED_FOR_MERGE`.
 
-Fresh clone, genuine Windows11 x64 guest, Native and Docker validation artifacts PASS;
+PR #412 normal-merged accepted head `56e418e9a22469f1c7ed8fbeda01cf7474e029de`,
+tree `dc91f58ec8a4b45733c3852036afd29d35986be3`, at merge commit
+`2219552d9817e11219c08b53e606d2969a368d02`. Merge parents are prior canonical main
+`0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5` and the exact accepted A2 head; GitHub merge verification is valid.
+The bounded validator reproducibility correction is included in the accepted head; its prior review blocker is closed.
+
+Fresh clone, genuine Windows11 x64 guest, Native and Docker validation artifacts remain accepted;
 canonical A1 gate is 1895 passed / 0 failed / four contracted historical witness skips,
-with no unexpected skips/xfails or guard denials. GAP05/06/07 are CLOSED; GAP20 is a retained
+with no unexpected skips/xfails or guard denials. GAP05/06/07 are CLOSED; GAP20 remains a retained
 nonblocking historical limitation with current A2 replacement/state-survival proof.
 Only EXIT04/05/06/07 gain A2 PASS; exact-six/public contracts remain preservation checks,
 with final L7 acceptance deferred. Existing A1 acceptance and immutable failed/TEMP evidence remain.
 
-**L7-A3+ NOT AUTHORIZED. Stable release/publication NOT AUTHORIZED. Merge NOT AUTHORIZED.
+**L7-A3+ NOT AUTHORIZED. Stable release/publication NOT AUTHORIZED.
 Phase M NOT AUTHORIZED. Phase L NOT CLOSED.** No dependency/support policy or VERSION changes.
 
 Report: `docs/governance/phase_l/PHASE_L_L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_FINAL_2026-10-24.md`.
 Evidence: `docs/governance/phase_l/acceptance_runs/l7-a2-20261024T133622Z-final/`.
+Reconciliation: `docs/governance/phase_l/PHASE_L_L7_A2_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-25.md`.
 
 ## Historical L7-A1 merged state (2026-10-24)
 
