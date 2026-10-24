@@ -1,0 +1,39 @@
+{
+  "canonical": {
+    "failed": 0,
+    "guard_denials": 0,
+    "guard_events": 385,
+    "optional_historical_artifact_skips": 4,
+    "passed": 1895,
+    "unexpected_skips": 0
+  },
+  "current_sealing_diff": [
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_default_ci.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_default_ci.log",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_default_ci.xml",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_default_ci_roots.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_full_non_network.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_full_non_network.log",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_full_non_network.xml",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_full_non_network_roots.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_guard.jsonl",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_release_blocking.xml",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_release_blocking_result.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_release_blocking_runner.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/failure_adjudication_47.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/test_change_justification.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/text_normalization.json"
+  ],
+  "dependency_identity_matches_baseline": true,
+  "diagnostic_results": {
+    "DEFAULT_CI": "1277 passed / 13 failed / 4 skipped / 5 deselected; overall FAIL",
+    "FULL_NON_NETWORK": "same fcntl collection error; overall FAIL"
+  },
+  "exact_input_sha256_binding": "implementation_input_binding.json",
+  "final_candidate_identity": "Containing final Git commit/tree and PR metadata",
+  "merge_authorized": false,
+  "origin_main_recheck": "405bf16f5f82f4d37062d036ca6815eba27f7c4d",
+  "sealing_diff_scope": "A1 evidence only; zero implementation/front-door/contract drift from tested committed source",
+  "tested_committed_source": "bd42b88305e88524feb0bd6a45d6d436caa428cf",
+  "tested_tree": "8e7b8043584485221eaf4cedb70a67c608b58319"
+}

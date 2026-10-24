@@ -63,80 +63,80 @@
     "target": "baseline_full_non_network_roots.json"
   },
   {
-    "committed_sha256": "68e806fd8fd8d826afbed539988b09b56734356a76cf67ac15249c62715ac17c",
-    "original_sha256": "68e806fd8fd8d826afbed539988b09b56734356a76cf67ac15249c62715ac17c",
+    "committed_sha256": "01aa5f13695d8b348553bfeac75517c644e2a5557a4e8b3569588dc264feca32",
+    "original_sha256": "01aa5f13695d8b348553bfeac75517c644e2a5557a4e8b3569588dc264feca32",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\default-ci\\result.json",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\default-ci\\result.json",
     "target": "candidate_default_ci.json"
   },
   {
-    "committed_sha256": "3b85d64945e89585760de3ef222e0063e368146d9fe24d990c907ce354cf1c15",
-    "original_sha256": "2075765bb0479c67d102b8e971d0c4a892b6da0427e8b87023328c12d619ff7c",
+    "committed_sha256": "335cedbee2f5f9fd810302b5223e79c11f38d864aafe628ef20b1db25f4ce765",
+    "original_sha256": "c403f406a0d0f95fcaf411a9f37ea7dbb4ddfefa1153e0b1c79018ffe7509f36",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\default-ci\\report.xml",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\default-ci\\report.xml",
     "target": "candidate_default_ci.xml"
   },
   {
-    "committed_sha256": "3a440b4434b9ada3ee911fd2763bd30c711ffaa8ef9a21df909a8e421c9e961c",
-    "original_sha256": "548010278d063b8790b7b4b89d2ad9299af878c9e3280ebefba799b1bc5f86d6",
+    "committed_sha256": "32986be498304e40f75321fd1a7c4369166b7d914145725651764f99a6cf0159",
+    "original_sha256": "5ab7838e88d9238dca5e78f28fbc7a6195c55263e22a95fd1d2ee204d59e41d3",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\default-ci\\runner.log",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\default-ci\\runner.log",
     "target": "candidate_default_ci.log"
   },
   {
-    "committed_sha256": "3f7f5bac112f9a35ea030681831608b0864a89ebe25c14adf2d9d077a372e853",
-    "original_sha256": "3f7f5bac112f9a35ea030681831608b0864a89ebe25c14adf2d9d077a372e853",
+    "committed_sha256": "9d3399a871de053709cf4974212a2d7069f670d0c573b86e124b56c73ee021b2",
+    "original_sha256": "9d3399a871de053709cf4974212a2d7069f670d0c573b86e124b56c73ee021b2",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\default-ci\\roots.json",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\default-ci\\roots.json",
     "target": "candidate_default_ci_roots.json"
   },
   {
-    "committed_sha256": "981e011df7979e0e44b6649b14d9375abae06a07f6d7b7808b0cadf7456a6e9f",
-    "original_sha256": "981e011df7979e0e44b6649b14d9375abae06a07f6d7b7808b0cadf7456a6e9f",
+    "committed_sha256": "506566fbe9f4224565b289a8865bf407d64c1cb18e38450712f63ccb4325e87a",
+    "original_sha256": "506566fbe9f4224565b289a8865bf407d64c1cb18e38450712f63ccb4325e87a",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\result.json",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\result.json",
     "target": "candidate_full_non_network.json"
   },
   {
-    "committed_sha256": "735e09155e3c29f109bdf10987f5fc9109b5a96b86aa36b76f25b0c40d705ad6",
-    "original_sha256": "ba4c503cf0dbd25285a5f4ff7f9876f86166c41812600a27d526b924dbd0fdbb",
+    "committed_sha256": "f7af1da58f6dad321ca3513472d96642ae0bd120802fce9efe9dcf3fb8f21c83",
+    "original_sha256": "74ec9d787b596c5f1e8618df79a1ec43c559cc04ddc84f3b6ca1fa7fcbdcdf23",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\report.xml",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\report.xml",
     "target": "candidate_full_non_network.xml"
   },
   {
-    "committed_sha256": "e542b2aa905608f85aefc4ace7ae523266d3f8b58aae647e50af1eb02459671c",
-    "original_sha256": "23b88ec11adc09eb034af4a9a9d1cf8ef9fe16c1925b79d8cfc017e8d58bc9f4",
+    "committed_sha256": "9e027e9320852c2e00b7e5e16152257c4943e0a324827a2f8b881ccf311fd7ba",
+    "original_sha256": "b51e9d369e7b1ea582bf61455f1c0d1b0839a39457e89ffa12408f53395119c8",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\runner.log",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\runner.log",
     "target": "candidate_full_non_network.log"
   },
   {
-    "committed_sha256": "ab17a2794bd45baba191b8023a8f903feaa1d8ac9c3bf1a0b7cdaf854a2ec824",
-    "original_sha256": "ab17a2794bd45baba191b8023a8f903feaa1d8ac9c3bf1a0b7cdaf854a2ec824",
+    "committed_sha256": "eea9f8a596f60e1a5fc07ff093b46629cd34ec754bd3e06ae3424c15a640d1b3",
+    "original_sha256": "eea9f8a596f60e1a5fc07ff093b46629cd34ec754bd3e06ae3424c15a640d1b3",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\roots.json",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\roots.json",
     "target": "candidate_full_non_network_roots.json"
   },
   {
-    "committed_sha256": "7b6e44c6446347b8ff1b473583799cc5a67b15f22d90022d87e004742317150d",
-    "original_sha256": "cdc2b38cb4020beaaf7a3c97859a608233ccaae8b7ee7812b4cc8fcb6ef78f66",
+    "committed_sha256": "1d3b605eb8790c22b5e4b08cabff0896360488c4ceb0829bca716b5c1bf95718",
+    "original_sha256": "206ce0c8aef0bf7380af5e9ef05b15151a1ca9d7c023753b59114c317dfba475",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-sealed\\release-blocking-ci\\report.xml",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-candidate\\release-blocking-ci\\report.xml",
     "target": "candidate_release_blocking.xml"
   },
   {
-    "committed_sha256": "331524ef7ebb7bc4a9aceaefd0dad10cf97ccad828a5db06076b4423bdcf7d09",
-    "original_sha256": "39c790323abe66e66e447cd1b1ee6dc7e38f87b394855d054db3fa0f1f48dd2c",
+    "committed_sha256": "4620e0c209bbf9db98aff3660216e342ef5252f6066051ff15b2cb4dc8127f35",
+    "original_sha256": "27a84505b8a5d26d797d999bf46677cf7722f91683af7ab232700ebf4d7600e6",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-sealed\\release-blocking-ci\\guard.jsonl",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-candidate\\release-blocking-ci\\guard.jsonl",
     "target": "candidate_guard.jsonl"
   },
   {
-    "committed_sha256": "2f06b0689561b5d5a28a2c93adbeee9633b32732d5bbcdcdbde758293c70d97c",
-    "original_sha256": "9710dddaa9a247749964b62a25bc90c83fcf1892485384478448e5e9a9d03945",
+    "committed_sha256": "776a34b7c676da646940c44eaa886578d148c1caebdfcdb8cfa245d2b94bd20d",
+    "original_sha256": "bbdf628baab9ad93a8c6ff1b01b2a6423a15c2ee22d98a6be61d5be843bf25d8",
     "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
-    "source": "C:\\twmarket_temp\\l7-a1\\candidate-sealed.log",
+    "source": "C:\\twmarket_temp\\l7-a1\\committed-candidate.log",
     "target": "candidate_release_blocking_runner.json"
   },
   {

@@ -1,9 +1,9 @@
 {
-  "A1_GUARD_LOG": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\guard-blocks.jsonl",
-  "LOCALAPPDATA": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\local",
+  "A1_GUARD_LOG": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\guard-blocks.jsonl",
+  "LOCALAPPDATA": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\local",
   "PATH": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313;C:\\Windows\\System32;C:\\Windows;C:\\Program Files\\Git\\cmd",
-  "TEMP": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\temp",
-  "TMP": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\temp",
-  "TW_MARKET_HOME": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\home",
-  "TW_MARKET_STATE_ROOT": "C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\state"
+  "TEMP": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\temp",
+  "TMP": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\temp",
+  "TW_MARKET_HOME": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\home",
+  "TW_MARKET_STATE_ROOT": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\state"
 }

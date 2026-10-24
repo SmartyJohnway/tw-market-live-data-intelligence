@@ -2,6 +2,10 @@
   "historical_test_modules_modified": 0,
   "modified_current_tests": [
     {
+      "file": "tests/unit/test_l7_a1_deterministic_ci.py",
+      "intent": "Correct explicit isolated initialization, qualified synthetic identity release, existing Node prerequisite selection, or trace_id fake interface; original behavior assertions preserved"
+    },
+    {
       "file": "tests/unit/test_m8r_06_03_localhost_vertical.py",
       "intent": "Correct explicit isolated initialization, qualified synthetic identity release, existing Node prerequisite selection, or trace_id fake interface; original behavior assertions preserved"
     },

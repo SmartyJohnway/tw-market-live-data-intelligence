@@ -1,12 +1,12 @@
 {
   "browser_required": false,
-  "collected": 5368,
+  "collected": 5369,
   "command_results": [
     {
       "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -m pytest -m not network and not historical and not performance tests",
-      "duration_seconds": 14.481,
+      "duration_seconds": 14.658,
       "execution_kind": "pytest",
-      "failure_output_tail": "============================= test session starts =============================\nplatform win32 -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0\nrootdir: C:\\twmarket_temp\\l7-a1\\repo\nconfigfile: pytest.ini\nplugins: anyio-4.12.1\ncollected 5368 items / 1 error / 56 deselected / 5312 selected\n\n=================================== ERRORS ====================================\n__ ERROR collecting tests/unit/test_phase_j_b04_a6_integrated_acceptance.py ___\nImportError while importing test module 'C:\\twmarket_temp\\l7-a1\\repo\\tests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\nC:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py:9: in <module>\n    from scripts.a6_session_transport import attempt_2_eligible, complete_dispatch, operation_context, reserve_dispatch\nscripts\\a6_session_transport.py:6: in <module>\n    import fcntl\nE   ModuleNotFoundError: No module named 'fcntl'\n- generated xml file: C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\report.xml -\n=========================== short test summary info ===========================\nERROR tests/unit/test_phase_j_b04_a6_integrated_acceptance.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n====================== 56 deselected, 1 error in 12.72s =======================\n",
+      "failure_output_tail": "============================= test session starts =============================\nplatform win32 -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0\nrootdir: C:\\twmarket_temp\\l7-a1\\repo\nconfigfile: pytest.ini\nplugins: anyio-4.12.1\ncollected 5369 items / 1 error / 56 deselected / 5313 selected\n\n=================================== ERRORS ====================================\n__ ERROR collecting tests/unit/test_phase_j_b04_a6_integrated_acceptance.py ___\nImportError while importing test module 'C:\\twmarket_temp\\l7-a1\\repo\\tests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\nC:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py:9: in <module>\n    from scripts.a6_session_transport import attempt_2_eligible, complete_dispatch, operation_context, reserve_dispatch\nscripts\\a6_session_transport.py:6: in <module>\n    import fcntl\nE   ModuleNotFoundError: No module named 'fcntl'\n- generated xml file: C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\report.xml -\n=========================== short test summary info ===========================\nERROR tests/unit/test_phase_j_b04_a6_integrated_acceptance.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n====================== 56 deselected, 1 error in 12.88s =======================\n",
       "return_code": 2
     }
   ],
@@ -19,13 +19,13 @@
     "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01"
   ],
   "deselected": 56,
-  "duration_seconds": 14.482,
+  "duration_seconds": 14.659,
   "explicit_live_confirmation": false,
   "failed": null,
   "failed_command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -m pytest -m not network and not historical and not performance tests",
   "failed_return_code": 2,
-  "failure_output_tail": "============================= test session starts =============================\nplatform win32 -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0\nrootdir: C:\\twmarket_temp\\l7-a1\\repo\nconfigfile: pytest.ini\nplugins: anyio-4.12.1\ncollected 5368 items / 1 error / 56 deselected / 5312 selected\n\n=================================== ERRORS ====================================\n__ ERROR collecting tests/unit/test_phase_j_b04_a6_integrated_acceptance.py ___\nImportError while importing test module 'C:\\twmarket_temp\\l7-a1\\repo\\tests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\nC:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py:9: in <module>\n    from scripts.a6_session_transport import attempt_2_eligible, complete_dispatch, operation_context, reserve_dispatch\nscripts\\a6_session_transport.py:6: in <module>\n    import fcntl\nE   ModuleNotFoundError: No module named 'fcntl'\n- generated xml file: C:\\twmarket_temp\\l7-a1\\candidate-diagnostics\\full-non-network\\report.xml -\n=========================== short test summary info ===========================\nERROR tests/unit/test_phase_j_b04_a6_integrated_acceptance.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n====================== 56 deselected, 1 error in 12.72s =======================\n",
-  "finished_at": "2026-10-24T00:29:02Z",
+  "failure_output_tail": "============================= test session starts =============================\nplatform win32 -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0\nrootdir: C:\\twmarket_temp\\l7-a1\\repo\nconfigfile: pytest.ini\nplugins: anyio-4.12.1\ncollected 5369 items / 1 error / 56 deselected / 5313 selected\n\n=================================== ERRORS ====================================\n__ ERROR collecting tests/unit/test_phase_j_b04_a6_integrated_acceptance.py ___\nImportError while importing test module 'C:\\twmarket_temp\\l7-a1\\repo\\tests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\nC:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py:9: in <module>\n    from scripts.a6_session_transport import attempt_2_eligible, complete_dispatch, operation_context, reserve_dispatch\nscripts\\a6_session_transport.py:6: in <module>\n    import fcntl\nE   ModuleNotFoundError: No module named 'fcntl'\n- generated xml file: C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\report.xml -\n=========================== short test summary info ===========================\nERROR tests/unit/test_phase_j_b04_a6_integrated_acceptance.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n====================== 56 deselected, 1 error in 12.88s =======================\n",
+  "finished_at": "2026-10-24T00:44:14Z",
   "network_may_have_occurred": false,
   "passed": null,
   "profile": "full-non-network",
@@ -33,9 +33,9 @@
   "return_codes": [
     2
   ],
-  "selected": 5368,
+  "selected": 5369,
   "skipped": null,
   "ssl_policy": "strict",
-  "started_at": "2026-10-24T00:28:48Z",
+  "started_at": "2026-10-24T00:43:59Z",
   "status": "fail"
 }

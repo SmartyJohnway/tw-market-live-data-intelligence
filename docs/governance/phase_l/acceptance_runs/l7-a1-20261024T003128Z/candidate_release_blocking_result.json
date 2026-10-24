@@ -1,6 +1,6 @@
 {
   "boundary": "Python audit and injected Python/Node child guards; local Git allowlist; no OS firewall claim",
-  "elapsed_seconds": 167.342,
+  "elapsed_seconds": 172.566,
   "guard_denials": [],
   "guard_events": 385,
   "junit_summary": {
