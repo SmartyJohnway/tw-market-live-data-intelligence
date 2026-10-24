@@ -1,0 +1,313 @@
+{
+  "L7_A2_DEPENDENCY_AUTHORITY_BLOCKER": "DISPOSED",
+  "blocked_checkpoint": "cd90403f66948618510632806627da3f78f27a62",
+  "dependency_authority_changed": false,
+  "historical_TEMP_incident_retained": true,
+  "preserved_files": [
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/a0_a1_contract_binding.json",
+      "sha256": "3414fcf1d647b7f890721a6e4a0432adbe6f0339e480e87df2268ee9161b0e08"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/a2_exit_criteria_matrix.json",
+      "sha256": "4d8741a3e228c461097068dda878f1492ad2c6ed9f15683921cb5ef76083e778"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/a2_gap_closure_matrix.json",
+      "sha256": "913b3d170122eb160512c152cdc82a9a6f237fb1e0b5a9b14b235975e86a1719"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/authority.json",
+      "sha256": "0588687eedae87a5a0c3217f3144c0c09e863e737a87f018c141a0f6568978f0"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/baseline_gate_members.json",
+      "sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/baseline_gate_report.xml",
+      "sha256": "be8d71b3617075989ea2d21a4d9d4cfa8c8d8af320507d9616330de0022e193e"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/baseline_gate_result.json",
+      "sha256": "2310992e0bcc63890c382c4d8415afa1473b163cc62cc3434a17d0588246b4df"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/baseline_gate_runner.json",
+      "sha256": "47fdca80097d022fc98b6b84968cec71380c677fd81f85ecc52297ca8d0cb1e7"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/baseline_guard.jsonl",
+      "sha256": "0d8a94f5b9510afa9713f177d924630281db0a97f965f3f5b50a4376865697ec"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/baseline_release_integration_inventory.json",
+      "sha256": "08d477e6b1dca02d10917d0a40c435171afdfd441bb3aaaa511bb5e4c4230f6b"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/candidate_diagnostic_comparison.json",
+      "sha256": "de1dca9629c28c1db881446615999baf2c08463191c471c39a7d35584ee2dd9d"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/candidate_gate_members.json",
+      "sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/candidate_gate_report.xml",
+      "sha256": "c9b98c9ce62fe428ed896a9112c4b9db3f0917a4ceebaf2d3f1026d676b54da5"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/candidate_gate_result.json",
+      "sha256": "3d9c26095df73dfbf28ab64f5133e8a3eebf618b02398ba75fd195915517e4bf"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/candidate_gate_runner.json",
+      "sha256": "11ba0b912c99ea71683418d1d2920e9f27da91f9036e462daa179f71fea6b2be"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/candidate_guard.jsonl",
+      "sha256": "15f8dedfe110fbf0092fde9ccdca7c862c7aa0a306f135b5fa123700015ea1ae"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/candidate_route_diagnostic.log",
+      "sha256": "021e4c0ff677fcc1f4507a4a722fb4f0481b32b00cf807a9fd839a135e7c8e64"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/candidate_route_identity.json",
+      "sha256": "6909bc37663f8a38366181f31cb7806750f6edb55a00ddfb093bbcb4bc445471"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/docker_base_identity.json",
+      "sha256": "f66ac61eb204020fe5250f26b3f4a24bb8007b023a258ae548ea4396478f3df1"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/docker_context.json",
+      "sha256": "03138d3a785015b4d831141ba83c0906b671eccb10d1c20317255592423587ca"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/docker_environment.json",
+      "sha256": "298537e8d0c95477589c63df37ed00dd7870ecd5c969d26c44e85811a63c61bb"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/docker_image_a.json",
+      "sha256": "e5938f941952bcd365a8bea70f67e676a8d818d5d5bc5709ee79810f5c9959f8"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/docker_image_b.json",
+      "sha256": "f6987075e3726e9345f386ced130f797b175779346190d4dcd69892c996b351e"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/docker_local_service_acceptance.json",
+      "sha256": "488e0ad54428338bf0d8876c59945195c53d83fc54f9fe2db5a61cabb10acc13"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/docker_preinit.json",
+      "sha256": "a0d5f4e6b9fe1aa63f0d29c0554acc5ab9957230cca658c71e3847b3ed9a33cf"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/docker_result.json",
+      "sha256": "99c72f9bf9a6da9251b99d7bce56a104de33864edd9d732b5e35bc5d4ab7efff"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/early_test_temp_boundary_incident.json",
+      "sha256": "3cd334c1abedd5146d9f9020f44183bb21dc7526c99816272c38a8bc9b5597d0"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/entry_identity.json",
+      "sha256": "b7155bf298c1d547daa45c870d20d1f44a80ed3c8bdc05beb55d268ad5c40c68"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/evidence_transport_normalization.json",
+      "sha256": "18a530dc86476cd255396e040901f98e462024aed0e2993270cc07f20235ec5b"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/exact_six_preservation.json",
+      "sha256": "5b1a1b47c36a9fe85f6d03b442f65070ce7236a4e50becff24d16bd2cfb851fc"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/final_technical_review.json",
+      "sha256": "8ceb86ecfdedd55549a54e14934b01929d4823539de35d9f291066a0ab344464"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/focused_tests_bounded.log",
+      "sha256": "9900098238a4e8305813d1e06e2073f443f3e9afdb51814a88064bd51c31d373"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/focused_tests_bounded.xml",
+      "sha256": "c4938244e5b525b9d4960f90900be7541545b8f8bf43367a504af65fd68f7ecd"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/fresh_clone_environment.json",
+      "sha256": "8615b8a6f9af8ebbc18d53aee0286de369dbf25883fbbc325a512cae3d11638f"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/fresh_clone_identity.json",
+      "sha256": "0e0ec1f6104c5cc6c481461b0251740262a625a6dd4dca0a7af90d0ba36c640a"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/implementation_input_binding.json",
+      "sha256": "4114c08b9162a08e7ebdad1463ff52805ecaa5e3c57cbf91835fdd462193c953"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/manifest.json",
+      "sha256": "45c6e07af89b6b9a7051f5f586cd45f78c2b07e87e3311a81f44626350b56ac2"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/native_acceptance_runner.json",
+      "sha256": "cff1aa759692f049a3d0f913197aeeb8ebd7762c0e3fc3a51db6fcb576ba08f0"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/native_bootstrap_lifecycle.json",
+      "sha256": "40ddb679ee5ae808f1f1cb14a9ec3b700b2f1f6ab6ff6567f691c1665c026c79"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/native_build_identity.json",
+      "sha256": "ce60105489bb0474c817453981068e3fc768577727ce1388ca4543de0c184096"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/native_cleanup_stop.json",
+      "sha256": "4046edb93e1f04acf711ade99d7b06079d45612102ad380ade877962f5ca59c0"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/native_mcp_stdio_incomplete.json",
+      "sha256": "34e3fa5b2681cf1b4c3723a5f2e9029f01879948f80a4a7e5b529890528f0dad"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/required_validators.json",
+      "sha256": "05d7cc3333d2e2bbe956780c738a3e56a3869a69420477f6efda17a696cceafd"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/scope_diff_verification.json",
+      "sha256": "eb62c553fead94a1c38ebe83f9e609f939b11483251d4a6ffa37a6d56ed564bf"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/setup_artifact_identity.json",
+      "sha256": "42a8fbfb47cc3ce46e34a237563e2c13f86a834793e956c65e6f6ba04f646b4c"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/setup_network_accounting.json",
+      "sha256": "17e2144b0ab02acad0516251e79d2cb56bfa964a436231e929f5b6f06d9e6695"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/windows11_environment_identity.json",
+      "sha256": "bdce33c9943209eb10220d30842b9467fac1d479b13947a196cbc40bca5a4eb8"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-20261024T024000Z-blocked/windows11_native_acceptance.json",
+      "sha256": "23e35849b1211285e26e8ed9a2134492d22a3996512e20144d45163f055f6e11"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/README.md",
+      "sha256": "d0f626df61d48a1a6b07e15aac499199ce0fb240101c99cd3308b42d13f4ebc7"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/authority.json",
+      "sha256": "e670571cd09c2a52604ba9f4a1ecad442ae1bb79375d5b8b058563db5b3c53b1"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/blocked_checkpoint_binding.json",
+      "sha256": "f4579e3a2349c04a6752adda14d9e56f93bd517d2631d2e46c91c935d947c209"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/dependency_identity_comparison.json",
+      "sha256": "a9504fd916f67bc3674f64048b6970678f65f3433d109611d43edfd755196cb4"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/dual_environment_result.json",
+      "sha256": "69e96880d194de83bf6f74b39e07bb13b5ba66f3f8fb9c8c4d93d288ceaf8b14"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/effective_post_surface_after.json",
+      "sha256": "6da3d079193ce3f7892c78d918da93993e33639ebd68e51793f8c42c313c0734"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/effective_post_surface_before.json",
+      "sha256": "8721fcc46f01dafbd78d4e7bd178ee671901b776294e2cdcc78d556f1dcbba7a"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/environment-a.log",
+      "sha256": "e6b7886556d1d7ca3d38a195eda125ca3aa7ff512827493b165cb5a873a103e9"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/environment-a_guard.jsonl",
+      "sha256": "b4a37b5fb9c226965aee6719da08d5f0b92b8dc054bbde17c8c4b88fe69c1ba1"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/environment-a_report.xml",
+      "sha256": "bdd0c1b913d4646e2ae93b5f3308233d9c85076994e051b4c10f08f379ec2f37"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/environment-b.log",
+      "sha256": "785e5271f88cd867040500b896262bb2b087b1b149594e4bc39bb98deec19069"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/environment-b_guard.jsonl",
+      "sha256": "1f004355f24cb08363a4a95704bd64673be485d57064e081666ffba6e20d0c4b"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/environment-b_report.xml",
+      "sha256": "1efa48f2a317477cf875758ec40da17863cdd0d22ed6848a51c227f54788dbb7"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/evidence_transport_normalization.json",
+      "sha256": "8e28250e989708c6749e48bdd70a5003969180f0a216655f99428dfa96b3be13"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/fastapi_route_representation_finding.json",
+      "sha256": "4dbd861cea0c5c7a6a03217ebe00f311aeb1283b20643f5e0b5b7612f1b3ba40"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/final_repair_review.json",
+      "sha256": "ea5a65b1faa9fea704ac9304b73590e0784ff79fdc8ca23160a0d0b89e2acd05"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/focused_guarded_runner.py",
+      "sha256": "2a2b9b3e63b44bcd83610742a14e551ef23ee7219313b098e84f4e5a8e17ea2a"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/manifest.json",
+      "sha256": "a1cc8f7196386a82532e71a677a58725f95624155c5f5b58c36e281f9d2c06bb"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/network_filesystem_boundary.json",
+      "sha256": "eeb5c956b8351307927e592c833a16c07e0ec108d8cc31e123670bafb94f68a7"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/release_blocking_ci_guard.jsonl",
+      "sha256": "6b89ead1596a4636e4ef39afd1a67a4a845290ac905217b00503642b2d4f0402"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/release_blocking_ci_members.json",
+      "sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/release_blocking_ci_report.xml",
+      "sha256": "e5afe3fce93e72a0dff1e79e2d1f39c0894a89ca250ae8e3b682d7a79dba92b0"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/release_blocking_ci_result.json",
+      "sha256": "54813f777a4948f5a4db26e31befc63103db0cc7dda9cc9a98ebfc4e480a0fbc"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/release_blocking_ci_runner.json",
+      "sha256": "a5a32678f060d96aeb8f67738b474057579cef577e6628f433ef61b63cec5618"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/repair_scope.json",
+      "sha256": "ccb00015e6285473ba0b463f3959abc60f1eb6f9f5392a2ac1c4688039919187"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/required_validators.json",
+      "sha256": "50b3d49c2b7ea38073b5db4ef9ec37ad97e3b4d1df79b69ee29e235a81a06e35"
+    },
+    {
+      "path": "docs/governance/phase_l/acceptance_runs/l7-a2-a1-compat-repair-20261024T080400Z/scope_diff_verification.json",
+      "sha256": "3fb38738c1da0576b0b02e6d27f81e2695a343a5f6b41ad0a670ebfd16ab6bb9"
+    },
+    {
+      "path": "docs/governance/phase_l/PHASE_L_L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_2026-10-24.md",
+      "sha256": "d0c7a8ca4d322056ce1f3bdf5b636ce008cacdecc15920c4b922e8072d7a8b1a"
+    }
+  ],
+  "root_cause": "Owner-accepted A1 selected-test FastAPI route-introspection compatibility defect"
+}

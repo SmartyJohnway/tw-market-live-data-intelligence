@@ -1,0 +1,154 @@
+{
+  "ID_type": "UUIDv4; A/B relocation preserves ID",
+  "guest_installation": {
+    "app_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+    "cache_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\cache",
+    "diagnostics": {
+      "home_source": "cli",
+      "settings_origins": {
+        "host": "settings",
+        "port": "env"
+      },
+      "state_root_source": "metadata"
+    },
+    "effective_service_host": "127.0.0.1",
+    "effective_service_port": 49671,
+    "governed_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\governed",
+    "home": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII",
+    "installation_id": "c8a3bfa4-5fc7-414a-979c-3fbbfead7fdd",
+    "installation_metadata_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+    "installation_status": "READY",
+    "logs_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\logs",
+    "operational_event_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+    "runtime_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\tmp\\TW-Market\\c8a3bfa4-5fc7-414a-979c-3fbbfead7fdd\\runtime",
+    "security_master_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\security-master",
+    "settings_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+    "state_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state",
+    "temp_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\tmp\\TW-Market\\c8a3bfa4-5fc7-414a-979c-3fbbfead7fdd\\temp",
+    "watchlist_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\watchlists"
+  },
+  "guest_installation_is_independent": true,
+  "host_installation_id": "115d63c6-3293-4919-942a-a9ae7842cb8b",
+  "identity": {
+    "architecture": "64-bit",
+    "build": "26100",
+    "computer": "E57CD39B-5D8A-4",
+    "developer_venv_mapped": false,
+    "edition": "Microsoft Windows 11 Enterprise",
+    "git_on_PATH": false,
+    "host_profile_mapped": false,
+    "localappdata": "C:\\Users\\WDAGUtilityAccount\\AppData\\Local",
+    "networking": "Disabled by WSB",
+    "preexisting_TWMarket": false,
+    "preexisting_acceptance_root": false,
+    "preexisting_python_processes": 0,
+    "profile": "C:\\Users\\WDAGUtilityAccount",
+    "python_on_PATH": false,
+    "sid": "S-1-5-21-2047949552-857980807-821054962-504",
+    "source_checkout_mapped": false,
+    "timestamp": "2026-10-24T13:22:29.9005012Z",
+    "username": "E57CD39B-5D8A-4\\WDAGUtilityAccount",
+    "version": "10.0.26100"
+  },
+  "maps": "read-only package/prerequisite/harness inputs plus isolated evidence output only",
+  "network": "disabled throughout guest provisioning and product acceptance",
+  "no_Git_or_developer_checkout_or_tunnel_or_agent_requirement": true,
+  "no_host_runtime_PID_or_installation_metadata_inherited": true,
+  "no_inherited_host_production_state": true,
+  "preinit_read_only": {
+    "doctor": {
+      "checks": [
+        {
+          "name": "installation",
+          "reason_code": "INSTALLATION_NOT_INITIALIZED",
+          "status": "WARN"
+        }
+      ],
+      "duration_ms": 18.31,
+      "identity": {
+        "reason_code": "INSTALLATION_NOT_INITIALIZED",
+        "status": "UNKNOWN"
+      },
+      "installation": {
+        "app_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+        "cache_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\cache",
+        "diagnostics": {
+          "home_source": "env",
+          "settings_origins": {
+            "host": "product_default",
+            "port": "env"
+          },
+          "state_root_source": "cli_or_env_or_default"
+        },
+        "effective_service_host": "127.0.0.1",
+        "effective_service_port": 49671,
+        "governed_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\governed",
+        "home": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII",
+        "installation_id": null,
+        "installation_metadata_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+        "installation_status": "INSTALLATION_NOT_INITIALIZED",
+        "logs_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\logs",
+        "operational_event_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+        "runtime_root": null,
+        "security_master_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\security-master",
+        "settings_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+        "state_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state",
+        "temp_root": null,
+        "watchlist_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\watchlists"
+      },
+      "operation_id": "eed5fcc4-f704-4868-a130-a4c5eb0c0697",
+      "reason_code": "INSTALLATION_NOT_INITIALIZED",
+      "started_at": "2026-10-24T13:23:49.256058+00:00",
+      "status": "INSTALLATION_NOT_INITIALIZED",
+      "trace_id": "36ff53af-4f37-4d49-9234-010b3bff0608"
+    },
+    "home_created": false,
+    "payload": {
+      "checks": [
+        {
+          "name": "installation",
+          "reason_code": "INSTALLATION_NOT_INITIALIZED",
+          "status": "WARN"
+        }
+      ],
+      "duration_ms": 21.46,
+      "identity": {
+        "reason_code": "INSTALLATION_NOT_INITIALIZED",
+        "status": "UNKNOWN"
+      },
+      "installation": {
+        "app_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+        "cache_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\cache",
+        "diagnostics": {
+          "home_source": "env",
+          "settings_origins": {
+            "host": "product_default",
+            "port": "env"
+          },
+          "state_root_source": "cli_or_env_or_default"
+        },
+        "effective_service_host": "127.0.0.1",
+        "effective_service_port": 49671,
+        "governed_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\governed",
+        "home": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII",
+        "installation_id": null,
+        "installation_metadata_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+        "installation_status": "INSTALLATION_NOT_INITIALIZED",
+        "logs_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\logs",
+        "operational_event_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+        "runtime_root": null,
+        "security_master_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\security-master",
+        "settings_path": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+        "state_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state",
+        "temp_root": null,
+        "watchlist_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state\\watchlists"
+      },
+      "operation_id": "851c0fc7-699a-417b-862f-3f74fb716280",
+      "reason_code": "INSTALLATION_NOT_INITIALIZED",
+      "started_at": "2026-10-24T13:23:46.098288+00:00",
+      "status": "INSTALLATION_NOT_INITIALIZED",
+      "trace_id": "2722b663-1459-4adf-a53c-d49a812c89ce"
+    }
+  },
+  "status": "PASS"
+}

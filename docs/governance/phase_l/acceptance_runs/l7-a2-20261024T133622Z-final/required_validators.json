@@ -1,0 +1,194 @@
+{
+  "guard_denials": [],
+  "postseal_governance_checks": {
+    "guard_denials": [],
+    "results": [
+      {
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "PASS\n",
+        "validator": "validate_v1_front_door"
+      },
+      {
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "Running R5B Insecure Path Pattern Scanner...\nPASS: No insecure filesystem patterns found.\n",
+        "validator": "governance_forbidden_path_guard"
+      },
+      {
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"authority\": \"VERSION\"}\n",
+        "validator": "validate_product_version_consistency"
+      },
+      {
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "{'status': 'PASS', 'checked': 'tracked docs and source files'}\n",
+        "validator": "validate_release_hygiene"
+      },
+      {
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}\n",
+        "validator": "validate_runtime_skill_guide_sync"
+      },
+      {
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"tool_count\": 6}\n",
+        "validator": "validate_v1_public_contracts"
+      },
+      {
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "{\n  \"policy_id\": \"CI_POLICY_V1\",\n  \"status\": \"passed\",\n  \"violations\": [],\n  \"workflow_count\": 5,\n  \"workflows\": [\n    {\n      \"file\": \".github\\\\workflows\\\\browser-operator-e2e.yml\",\n      \"name\": \"Browser Operator E2E\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\ci.yml\",\n      \"name\": \"Default CI\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\non-network-ci.yml\",\n      \"name\": \"Full Non-Network Regression\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\release-validation.yml\",\n      \"name\": \"Release Validation\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\windows-compatibility-smoke.yml\",\n      \"name\": \"Windows Compatibility Smoke\",\n      \"triggers\": [\n        \"pull_request\",\n        \"workflow_dispatch\"\n      ]\n    }\n  ]\n}\n",
+        "validator": "validate_github_actions_execution_policy"
+      },
+      {
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "{\n  \"status\": \"PASS\",\n  \"unlabeled_pr_expensive_job\": false,\n  \"labeled_pr_synchronize_eligible\": true,\n  \"labeled_pr_reopen_eligible\": true,\n  \"manual_dispatch_eligible\": true,\n  \"pre_publication\": true,\n  \"genuine_windows11_claim\": false\n}\n",
+        "validator": "validate_l7_a2_workflow_policy"
+      }
+    ],
+    "status": "PASS"
+  },
+  "results": [
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_v1_front_door.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "PASS\n",
+      "validator": "validate_v1_front_door"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/governance_forbidden_path_guard.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "Running R5B Insecure Path Pattern Scanner...\nPASS: No insecure filesystem patterns found.\n",
+      "validator": "governance_forbidden_path_guard"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_product_version_consistency.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"authority\": \"VERSION\"}\n",
+      "validator": "validate_product_version_consistency"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_release_hygiene.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{'status': 'PASS', 'checked': 'tracked docs and source files'}\n",
+      "validator": "validate_release_hygiene"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_runtime_skill_guide_sync.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}\n",
+      "validator": "validate_runtime_skill_guide_sync"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_v1_public_contracts.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"tool_count\": 6}\n",
+      "validator": "validate_v1_public_contracts"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_github_actions_execution_policy.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"policy_id\": \"CI_POLICY_V1\",\n  \"status\": \"passed\",\n  \"violations\": [],\n  \"workflow_count\": 5,\n  \"workflows\": [\n    {\n      \"file\": \".github\\\\workflows\\\\browser-operator-e2e.yml\",\n      \"name\": \"Browser Operator E2E\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\ci.yml\",\n      \"name\": \"Default CI\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\non-network-ci.yml\",\n      \"name\": \"Full Non-Network Regression\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\release-validation.yml\",\n      \"name\": \"Release Validation\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\windows-compatibility-smoke.yml\",\n      \"name\": \"Windows Compatibility Smoke\",\n      \"triggers\": [\n        \"pull_request\",\n        \"workflow_dispatch\"\n      ]\n    }\n  ]\n}\n",
+      "validator": "validate_github_actions_execution_policy"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_l7_a2_workflow_policy.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"unlabeled_pr_expensive_job\": false,\n  \"labeled_pr_synchronize_eligible\": true,\n  \"labeled_pr_reopen_eligible\": true,\n  \"manual_dispatch_eligible\": true,\n  \"pre_publication\": true,\n  \"genuine_windows11_claim\": false\n}\n",
+      "validator": "validate_l7_a2_workflow_policy"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=C:\\twmarket_temp\\l7-a2\\continuation\\final-checks\\pytest-temp",
+        "--junitxml=C:\\twmarket_temp\\l7-a2\\continuation\\final-checks\\report.xml",
+        "tests/unit/test_github_actions_execution_policy.py",
+        "tests/unit/test_l7_a2_workflow_policy.py",
+        "tests/unit/test_l7_a2_source_admission.py",
+        "tests/unit/test_l7_a2_docker_acceptance_guard.py",
+        "tests/unit/test_l6_a4_docker_packaging.py",
+        "tests/unit/test_l6_a4_docker_network_profile.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ".........................................                                [100%]\n41 passed in 2.14s\n",
+      "validator": "workflow_and_packaging_unit_tests"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\Location-B\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "import sys,json,hashlib,importlib.util\nfrom pathlib import Path\nimport jsonschema\nbundle=Path('C:\\\\twmarket_temp\\\\l7-a2\\\\continuation\\\\final-source\\\\native-quiet\\\\Location-B\\\\TW-Market-1.0.0-windows-x64')\nspec=importlib.util.spec_from_file_location('a2_integrity',bundle/'bootstrap/package_integrity.py');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);report=module.verify_bundle(bundle)\nschemas={p.name:json.loads(p.read_text(encoding='utf-8')) for p in (bundle/'app/schemas').glob('*.schema.json')}\nfor schema in schemas.values():jsonschema.validators.validator_for(schema).check_schema(schema)\nrequest={'schema_version':'unified_market_evidence_request.v3','request_id':'a2-packaged-preservation','targets':[{'input':'2330','market_hint':'TWSE'}],'data_needs':[{'type':'identity','priority':'required'}],'execution_mode':'preview'}\nname=next(n for n in schemas if n.startswith('unified_market_evidence_request') and '.v3.' in n)\njsonschema.validate(request,schemas[name])\nprint(json.dumps({'status':'PASS_AS_PRESERVATION','FINAL_L7_ACCEPTANCE':'DEFERRED','source_commit':report['manifest']['source_commit'],'manifested_member_count':report['manifest']['member_count'],'checked_schema_count':len(schemas),'representative_request_v3_valid':True,'checked_schemas':sorted(schemas),'sys_path':sys.path,'executable':sys.executable}))\n"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS_AS_PRESERVATION\", \"FINAL_L7_ACCEPTANCE\": \"DEFERRED\", \"source_commit\": \"510625c8e81e629e2c902b17949aa155abfe78b6\", \"manifested_member_count\": 337, \"checked_schema_count\": 45, \"representative_request_v3_valid\": true, \"checked_schemas\": [\"cash_institutional_flow_context_evidence.v1.schema.json\", \"cash_institutional_flow_context_evidence.v2.schema.json\", \"corporate_action_context_evidence.v1.schema.json\", \"discontinuity_safety_evidence.v1.schema.json\", \"index_futures_context_evidence.v1.schema.json\", \"m8r_eod_expected_trade_date_status.schema.json\", \"m8r_phase_c_execution_preview.schema.json\", \"market_state_context_evidence.v1.schema.json\", \"material_disclosure_evidence.v1.schema.json\", \"monthly_revenue_evidence.v1.schema.json\", \"phase_g_material_disclosure_operation_evidence.v1.schema.json\", \"phase_g_monthly_revenue_operation_evidence.v1.schema.json\", \"phase_h_source_attempt_governance.v1.schema.json\", \"recent_performance_evidence.v1.schema.json\", \"trading_status_context_composite.v1.schema.json\", \"trading_status_context_evidence.v1.schema.json\", \"trading_status_context_evidence.v2.schema.json\", \"twse_mis_identity.v1.schema.json\", \"unified_market_evidence_audit_package.v1.schema.json\", \"unified_market_evidence_audit_package.v2.schema.json\", \"unified_market_evidence_audit_package.v3.schema.json\", \"unified_market_evidence_authorization_consumption_binding.v1.schema.json\", \"unified_market_evidence_bundle.v1.schema.json\", \"unified_market_evidence_capability_catalog.v1.schema.json\", \"unified_market_evidence_capability_catalog.v2.schema.json\", \"unified_market_evidence_consumption_record.v1.schema.json\", \"unified_market_evidence_execution_authorization.v1.schema.json\", \"unified_market_evidence_execution_receipt.v1.schema.json\", \"unified_market_evidence_execution_request.v1.schema.json\", \"unified_market_evidence_execution_request.v2.schema.json\", \"unified_market_evidence_execution_request.v3.schema.json\", \"unified_market_evidence_executor_registry_metadata.v1.schema.json\", \"unified_market_evidence_finalization_journal.v1.schema.json\", \"unified_market_evidence_operation_result.v1.schema.json\", \"unified_market_evidence_operation_result.v2.schema.json\", \"unified_market_evidence_orchestration_plan.v1.schema.json\", \"unified_market_evidence_orchestrator_preflight.v1.schema.json\", \"unified_market_evidence_preview_response.v1.schema.json\", \"unified_market_evidence_request.v1.schema.json\", \"unified_market_evidence_request.v2.schema.json\", \"unified_market_evidence_request.v3.schema.json\", \"unified_market_evidence_request_validation.v1.schema.json\", \"unified_market_evidence_result.v1.schema.json\", \"unified_market_evidence_result.v2.schema.json\", \"unified_market_evidence_result.v3.schema.json\"], \"sys_path\": [\"C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python313.zip\", \"C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\DLLs\", \"C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\Lib\", \"C:\\\\Users\\\\weitang\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\", \"C:\\\\twmarket_temp\\\\l7-a2\\\\continuation\\\\final-source\\\\native-quiet\\\\Location-B\\\\TW-Market-1.0.0-windows-x64\\\\runtime\\\\venv\", \"C:\\\\twmarket_temp\\\\l7-a2\\\\continuation\\\\final-source\\\\native-quiet\\\\Location-B\\\\TW-Market-1.0.0-windows-x64\\\\runtime\\\\venv\\\\Lib\\\\site-packages\", \"C:\\\\twmarket_temp\\\\l7-a2\\\\continuation\\\\final-source\\\\native-quiet\\\\Location-B\\\\TW-Market-1.0.0-windows-x64\\\\runtime\\\\venv\\\\Lib\\\\site-packages\\\\win32\", \"C:\\\\twmarket_temp\\\\l7-a2\\\\continuation\\\\final-source\\\\native-quiet\\\\Location-B\\\\TW-Market-1.0.0-windows-x64\\\\runtime\\\\venv\\\\Lib\\\\site-packages\\\\win32\\\\lib\", \"C:\\\\twmarket_temp\\\\l7-a2\\\\continuation\\\\final-source\\\\native-quiet\\\\Location-B\\\\TW-Market-1.0.0-windows-x64\\\\runtime\\\\venv\\\\Lib\\\\site-packages\\\\pythonwin\"], \"executable\": \"C:\\\\twmarket_temp\\\\l7-a2\\\\continuation\\\\final-source\\\\native-quiet\\\\Location-B\\\\TW-Market-1.0.0-windows-x64\\\\runtime\\\\venv\\\\Scripts\\\\python.exe\"}\n",
+      "validator": "packaged_integrity_and_public_schema_preservation"
+    },
+    {
+      "exit_code": 0,
+      "validator": "script_syntax_static"
+    }
+  ],
+  "status": "PASS",
+  "supplemental_native_restart": {
+    "app_immutable": true,
+    "business_state_unchanged": true,
+    "guard_denials": 0,
+    "status": "PASS"
+  }
+}

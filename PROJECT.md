@@ -1,6 +1,26 @@
 # PROJECT.md — Current Project Authority
 
-## Current L7-A1 merged state (2026-10-24)
+## Current L7-A2 technical state (2026-10-24)
+
+L6 remains **CLOSED**. L7-A0 and L7-A1 remain **OWNER-ACCEPTED AND MERGED**;
+A1 post-merge governance is reconciled at canonical entry `0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5`.
+L7-A2 is **TECHNICAL PASS / OWNER ACCEPTANCE PENDING** under
+`L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_PASS`.
+
+Fresh clone, genuine Windows11 x64 guest, Native and Docker validation artifacts PASS;
+canonical A1 gate is 1895 passed / 0 failed / four contracted historical witness skips,
+with no unexpected skips/xfails or guard denials. GAP05/06/07 are CLOSED; GAP20 is a retained
+nonblocking historical limitation with current A2 replacement/state-survival proof.
+Only EXIT04/05/06/07 gain A2 PASS; exact-six/public contracts remain preservation checks,
+with final L7 acceptance deferred. Existing A1 acceptance and immutable failed/TEMP evidence remain.
+
+**L7-A3+ NOT AUTHORIZED. Stable release/publication NOT AUTHORIZED. Merge NOT AUTHORIZED.
+Phase M NOT AUTHORIZED. Phase L NOT CLOSED.** No dependency/support policy or VERSION changes.
+
+Report: `docs/governance/phase_l/PHASE_L_L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_FINAL_2026-10-24.md`.
+Evidence: `docs/governance/phase_l/acceptance_runs/l7-a2-20261024T133622Z-final/`.
+
+## Historical L7-A1 merged state (2026-10-24)
 
 L6 remains **CLOSED**; L7-A0 is **OWNER-ACCEPTED AND MERGED**, reconciled by
 PR #409 normal merge `405bf16f5f82f4d37062d036ca6815eba27f7c4d`.

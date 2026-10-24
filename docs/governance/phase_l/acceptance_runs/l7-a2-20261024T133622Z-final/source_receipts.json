@@ -1,0 +1,257 @@
+{
+  "classification": "ACCEPTANCE_ENVIRONMENT_METADATA; paths are evidence provenance, never portable payload authority",
+  "sources": {
+    "C:\\twmarket_temp\\l7-a2\\continuation\\cpython-nuget\\identity.json": {
+      "bytes": 1461,
+      "sha256": "4b4f47594f273e1575f5190142f45bb0ca9651b1603e1a5455c2662d00aad111"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\cpython-nuget\\signature.json": {
+      "bytes": 193,
+      "sha256": "05bbd53d363598c2fd93c82c4005a641bb406909cd3b32bda520049fd11e166e"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-checks\\summary.json": {
+      "bytes": 11390,
+      "sha256": "e4d6d23496095c317716ea179ef4400b5dda12b9682d4aa83de2ed31853f18d1"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\app-hashes-a.json": {
+      "bytes": 36348,
+      "sha256": "90dc61a7f0db13e6b9276b64a42f24ab47e7f4fdefb42c4808c97fe488572a0e"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\app-hashes-b.json": {
+      "bytes": 36348,
+      "sha256": "d389745313915d7cd00900dba6c5c9cfdd9354e4a9b3952f4a2849233345c690"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\base-identity.json": {
+      "bytes": 2336,
+      "sha256": "7603056e866c9067707e37fa4e1e2aceb03876f663eb887fb8f58e1f2077201a"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\config-a.json": {
+      "bytes": 12572,
+      "sha256": "cc7cd2249b6ba677d4a2f570e68d65fbdd79366b05479dae99783311890076ec"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\config-b.json": {
+      "bytes": 12571,
+      "sha256": "35f99d7f4b7201fc23c28df92bfa361ba5c5cff40c9fef8acee1dd82b3f6c984"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\context.json": {
+      "bytes": 409,
+      "sha256": "373f6ba17b6207bb4dae6764d056c95839dcf13335ae4869b42737fba8451513"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\doctor-a.json": {
+      "bytes": 4331,
+      "sha256": "1fa8ef51b40744aad5123f7833de35dbe21fe70cb4fca2c529113f4256d7196d"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\doctor-b.json": {
+      "bytes": 4331,
+      "sha256": "d128e8b85ed237dc79c217e1a2cd7f246df9c32d9fd9bd368accf25266dbd77d"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\environment.json": {
+      "bytes": 1418,
+      "sha256": "97210ae50dbc03ef561a5b93f7f3ccb7254ded95fbb4d07060311c31430e9b2d"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\host-health-a.json": {
+      "bytes": 134,
+      "sha256": "1636dde060a84687913545355ec5c4a64b96696be521690c426510b2150ee758"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\host-health-b.json": {
+      "bytes": 133,
+      "sha256": "343c0b1c8728571aaee5b10952f74159cdd01462f93f3875ce811b6f20226f69"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\image-a.json": {
+      "bytes": 4054,
+      "sha256": "93ab0b597d09bb6941aa2c804040ede2575cefecff9c165a1c7782c566aedb05"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\image-b.json": {
+      "bytes": 4055,
+      "sha256": "e0e94f6b654d57a4b410dd13c70dc8fc5eb44c963f565ceb1d5f31e67196453a"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\init-again.json": {
+      "bytes": 2820,
+      "sha256": "5f3160ca15c98457f639830b275903ecee363f669440b26a73cc4c6afa291d1e"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\init.json": {
+      "bytes": 2808,
+      "sha256": "947c77d2f09ffb9b167bd0bc4655c41f61c058e876f87100d437897bd907f3bc"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\preinit-doctor.json": {
+      "bytes": 2866,
+      "sha256": "b56b3809e0b7de956c0c419926109d56bf8f29c94a1ccb32937a9461e9e03477"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\preinit-readonly.json": {
+      "bytes": 1512,
+      "sha256": "e43ba439fec36d232c2044b7a1531966f343a22c7be9e9ecd20722adfac0af1e"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\preinit.json": {
+      "bytes": 2852,
+      "sha256": "406d03f9cb13d7670925321d39aebc7d5c1c7fc6a5f5e81ae1dee75f9c8bf328"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\result.json": {
+      "bytes": 3390,
+      "sha256": "749bfa4e739339ec7a327b5dfe03e1644037d15fee0f6085dd8e607e3283004f"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\startup-a.json": {
+      "bytes": 434,
+      "sha256": "2dc2fd82a95a9b22789896200af52fd1cc412f397171a4e18ad7ca620247e9aa"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-accepted\\startup-b.json": {
+      "bytes": 434,
+      "sha256": "d076476d4ac2758afdf0f39e9b7f67c81499c41882f3f2505a1f5fd000961f0c"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker-quiet\\result.json": {
+      "bytes": 1066,
+      "sha256": "2b4f42b4e99f396c23f8639e4a16b59834db5a5a77ed57966a9ab21830b41bbb"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\docker\\result.json": {
+      "bytes": 615,
+      "sha256": "0bdc793322f6a08682d410d7e173c9653fbbe6d89f6a31186d84e2aa811acf0a"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\gate-accepted\\release-blocking-ci\\members.json": {
+      "bytes": 240240,
+      "sha256": "1bfadc4fa5ceaaf69f1af2e3b00eec01061f931be8d487fc895f2cfe92c88418"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\gate-accepted\\release-blocking-ci\\result.json": {
+      "bytes": 843,
+      "sha256": "7993b70eb5f9ea7c251c5c63e783ddbb69a0a5799aa2da0129cb9203cf588cfd"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-accepted\\native-build.json": {
+      "bytes": 594876,
+      "sha256": "6ef8d8cafd56196315076fd35334bfef2f584b68632bb5ed0639792dc26708e8"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\app_root_write_guard.json": {
+      "bytes": 70330,
+      "sha256": "ccdc15dab334803fd8217b312ca5aff2e4e3dbaad1f9e1df42e9ff3eceef16f8"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\bootstrap_acceptance.json": {
+      "bytes": 1210,
+      "sha256": "abe1407979db44d7fae8a5c3b7c725a646228bdacc6781610c499c83df1d0794"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\distribution_manifest_verification.json": {
+      "bytes": 293,
+      "sha256": "146cdd89323bcfc77c82bd9635a24467385140f8274bc6cd8f0d73895b132716"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\distribution_relocation_probe.json": {
+      "bytes": 643,
+      "sha256": "714c653600333aa96dfd9856e306504739bf190ef837d0bcdbe32c33ddf76614"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\doctor_read_only.json": {
+      "bytes": 59,
+      "sha256": "5bc710c1d420b3de2df3aa80c2c9ca95a8fad429880862e0a683acc061762816"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\final_result.json": {
+      "bytes": 1724,
+      "sha256": "e9eb29e076f1d63635b5dceabd7bb354307edecfb0fbe82061d7b4846e6a2ba2"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\initialized_package_acceptance.json": {
+      "bytes": 2505,
+      "sha256": "faeaa40e3fa0ada2e18ce7f5b67b289cc021920fbf935c8b39e73d19913e86d1"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\launcher_acceptance.json": {
+      "bytes": 224,
+      "sha256": "f6c0d7840cd67686b04deec1aec868d0019c3129fc80f9ed69af0ab9f0c20118"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\lifecycle_acceptance.json": {
+      "bytes": 15512,
+      "sha256": "219056a57299d2cafac7e051fdd23055c73cf44fe357e0ad33ef8bb43a4a55ec"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\mcp_package_acceptance.json": {
+      "bytes": 73065,
+      "sha256": "0f0a0fce003954009493c8a39009235e12b93777fd0e71fce028391f3d2d074f"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\preinit_package_acceptance.json": {
+      "bytes": 4966,
+      "sha256": "72ea69001b2911775da2458ee0281e9116d70d7a030463d727156e2c13cc0376"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\security_master_package_acceptance.json": {
+      "bytes": 223,
+      "sha256": "f87c07ff4d623ac34dfcd2323657da1346e7d47e8777c6fd3904a3f85734743a"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\sys_path_isolation.json": {
+      "bytes": 3699,
+      "sha256": "212001993f5c4a2552b836fa9b1bd9aa2a4aef6fd8b6a0e1a666dfd135fe1f71"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\fresh\\docker-final\\result.json": {
+      "bytes": 1348,
+      "sha256": "68ff6933f5b288fbc2b861f9ee7c862a3c5a3702d736c8c273e0eff8abb43f52"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\fresh\\docker\\result.json": {
+      "bytes": 611,
+      "sha256": "6d19b3f1bb5f13f4d1e4c8c543da1cc55167104ce1f58a3f7602b99d1ea9d639"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\native-restart\\result.json": {
+      "bytes": 24947,
+      "sha256": "8bc387a68a48077c5f598b9e08d1b320a05d4da0a29965d526bb10b4beb01ffa"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-final\\output\\result.json": {
+      "bytes": 134,
+      "sha256": "60add8d8cb56af1b86082da4582c159621dd08a5646f461e5fed5a9f0492be1a"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-portable\\output\\result.json": {
+      "bytes": 154,
+      "sha256": "ee03714c2203b4431b7d76d1242b40ebaa96c8c410749e03f16f412587ccec2b"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\cleanup.json": {
+      "bytes": 112,
+      "sha256": "4fc374483e12062037e1b98c4067fb261962b54ed2180bf763f71d6cc744f5b4"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\launch.json": {
+      "bytes": 223,
+      "sha256": "2926241dd1a9852f52d36d20f49bdb7627bda9836a9b756d3d6422e37b213f11"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\acceptance\\app_root_write_guard.json": {
+      "bytes": 70330,
+      "sha256": "ccdc15dab334803fd8217b312ca5aff2e4e3dbaad1f9e1df42e9ff3eceef16f8"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\acceptance\\distribution_relocation_probe.json": {
+      "bytes": 574,
+      "sha256": "f09f7547bcb8cd19a0c15fe227f53dc3f26190447b209b273bcf06e1fb343081"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\acceptance\\doctor_read_only.json": {
+      "bytes": 59,
+      "sha256": "5bc710c1d420b3de2df3aa80c2c9ca95a8fad429880862e0a683acc061762816"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\acceptance\\final_result.json": {
+      "bytes": 1724,
+      "sha256": "e9eb29e076f1d63635b5dceabd7bb354307edecfb0fbe82061d7b4846e6a2ba2"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\acceptance\\mcp_package_acceptance.json": {
+      "bytes": 73065,
+      "sha256": "0f0a0fce003954009493c8a39009235e12b93777fd0e71fce028391f3d2d074f"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\acceptance\\preinit_package_acceptance.json": {
+      "bytes": 4462,
+      "sha256": "a419adfa1f25d3e4e60e7fc928003fc1fa1c3d637eef62ec371b28ebe105c7b7"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\artifact-verification.json": {
+      "bytes": 630,
+      "sha256": "58986e27dec1a03ad52a44c7814bf83ad2516b33e6c101ef168b253b6985ca04"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\fresh-state.json": {
+      "bytes": 806,
+      "sha256": "27f693f287e638ed17ae871418558f11fb3aac511e0f9baabddfb54a646f5b73"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\prerequisite.json": {
+      "bytes": 624,
+      "sha256": "2f49de33ab49525dbbb80a26f76dd4f411d01c83f515996ce89bb7f3f7ba06a3"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox-verified\\output\\result.json": {
+      "bytes": 154,
+      "sha256": "f8817cfd3632c6b45434e44168cf41135797597fb4e7333a115cee88bd09b0e0"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox\\host-identity.json": {
+      "bytes": 158,
+      "sha256": "e5ea3cd454b6fed8d20b93fa95b4b4faaffaadd8f061e908e24c46b20fffd72c"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\sandbox\\output\\result.json": {
+      "bytes": 154,
+      "sha256": "36ab0486a2533b94ce90eeb45ec79264ecd78d7573d01a9170a12fb5896441b5"
+    },
+    "C:\\twmarket_temp\\l7-a2\\continuation\\uname-provenance.json": {
+      "bytes": 731,
+      "sha256": "68740ed21f4a1ef5c5279d35153406d3a94a130f1e53f73983d312bc71c7b013"
+    },
+    "C:\\twmarket_temp\\l7-a2\\repo\\docs\\governance\\phase_l\\acceptance_runs\\l7-a2-20261024T024000Z-blocked\\candidate_gate_members.json": {
+      "bytes": 238297,
+      "sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f"
+    }
+  }
+}

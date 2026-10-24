@@ -1,0 +1,13 @@
+{
+  "CI_guard_denials": [],
+  "Docker_guard_denials": [],
+  "Native_guard_events": [],
+  "Security_Master_live_updates": 0,
+  "background_market_polling": 0,
+  "boundary": "Python and inherited Python/Node guards; Docker exact native identity allowlist and read-only runtime; no OS firewall or whole-host zero-network claim",
+  "guest_guard_events": [],
+  "live_provider_requests": 0,
+  "local_traffic": "explicit localhost health, readiness and MCP/local-service probes only",
+  "market_acquisition_attempts": 0,
+  "production_refresh": 0
+}

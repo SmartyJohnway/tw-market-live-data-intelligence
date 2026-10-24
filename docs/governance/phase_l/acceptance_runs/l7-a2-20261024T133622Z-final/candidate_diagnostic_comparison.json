@@ -1,0 +1,13 @@
+{
+  "DEFAULT_CI_FULL_NON_NETWORK": "historical diagnostic results retained, not rerun or claimed green; no failure exception granted",
+  "baseline_report_sha256": "be8d71b3617075989ea2d21a4d9d4cfa8c8d8af320507d9616330de0022e193e",
+  "candidate_only_unintended_failures": [],
+  "canonical_entry_and_blocked_selected_failure": [
+    "tests.unit.test_phase_l_l4_a4_control_plane_boundary::test_every_fastapi_post_route_has_exactly_one_explicit_classification"
+  ],
+  "canonical_entry_commit": "0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5",
+  "canonical_selected_members_equal": true,
+  "final_selected_failures": [],
+  "fixed_node": "Owner-accepted bounded compatibility repair",
+  "new_workflow_guard_and_packaging_tests": "all pass; counts in required_validators.json"
+}

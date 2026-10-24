@@ -1,0 +1,9 @@
+{
+  "canonical_entry": "0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5",
+  "canonical_entry_tree": "910803236875dbfbcf52efb166f1ce2eafd514e7",
+  "commit": "faba8c219426b20665b3fc94c090f836d6fe3c0c",
+  "history_rewritten": false,
+  "parent": "cd90403f66948618510632806627da3f78f27a62",
+  "tree": "fb4579b94873052b54dc402d5ebe6700eb4320ca",
+  "worktree_clean_at_entry": true
+}
