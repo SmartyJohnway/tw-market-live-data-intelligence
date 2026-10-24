@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate CI_POLICY_V1 workflow trigger boundaries deterministically."""
+"""Validate CI_POLICY_V1 with the explicit L7-A2 pre-publication amendment."""
 from __future__ import annotations
 
 import json
@@ -13,22 +13,6 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 POLICY_PATH = ROOT / "config" / "github_actions_execution_policy.json"
 RELEASE_WORKFLOW = "release-validation.yml"
 WINDOWS_WORKFLOW = "windows-compatibility-smoke.yml"
-REQUIRED_WINDOWS_STEP_NAMES = {
-    "Compile Windows compatibility surfaces",
-    "Run Windows non-network compatibility smoke tests",
-    "Validate M5F package",
-    "M5IJ Windows acceptance",
-    "MCP startup check",
-}
-REQUIRED_WINDOWS_TEST_PATHS = {
-    "tests/unit/test_m5f_canonical_market_context_package.py",
-    "tests/unit/test_m5i_explicit_bounded_refresh.py",
-    "tests/unit/test_m5ij_end_to_end_acceptance.py",
-    "tests/unit/test_m5fgh_fastapi_context.py",
-    "tests/unit/test_mcp_server.py",
-    "tests/unit/test_m6d_ssl_policy.py",
-    "tests/unit/test_m6d_operator_and_local_networking.py",
-}
 
 
 def job_step_names(workflow: dict[str, Any], job_name: str) -> set[str]:
@@ -43,19 +27,6 @@ def job_run_text(workflow: dict[str, Any], job_name: str) -> str:
     job = jobs.get(job_name, {}) if isinstance(jobs, dict) else {}
     steps = job.get("steps", []) if isinstance(job, dict) else []
     return "\n".join(str(step.get("run", "")) for step in steps if isinstance(step, dict))
-
-
-def validate_complete_windows_job(workflow: dict[str, Any], job_name: str, prefix: str, violations: list[str]) -> None:
-    names = job_step_names(workflow, job_name)
-    missing_names = REQUIRED_WINDOWS_STEP_NAMES - names
-    for name in sorted(missing_names):
-        violations.append(f"{prefix}:missing_step:{name}")
-    run_text = job_run_text(workflow, job_name)
-    for test_path in sorted(REQUIRED_WINDOWS_TEST_PATHS):
-        if test_path not in run_text:
-            violations.append(f"{prefix}:missing_test:{test_path}")
-    if "component-security" in run_text:
-        violations.append(f"{prefix}:filesystem_only_mislabeled_complete")
 
 
 def load_workflow(path: Path) -> dict[str, Any]:
@@ -99,7 +70,9 @@ def validate() -> dict[str, Any]:
         inspected.append({"file": str(path.relative_to(ROOT)), "name": name, "triggers": sorted(triggers)})
         if "workflow_dispatch" not in triggers:
             violations.append(f"missing_workflow_dispatch:{path.name}")
-        forbidden = triggers & {"pull_request", "pull_request_target", "merge_group", "workflow_run", "schedule"}
+        forbidden = triggers & {"pull_request_target", "merge_group", "workflow_run", "schedule"}
+        if "pull_request" in triggers and path.name != WINDOWS_WORKFLOW:
+            forbidden.add("pull_request")
         for trigger in sorted(forbidden):
             violations.append(f"forbidden_automatic_trigger:{path.name}:{trigger}")
         if "push" in triggers:
@@ -109,20 +82,20 @@ def validate() -> dict[str, Any]:
             if path.name != RELEASE_WORKFLOW:
                 violations.append(f"duplicate_release_trigger:{path.name}")
 
-    release_path = WORKFLOWS / RELEASE_WORKFLOW
-    release = load_workflow(release_path) if release_path.exists() else {}
-    if trigger_keys(release) != {"workflow_dispatch", "release"}:
-        violations.append("release_validation_trigger_set_invalid")
-    release_event = release.get("on", {}).get("release", {}) if isinstance(release.get("on"), dict) else {}
-    if not isinstance(release_event, dict) or release_event.get("types") != ["published"]:
-        violations.append("release_validation_not_published_only")
-    if release_files != [RELEASE_WORKFLOW]:
-        violations.append("release_validation_not_sole_release_workflow")
-
-    windows_path = WORKFLOWS / WINDOWS_WORKFLOW
-    windows = load_workflow(windows_path) if windows_path.exists() else {}
-    validate_complete_windows_job(windows, "windows-compatibility-smoke", "windows_compatibility", violations)
-    validate_complete_windows_job(release, "windows-compatibility", "release_windows_compatibility", violations)
+    # The A2 authority prospectively supersedes published-release gating and
+    # the old duplicated Windows step list with the canonical A1 gate runner.
+    from scripts.validate_l7_a2_workflow_policy import validate as validate_a2
+    try:
+        validate_a2(ROOT)
+    except (AssertionError, KeyError, TypeError, ValueError) as exc:
+        violations.append("a2_integration_policy:" + str(exc))
+    if policy.get("opt_in_windows_PR") != {"label":"windows-smoke", "activities":["opened","synchronize","reopened","labeled"], "unlabeled_expensive_job":False}:
+        violations.append("opt_in_windows_policy_mismatch")
+    release_mode = policy["authorization_modes"]["RELEASE_CI_REQUIRED"]
+    if release_mode.get("release_or_tag_context_required") is not False or release_mode.get("pre_publication_validation_required") is not True:
+        violations.append("pre_publication_policy_mismatch")
+    if release_files:
+        violations.append("post_publication_trigger_remains")
 
     profiles = json.loads((ROOT / "config" / "test_execution_profiles.json").read_text(encoding="utf-8"))["profiles"]
     for profile in ("performance", "historical-acceptance"):

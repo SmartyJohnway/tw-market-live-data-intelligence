@@ -15,25 +15,26 @@ def test_ci_policy_validator_accepts_repository_workflows():
     assert result["workflow_count"] == 5
 
 
-def test_testing_workflows_are_manual_or_published_release_only():
+def test_workflows_follow_prepublication_and_label_opt_in_policy():
     result = validator.validate()
     trigger_sets = {item["name"]: set(item["triggers"]) for item in result["workflows"]}
     assert trigger_sets["Default CI"] == {"workflow_dispatch"}
     assert trigger_sets["Full Non-Network Regression"] == {"workflow_dispatch"}
-    assert trigger_sets["Windows Compatibility Smoke"] == {"workflow_dispatch"}
+    assert trigger_sets["Windows Compatibility Smoke"] == {"workflow_dispatch", "pull_request"}
     assert trigger_sets["Browser Operator E2E"] == {"workflow_dispatch"}
-    assert trigger_sets["Release Validation"] == {"workflow_dispatch", "release"}
+    assert trigger_sets["Release Validation"] == {"workflow_dispatch"}
 
 
-def test_complete_windows_workflow_and_release_job_retain_compatibility_coverage():
+def test_windows_jobs_use_canonical_gate_instead_of_historical_step_names():
     windows = validator.load_workflow(ROOT / ".github/workflows/windows-compatibility-smoke.yml")
     release = validator.load_workflow(ROOT / ".github/workflows/release-validation.yml")
-    for workflow, job_name in ((windows, "windows-compatibility-smoke"), (release, "windows-compatibility")):
-        names = validator.job_step_names(workflow, job_name)
-        run_text = validator.job_run_text(workflow, job_name)
-        assert validator.REQUIRED_WINDOWS_STEP_NAMES <= names
-        assert validator.REQUIRED_WINDOWS_TEST_PATHS <= set(path for path in validator.REQUIRED_WINDOWS_TEST_PATHS if path in run_text)
-        assert "component-security" not in run_text
+    for workflow in (windows, release):
+        run_text = validator.job_run_text(workflow, "validation")
+        assert "run_l7_a2_release_validation.py" in run_text
+        assert "--gate" in run_text
+        assert "--source-commit" in run_text and "--source-tree" in run_text
+    assert "--native" in validator.job_run_text(release, "validation")
+    assert "accept_l7_a2_docker.py" in validator.job_run_text(release, "docker-validation")
 
 
 def test_policy_keeps_historical_and_performance_profiles_manual():
