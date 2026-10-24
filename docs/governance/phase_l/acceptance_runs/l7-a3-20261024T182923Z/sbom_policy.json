@@ -1,0 +1,7 @@
+{
+  "final_RC_regeneration": "A6",
+  "format": "Lightweight deterministic first-party JSON",
+  "scope": "Native, Docker, CI, Python 3.11 compatibility, browser Python and binary artifacts",
+  "signing_claim": false,
+  "upstream_SBOM_not_substitute": true
+}

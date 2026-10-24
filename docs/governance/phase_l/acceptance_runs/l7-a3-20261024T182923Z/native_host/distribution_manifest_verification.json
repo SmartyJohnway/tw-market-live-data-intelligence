@@ -1,0 +1,15 @@
+{
+  "tamper_cases": [
+    {
+      "member": "app/VERSION",
+      "rejected": true,
+      "runtime_created": false
+    },
+    {
+      "member": "distribution-manifest.json",
+      "rejected": true,
+      "runtime_created": false
+    }
+  ],
+  "fail_closed_before_runtime": true
+}

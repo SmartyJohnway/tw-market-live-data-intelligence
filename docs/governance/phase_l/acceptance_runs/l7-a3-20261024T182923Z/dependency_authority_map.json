@@ -1,0 +1,82 @@
+{
+  "authority": "USER_CHAT_2026-10-25_PHASE_L_L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_AUTHORIZATION",
+  "browser_intent": "requirements-browser-e2e.txt",
+  "consumers": {
+    "browser-linux": {
+      "lock": "config/browser-py313-linux-lock.json",
+      "platform": "manylinux_x86_64",
+      "python": "3.13",
+      "role": "BROWSER_VALIDATION_ONLY"
+    },
+    "ci-linux": {
+      "lock": "config/ci-py313-linux-lock.json",
+      "platform": "manylinux_x86_64",
+      "python": "3.13",
+      "role": "CANONICAL_LINUX_CI"
+    },
+    "developer-py311-windows": {
+      "lock": "config/developer-py311-windows-lock.json",
+      "platform": "win_amd64",
+      "python": "3.11",
+      "role": "NONCANONICAL_COMPATIBILITY"
+    },
+    "docker-linux": {
+      "lock": "packaging_docker/dependency-lock-linux-amd64-cp313.json",
+      "platform": "musllinux_x86_64",
+      "python": "3.13",
+      "role": "CANONICAL_DOCKER_RUNTIME"
+    },
+    "native-windows": {
+      "lock": "packaging_native/wheelhouse-lock.json",
+      "platform": "win_amd64",
+      "python": "3.13",
+      "role": "CANONICAL_NATIVE_RUNTIME"
+    },
+    "release-ci-windows": {
+      "lock": "packaging_native/wheelhouse-lock.json",
+      "platform": "win_amd64",
+      "python": "3.13",
+      "role": "CANONICAL_RELEASE_CI"
+    }
+  },
+  "direct_intent": "requirements.txt",
+  "publisher": {
+    "A3_publication_authorized": false,
+    "publication": "Only explicit Owner-authorized GitHub release under A7",
+    "repository": "SmartyJohnway/tw-market-live-data-intelligence"
+  },
+  "python_policy": {
+    "canonical": "CPython 3.13",
+    "compatibility": "CPython 3.11 Windows x64, noncanonical developer/test; explicit separate artifact lock",
+    "mcp_sdk_policy": "DEFERRED_TO_A4; current mcp==1.29.0 unchanged",
+    "native_tier1": "Windows 11 x64",
+    "patch_policy": "CPython patch versions recorded per validation/build; artifact reproducibility compares identical toolchain",
+    "unsupported": [
+      "3.12"
+    ]
+  },
+  "replay": {
+    "hashes_required": true,
+    "index": false,
+    "pip_check_required": true,
+    "transitive_resolution": false
+  },
+  "schema_version": 1,
+  "signing": {
+    "A3_not_mandatory": [
+      "Authenticode",
+      "cosign",
+      "SLSA"
+    ],
+    "key_creation_authorized": false,
+    "mandatory": [
+      "SHA256 integrity",
+      "exact source/tree",
+      "dependency provenance",
+      "first-party SBOM",
+      "verified GitHub source identity"
+    ]
+  },
+  "version_projection": "requirements-lock.txt",
+  "version_projection_role": "shared exact versions; release artifact bytes governed only by consumer locks"
+}

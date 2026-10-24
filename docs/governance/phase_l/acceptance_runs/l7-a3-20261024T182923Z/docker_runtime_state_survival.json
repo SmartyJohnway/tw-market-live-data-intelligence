@@ -1,0 +1,104 @@
+{
+  "after": {
+    "durable_files": {
+      "home/config/settings.json": "250982c341a13eb7ce0d3aabbfeee37d5d60e7b80f830108bf55905c0c3647ae",
+      "home/meta/installation.json": "789cb54748b34b8c9ed8300dec45874cdf5aada6ad5b564ce11611e79c60361f",
+      "state/a2-validation-witness.json": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+    },
+    "installation": {
+      "created_at": "2026-10-24T18:10:47.874538+00:00",
+      "installation_id": "c55b3686-5a7c-41ab-b1bf-01341ac9b7e4",
+      "installation_schema_version": 1,
+      "state_root": "/var/lib/tw-market/state"
+    },
+    "state_sha256": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+  },
+  "app_hashes_match_committed_manifest": true,
+  "before": {
+    "durable_files": {
+      "home/config/settings.json": "250982c341a13eb7ce0d3aabbfeee37d5d60e7b80f830108bf55905c0c3647ae",
+      "home/meta/installation.json": "789cb54748b34b8c9ed8300dec45874cdf5aada6ad5b564ce11611e79c60361f",
+      "state/a2-validation-witness.json": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+    },
+    "installation": {
+      "created_at": "2026-10-24T18:10:47.874538+00:00",
+      "installation_id": "c55b3686-5a7c-41ab-b1bf-01341ac9b7e4",
+      "installation_schema_version": 1,
+      "state_root": "/var/lib/tw-market/state"
+    },
+    "state_sha256": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+  },
+  "external_product_network_attempts": 0,
+  "guard_events": 72,
+  "images": [
+    "sha256:bd58cc4431e457f14e8835c5bd404bae0ce9e2777d86e4bd13656f0ff7fa0dc0",
+    "sha256:4bd2004da93c591e61de4000923c8c94c180037279a0b43e284fa1aef3d98460"
+  ],
+  "loopback_only_host_exposure": true,
+  "retained_resources": {
+    "evidence": "tw-market-l7-a3-1792865403009347900-evidence",
+    "guard": "tw-market-l7-a3-1792865403009347900-guard",
+    "home": "tw-market-l7-a3-1792865403009347900-home",
+    "network": "tw-market-l7-a3-1792865403009347900-network",
+    "state": "tw-market-l7-a3-1792865403009347900-state"
+  },
+  "same_application_layers": true,
+  "scope": "Python and inherited Python instrumentation, read-only container; no OS firewall claim",
+  "sequence": [
+    "environment",
+    "base-identity",
+    "build-a",
+    "image-a",
+    "build-b",
+    "image-b",
+    "volume-home",
+    "volume-state",
+    "network",
+    "guard-volume",
+    "evidence-volume",
+    "stage-create",
+    "stage-copy",
+    "stage-permissions",
+    "stage-remove",
+    "preinit",
+    "preinit-doctor",
+    "preinit-readonly",
+    "init",
+    "init-again",
+    "create-validation-witness",
+    "state-before",
+    "start-a",
+    "status-a-0",
+    "status-a-1",
+    "status-a-2",
+    "doctor-a",
+    "port-a",
+    "startup-a",
+    "config-a",
+    "app-hashes-a",
+    "logs-a",
+    "guard-evidence-a",
+    "stop-a",
+    "remove-a",
+    "start-b",
+    "status-b-0",
+    "status-b-1",
+    "status-b-2",
+    "doctor-b",
+    "port-b",
+    "startup-b",
+    "config-b",
+    "app-hashes-b",
+    "logs-b",
+    "guard-evidence-b",
+    "stop-b",
+    "remove-b",
+    "state-after",
+    "readback-create",
+    "readback-copy",
+    "readback-remove"
+  ],
+  "source_commit": "ab2b2dc941aea68187145166a519757622d092e8",
+  "source_tree": "1ccdb3e77ca99972d965a3f7eb771d2807fd7e73",
+  "status": "PASS"
+}

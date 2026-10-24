@@ -1,0 +1,10 @@
+{
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "handler_context_is_none": true,
+  "connection_verify_mode": 2,
+  "CERT_REQUIRED": 2,
+  "check_hostname": true,
+  "network_connections": 0,
+  "stdlib_connection_source_sha256": "894de32ce4b4433bdaedb608505110cbf11e269ac848cba40029d4258f7738f8",
+  "interpretation": "CPython 3.11 HTTPSHandler defers default context creation to HTTPSConnection; strict default TLS remains enabled; legacy test inspects earlier internal representation"
+}

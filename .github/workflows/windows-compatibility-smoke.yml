@@ -15,9 +15,17 @@ jobs:
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
         python-version: '3.13'
+    - name: Record hosted runner provenance
+      shell: python
+      run: |
+        import os, platform, subprocess, sys
+        print({k: os.environ.get(k) for k in ('ImageOS','ImageVersion','RUNNER_OS','RUNNER_ARCH')})
+        print(sys.version, platform.platform())
+        subprocess.run([sys.executable, '-m', 'pip', '--version'], check=True)
+        subprocess.run(['git', '--version'], check=True)
     - name: Fresh clone and canonical pre-publication validation (not genuine Win11 evidence)
       shell: pwsh
       run: |

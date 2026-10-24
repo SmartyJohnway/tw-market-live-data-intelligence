@@ -1,0 +1,8 @@
+{
+  "error": "base-identity failed",
+  "sequence": [
+    "environment",
+    "base-identity"
+  ],
+  "status": "FAIL"
+}

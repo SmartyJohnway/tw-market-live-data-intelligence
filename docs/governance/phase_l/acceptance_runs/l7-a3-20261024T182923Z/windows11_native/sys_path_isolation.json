@@ -1,0 +1,44 @@
+{
+  "sys_path": [
+    "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+    "C:\\twmarket_temp\\l7-a3\\guest\\prerequisite\\tools\\python313.zip",
+    "C:\\twmarket_temp\\l7-a3\\guest\\prerequisite\\tools\\DLLs",
+    "C:\\twmarket_temp\\l7-a3\\guest\\prerequisite\\tools\\Lib",
+    "C:\\twmarket_temp\\l7-a3\\guest\\prerequisite\\tools",
+    "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\runtime\\venv",
+    "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Lib\\site-packages",
+    "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Lib\\site-packages\\win32",
+    "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Lib\\site-packages\\win32\\lib",
+    "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Lib\\site-packages\\pythonwin"
+  ],
+  "sys_executable": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Scripts\\python.exe",
+  "version": "1.0.0",
+  "installation": {
+    "app_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+    "home": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII",
+    "state_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state",
+    "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+    "settings_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+    "security_master_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+    "watchlist_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\watchlists",
+    "governed_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\governed",
+    "cache_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\cache",
+    "logs_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs",
+    "runtime_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\runtime",
+    "temp_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\temp",
+    "installation_id": "07577129-bf5e-477f-af62-0186aa9e9e3f",
+    "installation_status": "READY",
+    "effective_service_host": "127.0.0.1",
+    "effective_service_port": 49671,
+    "operational_event_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+    "diagnostics": {
+      "home_source": "env",
+      "state_root_source": "metadata",
+      "settings_origins": {
+        "host": "settings",
+        "port": "env"
+      }
+    }
+  },
+  "source_commit": "ab2b2dc941aea68187145166a519757622d092e8"
+}

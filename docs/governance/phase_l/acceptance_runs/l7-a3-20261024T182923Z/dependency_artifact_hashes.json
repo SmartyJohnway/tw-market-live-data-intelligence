@@ -1,0 +1,2648 @@
+[
+  {
+    "consumer": "browser-linux",
+    "artifact": "pyjwt-2.13.0-py3-none-any.whl",
+    "sha256": "66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728",
+    "official_metadata_sha256": "5e003431d4acafcf7df206ffaefacc8a7630ce85f3f9461ccf544023b6432e69",
+    "source": "https://pypi.org/pypi/PyJWT/2.13.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "0f29edc409a6392443abf94b9cf89ce99889a1dd5376d94316ae5145dfedd5d6",
+    "official_metadata_sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def",
+    "source": "https://pypi.org/pypi/PyYAML/6.0.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pygments-2.21.0-py3-none-any.whl",
+    "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "official_metadata_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+    "source": "https://pypi.org/pypi/Pygments/2.21.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "annotated_doc-0.0.5-py3-none-any.whl",
+    "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+    "official_metadata_sha256": "1aab691a5f37dd292e6d93ab53f7da5d839f56ba605345f017022ec75eb643af",
+    "source": "https://pypi.org/pypi/annotated-doc/0.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "annotated_types-0.8.0-py3-none-any.whl",
+    "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+    "official_metadata_sha256": "a6e8e5b10c8fd2f596bba53e015cd37f6279fb5cec26ce0c5e9968625be4fefa",
+    "source": "https://pypi.org/pypi/annotated-types/0.8.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "anyio-4.15.1-py3-none-any.whl",
+    "sha256": "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+    "official_metadata_sha256": "e2ee22fad2fab3e66be503cba9b41945607d3076c9b7aa49b6e2f95ac323efab",
+    "source": "https://pypi.org/pypi/anyio/4.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "attrs-26.1.0-py3-none-any.whl",
+    "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+    "official_metadata_sha256": "a882bf941fb4a0bb748d0194df544121cc130f5fb15a710ab6b804c17d2899b7",
+    "source": "https://pypi.org/pypi/attrs/26.1.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "certifi-2026.7.22-py3-none-any.whl",
+    "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+    "official_metadata_sha256": "c65938c867536616d6755e3b1fded46639e940ea2b2ce6e792aaa6fe64fc55f5",
+    "source": "https://pypi.org/pypi/certifi/2026.7.22/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "cffi-2.1.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+    "sha256": "a931079504ecc49efed7744c476a5c343a92fabf66dec2db95edb1b2fdc770e2",
+    "official_metadata_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+    "source": "https://pypi.org/pypi/cffi/2.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "charset_normalizer-3.5.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "62b55f6722735a6c472f88361cde6640608773d9443cebdbb51abf436a1fcdd3",
+    "official_metadata_sha256": "d023a4c812bc4478f294dbb8b9c7e5699c62a98ed0516129c22982f983d47f95",
+    "source": "https://pypi.org/pypi/charset-normalizer/3.5.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "click-8.5.0-py3-none-any.whl",
+    "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+    "official_metadata_sha256": "4e36adc9b46f837e10ce801b7a478f9146fefdfb287292b7668fc64b1474e41d",
+    "source": "https://pypi.org/pypi/click/8.5.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "colorama-0.4.6-py2.py3-none-any.whl",
+    "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6",
+    "official_metadata_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+    "source": "https://pypi.org/pypi/colorama/0.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "cryptography-50.0.1-cp311-abi3-manylinux_2_34_x86_64.whl",
+    "sha256": "51afcfceb15597cf2635068e4ac9a56b2abde622edde17f37d85fd7b5306497a",
+    "official_metadata_sha256": "6173d893ced0fe6e155dcbc85531df981c7412d4bead511f8eeaad0e667f31c9",
+    "source": "https://pypi.org/pypi/cryptography/50.0.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "fastapi-0.141.1-py3-none-any.whl",
+    "sha256": "bfb91aa2d334c61cb35ba9a116fc123b3d3df31640b801cf57a7a78ec3f603b3",
+    "official_metadata_sha256": "823a0938363b641629afe5ab40b0c131edf48f600dc6e7182fd92c4783241cc4",
+    "source": "https://pypi.org/pypi/fastapi/0.141.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "greenlet-3.2.4-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "23768528f2911bcd7e475210822ffb5254ed10d71f4028387e5a99b4c6699671",
+    "official_metadata_sha256": "7da55d054f69e20c5b19c35d3374ed1240f1211add1e275989e348cbd88a44ce",
+    "source": "https://pypi.org/pypi/greenlet/3.2.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "h11-0.16.0-py3-none-any.whl",
+    "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+    "official_metadata_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+    "source": "https://pypi.org/pypi/h11/0.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "httpcore-1.0.9-py3-none-any.whl",
+    "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+    "official_metadata_sha256": "e26eca5c3d288fe9e6446af9bcbca1038ba688629d5c8a2886c47d74718d87a2",
+    "source": "https://pypi.org/pypi/httpcore/1.0.9/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "httpx-0.28.1-py3-none-any.whl",
+    "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+    "official_metadata_sha256": "293bfab7bf587fcd0825f1bd8eed8e6303285ba14801b15659853827cbe30796",
+    "source": "https://pypi.org/pypi/httpx/0.28.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "httpx_sse-0.4.3-py3-none-any.whl",
+    "sha256": "0ac1c9fe3c0afad2e0ebb25a934a59f4c7823b60792691f779fad2c5568830fc",
+    "official_metadata_sha256": "10290174877d76e44ac10aaa9ee06a591b140b99943bfde6c9ccf031527f1f59",
+    "source": "https://pypi.org/pypi/httpx-sse/0.4.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "idna-3.19-py3-none-any.whl",
+    "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+    "official_metadata_sha256": "cf4ff5d748a88fe6e9d75ffbcc19b946d304b334dd10baa21bd90fb5566dfa44",
+    "source": "https://pypi.org/pypi/idna/3.19/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "iniconfig-2.3.0-py3-none-any.whl",
+    "sha256": "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+    "official_metadata_sha256": "10a4699a386b2309a98d4c368b6696e80562cefebe20107610337447d7f13f65",
+    "source": "https://pypi.org/pypi/iniconfig/2.3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "jsonschema-4.26.0-py3-none-any.whl",
+    "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+    "official_metadata_sha256": "d0c9ccdfa30c3cdc57b048c2be21123dfb0c2f4d6bef2e8324dcb4eac985cfcf",
+    "source": "https://pypi.org/pypi/jsonschema/4.26.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+    "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+    "official_metadata_sha256": "91810d8f79384375ad0c0cf631e06903e2790b030d3fad2f1ad657b20ddd839e",
+    "source": "https://pypi.org/pypi/jsonschema-specifications/2025.9.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "mcp-1.29.0-py3-none-any.whl",
+    "sha256": "f5a075bb611f23d6f4d080c6a1699fa62772eebc562ba9e66b306ddde1c755f7",
+    "official_metadata_sha256": "abb94d32862a3500a0e77889960edb9f8f80303c87ec873a8974ab49acd2af99",
+    "source": "https://pypi.org/pypi/mcp/1.29.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "numpy-2.4.6-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "a7830bab239b79cda9c08c2da014761cafb48da6150e1da17ac06283f43b6089",
+    "official_metadata_sha256": "59a347f81abff9afe9053bbcc7b69a8b118dd896c5247b15396f1aac57dcf582",
+    "source": "https://pypi.org/pypi/numpy/2.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "packaging-26.3-py3-none-any.whl",
+    "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+    "official_metadata_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+    "source": "https://pypi.org/pypi/packaging/26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pandas-3.0.5-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "4b11c36e218331d0387cbe3a0a5f75162357a1d92d57b2b08a336ff94b19b2be",
+    "official_metadata_sha256": "370b1daf6c190e1143a4eb0340b87112e1d5c2a8984d9912f3e90f9429138a19",
+    "source": "https://pypi.org/pypi/pandas/3.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "playwright-1.55.0-py3-none-manylinux1_x86_64.whl",
+    "sha256": "c6d4d8f6f8c66c483b0835569c7f0caa03230820af8e500c181c93509c92d831",
+    "official_metadata_sha256": "e0c2c1dd90928a3aed07b4c082504544f41da4fa83e3c356e1493b6d0a26b5e2",
+    "source": "https://pypi.org/pypi/playwright/1.55.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pluggy-1.6.0-py3-none-any.whl",
+    "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+    "official_metadata_sha256": "597beede1e3bfb71dcf93f583c52f9b6ff64c7aca4c7cddcf365f0c6d5c0ade8",
+    "source": "https://pypi.org/pypi/pluggy/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pycparser-3.0-py3-none-any.whl",
+    "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+    "official_metadata_sha256": "13939b01403db93c94e8f9c5b0e3441c9cdccb4304e43ec6820031f7da71a793",
+    "source": "https://pypi.org/pypi/pycparser/3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pydantic-2.13.5-py3-none-any.whl",
+    "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
+    "official_metadata_sha256": "20a994795e3341324a7da30ae19b815669c2bf1722c5077089cfdc379215009d",
+    "source": "https://pypi.org/pypi/pydantic/2.13.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pydantic_settings-2.15.0-py3-none-any.whl",
+    "sha256": "0ba092c291c94baceb5eff768aa0d56400a457585bc0175925a5a5510303da42",
+    "official_metadata_sha256": "cb33d92bd4e7277c60e2a099dc1fcf85654000b634245a4b0af0e0872004d616",
+    "source": "https://pypi.org/pypi/pydantic-settings/2.15.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pydantic_core-2.46.5-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "sha256": "6f7b393a8b3da82f5c1fc0751e6d01ac6c55b93c18226a60bdfba4a724efafd1",
+    "official_metadata_sha256": "6cbd39a49f9c7e2dfc8b96f6955d9b9b275ba6f36cacab0e9a863937e99fd8ac",
+    "source": "https://pypi.org/pypi/pydantic_core/2.46.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pyee-13.0.0-py3-none-any.whl",
+    "sha256": "48195a3cddb3b1515ce0695ed76036b5ccc2ef3a9f963ff9f77aec0139845498",
+    "official_metadata_sha256": "f00185f83b155915aef7ebd943ada657afa516ecf0233e8f256b8acce649724d",
+    "source": "https://pypi.org/pypi/pyee/13.0.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pytest-9.1.1-py3-none-any.whl",
+    "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+    "official_metadata_sha256": "8ed48304ba7fd0ae974a041f117487b499d553b40e5ce55a9ece677e946f68dd",
+    "source": "https://pypi.org/pypi/pytest/9.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "pytest_mock-3.15.1-py3-none-any.whl",
+    "sha256": "0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d",
+    "official_metadata_sha256": "e2c2ff5331e9f5776ceb53c7d6cf8fd93fefdef912598b82210ad782672f94e3",
+    "source": "https://pypi.org/pypi/pytest-mock/3.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+    "official_metadata_sha256": "f3a0d4d44ef5e71ff77e4dd013b39b1d1bd173fb04f8b0aecc83e5502c44d858",
+    "source": "https://pypi.org/pypi/python-dateutil/2.9.0.post0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "python_dotenv-1.2.3-py3-none-any.whl",
+    "sha256": "904552145e8bfed22162c09dab1c2b9b54fefa7b23ba780f4f26ca0316b0f0d9",
+    "official_metadata_sha256": "5bbd730075bcfd67860e03d3bf67e844824e1b6e3df94c9b39c6556cff2ae193",
+    "source": "https://pypi.org/pypi/python-dotenv/1.2.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "python_multipart-0.0.32-py3-none-any.whl",
+    "sha256": "ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23",
+    "official_metadata_sha256": "f94ae178a5196b01730490f0b3b10b2ad32bf92aa2fba5c3f7ffd6b5235c9697",
+    "source": "https://pypi.org/pypi/python-multipart/0.0.32/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "referencing-0.37.0-py3-none-any.whl",
+    "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+    "official_metadata_sha256": "a67968d8e03aa45e650fc2ff0d07796676db1a7841ce8e810bf2dba5af689464",
+    "source": "https://pypi.org/pypi/referencing/0.37.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "requests-2.34.2-py3-none-any.whl",
+    "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0",
+    "official_metadata_sha256": "8622e50ffd295ed759ec793f2a009172a4ed0204bbc5e948de23111bc3d2aeae",
+    "source": "https://pypi.org/pypi/requests/2.34.2/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "responses-0.26.3-py3-none-any.whl",
+    "sha256": "74474f799334ac4f37d93b6437ecc3bb1bb5c77a8d31780a338643be2dce0af8",
+    "official_metadata_sha256": "de8d3052cd4898d9d2a0c284801f858a40d323f480e479fea7776c7e4a6be39a",
+    "source": "https://pypi.org/pypi/responses/0.26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "rpds_py-2026.6.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "sha256": "acac386b453c2516111b50985d60ce46e7fadb5ea71ae7b25f4c946935bf27cf",
+    "official_metadata_sha256": "c791bb0eaf9f18668ca978bd500d8dd8e25cdf692cf5bc92229d1c2854e8d852",
+    "source": "https://pypi.org/pypi/rpds-py/2026.6.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "six-1.17.0-py2.py3-none-any.whl",
+    "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "official_metadata_sha256": "d8de39dd52b73048d81a8fd78022ee2bc72f8b568bcf0d88e5d5069c302b1208",
+    "source": "https://pypi.org/pypi/six/1.17.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "sse_starlette-3.4.11-py3-none-any.whl",
+    "sha256": "c7b2244bdff016fe7f64e10075e89a3e6bbf899649cc89b0fe884b5545042453",
+    "official_metadata_sha256": "37b5ccfb0af5955e95639daafd4836164c4ed833d4c64e4f6ca686bbde108918",
+    "source": "https://pypi.org/pypi/sse-starlette/3.4.11/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "starlette-1.6.0-py3-none-any.whl",
+    "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+    "official_metadata_sha256": "f203a72cee50be4cc71d4fe8496b40c26d9a2f6fbde42b41d5a524d4b2c28940",
+    "source": "https://pypi.org/pypi/starlette/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "typing_inspection-0.4.4-py3-none-any.whl",
+    "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+    "official_metadata_sha256": "0605416f2f37f2df04e45360cf5ce4ca5eeca6d414bb6ddb1ec5a9893c62ac30",
+    "source": "https://pypi.org/pypi/typing-inspection/0.4.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "typing_extensions-4.16.0-py3-none-any.whl",
+    "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+    "official_metadata_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+    "source": "https://pypi.org/pypi/typing_extensions/4.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "tzdata-2026.3-py2.py3-none-any.whl",
+    "sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+    "official_metadata_sha256": "b8f42880d2cf78c536e066955964b94ce4d7d4c1b3ddfcfd190e8466ccafcedc",
+    "source": "https://pypi.org/pypi/tzdata/2026.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "urllib3-2.7.0-py3-none-any.whl",
+    "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897",
+    "official_metadata_sha256": "54db1e362e04e390c23c2182dd425a6b3f0c1a73c5bd3f3e40611c3590c7a43a",
+    "source": "https://pypi.org/pypi/urllib3/2.7.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "browser-linux",
+    "artifact": "uvicorn-0.52.4-py3-none-any.whl",
+    "sha256": "f86e41a149d7d05a9969337e3946a9c171c06a5d42680896daaba624aeac8da1",
+    "official_metadata_sha256": "388277206a6109a16d420abb58b287fc9f67d0e48022920474f89592ba826f20",
+    "source": "https://pypi.org/pypi/uvicorn/0.52.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pyjwt-2.13.0-py3-none-any.whl",
+    "sha256": "66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728",
+    "official_metadata_sha256": "5e003431d4acafcf7df206ffaefacc8a7630ce85f3f9461ccf544023b6432e69",
+    "source": "https://pypi.org/pypi/PyJWT/2.13.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "0f29edc409a6392443abf94b9cf89ce99889a1dd5376d94316ae5145dfedd5d6",
+    "official_metadata_sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def",
+    "source": "https://pypi.org/pypi/PyYAML/6.0.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pygments-2.21.0-py3-none-any.whl",
+    "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "official_metadata_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+    "source": "https://pypi.org/pypi/Pygments/2.21.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "annotated_doc-0.0.5-py3-none-any.whl",
+    "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+    "official_metadata_sha256": "1aab691a5f37dd292e6d93ab53f7da5d839f56ba605345f017022ec75eb643af",
+    "source": "https://pypi.org/pypi/annotated-doc/0.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "annotated_types-0.8.0-py3-none-any.whl",
+    "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+    "official_metadata_sha256": "a6e8e5b10c8fd2f596bba53e015cd37f6279fb5cec26ce0c5e9968625be4fefa",
+    "source": "https://pypi.org/pypi/annotated-types/0.8.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "anyio-4.15.1-py3-none-any.whl",
+    "sha256": "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+    "official_metadata_sha256": "e2ee22fad2fab3e66be503cba9b41945607d3076c9b7aa49b6e2f95ac323efab",
+    "source": "https://pypi.org/pypi/anyio/4.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "attrs-26.1.0-py3-none-any.whl",
+    "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+    "official_metadata_sha256": "a882bf941fb4a0bb748d0194df544121cc130f5fb15a710ab6b804c17d2899b7",
+    "source": "https://pypi.org/pypi/attrs/26.1.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "certifi-2026.7.22-py3-none-any.whl",
+    "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+    "official_metadata_sha256": "c65938c867536616d6755e3b1fded46639e940ea2b2ce6e792aaa6fe64fc55f5",
+    "source": "https://pypi.org/pypi/certifi/2026.7.22/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "cffi-2.1.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+    "sha256": "a931079504ecc49efed7744c476a5c343a92fabf66dec2db95edb1b2fdc770e2",
+    "official_metadata_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+    "source": "https://pypi.org/pypi/cffi/2.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "charset_normalizer-3.5.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "62b55f6722735a6c472f88361cde6640608773d9443cebdbb51abf436a1fcdd3",
+    "official_metadata_sha256": "d023a4c812bc4478f294dbb8b9c7e5699c62a98ed0516129c22982f983d47f95",
+    "source": "https://pypi.org/pypi/charset-normalizer/3.5.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "click-8.5.0-py3-none-any.whl",
+    "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+    "official_metadata_sha256": "4e36adc9b46f837e10ce801b7a478f9146fefdfb287292b7668fc64b1474e41d",
+    "source": "https://pypi.org/pypi/click/8.5.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "colorama-0.4.6-py2.py3-none-any.whl",
+    "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6",
+    "official_metadata_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+    "source": "https://pypi.org/pypi/colorama/0.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "cryptography-50.0.1-cp311-abi3-manylinux_2_34_x86_64.whl",
+    "sha256": "51afcfceb15597cf2635068e4ac9a56b2abde622edde17f37d85fd7b5306497a",
+    "official_metadata_sha256": "6173d893ced0fe6e155dcbc85531df981c7412d4bead511f8eeaad0e667f31c9",
+    "source": "https://pypi.org/pypi/cryptography/50.0.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "fastapi-0.141.1-py3-none-any.whl",
+    "sha256": "bfb91aa2d334c61cb35ba9a116fc123b3d3df31640b801cf57a7a78ec3f603b3",
+    "official_metadata_sha256": "823a0938363b641629afe5ab40b0c131edf48f600dc6e7182fd92c4783241cc4",
+    "source": "https://pypi.org/pypi/fastapi/0.141.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "h11-0.16.0-py3-none-any.whl",
+    "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+    "official_metadata_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+    "source": "https://pypi.org/pypi/h11/0.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "httpcore-1.0.9-py3-none-any.whl",
+    "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+    "official_metadata_sha256": "e26eca5c3d288fe9e6446af9bcbca1038ba688629d5c8a2886c47d74718d87a2",
+    "source": "https://pypi.org/pypi/httpcore/1.0.9/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "httpx-0.28.1-py3-none-any.whl",
+    "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+    "official_metadata_sha256": "293bfab7bf587fcd0825f1bd8eed8e6303285ba14801b15659853827cbe30796",
+    "source": "https://pypi.org/pypi/httpx/0.28.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "httpx_sse-0.4.3-py3-none-any.whl",
+    "sha256": "0ac1c9fe3c0afad2e0ebb25a934a59f4c7823b60792691f779fad2c5568830fc",
+    "official_metadata_sha256": "10290174877d76e44ac10aaa9ee06a591b140b99943bfde6c9ccf031527f1f59",
+    "source": "https://pypi.org/pypi/httpx-sse/0.4.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "idna-3.19-py3-none-any.whl",
+    "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+    "official_metadata_sha256": "cf4ff5d748a88fe6e9d75ffbcc19b946d304b334dd10baa21bd90fb5566dfa44",
+    "source": "https://pypi.org/pypi/idna/3.19/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "iniconfig-2.3.0-py3-none-any.whl",
+    "sha256": "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+    "official_metadata_sha256": "10a4699a386b2309a98d4c368b6696e80562cefebe20107610337447d7f13f65",
+    "source": "https://pypi.org/pypi/iniconfig/2.3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "jsonschema-4.26.0-py3-none-any.whl",
+    "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+    "official_metadata_sha256": "d0c9ccdfa30c3cdc57b048c2be21123dfb0c2f4d6bef2e8324dcb4eac985cfcf",
+    "source": "https://pypi.org/pypi/jsonschema/4.26.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+    "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+    "official_metadata_sha256": "91810d8f79384375ad0c0cf631e06903e2790b030d3fad2f1ad657b20ddd839e",
+    "source": "https://pypi.org/pypi/jsonschema-specifications/2025.9.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "mcp-1.29.0-py3-none-any.whl",
+    "sha256": "f5a075bb611f23d6f4d080c6a1699fa62772eebc562ba9e66b306ddde1c755f7",
+    "official_metadata_sha256": "abb94d32862a3500a0e77889960edb9f8f80303c87ec873a8974ab49acd2af99",
+    "source": "https://pypi.org/pypi/mcp/1.29.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "numpy-2.4.6-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "a7830bab239b79cda9c08c2da014761cafb48da6150e1da17ac06283f43b6089",
+    "official_metadata_sha256": "59a347f81abff9afe9053bbcc7b69a8b118dd896c5247b15396f1aac57dcf582",
+    "source": "https://pypi.org/pypi/numpy/2.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "packaging-26.3-py3-none-any.whl",
+    "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+    "official_metadata_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+    "source": "https://pypi.org/pypi/packaging/26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pandas-3.0.5-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "4b11c36e218331d0387cbe3a0a5f75162357a1d92d57b2b08a336ff94b19b2be",
+    "official_metadata_sha256": "370b1daf6c190e1143a4eb0340b87112e1d5c2a8984d9912f3e90f9429138a19",
+    "source": "https://pypi.org/pypi/pandas/3.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pluggy-1.6.0-py3-none-any.whl",
+    "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+    "official_metadata_sha256": "597beede1e3bfb71dcf93f583c52f9b6ff64c7aca4c7cddcf365f0c6d5c0ade8",
+    "source": "https://pypi.org/pypi/pluggy/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pycparser-3.0-py3-none-any.whl",
+    "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+    "official_metadata_sha256": "13939b01403db93c94e8f9c5b0e3441c9cdccb4304e43ec6820031f7da71a793",
+    "source": "https://pypi.org/pypi/pycparser/3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pydantic-2.13.5-py3-none-any.whl",
+    "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
+    "official_metadata_sha256": "20a994795e3341324a7da30ae19b815669c2bf1722c5077089cfdc379215009d",
+    "source": "https://pypi.org/pypi/pydantic/2.13.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pydantic_settings-2.15.0-py3-none-any.whl",
+    "sha256": "0ba092c291c94baceb5eff768aa0d56400a457585bc0175925a5a5510303da42",
+    "official_metadata_sha256": "cb33d92bd4e7277c60e2a099dc1fcf85654000b634245a4b0af0e0872004d616",
+    "source": "https://pypi.org/pypi/pydantic-settings/2.15.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pydantic_core-2.46.5-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "sha256": "6f7b393a8b3da82f5c1fc0751e6d01ac6c55b93c18226a60bdfba4a724efafd1",
+    "official_metadata_sha256": "6cbd39a49f9c7e2dfc8b96f6955d9b9b275ba6f36cacab0e9a863937e99fd8ac",
+    "source": "https://pypi.org/pypi/pydantic_core/2.46.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pytest-9.1.1-py3-none-any.whl",
+    "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+    "official_metadata_sha256": "8ed48304ba7fd0ae974a041f117487b499d553b40e5ce55a9ece677e946f68dd",
+    "source": "https://pypi.org/pypi/pytest/9.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "pytest_mock-3.15.1-py3-none-any.whl",
+    "sha256": "0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d",
+    "official_metadata_sha256": "e2c2ff5331e9f5776ceb53c7d6cf8fd93fefdef912598b82210ad782672f94e3",
+    "source": "https://pypi.org/pypi/pytest-mock/3.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+    "official_metadata_sha256": "f3a0d4d44ef5e71ff77e4dd013b39b1d1bd173fb04f8b0aecc83e5502c44d858",
+    "source": "https://pypi.org/pypi/python-dateutil/2.9.0.post0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "python_dotenv-1.2.3-py3-none-any.whl",
+    "sha256": "904552145e8bfed22162c09dab1c2b9b54fefa7b23ba780f4f26ca0316b0f0d9",
+    "official_metadata_sha256": "5bbd730075bcfd67860e03d3bf67e844824e1b6e3df94c9b39c6556cff2ae193",
+    "source": "https://pypi.org/pypi/python-dotenv/1.2.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "python_multipart-0.0.32-py3-none-any.whl",
+    "sha256": "ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23",
+    "official_metadata_sha256": "f94ae178a5196b01730490f0b3b10b2ad32bf92aa2fba5c3f7ffd6b5235c9697",
+    "source": "https://pypi.org/pypi/python-multipart/0.0.32/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "referencing-0.37.0-py3-none-any.whl",
+    "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+    "official_metadata_sha256": "a67968d8e03aa45e650fc2ff0d07796676db1a7841ce8e810bf2dba5af689464",
+    "source": "https://pypi.org/pypi/referencing/0.37.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "requests-2.34.2-py3-none-any.whl",
+    "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0",
+    "official_metadata_sha256": "8622e50ffd295ed759ec793f2a009172a4ed0204bbc5e948de23111bc3d2aeae",
+    "source": "https://pypi.org/pypi/requests/2.34.2/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "responses-0.26.3-py3-none-any.whl",
+    "sha256": "74474f799334ac4f37d93b6437ecc3bb1bb5c77a8d31780a338643be2dce0af8",
+    "official_metadata_sha256": "de8d3052cd4898d9d2a0c284801f858a40d323f480e479fea7776c7e4a6be39a",
+    "source": "https://pypi.org/pypi/responses/0.26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "rpds_py-2026.6.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "sha256": "acac386b453c2516111b50985d60ce46e7fadb5ea71ae7b25f4c946935bf27cf",
+    "official_metadata_sha256": "c791bb0eaf9f18668ca978bd500d8dd8e25cdf692cf5bc92229d1c2854e8d852",
+    "source": "https://pypi.org/pypi/rpds-py/2026.6.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "six-1.17.0-py2.py3-none-any.whl",
+    "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "official_metadata_sha256": "d8de39dd52b73048d81a8fd78022ee2bc72f8b568bcf0d88e5d5069c302b1208",
+    "source": "https://pypi.org/pypi/six/1.17.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "sse_starlette-3.4.11-py3-none-any.whl",
+    "sha256": "c7b2244bdff016fe7f64e10075e89a3e6bbf899649cc89b0fe884b5545042453",
+    "official_metadata_sha256": "37b5ccfb0af5955e95639daafd4836164c4ed833d4c64e4f6ca686bbde108918",
+    "source": "https://pypi.org/pypi/sse-starlette/3.4.11/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "starlette-1.6.0-py3-none-any.whl",
+    "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+    "official_metadata_sha256": "f203a72cee50be4cc71d4fe8496b40c26d9a2f6fbde42b41d5a524d4b2c28940",
+    "source": "https://pypi.org/pypi/starlette/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "typing_inspection-0.4.4-py3-none-any.whl",
+    "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+    "official_metadata_sha256": "0605416f2f37f2df04e45360cf5ce4ca5eeca6d414bb6ddb1ec5a9893c62ac30",
+    "source": "https://pypi.org/pypi/typing-inspection/0.4.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "typing_extensions-4.16.0-py3-none-any.whl",
+    "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+    "official_metadata_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+    "source": "https://pypi.org/pypi/typing_extensions/4.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "tzdata-2026.3-py2.py3-none-any.whl",
+    "sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+    "official_metadata_sha256": "b8f42880d2cf78c536e066955964b94ce4d7d4c1b3ddfcfd190e8466ccafcedc",
+    "source": "https://pypi.org/pypi/tzdata/2026.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "urllib3-2.7.0-py3-none-any.whl",
+    "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897",
+    "official_metadata_sha256": "54db1e362e04e390c23c2182dd425a6b3f0c1a73c5bd3f3e40611c3590c7a43a",
+    "source": "https://pypi.org/pypi/urllib3/2.7.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "ci-linux",
+    "artifact": "uvicorn-0.52.4-py3-none-any.whl",
+    "sha256": "f86e41a149d7d05a9969337e3946a9c171c06a5d42680896daaba624aeac8da1",
+    "official_metadata_sha256": "388277206a6109a16d420abb58b287fc9f67d0e48022920474f89592ba826f20",
+    "source": "https://pypi.org/pypi/uvicorn/0.52.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pyjwt-2.13.0-py3-none-any.whl",
+    "sha256": "66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728",
+    "official_metadata_sha256": "5e003431d4acafcf7df206ffaefacc8a7630ce85f3f9461ccf544023b6432e69",
+    "source": "https://pypi.org/pypi/PyJWT/2.13.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pyyaml-6.0.3-cp311-cp311-win_amd64.whl",
+    "sha256": "9f3bfb4965eb874431221a3ff3fdcddc7e74e3b07799e0e84ca4a0f867d449bf",
+    "official_metadata_sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def",
+    "source": "https://pypi.org/pypi/PyYAML/6.0.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pygments-2.21.0-py3-none-any.whl",
+    "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "official_metadata_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+    "source": "https://pypi.org/pypi/Pygments/2.21.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "annotated_doc-0.0.5-py3-none-any.whl",
+    "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+    "official_metadata_sha256": "1aab691a5f37dd292e6d93ab53f7da5d839f56ba605345f017022ec75eb643af",
+    "source": "https://pypi.org/pypi/annotated-doc/0.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "annotated_types-0.8.0-py3-none-any.whl",
+    "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+    "official_metadata_sha256": "a6e8e5b10c8fd2f596bba53e015cd37f6279fb5cec26ce0c5e9968625be4fefa",
+    "source": "https://pypi.org/pypi/annotated-types/0.8.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "anyio-4.15.1-py3-none-any.whl",
+    "sha256": "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+    "official_metadata_sha256": "e2ee22fad2fab3e66be503cba9b41945607d3076c9b7aa49b6e2f95ac323efab",
+    "source": "https://pypi.org/pypi/anyio/4.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "attrs-26.1.0-py3-none-any.whl",
+    "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+    "official_metadata_sha256": "a882bf941fb4a0bb748d0194df544121cc130f5fb15a710ab6b804c17d2899b7",
+    "source": "https://pypi.org/pypi/attrs/26.1.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "certifi-2026.7.22-py3-none-any.whl",
+    "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+    "official_metadata_sha256": "c65938c867536616d6755e3b1fded46639e940ea2b2ce6e792aaa6fe64fc55f5",
+    "source": "https://pypi.org/pypi/certifi/2026.7.22/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "cffi-2.1.1-cp311-cp311-win_amd64.whl",
+    "sha256": "42f6930c31dc7f50732c9ae793c2786c7b6b044195967bbdde40bb9be81c4cc0",
+    "official_metadata_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+    "source": "https://pypi.org/pypi/cffi/2.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "charset_normalizer-3.5.1-cp311-cp311-win_amd64.whl",
+    "sha256": "f9b1e28d0e8dbfa858abdba91d6b547beaf2df1a59bec6da6faae7b96a4991a9",
+    "official_metadata_sha256": "d023a4c812bc4478f294dbb8b9c7e5699c62a98ed0516129c22982f983d47f95",
+    "source": "https://pypi.org/pypi/charset-normalizer/3.5.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "click-8.5.0-py3-none-any.whl",
+    "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+    "official_metadata_sha256": "4e36adc9b46f837e10ce801b7a478f9146fefdfb287292b7668fc64b1474e41d",
+    "source": "https://pypi.org/pypi/click/8.5.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "colorama-0.4.6-py2.py3-none-any.whl",
+    "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6",
+    "official_metadata_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+    "source": "https://pypi.org/pypi/colorama/0.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "cryptography-50.0.1-cp311-abi3-win_amd64.whl",
+    "sha256": "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648",
+    "official_metadata_sha256": "6173d893ced0fe6e155dcbc85531df981c7412d4bead511f8eeaad0e667f31c9",
+    "source": "https://pypi.org/pypi/cryptography/50.0.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "fastapi-0.141.1-py3-none-any.whl",
+    "sha256": "bfb91aa2d334c61cb35ba9a116fc123b3d3df31640b801cf57a7a78ec3f603b3",
+    "official_metadata_sha256": "823a0938363b641629afe5ab40b0c131edf48f600dc6e7182fd92c4783241cc4",
+    "source": "https://pypi.org/pypi/fastapi/0.141.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "h11-0.16.0-py3-none-any.whl",
+    "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+    "official_metadata_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+    "source": "https://pypi.org/pypi/h11/0.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "httpcore-1.0.9-py3-none-any.whl",
+    "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+    "official_metadata_sha256": "e26eca5c3d288fe9e6446af9bcbca1038ba688629d5c8a2886c47d74718d87a2",
+    "source": "https://pypi.org/pypi/httpcore/1.0.9/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "httpx-0.28.1-py3-none-any.whl",
+    "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+    "official_metadata_sha256": "293bfab7bf587fcd0825f1bd8eed8e6303285ba14801b15659853827cbe30796",
+    "source": "https://pypi.org/pypi/httpx/0.28.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "httpx_sse-0.4.3-py3-none-any.whl",
+    "sha256": "0ac1c9fe3c0afad2e0ebb25a934a59f4c7823b60792691f779fad2c5568830fc",
+    "official_metadata_sha256": "10290174877d76e44ac10aaa9ee06a591b140b99943bfde6c9ccf031527f1f59",
+    "source": "https://pypi.org/pypi/httpx-sse/0.4.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "idna-3.19-py3-none-any.whl",
+    "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+    "official_metadata_sha256": "cf4ff5d748a88fe6e9d75ffbcc19b946d304b334dd10baa21bd90fb5566dfa44",
+    "source": "https://pypi.org/pypi/idna/3.19/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "iniconfig-2.3.0-py3-none-any.whl",
+    "sha256": "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+    "official_metadata_sha256": "10a4699a386b2309a98d4c368b6696e80562cefebe20107610337447d7f13f65",
+    "source": "https://pypi.org/pypi/iniconfig/2.3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "jsonschema-4.26.0-py3-none-any.whl",
+    "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+    "official_metadata_sha256": "d0c9ccdfa30c3cdc57b048c2be21123dfb0c2f4d6bef2e8324dcb4eac985cfcf",
+    "source": "https://pypi.org/pypi/jsonschema/4.26.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+    "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+    "official_metadata_sha256": "91810d8f79384375ad0c0cf631e06903e2790b030d3fad2f1ad657b20ddd839e",
+    "source": "https://pypi.org/pypi/jsonschema-specifications/2025.9.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "mcp-1.29.0-py3-none-any.whl",
+    "sha256": "f5a075bb611f23d6f4d080c6a1699fa62772eebc562ba9e66b306ddde1c755f7",
+    "official_metadata_sha256": "abb94d32862a3500a0e77889960edb9f8f80303c87ec873a8974ab49acd2af99",
+    "source": "https://pypi.org/pypi/mcp/1.29.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "numpy-2.4.6-cp311-cp311-win_amd64.whl",
+    "sha256": "1e254a00cdf42b1e4d5b3d68d33af63268d41340d8885df2ab6470f2e1500147",
+    "official_metadata_sha256": "59a347f81abff9afe9053bbcc7b69a8b118dd896c5247b15396f1aac57dcf582",
+    "source": "https://pypi.org/pypi/numpy/2.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "packaging-26.3-py3-none-any.whl",
+    "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+    "official_metadata_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+    "source": "https://pypi.org/pypi/packaging/26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pandas-3.0.5-cp311-cp311-win_amd64.whl",
+    "sha256": "b1261758dfb6cf12c3cff8300e21cefad30e7ec709abb4c24ac7318e6a52462a",
+    "official_metadata_sha256": "370b1daf6c190e1143a4eb0340b87112e1d5c2a8984d9912f3e90f9429138a19",
+    "source": "https://pypi.org/pypi/pandas/3.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pluggy-1.6.0-py3-none-any.whl",
+    "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+    "official_metadata_sha256": "597beede1e3bfb71dcf93f583c52f9b6ff64c7aca4c7cddcf365f0c6d5c0ade8",
+    "source": "https://pypi.org/pypi/pluggy/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pycparser-3.0-py3-none-any.whl",
+    "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+    "official_metadata_sha256": "13939b01403db93c94e8f9c5b0e3441c9cdccb4304e43ec6820031f7da71a793",
+    "source": "https://pypi.org/pypi/pycparser/3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pydantic-2.13.5-py3-none-any.whl",
+    "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
+    "official_metadata_sha256": "20a994795e3341324a7da30ae19b815669c2bf1722c5077089cfdc379215009d",
+    "source": "https://pypi.org/pypi/pydantic/2.13.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pydantic_settings-2.15.0-py3-none-any.whl",
+    "sha256": "0ba092c291c94baceb5eff768aa0d56400a457585bc0175925a5a5510303da42",
+    "official_metadata_sha256": "cb33d92bd4e7277c60e2a099dc1fcf85654000b634245a4b0af0e0872004d616",
+    "source": "https://pypi.org/pypi/pydantic-settings/2.15.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pydantic_core-2.46.5-cp311-cp311-win_amd64.whl",
+    "sha256": "40375c2d05acec10323e45dfe2077ac44bc74659008614af5069034e2cfc781c",
+    "official_metadata_sha256": "6cbd39a49f9c7e2dfc8b96f6955d9b9b275ba6f36cacab0e9a863937e99fd8ac",
+    "source": "https://pypi.org/pypi/pydantic_core/2.46.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pytest-9.1.1-py3-none-any.whl",
+    "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+    "official_metadata_sha256": "8ed48304ba7fd0ae974a041f117487b499d553b40e5ce55a9ece677e946f68dd",
+    "source": "https://pypi.org/pypi/pytest/9.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pytest_mock-3.15.1-py3-none-any.whl",
+    "sha256": "0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d",
+    "official_metadata_sha256": "e2c2ff5331e9f5776ceb53c7d6cf8fd93fefdef912598b82210ad782672f94e3",
+    "source": "https://pypi.org/pypi/pytest-mock/3.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+    "official_metadata_sha256": "f3a0d4d44ef5e71ff77e4dd013b39b1d1bd173fb04f8b0aecc83e5502c44d858",
+    "source": "https://pypi.org/pypi/python-dateutil/2.9.0.post0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "python_dotenv-1.2.3-py3-none-any.whl",
+    "sha256": "904552145e8bfed22162c09dab1c2b9b54fefa7b23ba780f4f26ca0316b0f0d9",
+    "official_metadata_sha256": "5bbd730075bcfd67860e03d3bf67e844824e1b6e3df94c9b39c6556cff2ae193",
+    "source": "https://pypi.org/pypi/python-dotenv/1.2.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "python_multipart-0.0.32-py3-none-any.whl",
+    "sha256": "ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23",
+    "official_metadata_sha256": "f94ae178a5196b01730490f0b3b10b2ad32bf92aa2fba5c3f7ffd6b5235c9697",
+    "source": "https://pypi.org/pypi/python-multipart/0.0.32/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "pywin32-312-cp311-cp311-win_amd64.whl",
+    "sha256": "d11417d84412f859b722fad0841b3614459ed0047f7542d8362e77884f6b6e8a",
+    "official_metadata_sha256": "f142c39d2740c13a932c795fb7f47af150185dbf6713cefa93ee5bd1e030d31f",
+    "source": "https://pypi.org/pypi/pywin32/312/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "referencing-0.37.0-py3-none-any.whl",
+    "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+    "official_metadata_sha256": "a67968d8e03aa45e650fc2ff0d07796676db1a7841ce8e810bf2dba5af689464",
+    "source": "https://pypi.org/pypi/referencing/0.37.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "requests-2.34.2-py3-none-any.whl",
+    "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0",
+    "official_metadata_sha256": "8622e50ffd295ed759ec793f2a009172a4ed0204bbc5e948de23111bc3d2aeae",
+    "source": "https://pypi.org/pypi/requests/2.34.2/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "responses-0.26.3-py3-none-any.whl",
+    "sha256": "74474f799334ac4f37d93b6437ecc3bb1bb5c77a8d31780a338643be2dce0af8",
+    "official_metadata_sha256": "de8d3052cd4898d9d2a0c284801f858a40d323f480e479fea7776c7e4a6be39a",
+    "source": "https://pypi.org/pypi/responses/0.26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "rpds_py-2026.6.3-cp311-cp311-win_amd64.whl",
+    "sha256": "2c54a076ca4d370980ab57bc0e31df57bbe8d41340436a90ef8b1219a3cbb127",
+    "official_metadata_sha256": "c791bb0eaf9f18668ca978bd500d8dd8e25cdf692cf5bc92229d1c2854e8d852",
+    "source": "https://pypi.org/pypi/rpds-py/2026.6.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "six-1.17.0-py2.py3-none-any.whl",
+    "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "official_metadata_sha256": "d8de39dd52b73048d81a8fd78022ee2bc72f8b568bcf0d88e5d5069c302b1208",
+    "source": "https://pypi.org/pypi/six/1.17.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "sse_starlette-3.4.11-py3-none-any.whl",
+    "sha256": "c7b2244bdff016fe7f64e10075e89a3e6bbf899649cc89b0fe884b5545042453",
+    "official_metadata_sha256": "37b5ccfb0af5955e95639daafd4836164c4ed833d4c64e4f6ca686bbde108918",
+    "source": "https://pypi.org/pypi/sse-starlette/3.4.11/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "starlette-1.6.0-py3-none-any.whl",
+    "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+    "official_metadata_sha256": "f203a72cee50be4cc71d4fe8496b40c26d9a2f6fbde42b41d5a524d4b2c28940",
+    "source": "https://pypi.org/pypi/starlette/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "typing_inspection-0.4.4-py3-none-any.whl",
+    "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+    "official_metadata_sha256": "0605416f2f37f2df04e45360cf5ce4ca5eeca6d414bb6ddb1ec5a9893c62ac30",
+    "source": "https://pypi.org/pypi/typing-inspection/0.4.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "typing_extensions-4.16.0-py3-none-any.whl",
+    "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+    "official_metadata_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+    "source": "https://pypi.org/pypi/typing_extensions/4.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "tzdata-2026.3-py2.py3-none-any.whl",
+    "sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+    "official_metadata_sha256": "b8f42880d2cf78c536e066955964b94ce4d7d4c1b3ddfcfd190e8466ccafcedc",
+    "source": "https://pypi.org/pypi/tzdata/2026.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "urllib3-2.7.0-py3-none-any.whl",
+    "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897",
+    "official_metadata_sha256": "54db1e362e04e390c23c2182dd425a6b3f0c1a73c5bd3f3e40611c3590c7a43a",
+    "source": "https://pypi.org/pypi/urllib3/2.7.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "developer-py311-windows",
+    "artifact": "uvicorn-0.52.4-py3-none-any.whl",
+    "sha256": "f86e41a149d7d05a9969337e3946a9c171c06a5d42680896daaba624aeac8da1",
+    "official_metadata_sha256": "388277206a6109a16d420abb58b287fc9f67d0e48022920474f89592ba826f20",
+    "source": "https://pypi.org/pypi/uvicorn/0.52.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "annotated_doc-0.0.5-py3-none-any.whl",
+    "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+    "official_metadata_sha256": "1aab691a5f37dd292e6d93ab53f7da5d839f56ba605345f017022ec75eb643af",
+    "source": "https://pypi.org/pypi/annotated-doc/0.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "annotated_types-0.8.0-py3-none-any.whl",
+    "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+    "official_metadata_sha256": "a6e8e5b10c8fd2f596bba53e015cd37f6279fb5cec26ce0c5e9968625be4fefa",
+    "source": "https://pypi.org/pypi/annotated-types/0.8.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "anyio-4.15.1-py3-none-any.whl",
+    "sha256": "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+    "official_metadata_sha256": "e2ee22fad2fab3e66be503cba9b41945607d3076c9b7aa49b6e2f95ac323efab",
+    "source": "https://pypi.org/pypi/anyio/4.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "attrs-26.1.0-py3-none-any.whl",
+    "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+    "official_metadata_sha256": "a882bf941fb4a0bb748d0194df544121cc130f5fb15a710ab6b804c17d2899b7",
+    "source": "https://pypi.org/pypi/attrs/26.1.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "certifi-2026.7.22-py3-none-any.whl",
+    "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+    "official_metadata_sha256": "c65938c867536616d6755e3b1fded46639e940ea2b2ce6e792aaa6fe64fc55f5",
+    "source": "https://pypi.org/pypi/certifi/2026.7.22/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "cffi-2.1.1-cp313-cp313-musllinux_1_2_x86_64.whl",
+    "sha256": "e0bcb7e0f677f543555d2adff3bf19c05f66cdb4796e5ff602442ab2fe3c4ef7",
+    "official_metadata_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+    "source": "https://pypi.org/pypi/cffi/2.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "charset_normalizer-3.5.1-cp313-cp313-musllinux_1_2_x86_64.whl",
+    "sha256": "fd0350afdc3aabd5576f60ea109228bd5538139713c7b094c5cd27c73a98bc6f",
+    "official_metadata_sha256": "d023a4c812bc4478f294dbb8b9c7e5699c62a98ed0516129c22982f983d47f95",
+    "source": "https://pypi.org/pypi/charset-normalizer/3.5.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "click-8.5.0-py3-none-any.whl",
+    "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+    "official_metadata_sha256": "4e36adc9b46f837e10ce801b7a478f9146fefdfb287292b7668fc64b1474e41d",
+    "source": "https://pypi.org/pypi/click/8.5.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "colorama-0.4.6-py2.py3-none-any.whl",
+    "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6",
+    "official_metadata_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+    "source": "https://pypi.org/pypi/colorama/0.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "cryptography-50.0.1-cp311-abi3-musllinux_1_2_x86_64.whl",
+    "sha256": "9ebcdd5519be9b652a46f507817a74591774fc3d6923ac364e4dfa64e36b291b",
+    "official_metadata_sha256": "6173d893ced0fe6e155dcbc85531df981c7412d4bead511f8eeaad0e667f31c9",
+    "source": "https://pypi.org/pypi/cryptography/50.0.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "fastapi-0.141.1-py3-none-any.whl",
+    "sha256": "bfb91aa2d334c61cb35ba9a116fc123b3d3df31640b801cf57a7a78ec3f603b3",
+    "official_metadata_sha256": "823a0938363b641629afe5ab40b0c131edf48f600dc6e7182fd92c4783241cc4",
+    "source": "https://pypi.org/pypi/fastapi/0.141.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "h11-0.16.0-py3-none-any.whl",
+    "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+    "official_metadata_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+    "source": "https://pypi.org/pypi/h11/0.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "httpcore-1.0.9-py3-none-any.whl",
+    "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+    "official_metadata_sha256": "e26eca5c3d288fe9e6446af9bcbca1038ba688629d5c8a2886c47d74718d87a2",
+    "source": "https://pypi.org/pypi/httpcore/1.0.9/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "httpx-0.28.1-py3-none-any.whl",
+    "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+    "official_metadata_sha256": "293bfab7bf587fcd0825f1bd8eed8e6303285ba14801b15659853827cbe30796",
+    "source": "https://pypi.org/pypi/httpx/0.28.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "httpx_sse-0.4.3-py3-none-any.whl",
+    "sha256": "0ac1c9fe3c0afad2e0ebb25a934a59f4c7823b60792691f779fad2c5568830fc",
+    "official_metadata_sha256": "10290174877d76e44ac10aaa9ee06a591b140b99943bfde6c9ccf031527f1f59",
+    "source": "https://pypi.org/pypi/httpx-sse/0.4.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "idna-3.19-py3-none-any.whl",
+    "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+    "official_metadata_sha256": "cf4ff5d748a88fe6e9d75ffbcc19b946d304b334dd10baa21bd90fb5566dfa44",
+    "source": "https://pypi.org/pypi/idna/3.19/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "iniconfig-2.3.0-py3-none-any.whl",
+    "sha256": "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+    "official_metadata_sha256": "10a4699a386b2309a98d4c368b6696e80562cefebe20107610337447d7f13f65",
+    "source": "https://pypi.org/pypi/iniconfig/2.3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "jsonschema-4.26.0-py3-none-any.whl",
+    "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+    "official_metadata_sha256": "d0c9ccdfa30c3cdc57b048c2be21123dfb0c2f4d6bef2e8324dcb4eac985cfcf",
+    "source": "https://pypi.org/pypi/jsonschema/4.26.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+    "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+    "official_metadata_sha256": "91810d8f79384375ad0c0cf631e06903e2790b030d3fad2f1ad657b20ddd839e",
+    "source": "https://pypi.org/pypi/jsonschema-specifications/2025.9.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "mcp-1.29.0-py3-none-any.whl",
+    "sha256": "f5a075bb611f23d6f4d080c6a1699fa62772eebc562ba9e66b306ddde1c755f7",
+    "official_metadata_sha256": "abb94d32862a3500a0e77889960edb9f8f80303c87ec873a8974ab49acd2af99",
+    "source": "https://pypi.org/pypi/mcp/1.29.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "numpy-2.4.6-cp313-cp313-musllinux_1_2_x86_64.whl",
+    "sha256": "dfa20cc6ca228e6b155b11da03825975ce66aea520985dbbddf0f2a5a495c605",
+    "official_metadata_sha256": "59a347f81abff9afe9053bbcc7b69a8b118dd896c5247b15396f1aac57dcf582",
+    "source": "https://pypi.org/pypi/numpy/2.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "packaging-26.3-py3-none-any.whl",
+    "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+    "official_metadata_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+    "source": "https://pypi.org/pypi/packaging/26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pandas-3.0.5-cp313-cp313-musllinux_1_2_x86_64.whl",
+    "sha256": "db172144bb56422bd157812f3b021eacc255451470b31e2c633c349490a1cfee",
+    "official_metadata_sha256": "370b1daf6c190e1143a4eb0340b87112e1d5c2a8984d9912f3e90f9429138a19",
+    "source": "https://pypi.org/pypi/pandas/3.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pluggy-1.6.0-py3-none-any.whl",
+    "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+    "official_metadata_sha256": "597beede1e3bfb71dcf93f583c52f9b6ff64c7aca4c7cddcf365f0c6d5c0ade8",
+    "source": "https://pypi.org/pypi/pluggy/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pycparser-3.0-py3-none-any.whl",
+    "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+    "official_metadata_sha256": "13939b01403db93c94e8f9c5b0e3441c9cdccb4304e43ec6820031f7da71a793",
+    "source": "https://pypi.org/pypi/pycparser/3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pydantic-2.13.5-py3-none-any.whl",
+    "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
+    "official_metadata_sha256": "20a994795e3341324a7da30ae19b815669c2bf1722c5077089cfdc379215009d",
+    "source": "https://pypi.org/pypi/pydantic/2.13.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pydantic_core-2.46.5-cp313-cp313-musllinux_1_1_x86_64.whl",
+    "sha256": "9c4b71f10dd532fb7a5cbc8f58707779e64f03a258c2bf8bfbaecfcd9970b519",
+    "official_metadata_sha256": "6cbd39a49f9c7e2dfc8b96f6955d9b9b275ba6f36cacab0e9a863937e99fd8ac",
+    "source": "https://pypi.org/pypi/pydantic_core/2.46.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pydantic_settings-2.15.0-py3-none-any.whl",
+    "sha256": "0ba092c291c94baceb5eff768aa0d56400a457585bc0175925a5a5510303da42",
+    "official_metadata_sha256": "cb33d92bd4e7277c60e2a099dc1fcf85654000b634245a4b0af0e0872004d616",
+    "source": "https://pypi.org/pypi/pydantic-settings/2.15.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pygments-2.21.0-py3-none-any.whl",
+    "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "official_metadata_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+    "source": "https://pypi.org/pypi/Pygments/2.21.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pyjwt-2.13.0-py3-none-any.whl",
+    "sha256": "66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728",
+    "official_metadata_sha256": "5e003431d4acafcf7df206ffaefacc8a7630ce85f3f9461ccf544023b6432e69",
+    "source": "https://pypi.org/pypi/PyJWT/2.13.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pytest-9.1.1-py3-none-any.whl",
+    "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+    "official_metadata_sha256": "8ed48304ba7fd0ae974a041f117487b499d553b40e5ce55a9ece677e946f68dd",
+    "source": "https://pypi.org/pypi/pytest/9.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pytest_mock-3.15.1-py3-none-any.whl",
+    "sha256": "0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d",
+    "official_metadata_sha256": "e2c2ff5331e9f5776ceb53c7d6cf8fd93fefdef912598b82210ad782672f94e3",
+    "source": "https://pypi.org/pypi/pytest-mock/3.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+    "official_metadata_sha256": "f3a0d4d44ef5e71ff77e4dd013b39b1d1bd173fb04f8b0aecc83e5502c44d858",
+    "source": "https://pypi.org/pypi/python-dateutil/2.9.0.post0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "python_dotenv-1.2.3-py3-none-any.whl",
+    "sha256": "904552145e8bfed22162c09dab1c2b9b54fefa7b23ba780f4f26ca0316b0f0d9",
+    "official_metadata_sha256": "5bbd730075bcfd67860e03d3bf67e844824e1b6e3df94c9b39c6556cff2ae193",
+    "source": "https://pypi.org/pypi/python-dotenv/1.2.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "python_multipart-0.0.32-py3-none-any.whl",
+    "sha256": "ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23",
+    "official_metadata_sha256": "f94ae178a5196b01730490f0b3b10b2ad32bf92aa2fba5c3f7ffd6b5235c9697",
+    "source": "https://pypi.org/pypi/python-multipart/0.0.32/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "pyyaml-6.0.3-cp313-cp313-musllinux_1_2_x86_64.whl",
+    "sha256": "eda16858a3cab07b80edaf74336ece1f986ba330fdb8ee0d6c0d68fe82bc96be",
+    "official_metadata_sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def",
+    "source": "https://pypi.org/pypi/PyYAML/6.0.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "referencing-0.37.0-py3-none-any.whl",
+    "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+    "official_metadata_sha256": "a67968d8e03aa45e650fc2ff0d07796676db1a7841ce8e810bf2dba5af689464",
+    "source": "https://pypi.org/pypi/referencing/0.37.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "requests-2.34.2-py3-none-any.whl",
+    "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0",
+    "official_metadata_sha256": "8622e50ffd295ed759ec793f2a009172a4ed0204bbc5e948de23111bc3d2aeae",
+    "source": "https://pypi.org/pypi/requests/2.34.2/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "responses-0.26.3-py3-none-any.whl",
+    "sha256": "74474f799334ac4f37d93b6437ecc3bb1bb5c77a8d31780a338643be2dce0af8",
+    "official_metadata_sha256": "de8d3052cd4898d9d2a0c284801f858a40d323f480e479fea7776c7e4a6be39a",
+    "source": "https://pypi.org/pypi/responses/0.26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "rpds_py-2026.6.3-cp313-cp313-musllinux_1_2_x86_64.whl",
+    "sha256": "1cf01971c4f2c5553b772a542e4aaf191789cd331bc2cd4ff0e6e65ba49e1e97",
+    "official_metadata_sha256": "c791bb0eaf9f18668ca978bd500d8dd8e25cdf692cf5bc92229d1c2854e8d852",
+    "source": "https://pypi.org/pypi/rpds-py/2026.6.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "six-1.17.0-py2.py3-none-any.whl",
+    "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "official_metadata_sha256": "d8de39dd52b73048d81a8fd78022ee2bc72f8b568bcf0d88e5d5069c302b1208",
+    "source": "https://pypi.org/pypi/six/1.17.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "sse_starlette-3.4.11-py3-none-any.whl",
+    "sha256": "c7b2244bdff016fe7f64e10075e89a3e6bbf899649cc89b0fe884b5545042453",
+    "official_metadata_sha256": "37b5ccfb0af5955e95639daafd4836164c4ed833d4c64e4f6ca686bbde108918",
+    "source": "https://pypi.org/pypi/sse-starlette/3.4.11/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "starlette-1.6.0-py3-none-any.whl",
+    "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+    "official_metadata_sha256": "f203a72cee50be4cc71d4fe8496b40c26d9a2f6fbde42b41d5a524d4b2c28940",
+    "source": "https://pypi.org/pypi/starlette/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "typing_extensions-4.16.0-py3-none-any.whl",
+    "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+    "official_metadata_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+    "source": "https://pypi.org/pypi/typing_extensions/4.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "typing_inspection-0.4.4-py3-none-any.whl",
+    "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+    "official_metadata_sha256": "0605416f2f37f2df04e45360cf5ce4ca5eeca6d414bb6ddb1ec5a9893c62ac30",
+    "source": "https://pypi.org/pypi/typing-inspection/0.4.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "tzdata-2026.3-py2.py3-none-any.whl",
+    "sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+    "official_metadata_sha256": "b8f42880d2cf78c536e066955964b94ce4d7d4c1b3ddfcfd190e8466ccafcedc",
+    "source": "https://pypi.org/pypi/tzdata/2026.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "urllib3-2.7.0-py3-none-any.whl",
+    "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897",
+    "official_metadata_sha256": "54db1e362e04e390c23c2182dd425a6b3f0c1a73c5bd3f3e40611c3590c7a43a",
+    "source": "https://pypi.org/pypi/urllib3/2.7.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "docker-linux",
+    "artifact": "uvicorn-0.52.4-py3-none-any.whl",
+    "sha256": "f86e41a149d7d05a9969337e3946a9c171c06a5d42680896daaba624aeac8da1",
+    "official_metadata_sha256": "388277206a6109a16d420abb58b287fc9f67d0e48022920474f89592ba826f20",
+    "source": "https://pypi.org/pypi/uvicorn/0.52.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "annotated_doc-0.0.5-py3-none-any.whl",
+    "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+    "official_metadata_sha256": "1aab691a5f37dd292e6d93ab53f7da5d839f56ba605345f017022ec75eb643af",
+    "source": "https://pypi.org/pypi/annotated-doc/0.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "annotated_types-0.8.0-py3-none-any.whl",
+    "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+    "official_metadata_sha256": "a6e8e5b10c8fd2f596bba53e015cd37f6279fb5cec26ce0c5e9968625be4fefa",
+    "source": "https://pypi.org/pypi/annotated-types/0.8.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "anyio-4.15.1-py3-none-any.whl",
+    "sha256": "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+    "official_metadata_sha256": "e2ee22fad2fab3e66be503cba9b41945607d3076c9b7aa49b6e2f95ac323efab",
+    "source": "https://pypi.org/pypi/anyio/4.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "attrs-26.1.0-py3-none-any.whl",
+    "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+    "official_metadata_sha256": "a882bf941fb4a0bb748d0194df544121cc130f5fb15a710ab6b804c17d2899b7",
+    "source": "https://pypi.org/pypi/attrs/26.1.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "certifi-2026.7.22-py3-none-any.whl",
+    "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+    "official_metadata_sha256": "c65938c867536616d6755e3b1fded46639e940ea2b2ce6e792aaa6fe64fc55f5",
+    "source": "https://pypi.org/pypi/certifi/2026.7.22/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "cffi-2.1.1-cp313-cp313-win_amd64.whl",
+    "sha256": "1aa5645c30469b09530c4ebca77ebf8f17618293c58f8549cb1a543a50236e7d",
+    "official_metadata_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+    "source": "https://pypi.org/pypi/cffi/2.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "charset_normalizer-3.5.1-cp313-cp313-win_amd64.whl",
+    "sha256": "aea996a6aba25260827c9ea511d1addfde2da9eb686ac961838509086188b7e6",
+    "official_metadata_sha256": "d023a4c812bc4478f294dbb8b9c7e5699c62a98ed0516129c22982f983d47f95",
+    "source": "https://pypi.org/pypi/charset-normalizer/3.5.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "click-8.5.0-py3-none-any.whl",
+    "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+    "official_metadata_sha256": "4e36adc9b46f837e10ce801b7a478f9146fefdfb287292b7668fc64b1474e41d",
+    "source": "https://pypi.org/pypi/click/8.5.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "colorama-0.4.6-py2.py3-none-any.whl",
+    "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6",
+    "official_metadata_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+    "source": "https://pypi.org/pypi/colorama/0.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "cryptography-50.0.1-cp311-abi3-win_amd64.whl",
+    "sha256": "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648",
+    "official_metadata_sha256": "6173d893ced0fe6e155dcbc85531df981c7412d4bead511f8eeaad0e667f31c9",
+    "source": "https://pypi.org/pypi/cryptography/50.0.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "fastapi-0.141.1-py3-none-any.whl",
+    "sha256": "bfb91aa2d334c61cb35ba9a116fc123b3d3df31640b801cf57a7a78ec3f603b3",
+    "official_metadata_sha256": "823a0938363b641629afe5ab40b0c131edf48f600dc6e7182fd92c4783241cc4",
+    "source": "https://pypi.org/pypi/fastapi/0.141.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "h11-0.16.0-py3-none-any.whl",
+    "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+    "official_metadata_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+    "source": "https://pypi.org/pypi/h11/0.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "httpcore-1.0.9-py3-none-any.whl",
+    "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+    "official_metadata_sha256": "e26eca5c3d288fe9e6446af9bcbca1038ba688629d5c8a2886c47d74718d87a2",
+    "source": "https://pypi.org/pypi/httpcore/1.0.9/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "httpx-0.28.1-py3-none-any.whl",
+    "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+    "official_metadata_sha256": "293bfab7bf587fcd0825f1bd8eed8e6303285ba14801b15659853827cbe30796",
+    "source": "https://pypi.org/pypi/httpx/0.28.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "httpx_sse-0.4.3-py3-none-any.whl",
+    "sha256": "0ac1c9fe3c0afad2e0ebb25a934a59f4c7823b60792691f779fad2c5568830fc",
+    "official_metadata_sha256": "10290174877d76e44ac10aaa9ee06a591b140b99943bfde6c9ccf031527f1f59",
+    "source": "https://pypi.org/pypi/httpx-sse/0.4.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "idna-3.19-py3-none-any.whl",
+    "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+    "official_metadata_sha256": "cf4ff5d748a88fe6e9d75ffbcc19b946d304b334dd10baa21bd90fb5566dfa44",
+    "source": "https://pypi.org/pypi/idna/3.19/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "iniconfig-2.3.0-py3-none-any.whl",
+    "sha256": "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+    "official_metadata_sha256": "10a4699a386b2309a98d4c368b6696e80562cefebe20107610337447d7f13f65",
+    "source": "https://pypi.org/pypi/iniconfig/2.3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "jsonschema-4.26.0-py3-none-any.whl",
+    "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+    "official_metadata_sha256": "d0c9ccdfa30c3cdc57b048c2be21123dfb0c2f4d6bef2e8324dcb4eac985cfcf",
+    "source": "https://pypi.org/pypi/jsonschema/4.26.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+    "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+    "official_metadata_sha256": "91810d8f79384375ad0c0cf631e06903e2790b030d3fad2f1ad657b20ddd839e",
+    "source": "https://pypi.org/pypi/jsonschema-specifications/2025.9.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "mcp-1.29.0-py3-none-any.whl",
+    "sha256": "f5a075bb611f23d6f4d080c6a1699fa62772eebc562ba9e66b306ddde1c755f7",
+    "official_metadata_sha256": "abb94d32862a3500a0e77889960edb9f8f80303c87ec873a8974ab49acd2af99",
+    "source": "https://pypi.org/pypi/mcp/1.29.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "numpy-2.4.6-cp313-cp313-win_amd64.whl",
+    "sha256": "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+    "official_metadata_sha256": "59a347f81abff9afe9053bbcc7b69a8b118dd896c5247b15396f1aac57dcf582",
+    "source": "https://pypi.org/pypi/numpy/2.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "packaging-26.3-py3-none-any.whl",
+    "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+    "official_metadata_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+    "source": "https://pypi.org/pypi/packaging/26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pandas-3.0.5-cp313-cp313-win_amd64.whl",
+    "sha256": "0d298e951f23016ce4699951d044ae6418dbc91bf68cefca0f77666fcbb4e5c6",
+    "official_metadata_sha256": "370b1daf6c190e1143a4eb0340b87112e1d5c2a8984d9912f3e90f9429138a19",
+    "source": "https://pypi.org/pypi/pandas/3.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pluggy-1.6.0-py3-none-any.whl",
+    "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+    "official_metadata_sha256": "597beede1e3bfb71dcf93f583c52f9b6ff64c7aca4c7cddcf365f0c6d5c0ade8",
+    "source": "https://pypi.org/pypi/pluggy/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pycparser-3.0-py3-none-any.whl",
+    "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+    "official_metadata_sha256": "13939b01403db93c94e8f9c5b0e3441c9cdccb4304e43ec6820031f7da71a793",
+    "source": "https://pypi.org/pypi/pycparser/3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pydantic-2.13.5-py3-none-any.whl",
+    "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
+    "official_metadata_sha256": "20a994795e3341324a7da30ae19b815669c2bf1722c5077089cfdc379215009d",
+    "source": "https://pypi.org/pypi/pydantic/2.13.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pydantic_core-2.46.5-cp313-cp313-win_amd64.whl",
+    "sha256": "15f4a94963c95accac15b7b657bb177d3ad82bb90b0d0526d9a9b85079925db5",
+    "official_metadata_sha256": "6cbd39a49f9c7e2dfc8b96f6955d9b9b275ba6f36cacab0e9a863937e99fd8ac",
+    "source": "https://pypi.org/pypi/pydantic_core/2.46.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pydantic_settings-2.15.0-py3-none-any.whl",
+    "sha256": "0ba092c291c94baceb5eff768aa0d56400a457585bc0175925a5a5510303da42",
+    "official_metadata_sha256": "cb33d92bd4e7277c60e2a099dc1fcf85654000b634245a4b0af0e0872004d616",
+    "source": "https://pypi.org/pypi/pydantic-settings/2.15.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pygments-2.21.0-py3-none-any.whl",
+    "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "official_metadata_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+    "source": "https://pypi.org/pypi/Pygments/2.21.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pyjwt-2.13.0-py3-none-any.whl",
+    "sha256": "66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728",
+    "official_metadata_sha256": "5e003431d4acafcf7df206ffaefacc8a7630ce85f3f9461ccf544023b6432e69",
+    "source": "https://pypi.org/pypi/PyJWT/2.13.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pytest-9.1.1-py3-none-any.whl",
+    "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+    "official_metadata_sha256": "8ed48304ba7fd0ae974a041f117487b499d553b40e5ce55a9ece677e946f68dd",
+    "source": "https://pypi.org/pypi/pytest/9.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pytest_mock-3.15.1-py3-none-any.whl",
+    "sha256": "0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d",
+    "official_metadata_sha256": "e2c2ff5331e9f5776ceb53c7d6cf8fd93fefdef912598b82210ad782672f94e3",
+    "source": "https://pypi.org/pypi/pytest-mock/3.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+    "official_metadata_sha256": "f3a0d4d44ef5e71ff77e4dd013b39b1d1bd173fb04f8b0aecc83e5502c44d858",
+    "source": "https://pypi.org/pypi/python-dateutil/2.9.0.post0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "python_dotenv-1.2.3-py3-none-any.whl",
+    "sha256": "904552145e8bfed22162c09dab1c2b9b54fefa7b23ba780f4f26ca0316b0f0d9",
+    "official_metadata_sha256": "5bbd730075bcfd67860e03d3bf67e844824e1b6e3df94c9b39c6556cff2ae193",
+    "source": "https://pypi.org/pypi/python-dotenv/1.2.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "python_multipart-0.0.32-py3-none-any.whl",
+    "sha256": "ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23",
+    "official_metadata_sha256": "f94ae178a5196b01730490f0b3b10b2ad32bf92aa2fba5c3f7ffd6b5235c9697",
+    "source": "https://pypi.org/pypi/python-multipart/0.0.32/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pywin32-312-cp313-cp313-win_amd64.whl",
+    "sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+    "official_metadata_sha256": "f142c39d2740c13a932c795fb7f47af150185dbf6713cefa93ee5bd1e030d31f",
+    "source": "https://pypi.org/pypi/pywin32/312/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "pyyaml-6.0.3-cp313-cp313-win_amd64.whl",
+    "sha256": "79005a0d97d5ddabfeeea4cf676af11e647e41d81c9a7722a193022accdb6b7c",
+    "official_metadata_sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def",
+    "source": "https://pypi.org/pypi/PyYAML/6.0.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "referencing-0.37.0-py3-none-any.whl",
+    "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+    "official_metadata_sha256": "a67968d8e03aa45e650fc2ff0d07796676db1a7841ce8e810bf2dba5af689464",
+    "source": "https://pypi.org/pypi/referencing/0.37.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "requests-2.34.2-py3-none-any.whl",
+    "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0",
+    "official_metadata_sha256": "8622e50ffd295ed759ec793f2a009172a4ed0204bbc5e948de23111bc3d2aeae",
+    "source": "https://pypi.org/pypi/requests/2.34.2/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "responses-0.26.3-py3-none-any.whl",
+    "sha256": "74474f799334ac4f37d93b6437ecc3bb1bb5c77a8d31780a338643be2dce0af8",
+    "official_metadata_sha256": "de8d3052cd4898d9d2a0c284801f858a40d323f480e479fea7776c7e4a6be39a",
+    "source": "https://pypi.org/pypi/responses/0.26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "rpds_py-2026.6.3-cp313-cp313-win_amd64.whl",
+    "sha256": "9250a9a0a6fd4648b3f868da8d91a4c52b5811a62df58e753d50ae4454a36f80",
+    "official_metadata_sha256": "c791bb0eaf9f18668ca978bd500d8dd8e25cdf692cf5bc92229d1c2854e8d852",
+    "source": "https://pypi.org/pypi/rpds-py/2026.6.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "six-1.17.0-py2.py3-none-any.whl",
+    "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "official_metadata_sha256": "d8de39dd52b73048d81a8fd78022ee2bc72f8b568bcf0d88e5d5069c302b1208",
+    "source": "https://pypi.org/pypi/six/1.17.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "sse_starlette-3.4.11-py3-none-any.whl",
+    "sha256": "c7b2244bdff016fe7f64e10075e89a3e6bbf899649cc89b0fe884b5545042453",
+    "official_metadata_sha256": "37b5ccfb0af5955e95639daafd4836164c4ed833d4c64e4f6ca686bbde108918",
+    "source": "https://pypi.org/pypi/sse-starlette/3.4.11/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "starlette-1.6.0-py3-none-any.whl",
+    "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+    "official_metadata_sha256": "f203a72cee50be4cc71d4fe8496b40c26d9a2f6fbde42b41d5a524d4b2c28940",
+    "source": "https://pypi.org/pypi/starlette/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "typing_extensions-4.16.0-py3-none-any.whl",
+    "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+    "official_metadata_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+    "source": "https://pypi.org/pypi/typing_extensions/4.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "typing_inspection-0.4.4-py3-none-any.whl",
+    "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+    "official_metadata_sha256": "0605416f2f37f2df04e45360cf5ce4ca5eeca6d414bb6ddb1ec5a9893c62ac30",
+    "source": "https://pypi.org/pypi/typing-inspection/0.4.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "tzdata-2026.3-py2.py3-none-any.whl",
+    "sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+    "official_metadata_sha256": "b8f42880d2cf78c536e066955964b94ce4d7d4c1b3ddfcfd190e8466ccafcedc",
+    "source": "https://pypi.org/pypi/tzdata/2026.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "urllib3-2.7.0-py3-none-any.whl",
+    "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897",
+    "official_metadata_sha256": "54db1e362e04e390c23c2182dd425a6b3f0c1a73c5bd3f3e40611c3590c7a43a",
+    "source": "https://pypi.org/pypi/urllib3/2.7.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "native-windows",
+    "artifact": "uvicorn-0.52.4-py3-none-any.whl",
+    "sha256": "f86e41a149d7d05a9969337e3946a9c171c06a5d42680896daaba624aeac8da1",
+    "official_metadata_sha256": "388277206a6109a16d420abb58b287fc9f67d0e48022920474f89592ba826f20",
+    "source": "https://pypi.org/pypi/uvicorn/0.52.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "annotated_doc-0.0.5-py3-none-any.whl",
+    "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+    "official_metadata_sha256": "1aab691a5f37dd292e6d93ab53f7da5d839f56ba605345f017022ec75eb643af",
+    "source": "https://pypi.org/pypi/annotated-doc/0.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "annotated_types-0.8.0-py3-none-any.whl",
+    "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+    "official_metadata_sha256": "a6e8e5b10c8fd2f596bba53e015cd37f6279fb5cec26ce0c5e9968625be4fefa",
+    "source": "https://pypi.org/pypi/annotated-types/0.8.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "anyio-4.15.1-py3-none-any.whl",
+    "sha256": "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+    "official_metadata_sha256": "e2ee22fad2fab3e66be503cba9b41945607d3076c9b7aa49b6e2f95ac323efab",
+    "source": "https://pypi.org/pypi/anyio/4.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "attrs-26.1.0-py3-none-any.whl",
+    "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+    "official_metadata_sha256": "a882bf941fb4a0bb748d0194df544121cc130f5fb15a710ab6b804c17d2899b7",
+    "source": "https://pypi.org/pypi/attrs/26.1.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "certifi-2026.7.22-py3-none-any.whl",
+    "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+    "official_metadata_sha256": "c65938c867536616d6755e3b1fded46639e940ea2b2ce6e792aaa6fe64fc55f5",
+    "source": "https://pypi.org/pypi/certifi/2026.7.22/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "cffi-2.1.1-cp313-cp313-win_amd64.whl",
+    "sha256": "1aa5645c30469b09530c4ebca77ebf8f17618293c58f8549cb1a543a50236e7d",
+    "official_metadata_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+    "source": "https://pypi.org/pypi/cffi/2.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "charset_normalizer-3.5.1-cp313-cp313-win_amd64.whl",
+    "sha256": "aea996a6aba25260827c9ea511d1addfde2da9eb686ac961838509086188b7e6",
+    "official_metadata_sha256": "d023a4c812bc4478f294dbb8b9c7e5699c62a98ed0516129c22982f983d47f95",
+    "source": "https://pypi.org/pypi/charset-normalizer/3.5.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "click-8.5.0-py3-none-any.whl",
+    "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+    "official_metadata_sha256": "4e36adc9b46f837e10ce801b7a478f9146fefdfb287292b7668fc64b1474e41d",
+    "source": "https://pypi.org/pypi/click/8.5.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "colorama-0.4.6-py2.py3-none-any.whl",
+    "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6",
+    "official_metadata_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+    "source": "https://pypi.org/pypi/colorama/0.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "cryptography-50.0.1-cp311-abi3-win_amd64.whl",
+    "sha256": "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648",
+    "official_metadata_sha256": "6173d893ced0fe6e155dcbc85531df981c7412d4bead511f8eeaad0e667f31c9",
+    "source": "https://pypi.org/pypi/cryptography/50.0.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "fastapi-0.141.1-py3-none-any.whl",
+    "sha256": "bfb91aa2d334c61cb35ba9a116fc123b3d3df31640b801cf57a7a78ec3f603b3",
+    "official_metadata_sha256": "823a0938363b641629afe5ab40b0c131edf48f600dc6e7182fd92c4783241cc4",
+    "source": "https://pypi.org/pypi/fastapi/0.141.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "h11-0.16.0-py3-none-any.whl",
+    "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+    "official_metadata_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+    "source": "https://pypi.org/pypi/h11/0.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "httpcore-1.0.9-py3-none-any.whl",
+    "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+    "official_metadata_sha256": "e26eca5c3d288fe9e6446af9bcbca1038ba688629d5c8a2886c47d74718d87a2",
+    "source": "https://pypi.org/pypi/httpcore/1.0.9/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "httpx-0.28.1-py3-none-any.whl",
+    "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+    "official_metadata_sha256": "293bfab7bf587fcd0825f1bd8eed8e6303285ba14801b15659853827cbe30796",
+    "source": "https://pypi.org/pypi/httpx/0.28.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "httpx_sse-0.4.3-py3-none-any.whl",
+    "sha256": "0ac1c9fe3c0afad2e0ebb25a934a59f4c7823b60792691f779fad2c5568830fc",
+    "official_metadata_sha256": "10290174877d76e44ac10aaa9ee06a591b140b99943bfde6c9ccf031527f1f59",
+    "source": "https://pypi.org/pypi/httpx-sse/0.4.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "idna-3.19-py3-none-any.whl",
+    "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+    "official_metadata_sha256": "cf4ff5d748a88fe6e9d75ffbcc19b946d304b334dd10baa21bd90fb5566dfa44",
+    "source": "https://pypi.org/pypi/idna/3.19/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "iniconfig-2.3.0-py3-none-any.whl",
+    "sha256": "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+    "official_metadata_sha256": "10a4699a386b2309a98d4c368b6696e80562cefebe20107610337447d7f13f65",
+    "source": "https://pypi.org/pypi/iniconfig/2.3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "jsonschema-4.26.0-py3-none-any.whl",
+    "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+    "official_metadata_sha256": "d0c9ccdfa30c3cdc57b048c2be21123dfb0c2f4d6bef2e8324dcb4eac985cfcf",
+    "source": "https://pypi.org/pypi/jsonschema/4.26.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+    "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+    "official_metadata_sha256": "91810d8f79384375ad0c0cf631e06903e2790b030d3fad2f1ad657b20ddd839e",
+    "source": "https://pypi.org/pypi/jsonschema-specifications/2025.9.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "mcp-1.29.0-py3-none-any.whl",
+    "sha256": "f5a075bb611f23d6f4d080c6a1699fa62772eebc562ba9e66b306ddde1c755f7",
+    "official_metadata_sha256": "abb94d32862a3500a0e77889960edb9f8f80303c87ec873a8974ab49acd2af99",
+    "source": "https://pypi.org/pypi/mcp/1.29.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "numpy-2.4.6-cp313-cp313-win_amd64.whl",
+    "sha256": "c4fc99836233ea196540b17ab0983aff60ed07941751930f5f4d05bc3b3b7359",
+    "official_metadata_sha256": "59a347f81abff9afe9053bbcc7b69a8b118dd896c5247b15396f1aac57dcf582",
+    "source": "https://pypi.org/pypi/numpy/2.4.6/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "packaging-26.3-py3-none-any.whl",
+    "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+    "official_metadata_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+    "source": "https://pypi.org/pypi/packaging/26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pandas-3.0.5-cp313-cp313-win_amd64.whl",
+    "sha256": "0d298e951f23016ce4699951d044ae6418dbc91bf68cefca0f77666fcbb4e5c6",
+    "official_metadata_sha256": "370b1daf6c190e1143a4eb0340b87112e1d5c2a8984d9912f3e90f9429138a19",
+    "source": "https://pypi.org/pypi/pandas/3.0.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pluggy-1.6.0-py3-none-any.whl",
+    "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+    "official_metadata_sha256": "597beede1e3bfb71dcf93f583c52f9b6ff64c7aca4c7cddcf365f0c6d5c0ade8",
+    "source": "https://pypi.org/pypi/pluggy/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pycparser-3.0-py3-none-any.whl",
+    "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+    "official_metadata_sha256": "13939b01403db93c94e8f9c5b0e3441c9cdccb4304e43ec6820031f7da71a793",
+    "source": "https://pypi.org/pypi/pycparser/3.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pydantic-2.13.5-py3-none-any.whl",
+    "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
+    "official_metadata_sha256": "20a994795e3341324a7da30ae19b815669c2bf1722c5077089cfdc379215009d",
+    "source": "https://pypi.org/pypi/pydantic/2.13.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pydantic_core-2.46.5-cp313-cp313-win_amd64.whl",
+    "sha256": "15f4a94963c95accac15b7b657bb177d3ad82bb90b0d0526d9a9b85079925db5",
+    "official_metadata_sha256": "6cbd39a49f9c7e2dfc8b96f6955d9b9b275ba6f36cacab0e9a863937e99fd8ac",
+    "source": "https://pypi.org/pypi/pydantic_core/2.46.5/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pydantic_settings-2.15.0-py3-none-any.whl",
+    "sha256": "0ba092c291c94baceb5eff768aa0d56400a457585bc0175925a5a5510303da42",
+    "official_metadata_sha256": "cb33d92bd4e7277c60e2a099dc1fcf85654000b634245a4b0af0e0872004d616",
+    "source": "https://pypi.org/pypi/pydantic-settings/2.15.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pygments-2.21.0-py3-none-any.whl",
+    "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "official_metadata_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+    "source": "https://pypi.org/pypi/Pygments/2.21.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pyjwt-2.13.0-py3-none-any.whl",
+    "sha256": "66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728",
+    "official_metadata_sha256": "5e003431d4acafcf7df206ffaefacc8a7630ce85f3f9461ccf544023b6432e69",
+    "source": "https://pypi.org/pypi/PyJWT/2.13.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pytest-9.1.1-py3-none-any.whl",
+    "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+    "official_metadata_sha256": "8ed48304ba7fd0ae974a041f117487b499d553b40e5ce55a9ece677e946f68dd",
+    "source": "https://pypi.org/pypi/pytest/9.1.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pytest_mock-3.15.1-py3-none-any.whl",
+    "sha256": "0a25e2eb88fe5168d535041d09a4529a188176ae608a6d249ee65abc0949630d",
+    "official_metadata_sha256": "e2c2ff5331e9f5776ceb53c7d6cf8fd93fefdef912598b82210ad782672f94e3",
+    "source": "https://pypi.org/pypi/pytest-mock/3.15.1/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+    "official_metadata_sha256": "f3a0d4d44ef5e71ff77e4dd013b39b1d1bd173fb04f8b0aecc83e5502c44d858",
+    "source": "https://pypi.org/pypi/python-dateutil/2.9.0.post0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "python_dotenv-1.2.3-py3-none-any.whl",
+    "sha256": "904552145e8bfed22162c09dab1c2b9b54fefa7b23ba780f4f26ca0316b0f0d9",
+    "official_metadata_sha256": "5bbd730075bcfd67860e03d3bf67e844824e1b6e3df94c9b39c6556cff2ae193",
+    "source": "https://pypi.org/pypi/python-dotenv/1.2.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "python_multipart-0.0.32-py3-none-any.whl",
+    "sha256": "ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23",
+    "official_metadata_sha256": "f94ae178a5196b01730490f0b3b10b2ad32bf92aa2fba5c3f7ffd6b5235c9697",
+    "source": "https://pypi.org/pypi/python-multipart/0.0.32/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pywin32-312-cp313-cp313-win_amd64.whl",
+    "sha256": "c53e878d15a1c44788082bfe712a905433473aa38f86375b7cf8b45e3acbaaf9",
+    "official_metadata_sha256": "f142c39d2740c13a932c795fb7f47af150185dbf6713cefa93ee5bd1e030d31f",
+    "source": "https://pypi.org/pypi/pywin32/312/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "pyyaml-6.0.3-cp313-cp313-win_amd64.whl",
+    "sha256": "79005a0d97d5ddabfeeea4cf676af11e647e41d81c9a7722a193022accdb6b7c",
+    "official_metadata_sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def",
+    "source": "https://pypi.org/pypi/PyYAML/6.0.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "referencing-0.37.0-py3-none-any.whl",
+    "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+    "official_metadata_sha256": "a67968d8e03aa45e650fc2ff0d07796676db1a7841ce8e810bf2dba5af689464",
+    "source": "https://pypi.org/pypi/referencing/0.37.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "requests-2.34.2-py3-none-any.whl",
+    "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0",
+    "official_metadata_sha256": "8622e50ffd295ed759ec793f2a009172a4ed0204bbc5e948de23111bc3d2aeae",
+    "source": "https://pypi.org/pypi/requests/2.34.2/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "responses-0.26.3-py3-none-any.whl",
+    "sha256": "74474f799334ac4f37d93b6437ecc3bb1bb5c77a8d31780a338643be2dce0af8",
+    "official_metadata_sha256": "de8d3052cd4898d9d2a0c284801f858a40d323f480e479fea7776c7e4a6be39a",
+    "source": "https://pypi.org/pypi/responses/0.26.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "rpds_py-2026.6.3-cp313-cp313-win_amd64.whl",
+    "sha256": "9250a9a0a6fd4648b3f868da8d91a4c52b5811a62df58e753d50ae4454a36f80",
+    "official_metadata_sha256": "c791bb0eaf9f18668ca978bd500d8dd8e25cdf692cf5bc92229d1c2854e8d852",
+    "source": "https://pypi.org/pypi/rpds-py/2026.6.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "six-1.17.0-py2.py3-none-any.whl",
+    "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "official_metadata_sha256": "d8de39dd52b73048d81a8fd78022ee2bc72f8b568bcf0d88e5d5069c302b1208",
+    "source": "https://pypi.org/pypi/six/1.17.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "sse_starlette-3.4.11-py3-none-any.whl",
+    "sha256": "c7b2244bdff016fe7f64e10075e89a3e6bbf899649cc89b0fe884b5545042453",
+    "official_metadata_sha256": "37b5ccfb0af5955e95639daafd4836164c4ed833d4c64e4f6ca686bbde108918",
+    "source": "https://pypi.org/pypi/sse-starlette/3.4.11/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "starlette-1.6.0-py3-none-any.whl",
+    "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+    "official_metadata_sha256": "f203a72cee50be4cc71d4fe8496b40c26d9a2f6fbde42b41d5a524d4b2c28940",
+    "source": "https://pypi.org/pypi/starlette/1.6.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "typing_extensions-4.16.0-py3-none-any.whl",
+    "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+    "official_metadata_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+    "source": "https://pypi.org/pypi/typing_extensions/4.16.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "typing_inspection-0.4.4-py3-none-any.whl",
+    "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+    "official_metadata_sha256": "0605416f2f37f2df04e45360cf5ce4ca5eeca6d414bb6ddb1ec5a9893c62ac30",
+    "source": "https://pypi.org/pypi/typing-inspection/0.4.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "tzdata-2026.3-py2.py3-none-any.whl",
+    "sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931",
+    "official_metadata_sha256": "b8f42880d2cf78c536e066955964b94ce4d7d4c1b3ddfcfd190e8466ccafcedc",
+    "source": "https://pypi.org/pypi/tzdata/2026.3/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "urllib3-2.7.0-py3-none-any.whl",
+    "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897",
+    "official_metadata_sha256": "54db1e362e04e390c23c2182dd425a6b3f0c1a73c5bd3f3e40611c3590c7a43a",
+    "source": "https://pypi.org/pypi/urllib3/2.7.0/json",
+    "yanked": false,
+    "binary_wheel": true
+  },
+  {
+    "consumer": "release-ci-windows",
+    "artifact": "uvicorn-0.52.4-py3-none-any.whl",
+    "sha256": "f86e41a149d7d05a9969337e3946a9c171c06a5d42680896daaba624aeac8da1",
+    "official_metadata_sha256": "388277206a6109a16d420abb58b287fc9f67d0e48022920474f89592ba826f20",
+    "source": "https://pypi.org/pypi/uvicorn/0.52.4/json",
+    "yanked": false,
+    "binary_wheel": true
+  }
+]

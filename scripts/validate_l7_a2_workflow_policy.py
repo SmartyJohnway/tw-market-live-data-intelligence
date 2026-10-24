@@ -8,6 +8,11 @@ ROOT=Path(__file__).resolve().parents[1]
 SMOKE_IF="github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'windows-smoke')"
 
 
+def approved_actions():
+    authority=json.loads((ROOT/'config/github_actions_artifact_authority.json').read_bytes())
+    return {name+'@'+row['sha'] for name,row in authority['actions'].items()}
+
+
 def smoke_job_eligible(workflow, event_name, labels=(), action=None):
     assert workflow['jobs']['validation']['if']==SMOKE_IF
     if event_name=='workflow_dispatch':return 'workflow_dispatch' in workflow['on']
@@ -45,7 +50,7 @@ def validate(root=ROOT):
             assert job.get('permissions',{'contents':'read'})=={'contents':'read'}
             for step in job.get('steps',[]):
                 if 'uses' in step:
-                    assert step['uses'] in {'actions/checkout@v4','actions/setup-python@v5'}, 'unapproved publication-capable action'
+                    assert step['uses'] in approved_actions(), 'unapproved or mutable action identity'
         assert not re.search(r'\bgit\s+(?:-\S+\s+)*tag\b|\b(?:gh|hub)\s+release\b',text)
         for forbidden in ('release: published','gh release','docker push','packages: write','contents: write','pull_request_target','secrets.'):
             assert forbidden not in text, forbidden

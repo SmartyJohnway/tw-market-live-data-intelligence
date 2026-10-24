@@ -1,0 +1,21 @@
+{
+  "POST_classifications": 15,
+  "POST_classifications_changed": 0,
+  "POST_effective_paths": 15,
+  "canonical_gate": true,
+  "changes": [],
+  "final_A4_acceptance": "DEFERRED",
+  "packaged_schemas_checked": 75,
+  "protected_paths": [
+    "server",
+    "schemas",
+    "scripts/tw_market_lifecycle.py",
+    "scripts/tw_market_installation.py",
+    "scripts/unified_market_evidence_mcp.py",
+    "scripts/m8r_09_persistent_watchlists.py",
+    "VERSION",
+    "config/release_blocking_ci.v1.json",
+    "scripts/deterministic_ci_guard.py"
+  ],
+  "status": "PASS_AS_PRESERVATION"
+}

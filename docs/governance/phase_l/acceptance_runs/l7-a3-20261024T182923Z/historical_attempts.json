@@ -1,0 +1,50 @@
+{
+  "attempts": [
+    {
+      "reason": "Playwright pyee constraint is a range, not an exact upstream pin; selected compatible explicit versions and preserved package version",
+      "stage": "initial lock metadata selection",
+      "status": "HARNESS_FAILURE"
+    },
+    {
+      "baseline_failure_witnesses": "python_311_compatibility_result.json",
+      "failed": 2,
+      "guard_denials": 6,
+      "not_used_as_release_PASS": true,
+      "passed": 1893,
+      "skips": 4,
+      "stage": "optional Python311 full canonical-profile diagnostic",
+      "status": "FAIL"
+    },
+    {
+      "functional_assertions": "PASS",
+      "guard_denials": 6,
+      "raw_result_retained": "diagnostic_python311_first_runtime_raw.json",
+      "reason": "stdlib read-only Windows version shell probe rejected by canonical-313 CI process allowlist",
+      "stage": "first Python311 runtime probe with canonical CI guard",
+      "status": "FAIL"
+    },
+    {
+      "reason": "Windows Python subprocess audit executable=None; corrected audit adapter, no product change",
+      "retained_guard": "harness/diagnostic_python311_guard_v1.py",
+      "stage": "first compatibility Native guard adapter",
+      "status": "HARNESS_FAILURE"
+    },
+    {
+      "all_differences_generated_pyc": true,
+      "content_differences": 419,
+      "repair": "suppress build-time bytecode writes and remove generated venv pyc; upstream wheel bytes untouched",
+      "repair_commit": "ab2b2dc941aea68187145166a519757622d092e8",
+      "stage": "first two Docker reproducibility builds at ce378e02",
+      "status": "FAIL"
+    },
+    {
+      "product_runtime_started": false,
+      "reason": "compound tag@digest inspect alias absent; canonical repository@digest already present. Explicit pull of same exact digest established expected alias, then fresh acceptance passed",
+      "stage": "first final Docker runtime preflight",
+      "status": "FAIL"
+    }
+  ],
+  "earlier_A2_TEMP_incident": "RETAINED_IMMUTABLE; not erased by A3",
+  "no_failed_attempt_relabelled_PASS": true,
+  "unchanged_A0_A1_A2_history": true
+}

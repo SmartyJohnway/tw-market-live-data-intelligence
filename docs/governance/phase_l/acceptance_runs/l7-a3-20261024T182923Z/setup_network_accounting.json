@@ -1,0 +1,1004 @@
+{
+  "CPython313_guest": "reused exact previously verified official NuGet archive; no guest network",
+  "Docker_build_network": "RUN --network none; no-index exact wheels; pinned cached base. Daemon registry metadata is setup/build provenance, not product provider traffic.",
+  "Docker_setup": [
+    "pull python:3.13.17-slim-bookworm, resolved immutable e32be0e55814a08977501ca863271d9bd02443710db8f2afaf8372e2c4508530 for disposable glibc replay",
+    "pull exact existing product base reference bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741 to establish expected local inspect alias"
+  ],
+  "GitHub_source_transport": "origin/main fetch + fresh clone + exact local implementation object transport; no publication",
+  "PyPI": [
+    {
+      "attempt": 1,
+      "bytes": 4692,
+      "phase": "setup",
+      "url": "https://pypi.org/pypi/pyee/13.0.0/json"
+    },
+    {
+      "attempt": 1,
+      "bytes": 62244,
+      "phase": "setup",
+      "url": "https://pypi.org/pypi/greenlet/3.2.4/json"
+    },
+    {
+      "attempt": 1,
+      "bytes": 5302,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/3e/30/e900b21425a860e195f32e37657aa1f7c7f2b1bfb26f03ca209b90933c06/annotated_doc-0.0.5-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 31274,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/a3/5e/ecf12fdb62546d64385c158514e9b2b671f7832108ef2ecd2020ce0af2d1/pyjwt-2.13.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 132079,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/12/b8/4bd346e22b28902df4d651910f5242c28d84e4a5c2435ca5c3f797ed7e2e/anyio-4.15.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 67548,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 158763,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/da/e3/ea007450a105ae919a72393cb06f122f288ef60bba2dc64b26e2646fa315/pyyaml-6.0.3-cp311-cp311-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 136983,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 125251,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/58/50/6c0d534c5f134586a8e1ba4e330569e32f057e33372ae556463212fb4cd3/click-8.5.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 25335,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 206653,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e3/57/32f0ccea59e8612057c61d6fd22ef2cb63cca93c9fe594094919696ac170/charset_normalizer-3.5.1-cp311-cp311-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 13427,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/99/91/8acff4f5e50511b911bbccb72b8628a49c68ce14148cd9f6431094859a90/annotated_types-0.8.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 37515,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 78784,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 73517,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/2a/39/e50c7c3a983047577ee07d2a9e53faf5a69493943ec3f6a384bdc792deb2/httpx-0.28.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 131954,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/cb/03/10388a42375ee7e4ac9b94eb2c5c569c8b5795e377e701c9ac3ad63de890/fastapi-0.141.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 68550,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/57/b0/0e52c878c53f245edd3a11020f20979b3f490f245af532c7cae3027754b5/idna-3.19-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 8960,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/d2/fd/6668e5aec43ab844de6fc74927e155a3b37bf40d7c3790e49fc0406b6578/httpx_sse-0.4.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 7484,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/cb/b1/3846dd7f199d53cb17f49cba7e651e9ce294d8497c8c150530ed11865bb8/iniconfig-2.3.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 18437,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/41/45/1a4ed80516f02155c51f51e8cedb3c1902296743db0bbc66608a0db2814f/jsonschema_specifications-2025.9.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 90630,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/69/90/f63fb5873511e014207a475e2bb4e8b2e570d655b00ac19a9a0ca0a385ee/jsonschema-4.26.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 185096,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/73/c0/77ba02423c2f7d7091143c45cd49e0e6575c4c1967394bb542bd923a9b74/cffi-2.1.1-cp311-cp311-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 129956,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 223436,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/01/c8/248b201f6d753d69fd5d6506011abbb35a946d9142b2ae311a948fd0be3d/mcp-1.29.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 20538,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/54/20/4d324d65cc6d9205fabedc306948156824eb9f0ee1633355a8f7ec5c66bf/pluggy-1.6.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 48172,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0c/c3/44f3fbbfa403ea2a7c779186dc20772604442dde72947e7d01069cbe98e3/pycparser-3.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 472589,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/eb/47/c95ffc2009878c7aac0c5e08528022dcb885933252a88b5f170058014464/pydantic-2.13.5-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 69413,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/30/a4/2bffa9f8e804325a09867f0e9d30795c80ea9f8d62560bd1b6ad6220eb2f/pydantic_settings-2.15.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 1250147,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 386536,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 10095,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/5a/cc/06253936f4a7fa2e0f48dfe6d851d9c56df896a9ab09ac019d70b760619c/pytest_mock-3.15.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 229892,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 22780,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0d/17/c5c6b53ddc18f297992099b3d9ec16c855c0ccc83263a21fe4d1c625ec6c/python_dotenv-1.2.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 30042,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e1/04/e8135ebd1ad02c56ec633277529b2602ff99ff634be76cdba5744cf554fd/python_multipart-0.0.32-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 2041030,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/9e/c2/718b9deb4b72453b5d8c7447a3b14cb77bef36917ef5f514e0948a4096a0/pydantic_core-2.46.5-cp311-cp311-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 26766,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/2c/58/ca301544e1fa93ed4f80d724bf5b194f6e4b945841c5bfd555878eea9fcb/referencing-0.37.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 73075,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 36289,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/6d/86/ca7958de70cb0752350575e98229368a3a2f746a2942034b3364e17312bb/responses-0.26.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 223219,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/f2/b7/b7a1695d7af36f521fb11e80d6d3adbd744f73b921859bd3c2a2c0dc706f/rpds_py-2026.6.3-cp311-cp311-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 3842826,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/42/8b/cb12b1b60c91b074ca6bf0fdd59aa8f10d8bc5f73af8faece86ef0421b37/cryptography-50.0.1-cp311-abi3-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 17122,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/98/6a/2ba3ed4a69babf3afdddf7d8314a48d87562c0a442206bbc2a1b50d5efc0/sse_starlette-3.4.11-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 75969,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/c8/cb/6a6a47d5b464bd08695d254f3da6e7986cc70c9fa5d778eda57538edfe56/starlette-1.6.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 14750,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/67/81/4add07e5172b7ac40d8ed5ff580409a7801a4fe26d529bdd915401dabfbe/typing_inspection-0.4.4-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 45571,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 11050,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 348168,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e5/6d/b53b99a9f2766d095985947a5782f1702cabb129a34f7a802d7197af832f/tzdata-2026.3-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 79871,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/f1/79/4a20b54ab0491485ccd8c077db2d39187c7f12b3e15485d38a7be37c81b4/uvicorn-0.52.4-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 131087,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/7f/3e/5db95bcf282c52709639744ca2a8b149baccf648e39c8cc87553df9eae0c/urllib3-2.7.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 6928825,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/35/c4/dcd2d62b5944b6d5db53413a5899016ccd57ffcb7278f3f81655d25d2027/pywin32-312-cp311-cp311-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 12608406,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/c5/31/7fc6239c12bce7e931463251cca4426c465e1876ba3cc785402ef4dd8f4e/numpy-2.4.6-cp311-cp311-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 9968804,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/fa/9a/31f4983f191af51ab2a8f2d0c7b33dff3a84da26533f982fff02c2f9e28b/pandas-3.0.5-cp311-cp311-win_amd64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 5302,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/3e/30/e900b21425a860e195f32e37657aa1f7c7f2b1bfb26f03ca209b90933c06/annotated_doc-0.0.5-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 13427,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/99/91/8acff4f5e50511b911bbccb72b8628a49c68ce14148cd9f6431094859a90/annotated_types-0.8.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 31274,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/a3/5e/ecf12fdb62546d64385c158514e9b2b671f7832108ef2ecd2020ce0af2d1/pyjwt-2.13.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 132079,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/12/b8/4bd346e22b28902df4d651910f5242c28d84e4a5c2435ca5c3f797ed7e2e/anyio-4.15.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 221824,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/95/95/86342356ff5953b3fb06f7ef7c5bee212d45e770abc7218d451b9148313c/cffi-2.1.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 250638,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/fb/af/63240b0c0248c075c2535a1f1bd992821d8251b9f173abc13329661d09e4/charset_normalizer-3.5.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 125251,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/58/50/6c0d534c5f134586a8e1ba4e330569e32f057e33372ae556463212fb4cd3/click-8.5.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 67548,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 136983,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 25335,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 131954,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/cb/03/10388a42375ee7e4ac9b94eb2c5c569c8b5795e377e701c9ac3ad63de890/fastapi-0.141.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 37515,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 73517,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/2a/39/e50c7c3a983047577ee07d2a9e53faf5a69493943ec3f6a384bdc792deb2/httpx-0.28.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 78784,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 8960,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/d2/fd/6668e5aec43ab844de6fc74927e155a3b37bf40d7c3790e49fc0406b6578/httpx_sse-0.4.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 7484,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/cb/b1/3846dd7f199d53cb17f49cba7e651e9ce294d8497c8c150530ed11865bb8/iniconfig-2.3.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 90630,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/69/90/f63fb5873511e014207a475e2bb4e8b2e570d655b00ac19a9a0ca0a385ee/jsonschema-4.26.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 18437,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/41/45/1a4ed80516f02155c51f51e8cedb3c1902296743db0bbc66608a0db2814f/jsonschema_specifications-2025.9.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 68550,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/57/b0/0e52c878c53f245edd3a11020f20979b3f490f245af532c7cae3027754b5/idna-3.19-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 223436,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/01/c8/248b201f6d753d69fd5d6506011abbb35a946d9142b2ae311a948fd0be3d/mcp-1.29.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 801626,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/74/27/e5b8f34d02d9995b80abcef563ea1f8b56d20134d8f4e5e81733b1feceb2/pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 129956,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 20538,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/54/20/4d324d65cc6d9205fabedc306948156824eb9f0ee1633355a8f7ec5c66bf/pluggy-1.6.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 48172,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0c/c3/44f3fbbfa403ea2a7c779186dc20772604442dde72947e7d01069cbe98e3/pycparser-3.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 472589,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/eb/47/c95ffc2009878c7aac0c5e08528022dcb885933252a88b5f170058014464/pydantic-2.13.5-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 69413,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/30/a4/2bffa9f8e804325a09867f0e9d30795c80ea9f8d62560bd1b6ad6220eb2f/pydantic_settings-2.15.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 1250147,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 386536,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 10095,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/5a/cc/06253936f4a7fa2e0f48dfe6d851d9c56df896a9ab09ac019d70b760619c/pytest_mock-3.15.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 229892,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 22780,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0d/17/c5c6b53ddc18f297992099b3d9ec16c855c0ccc83263a21fe4d1c625ec6c/python_dotenv-1.2.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 30042,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e1/04/e8135ebd1ad02c56ec633277529b2602ff99ff634be76cdba5744cf554fd/python_multipart-0.0.32-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 26766,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/2c/58/ca301544e1fa93ed4f80d724bf5b194f6e4b945841c5bfd555878eea9fcb/referencing-0.37.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 73075,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 36289,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/6d/86/ca7958de70cb0752350575e98229368a3a2f746a2942034b3364e17312bb/responses-0.26.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 365678,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/57/d7/fe978efc2ae50abe48eb7464668ea99f53c010c60aeebb7b35ad27f23661/rpds_py-2026.6.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 11050,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 17122,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/98/6a/2ba3ed4a69babf3afdddf7d8314a48d87562c0a442206bbc2a1b50d5efc0/sse_starlette-3.4.11-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 75969,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/c8/cb/6a6a47d5b464bd08695d254f3da6e7986cc70c9fa5d778eda57538edfe56/starlette-1.6.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 14750,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/67/81/4add07e5172b7ac40d8ed5ff580409a7801a4fe26d529bdd915401dabfbe/typing_inspection-0.4.4-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 45571,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 348168,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e5/6d/b53b99a9f2766d095985947a5782f1702cabb129a34f7a802d7197af832f/tzdata-2026.3-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 131087,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/7f/3e/5db95bcf282c52709639744ca2a8b149baccf648e39c8cc87553df9eae0c/urllib3-2.7.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 79871,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/f1/79/4a20b54ab0491485ccd8c077db2d39187c7f12b3e15485d38a7be37c81b4/uvicorn-0.52.4-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 2066633,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/d3/f2/9e4de77a6271e07a76d2d58b11c091a979c191ed2939bf80067568b369d2/pydantic_core-2.46.5-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 4746230,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/85/66/6ccca4722987ddedaa7fc9c3f4708af7431f5535666c174350830888c6b7/cryptography-50.0.1-cp311-abi3-manylinux_2_34_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 10938525,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e3/70/4363150359f95b4cb4bcbb34ca23572bb5495749a621a8f3d5a1ddfd293c/pandas-3.0.5-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 16633220,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/a5/9d/3584b9984ca4c047aea75214ce1a4c4c73d849bd71b604264b7f5653f8a8/numpy-2.4.6-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 13427,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/99/91/8acff4f5e50511b911bbccb72b8628a49c68ce14148cd9f6431094859a90/annotated_types-0.8.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 31274,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/a3/5e/ecf12fdb62546d64385c158514e9b2b671f7832108ef2ecd2020ce0af2d1/pyjwt-2.13.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 5302,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/3e/30/e900b21425a860e195f32e37657aa1f7c7f2b1bfb26f03ca209b90933c06/annotated_doc-0.0.5-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 136983,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 221824,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/95/95/86342356ff5953b3fb06f7ef7c5bee212d45e770abc7218d451b9148313c/cffi-2.1.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 132079,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/12/b8/4bd346e22b28902df4d651910f5242c28d84e4a5c2435ca5c3f797ed7e2e/anyio-4.15.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 125251,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/58/50/6c0d534c5f134586a8e1ba4e330569e32f057e33372ae556463212fb4cd3/click-8.5.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 250638,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/fb/af/63240b0c0248c075c2535a1f1bd992821d8251b9f173abc13329661d09e4/charset_normalizer-3.5.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 25335,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 131954,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/cb/03/10388a42375ee7e4ac9b94eb2c5c569c8b5795e377e701c9ac3ad63de890/fastapi-0.141.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 610497,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/ee/43/3cecdc0349359e1a527cbf2e3e28e5f8f06d3343aaf82ca13437a9aa290f/greenlet-3.2.4-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 801626,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/74/27/e5b8f34d02d9995b80abcef563ea1f8b56d20134d8f4e5e81733b1feceb2/pyyaml-6.0.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 78784,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 37515,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 8960,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/d2/fd/6668e5aec43ab844de6fc74927e155a3b37bf40d7c3790e49fc0406b6578/httpx_sse-0.4.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 68550,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/57/b0/0e52c878c53f245edd3a11020f20979b3f490f245af532c7cae3027754b5/idna-3.19-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 73517,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/2a/39/e50c7c3a983047577ee07d2a9e53faf5a69493943ec3f6a384bdc792deb2/httpx-0.28.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 7484,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/cb/b1/3846dd7f199d53cb17f49cba7e651e9ce294d8497c8c150530ed11865bb8/iniconfig-2.3.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 18437,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/41/45/1a4ed80516f02155c51f51e8cedb3c1902296743db0bbc66608a0db2814f/jsonschema_specifications-2025.9.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 223436,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/01/c8/248b201f6d753d69fd5d6506011abbb35a946d9142b2ae311a948fd0be3d/mcp-1.29.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 90630,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/69/90/f63fb5873511e014207a475e2bb4e8b2e570d655b00ac19a9a0ca0a385ee/jsonschema-4.26.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 129956,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 1250147,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 67548,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 20538,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/54/20/4d324d65cc6d9205fabedc306948156824eb9f0ee1633355a8f7ec5c66bf/pluggy-1.6.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 48172,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0c/c3/44f3fbbfa403ea2a7c779186dc20772604442dde72947e7d01069cbe98e3/pycparser-3.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 472589,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/eb/47/c95ffc2009878c7aac0c5e08528022dcb885933252a88b5f170058014464/pydantic-2.13.5-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 69413,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/30/a4/2bffa9f8e804325a09867f0e9d30795c80ea9f8d62560bd1b6ad6220eb2f/pydantic_settings-2.15.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 2066633,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/d3/f2/9e4de77a6271e07a76d2d58b11c091a979c191ed2939bf80067568b369d2/pydantic_core-2.46.5-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 15730,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/9b/4d/b9add7c84060d4c1906abe9a7e5359f2a60f7a9a4f67268b2766673427d8/pyee-13.0.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 386536,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 10095,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/5a/cc/06253936f4a7fa2e0f48dfe6d851d9c56df896a9ab09ac019d70b760619c/pytest_mock-3.15.1-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 229892,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 22780,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/0d/17/c5c6b53ddc18f297992099b3d9ec16c855c0ccc83263a21fe4d1c625ec6c/python_dotenv-1.2.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 30042,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e1/04/e8135ebd1ad02c56ec633277529b2602ff99ff634be76cdba5744cf554fd/python_multipart-0.0.32-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 26766,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/2c/58/ca301544e1fa93ed4f80d724bf5b194f6e4b945841c5bfd555878eea9fcb/referencing-0.37.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 73075,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 36289,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/6d/86/ca7958de70cb0752350575e98229368a3a2f746a2942034b3364e17312bb/responses-0.26.3-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 365678,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/57/d7/fe978efc2ae50abe48eb7464668ea99f53c010c60aeebb7b35ad27f23661/rpds_py-2026.6.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 11050,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 17122,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/98/6a/2ba3ed4a69babf3afdddf7d8314a48d87562c0a442206bbc2a1b50d5efc0/sse_starlette-3.4.11-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 75969,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/c8/cb/6a6a47d5b464bd08695d254f3da6e7986cc70c9fa5d778eda57538edfe56/starlette-1.6.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 14750,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/67/81/4add07e5172b7ac40d8ed5ff580409a7801a4fe26d529bdd915401dabfbe/typing_inspection-0.4.4-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 45571,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 348168,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e5/6d/b53b99a9f2766d095985947a5782f1702cabb129a34f7a802d7197af832f/tzdata-2026.3-py2.py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 131087,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/7f/3e/5db95bcf282c52709639744ca2a8b149baccf648e39c8cc87553df9eae0c/urllib3-2.7.0-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 79871,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/f1/79/4a20b54ab0491485ccd8c077db2d39187c7f12b3e15485d38a7be37c81b4/uvicorn-0.52.4-py3-none-any.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 4746230,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/85/66/6ccca4722987ddedaa7fc9c3f4708af7431f5535666c174350830888c6b7/cryptography-50.0.1-cp311-abi3-manylinux_2_34_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 10938525,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/e3/70/4363150359f95b4cb4bcbb34ca23572bb5495749a621a8f3d5a1ddfd293c/pandas-3.0.5-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 16633220,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/a5/9d/3584b9984ca4c047aea75214ce1a4c4c73d849bd71b604264b7f5653f8a8/numpy-2.4.6-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "attempt": 1,
+      "bytes": 45905643,
+      "phase": "setup",
+      "url": "https://files.pythonhosted.org/packages/08/33/858312628aa16a6de97839adc2ca28031ebc5391f96b6fb8fdf1fcb15d6c/playwright-1.55.0-py3-none-manylinux1_x86_64.whl"
+    }
+  ],
+  "browser_archives": [
+    {
+      "bytes": 182166967,
+      "filename": "chromium-linux.zip",
+      "final_url": "https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/chromium/1187/chromium-linux.zip",
+      "name": "chromium",
+      "phase": "setup/browser acquisition",
+      "revision": "1187",
+      "sha256": "395e829e88f9ff3fc108cc9a3db49907afd9f5860066e9678694b01a406ee979",
+      "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1187/chromium-linux.zip"
+    },
+    {
+      "bytes": 109363841,
+      "filename": "chromium-headless-shell-linux.zip",
+      "final_url": "https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/chromium/1187/chromium-headless-shell-linux.zip",
+      "name": "chromium-headless-shell",
+      "phase": "setup/browser acquisition",
+      "revision": "1187",
+      "sha256": "97842c43d49627e893e1498f61554fdfe0223d35daf247e4bedee11e79509b8e",
+      "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1187/chromium-headless-shell-linux.zip"
+    },
+    {
+      "bytes": 2376500,
+      "filename": "ffmpeg-linux.zip",
+      "final_url": "https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip",
+      "name": "ffmpeg",
+      "phase": "setup/browser acquisition",
+      "revision": "1011",
+      "sha256": "ebc74fc5b94830176a3c2914ae96bd8bc7f6a91f4f33890230f84a172ee61ccc",
+      "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip"
+    }
+  ],
+  "browser_provenance_sources": [
+    "https://raw.githubusercontent.com/microsoft/playwright/v1.55.0/packages/playwright-core/browsers.json",
+    "https://raw.githubusercontent.com/microsoft/playwright/v1.55.0/packages/playwright-core/src/server/registry/index.ts"
+  ],
+  "classification": "SETUP_BUILD_ACQUISITION_ONLY",
+  "metadata_initial_batch_note": "Initial 50 metadata responses retained with exact source URI and SHA256 before an assertion rejected Playwright range transitives; per-retry journal was not flushed for that aborted metadata-only batch. No exact HTTP retry count is asserted; all source URI uses are classified as setup.",
+  "metadata_source_inventory": "lock_generation_provenance.json",
+  "other_preflight_requests": [
+    {
+      "result": "success",
+      "url": "https://pypi.org/pypi/numpy/2.4.6/json"
+    },
+    {
+      "result": "success",
+      "url": "https://pypi.org/pypi/pandas/3.0.5/json"
+    },
+    {
+      "result": "success",
+      "url": "https://api.github.com/repos/actions/checkout/git/ref/tags/v4"
+    },
+    {
+      "result": "initial RemoteDisconnected, later success",
+      "url": "https://api.github.com/repos/actions/setup-python/git/ref/tags/v5"
+    },
+    {
+      "result": "success",
+      "url": "https://api.github.com/repos/actions/checkout/git/commits/11d5960a326750d5838078e36cf38b85af677262"
+    },
+    {
+      "result": "success",
+      "url": "https://api.github.com/repos/actions/setup-python/git/commits/a26af69be951a213d495a4c3e4e4022e16d87065"
+    }
+  ],
+  "preflight": [
+    {
+      "bytes": 337,
+      "phase": "setup",
+      "url": "https://api.github.com/repos/actions/setup-python/git/ref/tags/v5"
+    },
+    {
+      "bytes": 702,
+      "phase": "setup",
+      "url": "https://api.nuget.org/v3/registration5-gz-semver2/python/3.11.9.json"
+    },
+    {
+      "bytes": 596073,
+      "phase": "setup",
+      "url": "https://api.nuget.org/v3/catalog0/data/2024.04.02.13.14.51/python.3.11.9.json"
+    },
+    {
+      "bytes": 17478009,
+      "phase": "setup",
+      "url": "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg"
+    },
+    {
+      "bytes": 10925,
+      "phase": "setup",
+      "url": "https://pypi.org/pypi/playwright/1.55.0/json"
+    }
+  ],
+  "product_provider_requests": 0
+}

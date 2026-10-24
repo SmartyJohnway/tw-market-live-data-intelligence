@@ -1,6 +1,9 @@
 ARG BASE_IMAGE=python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741
 FROM ${BASE_IMAGE} AS dependencies
 
+# Build-time imports must not persist timestamp-dependent bytecode caches.
+ENV PYTHONDONTWRITEBYTECODE=1
+
 COPY requirements-linux-amd64-cp313.txt /tmp/requirements.txt
 COPY dependency-lock-linux-amd64-cp313.json /tmp/dependency-lock.json
 COPY wheelhouse/ /tmp/wheelhouse/
@@ -9,7 +12,8 @@ RUN python -m venv /opt/tw-market/venv \
        --disable-pip-version-check --no-cache-dir --no-compile --no-index \
        --find-links=/tmp/wheelhouse --only-binary=:all: --require-hashes \
        -r /tmp/requirements.txt \
-    && /opt/tw-market/venv/bin/python -m pip check
+    && /opt/tw-market/venv/bin/python -m pip check \
+    && find /opt/tw-market/venv -type f -name '*.pyc' -delete
 
 ARG BASE_IMAGE=python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741
 FROM ${BASE_IMAGE} AS runtime

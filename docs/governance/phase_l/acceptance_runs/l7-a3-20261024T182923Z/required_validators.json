@@ -1,0 +1,89 @@
+{
+  "guard_denials": [],
+  "manifest_validation": "performed before and after final commit; see manifest.json and exact receipt",
+  "packaged_schema_count": 75,
+  "postseal_validation": "postseal_required_validators.json",
+  "results": [
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"consumers\": 6,\n  \"core_package_version_changes\": 0,\n  \"sbom_sha256\": \"4be21c477be71520e2bdc87b9e49d35e08dc8bea85a6654b12a3969c418913f2\"\n}\n",
+      "validator": "validate_dependency_authority"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"browser_extra_count\": 1,\n  \"direct_count\": 11,\n  \"errors\": [],\n  \"lock_count\": 49,\n  \"network_access\": false,\n  \"status\": \"PASS\",\n  \"writes\": false\n}\n",
+      "validator": "verify_dependency_supply_chain"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"policy_id\": \"CI_POLICY_V1\",\n  \"status\": \"passed\",\n  \"violations\": [],\n  \"workflow_count\": 5,\n  \"workflows\": [\n    {\n      \"file\": \".github\\\\workflows\\\\browser-operator-e2e.yml\",\n      \"name\": \"Browser Operator E2E\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\ci.yml\",\n      \"name\": \"Default CI\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\non-network-ci.yml\",\n      \"name\": \"Full Non-Network Regression\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\release-validation.yml\",\n      \"name\": \"Release Validation\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\windows-compatibility-smoke.yml\",\n      \"name\": \"Windows Compatibility Smoke\",\n      \"triggers\": [\n        \"pull_request\",\n        \"workflow_dispatch\"\n      ]\n    }\n  ]\n}\n",
+      "validator": "validate_github_actions_execution_policy"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"unlabeled_pr_expensive_job\": false,\n  \"labeled_pr_synchronize_eligible\": true,\n  \"labeled_pr_reopen_eligible\": true,\n  \"manual_dispatch_eligible\": true,\n  \"pre_publication\": true,\n  \"genuine_windows11_claim\": false\n}\n",
+      "validator": "validate_l7_a2_workflow_policy"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "PASS\n",
+      "validator": "validate_v1_front_door"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "Running R5B Insecure Path Pattern Scanner...\nPASS: No insecure filesystem patterns found.\n",
+      "validator": "governance_forbidden_path_guard"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"authority\": \"VERSION\"}\n",
+      "validator": "validate_product_version_consistency"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{'status': 'PASS', 'checked': 'tracked docs and source files'}\n",
+      "validator": "validate_release_hygiene"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}\n",
+      "validator": "validate_runtime_skill_guide_sync"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"tool_count\": 6}\n",
+      "validator": "validate_v1_public_contracts"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "........................................................................ [ 96%]\n...                                                                      [100%]\n75 passed in 3.55s\n",
+      "validator": "focused_suite"
+    }
+  ],
+  "source_commit": "ab2b2dc941aea68187145166a519757622d092e8",
+  "static_compile": [
+    "scripts/accept_l7_a2_docker.py",
+    "scripts/compare_release_reproducibility.py",
+    "scripts/dependency_authority.py",
+    "scripts/run_l7_a2_release_validation.py",
+    "scripts/validate_dependency_authority.py",
+    "scripts/validate_l7_a2_workflow_policy.py",
+    "scripts/verify_browser_artifact.py",
+    "tests/unit/test_browser_artifact_authority.py",
+    "tests/unit/test_dependency_authority.py",
+    "tests/unit/test_l7_a2_workflow_policy.py",
+    "tests/unit/test_release_reproducibility.py"
+  ],
+  "status": "PASS"
+}

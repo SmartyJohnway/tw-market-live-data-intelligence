@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "upstream_wheels_with_pyc_members": [],
+  "final_venv_pyc_members": [],
+  "existing_wheel_bytes_changed": 0,
+  "cleanup_scope": "derived venv bytecode only; upstream wheel artifacts remain exact pinned bytes"
+}

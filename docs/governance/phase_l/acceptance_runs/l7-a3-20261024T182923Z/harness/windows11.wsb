@@ -1,0 +1,8 @@
+<Configuration>
+<Networking>Disable</Networking><ClipboardRedirection>Disable</ClipboardRedirection>
+<MappedFolders>
+<MappedFolder><HostFolder>C:\twmarket_temp\l7-a3\sandbox\input</HostFolder><SandboxFolder>C:\a3-input</SandboxFolder><ReadOnly>true</ReadOnly></MappedFolder>
+<MappedFolder><HostFolder>C:\twmarket_temp\l7-a3\sandbox\output</HostFolder><SandboxFolder>C:\a3-output</SandboxFolder><ReadOnly>false</ReadOnly></MappedFolder>
+</MappedFolders>
+<LogonCommand><Command>powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\a3-input\guest.ps1</Command></LogonCommand>
+</Configuration>
