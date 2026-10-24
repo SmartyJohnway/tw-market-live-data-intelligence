@@ -90,7 +90,9 @@ def main():
             docker('start-'+variant,'run','-d','--name',name,*common,'-p','127.0.0.1::8000','-e','TW_MARKET_A2_GUARD_LOG=/a2-evidence/service-'+variant+'.jsonl',prefix+':'+variant,'/a2-guard/run.py','serve')
             for attempt in range(40):
                 p=docker(f'status-{variant}-{attempt}','exec',name,'python','/a2-guard/run.py','status',check=False)
-                if 'RUNNING' in p.stdout:break
+                if p.returncode==0:
+                    payload=json.loads(p.stdout)
+                    if payload.get('status')=='RUNNING' and payload.get('service',{}).get('alive') is True:break
                 time.sleep(1)
             else:raise RuntimeError('service failed to become RUNNING')
             docker('doctor-'+variant,'exec',name,'python','/a2-guard/run.py','doctor')
@@ -98,7 +100,7 @@ def main():
             assert endpoint.startswith('127.0.0.1:') and '\n' not in endpoint
             with urllib.request.build_opener(urllib.request.ProxyHandler({})).open('http://'+endpoint+'/api/health',timeout=10) as response:
                 save('host-health-'+variant,{'status':response.status,'endpoint':endpoint,'body':response.read().decode(),'network_class':'localhost only'})
-            docker('startup-'+variant,'exec',name,'python','-c',"import acceptance_guard,runpy,sys;sys.argv=['server/mcp_server.py','--startup-check'];runpy.run_path('server/mcp_server.py',run_name='__main__')")
+            docker('startup-'+variant,'exec',name,'python','-c',"import acceptance_guard,runpy,sys;sys.argv=['scripts/run_unified_market_evidence_mcp.py','--startup-check'];runpy.run_path('scripts/run_unified_market_evidence_mcp.py',run_name='__main__')")
             docker('config-'+variant,'inspect',name)
             app_hashes=json.loads(docker('app-hashes-'+variant,'exec',name,'python','-c',"import acceptance_guard,json,pathlib,hashlib;p=pathlib.Path('/opt/tw-market/app');print(json.dumps({'app/'+str(q.relative_to(p)):hashlib.sha256(q.read_bytes()).hexdigest() for q in p.rglob('*') if q.is_file()}))").stdout)
             assert app_hashes=={row['destination']:row['sha256'] for row in metadata['application_members']}
