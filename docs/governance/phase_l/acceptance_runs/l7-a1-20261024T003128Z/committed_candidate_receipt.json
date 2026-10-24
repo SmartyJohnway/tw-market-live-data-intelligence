@@ -8,6 +8,7 @@
     "unexpected_skips": 0
   },
   "current_sealing_diff": [
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/baseline_full_non_network.json",
     "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_default_ci.json",
     "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_default_ci.log",
     "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_default_ci.xml",
@@ -20,11 +21,15 @@
     "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_release_blocking.xml",
     "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_release_blocking_result.json",
     "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/candidate_release_blocking_runner.json",
-    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/failure_adjudication_47.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/committed_candidate_receipt.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/diagnostic_collection_count_adjudication.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/manifest.json",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/scope_diff_verification.json",
     "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/test_change_justification.json",
     "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/text_normalization.json"
   ],
   "dependency_identity_matches_baseline": true,
+  "diagnostic_count_adjudication": "diagnostic_collection_count_adjudication.json; authoritative full-suite selected counts are 5301 baseline / 5313 candidate, zero cases executed due collection error",
   "diagnostic_results": {
     "DEFAULT_CI": "1277 passed / 13 failed / 4 skipped / 5 deselected; overall FAIL",
     "FULL_NON_NETWORK": "same fcntl collection error; overall FAIL"

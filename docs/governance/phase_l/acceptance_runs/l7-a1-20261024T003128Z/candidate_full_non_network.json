@@ -1,4 +1,5 @@
 {
+  "authoritative_collection_line": "collected 5369 items / 1 error / 56 deselected / 5313 selected",
   "browser_required": false,
   "collected": 5369,
   "collection_adjudication": {
@@ -7,6 +8,7 @@
     "current_equivalent": "Current deterministic transport/budget/authorization tests in canonical profile; frozen A6 one-shot ledger remains manual historical platform diagnostic",
     "not_dependency_repair": "No fcntl shim, dependency change or blanket exclusion added"
   },
+  "collection_errors": 1,
   "command_results": [
     {
       "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -m pytest -m not network and not historical and not performance tests",
@@ -24,6 +26,7 @@
     "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/run_m5ij_end_to_end_acceptance.py --check-only",
     "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01"
   ],
+  "count_adjudication": "Legacy runner parser does not recognize interposed collection-error text and overreports selected. This evidence uses the exact pytest collection line; raw runner log preserved; no execution or PASS inferred.",
   "deselected": 56,
   "duration_seconds": 14.659,
   "elapsed_seconds": 14.844,
@@ -58,7 +61,8 @@
     2
   ],
   "returncode": 1,
-  "selected": 5369,
+  "runner_reported_selected": 5369,
+  "selected": 5313,
   "skipped": null,
   "ssl_policy": "strict",
   "started_at": "2026-10-24T00:43:59Z",

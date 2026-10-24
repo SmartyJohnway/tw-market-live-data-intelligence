@@ -1,232 +1,265 @@
 [
   {
-    "committed_sha256": "7bdb2ddc26d2ac0df995940204ee42d5681102ac504e0bc9b7d9db05fccbd654",
+    "final_evidence_sha256": "7bdb2ddc26d2ac0df995940204ee42d5681102ac504e0bc9b7d9db05fccbd654",
+    "normalized_copy_sha256": "7bdb2ddc26d2ac0df995940204ee42d5681102ac504e0bc9b7d9db05fccbd654",
     "original_sha256": "7bdb2ddc26d2ac0df995940204ee42d5681102ac504e0bc9b7d9db05fccbd654",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\environment.json",
     "target": "baseline_environment.json"
   },
   {
-    "committed_sha256": "86cf94dec8302f92280ccf5fb9956cb33a5607ff7a8093c812ba9b43265ad1d5",
+    "final_evidence_sha256": "411f1269c2f7cd63a8203dd3c337e4d6f674047d85069c3267e130b62fcb8def",
+    "normalized_copy_sha256": "86cf94dec8302f92280ccf5fb9956cb33a5607ff7a8093c812ba9b43265ad1d5",
     "original_sha256": "86cf94dec8302f92280ccf5fb9956cb33a5607ff7a8093c812ba9b43265ad1d5",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\default-ci\\result.json",
     "target": "baseline_default_ci.json"
   },
   {
-    "committed_sha256": "31468f075002fe19e9798c642f9b4bb3dba6b39cdb3c38a939f9bae4f9cc2767",
+    "final_evidence_sha256": "31468f075002fe19e9798c642f9b4bb3dba6b39cdb3c38a939f9bae4f9cc2767",
+    "normalized_copy_sha256": "31468f075002fe19e9798c642f9b4bb3dba6b39cdb3c38a939f9bae4f9cc2767",
     "original_sha256": "76fc1c41381d3463f79fa736ddfe0c37b1c2fb43beb5e94f423d12643289c76c",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\default-ci\\report.xml",
     "target": "baseline_default_ci.xml"
   },
   {
-    "committed_sha256": "3ea47f54a8b7ad2d60d7336f6adce5a39711efc2f2b0352d21439694ed357fa3",
+    "final_evidence_sha256": "3ea47f54a8b7ad2d60d7336f6adce5a39711efc2f2b0352d21439694ed357fa3",
+    "normalized_copy_sha256": "3ea47f54a8b7ad2d60d7336f6adce5a39711efc2f2b0352d21439694ed357fa3",
     "original_sha256": "88339d7d17d58f0b9116c5dac07b740174c6b179f77fa61d936386727d1bb4a0",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\default-ci\\runner.log",
     "target": "baseline_default_ci.log"
   },
   {
-    "committed_sha256": "78979234b53a9f8f6b9b7e8bafbd5f5eaade519291c5f778a81852f75eb5dda2",
+    "final_evidence_sha256": "78979234b53a9f8f6b9b7e8bafbd5f5eaade519291c5f778a81852f75eb5dda2",
+    "normalized_copy_sha256": "78979234b53a9f8f6b9b7e8bafbd5f5eaade519291c5f778a81852f75eb5dda2",
     "original_sha256": "78979234b53a9f8f6b9b7e8bafbd5f5eaade519291c5f778a81852f75eb5dda2",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\default-ci\\roots.json",
     "target": "baseline_default_ci_roots.json"
   },
   {
-    "committed_sha256": "c91a81f8761456f45e0de443b2582b7787cfea3eb43356f934c4eaba55b9954c",
+    "final_evidence_sha256": "7ba6910ced2e9c7e632d475a9f4b8cd4bcc6e5717404c03244b891f0f3c8221c",
+    "normalized_copy_sha256": "c91a81f8761456f45e0de443b2582b7787cfea3eb43356f934c4eaba55b9954c",
     "original_sha256": "c91a81f8761456f45e0de443b2582b7787cfea3eb43356f934c4eaba55b9954c",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\full-non-network\\result.json",
     "target": "baseline_full_non_network.json"
   },
   {
-    "committed_sha256": "812bcb401dfca537a8a153dfb666fe5e53309e8c775e63021f83f45f0b7a8391",
+    "final_evidence_sha256": "812bcb401dfca537a8a153dfb666fe5e53309e8c775e63021f83f45f0b7a8391",
+    "normalized_copy_sha256": "812bcb401dfca537a8a153dfb666fe5e53309e8c775e63021f83f45f0b7a8391",
     "original_sha256": "7c92f2088bc99a52933d2969db727e16be49b4c5dd88f33595ed2365771ffb2f",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\full-non-network\\report.xml",
     "target": "baseline_full_non_network.xml"
   },
   {
-    "committed_sha256": "273702887da69c1a2cd26f9ccfb3a02a223c79cb6d1b789554a77fe0aae6c023",
+    "final_evidence_sha256": "273702887da69c1a2cd26f9ccfb3a02a223c79cb6d1b789554a77fe0aae6c023",
+    "normalized_copy_sha256": "273702887da69c1a2cd26f9ccfb3a02a223c79cb6d1b789554a77fe0aae6c023",
     "original_sha256": "74764c13b5d2ca946986e8caa5c53559b2883fc20124ce272a0328d2a322fe9e",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\full-non-network\\runner.log",
     "target": "baseline_full_non_network.log"
   },
   {
-    "committed_sha256": "512089f38153b3e23ebcf0ecd15927c67c27a9bbb425431ac0e33cfbe28a82ad",
+    "final_evidence_sha256": "512089f38153b3e23ebcf0ecd15927c67c27a9bbb425431ac0e33cfbe28a82ad",
+    "normalized_copy_sha256": "512089f38153b3e23ebcf0ecd15927c67c27a9bbb425431ac0e33cfbe28a82ad",
     "original_sha256": "512089f38153b3e23ebcf0ecd15927c67c27a9bbb425431ac0e33cfbe28a82ad",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\baseline\\full-non-network\\roots.json",
     "target": "baseline_full_non_network_roots.json"
   },
   {
-    "committed_sha256": "01aa5f13695d8b348553bfeac75517c644e2a5557a4e8b3569588dc264feca32",
+    "final_evidence_sha256": "e92ca194d5873e9fb1d5876a53e77c213825d8932adb5f21df1225f5e3148e79",
+    "normalized_copy_sha256": "01aa5f13695d8b348553bfeac75517c644e2a5557a4e8b3569588dc264feca32",
     "original_sha256": "01aa5f13695d8b348553bfeac75517c644e2a5557a4e8b3569588dc264feca32",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\default-ci\\result.json",
     "target": "candidate_default_ci.json"
   },
   {
-    "committed_sha256": "335cedbee2f5f9fd810302b5223e79c11f38d864aafe628ef20b1db25f4ce765",
+    "final_evidence_sha256": "335cedbee2f5f9fd810302b5223e79c11f38d864aafe628ef20b1db25f4ce765",
+    "normalized_copy_sha256": "335cedbee2f5f9fd810302b5223e79c11f38d864aafe628ef20b1db25f4ce765",
     "original_sha256": "c403f406a0d0f95fcaf411a9f37ea7dbb4ddfefa1153e0b1c79018ffe7509f36",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\default-ci\\report.xml",
     "target": "candidate_default_ci.xml"
   },
   {
-    "committed_sha256": "32986be498304e40f75321fd1a7c4369166b7d914145725651764f99a6cf0159",
+    "final_evidence_sha256": "32986be498304e40f75321fd1a7c4369166b7d914145725651764f99a6cf0159",
+    "normalized_copy_sha256": "32986be498304e40f75321fd1a7c4369166b7d914145725651764f99a6cf0159",
     "original_sha256": "5ab7838e88d9238dca5e78f28fbc7a6195c55263e22a95fd1d2ee204d59e41d3",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\default-ci\\runner.log",
     "target": "candidate_default_ci.log"
   },
   {
-    "committed_sha256": "9d3399a871de053709cf4974212a2d7069f670d0c573b86e124b56c73ee021b2",
+    "final_evidence_sha256": "9d3399a871de053709cf4974212a2d7069f670d0c573b86e124b56c73ee021b2",
+    "normalized_copy_sha256": "9d3399a871de053709cf4974212a2d7069f670d0c573b86e124b56c73ee021b2",
     "original_sha256": "9d3399a871de053709cf4974212a2d7069f670d0c573b86e124b56c73ee021b2",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\default-ci\\roots.json",
     "target": "candidate_default_ci_roots.json"
   },
   {
-    "committed_sha256": "506566fbe9f4224565b289a8865bf407d64c1cb18e38450712f63ccb4325e87a",
+    "final_evidence_sha256": "1921ab9a27723298b5122d93220028dd96dc616ab6d1163294cee8f1adf4b4d9",
+    "normalized_copy_sha256": "506566fbe9f4224565b289a8865bf407d64c1cb18e38450712f63ccb4325e87a",
     "original_sha256": "506566fbe9f4224565b289a8865bf407d64c1cb18e38450712f63ccb4325e87a",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\result.json",
     "target": "candidate_full_non_network.json"
   },
   {
-    "committed_sha256": "f7af1da58f6dad321ca3513472d96642ae0bd120802fce9efe9dcf3fb8f21c83",
+    "final_evidence_sha256": "f7af1da58f6dad321ca3513472d96642ae0bd120802fce9efe9dcf3fb8f21c83",
+    "normalized_copy_sha256": "f7af1da58f6dad321ca3513472d96642ae0bd120802fce9efe9dcf3fb8f21c83",
     "original_sha256": "74ec9d787b596c5f1e8618df79a1ec43c559cc04ddc84f3b6ca1fa7fcbdcdf23",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\report.xml",
     "target": "candidate_full_non_network.xml"
   },
   {
-    "committed_sha256": "9e027e9320852c2e00b7e5e16152257c4943e0a324827a2f8b881ccf311fd7ba",
+    "final_evidence_sha256": "9e027e9320852c2e00b7e5e16152257c4943e0a324827a2f8b881ccf311fd7ba",
+    "normalized_copy_sha256": "9e027e9320852c2e00b7e5e16152257c4943e0a324827a2f8b881ccf311fd7ba",
     "original_sha256": "b51e9d369e7b1ea582bf61455f1c0d1b0839a39457e89ffa12408f53395119c8",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\runner.log",
     "target": "candidate_full_non_network.log"
   },
   {
-    "committed_sha256": "eea9f8a596f60e1a5fc07ff093b46629cd34ec754bd3e06ae3424c15a640d1b3",
+    "final_evidence_sha256": "eea9f8a596f60e1a5fc07ff093b46629cd34ec754bd3e06ae3424c15a640d1b3",
+    "normalized_copy_sha256": "eea9f8a596f60e1a5fc07ff093b46629cd34ec754bd3e06ae3424c15a640d1b3",
     "original_sha256": "eea9f8a596f60e1a5fc07ff093b46629cd34ec754bd3e06ae3424c15a640d1b3",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-diagnostics\\full-non-network\\roots.json",
     "target": "candidate_full_non_network_roots.json"
   },
   {
-    "committed_sha256": "1d3b605eb8790c22b5e4b08cabff0896360488c4ceb0829bca716b5c1bf95718",
+    "final_evidence_sha256": "1d3b605eb8790c22b5e4b08cabff0896360488c4ceb0829bca716b5c1bf95718",
+    "normalized_copy_sha256": "1d3b605eb8790c22b5e4b08cabff0896360488c4ceb0829bca716b5c1bf95718",
     "original_sha256": "206ce0c8aef0bf7380af5e9ef05b15151a1ca9d7c023753b59114c317dfba475",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-candidate\\release-blocking-ci\\report.xml",
     "target": "candidate_release_blocking.xml"
   },
   {
-    "committed_sha256": "4620e0c209bbf9db98aff3660216e342ef5252f6066051ff15b2cb4dc8127f35",
+    "final_evidence_sha256": "4620e0c209bbf9db98aff3660216e342ef5252f6066051ff15b2cb4dc8127f35",
+    "normalized_copy_sha256": "4620e0c209bbf9db98aff3660216e342ef5252f6066051ff15b2cb4dc8127f35",
     "original_sha256": "27a84505b8a5d26d797d999bf46677cf7722f91683af7ab232700ebf4d7600e6",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-candidate\\release-blocking-ci\\guard.jsonl",
     "target": "candidate_guard.jsonl"
   },
   {
-    "committed_sha256": "776a34b7c676da646940c44eaa886578d148c1caebdfcdb8cfa245d2b94bd20d",
+    "final_evidence_sha256": "776a34b7c676da646940c44eaa886578d148c1caebdfcdb8cfa245d2b94bd20d",
+    "normalized_copy_sha256": "776a34b7c676da646940c44eaa886578d148c1caebdfcdb8cfa245d2b94bd20d",
     "original_sha256": "bbdf628baab9ad93a8c6ff1b01b2a6423a15c2ee22d98a6be61d5be843bf25d8",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\committed-candidate.log",
     "target": "candidate_release_blocking_runner.json"
   },
   {
-    "committed_sha256": "ae135857ce3785210e7f6311e98f21b022c84d6c3976aedf5b9e35effc9e4275",
+    "final_evidence_sha256": "ae135857ce3785210e7f6311e98f21b022c84d6c3976aedf5b9e35effc9e4275",
+    "normalized_copy_sha256": "ae135857ce3785210e7f6311e98f21b022c84d6c3976aedf5b9e35effc9e4275",
     "original_sha256": "3ac10e10da70062e00d39d7c189d6358ac2235c7fda773ff6e98d5456cbeced9",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\historical-replay.xml",
     "target": "historical_replay.xml"
   },
   {
-    "committed_sha256": "e702ca1561cf32beb4497380bd73529e1d2fa779011746e6fec8cb44544f7652",
+    "final_evidence_sha256": "e702ca1561cf32beb4497380bd73529e1d2fa779011746e6fec8cb44544f7652",
+    "normalized_copy_sha256": "e702ca1561cf32beb4497380bd73529e1d2fa779011746e6fec8cb44544f7652",
     "original_sha256": "0c21d49f6f8cc8751f02805da3bbf790527dbae4d41339c67eb7cd877365eea2",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\historical-replay.log",
     "target": "historical_replay.log"
   },
   {
-    "committed_sha256": "bf2b57c3ba13241a075e2fe3c5908392d208424ae77993f9f460f9717eedefd7",
+    "final_evidence_sha256": "bf2b57c3ba13241a075e2fe3c5908392d208424ae77993f9f460f9717eedefd7",
+    "normalized_copy_sha256": "bf2b57c3ba13241a075e2fe3c5908392d208424ae77993f9f460f9717eedefd7",
     "original_sha256": "bf2b57c3ba13241a075e2fe3c5908392d208424ae77993f9f460f9717eedefd7",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\result.json",
     "target": "network_negative_controls.json"
   },
   {
-    "committed_sha256": "272655f29691540bf9342af7c34a680f2b2465ed01bf71b15197f06abd26d7b0",
+    "final_evidence_sha256": "272655f29691540bf9342af7c34a680f2b2465ed01bf71b15197f06abd26d7b0",
+    "normalized_copy_sha256": "272655f29691540bf9342af7c34a680f2b2465ed01bf71b15197f06abd26d7b0",
     "original_sha256": "c0db937be51f13f1fb67e41ae25b6ddcf96d46fb9571d504bcf440d869d33f24",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\dns.jsonl",
     "target": "negative_dns.jsonl"
   },
   {
-    "committed_sha256": "e9798debc74b1a1f96399a044c01caed83229e9cf8742ab378f5eb37c73e2097",
+    "final_evidence_sha256": "e9798debc74b1a1f96399a044c01caed83229e9cf8742ab378f5eb37c73e2097",
+    "normalized_copy_sha256": "e9798debc74b1a1f96399a044c01caed83229e9cf8742ab378f5eb37c73e2097",
     "original_sha256": "62340ccd061fcc31bd61c9b8f4816032e4aba66f5d10a0377c44c8705e17027c",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\httpx.jsonl",
     "target": "negative_httpx.jsonl"
   },
   {
-    "committed_sha256": "434b373c532d3e3dea135009a3c1b2bb51cce0f68e11c7d89cc2d4fdd6eca7a4",
+    "final_evidence_sha256": "434b373c532d3e3dea135009a3c1b2bb51cce0f68e11c7d89cc2d4fdd6eca7a4",
+    "normalized_copy_sha256": "434b373c532d3e3dea135009a3c1b2bb51cce0f68e11c7d89cc2d4fdd6eca7a4",
     "original_sha256": "632969262c08e369d1b95050c54c3768775a878488cf239152f1a71dc7129372",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\isolated_python_child.jsonl",
     "target": "negative_isolated_python_child.jsonl"
   },
   {
-    "committed_sha256": "ffe59adf1ba8d91ea355622210b16ae6de17f7fe9078acdbc7c393cdd357e699",
+    "final_evidence_sha256": "ffe59adf1ba8d91ea355622210b16ae6de17f7fe9078acdbc7c393cdd357e699",
+    "normalized_copy_sha256": "ffe59adf1ba8d91ea355622210b16ae6de17f7fe9078acdbc7c393cdd357e699",
     "original_sha256": "2f464d27fca36f1d5ec6d778ab2b8de312264b2f122c8ad5f08a575563a7eb6e",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\native_child.jsonl",
     "target": "negative_native_child.jsonl"
   },
   {
-    "committed_sha256": "268fd177e85f5df2ff2db8aaffa91a356f4bc7a6e8a3c84f8301eeb3c4338454",
+    "final_evidence_sha256": "268fd177e85f5df2ff2db8aaffa91a356f4bc7a6e8a3c84f8301eeb3c4338454",
+    "normalized_copy_sha256": "268fd177e85f5df2ff2db8aaffa91a356f4bc7a6e8a3c84f8301eeb3c4338454",
     "original_sha256": "6174765d59fdf0ea7087b9ffd3461a325af485344225d8d814e7794dedb5efd7",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\node_https.jsonl",
     "target": "negative_node_https.jsonl"
   },
   {
-    "committed_sha256": "d41f4bef4c796d479f9d863120f0526ec0885efadd277f21f0df4a492edcbda7",
+    "final_evidence_sha256": "d41f4bef4c796d479f9d863120f0526ec0885efadd277f21f0df4a492edcbda7",
+    "normalized_copy_sha256": "d41f4bef4c796d479f9d863120f0526ec0885efadd277f21f0df4a492edcbda7",
     "original_sha256": "349ec5fbe69e9adb91260a65d7b241f8e14faa8e21b71ef71765726af8df0553",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\node_worker.jsonl",
     "target": "negative_node_worker.jsonl"
   },
   {
-    "committed_sha256": "aa0307f1064f09ff47a7ac3218014ce54b11907e6f0b270120ee81c63145bc67",
+    "final_evidence_sha256": "aa0307f1064f09ff47a7ac3218014ce54b11907e6f0b270120ee81c63145bc67",
+    "normalized_copy_sha256": "aa0307f1064f09ff47a7ac3218014ce54b11907e6f0b270120ee81c63145bc67",
     "original_sha256": "8455fa689d503beb92b32e241397196b7fd99d619513563db3f888e181ec21dd",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\requests.jsonl",
     "target": "negative_requests.jsonl"
   },
   {
-    "committed_sha256": "513d0944bb31fb2b19991ed5fe90a84929ece920c64ef56dc5d90c0e62806070",
+    "final_evidence_sha256": "513d0944bb31fb2b19991ed5fe90a84929ece920c64ef56dc5d90c0e62806070",
+    "normalized_copy_sha256": "513d0944bb31fb2b19991ed5fe90a84929ece920c64ef56dc5d90c0e62806070",
     "original_sha256": "f5c78a0b01c3b46aa90cdb84a76ec1c9adcf9d5d984dab32fa8806bc79cb7aab",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\socket_connect_ex.jsonl",
     "target": "negative_socket_connect_ex.jsonl"
   },
   {
-    "committed_sha256": "ac3d449ee1ad42513998f9cb0f04df0053b6bc35804ce53519b9b98ffc63265c",
+    "final_evidence_sha256": "ac3d449ee1ad42513998f9cb0f04df0053b6bc35804ce53519b9b98ffc63265c",
+    "normalized_copy_sha256": "ac3d449ee1ad42513998f9cb0f04df0053b6bc35804ce53519b9b98ffc63265c",
     "original_sha256": "50391e58aa9a5a59fc928e5cfa10a9ece46a921dd509d088bfc6949487652110",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\negative-controls-final\\urllib.jsonl",
     "target": "negative_urllib.jsonl"
   },
   {
-    "committed_sha256": "abe215be92c34c04a4267007c3dd17e5088e558b1bd0670ec0ffae9a1e9c7013",
+    "final_evidence_sha256": "abe215be92c34c04a4267007c3dd17e5088e558b1bd0670ec0ffae9a1e9c7013",
+    "normalized_copy_sha256": "abe215be92c34c04a4267007c3dd17e5088e558b1bd0670ec0ffae9a1e9c7013",
     "original_sha256": "abe215be92c34c04a4267007c3dd17e5088e558b1bd0670ec0ffae9a1e9c7013",
-    "policy": "LF and trailing whitespace normalization of new evidence copy only; originals retained; historical repository evidence unchanged",
+    "policy": "New evidence copy normalized to LF/trailing whitespace; JSON review/adjudication fields may then be added. Original, normalized-copy and final evidence hashes distinguished; manifest binds final bytes. Historical source evidence unchanged.",
     "source": "C:\\twmarket_temp\\l7-a1\\probe_guard_final.py",
     "target": "negative_control_harness.py"
   }

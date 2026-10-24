@@ -54,9 +54,9 @@
       "sha256": "87360eb7375f196351a7d92bc36a32be559eccbc23e27e713d3148f861cd29de"
     },
     {
-      "bytes": 6233,
+      "bytes": 6632,
       "path": "baseline_full_non_network.json",
-      "sha256": "7c508278834c1dcea626bbc92805d8707097724fbe9a505d22fa42022b6343c5"
+      "sha256": "7ba6910ced2e9c7e632d475a9f4b8cd4bcc6e5717404c03244b891f0f3c8221c"
     },
     {
       "bytes": 5215,
@@ -99,9 +99,9 @@
       "sha256": "b8707231e45bcc9152bb801513b77c2e5cb5356b26ab7e2782bbdff08252a0de"
     },
     {
-      "bytes": 6259,
+      "bytes": 6658,
       "path": "candidate_full_non_network.json",
-      "sha256": "73c7c3366a845a986988c1d85a7eaf4482a15cc799f352eefd5f09ba6bee0792"
+      "sha256": "1921ab9a27723298b5122d93220028dd96dc616ab6d1163294cee8f1adf4b4d9"
     },
     {
       "bytes": 5241,
@@ -139,14 +139,19 @@
       "sha256": "776a34b7c676da646940c44eaa886578d148c1caebdfcdb8cfa245d2b94bd20d"
     },
     {
-      "bytes": 2455,
+      "bytes": 3062,
       "path": "committed_candidate_receipt.json",
-      "sha256": "d41108bffb8f2e4fcb51a1af9b0baec7e39f14b11489c91dc3056c7f53a9b014"
+      "sha256": "ab9699abf788dd7ec93d92a2cbc9f4ec13a598308d2cbb01ea9e38f2ea9cb306"
     },
     {
       "bytes": 838,
       "path": "compile_static.json",
       "sha256": "13ef79329859b78e8f788ecf7da4cedab2dc85da5590a5d9a5784644b4b3bd2f"
+    },
+    {
+      "bytes": 870,
+      "path": "diagnostic_collection_count_adjudication.json",
+      "sha256": "e52b39f5562f113184ec3fd08806d0e829e145b68a7c514c8bb0173336c66819"
     },
     {
       "bytes": 458,
@@ -314,9 +319,9 @@
       "sha256": "68f6f0d21f26bf218447b8a73713972f32ef1c39c4d6a617f46c7c34a7b1ca26"
     },
     {
-      "bytes": 7741,
+      "bytes": 7857,
       "path": "scope_diff_verification.json",
-      "sha256": "4a21cb889fdcf039dcb4f6d78f7200f2faee7eab19879bbedb2e2805df34d357"
+      "sha256": "a9262e228c4e9d9cda7a16644bd8ea5d484c6c498c4a7959a7eb0fb1111cb1f6"
     },
     {
       "bytes": 4612,
@@ -324,11 +329,11 @@
       "sha256": "f7b82d971d347d378072ece104f9d244d2fdec50f6c614b6adf9dcabbe19318a"
     },
     {
-      "bytes": 15359,
+      "bytes": 22421,
       "path": "text_normalization.json",
-      "sha256": "25cffdd2adb99dc6a53bdd3a12a43d39d80fa68133791b8c378def269c5e1306"
+      "sha256": "c73736aeb89dbb5d068ed0852094a6f92c9a319d638ef9b141e50dd070bbb322"
     }
   ],
   "schema": "twmarket.l7_a1.acceptance_evidence.v1",
-  "self_digest": "66c81f10e4a9416def86f2bf72f99a6aa31875f77cb10ce510e777d6cc7538bb"
+  "self_digest": "ef89cd7fd52dfb5c84b1a9aae1b30796d4409a85afaacf24f9b2d69800b655f5"
 }

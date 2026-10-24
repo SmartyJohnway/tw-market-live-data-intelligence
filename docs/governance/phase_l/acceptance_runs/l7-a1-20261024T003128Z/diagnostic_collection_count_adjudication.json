@@ -1,0 +1,22 @@
+{
+  "classification": "TEST_INFRASTRUCTURE_DEFECT_REPORTING_ONLY",
+  "records": [
+    {
+      "authoritative_selected": 5301,
+      "collection_line": "collected 5357 items / 1 error / 56 deselected / 5301 selected",
+      "executed_cases": 0,
+      "raw_runner_selected": 5357,
+      "record": "baseline_full_non_network"
+    },
+    {
+      "authoritative_selected": 5313,
+      "collection_line": "collected 5369 items / 1 error / 56 deselected / 5313 selected",
+      "executed_cases": 0,
+      "raw_runner_selected": 5369,
+      "record": "candidate_full_non_network"
+    }
+  ],
+  "repair": "Evidence counters corrected against preserved pytest collection lines; CLI parsing implementation unchanged",
+  "scope": "Nonblocking legacy diagnostic count parsing, no effect on actual pytest return codes or canonical selected/JUnit equality",
+  "status": "ADJUDICATED"
+}
