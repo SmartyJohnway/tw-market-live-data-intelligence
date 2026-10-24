@@ -1,0 +1,25 @@
+{
+  "FastAPI": "0.141.1",
+  "MCP": "1.29.0",
+  "Node": "26.7.0 existing C prerequisite",
+  "Starlette": "1.6.0",
+  "classification": "OBSERVED_A2_VALIDATION_GRAPH",
+  "dependency_artifact_count": 49,
+  "dependency_authority": "FINAL_DEPENDENCY_AUTHORITY_DEFERRED_TO_A3",
+  "fresh_dependency_venv": "C:\\twmarket_temp\\l7-a2\\fresh-venv",
+  "guest_prerequisite": {
+    "catalog_SHA512_verified": true,
+    "network_requests": 0,
+    "official_package_sha256": "ea7541c98f77b6f344460b88db6e677573069979bcbf0ba18747cc2c125aba25",
+    "provisioning": "official CPython NuGet 3.13.9 archive, no MSI or Registry/PATH installation",
+    "runtime": {
+      "bits": 64,
+      "executable": "C:\\twmarket_temp\\l7-a2\\guest\\prerequisite\\tools\\python.exe",
+      "version": "3.13.9 (tags/v3.13.9:8183fa5, Oct 14 2025, 14:09:13) [MSC v.1944 64 bit (AMD64)]"
+    },
+    "scope": "disposable guest prerequisite only"
+  },
+  "host_python": "3.13.7",
+  "production_HOME_STATE_or_developer_venv_inherited": false,
+  "source": "unchanged hash-verified Native wheelhouse lock"
+}

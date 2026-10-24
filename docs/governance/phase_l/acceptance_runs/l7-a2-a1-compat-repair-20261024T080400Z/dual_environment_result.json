@@ -1,0 +1,45 @@
+{
+  "included_test_files": [
+    "tests/unit/test_phase_l_l4_a4_control_plane_boundary.py",
+    "tests/unit/test_l7_a1_deterministic_ci.py",
+    "tests/unit/test_post_route_surface_compatibility.py"
+  ],
+  "results": [
+    {
+      "FastAPI": "0.133.0",
+      "Starlette": "0.52.1",
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests": 39
+      },
+      "environment": "environment-a",
+      "guard_result": {
+        "boundary": "C:\\twmarket_temp\\l7-a2",
+        "guard_denials": [],
+        "network_scope": "Python and inherited Python/Node; no OS firewall claim",
+        "pytest_exit_code": 0
+      }
+    },
+    {
+      "FastAPI": "0.141.1",
+      "Starlette": "1.6.0",
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests": 39
+      },
+      "environment": "environment-b",
+      "guard_result": {
+        "boundary": "C:\\twmarket_temp\\l7-a2",
+        "guard_denials": [],
+        "network_scope": "Python and inherited Python/Node; no OS firewall claim",
+        "pytest_exit_code": 0
+      }
+    }
+  ],
+  "same_repaired_node_in_both": true,
+  "status": "PASS"
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "validator": "validate_v1_front_door",
+    "exit_code": 0,
+    "stdout": "PASS\n",
+    "stderr": ""
+  },
+  {
+    "validator": "governance_forbidden_path_guard",
+    "exit_code": 0,
+    "stdout": "Running R5B Insecure Path Pattern Scanner...\nPASS: No insecure filesystem patterns found.\n",
+    "stderr": ""
+  },
+  {
+    "validator": "validate_product_version_consistency",
+    "exit_code": 0,
+    "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"authority\": \"VERSION\"}\n",
+    "stderr": ""
+  },
+  {
+    "validator": "validate_release_hygiene",
+    "exit_code": 0,
+    "stdout": "{'status': 'PASS', 'checked': 'tracked docs and source files'}\n",
+    "stderr": ""
+  },
+  {
+    "validator": "validate_runtime_skill_guide_sync",
+    "exit_code": 0,
+    "stdout": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}\n",
+    "stderr": ""
+  },
+  {
+    "validator": "validate_v1_public_contracts",
+    "exit_code": 0,
+    "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"tool_count\": 6}\n",
+    "stderr": ""
+  },
+  {
+    "validator": "validate_github_actions_execution_policy",
+    "exit_code": 1,
+    "stdout": "{\n  \"policy_id\": \"CI_POLICY_V1\",\n  \"status\": \"failed\",\n  \"violations\": [\n    \"forbidden_automatic_trigger:windows-compatibility-smoke.yml:pull_request\",\n    \"release_validation_trigger_set_invalid\",\n    \"release_validation_not_published_only\",\n    \"release_validation_not_sole_release_workflow\",\n    \"windows_compatibility:missing_step:Compile Windows compatibility surfaces\",\n    \"windows_compatibility:missing_step:M5IJ Windows acceptance\",\n    \"windows_compatibility:missing_step:MCP startup check\",\n    \"windows_compatibility:missing_step:Run Windows non-network compatibility smoke tests\",\n    \"windows_compatibility:missing_step:Validate M5F package\",\n    \"windows_compatibility:missing_test:tests/unit/test_m5f_canonical_market_context_package.py\",\n    \"windows_compatibility:missing_test:tests/unit/test_m5fgh_fastapi_context.py\",\n    \"windows_compatibility:missing_test:tests/unit/test_m5i_explicit_bounded_refresh.py\",\n    \"windows_compatibility:missing_test:tests/unit/test_m5ij_end_to_end_acceptance.py\",\n    \"windows_compatibility:missing_test:tests/unit/test_m6d_operator_and_local_networking.py\",\n    \"windows_compatibility:missing_test:tests/unit/test_m6d_ssl_policy.py\",\n    \"windows_compatibility:missing_test:tests/unit/test_mcp_server.py\",\n    \"release_windows_compatibility:missing_step:Compile Windows compatibility surfaces\",\n    \"release_windows_compatibility:missing_step:M5IJ Windows acceptance\",\n    \"release_windows_compatibility:missing_step:MCP startup check\",\n    \"release_windows_compatibility:missing_step:Run Windows non-network compatibility smoke tests\",\n    \"release_windows_compatibility:missing_step:Validate M5F package\",\n    \"release_windows_compatibility:missing_test:tests/unit/test_m5f_canonical_market_context_package.py\",\n    \"release_windows_compatibility:missing_test:tests/unit/test_m5fgh_fastapi_context.py\",\n    \"release_windows_compatibility:missing_test:tests/unit/test_m5i_explicit_bounded_refresh.py\",\n    \"release_windows_compatibility:missing_test:tests/unit/test_m5ij_end_to_end_acceptance.py\",\n    \"release_windows_compatibility:missing_test:tests/unit/test_m6d_operator_and_local_networking.py\",\n    \"release_windows_compatibility:missing_test:tests/unit/test_m6d_ssl_policy.py\",\n    \"release_windows_compatibility:missing_test:tests/unit/test_mcp_server.py\"\n  ],\n  \"workflow_count\": 5,\n  \"workflows\": [\n    {\n      \"file\": \".github\\\\workflows\\\\browser-operator-e2e.yml\",\n      \"name\": \"Browser Operator E2E\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\ci.yml\",\n      \"name\": \"Default CI\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\non-network-ci.yml\",\n      \"name\": \"Full Non-Network Regression\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\release-validation.yml\",\n      \"name\": \"Release Validation\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\windows-compatibility-smoke.yml\",\n      \"name\": \"Windows Compatibility Smoke\",\n      \"triggers\": [\n        \"pull_request\",\n        \"workflow_dispatch\"\n      ]\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "validator": "validate_l7_a2_workflow_policy",
+    "exit_code": 0,
+    "stdout": "{\n  \"status\": \"PASS\",\n  \"unlabeled_pr_expensive_job\": false,\n  \"labeled_pr_synchronize_eligible\": true,\n  \"labeled_pr_reopen_eligible\": true,\n  \"manual_dispatch_eligible\": true,\n  \"pre_publication\": true,\n  \"genuine_windows11_claim\": false\n}\n",
+    "stderr": ""
+  }
+]

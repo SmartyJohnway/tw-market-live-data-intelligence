@@ -1,0 +1,66 @@
+{
+  "status": "FAIL",
+  "error": "",
+  "sequence": [
+    {
+      "label": "tamper-VERSION",
+      "exit_code": 1
+    },
+    {
+      "label": "tamper-distribution-manifest.json",
+      "exit_code": 1
+    },
+    {
+      "label": "bootstrap-A",
+      "exit_code": 0
+    },
+    {
+      "label": "bootstrap-A-again",
+      "exit_code": 0
+    },
+    {
+      "label": "preinit",
+      "exit_code": 0
+    },
+    {
+      "label": "preinit-doctor",
+      "exit_code": 0
+    },
+    {
+      "label": "init",
+      "exit_code": 0
+    },
+    {
+      "label": "init-again",
+      "exit_code": 0
+    },
+    {
+      "label": "quoted-cli-args",
+      "exit_code": 0
+    },
+    {
+      "label": "isolation-A",
+      "exit_code": 0
+    },
+    {
+      "label": "start",
+      "exit_code": 0
+    },
+    {
+      "label": "running-status",
+      "exit_code": 0
+    },
+    {
+      "label": "doctor",
+      "exit_code": 0
+    },
+    {
+      "label": "mcp-startup",
+      "exit_code": 0
+    },
+    {
+      "label": "mcp-stdio",
+      "exit_code": 0
+    }
+  ]
+}

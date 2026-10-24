@@ -1,0 +1,166 @@
+{
+  "members": [
+    {
+      "path": "baseline_gate_members.json",
+      "original_raw_sha256": "1bfadc4fa5ceaaf69f1af2e3b00eec01061f931be8d487fc895f2cfe92c88418",
+      "committed_sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "baseline_gate_report.xml",
+      "original_raw_sha256": "35ae9b45573d276cd506cadb6d21f60639d1d377289f2704f59532923777dde9",
+      "committed_sha256": "be8d71b3617075989ea2d21a4d9d4cfa8c8d8af320507d9616330de0022e193e",
+      "transformation": "UTF8 BOM removal if present, CRLF to LF, and trailing line whitespace removal only; external originals retained unchanged"
+    },
+    {
+      "path": "baseline_gate_result.json",
+      "original_raw_sha256": "143f865b31d581d6a0a2cd18a8a4d41c7abdd2e15d962c0cd0b2f278836d074a",
+      "committed_sha256": "2310992e0bcc63890c382c4d8415afa1473b163cc62cc3434a17d0588246b4df",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "baseline_gate_runner.json",
+      "original_raw_sha256": "66b7278554102639c3acdb5efa024e1ca4950aa4f46322296f87fa049631f89c",
+      "committed_sha256": "47fdca80097d022fc98b6b84968cec71380c677fd81f85ecc52297ca8d0cb1e7",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "baseline_guard.jsonl",
+      "original_raw_sha256": "4e44cdffcf1d67ec59a320c1a50d81d0c565404249a73e67d585a189cc8d5456",
+      "committed_sha256": "0d8a94f5b9510afa9713f177d924630281db0a97f965f3f5b50a4376865697ec",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "candidate_gate_members.json",
+      "original_raw_sha256": "1bfadc4fa5ceaaf69f1af2e3b00eec01061f931be8d487fc895f2cfe92c88418",
+      "committed_sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "candidate_gate_report.xml",
+      "original_raw_sha256": "e9f2be6347b9d8174590a2d14f21992e49f35fe7e0f25f2a088b8bdd7c471660",
+      "committed_sha256": "c9b98c9ce62fe428ed896a9112c4b9db3f0917a4ceebaf2d3f1026d676b54da5",
+      "transformation": "UTF8 BOM removal if present, CRLF to LF, and trailing line whitespace removal only; external originals retained unchanged"
+    },
+    {
+      "path": "candidate_gate_result.json",
+      "original_raw_sha256": "a9728a99d1b2475ec279328123a80570e5e3f8bf5b8a1ed34f3d02a626def74b",
+      "committed_sha256": "3d9c26095df73dfbf28ab64f5133e8a3eebf618b02398ba75fd195915517e4bf",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "candidate_gate_runner.json",
+      "original_raw_sha256": "0ef83d124ddbfe23dfa8e46fd51969db8227341f47b57746727a437a583eff3c",
+      "committed_sha256": "11ba0b912c99ea71683418d1d2920e9f27da91f9036e462daa179f71fea6b2be",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "candidate_guard.jsonl",
+      "original_raw_sha256": "864fbd3d1f41c4732a6886be2d12932dc28a748fefef7a5dfae5c30266d68563",
+      "committed_sha256": "15f8dedfe110fbf0092fde9ccdca7c862c7aa0a306f135b5fa123700015ea1ae",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "candidate_route_diagnostic.log",
+      "original_raw_sha256": "5dfe8d8100c84b60a86b10df8c7ab8855d7653556d74a73dd7d0953cee21ace5",
+      "committed_sha256": "021e4c0ff677fcc1f4507a4a722fb4f0481b32b00cf807a9fd839a135e7c8e64",
+      "transformation": "UTF8 BOM removal if present, CRLF to LF, and trailing line whitespace removal only; external originals retained unchanged"
+    },
+    {
+      "path": "candidate_route_identity.json",
+      "original_raw_sha256": "2da98b9145a9d98ac3f5ad9cbf14f700c5b4a4b75a3f2fdd1b0f7a2df0cafbe8",
+      "committed_sha256": "6909bc37663f8a38366181f31cb7806750f6edb55a00ddfb093bbcb4bc445471",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "docker_base_identity.json",
+      "original_raw_sha256": "7603056e866c9067707e37fa4e1e2aceb03876f663eb887fb8f58e1f2077201a",
+      "committed_sha256": "f66ac61eb204020fe5250f26b3f4a24bb8007b023a258ae548ea4396478f3df1",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "docker_context.json",
+      "original_raw_sha256": "30b7b1a1022b38bdb1a53fa9436fbf3176158d25066313ec7e58adffc45645f9",
+      "committed_sha256": "03138d3a785015b4d831141ba83c0906b671eccb10d1c20317255592423587ca",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "docker_environment.json",
+      "original_raw_sha256": "97210ae50dbc03ef561a5b93f7f3ccb7254ded95fbb4d07060311c31430e9b2d",
+      "committed_sha256": "298537e8d0c95477589c63df37ed00dd7870ecd5c969d26c44e85811a63c61bb",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "docker_image_a.json",
+      "original_raw_sha256": "16a02a3d9d289ff23b26cbeb84eaa0a651b5dd35855adf6648c4904f029f8d38",
+      "committed_sha256": "e5938f941952bcd365a8bea70f67e676a8d818d5d5bc5709ee79810f5c9959f8",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "docker_image_b.json",
+      "original_raw_sha256": "aae95810ff52b143b77a30c3c0e6fb7ddefb4c4ea7ba0fe5bd54c6fef2f2d9d3",
+      "committed_sha256": "f6987075e3726e9345f386ced130f797b175779346190d4dcd69892c996b351e",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "docker_preinit.json",
+      "original_raw_sha256": "a6ae758c5ebade980edc57a14469d95b99ec4841ac5661c2c564aa7bf36c6175",
+      "committed_sha256": "a0d5f4e6b9fe1aa63f0d29c0554acc5ab9957230cca658c71e3847b3ed9a33cf",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "docker_result.json",
+      "original_raw_sha256": "42ca4efa6c10aed422091a857cf603e81d273646284ebf6053cfe524c6acb09d",
+      "committed_sha256": "99c72f9bf9a6da9251b99d7bce56a104de33864edd9d732b5e35bc5d4ab7efff",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "focused_tests_bounded.log",
+      "original_raw_sha256": "1c1029ba5d998da1b8d12ee842f947994726b5d804b2406461516f236834e90a",
+      "committed_sha256": "9900098238a4e8305813d1e06e2073f443f3e9afdb51814a88064bd51c31d373",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "native_acceptance_runner.json",
+      "original_raw_sha256": "d1cd043774be5f9fad4ed04071845f04897d44744443c5eb2256d10a43fb96a9",
+      "committed_sha256": "cff1aa759692f049a3d0f913197aeeb8ebd7762c0e3fc3a51db6fcb576ba08f0",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "native_bootstrap_lifecycle.json",
+      "original_raw_sha256": "bf205c142eb29c61f54e8007d5ba296e88dbbf88d228a295cc668bda5b680611",
+      "committed_sha256": "40ddb679ee5ae808f1f1cb14a9ec3b700b2f1f6ab6ff6567f691c1665c026c79",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "native_build_identity.json",
+      "original_raw_sha256": "7502260fce195587ea265eca5d14d438e4f24b98a5a906997041f901862cfdb6",
+      "committed_sha256": "ce60105489bb0474c817453981068e3fc768577727ce1388ca4543de0c184096",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "native_cleanup_stop.json",
+      "original_raw_sha256": "a820a8b4336faa166a0f19404f9fa9adcc3f4711874d2a429a5d3bfa8dfe5c9e",
+      "committed_sha256": "4046edb93e1f04acf711ade99d7b06079d45612102ad380ade877962f5ca59c0",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "native_mcp_stdio_incomplete.json",
+      "original_raw_sha256": "d03ade946989e9004550ee737512189cb34a859d9517c8d3e2950f29d870f00b",
+      "committed_sha256": "34e3fa5b2681cf1b4c3723a5f2e9029f01879948f80a4a7e5b529890528f0dad",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "setup_network_accounting.json",
+      "original_raw_sha256": "d03d95e1230e60a33be732e4ee42637726472c95c24c5c096d9098d932096b74",
+      "committed_sha256": "17e2144b0ab02acad0516251e79d2cb56bfa964a436231e929f5b6f06d9e6695",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    },
+    {
+      "path": "windows11_environment_identity.json",
+      "original_raw_sha256": "6e5baff3f15820ba6b31d1b7b4101420a10be935f513c0e33c443b162f982d63",
+      "committed_sha256": "bdce33c9943209eb10220d30842b9467fac1d479b13947a196cbc40bca5a4eb8",
+      "transformation": "UTF8 BOM removal and CRLF to LF only; external original files retained unchanged"
+    }
+  ]
+}

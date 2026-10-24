@@ -1,0 +1,353 @@
+{
+  "fastapi": "0.141.1",
+  "routes": [
+    {
+      "type": "Route",
+      "path": "/openapi.json",
+      "methods": [
+        "GET",
+        "HEAD"
+      ]
+    },
+    {
+      "type": "Route",
+      "path": "/docs",
+      "methods": [
+        "GET",
+        "HEAD"
+      ]
+    },
+    {
+      "type": "Route",
+      "path": "/docs/oauth2-redirect",
+      "methods": [
+        "GET",
+        "HEAD"
+      ]
+    },
+    {
+      "type": "Route",
+      "path": "/redoc",
+      "methods": [
+        "GET",
+        "HEAD"
+      ]
+    },
+    {
+      "type": "_IncludedRouter",
+      "path": null,
+      "methods": []
+    },
+    {
+      "type": "APIRoute",
+      "path": "/workbench/",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/workbench/mode-a/",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "Mount",
+      "path": "/workbench/mode-a",
+      "methods": []
+    },
+    {
+      "type": "Mount",
+      "path": "/workbench",
+      "methods": []
+    },
+    {
+      "type": "APIRoute",
+      "path": "/",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/health",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/governance",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/probe/twse",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/probe/tpex",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/probe/yahoo",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/probe/twse_mis",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/probe/finmind",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/probe/feasibility",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/matrix",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/context/canonical",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/context/snapshot",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/context/source-health",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/context/capability-summary",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/context/briefing",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlists",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlists/{watchlist_id}",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlists/{watchlist_id}/versions",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlists/{watchlist_id}/versions/{version}",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlists/{watchlist_id}/export",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlists/{watchlist_id}/evidence-request-preview",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/evidence-request-previews",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlist-mutations/preview",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlist-mutations/commit",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlist",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlist/summary",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/watchlist/schema",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/conversation/context",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5l/source-adapter-matrix",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5l/source-capabilities",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5k/watchlist/default",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5k/watchlist/validate",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5k/conversation/handoff",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5k/live-observation/latest",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5k/live-observation/plan",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5k/live-observation/execute",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/source-health/latest",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/source-health/schema",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m5k/live-observation/history",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/source-health/history",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "type": "APIRoute",
+      "path": "/api/m7g/controlled-refresh/execute",
+      "methods": [
+        "POST"
+      ]
+    }
+  ]
+}

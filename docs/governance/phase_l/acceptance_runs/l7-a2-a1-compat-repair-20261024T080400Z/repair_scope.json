@@ -1,0 +1,16 @@
+{
+  "classification_table_changes": 0,
+  "dependency_changes": 0,
+  "negative_controls": "separate test file explicitly run; not added to frozen profile",
+  "public_API_changes": 0,
+  "release_blocking_membership_changes": 0,
+  "release_blocking_selection_contract_changes": 0,
+  "runtime_changes": 0,
+  "runtime_or_workflow_repair": false,
+  "server_behavior_changes": 0,
+  "source_paths": [
+    "tests/post_route_surface.py",
+    "tests/unit/test_phase_l_l4_a4_control_plane_boundary.py",
+    "tests/unit/test_post_route_surface_compatibility.py"
+  ]
+}

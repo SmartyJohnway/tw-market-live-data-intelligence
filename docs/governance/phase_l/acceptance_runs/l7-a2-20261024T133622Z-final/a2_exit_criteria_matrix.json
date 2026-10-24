@@ -1,0 +1,21 @@
+{
+  "A1_01_02_03_27": "PRESERVED_ACCEPTED",
+  "A3_plus_criteria_newly_accepted": [],
+  "L7-EXIT-04": {
+    "proof": "fresh_clone_identity.json",
+    "status": "PASS"
+  },
+  "L7-EXIT-05": {
+    "proof": "windows11_native_acceptance.json",
+    "status": "PASS"
+  },
+  "L7-EXIT-06": {
+    "proof": "native_bootstrap_lifecycle.json",
+    "status": "PASS"
+  },
+  "L7-EXIT-07": {
+    "proof": "docker_local_service_acceptance.json",
+    "status": "PASS"
+  },
+  "exact_six_and_public_contracts": "PASS_AS_PRESERVATION, FINAL_L7_ACCEPTANCE_DEFERRED"
+}

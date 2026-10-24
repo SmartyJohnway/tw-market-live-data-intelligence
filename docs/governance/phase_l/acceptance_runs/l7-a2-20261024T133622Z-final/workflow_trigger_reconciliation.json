@@ -1,0 +1,23 @@
+{
+  "PR_activities": [
+    "opened",
+    "synchronize",
+    "reopened",
+    "labeled"
+  ],
+  "PR_label": "windows-smoke",
+  "hosted_workflow_execution": "not dispatched; static plus actual local integration as authorized",
+  "old_historical_step_list_replaced_by_accepted_current_A1_gate_not_reclassified_as_current_coverage": true,
+  "policy": "CI_POLICY_V1 prospectively amended by A2 continuation",
+  "published_release_gating_authority": false,
+  "release_tag_or_registry_publication": false,
+  "release_validation": "manual pre-publication canonical A1 gate + Native and Docker integration",
+  "retained_label_synchronize_reopen_eligible": true,
+  "secrets_used": false,
+  "token_permissions": {
+    "contents": "read"
+  },
+  "unlabeled_PR_expensive_job": false,
+  "windows_latest_is_genuine_Win11_evidence": false,
+  "windows_manual": true
+}

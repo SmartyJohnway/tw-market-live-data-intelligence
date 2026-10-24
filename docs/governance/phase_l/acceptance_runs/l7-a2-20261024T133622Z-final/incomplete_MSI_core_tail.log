@@ -1,0 +1,39 @@
+Property(S): DATABASE = C:\Windows\Installer\becb.msi
+Property(S): OriginalDatabase = C:\Users\WDAGUtilityAccount\AppData\Local\Package Cache\{34E4C3B0-353E-4E04-88B1-EF41B1219C86}v3.13.9150.0\core.msi
+Property(S): UILevel = 2
+Property(S): MsiUISourceResOnly = 1
+Property(S): ACTION = INSTALL
+Property(S): ROOTDRIVE = C:\
+Property(S): CostingComplete = 1
+Property(S): OutOfDiskSpace = 0
+Property(S): OutOfNoRbDiskSpace = 0
+Property(S): PrimaryVolumeSpaceAvailable = 0
+Property(S): PrimaryVolumeSpaceRequired = 0
+Property(S): PrimaryVolumeSpaceRemaining = 0
+Property(S): SOURCEDIR = C:\Users\WDAGUtilityAccount\AppData\Local\Package Cache\{34E4C3B0-353E-4E04-88B1-EF41B1219C86}v3.13.9150.0\
+Property(S): SourcedirProduct = {34E4C3B0-353E-4E04-88B1-EF41B1219C86}
+Property(S): ProductToBeRegistered = 1
+MSI (s) (D8:38) [21:06:36:895]: Note: 1: 1707
+MSI (s) (D8:38) [21:06:36:895]: Note: 1: 2205 2:  3: Error
+MSI (s) (D8:38) [21:06:36:895]: Note: 1: 2228 2:  3: Error 4: SELECT `Message` FROM `Error` WHERE `Error` = 1707
+MSI (s) (D8:38) [21:06:36:895]: Note: 1: 2205 2:  3: Error
+MSI (s) (D8:38) [21:06:36:895]: Note: 1: 2228 2:  3: Error 4: SELECT `Message` FROM `Error` WHERE `Error` = 1709
+MSI (s) (D8:38) [21:06:36:895]: Product: Python 3.13.9 Core Interpreter (64-bit) -- Installation completed successfully.
+
+MSI (s) (D8:38) [21:06:36:895]: Windows Installer 已安裝該產品。產品名稱: Python 3.13.9 Core Interpreter (64-bit)。產品版本: 3.13.9150.0。產品語言: 1033。製造商: Python Software Foundation。安裝成功或錯誤狀態: 0。
+
+MSI (s) (D8:38) [21:06:36:895]: Deferring clean up of packages/files, if any exist
+MSI (s) (D8:38) [21:06:36:895]: MainEngineThread is returning 0
+MSI (s) (D8:A8) [21:06:36:895]: RESTART MANAGER: Session closed.
+MSI (s) (D8:A8) [21:06:36:895]: No System Restore sequence number for this installation.
+=== Logging stopped: 2026/10/24  21:06:36 ===
+MSI (s) (D8:A8) [21:06:36:895]: User policy value 'DisableRollback' is 0
+MSI (s) (D8:A8) [21:06:36:895]: Machine policy value 'DisableRollback' is 0
+MSI (s) (D8:A8) [21:06:36:895]: Incrementing counter to disable shutdown. Counter after increment: 0
+MSI (s) (D8:A8) [21:06:36:895]: Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2
+MSI (s) (D8:A8) [21:06:36:911]: Note: 1: 2265 2:  3: -2147287035
+MSI (s) (D8:A8) [21:06:36:911]: Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2
+MSI (s) (D8:A8) [21:06:36:912]: Decrementing counter to disable shutdown. If counter >= 0, shutdown will be denied.  Counter after decrement: -1
+MSI (c) (A0:88) [21:06:36:914]: Decrementing counter to disable shutdown. If counter >= 0, shutdown will be denied.  Counter after decrement: -1
+MSI (c) (A0:88) [21:06:36:914]: MainEngineThread is returning 0
+=== Verbose logging stopped: 2026/10/24  21:06:36 ===

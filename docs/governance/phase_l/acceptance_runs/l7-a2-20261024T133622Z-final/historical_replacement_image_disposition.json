@@ -1,0 +1,9 @@
+{
+  "current_A2_image_A": "sha256:e18d0913c7e707e54ec909d3c556de4b4e361d084aab2195260b2a1e610d431d",
+  "current_A2_image_B": "sha256:e6bf6ae779c3dab4a50dbf2ce4fb4221a35307a60b2db8921e01a4220eca59df",
+  "disposition": "RETAINED_NONBLOCKING_HISTORICAL_LIMITATION_WITH_CURRENT_A2_REPLACEMENT_PROOF",
+  "durable_state_survival": "PASS",
+  "gap": "L7-GAP-20",
+  "historical_A5_evidence_modified": false,
+  "old_A5_image_digest_recreated_or_manufactured": false
+}

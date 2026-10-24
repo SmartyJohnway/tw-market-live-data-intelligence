@@ -1,0 +1,111 @@
+{
+  "entry": "0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5",
+  "tree": "910803236875dbfbcf52efb166f1ce2eafd514e7",
+  "clean": true,
+  "files": [
+    {
+      "path": ".github/workflows/release-validation.yml",
+      "sha256": "abe93f656257f7d7258362b9666aeaa9b1e707e4baf1e48f82d86c3359180917"
+    },
+    {
+      "path": ".github/workflows/windows-compatibility-smoke.yml",
+      "sha256": "b5fba1da5a6d828c5ea7cdb1461ee1527cbca289d680f063077e5027d4cb0b27"
+    },
+    {
+      "path": "config/release_blocking_ci.v1.json",
+      "sha256": "b80476b43307d670a5a3000e84e84c3b617085db6c68373fc9b522c92708d2e7"
+    },
+    {
+      "path": "config/test_execution_profiles.json",
+      "sha256": "1acda8e8bb76f17eb1c4044a51c9889b6ccf1d6d4a1346a51c3f8c7c913fae26"
+    },
+    {
+      "path": "VERSION",
+      "sha256": "59854984853104df5c353e2f681a15fc7924742f9a2e468c29af248dce45ce03"
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "c4725a39857153c9d6ea14e26fb97515f25f1c0cd9bf18660d09c85cdca67ee7"
+    },
+    {
+      "path": "requirements-lock.txt",
+      "sha256": "57a4ffbb17095e5f5108b229cce781ab9d0f64b2ea1642ed3c93822b7fdfb85a"
+    },
+    {
+      "path": "requirements-browser-e2e.txt",
+      "sha256": "7b4017c4cb0f7a6b14e5c0a691a8796bcef78088d663b3cd75c65d22f3188f06"
+    },
+    {
+      "path": "packaging_native/acceptance_guard.py",
+      "sha256": "455be8412864abdd1fdffb199fbb2a07cf684cb14310962a91c5cf03d5ebbd3d"
+    },
+    {
+      "path": "packaging_native/path_scan.py",
+      "sha256": "2adf8f4432f50c73708f4e3d383632ef19c226228bea30a8be793d8ec9067e4b"
+    },
+    {
+      "path": "packaging_native/README-PACKAGE.md",
+      "sha256": "c4d33d7448658ea600048bfc830825119b32bcb7b8d31a62f135d1b17b8c7419"
+    },
+    {
+      "path": "packaging_native/resource-policy.json",
+      "sha256": "c01338b95aecb2c27f818bb1e33c48c0610e9dca367755307e7cac632f3700ef"
+    },
+    {
+      "path": "packaging_native/upstream-path-exceptions.json",
+      "sha256": "a4c6d23837cc6a65d8f16500c530b57d7c43c2dadf9e332adb4aaf572fa3f926"
+    },
+    {
+      "path": "packaging_native/wheelhouse-lock.json",
+      "sha256": "93c6d8745ea9be8f53e1d85d9d474d105316a068d067dbff37197641eccf6ac7"
+    },
+    {
+      "path": "packaging_native/bootstrap/bootstrap.ps1",
+      "sha256": "db8e1af276ad27d839e05cad7c86c2807df943a7220c9caa232619cae6ec633e"
+    },
+    {
+      "path": "packaging_native/bootstrap/bootstrap.py",
+      "sha256": "fcbf8de32079469f0e84cbd3726dd479dc38ef05d54d559404ef476f7f1e8f12"
+    },
+    {
+      "path": "packaging_native/bootstrap/launch.py",
+      "sha256": "c8e23c22f3f11ec063a56803e9569f439ac2c3cfe807ed9dbe1ec39aeda7b8c1"
+    },
+    {
+      "path": "packaging_native/bootstrap/package_integrity.py",
+      "sha256": "e196f09206abaf8da426c637e1e27ff4a7d5be18feca0a256d22f1807b7bd02d"
+    },
+    {
+      "path": "packaging_native/launchers/tw-market-mcp.cmd",
+      "sha256": "e852de157d135de11c6b63f28a5f9fbedde1dbf1af1c00c3294cf1a575bf087c"
+    },
+    {
+      "path": "packaging_native/launchers/tw-market-security-master.cmd",
+      "sha256": "428cf4a60bb18f5436fe58cf7b3f0026f5647d2b322592a808c6e9ace29ee521"
+    },
+    {
+      "path": "packaging_native/launchers/tw-market.cmd",
+      "sha256": "91a3afa8a0643e26481672b34079479ab31f86ec09daa4aea960df145b92288d"
+    },
+    {
+      "path": "packaging_docker/compose.yaml",
+      "sha256": "58bb739ebac21423a662ec8017fdab3b3ec257950e0c14629a871b682c03167b"
+    },
+    {
+      "path": "packaging_docker/dependency-lock-linux-amd64-cp313.json",
+      "sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88"
+    },
+    {
+      "path": "packaging_docker/Dockerfile",
+      "sha256": "472200b346d3b06a7a9385858a3f14bb85d5b2a3f08d5c68d27fc802fe1cefc1"
+    },
+    {
+      "path": "packaging_docker/README.md",
+      "sha256": "954440206745ccd70075b76ae901d37b394407d41d0aa7084e72d376a0c8ff97"
+    },
+    {
+      "path": "packaging_docker/requirements-linux-amd64-cp313.txt",
+      "sha256": "a2012b2c192f2661e4759179f89a399c6d4e5c0491707535c191627439b5c3ed"
+    }
+  ]
+}

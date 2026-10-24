@@ -1,0 +1,37 @@
+{
+  "after": {
+    "durable_files": {
+      "home/config/settings.json": "250982c341a13eb7ce0d3aabbfeee37d5d60e7b80f830108bf55905c0c3647ae",
+      "home/meta/installation.json": "24de4a12b7ddfcb2d9b7555439d04694349aef9c58ae5eeec466f85dcb4c0476",
+      "state/a2-validation-witness.json": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+    },
+    "installation": {
+      "created_at": "2026-10-24T12:59:43.971402+00:00",
+      "installation_id": "f16a023e-620d-44b8-a28e-6a47cbf341f5",
+      "installation_schema_version": 1,
+      "state_root": "/var/lib/tw-market/state"
+    },
+    "state_sha256": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+  },
+  "before": {
+    "durable_files": {
+      "home/config/settings.json": "250982c341a13eb7ce0d3aabbfeee37d5d60e7b80f830108bf55905c0c3647ae",
+      "home/meta/installation.json": "24de4a12b7ddfcb2d9b7555439d04694349aef9c58ae5eeec466f85dcb4c0476",
+      "state/a2-validation-witness.json": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+    },
+    "installation": {
+      "created_at": "2026-10-24T12:59:43.971402+00:00",
+      "installation_id": "f16a023e-620d-44b8-a28e-6a47cbf341f5",
+      "installation_schema_version": 1,
+      "state_root": "/var/lib/tw-market/state"
+    },
+    "state_sha256": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+  },
+  "container_A_removed_before_B": true,
+  "exact_durable_identity_equality": true,
+  "image_A": "sha256:e18d0913c7e707e54ec909d3c556de4b4e361d084aab2195260b2a1e610d431d",
+  "image_B": "sha256:e6bf6ae779c3dab4a50dbf2ce4fb4221a35307a60b2db8921e01a4220eca59df",
+  "operational_logs_excluded_from_business_fingerprint": true,
+  "state_not_relocated_into_application": true,
+  "status": "PASS"
+}

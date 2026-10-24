@@ -1,0 +1,12 @@
+{
+  "bytes": 40639271,
+  "classification": "A2 validation artifact, not stable release",
+  "filename": "TW-Market-1.0.0-windows-x64.zip",
+  "local_artifact": "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-accepted\\artifacts\\TW-Market-1.0.0-windows-x64.zip",
+  "member_count": 338,
+  "sha256": "a05d4e39da2f80c409749f66493a93658047950e29348a96986de53280f8c499",
+  "source_commit": "510625c8e81e629e2c902b17949aa155abfe78b6",
+  "source_tree": "e0450583689bf87d6329e226e5a66012006ea716",
+  "version": "1.0.0",
+  "wheel_count": 49
+}

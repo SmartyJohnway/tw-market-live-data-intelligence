@@ -1,0 +1,19 @@
+{
+  "forbidden_dependency_or_A1_contract_diff": [],
+  "implementation_changed_paths": [
+    ".github/workflows/release-validation.yml",
+    ".github/workflows/windows-compatibility-smoke.yml",
+    "packaging_docker/acceptance_guard.py",
+    "packaging_native/acceptance_guard.py",
+    "scripts/accept_l7_a2_docker.py",
+    "scripts/accept_native_distribution.py",
+    "scripts/build_docker_context.py",
+    "scripts/build_native_distribution.py",
+    "scripts/release_validation_source.py",
+    "scripts/run_l7_a2_release_validation.py",
+    "scripts/validate_l7_a2_workflow_policy.py",
+    "tests/unit/test_l7_a2_source_admission.py",
+    "tests/unit/test_l7_a2_workflow_policy.py"
+  ],
+  "manifest_scope": "partial blocked checkpoint only"
+}

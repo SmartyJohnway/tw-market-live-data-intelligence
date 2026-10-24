@@ -1,0 +1,490 @@
+{
+  "MCP_startup_A": {
+    "args": [
+      "exec",
+      "tw-market-l7-a2-1792846723430602500-a",
+      "python",
+      "-c",
+      "import acceptance_guard,runpy,sys;sys.argv=['scripts/run_unified_market_evidence_mcp.py','--startup-check'];runpy.run_path('scripts/run_unified_market_evidence_mcp.py',run_name='__main__')"
+    ],
+    "exit_code": 0,
+    "stderr": "startup_check=ok adapter=unified_market_evidence_mcp_adapter.v2 mcp=1.29.0\n",
+    "stdout": ""
+  },
+  "MCP_startup_B": {
+    "args": [
+      "exec",
+      "tw-market-l7-a2-1792846723430602500-b",
+      "python",
+      "-c",
+      "import acceptance_guard,runpy,sys;sys.argv=['scripts/run_unified_market_evidence_mcp.py','--startup-check'];runpy.run_path('scripts/run_unified_market_evidence_mcp.py',run_name='__main__')"
+    ],
+    "exit_code": 0,
+    "stderr": "startup_check=ok adapter=unified_market_evidence_mcp_adapter.v2 mcp=1.29.0\n",
+    "stdout": ""
+  },
+  "container_A": {
+    "args": [
+      "inspect",
+      "tw-market-l7-a2-1792846723430602500-a"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "[\n    {\n        \"Id\": \"baedb1a7610986e4f23b9b5aff3a0d129124823def457adb00ee5f968bb96730\",\n        \"Created\": \"2026-10-24T12:59:48.5735471Z\",\n        \"Path\": \"python\",\n        \"Args\": [\n            \"/a2-guard/run.py\",\n            \"serve\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 2747,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-10-24T12:59:48.6113105Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\"\n        },\n        \"Image\": \"sha256:e18d0913c7e707e54ec909d3c556de4b4e361d084aab2195260b2a1e610d431d\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/baedb1a7610986e4f23b9b5aff3a0d129124823def457adb00ee5f968bb96730/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/baedb1a7610986e4f23b9b5aff3a0d129124823def457adb00ee5f968bb96730/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/baedb1a7610986e4f23b9b5aff3a0d129124823def457adb00ee5f968bb96730/hosts\",\n        \"LogPath\": \"/var/lib/docker/containers/baedb1a7610986e4f23b9b5aff3a0d129124823def457adb00ee5f968bb96730/baedb1a7610986e4f23b9b5aff3a0d129124823def457adb00ee5f968bb96730-json.log\",\n        \"Name\": \"/tw-market-l7-a2-1792846723430602500-a\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": null,\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"json-file\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"tw-market-l7-a2-1792846723430602500-network\",\n            \"PortBindings\": {\n                \"8000/tcp\": [\n                    {\n                        \"HostIp\": \"127.0.0.1\",\n                        \"HostPort\": \"\"\n                    }\n                ]\n            },\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": false,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": null,\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": [],\n            \"DnsSearch\": [],\n            \"ExtraHosts\": null,\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": true,\n            \"SecurityOpt\": [\n                \"no-new-privileges\"\n            ],\n            \"Tmpfs\": {\n                \"/tmp\": \"rw,noexec,nosuid,nodev,size=64m,mode=1777\"\n            },\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 0,\n            \"NanoCpus\": 0,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": [],\n            \"BlkioDeviceReadBps\": [],\n            \"BlkioDeviceWriteBps\": [],\n            \"BlkioDeviceReadIOps\": [],\n            \"BlkioDeviceWriteIOps\": [],\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": [],\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 0,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": 128,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"Mounts\": [\n                {\n                    \"Type\": \"volume\",\n                    \"Source\": \"tw-market-l7-a2-1792846723430602500-home\",\n                    \"Target\": \"/var/lib/tw-market/home\"\n                },\n                {\n                    \"Type\": \"volume\",\n                    \"Source\": \"tw-market-l7-a2-1792846723430602500-state\",\n                    \"Target\": \"/var/lib/tw-market/state\"\n                },\n                {\n                    \"Type\": \"volume\",\n                    \"Source\": \"tw-market-l7-a2-1792846723430602500-guard\",\n                    \"Target\": \"/a2-guard\",\n                    \"ReadOnly\": true\n                },\n                {\n                    \"Type\": \"volume\",\n                    \"Source\": \"tw-market-l7-a2-1792846723430602500-evidence\",\n                    \"Target\": \"/a2-evidence\"\n                }\n            ],\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ]\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [\n            {\n                \"Type\": \"volume\",\n                \"Name\": \"tw-market-l7-a2-1792846723430602500-evidence\",\n                \"Source\": \"/var/lib/docker/volumes/tw-market-l7-a2-1792846723430602500-evidence/_data\",\n                \"Destination\": \"/a2-evidence\",\n                \"Driver\": \"local\",\n                \"Mode\": \"z\",\n                \"RW\": true,\n                \"Propagation\": \"\"\n            },\n            {\n                \"Type\": \"volume\",\n                \"Name\": \"tw-market-l7-a2-1792846723430602500-guard\",\n                \"Source\": \"/var/lib/docker/volumes/tw-market-l7-a2-1792846723430602500-guard/_data\",\n                \"Destination\": \"/a2-guard\",\n                \"Driver\": \"local\",\n                \"Mode\": \"z\",\n                \"RW\": false,\n                \"Propagation\": \"\"\n            },\n            {\n                \"Type\": \"volume\",\n                \"Name\": \"tw-market-l7-a2-1792846723430602500-home\",\n                \"Source\": \"/var/lib/docker/volumes/tw-market-l7-a2-1792846723430602500-home/_data\",\n                \"Destination\": \"/var/lib/tw-market/home\",\n                \"Driver\": \"local\",\n                \"Mode\": \"z\",\n                \"RW\": true,\n                \"Propagation\": \"\"\n            },\n            {\n                \"Type\": \"volume\",\n                \"Name\": \"tw-market-l7-a2-1792846723430602500-state\",\n                \"Source\": \"/var/lib/docker/volumes/tw-market-l7-a2-1792846723430602500-state/_data\",\n                \"Destination\": \"/var/lib/tw-market/state\",\n                \"Driver\": \"local\",\n                \"Mode\": \"z\",\n                \"RW\": true,\n                \"Propagation\": \"\"\n            }\n        ],\n        \"Config\": {\n            \"Hostname\": \"baedb1a76109\",\n            \"Domainname\": \"\",\n            \"User\": \"10001:10001\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": false,\n            \"AttachStderr\": false,\n            \"ExposedPorts\": {\n                \"8000/tcp\": {}\n            },\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"TW_MARKET_NETWORK_PROFILE=docker-local-service\",\n                \"TW_MARKET_A2_GUARD_LOG=/a2-evidence/service-a.jsonl\",\n                \"PYTHONPATH=/a2-guard:/opt/tw-market/app\",\n                \"PATH=/opt/tw-market/venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305\",\n                \"PYTHON_VERSION=3.13.17\",\n                \"PYTHON_SHA256=6020bd10aff3bf4821be16f088ebb1591beb7b811dcd8fab1da8f7c22a7b27e7\",\n                \"PYTHONDONTWRITEBYTECODE=1\",\n                \"PYTHONUNBUFFERED=1\",\n                \"PIP_NO_CACHE_DIR=1\",\n                \"TW_MARKET_HOME=/var/lib/tw-market/home\",\n                \"TW_MARKET_STATE_ROOT=/var/lib/tw-market/state\"\n            ],\n            \"Cmd\": [\n                \"/a2-guard/run.py\",\n                \"serve\"\n            ],\n            \"Image\": \"tw-market-l7-a2-1792846723430602500:a\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/opt/tw-market/app\",\n            \"Entrypoint\": [\n                \"python\"\n            ],\n            \"Labels\": {\n                \"org.opencontainers.image.revision\": \"510625c8e81e629e2c902b17949aa155abfe78b6\",\n                \"org.opencontainers.image.source\": \"https://github.com/SmartyJohnway/tw-market-live-data-intelligence\",\n                \"org.opencontainers.image.title\": \"TW-Market Local Service\",\n                \"org.twmarket.dependency-lock-sha256\": \"4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88\",\n                \"org.twmarket.source-tree\": \"e0450583689bf87d6329e226e5a66012006ea716\",\n                \"org.twmarket.validation-variant\": \"a\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"bcf53e93853479a47324ff5d3185b1fadf680c520888240da76dc30a156b8338\",\n            \"SandboxKey\": \"/var/run/docker/netns/bcf53e938534\",\n            \"Ports\": {\n                \"8000/tcp\": [\n                    {\n                        \"HostIp\": \"127.0.0.1\",\n                        \"HostPort\": \"11373\"\n                    }\n                ]\n            },\n            \"Networks\": {\n                \"tw-market-l7-a2-1792846723430602500-network\": {\n                    \"IPAMConfig\": null,\n                    \"Links\": null,\n                    \"Aliases\": null,\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"35929a4e85bb60f9d7bc82e1d448ab00a30d91a35cc68f74d520d243af581861\",\n                    \"EndpointID\": \"adee1abbf33f80cc1587fea6300f78f25ca51065be46a0edf3bf02401fc0899c\",\n                    \"Gateway\": \"172.23.0.1\",\n                    \"IPAddress\": \"172.23.0.2\",\n                    \"MacAddress\": \"22:53:21:11:b2:91\",\n                    \"IPPrefixLen\": 16,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"tw-market-l7-a2-1792846723430602500-a\",\n                        \"baedb1a76109\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:1da3f7d5cb816f362993e57ce77aa4543bbb3c2643e8dc18adacbcc0347db185\",\n            \"size\": 2006,\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            }\n        }\n    }\n]\n"
+  },
+  "container_B": {
+    "args": [
+      "inspect",
+      "tw-market-l7-a2-1792846723430602500-b"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "[\n    {\n        \"Id\": \"49a1f043e62bddfc518164bef9a811a04b9969cd6684921a537e2712aa64cd21\",\n        \"Created\": \"2026-10-24T13:00:23.6866111Z\",\n        \"Path\": \"python\",\n        \"Args\": [\n            \"/a2-guard/run.py\",\n            \"serve\"\n        ],\n        \"State\": {\n            \"Status\": \"running\",\n            \"Running\": true,\n            \"Paused\": false,\n            \"Restarting\": false,\n            \"OOMKilled\": false,\n            \"Dead\": false,\n            \"Pid\": 2993,\n            \"ExitCode\": 0,\n            \"Error\": \"\",\n            \"StartedAt\": \"2026-10-24T13:00:23.7256167Z\",\n            \"FinishedAt\": \"0001-01-01T00:00:00Z\"\n        },\n        \"Image\": \"sha256:e6bf6ae779c3dab4a50dbf2ce4fb4221a35307a60b2db8921e01a4220eca59df\",\n        \"ResolvConfPath\": \"/var/lib/docker/containers/49a1f043e62bddfc518164bef9a811a04b9969cd6684921a537e2712aa64cd21/resolv.conf\",\n        \"HostnamePath\": \"/var/lib/docker/containers/49a1f043e62bddfc518164bef9a811a04b9969cd6684921a537e2712aa64cd21/hostname\",\n        \"HostsPath\": \"/var/lib/docker/containers/49a1f043e62bddfc518164bef9a811a04b9969cd6684921a537e2712aa64cd21/hosts\",\n        \"LogPath\": \"/var/lib/docker/containers/49a1f043e62bddfc518164bef9a811a04b9969cd6684921a537e2712aa64cd21/49a1f043e62bddfc518164bef9a811a04b9969cd6684921a537e2712aa64cd21-json.log\",\n        \"Name\": \"/tw-market-l7-a2-1792846723430602500-b\",\n        \"RestartCount\": 0,\n        \"Driver\": \"overlayfs\",\n        \"Platform\": \"linux\",\n        \"MountLabel\": \"\",\n        \"ProcessLabel\": \"\",\n        \"AppArmorProfile\": \"\",\n        \"ExecIDs\": null,\n        \"HostConfig\": {\n            \"Binds\": null,\n            \"ContainerIDFile\": \"\",\n            \"LogConfig\": {\n                \"Type\": \"json-file\",\n                \"Config\": {}\n            },\n            \"NetworkMode\": \"tw-market-l7-a2-1792846723430602500-network\",\n            \"PortBindings\": {\n                \"8000/tcp\": [\n                    {\n                        \"HostIp\": \"127.0.0.1\",\n                        \"HostPort\": \"\"\n                    }\n                ]\n            },\n            \"RestartPolicy\": {\n                \"Name\": \"no\",\n                \"MaximumRetryCount\": 0\n            },\n            \"AutoRemove\": false,\n            \"VolumeDriver\": \"\",\n            \"VolumesFrom\": null,\n            \"ConsoleSize\": [\n                0,\n                0\n            ],\n            \"CapAdd\": null,\n            \"CapDrop\": [\n                \"ALL\"\n            ],\n            \"CgroupnsMode\": \"private\",\n            \"Dns\": null,\n            \"DnsOptions\": [],\n            \"DnsSearch\": [],\n            \"ExtraHosts\": null,\n            \"GroupAdd\": null,\n            \"IpcMode\": \"private\",\n            \"Cgroup\": \"\",\n            \"Links\": null,\n            \"OomScoreAdj\": 0,\n            \"PidMode\": \"\",\n            \"Privileged\": false,\n            \"PublishAllPorts\": false,\n            \"ReadonlyRootfs\": true,\n            \"SecurityOpt\": [\n                \"no-new-privileges\"\n            ],\n            \"Tmpfs\": {\n                \"/tmp\": \"rw,noexec,nosuid,nodev,size=64m,mode=1777\"\n            },\n            \"UTSMode\": \"\",\n            \"UsernsMode\": \"\",\n            \"ShmSize\": 67108864,\n            \"Runtime\": \"runc\",\n            \"Isolation\": \"\",\n            \"CpuShares\": 0,\n            \"Memory\": 0,\n            \"NanoCpus\": 0,\n            \"CgroupParent\": \"\",\n            \"BlkioWeight\": 0,\n            \"BlkioWeightDevice\": [],\n            \"BlkioDeviceReadBps\": [],\n            \"BlkioDeviceWriteBps\": [],\n            \"BlkioDeviceReadIOps\": [],\n            \"BlkioDeviceWriteIOps\": [],\n            \"CpuPeriod\": 0,\n            \"CpuQuota\": 0,\n            \"CpuRealtimePeriod\": 0,\n            \"CpuRealtimeRuntime\": 0,\n            \"CpusetCpus\": \"\",\n            \"CpusetMems\": \"\",\n            \"Devices\": [],\n            \"DeviceCgroupRules\": null,\n            \"DeviceRequests\": null,\n            \"MemoryReservation\": 0,\n            \"MemorySwap\": 0,\n            \"MemorySwappiness\": null,\n            \"OomKillDisable\": null,\n            \"PidsLimit\": 128,\n            \"Ulimits\": null,\n            \"CpuCount\": 0,\n            \"CpuPercent\": 0,\n            \"IOMaximumIOps\": 0,\n            \"IOMaximumBandwidth\": 0,\n            \"Mounts\": [\n                {\n                    \"Type\": \"volume\",\n                    \"Source\": \"tw-market-l7-a2-1792846723430602500-home\",\n                    \"Target\": \"/var/lib/tw-market/home\"\n                },\n                {\n                    \"Type\": \"volume\",\n                    \"Source\": \"tw-market-l7-a2-1792846723430602500-state\",\n                    \"Target\": \"/var/lib/tw-market/state\"\n                },\n                {\n                    \"Type\": \"volume\",\n                    \"Source\": \"tw-market-l7-a2-1792846723430602500-guard\",\n                    \"Target\": \"/a2-guard\",\n                    \"ReadOnly\": true\n                },\n                {\n                    \"Type\": \"volume\",\n                    \"Source\": \"tw-market-l7-a2-1792846723430602500-evidence\",\n                    \"Target\": \"/a2-evidence\"\n                }\n            ],\n            \"MaskedPaths\": [\n                \"/proc/acpi\",\n                \"/proc/asound\",\n                \"/proc/interrupts\",\n                \"/proc/kcore\",\n                \"/proc/keys\",\n                \"/proc/latency_stats\",\n                \"/proc/sched_debug\",\n                \"/proc/scsi\",\n                \"/proc/timer_list\",\n                \"/proc/timer_stats\",\n                \"/sys/devices/virtual/powercap\",\n                \"/sys/firmware\"\n            ],\n            \"ReadonlyPaths\": [\n                \"/proc/bus\",\n                \"/proc/fs\",\n                \"/proc/irq\",\n                \"/proc/sys\",\n                \"/proc/sysrq-trigger\"\n            ]\n        },\n        \"Storage\": {\n            \"RootFS\": {\n                \"Snapshot\": {\n                    \"Name\": \"overlayfs\"\n                }\n            }\n        },\n        \"Mounts\": [\n            {\n                \"Type\": \"volume\",\n                \"Name\": \"tw-market-l7-a2-1792846723430602500-evidence\",\n                \"Source\": \"/var/lib/docker/volumes/tw-market-l7-a2-1792846723430602500-evidence/_data\",\n                \"Destination\": \"/a2-evidence\",\n                \"Driver\": \"local\",\n                \"Mode\": \"z\",\n                \"RW\": true,\n                \"Propagation\": \"\"\n            },\n            {\n                \"Type\": \"volume\",\n                \"Name\": \"tw-market-l7-a2-1792846723430602500-guard\",\n                \"Source\": \"/var/lib/docker/volumes/tw-market-l7-a2-1792846723430602500-guard/_data\",\n                \"Destination\": \"/a2-guard\",\n                \"Driver\": \"local\",\n                \"Mode\": \"z\",\n                \"RW\": false,\n                \"Propagation\": \"\"\n            },\n            {\n                \"Type\": \"volume\",\n                \"Name\": \"tw-market-l7-a2-1792846723430602500-home\",\n                \"Source\": \"/var/lib/docker/volumes/tw-market-l7-a2-1792846723430602500-home/_data\",\n                \"Destination\": \"/var/lib/tw-market/home\",\n                \"Driver\": \"local\",\n                \"Mode\": \"z\",\n                \"RW\": true,\n                \"Propagation\": \"\"\n            },\n            {\n                \"Type\": \"volume\",\n                \"Name\": \"tw-market-l7-a2-1792846723430602500-state\",\n                \"Source\": \"/var/lib/docker/volumes/tw-market-l7-a2-1792846723430602500-state/_data\",\n                \"Destination\": \"/var/lib/tw-market/state\",\n                \"Driver\": \"local\",\n                \"Mode\": \"z\",\n                \"RW\": true,\n                \"Propagation\": \"\"\n            }\n        ],\n        \"Config\": {\n            \"Hostname\": \"49a1f043e62b\",\n            \"Domainname\": \"\",\n            \"User\": \"10001:10001\",\n            \"AttachStdin\": false,\n            \"AttachStdout\": false,\n            \"AttachStderr\": false,\n            \"ExposedPorts\": {\n                \"8000/tcp\": {}\n            },\n            \"Tty\": false,\n            \"OpenStdin\": false,\n            \"StdinOnce\": false,\n            \"Env\": [\n                \"PYTHONPATH=/a2-guard:/opt/tw-market/app\",\n                \"TW_MARKET_NETWORK_PROFILE=docker-local-service\",\n                \"TW_MARKET_A2_GUARD_LOG=/a2-evidence/service-b.jsonl\",\n                \"PATH=/opt/tw-market/venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305\",\n                \"PYTHON_VERSION=3.13.17\",\n                \"PYTHON_SHA256=6020bd10aff3bf4821be16f088ebb1591beb7b811dcd8fab1da8f7c22a7b27e7\",\n                \"PYTHONDONTWRITEBYTECODE=1\",\n                \"PYTHONUNBUFFERED=1\",\n                \"PIP_NO_CACHE_DIR=1\",\n                \"TW_MARKET_HOME=/var/lib/tw-market/home\",\n                \"TW_MARKET_STATE_ROOT=/var/lib/tw-market/state\"\n            ],\n            \"Cmd\": [\n                \"/a2-guard/run.py\",\n                \"serve\"\n            ],\n            \"Image\": \"tw-market-l7-a2-1792846723430602500:b\",\n            \"Volumes\": null,\n            \"WorkingDir\": \"/opt/tw-market/app\",\n            \"Entrypoint\": [\n                \"python\"\n            ],\n            \"Labels\": {\n                \"org.opencontainers.image.revision\": \"510625c8e81e629e2c902b17949aa155abfe78b6\",\n                \"org.opencontainers.image.source\": \"https://github.com/SmartyJohnway/tw-market-live-data-intelligence\",\n                \"org.opencontainers.image.title\": \"TW-Market Local Service\",\n                \"org.twmarket.dependency-lock-sha256\": \"4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88\",\n                \"org.twmarket.source-tree\": \"e0450583689bf87d6329e226e5a66012006ea716\",\n                \"org.twmarket.validation-variant\": \"b\"\n            }\n        },\n        \"NetworkSettings\": {\n            \"SandboxID\": \"ef0e18d185d7b3f36eba5fcf10677e4021319b8749672859d76d392d9f8946ef\",\n            \"SandboxKey\": \"/var/run/docker/netns/ef0e18d185d7\",\n            \"Ports\": {\n                \"8000/tcp\": [\n                    {\n                        \"HostIp\": \"127.0.0.1\",\n                        \"HostPort\": \"9560\"\n                    }\n                ]\n            },\n            \"Networks\": {\n                \"tw-market-l7-a2-1792846723430602500-network\": {\n                    \"IPAMConfig\": null,\n                    \"Links\": null,\n                    \"Aliases\": null,\n                    \"DriverOpts\": null,\n                    \"GwPriority\": 0,\n                    \"NetworkID\": \"35929a4e85bb60f9d7bc82e1d448ab00a30d91a35cc68f74d520d243af581861\",\n                    \"EndpointID\": \"fa35c6d6f231abe0958d2ed069f920d269d64a18ed80babf100555e4b910b74b\",\n                    \"Gateway\": \"172.23.0.1\",\n                    \"IPAddress\": \"172.23.0.2\",\n                    \"MacAddress\": \"16:5a:1f:95:71:ec\",\n                    \"IPPrefixLen\": 16,\n                    \"IPv6Gateway\": \"\",\n                    \"GlobalIPv6Address\": \"\",\n                    \"GlobalIPv6PrefixLen\": 0,\n                    \"DNSNames\": [\n                        \"tw-market-l7-a2-1792846723430602500-b\",\n                        \"49a1f043e62b\"\n                    ]\n                }\n            }\n        },\n        \"ImageManifestDescriptor\": {\n            \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n            \"digest\": \"sha256:d0fa59489ee00f30508c7d64ad6d941c967124c6236d2b7f30ae63b9cd09417b\",\n            \"size\": 2006,\n            \"platform\": {\n                \"architecture\": \"amd64\",\n                \"os\": \"linux\"\n            }\n        }\n    }\n]\n"
+  },
+  "doctor_A": {
+    "args": [
+      "exec",
+      "tw-market-l7-a2-1792846723430602500-a",
+      "python",
+      "/a2-guard/run.py",
+      "doctor"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "{\"checks\": [{\"detail\": {\"version\": \"3.13.17\"}, \"name\": \"python\", \"status\": \"PASS\"}, {\"name\": \"dependencies\", \"status\": \"PASS\"}, {\"name\": \"environment_verification\", \"status\": \"PASS\"}, {\"detail\": {\"exists\": true, \"readable\": true}, \"name\": \"security_master_root\", \"status\": \"PASS\"}, {\"detail\": {\"exists\": true, \"readable\": true}, \"name\": \"watchlist_root\", \"status\": \"PASS\"}, {\"detail\": {\"exists\": true, \"readable\": true}, \"name\": \"control_root\", \"status\": \"PASS\"}, {\"detail\": {\"event_file_exists\": true, \"parent_ready\": true}, \"name\": \"operational_event_sink\", \"status\": \"PASS\"}, {\"detail\": {\"application_root_disk_free_bytes\": 459775938560, \"managed_service_process_memory_bytes\": 61222912, \"runtime_root_disk_free_bytes\": 67104768}, \"name\": \"resource_snapshot\", \"status\": \"PASS\"}, {\"name\": \"security_master\", \"reason_code\": \"SECURITY_MASTER_NOT_INITIALIZED\", \"status\": \"WARN\"}, {\"name\": \"process_ownership\", \"status\": \"PASS\"}, {\"detail\": {\"security_master_status\": \"NOT_INITIALIZED\", \"status\": \"not_initialized\"}, \"name\": \"workbench_preload\", \"status\": \"PASS\"}, {\"name\": \"local_service\", \"status\": \"PASS\"}, {\"name\": \"route_capability_projection\", \"status\": \"PASS\"}, {\"detail\": {\"tool_count\": 6}, \"name\": \"mcp_tool_contract\", \"status\": \"PASS\"}, {\"name\": \"mcp_startup_check\", \"status\": \"PASS\"}], \"command\": \"doctor\", \"configuration\": {\"host\": \"127.0.0.1\", \"port\": 8000, \"sources\": {\"host\": \"settings\", \"port\": \"settings\"}}, \"duration_ms\": 11525.21, \"identity\": {\"root\": \"/var/lib/tw-market/state/security-master\", \"status\": \"NOT_INITIALIZED\"}, \"installation\": {\"app_root\": \"/opt/tw-market/app\", \"cache_root\": \"/var/lib/tw-market/home/cache\", \"diagnostics\": {\"home_source\": \"env\", \"settings_origins\": {\"host\": \"settings\", \"port\": \"settings\"}, \"state_root_source\": \"metadata\"}, \"effective_service_host\": \"127.0.0.1\", \"effective_service_port\": 8000, \"governed_root\": \"/var/lib/tw-market/state/governed\", \"home\": \"/var/lib/tw-market/home\", \"installation_id\": \"f16a023e-620d-44b8-a28e-6a47cbf341f5\", \"installation_metadata_path\": \"/var/lib/tw-market/home/meta/installation.json\", \"installation_status\": \"READY\", \"logs_root\": \"/var/lib/tw-market/home/logs\", \"operational_event_path\": \"/var/lib/tw-market/home/logs/operational-events.jsonl\", \"runtime_root\": \"/tmp/TW-Market/f16a023e-620d-44b8-a28e-6a47cbf341f5/runtime\", \"security_master_root\": \"/var/lib/tw-market/state/security-master\", \"settings_path\": \"/var/lib/tw-market/home/config/settings.json\", \"state_root\": \"/var/lib/tw-market/state\", \"temp_root\": \"/tmp/TW-Market/f16a023e-620d-44b8-a28e-6a47cbf341f5/temp\", \"watchlist_root\": \"/var/lib/tw-market/state/watchlists\"}, \"mcp\": {\"local_service_reachable\": true, \"sdk_compatible\": true, \"service_url\": \"http://127.0.0.1:8000\", \"status\": \"READY\"}, \"operation_id\": \"2e93dad3-7482-425f-b818-bd0ef3b88b5a\", \"paths\": {\"control_root\": \"/var/lib/tw-market/state/governed\", \"operational_event_path\": \"/var/lib/tw-market/home/logs/operational-events.jsonl\", \"ownership_file\": \"/tmp/TW-Market/f16a023e-620d-44b8-a28e-6a47cbf341f5/runtime/service-8000.json\", \"security_master_root\": \"/var/lib/tw-market/state/security-master\", \"watchlist_root\": \"/var/lib/tw-market/state/watchlists\"}, \"readiness\": {\"preload\": \"READY\", \"routes\": {\"capability_count\": 14, \"projection\": \"READY\"}, \"schema_catalog\": \"READY\"}, \"resources\": {\"application_root_disk_free_bytes\": 459775938560, \"managed_service_process_memory_bytes\": 61222912, \"runtime_root_disk_free_bytes\": 67104768}, \"returncode\": 0, \"service\": {\"alive\": true, \"health\": {\"status\": \"healthy\"}, \"host\": \"127.0.0.1\", \"port\": 8000, \"process\": \"RUNNING\", \"url\": \"http://127.0.0.1:8000\"}, \"started_at\": \"2026-10-24T13:00:06.644416+00:00\", \"status\": \"WARN\", \"trace_id\": \"18388d7a-f52f-4d16-9aee-e963afa772f3\"}\n"
+  },
+  "doctor_B": {
+    "args": [
+      "exec",
+      "tw-market-l7-a2-1792846723430602500-b",
+      "python",
+      "/a2-guard/run.py",
+      "doctor"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "{\"checks\": [{\"detail\": {\"version\": \"3.13.17\"}, \"name\": \"python\", \"status\": \"PASS\"}, {\"name\": \"dependencies\", \"status\": \"PASS\"}, {\"name\": \"environment_verification\", \"status\": \"PASS\"}, {\"detail\": {\"exists\": true, \"readable\": true}, \"name\": \"security_master_root\", \"status\": \"PASS\"}, {\"detail\": {\"exists\": true, \"readable\": true}, \"name\": \"watchlist_root\", \"status\": \"PASS\"}, {\"detail\": {\"exists\": true, \"readable\": true}, \"name\": \"control_root\", \"status\": \"PASS\"}, {\"detail\": {\"event_file_exists\": true, \"parent_ready\": true}, \"name\": \"operational_event_sink\", \"status\": \"PASS\"}, {\"detail\": {\"application_root_disk_free_bytes\": 459775934464, \"managed_service_process_memory_bytes\": 61014016, \"runtime_root_disk_free_bytes\": 67104768}, \"name\": \"resource_snapshot\", \"status\": \"PASS\"}, {\"name\": \"security_master\", \"reason_code\": \"SECURITY_MASTER_NOT_INITIALIZED\", \"status\": \"WARN\"}, {\"name\": \"process_ownership\", \"status\": \"PASS\"}, {\"detail\": {\"security_master_status\": \"NOT_INITIALIZED\", \"status\": \"not_initialized\"}, \"name\": \"workbench_preload\", \"status\": \"PASS\"}, {\"name\": \"local_service\", \"status\": \"PASS\"}, {\"name\": \"route_capability_projection\", \"status\": \"PASS\"}, {\"detail\": {\"tool_count\": 6}, \"name\": \"mcp_tool_contract\", \"status\": \"PASS\"}, {\"name\": \"mcp_startup_check\", \"status\": \"PASS\"}], \"command\": \"doctor\", \"configuration\": {\"host\": \"127.0.0.1\", \"port\": 8000, \"sources\": {\"host\": \"settings\", \"port\": \"settings\"}}, \"duration_ms\": 11533.18, \"identity\": {\"root\": \"/var/lib/tw-market/state/security-master\", \"status\": \"NOT_INITIALIZED\"}, \"installation\": {\"app_root\": \"/opt/tw-market/app\", \"cache_root\": \"/var/lib/tw-market/home/cache\", \"diagnostics\": {\"home_source\": \"env\", \"settings_origins\": {\"host\": \"settings\", \"port\": \"settings\"}, \"state_root_source\": \"metadata\"}, \"effective_service_host\": \"127.0.0.1\", \"effective_service_port\": 8000, \"governed_root\": \"/var/lib/tw-market/state/governed\", \"home\": \"/var/lib/tw-market/home\", \"installation_id\": \"f16a023e-620d-44b8-a28e-6a47cbf341f5\", \"installation_metadata_path\": \"/var/lib/tw-market/home/meta/installation.json\", \"installation_status\": \"READY\", \"logs_root\": \"/var/lib/tw-market/home/logs\", \"operational_event_path\": \"/var/lib/tw-market/home/logs/operational-events.jsonl\", \"runtime_root\": \"/tmp/TW-Market/f16a023e-620d-44b8-a28e-6a47cbf341f5/runtime\", \"security_master_root\": \"/var/lib/tw-market/state/security-master\", \"settings_path\": \"/var/lib/tw-market/home/config/settings.json\", \"state_root\": \"/var/lib/tw-market/state\", \"temp_root\": \"/tmp/TW-Market/f16a023e-620d-44b8-a28e-6a47cbf341f5/temp\", \"watchlist_root\": \"/var/lib/tw-market/state/watchlists\"}, \"mcp\": {\"local_service_reachable\": true, \"sdk_compatible\": true, \"service_url\": \"http://127.0.0.1:8000\", \"status\": \"READY\"}, \"operation_id\": \"4ea8d5ef-2f99-486e-aa82-e5d0ea1d73af\", \"paths\": {\"control_root\": \"/var/lib/tw-market/state/governed\", \"operational_event_path\": \"/var/lib/tw-market/home/logs/operational-events.jsonl\", \"ownership_file\": \"/tmp/TW-Market/f16a023e-620d-44b8-a28e-6a47cbf341f5/runtime/service-8000.json\", \"security_master_root\": \"/var/lib/tw-market/state/security-master\", \"watchlist_root\": \"/var/lib/tw-market/state/watchlists\"}, \"readiness\": {\"preload\": \"READY\", \"routes\": {\"capability_count\": 14, \"projection\": \"READY\"}, \"schema_catalog\": \"READY\"}, \"resources\": {\"application_root_disk_free_bytes\": 459775934464, \"managed_service_process_memory_bytes\": 61014016, \"runtime_root_disk_free_bytes\": 67104768}, \"returncode\": 0, \"service\": {\"alive\": true, \"health\": {\"status\": \"healthy\"}, \"host\": \"127.0.0.1\", \"port\": 8000, \"process\": \"RUNNING\", \"url\": \"http://127.0.0.1:8000\"}, \"started_at\": \"2026-10-24T13:00:41.576531+00:00\", \"status\": \"WARN\", \"trace_id\": \"339db943-4cc8-4c98-9a20-537925248b66\"}\n"
+  },
+  "guard_denials": [],
+  "guard_events": [
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 7
+    },
+    {
+      "event": "guard_installed",
+      "pid": 8
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 7
+    },
+    {
+      "event": "guard_installed",
+      "pid": 8
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 7
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 7
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 7
+    },
+    {
+      "event": "guard_installed",
+      "pid": 13
+    },
+    {
+      "event": "guard_installed",
+      "pid": 14
+    },
+    {
+      "event": "guard_installed",
+      "pid": 15
+    },
+    {
+      "event": "guard_installed",
+      "pid": 16
+    },
+    {
+      "event": "guard_installed",
+      "pid": 17
+    },
+    {
+      "event": "guard_installed",
+      "pid": 18
+    },
+    {
+      "event": "guard_installed",
+      "pid": 19
+    },
+    {
+      "event": "guard_installed",
+      "pid": 20
+    },
+    {
+      "event": "guard_installed",
+      "pid": 21
+    },
+    {
+      "event": "guard_installed",
+      "pid": 27
+    },
+    {
+      "event": "guard_installed",
+      "pid": 28
+    },
+    {
+      "event": "guard_installed",
+      "pid": 29
+    },
+    {
+      "event": "guard_installed",
+      "pid": 31
+    },
+    {
+      "event": "guard_installed",
+      "pid": 37
+    },
+    {
+      "event": "guard_installed",
+      "pid": 38
+    },
+    {
+      "event": "guard_installed",
+      "pid": 39
+    },
+    {
+      "event": "guard_installed",
+      "pid": 40
+    },
+    {
+      "event": "guard_installed",
+      "pid": 46
+    },
+    {
+      "event": "guard_installed",
+      "pid": 47
+    },
+    {
+      "event": "guard_installed",
+      "pid": 48
+    },
+    {
+      "event": "guard_installed",
+      "pid": 49
+    },
+    {
+      "argv": [
+        "/bin/uname",
+        "-p"
+      ],
+      "event": "allowed_native_identity_probe",
+      "pid": 49
+    },
+    {
+      "event": "guard_installed",
+      "pid": 62
+    },
+    {
+      "event": "guard_installed",
+      "pid": 63
+    },
+    {
+      "event": "guard_installed",
+      "pid": 64
+    },
+    {
+      "event": "guard_installed",
+      "pid": 70
+    },
+    {
+      "event": "guard_installed",
+      "pid": 76
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 7
+    },
+    {
+      "event": "guard_installed",
+      "pid": 13
+    },
+    {
+      "event": "guard_installed",
+      "pid": 14
+    },
+    {
+      "event": "guard_installed",
+      "pid": 15
+    },
+    {
+      "event": "guard_installed",
+      "pid": 16
+    },
+    {
+      "event": "guard_installed",
+      "pid": 17
+    },
+    {
+      "event": "guard_installed",
+      "pid": 18
+    },
+    {
+      "event": "guard_installed",
+      "pid": 19
+    },
+    {
+      "event": "guard_installed",
+      "pid": 20
+    },
+    {
+      "event": "guard_installed",
+      "pid": 21
+    },
+    {
+      "event": "guard_installed",
+      "pid": 27
+    },
+    {
+      "event": "guard_installed",
+      "pid": 28
+    },
+    {
+      "event": "guard_installed",
+      "pid": 29
+    },
+    {
+      "event": "guard_installed",
+      "pid": 31
+    },
+    {
+      "event": "guard_installed",
+      "pid": 37
+    },
+    {
+      "event": "guard_installed",
+      "pid": 38
+    },
+    {
+      "event": "guard_installed",
+      "pid": 39
+    },
+    {
+      "event": "guard_installed",
+      "pid": 40
+    },
+    {
+      "event": "guard_installed",
+      "pid": 46
+    },
+    {
+      "event": "guard_installed",
+      "pid": 47
+    },
+    {
+      "event": "guard_installed",
+      "pid": 48
+    },
+    {
+      "event": "guard_installed",
+      "pid": 49
+    },
+    {
+      "argv": [
+        "/bin/uname",
+        "-p"
+      ],
+      "event": "allowed_native_identity_probe",
+      "pid": 49
+    },
+    {
+      "event": "guard_installed",
+      "pid": 62
+    },
+    {
+      "event": "guard_installed",
+      "pid": 63
+    },
+    {
+      "event": "guard_installed",
+      "pid": 64
+    },
+    {
+      "event": "guard_installed",
+      "pid": 71
+    },
+    {
+      "event": "guard_installed",
+      "pid": 77
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    },
+    {
+      "event": "guard_installed",
+      "pid": 1
+    }
+  ],
+  "guard_read_only_uname_allowance": "exact argv uname -p anchored to /bin/uname in pinned base; all other native children rejected except exact local Git identity probe",
+  "host_health_A": {
+    "body": "{\"status\":\"healthy\"}",
+    "endpoint": "127.0.0.1:11373",
+    "network_class": "localhost only",
+    "status": 200
+  },
+  "host_health_B": {
+    "body": "{\"status\":\"healthy\"}",
+    "endpoint": "127.0.0.1:9560",
+    "network_class": "localhost only",
+    "status": 200
+  },
+  "result": {
+    "after": {
+      "durable_files": {
+        "home/config/settings.json": "250982c341a13eb7ce0d3aabbfeee37d5d60e7b80f830108bf55905c0c3647ae",
+        "home/meta/installation.json": "24de4a12b7ddfcb2d9b7555439d04694349aef9c58ae5eeec466f85dcb4c0476",
+        "state/a2-validation-witness.json": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+      },
+      "installation": {
+        "created_at": "2026-10-24T12:59:43.971402+00:00",
+        "installation_id": "f16a023e-620d-44b8-a28e-6a47cbf341f5",
+        "installation_schema_version": 1,
+        "state_root": "/var/lib/tw-market/state"
+      },
+      "state_sha256": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+    },
+    "app_hashes_match_committed_manifest": true,
+    "before": {
+      "durable_files": {
+        "home/config/settings.json": "250982c341a13eb7ce0d3aabbfeee37d5d60e7b80f830108bf55905c0c3647ae",
+        "home/meta/installation.json": "24de4a12b7ddfcb2d9b7555439d04694349aef9c58ae5eeec466f85dcb4c0476",
+        "state/a2-validation-witness.json": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+      },
+      "installation": {
+        "created_at": "2026-10-24T12:59:43.971402+00:00",
+        "installation_id": "f16a023e-620d-44b8-a28e-6a47cbf341f5",
+        "installation_schema_version": 1,
+        "state_root": "/var/lib/tw-market/state"
+      },
+      "state_sha256": "b5f0931858db0e4560bc50c2c8a56353e712da2c64df180e810038f18c60fb07"
+    },
+    "external_product_network_attempts": 0,
+    "guard_events": 72,
+    "images": [
+      "sha256:e18d0913c7e707e54ec909d3c556de4b4e361d084aab2195260b2a1e610d431d",
+      "sha256:e6bf6ae779c3dab4a50dbf2ce4fb4221a35307a60b2db8921e01a4220eca59df"
+    ],
+    "loopback_only_host_exposure": true,
+    "retained_resources": {
+      "evidence": "tw-market-l7-a2-1792846723430602500-evidence",
+      "guard": "tw-market-l7-a2-1792846723430602500-guard",
+      "home": "tw-market-l7-a2-1792846723430602500-home",
+      "network": "tw-market-l7-a2-1792846723430602500-network",
+      "state": "tw-market-l7-a2-1792846723430602500-state"
+    },
+    "same_application_layers": true,
+    "scope": "Python and inherited Python instrumentation, read-only container; no OS firewall claim",
+    "sequence": [
+      "environment",
+      "base-identity",
+      "build-a",
+      "image-a",
+      "build-b",
+      "image-b",
+      "volume-home",
+      "volume-state",
+      "network",
+      "guard-volume",
+      "evidence-volume",
+      "stage-create",
+      "stage-copy",
+      "stage-permissions",
+      "stage-remove",
+      "preinit",
+      "preinit-doctor",
+      "preinit-readonly",
+      "init",
+      "init-again",
+      "create-validation-witness",
+      "state-before",
+      "start-a",
+      "status-a-0",
+      "status-a-1",
+      "status-a-2",
+      "doctor-a",
+      "port-a",
+      "startup-a",
+      "config-a",
+      "app-hashes-a",
+      "logs-a",
+      "guard-evidence-a",
+      "stop-a",
+      "remove-a",
+      "start-b",
+      "status-b-0",
+      "status-b-1",
+      "status-b-2",
+      "doctor-b",
+      "port-b",
+      "startup-b",
+      "config-b",
+      "app-hashes-b",
+      "logs-b",
+      "guard-evidence-b",
+      "stop-b",
+      "remove-b",
+      "state-after",
+      "readback-create",
+      "readback-copy",
+      "readback-remove"
+    ],
+    "source_commit": "510625c8e81e629e2c902b17949aa155abfe78b6",
+    "source_tree": "e0450583689bf87d6329e226e5a66012006ea716",
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "uname_identity_probe_provenance": {
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "{\"platform_source\": \"    def from_subprocess():\\n        \\\"\\\"\\\"\\n        Fall back to `uname -p`\\n        \\\"\\\"\\\"\\n        try:\\n            import subprocess\\n        except ImportError:\\n            return None\\n        try:\\n            return subprocess.check_output(\\n                ['uname', '-p'],\\n                stderr=subprocess.DEVNULL,\\n                text=True,\\n                encoding=\\\"utf8\\\",\\n            ).strip()\\n        except (OSError, subprocess.CalledProcessError):\\n            pass\\n\", \"uname_target\": \"/bin/busybox\", \"uname_sha256\": \"01a989eb4d1d04b0d146c790ac536abd88f374ec74a2e110c58910b840d42045\"}\n"
+  }
+}

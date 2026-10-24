@@ -1,0 +1,32 @@
+{
+  "guest": {
+    "APP_ROOT_A": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+    "APP_ROOT_B": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\Location-B\\TW-Market-1.0.0-windows-x64\\app",
+    "app_B_immutable": true,
+    "independent_local_venvs": true,
+    "name": "A3_DISTRIBUTION_RELOCATION_PROBE",
+    "same_installation_id": "c8a3bfa4-5fc7-414a-979c-3fbbfead7fdd",
+    "same_state_root": "C:\\twmarket_temp\\l7-a2\\guest\\acceptance\\business state",
+    "settings_unchanged": true,
+    "stale_marker_rejected": true
+  },
+  "host": {
+    "APP_ROOT_A": "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+    "APP_ROOT_B": "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\Location-B\\TW-Market-1.0.0-windows-x64\\app",
+    "app_B_immutable": true,
+    "independent_local_venvs": true,
+    "name": "A3_DISTRIBUTION_RELOCATION_PROBE",
+    "same_installation_id": "115d63c6-3293-4919-942a-a9ae7842cb8b",
+    "same_state_root": "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\business state",
+    "settings_unchanged": true,
+    "stale_marker_rejected": true
+  },
+  "host_quoted_launcher": {
+    "home": "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\native-quiet\\home 非ASCII",
+    "inherited_python_environment_cleared": true,
+    "paths_with_spaces_and_non_ascii": true,
+    "unknown_command_exit": 2
+  },
+  "runtime_source_checkout_or_developer_fallback": false,
+  "status": "PASS"
+}

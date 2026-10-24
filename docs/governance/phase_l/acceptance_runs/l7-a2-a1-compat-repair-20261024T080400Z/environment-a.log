@@ -1,0 +1,12 @@
+.......................................                                  [100%]
+============================== warnings summary ===============================
+..\..\..\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\config\__init__.py:1303
+  C:\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\config\__init__.py:1303: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+tests/unit/test_post_route_surface_compatibility.py::test_duplicate_post_path_is_not_collapsed_to_one_schema_operation
+  C:\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\openapi\utils.py:254: UserWarning: Duplicate Operation ID endpoint_same_post for function endpoint at C:\twmarket_temp\l7-a2\repo\tests\unit\test_post_route_surface_compatibility.py
+    warnings.warn(message, stacklevel=1)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+39 passed, 2 warnings in 5.90s

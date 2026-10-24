@@ -1,0 +1,12 @@
+{
+  "L7_EXIT_08_PASS": false,
+  "observed_failure": "batch stdin closed before tools/list response; StopIteration in acceptance harness",
+  "product_tool_drift_proven": false,
+  "public_tool_additions": 0,
+  "received_initialize": true,
+  "received_tools_list": false,
+  "repair_and_fresh_rerun_required": true,
+  "startup_check_exit": 0,
+  "status": "NOT_ACCEPTED",
+  "stdio_process_exit": 0
+}

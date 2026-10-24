@@ -1,0 +1,66 @@
+{
+  "dual_environment_test_results": "dual_environment_result.json",
+  "full_release_blocking_result": "release_blocking_ci_result.json",
+  "in_scope_results": [
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "PASS\n",
+      "validator": "validate_v1_front_door"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "Running R5B Insecure Path Pattern Scanner...\nPASS: No insecure filesystem patterns found.\n",
+      "validator": "governance_forbidden_path_guard"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"authority\": \"VERSION\"}\n",
+      "validator": "validate_product_version_consistency"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{'status': 'PASS', 'checked': 'tracked docs and source files'}\n",
+      "validator": "validate_release_hygiene"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"tool_count\": 6, \"tools\": [\"market_describe_capabilities\", \"market_export_ai_handoff\", \"market_fetch_evidence\", \"market_preview_request\", \"market_read_result\", \"market_validate_request\"]}\n",
+      "validator": "validate_runtime_skill_guide_sync"
+    },
+    {
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"status\": \"PASS\", \"product_version\": \"1.0.0\", \"tool_count\": 6}\n",
+      "validator": "validate_v1_public_contracts"
+    },
+    {
+      "exit_code": 0,
+      "validator": "changed_test_syntax"
+    }
+  ],
+  "legacy_workflow_policy": "not modified or treated as PASS; known inherited failure remains pending remaining A2 workflow reconciliation",
+  "remaining_A2_packaging_validators": "not resumed under this bounded authorization",
+  "staged_evidence_checks": [
+    {
+      "exit_code": 0,
+      "validator": "git diff --cached --check"
+    },
+    {
+      "exit_code": 0,
+      "validator": "validate_release_hygiene"
+    },
+    {
+      "exit_code": 0,
+      "validator": "governance_forbidden_path_guard"
+    },
+    {
+      "exit_code": 0,
+      "validator": "validate_v1_front_door"
+    }
+  ]
+}

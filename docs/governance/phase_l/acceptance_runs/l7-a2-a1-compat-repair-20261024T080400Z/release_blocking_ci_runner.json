@@ -1,0 +1,26 @@
+{
+  "browser_required": false,
+  "command_results": [
+    {
+      "command": "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe scripts/run_deterministic_ci.py --output-root C:\\twmarket_temp\\l7-a2\\compat-repair\\full-gate\\release-blocking-ci",
+      "duration_seconds": 185.425,
+      "execution_kind": "authoritative_runner",
+      "return_code": 0
+    }
+  ],
+  "commands": [
+    "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe scripts/run_deterministic_ci.py --output-root C:\\twmarket_temp\\l7-a2\\compat-repair\\full-gate\\release-blocking-ci"
+  ],
+  "duration_seconds": 185.427,
+  "explicit_live_confirmation": false,
+  "finished_at": "2026-10-24T08:08:13Z",
+  "network_may_have_occurred": false,
+  "profile": "release-blocking-ci",
+  "resolved_profile": "release-blocking-ci",
+  "return_codes": [
+    0
+  ],
+  "ssl_policy": "strict",
+  "started_at": "2026-10-24T08:05:07Z",
+  "status": "pass"
+}

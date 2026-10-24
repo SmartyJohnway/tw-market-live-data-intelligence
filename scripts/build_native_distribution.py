@@ -126,16 +126,23 @@ def check_member(path: str, data: bytes) -> None:
         raise ValueError(f"secret-shaped payload in {path}")
 
 
-def build(output: Path, wheelhouse: Path, *, acceptance_base: str | None = None) -> dict:
+def build(output: Path, wheelhouse: Path, *, acceptance_base: str | None = None,
+          release_validation_source: str | None = None, release_validation_tree: str | None = None) -> dict:
     if git("status", "--porcelain", "--untracked-files=all").strip():
         raise ValueError("final build requires clean committed source")
     base = BASE
-    if acceptance_base is not None:
+    if release_validation_source is not None or release_validation_tree is not None:
+        if acceptance_base is not None:raise ValueError('ambiguous acceptance lineage')
+        from scripts.release_validation_source import exact_release_validation_source
+        exact_release_validation_source(git,release_validation_source,release_validation_tree)
+        from scripts.release_validation_source import ENTRY
+        base=ENTRY
+    elif acceptance_base is not None:
         if acceptance_base != A5_BASE or git('rev-parse', 'origin/main').decode().strip() != A5_BASE:
             raise ValueError('L6_A5_ENTRY_BASE_DRIFT')
         base = A5_BASE
     subprocess.run(["git", "merge-base", "--is-ancestor", base, "HEAD"], cwd=ROOT, check=True)
-    if git('rev-list', '--merges', base + '..HEAD').strip():
+    if release_validation_source is None and git('rev-list', '--merges', base + '..HEAD').strip():
         raise ValueError('candidate must retain a linear clean reimplementation from exact A2')
     commit = git("rev-parse", "HEAD").decode().strip()
     tree = git("rev-parse", "HEAD^{tree}").decode().strip()
@@ -202,5 +209,8 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--wheelhouse", type=Path, required=True)
     parser.add_argument("--acceptance-base", choices=[A5_BASE])
+    parser.add_argument('--release-validation-source')
+    parser.add_argument('--release-validation-tree')
     args = parser.parse_args()
-    print(json.dumps(build(args.output.resolve(), args.wheelhouse.resolve(), acceptance_base=args.acceptance_base), indent=2))
+    print(json.dumps(build(args.output.resolve(), args.wheelhouse.resolve(), acceptance_base=args.acceptance_base,
+                           release_validation_source=args.release_validation_source, release_validation_tree=args.release_validation_tree), indent=2))

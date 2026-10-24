@@ -1,0 +1,10 @@
+{
+  "A1_accepted_criteria_reopened": false,
+  "criteria": {
+    "L7-EXIT-04": "NOT_ACCEPTED",
+    "L7-EXIT-05": "NOT_ACCEPTED",
+    "L7-EXIT-06": "NOT_ACCEPTED",
+    "L7-EXIT-07": "NOT_ACCEPTED"
+  },
+  "other_exit_criteria_newly_accepted": []
+}

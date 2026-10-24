@@ -1,0 +1,6 @@
+{
+    "acceptance_exit":  null,
+    "status":  "FAIL",
+    "error":  "Native guest acceptance did not pass",
+    "stage":  "native-acceptance"
+}

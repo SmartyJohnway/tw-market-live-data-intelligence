@@ -1,0 +1,25 @@
+{
+  "Environment_A": {
+    "FastAPI": "0.133.0",
+    "Starlette": "0.52.1",
+    "passed": 39
+  },
+  "Environment_B": {
+    "FastAPI": "0.141.1",
+    "Starlette": "1.6.0",
+    "passed": 39
+  },
+  "accepted_proof_not_repeated_unnecessarily": true,
+  "classifications": 15,
+  "commit": "faba8c219426b20665b3fc94c090f836d6fe3c0c",
+  "effective_POST_paths": 15,
+  "independently_accepted_by_continuation_authority": true,
+  "missing": [],
+  "repair_source_unchanged": [
+    "tests/post_route_surface.py",
+    "tests/unit/test_phase_l_l4_a4_control_plane_boundary.py",
+    "tests/unit/test_post_route_surface_compatibility.py"
+  ],
+  "stale": [],
+  "tree": "fb4579b94873052b54dc402d5ebe6700eb4320ca"
+}

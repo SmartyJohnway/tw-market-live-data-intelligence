@@ -1,27 +1,43 @@
 name: Windows Compatibility Smoke
-
-on:
-  workflow_dispatch:
-
+'on':
+  workflow_dispatch: {}
+  pull_request:
+    types:
+    - opened
+    - synchronize
+    - reopened
+    - labeled
+permissions:
+  contents: read
 jobs:
-  windows-compatibility-smoke:
+  validation:
     runs-on: windows-latest
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Install test dependencies
-        run: python -m pip install -r requirements.txt
-      - name: Compile Windows compatibility surfaces
-        run: python -m compileall scripts server tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py
-      - name: Run Windows non-network compatibility smoke tests
-        run: pytest -m "not network" tests/unit/test_m5f_canonical_market_context_package.py tests/unit/test_m5i_explicit_bounded_refresh.py tests/unit/test_m5ij_end_to_end_acceptance.py tests/unit/test_m5fgh_fastapi_context.py tests/unit/test_mcp_server.py tests/unit/test_m6d_ssl_policy.py tests/unit/test_m6d_operator_and_local_networking.py -q
-      - name: Validate M5F package
-        run: python scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01
-      - name: M5IJ Windows acceptance
-        run: python scripts/run_m5ij_end_to_end_acceptance.py --check-only
-      - name: MCP startup check
-        run: python server/mcp_server.py --startup-check
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+    - name: Fresh clone and canonical pre-publication validation (not genuine Win11 evidence)
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = 'Stop'
+        $env:PATH = 'C:\Program Files\Git\cmd;C:\Windows\System32;C:\Windows;C:\Program Files\nodejs;' + $env:pythonLocation
+        $base = "C:\twmarket_temp\l7-a2\gha-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+        $env:TEMP = "$base\temp"
+        $env:TMP = $env:TEMP
+        $env:PYTHONDONTWRITEBYTECODE = '1'
+        New-Item -ItemType Directory -Force -Path $env:TEMP | Out-Null
+        if ($env:SOURCE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'Exact source SHA required' }
+        git clone --no-checkout https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git "$base\source"
+        if ($LASTEXITCODE -ne 0) { throw 'Fresh clone failed' }
+        Set-Location "$base\source"
+        git fetch origin $env:SOURCE_SHA
+        git checkout --detach $env:SOURCE_SHA
+        if ($LASTEXITCODE -ne 0) { throw 'Exact source checkout failed' }
+        $tree = git rev-parse 'HEAD^{tree}'
+        & "$env:pythonLocation\python.exe" -B -m venv "$base\venv"
+        if ($LASTEXITCODE -ne 0) { throw 'Fresh prerequisite venv failed' }
+        & "$base\venv\Scripts\python.exe" -B scripts/run_l7_a2_release_validation.py --source-commit $env:SOURCE_SHA --source-tree $tree --work "$base\work" --wheelhouse "$base\wheelhouse" --download-setup --provision --gate
+        if ($LASTEXITCODE -ne 0) { throw 'Release validation failed' }
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'windows-smoke')

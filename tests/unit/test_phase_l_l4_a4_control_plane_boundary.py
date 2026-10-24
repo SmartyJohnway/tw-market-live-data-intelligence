@@ -16,6 +16,7 @@ from server.local_control_plane_boundary import (
     classify_post_path,
 )
 from server.main import app
+from tests.post_route_surface import schema_post_paths_with_visibility_guard
 
 
 PRIVILEGED_PATH = "/api/unified/authorizations"
@@ -36,11 +37,7 @@ async def _post(*, url="http://127.0.0.1:8000", origin=None, fetch_site=None,
 
 
 def test_every_fastapi_post_route_has_exactly_one_explicit_classification():
-    actual = {
-        route.path
-        for route in app.routes
-        if "POST" in getattr(route, "methods", set())
-    }
+    actual = schema_post_paths_with_visibility_guard(app)
     assert actual == set(POST_ROUTE_CLASSIFICATIONS)
     assert {classify_post_path(path) for path in actual} == {
         READ_OR_OFFLINE_PROJECTION,

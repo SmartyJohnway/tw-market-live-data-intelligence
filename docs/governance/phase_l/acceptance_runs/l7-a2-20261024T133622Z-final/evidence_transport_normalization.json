@@ -1,0 +1,106 @@
+{
+  "members": [
+    {
+      "committed_sha256": "d6ce3e73a559eae3c2d4b547de3f4054eb83601d81f65b6b4f3c8f7aa0ca5fbe",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "release_blocking_ci_report.xml",
+      "raw_sha256": "d6ce3e73a559eae3c2d4b547de3f4054eb83601d81f65b6b4f3c8f7aa0ca5fbe"
+    },
+    {
+      "committed_sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "release_blocking_ci_members.json",
+      "raw_sha256": "1bfadc4fa5ceaaf69f1af2e3b00eec01061f931be8d487fc895f2cfe92c88418"
+    },
+    {
+      "committed_sha256": "94087a0007948af57263f6b4f7074db5f15238c9af76a6bd63cdfd6ec4eafa43",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "release_blocking_ci_guard.jsonl",
+      "raw_sha256": "cf1792090249ea671dc1c70a7422e430a5d4f3cb732958026260a2ecc2b0f3d6"
+    },
+    {
+      "committed_sha256": "6d57fc9fa05e80a13a0eb33f6cf3fe7a6d7c85b9ff92d37a57d21fc7c5716afb",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "release_blocking_ci_runner.json",
+      "raw_sha256": "a1940898e50fd339a4a16f59b4eed7c76db8c3aa926e71f3f7cdbeddb48c817f"
+    },
+    {
+      "committed_sha256": "3a52841f608fe1fc97746726b39988f71062a7e9ba5d99adbd66d7abff9d5ce5",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "native_raw_mcp_protocol.json",
+      "raw_sha256": "075d9ee1bee08152add766dea71a0166b9e6e75d13c011d47e97162df202a5fd"
+    },
+    {
+      "committed_sha256": "3a52841f608fe1fc97746726b39988f71062a7e9ba5d99adbd66d7abff9d5ce5",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "guest_raw_mcp_protocol.json",
+      "raw_sha256": "075d9ee1bee08152add766dea71a0166b9e6e75d13c011d47e97162df202a5fd"
+    },
+    {
+      "committed_sha256": "a186884a802017b6ee708c02f056f405a229d9d6fbbaf860318e52fc1ae67c65",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "guest_acceptance_harness.ps1",
+      "raw_sha256": "a186884a802017b6ee708c02f056f405a229d9d6fbbaf860318e52fc1ae67c65"
+    },
+    {
+      "committed_sha256": "92c1b617d21ac9048a65bfe54fd56bf0d38f52372b20eff60b88d44bd43a6fd5",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "guest_acceptance_configuration.wsb",
+      "raw_sha256": "92c1b617d21ac9048a65bfe54fd56bf0d38f52372b20eff60b88d44bd43a6fd5"
+    },
+    {
+      "committed_sha256": "9abf338e6bc20915c30da8c03d7f0b8ace620007353006016dd931fcc39ea50b",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "guest_preinit_doctor.json",
+      "raw_sha256": "5bcc483dd1afb3d565c1d2c9315c84320a367573fa45704cd836ebe475bd6668"
+    },
+    {
+      "committed_sha256": "a7536682940c6b49b7dd1f996011487b96f3feb9369e112987a56e861482c91a",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "guest_product_cleanup_stop.json",
+      "raw_sha256": "82f40e96fe327e6582b2420e97c6a51c1f67d026256a21b351bd933e944ad41d"
+    },
+    {
+      "committed_sha256": "be8d71b3617075989ea2d21a4d9d4cfa8c8d8af320507d9616330de0022e193e",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "canonical_entry_gate_baseline_report.xml",
+      "raw_sha256": "be8d71b3617075989ea2d21a4d9d4cfa8c8d8af320507d9616330de0022e193e"
+    },
+    {
+      "committed_sha256": "d9605af73d5589a59b883fe471d9316d24491131ac3eb36763810d5e151f02f5",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "focused_packaging_workflow_report.xml",
+      "raw_sha256": "d9605af73d5589a59b883fe471d9316d24491131ac3eb36763810d5e151f02f5"
+    },
+    {
+      "committed_sha256": "947049ae337adcdb2cdb0d89381bfb2ea13fd7b6d783fb5bc607921038b8e3b0",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "validator_guard.jsonl",
+      "raw_sha256": "6645f3787419c6703999bbd902ac01b77f021ff265b679c7828a877c16bef13a"
+    },
+    {
+      "committed_sha256": "7d63812887a8b6cedba11998d7947b1658b28693a9b9bfb26063816b56732020",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "final_validator_harness.py",
+      "raw_sha256": "7d63812887a8b6cedba11998d7947b1658b28693a9b9bfb26063816b56732020"
+    },
+    {
+      "committed_sha256": "ed26de560853701f0c821a623fddc0f23468d4dc680f7e5f3c57451f84bfd707",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained; trailing blank EOF lines collapsed for Git whitespace",
+      "path": "incomplete_MSI_core_tail.log",
+      "raw_sha256": "e731d3d4cea3b9f5a1fa7b7c712622a37cddb204391e15991c7c60a5000460ed"
+    },
+    {
+      "committed_sha256": "6c2ca27bece67d86549f64874d886ba217c2e7257091be90487f85001630cb25",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "intermediate_guest_wrapper_exitcode_failure.json",
+      "raw_sha256": "ee03714c2203b4431b7d76d1242b40ebaa96c8c410749e03f16f412587ccec2b"
+    },
+    {
+      "committed_sha256": "dc6e2f3b6444e845138ed6efacb9765b14bc82e0896cadc702b2a4a81826ea50",
+      "normalization": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; external originals retained",
+      "path": "intermediate_guest_native_body_result.json",
+      "raw_sha256": "e9eb29e076f1d63635b5dceabd7bb354307edecfb0fbe82061d7b4846e6a2ba2"
+    }
+  ]
+}

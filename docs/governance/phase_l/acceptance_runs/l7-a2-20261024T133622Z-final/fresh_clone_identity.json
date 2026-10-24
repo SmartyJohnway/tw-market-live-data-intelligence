@@ -1,0 +1,11 @@
+{
+  "HEAD": "510625c8e81e629e2c902b17949aa155abfe78b6",
+  "acceptance_CWD": "outside checkout; Native derived venv only",
+  "acquisition": "actual public GitHub clone; exact unpublished local candidate objects fetched from bounded implementation checkout without early push",
+  "checkout": "C:\\twmarket_temp\\l7-a2\\continuation\\final-source\\repo",
+  "clean": true,
+  "ignored_runtime_or_state_files": [],
+  "origin": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git",
+  "origin_main_observed": "0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5",
+  "tree": "e0450583689bf87d6329e226e5a66012006ea716"
+}

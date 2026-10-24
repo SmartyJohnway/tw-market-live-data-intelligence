@@ -1,0 +1,51 @@
+{
+  "negative_controls": "unlabeled/retained label, missing synchronize, unconditional job, extra unguarded job, write permissions, published trigger, publication action, git tag",
+  "status": "PASS",
+  "validator_results": [
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_github_actions_execution_policy.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"policy_id\": \"CI_POLICY_V1\",\n  \"status\": \"passed\",\n  \"violations\": [],\n  \"workflow_count\": 5,\n  \"workflows\": [\n    {\n      \"file\": \".github\\\\workflows\\\\browser-operator-e2e.yml\",\n      \"name\": \"Browser Operator E2E\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\ci.yml\",\n      \"name\": \"Default CI\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\non-network-ci.yml\",\n      \"name\": \"Full Non-Network Regression\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\release-validation.yml\",\n      \"name\": \"Release Validation\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\windows-compatibility-smoke.yml\",\n      \"name\": \"Windows Compatibility Smoke\",\n      \"triggers\": [\n        \"pull_request\",\n        \"workflow_dispatch\"\n      ]\n    }\n  ]\n}\n",
+      "validator": "validate_github_actions_execution_policy"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_l7_a2_workflow_policy.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"unlabeled_pr_expensive_job\": false,\n  \"labeled_pr_synchronize_eligible\": true,\n  \"labeled_pr_reopen_eligible\": true,\n  \"manual_dispatch_eligible\": true,\n  \"pre_publication\": true,\n  \"genuine_windows11_claim\": false\n}\n",
+      "validator": "validate_l7_a2_workflow_policy"
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=C:\\twmarket_temp\\l7-a2\\continuation\\final-checks\\pytest-temp",
+        "--junitxml=C:\\twmarket_temp\\l7-a2\\continuation\\final-checks\\report.xml",
+        "tests/unit/test_github_actions_execution_policy.py",
+        "tests/unit/test_l7_a2_workflow_policy.py",
+        "tests/unit/test_l7_a2_source_admission.py",
+        "tests/unit/test_l7_a2_docker_acceptance_guard.py",
+        "tests/unit/test_l6_a4_docker_packaging.py",
+        "tests/unit/test_l6_a4_docker_network_profile.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": ".........................................                                [100%]\n41 passed in 2.14s\n",
+      "validator": "workflow_and_packaging_unit_tests"
+    }
+  ]
+}

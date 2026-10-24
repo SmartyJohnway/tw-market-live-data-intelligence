@@ -1,0 +1,16 @@
+{
+  "review_id": 5639050489,
+  "reviewed_head": "eb3b6477c7411b71e4a5a34b16d90bbaf91ca220",
+  "reviewed_tree": "631bdddb47f1118e57daf8da3fc742ae43bf832c",
+  "authority": "Owner chat bounded validator reproducibility correction",
+  "root_cause": "Direct script sys.path contains scripts directory rather than repository root; package-qualified import required hidden PYTHONPATH",
+  "repair": "Package-relative import for module execution; sibling import for direct execution; no exception masking",
+  "before_direct_exit": 1,
+  "before_error": "ModuleNotFoundError: No module named 'scripts.validate_l7_a2_workflow_policy'",
+  "core_acceptance": "NO CORE FAILURE FOUND; historical accepted evidence retained unchanged",
+  "core_reruns": "Not required by Owner: unchanged Native/Docker/Sandbox/gate implementation inputs",
+  "disposition": "L7_A2_VALIDATOR_REPRODUCIBILITY_CORRECTION_READY_FOR_BOUNDED_RE_REVIEW",
+  "owner_acceptance": "PENDING",
+  "merge_authorized": false,
+  "A3_authorized": false
+}

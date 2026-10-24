@@ -41,9 +41,15 @@ def _secret_shaped(data: bytes) -> bool:
     ))
 
 
-def build_context(wheelhouse: Path, output: Path, *, acceptance_base: str | None = None) -> dict:
+def build_context(wheelhouse: Path, output: Path, *, acceptance_base: str | None = None,
+                  release_validation_source: str | None = None, release_validation_tree: str | None = None) -> dict:
     status = _git("status", "--porcelain", "--untracked-files=all").decode().splitlines()
-    if acceptance_base is not None:
+    release_mode=release_validation_source is not None or release_validation_tree is not None
+    if release_mode:
+        if acceptance_base is not None:raise ValueError('ambiguous acceptance lineage')
+        from scripts.release_validation_source import exact_release_validation_source, ENTRY as RELEASE_ENTRY
+        commit,tree=exact_release_validation_source(_git,release_validation_source,release_validation_tree)
+    elif acceptance_base is not None:
         if acceptance_base != A5_BASE or _git("rev-parse", "origin/main").decode().strip() != A5_BASE:
             raise ValueError("L6_A5_ENTRY_BASE_DRIFT")
         if status:
@@ -58,7 +64,7 @@ def build_context(wheelhouse: Path, output: Path, *, acceptance_base: str | None
     else:
         subprocess.run(["git", "merge-base", "--is-ancestor", BASE, "HEAD"], cwd=ROOT, check=True)
         commit = _git("rev-parse", "HEAD").decode().strip()
-    if acceptance_base is not None:
+    if release_mode or acceptance_base is not None:
         pass
     elif commit == BASE:
         if any(line.startswith("??") or line[1] not in " " for line in status):
@@ -153,8 +159,8 @@ def build_context(wheelhouse: Path, output: Path, *, acceptance_base: str | None
         "candidate_head_base": commit,
         "candidate_tree": tree,
         "application_source_tree": tree,
-        "entry_base_commit": BASE,
-        "entry_base_tree": _git("rev-parse", f"{BASE}^{{tree}}").decode().strip(),
+        "entry_base_commit": RELEASE_ENTRY if release_mode else BASE,
+        "entry_base_tree": _git("rev-parse", f"{RELEASE_ENTRY if release_mode else BASE}^{{tree}}").decode().strip(),
         "resource_policy_sha256": _sha(_git("show", f"{tree}:packaging_native/resource-policy.json")),
         "dependency_lock_sha256": _sha(_git("show", f"{tree}:packaging_docker/dependency-lock-linux-amd64-cp313.json")),
         "requirements_sha256": _sha(requirements),
@@ -174,9 +180,12 @@ def main() -> int:
     parser.add_argument("--wheelhouse", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--acceptance-base", choices=[A5_BASE])
+    parser.add_argument('--release-validation-source')
+    parser.add_argument('--release-validation-tree')
     args = parser.parse_args()
     try:
-        result = build_context(args.wheelhouse.resolve(), args.output.resolve(), acceptance_base=args.acceptance_base)
+        result = build_context(args.wheelhouse.resolve(), args.output.resolve(), acceptance_base=args.acceptance_base,
+                               release_validation_source=args.release_validation_source, release_validation_tree=args.release_validation_tree)
     except (OSError, ValueError, subprocess.CalledProcessError, KeyError, zipfile.BadZipFile) as exc:
         print(json.dumps({"status": "FAIL", "reason": str(exc)}, sort_keys=True), file=sys.stderr)
         return 1

@@ -1,6 +1,6 @@
 """Acceptance-only Python filesystem/network guard; not distributed."""
 import os, sys, socket
-BASE = os.path.normcase(r'C:\twmarket_temp')
+BASE = os.path.normcase(os.path.abspath(os.environ.get('TW_MARKET_ACCEPTANCE_GUARD_BASE',r'C:\twmarket_temp')))
 LOG = r'C:\twmarket_temp\build\guard-events.jsonl'
 _raw_open = open
 
@@ -19,6 +19,8 @@ def check(p,write=False):
     if isinstance(p, str) and p.lower() in {'nul', '\\\\.\\nul'}: return
     name=normalized(p)
     if name.startswith('d:'): reject('D_DRIVE_ACCESS',name)
+    owner=normalized(os.path.join(os.environ.get('USERPROFILE',''), 'AppData', 'Local', 'TW-Market'))
+    if name and (name==owner or name.startswith(owner+os.sep)): reject('OWNER_PRODUCTION_STATE_ACCESS',name)
     if write and name and name != BASE and not name.startswith(BASE+os.sep) and name not in {'nul','\\\\.\\nul'}:
         reject('OUTSIDE_WRITE',name)
 

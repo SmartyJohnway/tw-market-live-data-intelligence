@@ -1,0 +1,13 @@
+{
+  "baseline_environment_equals_candidate_environment": true,
+  "baseline_failed_nodes": [
+    "tests.unit.test_phase_l_l4_a4_control_plane_boundary::test_every_fastapi_post_route_has_exactly_one_explicit_classification"
+  ],
+  "baseline_failure_is_not_a_waiver": true,
+  "candidate_failed_nodes": [
+    "tests.unit.test_phase_l_l4_a4_control_plane_boundary::test_every_fastapi_post_route_has_exactly_one_explicit_classification"
+  ],
+  "candidate_only_failures": [],
+  "gate_green": false,
+  "selected_members_equal": true
+}

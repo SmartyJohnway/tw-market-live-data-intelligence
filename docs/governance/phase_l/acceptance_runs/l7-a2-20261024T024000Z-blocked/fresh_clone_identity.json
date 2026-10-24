@@ -1,0 +1,8 @@
+{
+  "acquisition": "actual public GitHub clone then exact unpublished candidate object fetched from bounded local implementation repo; no early push",
+  "checkout": "C:\\twmarket_temp\\l7-a2\\fresh\\repo",
+  "clean": true,
+  "commit": "84ff1f89c3f1ab43a289d8a420e987c80d187cd6",
+  "origin": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git",
+  "tree": "e0bd9d5b0573b12dbc8f7d1d76dc4323cb61bc00"
+}

@@ -1,0 +1,22 @@
+{
+  "member_count": 3,
+  "members": [
+    {
+      "path": "authority_and_provenance.json",
+      "bytes": 1001,
+      "sha256": "4035b15366d3a6a522f18b91fb46c538ffc0aa27c8b0ccdef537421787279558"
+    },
+    {
+      "path": "scope_verification.json",
+      "bytes": 466,
+      "sha256": "0bb8249b098b41decbc94aca304c564dcf336eecd9ed30633386b94b88b4d3db"
+    },
+    {
+      "path": "validation_results.json",
+      "bytes": 4428,
+      "sha256": "f430179d37f7bbbd4fd4a67a90d0927693f138e651ff74dee2b58bb7bdcde3d4"
+    }
+  ],
+  "self_digest_convention": "SHA256 compact sorted UTF8 JSON excluding self_digest",
+  "self_digest": "23698ec505db890e273d8a40397d9b351e0d4dd427aa06f6a19d9231a1e4ce1e"
+}
