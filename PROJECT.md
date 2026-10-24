@@ -1,28 +1,30 @@
 # PROJECT.md — Current Project Authority
 
-## Current L7-A1 deterministic CI state (2026-10-24)
+## Current L7-A1 merged state (2026-10-24)
 
 L6 remains **CLOSED**; L7-A0 is **OWNER-ACCEPTED AND MERGED**, reconciled by
 PR #409 normal merge `405bf16f5f82f4d37062d036ca6815eba27f7c4d`.
-L7-A1 is **TECHNICAL PASS / OWNER ACCEPTANCE PENDING** under
+L7-A1 is **OWNER-ACCEPTED AND MERGED** under
 `L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_PASS`.
+Independent review disposition is `L7_A1_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
+`L7_A1_OWNER_ACCEPTED_FOR_MERGE`.
 
-Canonical `release-blocking-ci` v1: 1895 passed / 0 failed / four named optional
-historical artifact witnesses skipped; zero unexpected skips and guard denials.
-All 47 baseline failures are finally adjudicated (32 test infrastructure,
-one environment prerequisite, 14 historical governance); DECISION_REQUIRED=0.
-Original historical assertions remain preserved with current blocking coverage.
-DEFAULT_CI remains overall FAIL (1277 passed / 13 failed / 4 skipped / 5 deselected).
-FULL_NON_NETWORK remains FAIL at Windows collection (historical Unix fcntl helper).
-No complete FULL_NON_NETWORK PASS is claimed. No new candidate failure is introduced.
+PR #410 normal-merged accepted head `c2cdb66fb8d5e1a697f56a8c65de9f7313dafc14`,
+tree `f1105c640e749247c99ed23dd2e45c9432bb1b4a`, at merge commit
+`fe07765e67422dbad065cb5be8aad4ddb3d14914`. Merge parents are prior canonical main
+`405bf16f5f82f4d37062d036ca6815eba27f7c4d` and the exact accepted A1 head; GitHub merge verification is valid.
 
-Only L7-GAP-01/02/03/04 are CLOSED; only L7-EXIT-01/02/03/27 are PASS.
-The other 17 A0 gaps and 25 final release criteria remain unaccepted by A1.
-Windows 11 x64 remains the decided Native Tier-1; historical L0-D03 is unchanged.
-**L7-A2+ NOT AUTHORIZED. Stable release/publication NOT AUTHORIZED.
-Phase M NOT AUTHORIZED. Phase L NOT CLOSED. Merge/auto-merge NOT AUTHORIZED.**
+Canonical `release-blocking-ci` v1 remains accepted at 1895 passed / 0 failed / four named optional
+historical artifact witnesses skipped; zero unexpected skips and guard denials. All 47 baseline
+failures remain finally adjudicated with DECISION_REQUIRED=0. DEFAULT_CI remains diagnostic FAIL;
+FULL_NON_NETWORK remains diagnostic FAIL at the preserved Windows `fcntl` collection boundary.
+
+Only L7-GAP-01/02/03/04 are CLOSED; only L7-EXIT-01/02/03/27 are PASS. The other 17 A0 gaps and
+25 final release criteria remain unaccepted. **L7-A2+ NOT AUTHORIZED. Stable release/publication
+NOT AUTHORIZED. Phase M NOT AUTHORIZED. Phase L NOT CLOSED.**
 
 Report: `docs/governance/phase_l/PHASE_L_L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_2026-10-24.md`.
+Reconciliation: `docs/governance/phase_l/PHASE_L_L7_A1_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-24.md`.
 Evidence: `docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/`.
 
 ## Historical L7-A0 merged state (2026-10-24)

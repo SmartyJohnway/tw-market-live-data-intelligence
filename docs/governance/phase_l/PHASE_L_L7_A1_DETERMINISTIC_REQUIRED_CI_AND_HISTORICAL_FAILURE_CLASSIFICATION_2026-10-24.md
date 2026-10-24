@@ -2,9 +2,10 @@
 
 Technical disposition:
 `L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_PASS`.
-**OWNER ACCEPTANCE PENDING**. Merge/auto-merge, L7-A2+, stable publication and
-Phase M remain unauthorized. L6 is CLOSED; L7-A0 is Owner-accepted and merged;
-Phase L remains NOT CLOSED.
+**OWNER-ACCEPTED AND MERGED**. Independent review disposition is
+`L7_A1_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
+`L7_A1_OWNER_ACCEPTED_FOR_MERGE`. L7-A2+, stable publication and Phase M remain
+unauthorized. L6 is CLOSED; L7-A0 is Owner-accepted and merged; Phase L remains NOT CLOSED.
 
 Authority:
 `USER_CHAT_2026-10-24_PHASE_L_L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_AUTHORIZATION`.
@@ -17,6 +18,13 @@ PR #409 was verified merged through GitHub. Its normal merge is
 `f29f053336773b093c9cda819922cd1ee8f5fc65`, tree
 `cf6db19544705fa83a55e17377489116b9ebcdc7`. origin/main equalled this merge.
 The clean isolated branch is `phase-l/l7-a1-deterministic-required-ci`.
+
+PR #410 normal-merged exact accepted A1 head `c2cdb66fb8d5e1a697f56a8c65de9f7313dafc14`,
+tree `f1105c640e749247c99ed23dd2e45c9432bb1b4a`, at merge commit
+`fe07765e67422dbad065cb5be8aad4ddb3d14914`. Merge parents are prior canonical main
+`405bf16f5f82f4d37062d036ca6815eba27f7c4d` and the exact accepted A1 head; GitHub
+merge verification is valid. Owner acceptance review is `5636057428`; independent
+review is `5635986521`.
 
 [A1 evidence manifest](acceptance_runs/l7-a1-20261024T003128Z/manifest.json)
 binds the records and exact test input hashes. The containing Git commit/tree
