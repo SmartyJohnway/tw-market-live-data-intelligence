@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="12.837" timestamp="2026-10-24T08:44:00.969502+08:00" hostname="C04N06"><testcase classname="" name="tests.unit.test_phase_j_b04_a6_integrated_acceptance" time="0.000"><error message="collection failure">ImportError while importing test module 'C:\twmarket_temp\l7-a1\repo\tests\unit\test_phase_j_b04_a6_integrated_acceptance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\weitang\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_phase_j_b04_a6_integrated_acceptance.py:9: in &lt;module&gt;
+    from scripts.a6_session_transport import attempt_2_eligible, complete_dispatch, operation_context, reserve_dispatch
+scripts\a6_session_transport.py:6: in &lt;module&gt;
+    import fcntl
+E   ModuleNotFoundError: No module named 'fcntl'</error></testcase></testsuite></testsuites>

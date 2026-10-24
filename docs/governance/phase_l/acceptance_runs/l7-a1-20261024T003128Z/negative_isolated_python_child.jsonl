@@ -1,0 +1,4 @@
+{"event": "guard_loaded", "pid": 6316, "python": "3.13.7"}
+{"event": "child_python_injected", "executable": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe", "pid": 6316}
+{"event": "guard_loaded", "pid": 25264, "python": "3.13.7"}
+{"event": "denied", "pid": 25264, "reason": "EXTERNAL_NETWORK_ATTEMPT", "value": "192.0.2.1"}

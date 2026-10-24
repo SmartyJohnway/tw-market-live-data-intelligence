@@ -41,12 +41,16 @@ def test_real_localhost_authorize_execute_once_vertical(tmp_path):
         port = probe.getsockname()[1]
     control_root, counter = tmp_path / "control", tmp_path / "counter"
     environment = os.environ | {
+        "TW_MARKET_HOME": str(tmp_path / "home"),
+        "TW_MARKET_STATE_ROOT": str(tmp_path / "state"),
         "M8R_06_03_CONTROL_ROOT": str(control_root),
         "M8R_06_03_EXECUTION_ENVIRONMENT": "test",
         "M8R_06_03_TEST_SOURCE_TRANSPORT": "deterministic",
         "M8R_06_03_TEST_INVOCATION_COUNTER": str(counter),
         "TW_MARKET_SECURITY_MASTER_ROOT": str(tmp_path / "security_master"),
     }
+    from scripts.tw_market_installation import initialize_installation
+    initialize_installation(environ=environment)
     server = subprocess.Popen(
         [sys.executable, "scripts/run_unified_workbench.py", "--host", "127.0.0.1", "--port", str(port)],
         cwd=ROOT, env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,

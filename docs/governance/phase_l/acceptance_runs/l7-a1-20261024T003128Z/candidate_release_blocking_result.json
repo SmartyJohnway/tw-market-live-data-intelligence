@@ -1,0 +1,46 @@
+{
+  "boundary": "Python audit and injected Python/Node child guards; local Git allowlist; no OS firewall claim",
+  "elapsed_seconds": 172.566,
+  "guard_denials": [],
+  "guard_events": 385,
+  "junit_summary": {
+    "errors": [],
+    "executed_cases": 1899,
+    "failed": 0,
+    "failed_nodes": [],
+    "overall": "PASS",
+    "passed": 1895,
+    "skipped": [
+      {
+        "nodeid": "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py::test_sealed_bundle_acceptance_and_exhaustive_resolver_equivalence",
+        "reason": "requires original sealed 01B bundle; normal CI uses synthetic fixtures"
+      },
+      {
+        "nodeid": "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_sealed_candidate_production_activation",
+        "reason": "accepted local C1B compact candidate is not materialized"
+      },
+      {
+        "nodeid": "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_active_release_http_e2e_without_runtime_monkeypatch",
+        "reason": "installation-local active release is not initialized"
+      },
+      {
+        "nodeid": "tests/integration/test_unified_workbench_api.py::test_real_sealed_candidate_is_not_a_production_fallback",
+        "reason": "governed local candidate is Git-ignored"
+      }
+    ]
+  },
+  "profile": "release-blocking-ci",
+  "profile_version": 1,
+  "public_contract_anchor": "405bf16f5f82f4d37062d036ca6815eba27f7c4d",
+  "pytest_exit_code": 0,
+  "selected_nodes": 1899,
+  "selection_consistency": "JUnit exact set equals final pytest collection_finish membership",
+  "skipped_nodes": [
+    "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py::test_sealed_bundle_acceptance_and_exhaustive_resolver_equivalence",
+    "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_sealed_candidate_production_activation",
+    "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_active_release_http_e2e_without_runtime_monkeypatch",
+    "tests/integration/test_unified_workbench_api.py::test_real_sealed_candidate_is_not_a_production_fallback"
+  ],
+  "status": "PASS",
+  "unexpected_skips": []
+}

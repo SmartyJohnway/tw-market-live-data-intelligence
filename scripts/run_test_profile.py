@@ -33,6 +33,8 @@ def _materialize_runner_command(cmd: list[str], ssl_policy: str, output_root: Pa
             materialized.extend(['--report-dir', str(output_root / 'm6g')])
         elif 'scripts/run_v1_workbench_browser_e2e.py' in materialized:
             materialized.extend(['--report-dir', str(output_root / 'v1-workbench-browser')])
+        elif 'scripts/run_deterministic_ci.py' in materialized:
+            materialized.extend(['--output-root', str(output_root / 'release-blocking-ci')])
     return materialized
 
 def resolve_profile_plan(profile:str, *, confirm_bounded_live=False, ssl_policy='strict', output_root: Path | None = None)->list[CommandPlan]:
@@ -73,7 +75,13 @@ def run_commands(command_plan:list[CommandPlan], *, capture:bool)->list[CommandR
     for item in command_plan:
         cmd=item['command']
         started=time.monotonic()
-        proc=subprocess.run(cmd,cwd=ROOT,text=True,stdout=subprocess.PIPE if capture else None,stderr=subprocess.STDOUT if capture else None)
+        options={'timeout':3600} if 'scripts/run_deterministic_ci.py' in cmd else {}
+        try:
+            proc=subprocess.run(cmd,cwd=ROOT,text=True,stdout=subprocess.PIPE if capture else None,stderr=subprocess.STDOUT if capture else None,**options)
+        except subprocess.TimeoutExpired as exc:
+            output=exc.stdout or ''
+            if isinstance(output,bytes):output=output.decode('utf-8',errors='replace')
+            proc=subprocess.CompletedProcess(cmd,124,output+'\nrelease-blocking-ci hard deadline exceeded')
         result={
             'command': command_to_display(cmd),
             'return_code': proc.returncode,

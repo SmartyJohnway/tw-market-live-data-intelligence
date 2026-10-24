@@ -127,15 +127,18 @@ def test_mcp_dispatch_v3_validate_preview_and_fetch_reaches_existing_action():
             self.preview_count = 0
             self.fetch_count = 0
 
-        async def validate_request(self, _args):
+        async def validate_request(self, _args, *, trace_id):
+            assert isinstance(trace_id, str) and trace_id
             self.validate_count += 1
             return {"validation_status": "valid"}
 
-        async def preview_request(self, _args):
+        async def preview_request(self, _args, *, trace_id):
+            assert isinstance(trace_id, str) and trace_id
             self.preview_count += 1
             return {"status": "unsupported_capability"}
 
-        async def fetch_evidence(self, _args):
+        async def fetch_evidence(self, _args, *, trace_id):
+            assert isinstance(trace_id, str) and trace_id
             self.fetch_count += 1
             return {"execution_outcome": "succeeded"}
 

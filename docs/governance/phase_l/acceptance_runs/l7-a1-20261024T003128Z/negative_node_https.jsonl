@@ -1,0 +1,4 @@
+{"event": "guard_loaded", "pid": 32228, "python": "3.13.7"}
+{"event": "child_node_injected", "executable": "C:\\Program Files\\nodejs\\node.exe", "pid": 32228}
+{"event":"guard_loaded_node","reason":"state_contract_only","pid":33088}
+{"event":"denied","reason":"NODE_NETWORK_OR_CHILD_ATTEMPT","pid":33088}

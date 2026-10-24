@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import subprocess
+import os
 from pathlib import Path
 
 
@@ -59,7 +60,7 @@ lifecycle = state.transition(lifecycle, 'CONFLICT');
 assert(lifecycle.state, state.STATES.CONFLICT_OR_EXPIRY, 'conflict state');
 '''
     completed = subprocess.run(
-        ["node", "-e", script, str(STATE_MODULE)], cwd=ROOT,
+        [os.environ.get("TW_MARKET_CI_NODE", "node"), "-e", script, str(STATE_MODULE)], cwd=ROOT,
         text=True, capture_output=True, timeout=15,
     )
     assert completed.returncode == 0, completed.stderr or completed.stdout

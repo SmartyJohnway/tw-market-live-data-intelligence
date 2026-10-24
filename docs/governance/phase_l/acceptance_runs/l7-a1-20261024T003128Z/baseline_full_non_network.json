@@ -1,0 +1,70 @@
+{
+  "authoritative_collection_line": "collected 5357 items / 1 error / 56 deselected / 5301 selected",
+  "browser_required": false,
+  "collected": 5357,
+  "collection_adjudication": {
+    "cause": "Unchanged historical Phase J A6-only session helper imports Unix fcntl; one Windows collection error; no tests executed",
+    "classification": "NON_RELEASE_BLOCKING_MANUAL_ACCEPTANCE",
+    "current_equivalent": "Current deterministic transport/budget/authorization tests in canonical profile; frozen A6 one-shot ledger remains manual historical platform diagnostic",
+    "not_dependency_repair": "No fcntl shim, dependency change or blanket exclusion added"
+  },
+  "collection_errors": 1,
+  "command_results": [
+    {
+      "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -m pytest -m not network and not historical and not performance tests",
+      "duration_seconds": 16.125,
+      "execution_kind": "pytest",
+      "failure_output_tail": "============================= test session starts =============================\nplatform win32 -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0\nrootdir: C:\\twmarket_temp\\l7-a1\\repo\nconfigfile: pytest.ini\nplugins: anyio-4.12.1\ncollected 5357 items / 1 error / 56 deselected / 5301 selected\n\n=================================== ERRORS ====================================\n__ ERROR collecting tests/unit/test_phase_j_b04_a6_integrated_acceptance.py ___\nImportError while importing test module 'C:\\twmarket_temp\\l7-a1\\repo\\tests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\nC:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py:9: in <module>\n    from scripts.a6_session_transport import attempt_2_eligible, complete_dispatch, operation_context, reserve_dispatch\nscripts\\a6_session_transport.py:6: in <module>\n    import fcntl\nE   ModuleNotFoundError: No module named 'fcntl'\n- generated xml file: C:\\twmarket_temp\\l7-a1\\baseline\\full-non-network\\report.xml -\n=========================== short test summary info ===========================\nERROR tests/unit/test_phase_j_b04_a6_integrated_acceptance.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n====================== 56 deselected, 1 error in 14.52s =======================\n",
+      "return_code": 2
+    }
+  ],
+  "commands": [
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -m pytest -m not network and not historical and not performance tests",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/run_local_delivery_acceptance.py --check-only",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/run_ci_delivery_acceptance.py --check-only",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/run_m4_local_validation.py --check-only",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/run_m5ij_end_to_end_acceptance.py --check-only",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/validate_m5f_canonical_market_context_package.py --package-dir research/staging/m5f/m5f_canonical_market_context_01"
+  ],
+  "count_adjudication": "Legacy runner parser does not recognize interposed collection-error text and overreports selected. This evidence uses the exact pytest collection line; raw runner log preserved; no execution or PASS inferred.",
+  "deselected": 56,
+  "duration_seconds": 16.126,
+  "elapsed_seconds": 16.289,
+  "explicit_live_confirmation": false,
+  "failed": null,
+  "failed_command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -m pytest -m not network and not historical and not performance tests",
+  "failed_nodes": [
+    ".py::tests.unit.test_phase_j_b04_a6_integrated_acceptance"
+  ],
+  "failed_return_code": 2,
+  "failure_output_tail": "============================= test session starts =============================\nplatform win32 -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0\nrootdir: C:\\twmarket_temp\\l7-a1\\repo\nconfigfile: pytest.ini\nplugins: anyio-4.12.1\ncollected 5357 items / 1 error / 56 deselected / 5301 selected\n\n=================================== ERRORS ====================================\n__ ERROR collecting tests/unit/test_phase_j_b04_a6_integrated_acceptance.py ___\nImportError while importing test module 'C:\\twmarket_temp\\l7-a1\\repo\\tests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\nC:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\unit\\test_phase_j_b04_a6_integrated_acceptance.py:9: in <module>\n    from scripts.a6_session_transport import attempt_2_eligible, complete_dispatch, operation_context, reserve_dispatch\nscripts\\a6_session_transport.py:6: in <module>\n    import fcntl\nE   ModuleNotFoundError: No module named 'fcntl'\n- generated xml file: C:\\twmarket_temp\\l7-a1\\baseline\\full-non-network\\report.xml -\n=========================== short test summary info ===========================\nERROR tests/unit/test_phase_j_b04_a6_integrated_acceptance.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n====================== 56 deselected, 1 error in 14.52s =======================\n",
+  "finished_at": "2026-10-23T17:20:41Z",
+  "fixture_environment_identity": "baseline_environment.json / candidate_environment.json",
+  "junit_case_count": 1,
+  "junit_summary": {
+    "errors": [
+      "tests.unit.test_phase_j_b04_a6_integrated_acceptance"
+    ],
+    "executed_cases": 0,
+    "failed": 0,
+    "failed_nodes": [],
+    "overall": "FAIL",
+    "passed": 0,
+    "skipped": []
+  },
+  "network_may_have_occurred": false,
+  "overall": "FAIL",
+  "passed": null,
+  "profile": "full-non-network",
+  "resolved_profile": "full-non-network",
+  "return_codes": [
+    2
+  ],
+  "returncode": 1,
+  "runner_reported_selected": 5357,
+  "selected": 5301,
+  "skipped": null,
+  "ssl_policy": "strict",
+  "started_at": "2026-10-23T17:20:25Z",
+  "status": "fail"
+}

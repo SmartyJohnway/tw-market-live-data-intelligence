@@ -1,6 +1,31 @@
 # Governance Index
 
-## Current L7-A0 merged state (2026-10-24)
+## Current L7-A1 deterministic CI state (2026-10-24)
+
+L6 remains **CLOSED**; L7-A0 is **OWNER-ACCEPTED AND MERGED**, reconciled by
+PR #409 normal merge `405bf16f5f82f4d37062d036ca6815eba27f7c4d`.
+L7-A1 is **TECHNICAL PASS / OWNER ACCEPTANCE PENDING** under
+`L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_PASS`.
+
+Canonical `release-blocking-ci` v1: 1895 passed / 0 failed / four named optional
+historical artifact witnesses skipped; zero unexpected skips and guard denials.
+All 47 baseline failures are finally adjudicated (32 test infrastructure,
+one environment prerequisite, 14 historical governance); DECISION_REQUIRED=0.
+Original historical assertions remain preserved with current blocking coverage.
+DEFAULT_CI remains overall FAIL (1277 passed / 13 failed / 4 skipped / 5 deselected).
+FULL_NON_NETWORK remains FAIL at Windows collection (historical Unix fcntl helper).
+No complete FULL_NON_NETWORK PASS is claimed. No new candidate failure is introduced.
+
+Only L7-GAP-01/02/03/04 are CLOSED; only L7-EXIT-01/02/03/27 are PASS.
+The other 17 A0 gaps and 25 final release criteria remain unaccepted by A1.
+Windows 11 x64 remains the decided Native Tier-1; historical L0-D03 is unchanged.
+**L7-A2+ NOT AUTHORIZED. Stable release/publication NOT AUTHORIZED.
+Phase M NOT AUTHORIZED. Phase L NOT CLOSED. Merge/auto-merge NOT AUTHORIZED.**
+
+Report: `docs/governance/phase_l/PHASE_L_L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_2026-10-24.md`.
+Evidence: `docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/`.
+
+## Historical L7-A0 merged state (2026-10-24)
 
 L6 remains **CLOSED** under `PHASE_L_L6_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
 L7 is **STARTED**. L7-A0 is **OWNER-ACCEPTED AND MERGED** under

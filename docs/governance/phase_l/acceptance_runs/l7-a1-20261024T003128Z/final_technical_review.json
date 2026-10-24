@@ -1,0 +1,43 @@
+{
+  "A2_plus_authorized": false,
+  "D_drive_access_commands": 0,
+  "accepted_exit_progress": [
+    "L7-EXIT-01",
+    "L7-EXIT-02",
+    "L7-EXIT-03",
+    "L7-EXIT-27"
+  ],
+  "binding": "Containing candidate commit/tree; exact frozen implementation input hashes and run members/results retained. Governance/evidence sealing introduces no implementation input drift.",
+  "canonical_failed": 0,
+  "canonical_passed": 1895,
+  "canonical_profile": "release-blocking-ci v1",
+  "classification_counts": {
+    "ENVIRONMENT_PREREQUISITE": 1,
+    "HISTORICAL_GOVERNANCE_ASSERTION": 14,
+    "TEST_INFRASTRUCTURE_DEFECT": 32
+  },
+  "closed_gaps": [
+    "L7-GAP-01",
+    "L7-GAP-02",
+    "L7-GAP-03",
+    "L7-GAP-04"
+  ],
+  "entry": "405bf16f5f82f4d37062d036ca6815eba27f7c4d",
+  "failure_rows": 47,
+  "guard_denials": 0,
+  "historical_evidence_integrity": "PASS",
+  "live_provider_requests": 0,
+  "merge_authorized": false,
+  "new_unintended_candidate_failures": 0,
+  "optional_historical_artifact_skips": 4,
+  "other_gaps_and_exit_criteria": "NOT ACCEPTED BY A1",
+  "owner_acceptance": "PENDING",
+  "production_state_mutations": 0,
+  "public_contract_and_runtime_product_changes": 0,
+  "required_validators": "8 PASS",
+  "status": "PASS",
+  "technical_disposition": "L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_PASS",
+  "unclassified": 0,
+  "unexpected_skips": 0,
+  "workflow_settings_dependency_VERSION_changes": 0
+}

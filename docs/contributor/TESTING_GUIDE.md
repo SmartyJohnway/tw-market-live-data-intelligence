@@ -1,5 +1,23 @@
 # Testing Guide
 
+## Current L7 deterministic release gate
+
+`release-blocking-ci` v1 is the canonical local deterministic release gate:
+`python scripts/run_test_profile.py release-blocking-ci --json --output-root ../ci-runs/UNIQUE-RUN-ID`.
+It uses `config/release_blocking_ci.v1.json`, fresh external state/temp roots,
+existing Node/Git/Python prerequisites and guarded Python/Node subprocesses.
+Unknown native children, external acquisition, unexpected skips and xfails fail
+the gate. Four named historical local-artifact witnesses may skip only with the
+contract's required current equivalents; all other selected checks must pass.
+
+FAST is inner-loop feedback. DEFAULT_CI retains its earlier current/historical
+selection as a diagnostic; FULL_NON_NETWORK is a broader diagnostic and may
+report platform collection failures. Preserve their exact outcomes. Browser,
+operator and bounded-live acceptance are separate release proofs; live execution
+requires fresh Owner authority. GitHub integration/protection and stable release
+publication remain separately authorized later work. See the
+[Release Checklist](../release/RELEASE_CHECKLIST.md) for the current gate hierarchy.
+
 Core validation commands:
 
 ```bash

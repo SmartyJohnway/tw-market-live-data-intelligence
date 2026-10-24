@@ -1,0 +1,59 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+__________ test_72_dimension_cells_keep_exact_frozen_classifications __________
+
+snapshot = {'catalog': {'available_source_families': [{'activation_status': 'active', 'known_limitations': ['no continuous pollin...research_executor', 'expected_evidence_contract': 'phase_g_material_disclosure_operation_evidence.v1', ...}, ...], ...}
+
+    def test_72_dimension_cells_keep_exact_frozen_classifications(snapshot):
+        assert len(dimension_matrix()) == 72
+>       assert validate_snapshot(snapshot) == []
+E       assert [{'code': 'A5...mode_c.py']"}] == []
+E
+E         Left contains one more item: {'code': 'A5_NEW_FAMILY_DETECTED', 'detail': "A5 requires unchanged product authority: ['config/test_execution_profile....py', 'server/services/unified_backup.py', 'server/services/unified_mode_b2.py', 'server/services/unified_mode_c.py']"}
+E         Use -v to get more diff
+
+tests\unit\test_l5_a5_existing_family_conformance.py:152: AssertionError
+_____________ test_entire_validator_is_offline_and_does_not_write _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000016316906C40>
+
+    def test_entire_validator_is_offline_and_does_not_write(monkeypatch):
+        from pathlib import Path
+        def forbidden(*args, **kwargs):
+            raise AssertionError("provider/socket or write forbidden in acceptance validator")
+        monkeypatch.setattr(socket, "create_connection", forbidden)
+        monkeypatch.setattr(socket.socket, "connect", forbidden)
+        monkeypatch.setattr(Path, "write_text", forbidden)
+        monkeypatch.setattr(Path, "write_bytes", forbidden)
+>       assert build_evidence()["status"] == "PASS"
+E       AssertionError: assert 'FAIL' == 'PASS'
+E
+E         - PASS
+E         + FAIL
+
+tests\unit\test_l5_a5_existing_family_conformance.py:197: AssertionError
+____________ test_phase_j_closure_authority_reconciliation_passes _____________
+
+    def test_phase_j_closure_authority_reconciliation_passes() -> None:
+>       result = validate(check_git=False)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_phase_j_closure_authority_reconciliation.py:5:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_phase_j_closure_authority_reconciliation.py:34: in validate
+    require("# [ ] Phase K — Multi-Agent Compatibility & Evaluation" in roadmap, "PHASE_K_STATE_DRIFT")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'PHASE_K_STATE_DRIFT'
+
+    def require(condition: bool, message: str) -> None:
+        if not condition:
+>           raise ValueError(message)
+E           ValueError: PHASE_K_STATE_DRIFT
+
+scripts\validate_phase_j_closure_authority_reconciliation.py:19: ValueError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_l5_a5_existing_family_conformance.py::test_72_dimension_cells_keep_exact_frozen_classifications
+FAILED tests/unit/test_l5_a5_existing_family_conformance.py::test_entire_validator_is_offline_and_does_not_write
+FAILED tests/unit/test_phase_j_closure_authority_reconciliation.py::test_phase_j_closure_authority_reconciliation_passes
+3 failed in 4.25s

@@ -1,0 +1,258 @@
+{
+  "additional_cause": "Frozen post-J closure validator still asserts K unchecked/NOT_STARTED; accepted 2026-10-13 K Owner final closure and current checked Roadmap supersede it. Test/validator/Roadmap J-K closure bytes equal entry before A1 front-door edits. No new product defect is exempted.",
+  "additional_historical_node": 1,
+  "baseline_47_historical_nodes": 14,
+  "entries": [
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_preflight.py::test_current_hold_record_and_runtime_containment",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "4c85950350fa93fab7f9e7a2f353e7a1b61554beb0a652b26a91cf4e14d1373c",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_preflight.py::test_p0_validator_cannot_claim_pass_or_rearm",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "4c85950350fa93fab7f9e7a2f353e7a1b61554beb0a652b26a91cf4e14d1373c",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_p1_adjudication.py::test_p1_governance_validator_passes_under_network_denial",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "d1f0cfa7a7bad51fc7e9e074f3c9071873099d972d5408d54314470d17eaecd2",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_p3.py::test_p3_validator_production_containment_and_readiness",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "90cd7dd44a677ecd95ea0b75e0756b93a5d0988db0bdd8fe044ab0d81aa899c9",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_p3_r1.py::test_r1_validator",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "7818e376a2e84743750460fd6e3afa56d03839ae0a7a682963c502c9081cb3e8",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_i_i3_a1.py::test_a1_validator_and_immutable_a0_anchors",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "cb150c6e917a729dea0ac377a832c446375f1b086e715903ce6946dac5b658e8",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_i_i3_a3_attempt_2_bounded_live.py::test_exact_mapping_and_frozen_candidate_and_production_containment",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "d285e901a75e86c4b28685c777d0e1e5e8e2e410664fd64cb84b021760326e65",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_i_i3_a3_r3_http520_lifecycle.py::test_committed_attempt4_pass_lineage_and_containment",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "c9b8d90420aa3323c3eb2b68dc46b28277b7e83e4ff52b924f12711f1747f792",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_j_ghi_readiness_preflight.py::test_current_record",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "c152799bedb29cb6541b69a43be0815c26e799ced329203e3a02384393d3a69c",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_j_ghi_readiness_preflight.py::test_unchecked_g_h_do_not_themselves_block_pass",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "c152799bedb29cb6541b69a43be0815c26e799ced329203e3a02384393d3a69c",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_j_ghi_readiness_preflight.py::test_missing_runtime_can_be_nonblocking_when_safe_or_optional[J1-08]",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "c152799bedb29cb6541b69a43be0815c26e799ced329203e3a02384393d3a69c",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_phase_j_ghi_readiness_preflight.py::test_missing_runtime_can_be_nonblocking_when_safe_or_optional[J1-10]",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "c152799bedb29cb6541b69a43be0815c26e799ced329203e3a02384393d3a69c",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_l5_a5_existing_family_conformance.py::test_72_dimension_cells_keep_exact_frozen_classifications",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "83901bd49f5091232c1130eda53dce79092eebb29e3548307cf1aacdeded7818",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Frozen historical tranche scope/readiness assertion; original remains runnable through default/full/historical diagnostics",
+      "nodeid": "tests/unit/test_l5_a5_existing_family_conformance.py::test_entire_validator_is_offline_and_does_not_write",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "83901bd49f5091232c1130eda53dce79092eebb29e3548307cf1aacdeded7818",
+      "reason": "Later Owner-accepted L3-L6 source hardening or Phase J closure supersedes a no-later-change/unchecked assertion; no product invariant waived"
+    },
+    {
+      "classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "equivalent_blocking_execution": "PASS",
+      "historical_evidence_retained": true,
+      "intent": "Post-J frozen closure validator also required Phase K NOT_STARTED",
+      "nodeid": "tests/unit/test_phase_j_closure_authority_reconciliation.py::test_phase_j_closure_authority_reconciliation_passes",
+      "original_module_byte_changes": 0,
+      "original_module_sha256": "bf70dbe0b615cd8a35b1f4e80890188714c5c41f56c961e040e8d6b3c529a488",
+      "reason": "Later separately accepted Phase K closure invalidates only that obsolete continuation boundary; source/test unchanged from A1 entry"
+    }
+  ]
+}

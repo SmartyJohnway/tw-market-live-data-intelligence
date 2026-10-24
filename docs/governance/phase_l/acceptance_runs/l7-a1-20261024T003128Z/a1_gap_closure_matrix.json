@@ -1,0 +1,25 @@
+{
+  "other_17_A0_gaps": "not closed by A1",
+  "rows": [
+    {
+      "id": "L7-GAP-01",
+      "proof": "defined guarded green canonical profile + exact 47 ledger",
+      "status": "CLOSED"
+    },
+    {
+      "id": "L7-GAP-02",
+      "proof": "preserved historical nodes + executed current equivalents",
+      "status": "CLOSED"
+    },
+    {
+      "id": "L7-GAP-03",
+      "proof": "positive zero-denial window + nine independent denial controls + guarded children",
+      "status": "CLOSED"
+    },
+    {
+      "id": "L7-GAP-04",
+      "proof": "Model B checklist and honest diagnostic outcomes",
+      "status": "CLOSED"
+    }
+  ]
+}

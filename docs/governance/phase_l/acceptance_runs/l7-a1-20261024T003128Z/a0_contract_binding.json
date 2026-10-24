@@ -1,0 +1,20 @@
+{
+  "current_Native_Tier1": "Windows 11 x64 only, accepted prospective policy; historical L0-D03 unchanged",
+  "exit_criteria": 29,
+  "gaps": 21,
+  "manifest_self_digest": "db85f4650829b4d3916059b5d1803b1c4d90e07778abf1bd30496d8727e28726",
+  "obligations": 15,
+  "owned_exit_criteria": [
+    "L7-EXIT-01",
+    "L7-EXIT-02",
+    "L7-EXIT-03",
+    "L7-EXIT-27"
+  ],
+  "owned_gaps": [
+    "L7-GAP-01",
+    "L7-GAP-02",
+    "L7-GAP-03",
+    "L7-GAP-04"
+  ],
+  "source_run": "docs/governance/phase_l/acceptance_runs/l7-a0-20261023T164344Z"
+}

@@ -1,0 +1,5 @@
+{
+  "entry_gate": "PR409 Owner-accepted and normal merged verified through GitHub and exact Git parents/tree",
+  "scope": "deterministic CI and failure adjudication; PR after technical PASS; no merge/A2+",
+  "token": "USER_CHAT_2026-10-24_PHASE_L_L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_AUTHORIZATION"
+}

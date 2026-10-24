@@ -1,0 +1,2 @@
+{"event": "guard_loaded", "pid": 8400, "python": "3.13.7"}
+{"event": "denied", "pid": 8400, "reason": "UNOBSERVED_NATIVE_PROCESS", "value": "['curl', 'https://example.invalid']"}
