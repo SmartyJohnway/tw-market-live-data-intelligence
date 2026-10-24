@@ -1,0 +1,336 @@
+{
+  "start": {
+    "duration_ms": 3178.73,
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "settings",
+          "port": "env"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 2441,
+      "governed_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\governed",
+      "home": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII",
+      "installation_id": "6f475eaa-b0ca-4f15-9657-7931c2243c02",
+      "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state",
+      "temp_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\watchlists"
+    },
+    "operation_id": "0fb2f1b6-79bb-4986-8dc6-9c7ee99d221a",
+    "pid": 34416,
+    "service": {
+      "host": "127.0.0.1",
+      "port": 2441,
+      "url": "http://127.0.0.1:2441"
+    },
+    "started_at": "2026-10-24T17:59:41.216293+00:00",
+    "status": "STARTED",
+    "trace_id": "a3a8c585-b623-4ce0-90d2-2fb0a54a17e4"
+  },
+  "status": {
+    "checks": [],
+    "configuration": {
+      "host": "127.0.0.1",
+      "port": 2441,
+      "sources": {
+        "host": "settings",
+        "port": "env"
+      }
+    },
+    "duration_ms": 2649.42,
+    "identity": {
+      "root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\security-master",
+      "status": "NOT_INITIALIZED"
+    },
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "settings",
+          "port": "env"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 2441,
+      "governed_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\governed",
+      "home": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII",
+      "installation_id": "6f475eaa-b0ca-4f15-9657-7931c2243c02",
+      "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state",
+      "temp_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\watchlists"
+    },
+    "mcp": {
+      "local_service_reachable": true,
+      "sdk_compatible": true,
+      "service_url": "http://127.0.0.1:2441",
+      "status": "READY"
+    },
+    "operation_id": "30e7c1e3-8e82-4222-80bf-17f18e12f6c9",
+    "paths": {
+      "control_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\governed",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs\\operational-events.jsonl",
+      "ownership_file": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\runtime\\service-2441.json",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\security-master",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\watchlists"
+    },
+    "readiness": {
+      "preload": "READY",
+      "routes": {
+        "capability_count": 14,
+        "projection": "READY"
+      },
+      "schema_catalog": "READY"
+    },
+    "resources": {
+      "application_root_disk_free_bytes": 121651740672,
+      "managed_service_process_memory_bytes": 4296704,
+      "runtime_root_disk_free_bytes": 121651740672
+    },
+    "service": {
+      "alive": true,
+      "health": {
+        "status": "healthy"
+      },
+      "host": "127.0.0.1",
+      "port": 2441,
+      "process": "RUNNING",
+      "url": "http://127.0.0.1:2441"
+    },
+    "started_at": "2026-10-24T17:59:46.540812+00:00",
+    "status": "SERVICE_ALIVE / IDENTITY_NOT_INITIALIZED",
+    "trace_id": "3907d93a-d194-4ba5-8f86-5b28ded4bd2e"
+  },
+  "doctor": {
+    "checks": [
+      {
+        "detail": {
+          "version": "3.13.7"
+        },
+        "name": "python",
+        "status": "PASS"
+      },
+      {
+        "name": "dependencies",
+        "status": "PASS"
+      },
+      {
+        "name": "environment_verification",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "security_master_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "watchlist_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "control_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "event_file_exists": true,
+          "parent_ready": true
+        },
+        "name": "operational_event_sink",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "application_root_disk_free_bytes": 121651736576,
+          "managed_service_process_memory_bytes": 4296704,
+          "runtime_root_disk_free_bytes": 121651736576
+        },
+        "name": "resource_snapshot",
+        "status": "PASS"
+      },
+      {
+        "name": "security_master",
+        "reason_code": "SECURITY_MASTER_NOT_INITIALIZED",
+        "status": "WARN"
+      },
+      {
+        "name": "process_ownership",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "security_master_status": "NOT_INITIALIZED",
+          "status": "not_initialized"
+        },
+        "name": "workbench_preload",
+        "status": "PASS"
+      },
+      {
+        "name": "local_service",
+        "status": "PASS"
+      },
+      {
+        "name": "route_capability_projection",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "tool_count": 6
+        },
+        "name": "mcp_tool_contract",
+        "status": "PASS"
+      },
+      {
+        "name": "mcp_startup_check",
+        "status": "PASS"
+      }
+    ],
+    "configuration": {
+      "host": "127.0.0.1",
+      "port": 2441,
+      "sources": {
+        "host": "settings",
+        "port": "env"
+      }
+    },
+    "duration_ms": 14161.77,
+    "identity": {
+      "root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\security-master",
+      "status": "NOT_INITIALIZED"
+    },
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "settings",
+          "port": "env"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 2441,
+      "governed_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\governed",
+      "home": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII",
+      "installation_id": "6f475eaa-b0ca-4f15-9657-7931c2243c02",
+      "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state",
+      "temp_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\watchlists"
+    },
+    "mcp": {
+      "local_service_reachable": true,
+      "sdk_compatible": true,
+      "service_url": "http://127.0.0.1:2441",
+      "status": "READY"
+    },
+    "operation_id": "085444b5-0a6a-4bdb-8aca-8e37088f3a1e",
+    "paths": {
+      "control_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\governed",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs\\operational-events.jsonl",
+      "ownership_file": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\runtime\\service-2441.json",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\security-master",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\watchlists"
+    },
+    "readiness": {
+      "preload": "READY",
+      "routes": {
+        "capability_count": 14,
+        "projection": "READY"
+      },
+      "schema_catalog": "READY"
+    },
+    "resources": {
+      "application_root_disk_free_bytes": 121651736576,
+      "managed_service_process_memory_bytes": 4296704,
+      "runtime_root_disk_free_bytes": 121651736576
+    },
+    "service": {
+      "alive": true,
+      "health": {
+        "status": "healthy"
+      },
+      "host": "127.0.0.1",
+      "port": 2441,
+      "process": "RUNNING",
+      "url": "http://127.0.0.1:2441"
+    },
+    "started_at": "2026-10-24T17:59:51.335569+00:00",
+    "status": "WARN",
+    "trace_id": "83597148-b5ef-4102-a4d8-6e9cd66a944f"
+  },
+  "stop": {
+    "duration_ms": 202.2,
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "settings",
+          "port": "env"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 2441,
+      "governed_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\governed",
+      "home": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII",
+      "installation_id": "6f475eaa-b0ca-4f15-9657-7931c2243c02",
+      "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\home 非ASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state",
+      "temp_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\tmp\\TW-Market\\6f475eaa-b0ca-4f15-9657-7931c2243c02\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state\\watchlists"
+    },
+    "operation_id": "f9297579-e1a2-41fe-9300-fdf1412780db",
+    "reason_code": "STOPPED",
+    "started_at": "2026-10-24T18:00:17.924644+00:00",
+    "status": "STOPPED",
+    "trace_id": "1fa7ac86-ade9-435d-a256-7da7f1117eb6"
+  }
+}

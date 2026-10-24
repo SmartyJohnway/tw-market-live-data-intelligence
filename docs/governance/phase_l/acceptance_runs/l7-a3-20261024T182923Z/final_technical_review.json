@@ -1,0 +1,25 @@
+{
+  "A1": "1895 passed, zero failures, four contracted skips, zero guard denials",
+  "A2_repeat": "PASS: fresh source, Native, exact-six, lifecycle, actual B restart, genuine fresh Win11, Docker replacement/state survival",
+  "A3_owned_exits": 5,
+  "A3_owned_gaps": 5,
+  "A4_plus": "NOT_AUTHORIZED",
+  "Docker_reproducibility": "REPRODUCIBLE_ROOTFS_CONTENT_WITH_EXPLICIT_OCI_METADATA_BOUNDARY",
+  "Native_reproducibility": "BYTE_FOR_BYTE_REPRODUCIBLE",
+  "Owner_acceptance": "PENDING",
+  "Phase_L": "NOT_CLOSED",
+  "Python311": "retained noncanonical source/developer compatibility with exact lock, 39 focused passes, full source lifecycle/exact-six PASS; optional full release-gate diagnostic retained FAIL and not exempted",
+  "disposition": "L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_PASS",
+  "frontdoor_postseal_validators": "PASS: all ten validators, zero guard denials",
+  "glibc_consumer_replay": "PASS: independent clean 48-wheel CI and 51-wheel browser graphs",
+  "merge": "NOT_AUTHORIZED",
+  "publication": "NOT_AUTHORIZED",
+  "status": "PASS",
+  "tested_implementation": {
+    "commit": "ab2b2dc941aea68187145166a519757622d092e8",
+    "parents": [
+      "ce378e027daddd2573104fff58c784c01ed88afd"
+    ],
+    "tree": "1ccdb3e77ca99972d965a3f7eb771d2807fd7e73"
+  }
+}

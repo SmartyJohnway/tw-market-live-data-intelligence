@@ -1,0 +1,19 @@
+{
+  "first": {
+    "bundle_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64",
+    "dependency_count": 49,
+    "manifest_canonical_sha256": "d6a7ed0b16ddbade209162a8d8139f39185214fc0256a97fbb71ffcdcd8c3d4d",
+    "python": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Scripts\\python.exe",
+    "status": "bootstrapped"
+  },
+  "second": {
+    "bundle_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64",
+    "dependency_count": 49,
+    "manifest_canonical_sha256": "d6a7ed0b16ddbade209162a8d8139f39185214fc0256a97fbb71ffcdcd8c3d4d",
+    "python": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\runtime\\venv\\Scripts\\python.exe",
+    "status": "verified-existing"
+  },
+  "home_created": false,
+  "offline_flags": "--no-index --find-links --only-binary=:all: --require-hashes",
+  "scope": "Python process and inherited Python guard"
+}

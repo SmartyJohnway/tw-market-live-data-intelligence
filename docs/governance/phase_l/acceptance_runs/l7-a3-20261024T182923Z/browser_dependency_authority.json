@@ -1,0 +1,86 @@
+{
+  "archive_replay": {
+    "archives": [
+      {
+        "bytes": 182166967,
+        "executable": "chrome-linux/chrome",
+        "filename": "chromium-linux.zip",
+        "install_directory": "chromium-1187",
+        "name": "chromium",
+        "revision": "1187",
+        "sha256": "395e829e88f9ff3fc108cc9a3db49907afd9f5860066e9678694b01a406ee979",
+        "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1187/chromium-linux.zip"
+      },
+      {
+        "bytes": 109363841,
+        "executable": "chrome-linux/headless_shell",
+        "filename": "chromium-headless-shell-linux.zip",
+        "install_directory": "chromium_headless_shell-1187",
+        "name": "chromium-headless-shell",
+        "revision": "1187",
+        "sha256": "97842c43d49627e893e1498f61554fdfe0223d35daf247e4bedee11e79509b8e",
+        "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1187/chromium-headless-shell-linux.zip"
+      },
+      {
+        "bytes": 2376500,
+        "executable": "ffmpeg-linux",
+        "filename": "ffmpeg-linux.zip",
+        "install_directory": "ffmpeg-1011",
+        "name": "ffmpeg",
+        "revision": "1011",
+        "sha256": "ebc74fc5b94830176a3c2914ae96bd8bc7f6a91f4f33890230f84a172ee61ccc",
+        "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip"
+      }
+    ],
+    "browser_root": "C:\\twmarket_temp\\l7-a3\\browser-replay\\browsers",
+    "network_requests": [],
+    "status": "PASS"
+  },
+  "artifact_graph": {
+    "archive_hash_authority": "Project-frozen SHA256 of official revision-addressed upstream archive, acquired over HTTPS; upstream does not publish an independent signed SHA256 manifest",
+    "artifacts": [
+      {
+        "bytes": 182166967,
+        "executable": "chrome-linux/chrome",
+        "filename": "chromium-linux.zip",
+        "install_directory": "chromium-1187",
+        "name": "chromium",
+        "revision": "1187",
+        "sha256": "395e829e88f9ff3fc108cc9a3db49907afd9f5860066e9678694b01a406ee979",
+        "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1187/chromium-linux.zip"
+      },
+      {
+        "bytes": 109363841,
+        "executable": "chrome-linux/headless_shell",
+        "filename": "chromium-headless-shell-linux.zip",
+        "install_directory": "chromium_headless_shell-1187",
+        "name": "chromium-headless-shell",
+        "revision": "1187",
+        "sha256": "97842c43d49627e893e1498f61554fdfe0223d35daf247e4bedee11e79509b8e",
+        "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1187/chromium-headless-shell-linux.zip"
+      },
+      {
+        "bytes": 2376500,
+        "executable": "ffmpeg-linux",
+        "filename": "ffmpeg-linux.zip",
+        "install_directory": "ffmpeg-1011",
+        "name": "ffmpeg",
+        "revision": "1011",
+        "sha256": "ebc74fc5b94830176a3c2914ae96bd8bc7f6a91f4f33890230f84a172ee61ccc",
+        "url": "https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip"
+      }
+    ],
+    "browser_metadata_sha256": "6a346d802543e845c5e79715b99d58fc2bbf58f2a509dccc00f08b634dcb7894",
+    "platform": "ubuntu24.04-x64",
+    "playwright_version": "1.55.0",
+    "registry_sha256": "e3d47020a19d20432c0e57cf9f4be9c3f0c2c3320f07ab29028d5b177310f303",
+    "residual_limitation": "Archive integrity is pinned after initial official acquisition; this is not artifact signing or publisher-key authentication",
+    "schema_version": 1,
+    "upstream_browser_metadata": "https://raw.githubusercontent.com/microsoft/playwright/v1.55.0/packages/playwright-core/browsers.json",
+    "upstream_registry": "https://raw.githubusercontent.com/microsoft/playwright/v1.55.0/packages/playwright-core/src/server/registry/index.ts"
+  },
+  "browser_E2E_execution_claimed": false,
+  "package_browsers_json_matches_upstream": true,
+  "python_graph": "config/browser-py313-linux-lock.json",
+  "system_prerequisites": "HOSTED_ENVIRONMENT_PROVENANCE_ONLY; future hosted job records dpkg-query and image identity; no mutable OS byte identity claim"
+}

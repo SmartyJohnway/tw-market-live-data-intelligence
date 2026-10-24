@@ -1,0 +1,73 @@
+{
+  "artifacts": [
+    {
+      "classification": "VERSIONED_EXTERNAL_PREREQUISITE",
+      "name": "Native CPython consumer prerequisite",
+      "policy": "official CPython 3.13 x64; patch identity recorded for each validation; same exact patch/toolchain required for byte comparison",
+      "source": "https://www.python.org/downloads/windows/"
+    },
+    {
+      "classification": "PINNED_ARTIFACT",
+      "name": "Fresh Win11 CPython prerequisite",
+      "publisher": "Python Software Foundation; official NuGet catalog hash and Authenticode verified",
+      "sha256": "ea7541c98f77b6f344460b88db6e677573069979bcbf0ba18747cc2c125aba25",
+      "source": "https://api.nuget.org/v3-flatcontainer/python/3.13.9/python.3.13.9.nupkg",
+      "version": "3.13.9"
+    },
+    {
+      "classification": "PINNED_DIGEST",
+      "digest": "sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741",
+      "informational_tag": "3.13-alpine",
+      "name": "Docker base",
+      "platform": "linux/amd64",
+      "registry": "docker.io",
+      "repository": "library/python"
+    },
+    {
+      "classification": "VERSIONED_EXTERNAL_PREREQUISITE",
+      "name": "Git",
+      "policy": "source transport/build blob access only; record exact Git version; archive inputs are exact committed blobs"
+    },
+    {
+      "classification": "VERSIONED_EXTERNAL_PREREQUISITE",
+      "name": "Node",
+      "policy": "canonical A1 test subprocess prerequisite; record exact version; not a Native/Docker application dependency"
+    },
+    {
+      "classification": "PINNED_ARTIFACT",
+      "name": "Playwright embedded Node",
+      "policy": "covered by exact Playwright wheel hash; not host Node"
+    },
+    {
+      "classification": "VERSIONED_EXTERNAL_PREREQUISITE",
+      "name": "Windows 11 x64",
+      "policy": "Native Tier1; edition/build/architecture captured in genuine disposable guest"
+    },
+    {
+      "classification": "HOSTED_ENVIRONMENT_PROVENANCE_ONLY",
+      "name": "GitHub hosted OS and browser system libraries",
+      "policy": "ImageOS/ImageVersion/OS/architecture and dpkg package versions recorded; install-deps uses pinned Playwright driver; hosted OS packages remain environment provenance, not artifact byte authority"
+    },
+    {
+      "classification": "VERSIONED_EXTERNAL_PREREQUISITE",
+      "name": "PowerShell",
+      "policy": "record version for provisioning/harness; not a Native ZIP payload generator"
+    },
+    {
+      "classification": "VERSIONED_EXTERNAL_PREREQUISITE",
+      "name": "Docker Engine/BuildKit",
+      "policy": "record exact server/buildx identities and reproducibility config differences; no registry publication"
+    },
+    {
+      "classification": "PINNED_DIGEST",
+      "digest": "sha256:e32be0e55814a08977501ca863271d9bd02443710db8f2afaf8372e2c4508530",
+      "informational_tag": "3.13.17-slim-bookworm",
+      "name": "Disposable Linux glibc dependency replay prerequisite",
+      "platform": "linux/amd64",
+      "registry": "docker.io",
+      "repository": "library/python",
+      "scope": "A3 compatibility/browser dependency replay only; does not replace accepted Alpine product base"
+    }
+  ],
+  "schema_version": 1
+}

@@ -1,0 +1,15 @@
+{
+  "A3_not_mandatory": [
+    "Authenticode",
+    "cosign",
+    "SLSA"
+  ],
+  "key_creation_authorized": false,
+  "mandatory": [
+    "SHA256 integrity",
+    "exact source/tree",
+    "dependency provenance",
+    "first-party SBOM",
+    "verified GitHub source identity"
+  ]
+}

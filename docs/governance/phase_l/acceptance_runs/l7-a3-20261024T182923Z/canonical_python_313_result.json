@@ -1,0 +1,12 @@
+{
+  "Docker_python": "3.13.17",
+  "Native_host": "native_host_final_result.json",
+  "Win11_guest_python": "3.13.9",
+  "all_cp313_wheels": true,
+  "final_dependency_authority_frozen": true,
+  "graph": "packaging_native/wheelhouse-lock.json",
+  "installed_graph": "installed_graph_verification.json",
+  "python": "3.13.7 Windows x64",
+  "release_gate": "release_blocking_ci_revalidation.json",
+  "status": "PASS"
+}

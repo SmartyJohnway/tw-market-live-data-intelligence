@@ -1,0 +1,21 @@
+{
+  "excluded_final_governance_paths": [
+    "HANDOFF.md",
+    "PROJECT.md",
+    "ROADMAP.md",
+    "docs/governance/INDEX.md",
+    "docs/governance/phase_l/PHASE_L_CURRENT_STATUS_AND_RECOVERY_INDEX_2026-10-14.md",
+    "docs/governance/phase_l/PHASE_L_L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_2026-10-25.md"
+  ],
+  "excluded_new_evidence_prefix": "docs/governance/phase_l/acceptance_runs/l7-a3-20261024T182923Z/",
+  "final_candidate_binding": "post-commit exact receipt and PR; no self-referential commit hash embedded",
+  "projection_members": 4641,
+  "projection_sha256": "af611977d53ce600ff4b68750da9e58fe1b1858ff0bfab05f43e1409f6b858f0",
+  "tested_source": {
+    "commit": "ab2b2dc941aea68187145166a519757622d092e8",
+    "parents": [
+      "ce378e027daddd2573104fff58c784c01ed88afd"
+    ],
+    "tree": "1ccdb3e77ca99972d965a3f7eb771d2807fd7e73"
+  }
+}

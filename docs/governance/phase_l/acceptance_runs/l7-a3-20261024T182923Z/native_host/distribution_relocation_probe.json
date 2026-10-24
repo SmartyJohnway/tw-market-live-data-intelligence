@@ -1,0 +1,11 @@
+{
+  "name": "A3_DISTRIBUTION_RELOCATION_PROBE",
+  "APP_ROOT_A": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+  "APP_ROOT_B": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\Location-B\\TW-Market-1.0.0-windows-x64\\app",
+  "same_installation_id": "6f475eaa-b0ca-4f15-9657-7931c2243c02",
+  "same_state_root": "C:\\twmarket_temp\\l7-a3\\native acceptance 最終\\business state",
+  "settings_unchanged": true,
+  "independent_local_venvs": true,
+  "stale_marker_rejected": true,
+  "app_B_immutable": true
+}

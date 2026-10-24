@@ -1,0 +1,138 @@
+{
+  "final_A4_compatibility_acceptance": "DEFERRED",
+  "focused": {
+    "command": [
+      "-m",
+      "pytest",
+      "tests/unit/test_phase_l_l4_a4_control_plane_boundary.py",
+      "tests/unit/test_l7_a1_deterministic_ci.py",
+      "tests/unit/test_post_route_surface_compatibility.py",
+      "-q",
+      "--basetemp=C:\\twmarket_temp\\l7-a3\\compatibility311-temp"
+    ],
+    "exit_code": 0,
+    "guard_denials": [],
+    "stderr": "",
+    "stdout": ".......................................                                  [100%]\n============================== warnings summary ===============================\n..\\venv311\\Lib\\site-packages\\fastapi\\testclient.py:1\n  C:\\twmarket_temp\\l7-a3\\venv311\\Lib\\site-packages\\fastapi\\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n..\\venv311\\Lib\\site-packages\\starlette\\testclient.py:53\n  C:\\twmarket_temp\\l7-a3\\venv311\\Lib\\site-packages\\starlette\\testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\ntests/unit/test_post_route_surface_compatibility.py::test_duplicate_post_path_is_not_collapsed_to_one_schema_operation\n  C:\\twmarket_temp\\l7-a3\\venv311\\Lib\\site-packages\\fastapi\\openapi\\utils.py:303: UserWarning: Duplicate Operation ID endpoint_same_post for function endpoint at C:\\twmarket_temp\\l7-a3\\repo\\tests\\unit\\test_post_route_surface_compatibility.py\n    warnings.warn(message, stacklevel=1)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n39 passed, 3 warnings in 6.72s\n"
+  },
+  "graph": "config/developer-py311-windows-lock.json",
+  "guard": "Existing Native acceptance guard plus exact anchored read-only Windows version command; canonical A1 guard unchanged",
+  "negative_controls": {
+    "canonical_A1_guard_changed": false,
+    "expected_negative_controls": [
+      {
+        "blocked_before_execution": true,
+        "command": [
+          "C:\\Windows\\System32\\cmd.exe",
+          "/c",
+          "echo rejected"
+        ]
+      },
+      {
+        "blocked_before_execution": true,
+        "command": [
+          "C:\\Windows\\System32\\cmd.exe",
+          "/c",
+          "ver & echo rejected"
+        ]
+      }
+    ],
+    "status": "PASS"
+  },
+  "noncanonical_full_gate_diagnostic": {
+    "baseline_two_nodes": {
+      "command": [
+        "-m",
+        "pytest",
+        "tests/unit/test_phase_i_i3_a0_p2.py::test_tpex_uses_default_strict_tls_and_no_compatibility_fallback",
+        "tests/unit/test_l6_a3_package_integrity.py::test_bootstrap_missing_resources_before_write",
+        "-q",
+        "--basetemp=C:\\twmarket_temp\\l7-a3\\baseline311-temp"
+      ],
+      "exit_code": 1,
+      "guard_denials": [],
+      "stderr": "",
+      "stdout": "FF                                                                       [100%]\n================================== FAILURES ===================================\n_______ test_tpex_uses_default_strict_tls_and_no_compatibility_fallback _______\n\n    def test_tpex_uses_default_strict_tls_and_no_compatibility_fallback():\n        captured = []\n        telemetry, body, _op = read(\"TPEx\", Response(b'[]'), captured=captured)\n        handler = next(h for h in captured if isinstance(h, transport.HTTPSHandler))\n>       assert handler._context.verify_mode == ssl.CERT_REQUIRED\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AttributeError: 'NoneType' object has no attribute 'verify_mode'\n\ntests\\unit\\test_phase_i_i3_a0_p2.py:182: AttributeError\n________________ test_bootstrap_missing_resources_before_write ________________\n\nbundle = (WindowsPath('C:/twmarket_temp/l7-a3/baseline311-temp/test_bootstrap_missing_resourc0'), {'schema_version': 1, 'product_name': 'TW-Market', 'product_version': '1.0.0', 'source_commit': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', ...})\n\n    def test_bootstrap_missing_resources_before_write(bundle):\n        r,m=bundle\n>       with pytest.raises(RuntimeError,match='resources missing'): bootstrap(r)\nE       AssertionError: Regex pattern did not match.\nE         Expected regex: 'resources missing'\nE         Actual message: 'Windows CPython 3.13 x64 required'\n\ntests\\unit\\test_l6_a3_package_integrity.py:67: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/unit/test_phase_i_i3_a0_p2.py::test_tpex_uses_default_strict_tls_and_no_compatibility_fallback\nFAILED tests/unit/test_l6_a3_package_integrity.py::test_bootstrap_missing_resources_before_write\n2 failed in 0.68s\n"
+    },
+    "contracted_skips": 4,
+    "failed": 2,
+    "guard_denials": 6,
+    "interpretation": "Both failing nodes reproduce unchanged at entry: CPython 3.11 HTTPSHandler context materialization assumption; Native-only CPython 3.13 precondition. No node removed, skipped, xfailed or reclassified in canonical A1. Six denied stdlib ver attempts retained as harness diagnostics; final source-runtime probe uses appropriate Native acceptance guard with strict native allowlist.",
+    "passed": 1893,
+    "scope": "Optional diagnostic; no 3.11 release-gate PASS claimed",
+    "status": "FAIL_NOT_ACCEPTED"
+  },
+  "offline_replay": "No broken requirements; exact 49-package application graph; pip/setuptools are bundled prerequisite tooling",
+  "python": "3.11.9 Windows x64",
+  "readonly_native_identity": [
+    {
+      "command": "C:\\Windows\\System32\\cmd.exe /c \"ver\"",
+      "event": "allowed_readonly_windows_identity",
+      "executable": "C:\\Windows\\System32\\cmd.exe",
+      "pid": 36808
+    },
+    {
+      "command": "C:\\Windows\\System32\\cmd.exe /c \"ver\"",
+      "event": "allowed_readonly_windows_identity",
+      "executable": "C:\\Windows\\System32\\cmd.exe",
+      "pid": 36808
+    }
+  ],
+  "runtime": {
+    "doctor_read_only": true,
+    "guard_denials": [],
+    "installation_id": "eac646d1-e42c-4517-a0a1-d3059bedc27c",
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "scope": "Noncanonical Python 3.11 source/runtime compatibility; not Native bootstrap or canonical release gate",
+    "sequence": [
+      {
+        "exit_code": 0,
+        "label": "preinit"
+      },
+      {
+        "exit_code": 0,
+        "label": "init"
+      },
+      {
+        "exit_code": 0,
+        "label": "init-again"
+      },
+      {
+        "exit_code": 0,
+        "label": "start"
+      },
+      {
+        "exit_code": 0,
+        "label": "status"
+      },
+      {
+        "exit_code": 0,
+        "label": "doctor"
+      },
+      {
+        "exit_code": 0,
+        "label": "stop"
+      }
+    ],
+    "status": "PASS",
+    "tools": [
+      "market_describe_capabilities",
+      "market_export_ai_handoff",
+      "market_fetch_evidence",
+      "market_preview_request",
+      "market_read_result",
+      "market_validate_request"
+    ]
+  },
+  "status": "PASS",
+  "strict_default_TLS": {
+    "CERT_REQUIRED": 2,
+    "check_hostname": true,
+    "connection_verify_mode": 2,
+    "handler_context_is_none": true,
+    "interpretation": "CPython 3.11 HTTPSHandler defers default context creation to HTTPSConnection; strict default TLS remains enabled; legacy test inspects earlier internal representation",
+    "network_connections": 0,
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "stdlib_connection_source_sha256": "894de32ce4b4433bdaedb608505110cbf11e269ac848cba40029d4258f7738f8"
+  }
+}

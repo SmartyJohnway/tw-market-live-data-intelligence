@@ -1,6 +1,32 @@
 # Governance Index
 
-## Current L7-A2 merged state (2026-10-25)
+## Current L7-A3 technical state (2026-10-25)
+
+L6 remains **CLOSED**. L7-A0, L7-A1 and L7-A2 remain **OWNER-ACCEPTED AND MERGED**.
+L7-A3 is **TECHNICAL PASS / OWNER ACCEPTANCE PENDING** under
+`L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_PASS`.
+
+Canonical release/build/CI Python is 3.13; independently proven 3.11 source/developer
+compatibility is retained with a separate exact artifact lock. Python 3.12 is unsupported.
+Core dependency versions, MCP 1.29.0 and VERSION are unchanged. Consumer authorities,
+verified action commits, browser archive hashes, deterministic SBOM and explicit signing /
+hosted-runner provenance boundaries are frozen. Native ZIP builds are byte-identical;
+Docker has an explicit equal-content / OCI metadata boundary. Canonical A1 remains
+1895 passed / 0 failed / four contracted skips / zero guard denials. A2 repeat validation,
+including genuine fresh Win11, Native exact-six / relocation / restart and Docker
+replacement/state survival, passes. Optional failed 3.11 diagnostics remain retained;
+no canonical gate exemption was added.
+
+Only GAP08–12 and EXIT11/12/13/17/18 close in A3. Public/exact-six checks remain
+preservation checks; final A4 compatibility acceptance is deferred.
+
+**L7-A4+ NOT AUTHORIZED. Merge and stable release/publication NOT AUTHORIZED.
+Phase M NOT AUTHORIZED. Phase L NOT CLOSED.** Stop after opening the A3 PR for review.
+
+Report: `docs/governance/phase_l/PHASE_L_L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_2026-10-25.md`.
+Evidence: `docs/governance/phase_l/acceptance_runs/l7-a3-20261024T182923Z/`.
+
+## Historical L7-A2 merged state (2026-10-25)
 
 L6 remains **CLOSED**. L7-A0 and L7-A1 remain **OWNER-ACCEPTED AND MERGED**;
 A1 post-merge governance is reconciled at canonical entry `0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5`.

@@ -1,0 +1,65 @@
+{
+  "browser_newly_frozen_transitives": [
+    {
+      "name": "pyee",
+      "new": "13.0.0",
+      "old": "unfrozen",
+      "reason": "Satisfies Playwright >=13,<14; establish missing exact binary closure"
+    },
+    {
+      "name": "greenlet",
+      "new": "3.2.4",
+      "old": "unfrozen",
+      "reason": "Satisfies Playwright >=3.1.1,<4; compatible cp313 binary; no accepted old pin changed"
+    }
+  ],
+  "constraints": [
+    {
+      "constraint": ">=2.31.0",
+      "name": "requests"
+    },
+    {
+      "constraint": ">=2.0.0",
+      "name": "pandas"
+    },
+    {
+      "constraint": ">=1.0.0",
+      "name": "python-dotenv"
+    },
+    {
+      "constraint": ">=0.100.0",
+      "name": "fastapi"
+    },
+    {
+      "constraint": ">=0.23.0",
+      "name": "uvicorn"
+    },
+    {
+      "constraint": ">=0.24.0",
+      "name": "httpx"
+    },
+    {
+      "constraint": "==1.29.0",
+      "name": "mcp"
+    },
+    {
+      "constraint": ">=7.0.0",
+      "name": "pytest"
+    },
+    {
+      "constraint": ">=3.10.0",
+      "name": "pytest-mock"
+    },
+    {
+      "constraint": ">=0.23.0",
+      "name": "responses"
+    },
+    {
+      "constraint": "<5,>=4.21.0",
+      "name": "jsonschema"
+    }
+  ],
+  "core_versions_changed": [],
+  "mcp": "1.29.0 unchanged",
+  "requirements_sha256": "9ddd5c37b59cc37c1ccd5c71f9236fceda5269e1424235a52705c58a736b51a0"
+}

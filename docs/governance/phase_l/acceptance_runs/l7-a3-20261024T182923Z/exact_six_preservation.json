@@ -1,0 +1,30 @@
+{
+  "MCP_SDK": "1.29.0 unchanged",
+  "count": 6,
+  "final_L7_A4_acceptance": "DEFERRED",
+  "guest": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ],
+  "host": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ],
+  "python311": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ],
+  "status": "PASS_AS_PRESERVATION"
+}

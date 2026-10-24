@@ -1,0 +1,24 @@
+{
+  "GitHub_workflows_executed_in_A3": false,
+  "local_integration": true,
+  "no_hosted_image_byte_pin_claim": true,
+  "policy": {
+    "artifact_byte_identity_authority": false,
+    "authority": "HOSTED_ENVIRONMENT_PROVENANCE_ONLY",
+    "limitation": "GitHub hosted labels do not pin a byte-identical runner image; final artifact identity comes from frozen source/dependency/toolchain and compared builds",
+    "mutable_labels": [
+      "windows-latest",
+      "ubuntu-latest"
+    ],
+    "required_observations": [
+      "ImageOS",
+      "ImageVersion",
+      "RUNNER_OS",
+      "RUNNER_ARCH",
+      "Python",
+      "pip",
+      "Git"
+    ]
+  },
+  "static_validation": true
+}

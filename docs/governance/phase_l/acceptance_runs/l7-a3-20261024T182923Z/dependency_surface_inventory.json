@@ -1,0 +1,49 @@
+{
+  "artifact_checks": "dependency_artifact_hashes.json",
+  "binary_only": true,
+  "browser_intent": "requirements-browser-e2e.txt",
+  "canonical_developer_test_reuse": {
+    "Linux_313": "ci-linux",
+    "Windows_313": "release-ci-windows"
+  },
+  "consumer_locks": {
+    "browser-linux": {
+      "lock": "config/browser-py313-linux-lock.json",
+      "platform": "manylinux_x86_64",
+      "python": "3.13",
+      "role": "BROWSER_VALIDATION_ONLY"
+    },
+    "ci-linux": {
+      "lock": "config/ci-py313-linux-lock.json",
+      "platform": "manylinux_x86_64",
+      "python": "3.13",
+      "role": "CANONICAL_LINUX_CI"
+    },
+    "developer-py311-windows": {
+      "lock": "config/developer-py311-windows-lock.json",
+      "platform": "win_amd64",
+      "python": "3.11",
+      "role": "NONCANONICAL_COMPATIBILITY"
+    },
+    "docker-linux": {
+      "lock": "packaging_docker/dependency-lock-linux-amd64-cp313.json",
+      "platform": "musllinux_x86_64",
+      "python": "3.13",
+      "role": "CANONICAL_DOCKER_RUNTIME"
+    },
+    "native-windows": {
+      "lock": "packaging_native/wheelhouse-lock.json",
+      "platform": "win_amd64",
+      "python": "3.13",
+      "role": "CANONICAL_NATIVE_RUNTIME"
+    },
+    "release-ci-windows": {
+      "lock": "packaging_native/wheelhouse-lock.json",
+      "platform": "win_amd64",
+      "python": "3.13",
+      "role": "CANONICAL_RELEASE_CI"
+    }
+  },
+  "direct_intent": "requirements.txt",
+  "version_projection": "requirements-lock.txt"
+}
