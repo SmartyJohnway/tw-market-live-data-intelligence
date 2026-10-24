@@ -10,6 +10,15 @@ import pytest
 launcher = importlib.import_module("scripts.run_unified_workbench")
 
 
+@pytest.fixture(autouse=True)
+def initialized_installation(tmp_path, monkeypatch):
+    """Use the explicit L6 lifecycle before exercising launcher ordering."""
+    from scripts.tw_market_installation import initialize_installation
+    monkeypatch.setenv("TW_MARKET_HOME", str(tmp_path / "home"))
+    monkeypatch.setenv("TW_MARKET_STATE_ROOT", str(tmp_path / "state"))
+    initialize_installation()
+
+
 def _main(monkeypatch, *arguments):
     monkeypatch.setattr(sys, "argv", ["run_unified_workbench.py", *arguments])
     with pytest.raises(SystemExit) as exit_info:

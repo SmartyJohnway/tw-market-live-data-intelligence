@@ -1,0 +1,11 @@
+{
+  "DEFAULT_CI": "preserved mixed diagnostic; FAIL retained",
+  "FAST": "inner-loop diagnostic",
+  "FULL_NON_NETWORK": "broad diagnostic; Windows fcntl collection error retained; no PASS claim",
+  "canonical": "release-blocking-ci v1",
+  "manual_browser_operator_release_proofs": "separate later acceptance, not waived by A1",
+  "model": "B",
+  "no_valid_current_baseline_failure_omitted": true,
+  "source": "docs/release/RELEASE_CHECKLIST.md",
+  "workflow_integration": "deferred A2/A6, no YAML/settings change"
+}

@@ -1,0 +1,14 @@
+{
+  "Node_children": "only explicit state-contract -e mode; network/children/workers denied",
+  "Python_children": "bootstrap injection including -I/-S/-X utf8; before site for ordinary children; logs guard load",
+  "denied": "non-loopback DNS/connect/sendto, raw/unobserved native children, nonlocal Git, production state, forbidden drive and out-of-task writes",
+  "implementation": [
+    "scripts/deterministic_ci_guard.py",
+    "scripts/deterministic_ci_node_guard.cjs",
+    "scripts/run_deterministic_ci.py"
+  ],
+  "installation_network": "no setup/download performed; prerequisite setup outside test window",
+  "local_loopback": "explicit controlled test service/readiness only; proxies stripped",
+  "negative_controls": "separate deliberate denial window; not counted as unexpected product attempts",
+  "no_OS_egress_claim": true
+}

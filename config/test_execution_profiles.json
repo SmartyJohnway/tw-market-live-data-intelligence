@@ -848,6 +848,21 @@
       "browser_policy": "not required",
       "live_policy": "never executes live or real-agent checks",
       "automatic_ci_allowed": true
+    },
+    "release-blocking-ci": {
+      "purpose": "L7-A1 canonical deterministic release-blocking contract; historical diagnostics preserved with explicit equivalent coverage",
+      "execution_type": "authoritative_runner",
+      "authoritative_runner": [
+        [
+          "python",
+          "scripts/run_deterministic_ci.py"
+        ]
+      ],
+      "network_policy": "external acquisition denied and observed; guarded Python/Node descendants; local controlled loopback only",
+      "browser_policy": "no browser; existing Node required for deterministic JS state contract",
+      "live_policy": "never authorized",
+      "automatic_ci_allowed": true,
+      "contract": "config/release_blocking_ci.v1.json"
     }
   }
 }

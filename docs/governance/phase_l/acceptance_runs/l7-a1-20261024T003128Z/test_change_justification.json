@@ -1,0 +1,69 @@
+{
+  "historical_test_modules_modified": 0,
+  "modified_current_tests": [
+    {
+      "file": "tests/unit/test_m8r_06_03_localhost_vertical.py",
+      "intent": "Correct explicit isolated initialization, qualified synthetic identity release, existing Node prerequisite selection, or trace_id fake interface; original behavior assertions preserved"
+    },
+    {
+      "file": "tests/unit/test_m8r_06_human_browser_authorize_state.py",
+      "intent": "Correct explicit isolated initialization, qualified synthetic identity release, existing Node prerequisite selection, or trace_id fake interface; original behavior assertions preserved"
+    },
+    {
+      "file": "tests/unit/test_m8r_08c_r1_launcher_readiness.py",
+      "intent": "Correct explicit isolated initialization, qualified synthetic identity release, existing Node prerequisite selection, or trace_id fake interface; original behavior assertions preserved"
+    },
+    {
+      "file": "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py",
+      "intent": "Correct explicit isolated initialization, qualified synthetic identity release, existing Node prerequisite selection, or trace_id fake interface; original behavior assertions preserved"
+    },
+    {
+      "file": "tests/unit/test_phase_i_i2_a4_activation.py",
+      "intent": "Correct explicit isolated initialization, qualified synthetic identity release, existing Node prerequisite selection, or trace_id fake interface; original behavior assertions preserved"
+    }
+  ],
+  "new_current_coverage": "tests/unit/test_l7_a1_deterministic_ci.py",
+  "optional_skips": {
+    "tests/integration/test_unified_workbench_api.py::test_real_sealed_candidate_is_not_a_production_fallback": {
+      "blocking_current_equivalents": true,
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_explicit_offline_release_serves_identity_over_real_localhost",
+        "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+        "tests/unit/test_l6_a2_lifecycle_integration.py"
+      ],
+      "expected_skip_reason": "governed local candidate is Git-ignored",
+      "intent": "Optional historical sealed/developer artifact witness; cannot inherit host state in fresh CI"
+    },
+    "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py::test_sealed_bundle_acceptance_and_exhaustive_resolver_equivalence": {
+      "blocking_current_equivalents": true,
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_explicit_offline_release_serves_identity_over_real_localhost",
+        "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+        "tests/unit/test_l6_a2_lifecycle_integration.py"
+      ],
+      "expected_skip_reason": "requires original sealed 01B bundle; normal CI uses synthetic fixtures",
+      "intent": "Optional historical sealed/developer artifact witness; cannot inherit host state in fresh CI"
+    },
+    "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_active_release_http_e2e_without_runtime_monkeypatch": {
+      "blocking_current_equivalents": true,
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_explicit_offline_release_serves_identity_over_real_localhost",
+        "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+        "tests/unit/test_l6_a2_lifecycle_integration.py"
+      ],
+      "expected_skip_reason": "installation-local active release is not initialized",
+      "intent": "Optional historical sealed/developer artifact witness; cannot inherit host state in fresh CI"
+    },
+    "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_sealed_candidate_production_activation": {
+      "blocking_current_equivalents": true,
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_explicit_offline_release_serves_identity_over_real_localhost",
+        "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+        "tests/unit/test_l6_a2_lifecycle_integration.py"
+      ],
+      "expected_skip_reason": "accepted local C1B compact candidate is not materialized",
+      "intent": "Optional historical sealed/developer artifact witness; cannot inherit host state in fresh CI"
+    }
+  },
+  "unexpected_skips": "blocking failure; no xfail or blanket failure exclusion"
+}

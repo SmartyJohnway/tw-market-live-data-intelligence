@@ -1,0 +1,13 @@
+{
+  "branch": "phase-l/l7-a1-deterministic-required-ci",
+  "commit": "405bf16f5f82f4d37062d036ca6815eba27f7c4d",
+  "github_PR409_merged": true,
+  "initial_worktree_clean": true,
+  "merge_method": "normal merge",
+  "merge_parents": [
+    "37b6a836fd80addfd6a8cf03c3c6f19848b3e143",
+    "f29f053336773b093c9cda819922cd1ee8f5fc65"
+  ],
+  "origin_main_verified": "405bf16f5f82f4d37062d036ca6815eba27f7c4d",
+  "tree": "cf6db19544705fa83a55e17377489116b9ebcdc7"
+}

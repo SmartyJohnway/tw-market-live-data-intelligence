@@ -197,10 +197,11 @@ def production_preview(targets=("1101", "1102"), *, authorities=None):
     request = {"schema_version": "unified_market_evidence_request.v3", "request_id": "i2-a4-offline-proof",
                "execution_mode": "execute", "targets": [{"input": code, "market_hint": "TWSE" if code != "6488" else "TPEX", "resolution_requirement": "exact"} for code in targets],
                "data_needs": [{"type": CAPABILITY, "priority": "required", "parameters": {}}]}
-    runtime = load_active_mode_a_security_master(security_master_root=ROOT / "data/security_master")
+    selected_root = Path(os.environ.get("TW_MARKET_SECURITY_MASTER_ROOT", ROOT / "data/security_master"))
+    runtime = load_active_mode_a_security_master(security_master_root=selected_root)
     assert runtime.validation["valid"]
     # Installation-local exact identity authority, not a fixture identity fork.
-    with patch.dict(os.environ, {"TW_MARKET_SECURITY_MASTER_ROOT": str(ROOT / "data/security_master")}):
+    with patch.dict(os.environ, {"TW_MARKET_SECURITY_MASTER_ROOT": str(selected_root)}):
         with patch("server.services.unified_mode_a.get_production_mode_a_security_master", return_value=runtime):
             validation = validate_mode_a_request(request)
             package = build_mode_b1_preview_package(request, validation, runtime,

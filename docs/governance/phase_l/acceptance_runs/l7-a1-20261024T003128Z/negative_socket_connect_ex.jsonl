@@ -1,0 +1,2 @@
+{"event": "guard_loaded", "pid": 33844, "python": "3.13.7"}
+{"event": "denied", "pid": 33844, "reason": "EXTERNAL_NETWORK_ATTEMPT", "value": "192.0.2.1"}

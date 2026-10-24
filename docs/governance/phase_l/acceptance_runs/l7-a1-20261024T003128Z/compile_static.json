@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "Python_builtin_compile": [
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/negative_control_harness.py",
+    "docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/review_evidence.py",
+    "scripts/deterministic_ci_guard.py",
+    "scripts/phase_i_i2_a4_proof.py",
+    "scripts/run_deterministic_ci.py",
+    "scripts/run_test_profile.py",
+    "tests/unit/test_l7_a1_deterministic_ci.py",
+    "tests/unit/test_m8r_06_03_localhost_vertical.py",
+    "tests/unit/test_m8r_06_human_browser_authorize_state.py",
+    "tests/unit/test_m8r_08c_r1_launcher_readiness.py",
+    "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py",
+    "tests/unit/test_phase_i_i2_a4_activation.py"
+  ],
+  "Node_check": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "pycache_writes": 0
+}

@@ -17,6 +17,33 @@ from server.services import phase_i_i2_production_candidate as candidate
 
 
 @pytest.fixture(autouse=True)
+def isolated_qualified_identity_release(tmp_path, monkeypatch):
+    """Explicit synthetic release through the real offline qualification path."""
+    from scripts.m8r_08g_security_master_releases import (
+        build_candidate_release, qualify_candidate_release, activate_qualified_release,
+    )
+    root = tmp_path / "security_master"
+    records = []
+    for market, code, isin in [("TWSE", "1101", "TW0001101004"),
+                                ("TWSE", "1102", "TW0001102002"),
+                                ("TPEX", "6488", "TW0006488000")]:
+        records.append({"canonical_target_id": f"{market}:{code}",
+                        "identity": {"security_code": code, "isin": isin},
+                        "classification": {"market": market, "instrument_family": "company_share", "instrument_type": "common_share"},
+                        "lifecycle": {"state": "listed", "resolution_status": "resolved", "basis_event_ids": [], "events": []},
+                        "execution_eligibility": {"status": "allowed", "reason_codes": []}})
+    rid = "security-master-20261024T000000Z"
+    build_candidate_release(root=root, release_id=rid, records=records,
+                            source_provenance={"source_type": "deterministic_test_fixture", "snapshot_id": "i2-isolated-fixture",
+                                               "source_content_hashes": {"synthetic_records": "a" * 64},
+                                               "producer_skill": {"name": "test", "skill_version": "1", "skill_contract_hash": "b" * 64}})
+    qualified, report = qualify_candidate_release(root=root, release_id=rid)
+    assert qualified and report["status"] == "PASS"
+    activate_qualified_release(root=root, release_id=rid)
+    monkeypatch.setenv("TW_MARKET_SECURITY_MASTER_ROOT", str(root))
+
+
+@pytest.fixture(autouse=True)
 def deny_network(monkeypatch):
     def deny(*args, **kwargs):
         raise AssertionError("A4 external network forbidden")

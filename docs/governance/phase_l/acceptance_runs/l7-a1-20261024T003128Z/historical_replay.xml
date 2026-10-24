@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="4.183" timestamp="2026-10-24T08:31:03.503099+08:00" hostname="C04N06"><testcase classname="tests.unit.test_l5_a5_existing_family_conformance" name="test_72_dimension_cells_keep_exact_frozen_classifications" time="1.812"><failure message="assert [{'code': 'A5...mode_c.py']&quot;}] == []&#10;  &#10;  Left contains one more item: {'code': 'A5_NEW_FAMILY_DETECTED', 'detail': &quot;A5 requires unchanged product authority: ['config/test_execution_profile....py', 'server/services/unified_backup.py', 'server/services/unified_mode_b2.py', 'server/services/unified_mode_c.py']&quot;}&#10;  Use -v to get more diff">snapshot = {'catalog': {'available_source_families': [{'activation_status': 'active', 'known_limitations': ['no continuous pollin...research_executor', 'expected_evidence_contract': 'phase_g_material_disclosure_operation_evidence.v1', ...}, ...], ...}
+
+    def test_72_dimension_cells_keep_exact_frozen_classifications(snapshot):
+        assert len(dimension_matrix()) == 72
+&gt;       assert validate_snapshot(snapshot) == []
+E       assert [{'code': 'A5...mode_c.py']"}] == []
+E
+E         Left contains one more item: {'code': 'A5_NEW_FAMILY_DETECTED', 'detail': "A5 requires unchanged product authority: ['config/test_execution_profile....py', 'server/services/unified_backup.py', 'server/services/unified_mode_b2.py', 'server/services/unified_mode_c.py']"}
+E         Use -v to get more diff
+
+tests\unit\test_l5_a5_existing_family_conformance.py:152: AssertionError</failure></testcase><testcase classname="tests.unit.test_l5_a5_existing_family_conformance" name="test_entire_validator_is_offline_and_does_not_write" time="1.237"><failure message="AssertionError: assert 'FAIL' == 'PASS'&#10;  &#10;  - PASS&#10;  + FAIL">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000016316906C40&gt;
+
+    def test_entire_validator_is_offline_and_does_not_write(monkeypatch):
+        from pathlib import Path
+        def forbidden(*args, **kwargs):
+            raise AssertionError("provider/socket or write forbidden in acceptance validator")
+        monkeypatch.setattr(socket, "create_connection", forbidden)
+        monkeypatch.setattr(socket.socket, "connect", forbidden)
+        monkeypatch.setattr(Path, "write_text", forbidden)
+        monkeypatch.setattr(Path, "write_bytes", forbidden)
+&gt;       assert build_evidence()["status"] == "PASS"
+E       AssertionError: assert 'FAIL' == 'PASS'
+E
+E         - PASS
+E         + FAIL
+
+tests\unit\test_l5_a5_existing_family_conformance.py:197: AssertionError</failure></testcase><testcase classname="tests.unit.test_phase_j_closure_authority_reconciliation" name="test_phase_j_closure_authority_reconciliation_passes" time="0.001"><failure message="ValueError: PHASE_K_STATE_DRIFT">def test_phase_j_closure_authority_reconciliation_passes() -&gt; None:
+&gt;       result = validate(check_git=False)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_phase_j_closure_authority_reconciliation.py:5:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\validate_phase_j_closure_authority_reconciliation.py:34: in validate
+    require("# [ ] Phase K — Multi-Agent Compatibility &amp; Evaluation" in roadmap, "PHASE_K_STATE_DRIFT")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, message = 'PHASE_K_STATE_DRIFT'
+
+    def require(condition: bool, message: str) -&gt; None:
+        if not condition:
+&gt;           raise ValueError(message)
+E           ValueError: PHASE_K_STATE_DRIFT
+
+scripts\validate_phase_j_closure_authority_reconciliation.py:19: ValueError</failure></testcase></testsuite></testsuites>

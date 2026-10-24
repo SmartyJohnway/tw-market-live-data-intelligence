@@ -1,0 +1,199 @@
+{
+  "window": "intentional guard negative controls; not product execution",
+  "probes": [
+    {
+      "probe": "dns",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "pid": 18940,
+          "reason": "EXTERNAL_NETWORK_ATTEMPT",
+          "value": "example.invalid"
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 18940,
+          "python": "3.13.7"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "probe": "socket_connect_ex",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "pid": 33844,
+          "reason": "EXTERNAL_NETWORK_ATTEMPT",
+          "value": "192.0.2.1"
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 33844,
+          "python": "3.13.7"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "probe": "urllib",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "pid": 1952,
+          "reason": "EXTERNAL_NETWORK_ATTEMPT",
+          "value": "example.invalid"
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 1952,
+          "python": "3.13.7"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "probe": "requests",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "pid": 22060,
+          "reason": "EXTERNAL_NETWORK_ATTEMPT",
+          "value": "example.invalid"
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 22060,
+          "python": "3.13.7"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "probe": "httpx",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "pid": 19848,
+          "reason": "EXTERNAL_NETWORK_ATTEMPT",
+          "value": "example.invalid"
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 19848,
+          "python": "3.13.7"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "probe": "isolated_python_child",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "pid": 25264,
+          "reason": "EXTERNAL_NETWORK_ATTEMPT",
+          "value": "192.0.2.1"
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 6316,
+          "python": "3.13.7"
+        },
+        {
+          "event": "guard_loaded",
+          "pid": 25264,
+          "python": "3.13.7"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "probe": "native_child",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "pid": 8400,
+          "reason": "UNOBSERVED_NATIVE_PROCESS",
+          "value": "['curl', 'https://example.invalid']"
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 8400,
+          "python": "3.13.7"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "probe": "node_https",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "reason": "NODE_NETWORK_OR_CHILD_ATTEMPT",
+          "pid": 33088
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 32228,
+          "python": "3.13.7"
+        },
+        {
+          "event": "guard_loaded_node",
+          "reason": "state_contract_only",
+          "pid": 33088
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "probe": "node_worker",
+      "returncode": 1,
+      "expected_denials": [
+        {
+          "event": "denied",
+          "reason": "NODE_NETWORK_OR_CHILD_ATTEMPT",
+          "pid": 35036
+        }
+      ],
+      "guarded_processes": [
+        {
+          "event": "guard_loaded",
+          "pid": 4884,
+          "python": "3.13.7"
+        },
+        {
+          "event": "guard_loaded_node",
+          "reason": "state_contract_only",
+          "pid": 35036
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "real_external_dispatches": 0
+}

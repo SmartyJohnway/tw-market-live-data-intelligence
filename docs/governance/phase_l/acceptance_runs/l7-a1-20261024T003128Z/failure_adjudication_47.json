@@ -1,0 +1,914 @@
+{
+  "DECISION_REQUIRED": 0,
+  "classification_counts": {
+    "ENVIRONMENT_PREREQUISITE": 1,
+    "HISTORICAL_GOVERNANCE_ASSERTION": 14,
+    "TEST_INFRASTRUCTURE_DEFECT": 32
+  },
+  "row_count": 47,
+  "rows": [
+    {
+      "A0_provisional_classification": "ENVIRONMENT_DEPENDENT",
+      "A1_final_classification": "ENVIRONMENT_PREREQUISITE",
+      "code_test_changes": [
+        "tests/unit/test_m8r_06_human_browser_authorize_state.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_m8r_06_human_browser_authorize_state.py::test_authorization_controls_follow_preview_and_invalidation_state_machine"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_m8r_06_human_browser_authorize_state.py::test_authorization_controls_follow_preview_and_invalidation_state_machine",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Use existing explicit Node executable in canonical profile with Node network/child guard; no installation or assertion weakening.",
+      "root_cause": "Bounded legacy PATH lacks installed Node; this is an executable deterministic JS state contract, not a browser or product defect."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "tests/unit/test_m8r_06_03_localhost_vertical.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_m8r_06_03_localhost_vertical.py::test_real_localhost_authorize_execute_once_vertical",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Explicitly initialize isolated installation, preserve preload-before-bind/failure/no-acquisition assertions and real localhost uninitialized Security Master behavior.",
+      "root_cause": "Launcher now correctly requires initialized installation before preload/bind; old test omitted explicit offline initialization."
+    },
+    {
+      "A0_provisional_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "tests/unit/test_m8r_08c_r1_launcher_readiness.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_m8r_08c_r1_launcher_readiness.py::test_normal_launch_preloads_before_uvicorn_and_uses_no_background_work"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_m8r_08c_r1_launcher_readiness.py::test_normal_launch_preloads_before_uvicorn_and_uses_no_background_work",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Explicitly initialize isolated installation, preserve preload-before-bind/failure/no-acquisition assertions and real localhost uninitialized Security Master behavior.",
+      "root_cause": "Launcher now correctly requires initialized installation before preload/bind; old test omitted explicit offline initialization."
+    },
+    {
+      "A0_provisional_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "tests/unit/test_m8r_08c_r1_launcher_readiness.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_m8r_08c_r1_launcher_readiness.py::test_preload_failure_prevents_uvicorn_bind"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_m8r_08c_r1_launcher_readiness.py::test_preload_failure_prevents_uvicorn_bind",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Explicitly initialize isolated installation, preserve preload-before-bind/failure/no-acquisition assertions and real localhost uninitialized Security Master behavior.",
+      "root_cause": "Launcher now correctly requires initialized installation before preload/bind; old test omitted explicit offline initialization."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py::test_mcp_dispatch_v3_validate_preview_and_fetch_reaches_existing_action"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_h_imp_0_passive_v3_compatibility.py::test_mcp_dispatch_v3_validate_preview_and_fetch_reaches_existing_action",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Make fake client implement current seam and assert nonempty trace_id; product dispatcher unchanged.",
+      "root_cause": "Fake client lacked current keyword-only trace_id seam; real dispatcher maps TypeError to bounded adapter internal error."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets0-1-1]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_ordinary_preview_has_no_overlay_and_requires_approval[targets1-2-1]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_tpex_remains_nonexecutable",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[complete]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[partial]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[unavailable]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[source_failed]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_normal_production_governed_chain_status_and_same_source[binding_failed]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_i2_roll_001_exact_baseline_and_passive_preview",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_governed_listing_syntax_is_not_four_digits",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[executor_id-wrong]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[capability_id-recent_performance]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[market-TPEX]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[network_authorized-False]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[timeout_seconds-15]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[maximum_records-2]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[parameters-value6]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_types-value7]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value8]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_entire_batch_validated_before_transport[approved_security_identifiers-value9]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_nonapproved_mode_and_51_targets_fail_before_transport",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_50_targets_allowed_and_second_acquisition_denied_before_io",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[redirect]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[http-failure]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[bad-mime]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[invalid-utf8]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[oversize]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "DECISION_REQUIRED",
+      "A1_final_classification": "TEST_INFRASTRUCTURE_DEFECT",
+      "code_test_changes": [
+        "scripts/phase_i_i2_a4_proof.py",
+        "tests/unit/test_phase_i_i2_a4_activation.py"
+      ],
+      "current_equivalent_coverage": [
+        "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]"
+      ],
+      "final_result": "PASS_IN_CANONICAL_RELEASE_BLOCKING",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "PASS",
+      "nodeid": "tests/unit/test_phase_i_i2_a4_activation.py::test_transport_failure_retains_honest_normalized_failure[wrong-root]",
+      "owner": "A1",
+      "release_blocking": true,
+      "resolution": "Honor explicit selected Security Master root in acceptance-only helper; construct synthetic records, qualify and activate through existing offline release API in per-test temporary root. Preserve every batch/approval/error assertion.",
+      "root_cause": "Offline proof hardcoded checkout-local active Security Master. Clean checkout has no Git-ignored active release."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_preflight.py::test_current_hold_record_and_runtime_containment",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_preflight.py::test_p0_validator_cannot_claim_pass_or_rearm",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_p1_adjudication.py::test_p1_governance_validator_passes_under_network_denial",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_p3.py::test_p3_validator_production_containment_and_readiness",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_i_i3_a0_p3_r1.py::test_r1_validator",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_i_i3_a1.py::test_a1_validator_and_immutable_a0_anchors",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_i_i3_a3_attempt_2_bounded_live.py::test_exact_mapping_and_frozen_candidate_and_production_containment",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_i_i3_a3_r3_http520_lifecycle.py::test_committed_attempt4_pass_lineage_and_containment",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_j_ghi_readiness_preflight.py::test_current_record",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_j_ghi_readiness_preflight.py::test_unchecked_g_h_do_not_themselves_block_pass",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_j_ghi_readiness_preflight.py::test_missing_runtime_can_be_nonblocking_when_safe_or_optional[J1-08]",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "FAIL",
+      "nodeid": "tests/unit/test_phase_j_ghi_readiness_preflight.py::test_missing_runtime_can_be_nonblocking_when_safe_or_optional[J1-10]",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "NOT_IN_LEGACY_DEFAULT_SELECTION",
+      "nodeid": "tests/unit/test_l5_a5_existing_family_conformance.py::test_72_dimension_cells_keep_exact_frozen_classifications",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    },
+    {
+      "A0_provisional_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "A1_final_classification": "HISTORICAL_GOVERNANCE_ASSERTION",
+      "code_test_changes": [],
+      "current_equivalent_coverage": [
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_public_authorities_match_accepted_entry",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_authority_mutation_is_detected",
+        "tests/unit/test_phase_h_h3_i2a_twse_stock_day_adapter.py",
+        "tests/unit/test_l5_a5_existing_family_conformance.py::test_acceptance_snapshot_negative_controls",
+        "tests/unit/test_l7_a1_deterministic_ci.py::test_current_phase_j_closure_retains_accepted_k_continuation"
+      ],
+      "final_result": "RETAINED_HISTORICAL_DIAGNOSTIC; CURRENT_EQUIVALENTS_PASS",
+      "historical_evidence_retained": true,
+      "legacy_default_result": "NOT_IN_LEGACY_DEFAULT_SELECTION",
+      "nodeid": "tests/unit/test_l5_a5_existing_family_conformance.py::test_entire_validator_is_offline_and_does_not_write",
+      "owner": "A1",
+      "release_blocking": false,
+      "resolution": "Preserve original runnable diagnostic; explicit node rationale and required current equivalent coverage in versioned contract.",
+      "root_cause": "Frozen historical tranche call-shape/catalog/no-later-source-change or not-started snapshot; superseded by accepted L3/L4/L6 or Phase J closure; original historical bytes preserved."
+    }
+  ],
+  "unclassified": 0
+}

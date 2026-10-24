@@ -1,0 +1,13 @@
+{
+  "errors": [],
+  "executed_cases": 3,
+  "failed": 3,
+  "failed_nodes": [
+    "tests/unit/test_l5_a5_existing_family_conformance.py::test_72_dimension_cells_keep_exact_frozen_classifications",
+    "tests/unit/test_l5_a5_existing_family_conformance.py::test_entire_validator_is_offline_and_does_not_write",
+    "tests/unit/test_phase_j_closure_authority_reconciliation.py::test_phase_j_closure_authority_reconciliation_passes"
+  ],
+  "overall": "FAIL",
+  "passed": 0,
+  "skipped": []
+}

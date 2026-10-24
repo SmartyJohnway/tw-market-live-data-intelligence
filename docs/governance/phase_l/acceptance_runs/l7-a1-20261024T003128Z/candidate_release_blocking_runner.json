@@ -1,0 +1,26 @@
+{
+  "browser_required": false,
+  "command_results": [
+    {
+      "command": "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/run_deterministic_ci.py --output-root C:\\twmarket_temp\\l7-a1\\candidate-sealed\\release-blocking-ci",
+      "duration_seconds": 168.09,
+      "execution_kind": "authoritative_runner",
+      "return_code": 0
+    }
+  ],
+  "commands": [
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/run_deterministic_ci.py --output-root C:\\twmarket_temp\\l7-a1\\candidate-sealed\\release-blocking-ci"
+  ],
+  "duration_seconds": 168.091,
+  "explicit_live_confirmation": false,
+  "finished_at": "2026-10-24T00:32:47Z",
+  "network_may_have_occurred": false,
+  "profile": "release-blocking-ci",
+  "resolved_profile": "release-blocking-ci",
+  "return_codes": [
+    0
+  ],
+  "ssl_policy": "strict",
+  "started_at": "2026-10-24T00:29:59Z",
+  "status": "pass"
+}

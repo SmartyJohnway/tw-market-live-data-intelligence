@@ -1,0 +1,13 @@
+{
+  "L2_L6_state_schema_changes": [],
+  "acceptance_only_helper_change": "scripts/phase_i_i2_a4_proof.py honors explicit selected identity root; no runtime import/discovery/fallback introduced",
+  "new_tools_families_providers": 0,
+  "public_contract_changes": [],
+  "server_runtime_changes": [],
+  "test_runner_guard_changes": [
+    "scripts/run_test_profile.py",
+    "scripts/run_deterministic_ci.py",
+    "scripts/deterministic_ci_guard.py",
+    "scripts/deterministic_ci_node_guard.cjs"
+  ]
+}
