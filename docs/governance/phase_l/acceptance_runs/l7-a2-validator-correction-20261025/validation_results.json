@@ -1,0 +1,63 @@
+{
+  "pythonpath_present": false,
+  "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+  "results": [
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_github_actions_execution_policy.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"policy_id\": \"CI_POLICY_V1\",\n  \"status\": \"passed\",\n  \"violations\": [],\n  \"workflow_count\": 5,\n  \"workflows\": [\n    {\n      \"file\": \".github\\\\workflows\\\\browser-operator-e2e.yml\",\n      \"name\": \"Browser Operator E2E\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\ci.yml\",\n      \"name\": \"Default CI\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\non-network-ci.yml\",\n      \"name\": \"Full Non-Network Regression\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\release-validation.yml\",\n      \"name\": \"Release Validation\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\windows-compatibility-smoke.yml\",\n      \"name\": \"Windows Compatibility Smoke\",\n      \"triggers\": [\n        \"pull_request\",\n        \"workflow_dispatch\"\n      ]\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.validate_github_actions_execution_policy"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"policy_id\": \"CI_POLICY_V1\",\n  \"status\": \"passed\",\n  \"violations\": [],\n  \"workflow_count\": 5,\n  \"workflows\": [\n    {\n      \"file\": \".github\\\\workflows\\\\browser-operator-e2e.yml\",\n      \"name\": \"Browser Operator E2E\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\ci.yml\",\n      \"name\": \"Default CI\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\non-network-ci.yml\",\n      \"name\": \"Full Non-Network Regression\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\release-validation.yml\",\n      \"name\": \"Release Validation\",\n      \"triggers\": [\n        \"workflow_dispatch\"\n      ]\n    },\n    {\n      \"file\": \".github\\\\workflows\\\\windows-compatibility-smoke.yml\",\n      \"name\": \"Windows Compatibility Smoke\",\n      \"triggers\": [\n        \"pull_request\",\n        \"workflow_dispatch\"\n      ]\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "scripts/validate_l7_a2_workflow_policy.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"unlabeled_pr_expensive_job\": false,\n  \"labeled_pr_synchronize_eligible\": true,\n  \"labeled_pr_reopen_eligible\": true,\n  \"manual_dispatch_eligible\": true,\n  \"pre_publication\": true,\n  \"genuine_windows11_claim\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.validate_l7_a2_workflow_policy"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"unlabeled_pr_expensive_job\": false,\n  \"labeled_pr_synchronize_eligible\": true,\n  \"labeled_pr_reopen_eligible\": true,\n  \"manual_dispatch_eligible\": true,\n  \"pre_publication\": true,\n  \"genuine_windows11_claim\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/unit/test_github_actions_execution_policy.py",
+        "tests/unit/test_l7_a2_workflow_policy.py",
+        "-q",
+        "--basetemp=C:/twmarket_temp/l7-a2/continuation/validator-correction-pytest"
+      ],
+      "exit_code": 0,
+      "stdout": "..................                                                       [100%]\n18 passed in 0.98s\n",
+      "stderr": ""
+    }
+  ]
+}

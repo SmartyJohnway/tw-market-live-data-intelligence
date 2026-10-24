@@ -84,7 +84,11 @@ def validate() -> dict[str, Any]:
 
     # The A2 authority prospectively supersedes published-release gating and
     # the old duplicated Windows step list with the canonical A1 gate runner.
-    from scripts.validate_l7_a2_workflow_policy import validate as validate_a2
+    if __package__:
+        from .validate_l7_a2_workflow_policy import validate as validate_a2
+    else:
+        # Direct script execution places scripts/, not the repository, on sys.path.
+        from validate_l7_a2_workflow_policy import validate as validate_a2
     try:
         validate_a2(ROOT)
     except (AssertionError, KeyError, TypeError, ValueError) as exc:

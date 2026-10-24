@@ -1,11 +1,30 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
+
+import pytest
 
 import scripts.validate_github_actions_execution_policy as validator
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+@pytest.mark.parametrize("module", [False, True], ids=["direct-script", "module"])
+def test_validator_clean_subprocess_without_pythonpath(module):
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+    target = (["-m", "scripts.validate_github_actions_execution_policy"] if module
+              else ["scripts/validate_github_actions_execution_policy.py"])
+    result = subprocess.run(
+        [sys.executable, "-B", *target], cwd=ROOT, env=env,
+        capture_output=True, text=True, encoding="utf-8", timeout=60,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["status"] == "passed"
 
 
 def test_ci_policy_validator_accepts_repository_workflows():
