@@ -15,17 +15,19 @@ def fingerprint(root):
     return {p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file()}
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--zip',type=Path,required=True);ap.add_argument('--python',required=True);ap.add_argument('--run',type=Path,required=True);a=ap.parse_args()
-    run=a.run.resolve();assert run.is_relative_to(WORK);run.mkdir(parents=True,exist_ok=False)
+    ap=argparse.ArgumentParser();ap.add_argument('--zip',type=Path,required=True);ap.add_argument('--python',required=True);ap.add_argument('--run',type=Path,required=True);ap.add_argument('--guard-base',type=Path,default=WORK);a=ap.parse_args()
+    guard_base=a.guard_base.resolve();assert guard_base.is_relative_to(WORK)
+    run=a.run.resolve();assert run.is_relative_to(guard_base);run.mkdir(parents=True,exist_ok=False)
     logdir=run/'logs';logdir.mkdir();tmp=run/'tmp';tmp.mkdir();cwd=run/'outside cwd';cwd.mkdir()
     guard=run/'acceptance_guard.py';shutil.copyfile(ROOT/'packaging_native/acceptance_guard.py',guard)
     # Guard is installed before any child creates runtime files. Propagation is
     # explicit and independent of PYTHONPATH, which launchers deliberately clear.
-    os.environ.update(TEMP=str(tmp),TMP=str(tmp),PYTHONDONTWRITEBYTECODE='1',TW_MARKET_ACCEPTANCE_GUARD='1',TW_MARKET_GUARD_LOG=str(run/'guard-events.jsonl'))
+    os.environ.update(TEMP=str(tmp),TMP=str(tmp),PYTHONDONTWRITEBYTECODE='1',TW_MARKET_ACCEPTANCE_GUARD='1',TW_MARKET_GUARD_LOG=str(run/'guard-events.jsonl'),TW_MARKET_ACCEPTANCE_GUARD_BASE=str(guard_base))
     exec(compile(guard.read_text(encoding='utf-8-sig'),str(guard),'exec'),{'__file__':str(guard)})
     env={k:v for k,v in os.environ.items() if not k.startswith(('TW_MARKET_','UNIFIED_MARKET_','M8R_','PYTHON'))}
     env.update(TEMP=str(tmp),TMP=str(tmp),PYTHONDONTWRITEBYTECODE='1',TW_MARKET_ACCEPTANCE_GUARD='1',TW_MARKET_GUARD_LOG=str(run/'guard-events.jsonl'),
                TW_MARKET_HOME=str(run/'home 非ASCII'),TW_MARKET_STATE_ROOT=str(run/'business state'),
+               TW_MARKET_ACCEPTANCE_GUARD_BASE=str(guard_base),LOCALAPPDATA=str(run/'isolated-localappdata'),
                PATH=r'C:\Windows\System32;C:\Windows',PYTHONPATH='invalid-inherited-checkout',PYTHONHOME='invalid-inherited-home')
     # Select a free local port without contacting any provider.
     with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
@@ -84,10 +86,14 @@ def main():
         before=fingerprint(A/'app')
         pre=parse(cli(A,'preinit','status','--json'))
         assert pre['status']=='INSTALLATION_NOT_INITIALIZED' and not Path(env['TW_MARKET_HOME']).exists()
-        write('preinit_package_acceptance',{'payload':pre,'home_created':False})
+        pre_doctor=parse(cli(A,'preinit-doctor','doctor','--json'))
+        assert pre_doctor['status']=='INSTALLATION_NOT_INITIALIZED' and not Path(env['TW_MARKET_HOME']).exists()
+        write('preinit_package_acceptance',{'payload':pre,'doctor':pre_doctor,'home_created':False})
         init=parse(cli(A,'init','init','--json'))
         assert init['installation']['installation_status']=='READY'
         assert init['identity']['status']=='NOT_INITIALIZED'
+        again=parse(cli(A,'init-again','init','--json'))
+        assert again['installation']['installation_id']==init['installation']['installation_id']
         write('initialized_package_acceptance',init)
         quoted=parse(cli(A,'quoted-cli-args','status','--json','--home',env['TW_MARKET_HOME'],'--state-root',env['TW_MARKET_STATE_ROOT']))
         assert quoted['installation']['installation_id']==init['installation']['installation_id']
@@ -111,7 +117,12 @@ def main():
                 write('service_foreground_diagnostic',{'exit_code':p.returncode,'stdout':p.stdout,'stderr':p.stderr})
             except subprocess.TimeoutExpired as ex:write('service_foreground_diagnostic',{'timeout':True,'stdout':str(ex.stdout),'stderr':str(ex.stderr)})
             raise AssertionError('lifecycle start failed: '+payload.get('reason_code','unknown'))
+        def business_fingerprint():
+            return {k:v for k,v in fingerprint(Path(env['TW_MARKET_HOME'])).items() if not k.startswith('logs/')},fingerprint(Path(env['TW_MARKET_STATE_ROOT']))
+        readonly_before=business_fingerprint()
         status=parse(cli(A,'running-status','status','--json'));doctor=parse(cli(A,'doctor','doctor','--json'))
+        assert readonly_before==business_fingerprint()
+        write('doctor_read_only',{'status':'PASS','HOME_STATE_unchanged':True})
         mcp=command('mcp-startup',[str(A/'tw-market-mcp.cmd'),'--startup-check'],cmd=True)
         frames=[{'jsonrpc':'2.0','id':1,'method':'initialize','params':{'protocolVersion':'2024-11-05','capabilities':{},'clientInfo':{'name':'a3-acceptance','version':'1'}}},{'jsonrpc':'2.0','method':'notifications/initialized'},{'jsonrpc':'2.0','id':2,'method':'tools/list','params':{}}]
         raw=command('mcp-stdio',[str(A/'tw-market-mcp.cmd')],cmd=True,stdin=''.join(json.dumps(x)+'\n' for x in frames))
