@@ -1,0 +1,12 @@
+{
+  "A1_contract_changes": false,
+  "PR": false,
+  "authority": "USER_CHAT_2026-10-24_PHASE_L_L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_AUTHORIZATION",
+  "blocker": "L7_A2_DEPENDENCY_AUTHORITY_BLOCKER",
+  "dependency_changes": false,
+  "front_door_acceptance_promotion": false,
+  "merge": false,
+  "push": false,
+  "status": "BLOCKED",
+  "technical_complete": false
+}

@@ -1,0 +1,5 @@
+{
+  "environment_preflight_is_acceptance": false,
+  "reason": "environment preflight only; full fresh guest package acceptance deferred at dependency blocker",
+  "status": "NOT_RUN"
+}

@@ -1,0 +1,10 @@
+{
+  "build_A_and_B": true,
+  "fresh_state_and_replacement_acceptance": false,
+  "interruption": "owned docker run client stopped while pending, no owned running container observed; stop at dependency blocker",
+  "no_global_cleanup": true,
+  "preinit_completed": false,
+  "product_failure_adjudicated": false,
+  "retained_resources": "tw-market-l7-a2-1792809320129565900 image A/B, home/state volumes, dedicated network",
+  "status": "INCOMPLETE_INTERRUPTED"
+}

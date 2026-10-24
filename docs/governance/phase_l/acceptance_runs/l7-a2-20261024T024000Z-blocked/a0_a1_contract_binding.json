@@ -1,0 +1,40 @@
+{
+  "frozen_members": [
+    {
+      "entry_sha256": "b80476b43307d670a5a3000e84e84c3b617085db6c68373fc9b522c92708d2e7",
+      "implementation_sha256": "b80476b43307d670a5a3000e84e84c3b617085db6c68373fc9b522c92708d2e7",
+      "path": "config/release_blocking_ci.v1.json",
+      "unchanged": true
+    },
+    {
+      "entry_sha256": "c4725a39857153c9d6ea14e26fb97515f25f1c0cd9bf18660d09c85cdca67ee7",
+      "implementation_sha256": "c4725a39857153c9d6ea14e26fb97515f25f1c0cd9bf18660d09c85cdca67ee7",
+      "path": "requirements.txt",
+      "unchanged": true
+    },
+    {
+      "entry_sha256": "57a4ffbb17095e5f5108b229cce781ab9d0f64b2ea1642ed3c93822b7fdfb85a",
+      "implementation_sha256": "57a4ffbb17095e5f5108b229cce781ab9d0f64b2ea1642ed3c93822b7fdfb85a",
+      "path": "requirements-lock.txt",
+      "unchanged": true
+    },
+    {
+      "entry_sha256": "59854984853104df5c353e2f681a15fc7924742f9a2e468c29af248dce45ce03",
+      "implementation_sha256": "59854984853104df5c353e2f681a15fc7924742f9a2e468c29af248dce45ce03",
+      "path": "VERSION",
+      "unchanged": true
+    },
+    {
+      "entry_sha256": "93c6d8745ea9be8f53e1d85d9d474d105316a068d067dbff37197641eccf6ac7",
+      "implementation_sha256": "93c6d8745ea9be8f53e1d85d9d474d105316a068d067dbff37197641eccf6ac7",
+      "path": "packaging_native/wheelhouse-lock.json",
+      "unchanged": true
+    },
+    {
+      "entry_sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88",
+      "implementation_sha256": "4dce92718699974d74e62845884f3887d6471299967e52b3a2b1191562fd7a88",
+      "path": "packaging_docker/dependency-lock-linux-amd64-cp313.json",
+      "unchanged": true
+    }
+  ]
+}

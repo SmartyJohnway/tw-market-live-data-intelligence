@@ -1,0 +1,18 @@
+{
+  "A1_accepted_environment_fastapi": "0.133.0",
+  "additional_unfinished_work": [
+    "reconcile legacy CI_POLICY_V1 validator with authorized A2 trigger supersession; it currently fails and remains unweakened",
+    "interactive MCP stdio harness repair and new acceptance",
+    "bounded Docker runtime probe completion and replacement proof",
+    "full fresh Windows11 guest acceptance",
+    "remaining required packaging validators and evidence sealing"
+  ],
+  "disposition": "L7_A2_DEPENDENCY_AUTHORITY_BLOCKER",
+  "finding": "The same selected route classification assertion fails at exact entry and candidate under the unchanged Native-lock validation graph; candidate app.routes contains _IncludedRouter without direct path/methods. This does not establish missing public endpoints.",
+  "push_PR_allowed": false,
+  "required_owner_adjudication": "Resolve which already-authorized validation dependency authority applies, or authorize a bounded A1 compatibility repair and independent review. No automatic dependency downgrade or selected-test exclusion.",
+  "source_commit": "84ff1f89c3f1ab43a289d8a420e987c80d187cd6",
+  "source_tree": "e0bd9d5b0573b12dbc8f7d1d76dc4323cb61bc00",
+  "technical_PASS": false,
+  "unchanged_native_lock_fastapi": "0.141.1"
+}

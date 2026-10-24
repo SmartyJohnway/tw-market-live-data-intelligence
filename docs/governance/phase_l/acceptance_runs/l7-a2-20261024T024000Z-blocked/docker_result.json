@@ -1,0 +1,16 @@
+{
+  "error": "",
+  "sequence": [
+    "environment",
+    "base-identity",
+    "build-a",
+    "image-a",
+    "build-b",
+    "image-b",
+    "volume-home",
+    "volume-state",
+    "network",
+    "preinit"
+  ],
+  "status": "FAIL"
+}

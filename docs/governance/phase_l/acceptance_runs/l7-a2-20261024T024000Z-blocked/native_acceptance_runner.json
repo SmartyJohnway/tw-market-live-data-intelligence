@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+    "-B",
+    "scripts/accept_native_distribution.py",
+    "--zip",
+    "C:\\twmarket_temp\\l7-a2\\fresh\\native-run-1\\artifacts\\TW-Market-1.0.0-windows-x64.zip",
+    "--python",
+    "C:\\twmarket_temp\\l7-a2\\fresh-venv\\Scripts\\python.exe",
+    "--run",
+    "C:\\twmarket_temp\\l7-a2\\fresh\\native-run-1\\native acceptance",
+    "--guard-base",
+    "C:\\twmarket_temp\\l7-a2"
+  ],
+  "exit_code": 1,
+  "stderr": "Traceback (most recent call last):\n  File \"C:\\twmarket_temp\\l7-a2\\fresh\\repo\\scripts\\accept_native_distribution.py\", line 176, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"C:\\twmarket_temp\\l7-a2\\fresh\\repo\\scripts\\accept_native_distribution.py\", line 130, in main\n    tools=next(x['result']['tools'] for x in replies if x.get('id')==2)\nStopIteration\n",
+  "stdout": ""
+}

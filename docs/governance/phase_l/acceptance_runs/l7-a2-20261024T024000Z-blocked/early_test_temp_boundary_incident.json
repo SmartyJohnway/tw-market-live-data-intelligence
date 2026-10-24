@@ -1,0 +1,17 @@
+{
+  "cause": "early focused pytest invocations omitted --basetemp and task TEMP/TMP, so tmp_path fixtures used the system TEMP",
+  "corrective_rerun": "14 passed with TEMP/TMP and explicit --basetemp under C:/twmarket_temp/l7-a2; this does not erase the earlier violation",
+  "early_run_filesystem_confinement_PASS": false,
+  "historical_retention_side_effects": "not audited; no zero-overreach claim",
+  "observed_last_write_times": [
+    "2026-10-24T10:32:11+08:00",
+    "2026-10-24T10:34:21+08:00"
+  ],
+  "observed_roots": [
+    "C:\\Users\\weitang\\AppData\\Local\\Temp\\pytest-of-weitang\\pytest-167",
+    "C:\\Users\\weitang\\AppData\\Local\\Temp\\pytest-of-weitang\\pytest-168"
+  ],
+  "outside_boundary_cleanup_performed": false,
+  "retroactive_PASS": false,
+  "status": "BOUNDARY_VIOLATION_RECORDED"
+}
