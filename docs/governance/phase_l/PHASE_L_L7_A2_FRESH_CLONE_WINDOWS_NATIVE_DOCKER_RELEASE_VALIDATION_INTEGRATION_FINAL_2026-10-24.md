@@ -1,6 +1,11 @@
 # L7-A2 fresh clone / Windows / Native / Docker validation integration
 
-Disposition: `L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_PASS`. **TECHNICAL PASS; OWNER ACCEPTANCE PENDING.**
+Disposition: `L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_PASS`. **OWNER-ACCEPTED AND MERGED**.
+Independent review disposition is `L7_A2_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
+`L7_A2_OWNER_ACCEPTED_FOR_MERGE`. Owner acceptance review is `5639100326`; independent PASS review is `5639095429`.
+PR #412 normal-merged exact accepted head `56e418e9a22469f1c7ed8fbeda01cf7474e029de`, tree
+`dc91f58ec8a4b45733c3852036afd29d35986be3`, at merge commit `2219552d9817e11219c08b53e606d2969a368d02`;
+merge parents are prior canonical main `0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5` and the exact accepted A2 head; GitHub merge verification is valid.
 
 Canonical entry `0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5`, tree `910803236875dbfbcf52efb166f1ce2eafd514e7`. Preserved blocked checkpoint `cd90403f66948618510632806627da3f78f27a62`. Independently accepted compatibility repair `faba8c219426b20665b3fc94c090f836d6fe3c0c`, tree `fb4579b94873052b54dc402d5ebe6700eb4320ca`.
 
@@ -27,6 +32,6 @@ The earlier host TEMP incident remains immutable and is not erased by clean reru
 
 L7-GAP-05/06/07 are CLOSED. GAP-20 is `RETAINED_NONBLOCKING_HISTORICAL_LIMITATION_WITH_CURRENT_A2_REPLACEMENT_PROOF`; no historical A5 digest is manufactured. Only EXIT04/05/06/07 gain A2 PASS. Existing A1 EXIT01/02/03/27 remain preserved; exact-six/public-contract checks are `PASS_AS_PRESERVATION`, `FINAL_L7_ACCEPTANCE_DEFERRED`.
 
-L6 remains CLOSED. L7-A0/A1 remain OWNER-ACCEPTED AND MERGED. A2 is TECHNICAL PASS / OWNER ACCEPTANCE PENDING. A3+, stable release/publication, merge and Phase M remain NOT AUTHORIZED. Phase L is NOT CLOSED. DEFAULT_CI/FULL_NON_NETWORK historical diagnostics are not rerun or represented as green.
+L6 remains CLOSED. L7-A0/A1/A2 are OWNER-ACCEPTED AND MERGED. A2 post-merge governance reconciliation is governance-only and does not alter the accepted technical evidence. A3+, stable release/publication and Phase M remain NOT AUTHORIZED. Phase L is NOT CLOSED. DEFAULT_CI/FULL_NON_NETWORK historical diagnostics are not rerun or represented as green.
 
 The [final evidence manifest](acceptance_runs/l7-a2-20261024T133622Z-final/manifest.json) seals the new run. Both earlier blocked and compatibility-repair evidence directories and the original blocked report remain unchanged. No ZIP, venv, image export or Sandbox image is committed.
