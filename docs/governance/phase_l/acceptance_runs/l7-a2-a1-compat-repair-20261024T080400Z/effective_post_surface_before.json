@@ -1,0 +1,52 @@
+{
+  "historical_selected_node_failure": "preserved blocked checkpoint; no old evidence edited",
+  "product_source_unchanged": true,
+  "representation_before_repair": {
+    "OpenAPI_POST_paths": [
+      "/api/evidence-request-previews",
+      "/api/m5k/conversation/handoff",
+      "/api/m5k/live-observation/execute",
+      "/api/m5k/live-observation/plan",
+      "/api/m5k/watchlist/validate",
+      "/api/m7g/controlled-refresh/execute",
+      "/api/unified/authorizations",
+      "/api/unified/executions",
+      "/api/unified/fetch-evidence",
+      "/api/unified/preview-request",
+      "/api/unified/result-package",
+      "/api/unified/validate-request",
+      "/api/watchlist-mutations/commit",
+      "/api/watchlist-mutations/preview",
+      "/api/watchlists/{watchlist_id}/evidence-request-preview"
+    ],
+    "OpenAPI_exact_equality": true,
+    "classified_paths": [
+      "/api/evidence-request-previews",
+      "/api/m5k/conversation/handoff",
+      "/api/m5k/live-observation/execute",
+      "/api/m5k/live-observation/plan",
+      "/api/m5k/watchlist/validate",
+      "/api/m7g/controlled-refresh/execute",
+      "/api/unified/authorizations",
+      "/api/unified/executions",
+      "/api/unified/fetch-evidence",
+      "/api/unified/preview-request",
+      "/api/unified/result-package",
+      "/api/unified/validate-request",
+      "/api/watchlist-mutations/commit",
+      "/api/watchlist-mutations/preview",
+      "/api/watchlists/{watchlist_id}/evidence-request-preview"
+    ],
+    "flat_POST_paths": [
+      "/api/evidence-request-previews",
+      "/api/m5k/conversation/handoff",
+      "/api/m5k/live-observation/execute",
+      "/api/m5k/live-observation/plan",
+      "/api/m5k/watchlist/validate",
+      "/api/m7g/controlled-refresh/execute",
+      "/api/watchlist-mutations/commit",
+      "/api/watchlist-mutations/preview",
+      "/api/watchlists/{watchlist_id}/evidence-request-preview"
+    ]
+  }
+}

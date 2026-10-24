@@ -1,0 +1,70 @@
+{
+  "members": [
+    {
+      "committed_sha256": "bdd0c1b913d4646e2ae93b5f3308233d9c85076994e051b4c10f08f379ec2f37",
+      "path": "environment-a_report.xml",
+      "raw_sha256": "bdd0c1b913d4646e2ae93b5f3308233d9c85076994e051b4c10f08f379ec2f37",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "b4a37b5fb9c226965aee6719da08d5f0b92b8dc054bbde17c8c4b88fe69c1ba1",
+      "path": "environment-a_guard.jsonl",
+      "raw_sha256": "1238e1b9df37170e00659fcf1d6886860e875b7b8662a12af93e6047dc9d1fb5",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "e6b7886556d1d7ca3d38a195eda125ca3aa7ff512827493b165cb5a873a103e9",
+      "path": "environment-a.log",
+      "raw_sha256": "0673f322d0cbc1b69a6a89b006b31bc659df719bb4ae297886a866682877ee49",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "1efa48f2a317477cf875758ec40da17863cdd0d22ed6848a51c227f54788dbb7",
+      "path": "environment-b_report.xml",
+      "raw_sha256": "1efa48f2a317477cf875758ec40da17863cdd0d22ed6848a51c227f54788dbb7",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "1f004355f24cb08363a4a95704bd64673be485d57064e081666ffba6e20d0c4b",
+      "path": "environment-b_guard.jsonl",
+      "raw_sha256": "030745f9ca862343464577d54019a7f1ea09db6c6c6f44ca845098f35aa46d16",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "785e5271f88cd867040500b896262bb2b087b1b149594e4bc39bb98deec19069",
+      "path": "environment-b.log",
+      "raw_sha256": "c7467c1d6ebbd004a4ddd41a439f1c07f0cd67ff390fb4dd0382623931dd940c",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "e5afe3fce93e72a0dff1e79e2d1f39c0894a89ca250ae8e3b682d7a79dba92b0",
+      "path": "release_blocking_ci_report.xml",
+      "raw_sha256": "e5afe3fce93e72a0dff1e79e2d1f39c0894a89ca250ae8e3b682d7a79dba92b0",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f",
+      "path": "release_blocking_ci_members.json",
+      "raw_sha256": "1bfadc4fa5ceaaf69f1af2e3b00eec01061f931be8d487fc895f2cfe92c88418",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "6b89ead1596a4636e4ef39afd1a67a4a845290ac905217b00503642b2d4f0402",
+      "path": "release_blocking_ci_guard.jsonl",
+      "raw_sha256": "f9fd36c678305a18dcadb76d3ee329d08e3f8898e8194d640907f754aec298fa",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "a5a32678f060d96aeb8f67738b474057579cef577e6628f433ef61b63cec5618",
+      "path": "release_blocking_ci_runner.json",
+      "raw_sha256": "372159f53accd2d78f3da0f644e9bd993ec75bb5eb3780ce6ea3ddba03dcff7d",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    },
+    {
+      "committed_sha256": "2a2b9b3e63b44bcd83610742a14e551ef23ee7219313b098e84f4e5a8e17ea2a",
+      "path": "focused_guarded_runner.py",
+      "raw_sha256": "2a2b9b3e63b44bcd83610742a14e551ef23ee7219313b098e84f4e5a8e17ea2a",
+      "transform": "UTF8 BOM removal, CRLF to LF, trailing line whitespace only; raw external originals retained"
+    }
+  ]
+}

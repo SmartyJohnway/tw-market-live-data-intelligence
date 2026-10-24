@@ -1,0 +1,10 @@
+{
+  "A2_PASS": false,
+  "A3_authorized": false,
+  "PR": false,
+  "authority": "USER_CHAT_2026-10-24_L7_A2_BOUNDED_A1_ROUTE_INTROSPECTION_COMPATIBILITY_REPAIR_AUTHORIZATION",
+  "disposition": "L7_A2_A1_ROUTE_INTROSPECTION_COMPATIBILITY_REPAIR_READY_FOR_INDEPENDENT_REVIEW",
+  "merge": false,
+  "push": false,
+  "remaining_A2_resumed": false
+}

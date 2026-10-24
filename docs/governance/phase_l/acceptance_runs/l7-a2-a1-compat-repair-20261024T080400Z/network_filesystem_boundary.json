@@ -1,0 +1,16 @@
+{
+  "D_drive_access_commands": 0,
+  "Security_Master_updates": 0,
+  "TEMP_TMP": "C:\\twmarket_temp\\l7-a2\\compat-repair\\temp",
+  "focused_basetemp": [
+    "C:\\twmarket_temp\\l7-a2\\compat-repair\\environment-a\\pytest-temp",
+    "C:\\twmarket_temp\\l7-a2\\compat-repair\\environment-b\\pytest-temp"
+  ],
+  "gate_basetemp": "C:\\twmarket_temp\\l7-a2\\compat-repair\\full-gate\\release-blocking-ci\\pytest-temp",
+  "guard_denials": 0,
+  "historical_TEMP_incident_erased": false,
+  "instrumentation_scope": "Python/inherited Python/Node deterministic CI guards, not OS firewall; no external documentation lookup or prerequisite acquisition performed",
+  "live_provider_requests": 0,
+  "market_acquisition_attempts": 0,
+  "production_refresh": 0
+}

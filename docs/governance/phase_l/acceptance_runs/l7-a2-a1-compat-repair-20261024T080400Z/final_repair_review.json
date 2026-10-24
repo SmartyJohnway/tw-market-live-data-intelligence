@@ -1,0 +1,22 @@
+{
+  "A2_PASS": false,
+  "A3_complete": false,
+  "L7_A2_DEPENDENCY_AUTHORITY_BLOCKER": "DISPOSED",
+  "PR": false,
+  "dependency_artifact_bytes_changed": 0,
+  "dependency_declarations_changed": 0,
+  "disposition": "L7_A2_A1_ROUTE_INTROSPECTION_COMPATIBILITY_REPAIR_READY_FOR_INDEPENDENT_REVIEW",
+  "invariant": "Every effective application POST endpoint has exactly one explicit classification; schema visibility is independently required.",
+  "merge": false,
+  "push": false,
+  "reason": "Owner adjudicated a selected-test route-introspection compatibility defect. Public OpenAPI equality plus independent effective-route visibility/duplicate guards passes both installed contexts. No dependency-authority decision was required.",
+  "remaining_A2_work": [
+    "legacy workflow-policy reconciliation",
+    "Native interactive MCP/exact-six and final relocation acceptance",
+    "Docker runtime/replacement/state survival",
+    "full fresh genuine Windows11 guest acceptance",
+    "remaining packaging validators/evidence"
+  ],
+  "stop_for_independent_review": true,
+  "test_selection_weakened": false
+}
