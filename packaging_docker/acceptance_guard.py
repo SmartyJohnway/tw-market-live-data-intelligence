@@ -59,6 +59,12 @@ class GuardedPopen(_Popen):
                 code=pre+'sys.argv='+repr([mode]+tail)+";runpy.run_path("+repr(mode)+",run_name='__main__')"
             else:reject('UNOBSERVED_PYTHON_MODE',args)
             args=[executable,*flags,'-c',code]
+        elif list(args)==['uname','-p']:
+            # CPython platform._Processor.from_subprocess uses this exact
+            # read-only identity probe. Anchor it to the pinned base binary.
+            args=['/bin/uname','-p']
+            with _open(LOG,'a') as stream:
+                stream.write(json.dumps({'event':'allowed_native_identity_probe','argv':args,'pid':os.getpid()})+'\n')
         elif args!=['git','rev-parse','HEAD']:
             reject('UNOBSERVED_NATIVE_CHILD',args)
         super().__init__(args,*a,**kw)
