@@ -92,7 +92,8 @@ def main():
                 p=docker(f'status-{variant}-{attempt}','exec',name,'python','/a2-guard/run.py','status',check=False)
                 if p.returncode==0:
                     payload=json.loads(p.stdout)
-                    if payload.get('status')=='RUNNING' and payload.get('service',{}).get('alive') is True:break
+                    service=payload.get('service',{})
+                    if service.get('process')=='RUNNING' and service.get('alive') is True:break
                 time.sleep(1)
             else:raise RuntimeError('service failed to become RUNNING')
             docker('doctor-'+variant,'exec',name,'python','/a2-guard/run.py','doctor')
