@@ -6,7 +6,7 @@
 
 ![確定性 Unified Workbench 總覽](docs/assets/workbench-overview.png)
 
-ProductVersion = `1.0.0`。目前 stable release 是 **[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)**；已發布的 prerelease 歷史版本為 [`v1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)，較早的 stable GitHub Release 是 `v0.1.0`。目前開發線已將 Unified Request / Result / Audit V3 升為偏好 authority，V1/V2 仍保留相容性；Phase G G1/G2 已有受界限 live 驗收，Phase H 目前只有 TPEx 注意股票路由正式 active，較廣的 Roadmap Phase G/H scope 仍明確未完整完成。它是本機優先的證據工作台，不是即時交易產品。
+ProductVersion = `1.5.0`。已選定 `v1.5.0`，尚未發布；版本選定本身不等於技術驗收通過。目前 stable release 是 **[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)**；已發布的 prerelease 歷史版本為 [`v1.0.0-rc.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)，較早的 stable GitHub Release 是 `v0.1.0`。目前開發線已將 Unified Request / Result / Audit V3 升為偏好 authority，V1/V2 仍保留相容性；Phase G G1/G2 已有受界限 live 驗收，Phase H 目前只有 TPEx 注意股票路由正式 active，較廣的 Roadmap Phase G/H scope 仍明確未完整完成。它是本機優先的證據工作台，不是即時交易產品。
 
 ## 快速開始
 

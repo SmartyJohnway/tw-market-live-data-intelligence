@@ -207,7 +207,11 @@ def _health(host: str, port: int) -> tuple[bool, dict | None]:
 def _capability_projection(host: str, port: int) -> dict | None:
     url_host = "[::1]" if host == "::1" else "127.0.0.1"
     try:
-        with _LOCAL_HTTP.open(f"http://{url_host}:{port}/api/unified/capabilities", timeout=2.0) as response:
+        request = urllib.request.Request(
+            f"http://{url_host}:{port}/api/unified/capabilities",
+            headers={"X-TW-Market-Service-Contract": "unified_market_evidence_local_service.v2"},
+        )
+        with _LOCAL_HTTP.open(request, timeout=2.0) as response:
             payload = json.loads(response.read(65537).decode("utf-8"))
         if not isinstance(payload, dict) or not isinstance(payload.get("capabilities"), list):
             return None

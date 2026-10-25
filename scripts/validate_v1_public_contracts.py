@@ -39,9 +39,18 @@ def readme_current_product_truth_failures(
         failures.append("readme_persistent_watchlist_contradiction")
     if release_lifecycle_state is None:
         release_lifecycle_state = (
-            "published_rc" if current_product_version == "1.0.0-rc.1" else "stable_published"
+            "published_rc" if current_product_version == "1.0.0-rc.1"
+            else "selected_unpublished" if current_product_version == "1.5.0"
+            else "stable_published"
         )
     release_patterns_by_state = {
+        "selected_unpublished": (
+            r"ProductVersion\s*=\s*[`*_]*1\.5\.0",
+            r"selected\s+[`*_]*v1\.5\.0[`*_]*\s+is\s+unpublished",
+            r"current\s+stable\s+release\s+is\s+[`*_]*v1\.0\.0",
+            r"v1\.0\.0-rc\.1",
+            r"v0\.1\.0",
+        ),
         "published_rc": (
             r"1\.0\.0-rc\.1",
             r"v0\.1\.0",
@@ -74,6 +83,7 @@ def readme_current_product_truth_failures(
             "published_rc": "readme_published_rc_release_status_incomplete",
             "final_promotion": "readme_final_promotion_release_status_incomplete",
             "stable_published": "readme_stable_published_release_status_incomplete",
+            "selected_unpublished": "readme_selected_unpublished_status_incomplete",
         }.get(release_lifecycle_state, "readme_release_lifecycle_state_unsupported"))
     if re.search(
         r"no\s+rc\s+tag\s+or\s+github\s+prerelease\s+has\s+been\s+created",
@@ -87,6 +97,11 @@ def readme_current_product_truth_failures(
         flags=re.IGNORECASE,
     ):
         failures.append("readme_stale_final_promotion_release_status")
+    if release_lifecycle_state == "selected_unpublished" and re.search(
+        r"(?:current|latest)\s+stable\s+(?:github\s+)?release\s+(?:is|=|:)\s+[`*_]*v1\.5\.0",
+        text, flags=re.IGNORECASE,
+    ):
+        failures.append("readme_selected_version_claimed_published")
     return failures
 
 
@@ -100,6 +115,7 @@ def main() -> int:
     from server.main import app
     from server.unified_mcp import LOCAL_SERVICE_CONTRACT_VERSION
     from server.unified_mcp.tool_contracts import build_tool_specs
+    from server.services.unified_local_service import describe_capabilities, LocalServiceError
 
     inventory_path = ROOT / "docs/contracts/v1_public_contracts.json"
     try:
@@ -111,6 +127,12 @@ def main() -> int:
         return _fail("product_version_inventory_drift")
     if app.version != LOCAL_SERVICE_CONTRACT_VERSION:
         return _fail("local_service_contract_version_drift")
+    try:
+        compatibility = describe_capabilities(inventory.get("api_contract_version"))
+    except LocalServiceError:
+        return _fail("published_local_service_contract_not_supported")
+    if compatibility.get("service_contract_version") != inventory.get("api_contract_version"):
+        return _fail("published_local_service_contract_projection_drift")
     tools = tuple(tool.name for tool in build_tool_specs())
     if tools != EXPECTED_TOOLS:
         return _fail("mcp_tool_inventory_drift", tools)

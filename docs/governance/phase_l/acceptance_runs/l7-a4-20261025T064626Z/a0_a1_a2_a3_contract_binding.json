@@ -1,0 +1,11 @@
+{
+  "A1_gate": {
+    "contracted_skips": 4,
+    "passed": 1895
+  },
+  "A2": "fresh clone/genuine Win11/Native/Docker accepted; materially affected paths repeated here",
+  "A3": "Canonical CPython 3.13 exact consumer locks and SBOM retained; 3.11 remains separately supported noncanonical source compatibility",
+  "canonical_entry": "9bc3be99bd37d035cb7d1f02172569f7120781ea",
+  "historical_evidence_mutated": false,
+  "status": "OWNER_ACCEPTED_AND_MERGED"
+}

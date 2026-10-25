@@ -1,0 +1,132 @@
+{
+  "canonical_entry_commit": "9bc3be99bd37d035cb7d1f02172569f7120781ea",
+  "disposition": "L7_A4_PUBLISHED_V1_COMPATIBILITY_BRIDGE_PASS",
+  "final_candidate_binding": "Exact commit/tree containing this manifest; independently verified after commit in the final candidate receipt and PR body.",
+  "member_count": 24,
+  "members": [
+    {
+      "bytes": 5734,
+      "path": "a2_repeat_validation.json",
+      "sha256": "af38897d6b9dd4d7a2d233557e7a876a24c1e81865db82962f068a82811688e2"
+    },
+    {
+      "bytes": 720,
+      "path": "blocked_checkpoint_binding.json",
+      "sha256": "97b6b29bfecc3add9193059871315429cc8db410d3c55b75f63136913a9c3a26"
+    },
+    {
+      "bytes": 444,
+      "path": "bridge_technical_review.json",
+      "sha256": "d03ebaae27a83a724acd97428f69ee0dfabebb45aed8b479427526963cf8ca37"
+    },
+    {
+      "bytes": 1231,
+      "path": "compatibility_bridge_design.json",
+      "sha256": "c873a451bedb562273a5ca499482c936ef0806fe346c7afb61d93e0b19a3035b"
+    },
+    {
+      "bytes": 563,
+      "path": "compatibility_bridge_scope.json",
+      "sha256": "b301f81a03801acdc373518c492617108a5df7bfd7e83bd11dba4eddc97552ba"
+    },
+    {
+      "bytes": 212,
+      "path": "current_v2_client_regression.json",
+      "sha256": "aeb637c5281790ad330549b278054d7a0c5ee3460e26f33a85c317554fb239cb"
+    },
+    {
+      "bytes": 402,
+      "path": "current_v2_contract_inventory.json",
+      "sha256": "445826c26363040148426a8dbc78155a64fd9d28a4a13d07ce44b4b9a945e3e9"
+    },
+    {
+      "bytes": 355,
+      "path": "exact_six_acceptance.json",
+      "sha256": "3e63a98dbeb68076448680b3f3b45d61924933395dccbda24b93aa2d0ba90eff"
+    },
+    {
+      "bytes": 355,
+      "path": "exact_six_preservation.json",
+      "sha256": "3e63a98dbeb68076448680b3f3b45d61924933395dccbda24b93aa2d0ba90eff"
+    },
+    {
+      "bytes": 1074,
+      "path": "historical_blocker_reproduction.json",
+      "sha256": "485c4e0b1be49ae4a5b764ebd8c112555d34a2d019607709f7edd2ef25be3c29"
+    },
+    {
+      "bytes": 377,
+      "path": "owner_adjudication.json",
+      "sha256": "7ea55a29127a3c65be47e99131dfc067823370112ee47f13049b8d5a847c1ffd"
+    },
+    {
+      "bytes": 537,
+      "path": "product_network_accounting.json",
+      "sha256": "f834df80c3b490a2c8ca3be80e99438f5c8a1d3824b4974ff950ab376634ae5e"
+    },
+    {
+      "bytes": 258,
+      "path": "public_surface_reclassification.json",
+      "sha256": "54d2fd8546cc4ef3a4d76ef19eec7a5fbf46d08eec786820fc7e1d04d6e69961"
+    },
+    {
+      "bytes": 4791,
+      "path": "published_v1_client_black_box_result.json",
+      "sha256": "4912392d2e6861c05120e435601a1bd6424afd074ef32421acf5019b71360e17"
+    },
+    {
+      "bytes": 1487,
+      "path": "published_v1_client_identity.json",
+      "sha256": "acb712580eb5bc68dccd621a4845f67972a05e16c41ddea270996b713aea72de"
+    },
+    {
+      "bytes": 237,
+      "path": "published_v1_contract_inventory.json",
+      "sha256": "70594e633dc301ed82e7620b8f760dd9f0a36c0c16ea7e71c8c90a63d14834bc"
+    },
+    {
+      "bytes": 4791,
+      "path": "published_v1_operation_matrix.json",
+      "sha256": "4912392d2e6861c05120e435601a1bd6424afd074ef32421acf5019b71360e17"
+    },
+    {
+      "bytes": 1109,
+      "path": "release_blocking_ci_result.json",
+      "sha256": "5471422d803041967bed671965126a2bffa44abe982f285e4abf9696083078db"
+    },
+    {
+      "bytes": 1109,
+      "path": "release_blocking_ci_revalidation.json",
+      "sha256": "5471422d803041967bed671965126a2bffa44abe982f285e4abf9696083078db"
+    },
+    {
+      "bytes": 327,
+      "path": "request_result_audit_preservation.json",
+      "sha256": "45f7e13815939d8456bd45f6306f8fd2cd344c329445fc3127c83ab12e41923b"
+    },
+    {
+      "bytes": 4404,
+      "path": "required_validators.json",
+      "sha256": "d74860a967f6907f702adb9a50659ce67f7dcb665c5236a1eb7ce1a3ee5cf308"
+    },
+    {
+      "bytes": 2687,
+      "path": "scope_diff_verification.json",
+      "sha256": "c39da8e7a95580fa6cda3e2214138218e2fa5502c7a8dfccf517abb5b6be09b5"
+    },
+    {
+      "bytes": 1488,
+      "path": "setup_network_accounting.json",
+      "sha256": "2afd1ba4e7e67eead0b3d84a006e26a8ed9d2f2584789481d5377562d9602fc9"
+    },
+    {
+      "bytes": 317,
+      "path": "unsupported_version_fail_closed.json",
+      "sha256": "1401031ff929edc508e315bab6d181bd9f09b7a5c089ffe08dae15509060b3e0"
+    }
+  ],
+  "schema_version": 1,
+  "self_digest": "762d6d670b6fbc71c0e1ccb37ebeb299faac8aff619b5827448d91d8efd9a31b",
+  "tested_implementation_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "tested_implementation_tree": "a11c5be938470270b69c903c5e4430fdd46e2ed0"
+}

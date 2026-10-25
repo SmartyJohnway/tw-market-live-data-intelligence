@@ -5,7 +5,9 @@ from server.main import app
 from server.services import unified_local_service
 
 
-client = TestClient(app)
+client = TestClient(app, headers={
+    "X-TW-Market-Service-Contract": "unified_market_evidence_local_service.v2",
+})
 
 
 def _capability(payload, capability_id):

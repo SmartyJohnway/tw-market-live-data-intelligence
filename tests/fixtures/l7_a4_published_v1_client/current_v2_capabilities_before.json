@@ -1,0 +1,664 @@
+{
+  "service_contract_version": "unified_market_evidence_local_service.v2",
+  "capability_catalog_schema_version": "unified_market_evidence_capability_catalog.v3",
+  "routing_matrix_schema_version": "m8r_05b_capability_to_executor_routing_matrix.v3",
+  "accepted_request_schema_versions": [
+    "unified_market_evidence_request.v1",
+    "unified_market_evidence_request.v2",
+    "unified_market_evidence_request.v3"
+  ],
+  "preferred_request_schema_version": "unified_market_evidence_request.v3",
+  "emitted_result_schema_version": "unified_market_evidence_result.v3",
+  "capabilities": [
+    {
+      "capability_id": "identity",
+      "description": "Retrieves the canonical security identity.",
+      "semantic_support_status": "contract_supported",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": false,
+      "network_required": false,
+      "routing_disposition": "plan_only",
+      "selected_executor_id": null,
+      "batching_scope": "none",
+      "supported_security_types": [],
+      "possible_timing_classes": [],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "identity is resolved by the installation-local Security Master; unsupported or uninitialized identities fail closed"
+      ],
+      "instrument_scope": null,
+      "coverage_modes": [],
+      "historical_lookup_supported": null,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TAIFEX",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        },
+        {
+          "market": "TPEX",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        },
+        {
+          "market": "TWSE",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        }
+      ]
+    },
+    {
+      "capability_id": "current_observation",
+      "description": "Retrieves the latest available market data snapshot. Not guaranteed to be realtime.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+      "batching_scope": "same_source",
+      "supported_security_types": [
+        "equity"
+      ],
+      "possible_timing_classes": [
+        "liveish_intraday_snapshot"
+      ],
+      "possible_fallbacks": [
+        "official_eod"
+      ],
+      "known_limitations": [
+        "not guaranteed realtime",
+        "source availability may produce partial results",
+        "TAIFEX current observation is not yet implemented"
+      ],
+      "instrument_scope": null,
+      "coverage_modes": [],
+      "historical_lookup_supported": null,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TPEX",
+          "disposition": "executable",
+          "production_executor_available": true
+        },
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    },
+    {
+      "capability_id": "official_eod_reference",
+      "description": "Retrieves the official End of Day reference data.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "m8r_03d_watchlist_controlled_executor_adapter",
+      "batching_scope": "same_source",
+      "supported_security_types": [
+        "equity"
+      ],
+      "possible_timing_classes": [
+        "official_eod"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "publication grace remains provisional and configurable"
+      ],
+      "instrument_scope": null,
+      "coverage_modes": [],
+      "historical_lookup_supported": null,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TAIFEX",
+          "disposition": "provisional",
+          "production_executor_available": false
+        },
+        {
+          "market": "TPEX",
+          "disposition": "executable",
+          "production_executor_available": true
+        },
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    },
+    {
+      "capability_id": "session_status",
+      "description": "Retrieves the market session status, local clock and closure states.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": false,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "blocked",
+      "selected_executor_id": null,
+      "batching_scope": "same_market",
+      "supported_security_types": [],
+      "possible_timing_classes": [
+        "request_session_context"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "TPEX closure authority follows synchronized-market assumption",
+        "TAIFEX day-session policy is provisional",
+        "TAIFEX night-session interpretation is unsupported",
+        "TAIFEX Taipei closure authority is unresolved"
+      ],
+      "instrument_scope": null,
+      "coverage_modes": [],
+      "historical_lookup_supported": null,
+      "blocking_reasons": [
+        "authoritative holiday/emergency-closure evidence requires a separately governed retrieval or explicitly bound preexisting evidence",
+        "inventoried local builders only compute from supplied evidence",
+        "no approved 05B-compatible executor binds the complete session-status evidence set"
+      ],
+      "markets": [
+        {
+          "market": "TAIFEX",
+          "disposition": "provisional",
+          "production_executor_available": false
+        },
+        {
+          "market": "TPEX",
+          "disposition": "blocked",
+          "production_executor_available": false
+        },
+        {
+          "market": "TWSE",
+          "disposition": "blocked",
+          "production_executor_available": false
+        }
+      ]
+    },
+    {
+      "capability_id": "recent_performance",
+      "description": "Bounded descriptive recent-market reference evidence using 1..20 completed-session lookback observations plus one governed end observation.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {
+        "lookback_trading_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "required": true
+        }
+      },
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "phase_h_h3_twse_recent_performance_executor",
+      "batching_scope": "none",
+      "supported_security_types": [
+        "equity"
+      ],
+      "possible_timing_classes": [
+        "official_eod"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "only H3-TWSE-DEFAULT-BOUNDED is selected for runtime execution; TPEX H3 remains blocked and non-executable",
+        "TWSE provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED; Owner controlled local-first use is not provider-approved automation",
+        "H0H-LIVE-003 and H0H-ROLL-004 are accepted for the selected TWSE route",
+        "optional provider contracts remain pending",
+        "no persistent history accumulation, scheduler, polling, or backfill"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [],
+      "historical_lookup_supported": null,
+      "blocking_reasons": [
+        "H0-SRC-10 TPEx default bounded route remains unresolved",
+        "H0-SRC-11 and H0-SRC-12 optional provider contracts are pending"
+      ],
+      "markets": [
+        {
+          "market": "TAIFEX",
+          "disposition": "provisional",
+          "production_executor_available": false
+        },
+        {
+          "market": "TPEX",
+          "disposition": "blocked",
+          "production_executor_available": false
+        },
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    },
+    {
+      "capability_id": "source_currentness",
+      "description": "Retrieves metadata concerning retrieval timestamp, effective trade date, and timing class.",
+      "semantic_support_status": "contract_supported",
+      "target_required": false,
+      "allowed_parameters": {},
+      "approval_required": false,
+      "network_required": false,
+      "routing_disposition": "plan_only",
+      "selected_executor_id": null,
+      "batching_scope": "same_source",
+      "supported_security_types": [],
+      "possible_timing_classes": [],
+      "possible_fallbacks": [],
+      "known_limitations": [],
+      "instrument_scope": null,
+      "coverage_modes": [],
+      "historical_lookup_supported": null,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TAIFEX",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        },
+        {
+          "market": "TPEX",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        },
+        {
+          "market": "TWSE",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        }
+      ]
+    },
+    {
+      "capability_id": "evidence_quality",
+      "description": "Retrieves details on data coverage, partial results, and available fallbacks.",
+      "semantic_support_status": "contract_supported",
+      "target_required": false,
+      "allowed_parameters": {},
+      "approval_required": false,
+      "network_required": false,
+      "routing_disposition": "plan_only",
+      "selected_executor_id": null,
+      "batching_scope": "same_source",
+      "supported_security_types": [],
+      "possible_timing_classes": [],
+      "possible_fallbacks": [],
+      "known_limitations": [],
+      "instrument_scope": null,
+      "coverage_modes": [],
+      "historical_lookup_supported": null,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TAIFEX",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        },
+        {
+          "market": "TPEX",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        },
+        {
+          "market": "TWSE",
+          "disposition": "plan_only",
+          "production_executor_available": false
+        }
+      ]
+    },
+    {
+      "capability_id": "material_disclosures",
+      "description": "Retrieves official material disclosures from the latest completed official daily batch for eligible Taiwan common shares.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "phase_g_official_research_executor",
+      "batching_scope": "same_source",
+      "supported_security_types": [],
+      "possible_timing_classes": [
+        "official_daily_batch"
+      ],
+      "possible_fallbacks": [
+        "official_json_openapi"
+      ],
+      "known_limitations": [
+        "initial Phase G coverage is the latest completed official daily batch only",
+        "bounded historical lookup is not supported in initial G1",
+        "initial research eligibility is limited to company_share/common_share"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "latest_completed_official_daily_batch"
+      ],
+      "historical_lookup_supported": false,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TPEX",
+          "disposition": "executable",
+          "production_executor_available": true
+        },
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    },
+    {
+      "capability_id": "monthly_revenue",
+      "description": "Retrieves the latest available official monthly-revenue reporting period for eligible Taiwan common shares.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "phase_g_official_research_executor",
+      "batching_scope": "same_source",
+      "supported_security_types": [],
+      "possible_timing_classes": [
+        "official_monthly_reporting_period"
+      ],
+      "possible_fallbacks": [
+        "official_json_openapi"
+      ],
+      "known_limitations": [
+        "initial G2 provides the latest available reporting period only",
+        "arbitrary monthly-revenue history is not supported in initial G2",
+        "initial research eligibility is limited to company_share/common_share"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "latest_available_reporting_period"
+      ],
+      "historical_lookup_supported": false,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TPEX",
+          "disposition": "executable",
+          "production_executor_available": true
+        },
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    },
+    {
+      "capability_id": "market_state_context",
+      "description": "Optional official market-level benchmark, breadth, and turnover context associated with a resolved TWSE or TPEx company common-share target; source units remain explicit and no target-specific causation is implied.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "phase_i_i1_market_state_executor",
+      "batching_scope": "same_market",
+      "supported_security_types": [],
+      "possible_timing_classes": [
+        "official_eod"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "TWSE market-state evidence may legitimately be partial when FMTQIK and exact \u80a1\u7968 breadth official dates do not align; TWSE breadth never falls back to \u6574\u9ad4\u5e02\u5834",
+        "TWSE and TPEx source-native monetary and volume units remain distinct and are not converted",
+        "currentness remains unknown without a separately governed market-session calendar input",
+        "market-level context does not establish target-specific causation",
+        "bounded live acceptance and I1-ROLL-001 passed; the selected TWSE and TPEx I1 sources have final Owner production activation acceptance",
+        "no historical lookup, polling, scheduler, background refresh, or persistent source history"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "single_official_market_date"
+      ],
+      "historical_lookup_supported": false,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TPEX",
+          "disposition": "executable",
+          "production_executor_available": true
+        },
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    },
+    {
+      "capability_id": "index_futures_context",
+      "description": "Optional descriptive TAIFEX TX regular-session context for resolved TWSE company common-share targets; Owner-accepted production activation; explicit-request and approval-gated.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "phase_i_i2_index_futures_context_executor",
+      "batching_scope": "same_source",
+      "supported_security_types": [
+        "equity"
+      ],
+      "possible_timing_classes": [
+        "official_eod"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "TAIFEX TX regular session only; standard monthly outright series only",
+        "TPEx targets, after-hours, weekly series, calendar spreads, MTX/TMF, options, and other products are unsupported",
+        "A3 bounded live acceptance and final Owner production activation accepted; selected route remains approval-gated and explicit-request only; currentness unknown",
+        "no history, historical lookup/backfill, rolling futures, continuous-contract synthesis, polling, scheduler, or background refresh",
+        "no basis/premium-discount, signals, bullish/bearish interpretation, or target-specific causation"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "nearest_available_standard_monthly_outright"
+      ],
+      "historical_lookup_supported": false,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    },
+    {
+      "capability_id": "cash_institutional_flow_context",
+      "description": "Optional descriptive institutional cash share-flow evidence with independently attributed source dates.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+      "batching_scope": "same_market",
+      "supported_security_types": [
+        "equity"
+      ],
+      "possible_timing_classes": [
+        "official_eod"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "I3-A3 bounded-live acceptance is Owner-accepted",
+        "TWSE source date is resolved through governed calendar/currentness authority before authorization and bound immutably per execution",
+        "TPEx source-reported date remains source-native; finality and currentness remain unknown",
+        "common shares only; no history, polling, scheduler, fallback, raw persistence, or retry"
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "latest_governed_source_observation"
+      ],
+      "historical_lookup_supported": false,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TPEX",
+          "disposition": "executable",
+          "production_executor_available": true
+        },
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    },
+    {
+      "capability_id": "trading_status_context",
+      "description": "TPEx representative trading-status evidence: canonical attention and disposition plus unresolved source-native cmode observation, with fail-closed partial coverage.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "phase_h_h1_tpex_composite_executor",
+      "batching_scope": "none",
+      "supported_security_types": [
+        "equity"
+      ],
+      "possible_timing_classes": [
+        "official_bounded_context"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "The selected TPEx composite provides canonical attention and disposition evidence; cmode remains source-native with unresolved semantics and contributes no canonical coverage.",
+        "changed_trading_method, suspension, and resumption remain uncovered.",
+        "H0-SRC-02 prevents complete H1 coverage claims.",
+        "V3 is the preferred production request/result authority; V1/V2 remain compatibility contracts."
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "partial_attention_disposition_plus_native_cmode"
+      ],
+      "historical_lookup_supported": false,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TPEX",
+          "disposition": "executable",
+          "production_executor_available": true
+        },
+        {
+          "market": "TWSE",
+          "disposition": "blocked",
+          "production_executor_available": false
+        }
+      ]
+    },
+    {
+      "capability_id": "corporate_action_context",
+      "description": "Quote-relevant price-basis corporate-action evidence with explicit subtype coverage and lifecycle stage.",
+      "semantic_support_status": "runtime_executable",
+      "target_required": true,
+      "allowed_parameters": {},
+      "approval_required": true,
+      "network_required": true,
+      "routing_disposition": "resolved",
+      "selected_executor_id": "phase_h_h2_twse_exright_pre_executor",
+      "batching_scope": "none",
+      "supported_security_types": [
+        "equity"
+      ],
+      "possible_timing_classes": [
+        "official_bounded_context"
+      ],
+      "possible_fallbacks": [],
+      "known_limitations": [
+        "Only the TWSE TWT48U_ALL pre-announcement route is selected; no TPEx H2 route is activated.",
+        "TWT48U_ALL provides pre-announcement context only; final TWT49U evidence remains inactive.",
+        "Capital-reduction events require manual verification; par-value changes, splits, and consolidations remain source gaps.",
+        "Coverage remains subtype-limited; insufficient subtype coverage must remain coverage_incomplete and block ordinary-return interpretation.",
+        "Owner-controlled bounded A6 use is authorized; provider automation permission remains NOT_ESTABLISHED_TERMS_CONFLICTED and no provider approval is claimed."
+      ],
+      "instrument_scope": {
+        "instrument_families": [
+          "company_share"
+        ],
+        "instrument_types": [
+          "common_share"
+        ]
+      },
+      "coverage_modes": [
+        "explicit_target_scoped_time_bounded"
+      ],
+      "historical_lookup_supported": false,
+      "blocking_reasons": [],
+      "markets": [
+        {
+          "market": "TWSE",
+          "disposition": "executable",
+          "production_executor_available": true
+        }
+      ]
+    }
+  ]
+}

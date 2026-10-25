@@ -1,0 +1,32 @@
+{
+  "created_by_product_version": "1.0.0",
+  "files": {
+    "watchlists/watchlists.sqlite3": "e64bad41c810587331211782c0d31dde29b52fddf5b80aab9f2852f76383751c"
+  },
+  "home": "C:\\twmarket_temp\\l7-a4\\sdk-behavior\\home",
+  "installation": {
+    "created_at": "2026-10-25T01:40:20.847238+00:00",
+    "installation_id": "88a9c9da-11f5-41c6-a4a1-090c175152cc",
+    "installation_schema_version": 1,
+    "state_root": "C:\\twmarket_temp\\l7-a4\\sdk-behavior\\state"
+  },
+  "integrity": {
+    "schema_version": 1,
+    "status": "PASS"
+  },
+  "production_state": false,
+  "snapshot": {
+    "created_at": "2026-10-25T01:48:08Z",
+    "current_version": 1,
+    "deleted": false,
+    "entries": [],
+    "is_default": false,
+    "name": "A4 synthetic prior stable state",
+    "schema_version": "persistent_watchlist.v1",
+    "updated_at": "2026-10-25T01:48:08Z",
+    "watchlist_id": "84b8b95b-b522-437e-bfc1-b2fa71e9beaf"
+  },
+  "source_commit": "9bc3be99bd37d035cb7d1f02172569f7120781ea",
+  "state_root": "C:\\twmarket_temp\\l7-a4\\sdk-behavior\\state",
+  "synthetic": true
+}

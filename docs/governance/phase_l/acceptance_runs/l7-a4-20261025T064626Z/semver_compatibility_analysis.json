@@ -1,0 +1,15 @@
+{
+  "algorithm_outcome": "1.5.0",
+  "component_versions_independent": true,
+  "evidence": [
+    "published_v1_operation_matrix.json",
+    "native_prior_state_upgrade.json",
+    "historical_state_readback.json",
+    "release_focused_result.json"
+  ],
+  "intentional_v2_breaks": 0,
+  "public_compatibility_preserved": true,
+  "published_v1_client_support": "AFFIRMED_AND_BRIDGED",
+  "same_release_only": "REJECTED",
+  "supported_state_compatibility_preserved": true
+}

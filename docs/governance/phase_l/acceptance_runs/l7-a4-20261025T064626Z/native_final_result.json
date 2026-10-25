@@ -1,0 +1,94 @@
+{
+  "external_network_attempts": 0,
+  "guard_events": [],
+  "provider_acquisition_attempts": 0,
+  "scope": "Python process/inherited Python; not OS-wide",
+  "sequence": [
+    {
+      "exit_code": 1,
+      "label": "tamper-VERSION"
+    },
+    {
+      "exit_code": 1,
+      "label": "tamper-distribution-manifest.json"
+    },
+    {
+      "exit_code": 0,
+      "label": "bootstrap-A"
+    },
+    {
+      "exit_code": 0,
+      "label": "bootstrap-A-again"
+    },
+    {
+      "exit_code": 0,
+      "label": "preinit"
+    },
+    {
+      "exit_code": 0,
+      "label": "preinit-doctor"
+    },
+    {
+      "exit_code": 0,
+      "label": "init"
+    },
+    {
+      "exit_code": 0,
+      "label": "init-again"
+    },
+    {
+      "exit_code": 0,
+      "label": "quoted-cli-args"
+    },
+    {
+      "exit_code": 0,
+      "label": "isolation-A"
+    },
+    {
+      "exit_code": 0,
+      "label": "start"
+    },
+    {
+      "exit_code": 0,
+      "label": "running-status"
+    },
+    {
+      "exit_code": 0,
+      "label": "doctor"
+    },
+    {
+      "exit_code": 0,
+      "label": "mcp-startup"
+    },
+    {
+      "exit_code": 0,
+      "label": "mcp-stdio-interactive"
+    },
+    {
+      "exit_code": 0,
+      "label": "sm-status"
+    },
+    {
+      "exit_code": 0,
+      "label": "stop"
+    },
+    {
+      "exit_code": 2,
+      "label": "invalid-cli"
+    },
+    {
+      "exit_code": 0,
+      "label": "bootstrap-B"
+    },
+    {
+      "exit_code": 0,
+      "label": "relocation-status"
+    },
+    {
+      "exit_code": 1,
+      "label": "stale-runtime"
+    }
+  ],
+  "source_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "status": "PASS"
+}

@@ -1,0 +1,70 @@
+[
+  {
+    "behavior_status": "PASS",
+    "claim_supported": false,
+    "dependency_check": {
+      "install_exit": 0,
+      "pip_check_exit": 0,
+      "stderr": "",
+      "stdout": "No broken requirements found.\n"
+    },
+    "process_exit": 0,
+    "public_launcher": {
+      "exit_code": 4,
+      "stderr": "M8R-08B requires mcp==1.29.0\n",
+      "stdout": ""
+    },
+    "version": "1.28.1"
+  },
+  {
+    "behavior_status": "PASS",
+    "claim_supported": true,
+    "dependency_check": {
+      "install_exit": 0,
+      "pip_check_exit": 0,
+      "stderr": "",
+      "stdout": "No broken requirements found.\n"
+    },
+    "process_exit": 0,
+    "public_launcher": {
+      "exit_code": 0,
+      "stderr": "startup_check=ok adapter=unified_market_evidence_mcp_adapter.v2 mcp=1.29.0\n",
+      "stdout": ""
+    },
+    "version": "1.29.0"
+  },
+  {
+    "behavior_status": "PASS",
+    "claim_supported": false,
+    "dependency_check": {
+      "install_exit": 0,
+      "pip_check_exit": 0,
+      "stderr": "",
+      "stdout": "No broken requirements found.\n"
+    },
+    "process_exit": 0,
+    "public_launcher": {
+      "exit_code": 4,
+      "stderr": "M8R-08B requires mcp==1.29.0\n",
+      "stdout": ""
+    },
+    "version": "1.29.1"
+  },
+  {
+    "behavior_status": "NOT_COMPATIBLE_WITH_CURRENT_GRAPH_OR_ENTRY",
+    "claim_supported": false,
+    "dependency_check": {
+      "install_exit": 0,
+      "pip_check_exit": 1,
+      "stderr": "",
+      "stdout": "mcp 2.3.0 requires httpx2, which is not installed.\nmcp 2.3.0 requires mcp-types, which is not installed.\nmcp 2.3.0 requires opentelemetry-api, which is not installed.\n"
+    },
+    "process_exit": 1,
+    "public_launcher": {
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import sys,runpy; exec(compile(open('C:\\\\twmarket_temp\\\\l7-a4\\\\release-source\\\\packaging_native\\\\acceptance_guard.py',encoding='utf-8-sig').read(),'C:\\\\twmarket_temp\\\\l7-a4\\\\release-source\\\\packaging_native\\\\acceptance_guard.py','exec'),{'__file__':'C:\\\\twmarket_temp\\\\l7-a4\\\\release-source\\\\packaging_native\\\\acceptance_guard.py'}); sys.argv=['scripts/run_unified_market_evidence_mcp.py', '--startup-check']; sys.path.insert(0,'C:\\\\twmarket_temp\\\\l7-a4\\\\release-source\\\\scripts'); runpy.run_path('scripts/run_unified_market_evidence_mcp.py',run_name='__main__')\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 287, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"scripts/run_unified_market_evidence_mcp.py\", line 15, in <module>\n    from mcp.server.stdio import stdio_server\n  File \"C:\\twmarket_temp\\l7-a4\\sdk-matrix\\2.3.0\\venv\\Lib\\site-packages\\mcp\\__init__.py\", line 1, in <module>\n    from mcp_types import (\n    ...<56 lines>...\n    )\nModuleNotFoundError: No module named 'mcp_types'\n",
+      "stdout": ""
+    },
+    "version": "2.3.0"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "bytes_recreated": false,
+    "current_reader_evidence": "test_phase_g_mode_c_v2.py / test_unified_replay_inspector.py, 168-test guarded run",
+    "fixture": "tests/fixtures/phase_g_pr_c/v1_mode_c_golden/ai_context/unified_market_evidence_result.v1.json",
+    "schema_valid": true,
+    "schema_version": "unified_market_evidence_result.v1",
+    "sha256": "609e76da67fa7e670fc746288d0d4ae4e1b694e8000a80ec5f05d008573957f9",
+    "status": "HISTORICAL_READ_ONLY"
+  },
+  {
+    "bytes_recreated": false,
+    "current_reader_evidence": "test_phase_g_mode_c_v2.py / test_unified_replay_inspector.py, 168-test guarded run",
+    "fixture": "tests/fixtures/phase_g_pr_c/v1_mode_c_golden/audit/unified_market_evidence_audit_package.v1.json",
+    "schema_valid": true,
+    "schema_version": "unified_market_evidence_audit_package.v1",
+    "sha256": "9c9c8b09a56038d46fa488c3be48da7cf1ded326689b36eea69b6a281363daca",
+    "status": "HISTORICAL_READ_ONLY"
+  },
+  {
+    "bytes_recreated": false,
+    "current_reader_evidence": "test_phase_g_mode_c_v2.py / test_unified_replay_inspector.py, 168-test guarded run",
+    "fixture": "tests/fixtures/phase_g_pr_c/v2_acceptance/unified_market_evidence_result.v2.json",
+    "schema_valid": true,
+    "schema_version": "unified_market_evidence_result.v2",
+    "sha256": "3bedf560b9305a8011946ec19bde80995a506864d11a15776264251adfa3b8c4",
+    "status": "HISTORICAL_READ_ONLY"
+  },
+  {
+    "bytes_recreated": false,
+    "current_reader_evidence": "test_phase_g_mode_c_v2.py / test_unified_replay_inspector.py, 168-test guarded run",
+    "fixture": "tests/fixtures/phase_g_pr_c/v2_acceptance/unified_market_evidence_audit_package.v2.json",
+    "schema_valid": true,
+    "schema_version": "unified_market_evidence_audit_package.v2",
+    "sha256": "a0f6e8c5cb3c525aaf063e00dbe35ae12c723a54e6fc624f5b9d690c57c040e0",
+    "status": "HISTORICAL_READ_ONLY"
+  }
+]

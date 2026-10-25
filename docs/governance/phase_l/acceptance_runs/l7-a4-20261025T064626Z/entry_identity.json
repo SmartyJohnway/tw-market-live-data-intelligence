@@ -1,0 +1,9 @@
+{
+  "branch": "phase-l/l7-a4-public-compatibility-mcp-version-decision",
+  "clean_before_mutation": true,
+  "commit": "9bc3be99bd37d035cb7d1f02172569f7120781ea",
+  "initial_A4_commit_count": 0,
+  "original_blocker_preserved": true,
+  "tree": "f7109f532234b95ce14e4a32681bd9befcfc0731",
+  "verified_origin_main_at_entry": true
+}

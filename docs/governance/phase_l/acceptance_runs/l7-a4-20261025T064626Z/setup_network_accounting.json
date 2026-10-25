@@ -1,0 +1,28 @@
+{
+  "Docker_base": {
+    "classification": "setup prerequisite acquisition; no product activity",
+    "command": [
+      "C:\\Users\\weitang\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe",
+      "pull",
+      "--platform",
+      "linux/amd64",
+      "python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "docker.io/library/python@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741: Pulling from library/python\nDigest: sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741\nStatus: Image is up to date for python@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741\ndocker.io/library/python:3.13-alpine@sha256:bf12ecc0bea3f171d55145dd02c78b5eeb09f30ee2ac9cc2b4c9e4e8f5e30741\n"
+  },
+  "Docker_registry_HTTP_subrequest_count": "Not measured; do not infer from CLI invocation count",
+  "Native_Docker_wheels": "Reused verified A3 cache; no dependency resolution",
+  "PyPI_candidate_metadata_requests": 4,
+  "PyPI_latest_metadata_requests": 1,
+  "accepted_1_29_0_wheel": "Reused verified A3 cache",
+  "allowed_sources": [
+    "GitHub source transport",
+    "official PyPI metadata/artifacts",
+    "exact pinned Docker base"
+  ],
+  "candidate_wheel_downloads": 3,
+  "guest_CPython": "Reused exact hash-verified official NuGet 3.13.9 accepted cache; A4 guest network disabled",
+  "product_provider_requests": 0
+}

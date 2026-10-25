@@ -1,0 +1,7 @@
+{
+  "Docker_dual_client": "PASS",
+  "Native_and_guest_exact_six": true,
+  "current_capabilities_equal_prebridge_snapshot": true,
+  "source_stdio": "mcp_sdk_test_matrix.json in final A4 run",
+  "status": "PASS"
+}

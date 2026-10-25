@@ -1,0 +1,11 @@
+{
+  "exact_supported_set": [
+    "unified_market_evidence_local_service.v1",
+    "unified_market_evidence_local_service.v2"
+  ],
+  "prefix_acceptance": false,
+  "real_HTTP_negative_cases": 12,
+  "source": "published_v1_operation_matrix.json",
+  "status": "PASS",
+  "unknown_rejected_before_Unified_operation": true
+}

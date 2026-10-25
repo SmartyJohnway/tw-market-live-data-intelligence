@@ -1,0 +1,6 @@
+{
+  "authority": "USER_CHAT_2026-10-25_L7_A4_PUBLIC_V1_CLIENT_BACKEND_COMPATIBILITY_BRIDGE_ADJUDICATION",
+  "current_v2": "PUBLIC_STABLE",
+  "old_v1": "PUBLIC_COMPATIBILITY retained throughout product v1.x; not INTERNAL",
+  "same_release_only": "REJECTED"
+}

@@ -1,0 +1,50 @@
+{
+  "after": {
+    "watchlists.sqlite3": "e1f9cc9bc841dfdb0dee352e10f23a144a754c41f8c125f45e933fe1ff1ef12f"
+  },
+  "before": {
+    "watchlists.sqlite3": "e1f9cc9bc841dfdb0dee352e10f23a144a754c41f8c125f45e933fe1ff1ef12f"
+  },
+  "creator": "exact historical Watchlist source; current Python/dependency environment and explicit synthetic identity fixture",
+  "current_product_VERSION": "1.5.0",
+  "current_reader_equal": true,
+  "database_bytes_unchanged": true,
+  "entry_count": 1,
+  "historical_reader_rollback_equal": true,
+  "identities": [
+    {
+      "path": "scripts/m8r_09_persistent_watchlists.py",
+      "sha256": "94f1b93398f84863bd1f1b56e77ac7dc3ea1d282c66df01c0c030c6fbbabf487"
+    },
+    {
+      "path": "docs/contracts/schemas/persistent_watchlist.v1.schema.json",
+      "sha256": "828a823ede6a0e7cef3e3728b72578155720950ed5b634003cefa33af9e6c8b2"
+    },
+    {
+      "path": "docs/contracts/schemas/persistent_watchlist_entry.v1.schema.json",
+      "sha256": "49979070e40878a61e59315aa8ef87de60c6a5ba809ecb1c1a37714362871658"
+    },
+    {
+      "path": "docs/contracts/schemas/persistent_watchlist_export.v1.schema.json",
+      "sha256": "a13ed510817b68b68776b2632e065a91ce2279035f5d00bc4fc6f5a8b9e5f9c4"
+    },
+    {
+      "path": "docs/contracts/schemas/persistent_watchlist_mutation_command.v1.schema.json",
+      "sha256": "b4c694660799ecd7d4ccbad45ffcab51c13270a50bbd71c5ed3d4024b88e2f72"
+    },
+    {
+      "path": "docs/contracts/schemas/persistent_watchlist_mutation_preview.v1.schema.json",
+      "sha256": "939d0ca4b49196df69584430cee82c70562a3726a72ea35f931d04187fbacd65"
+    },
+    {
+      "path": "docs/contracts/schemas/persistent_watchlist_revision.v1.schema.json",
+      "sha256": "3a537643cc3f38b69fc64c3b46805f4270ab49dd3f2cdebed98cc4c0e8174bcd"
+    }
+  ],
+  "production_state": false,
+  "published_commit": "e02bcb125999f542308a75f349c212f0ff3fee83",
+  "scope": "Exact published v1 state creation -> current selected 1.5.0 read -> published reader rollback; no mutation or migration",
+  "source_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "status": "PASS",
+  "synthetic": true
+}

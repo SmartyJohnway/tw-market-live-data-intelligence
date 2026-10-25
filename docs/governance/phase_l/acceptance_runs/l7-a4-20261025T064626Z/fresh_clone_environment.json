@@ -1,0 +1,15 @@
+{
+  "build_and_source_validation_runtime": {
+    "bits": 64,
+    "executable": "C:\\twmarket_temp\\l7-a4\\venv\\Scripts\\python.exe",
+    "fastapi": "0.141.1",
+    "mcp": "1.29.0",
+    "python": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+    "starlette": "1.6.0"
+  },
+  "canonical_minor": "3.13",
+  "consumer_graph": "Exact unchanged A3 Native 49 graph",
+  "packaged_guest_runtime": "Separately verified official CPython 3.13.9; no host runtime inherited",
+  "setup": "Offline exact-hash artifact cache; no free resolver",
+  "source_transport": "Fresh local Git clone of verified canonical-derived A4 source; no claim of new remote-source download"
+}

@@ -1,0 +1,43 @@
+{
+  "backup_immutable": true,
+  "known_watchlist_v0": "MIGRATION_REQUIRED classification; production apply fails MIGRATION_PATH_NOT_IMPLEMENTED; v0 is not a previously supported stable state",
+  "production_registry": [
+    {
+      "id": "watchlist-schema-v0-to-v1",
+      "status": "KNOWN_NOT_IMPLEMENTED"
+    }
+  ],
+  "rollback_proof": "existing L2 synthetic copy-on-write rollback test; not a production v0 transformer",
+  "rows": [
+    {
+      "attested_state_version": "1",
+      "outcome": "DIRECT_RESTORE_COMPATIBLE",
+      "scenario": "current-state",
+      "writes": false
+    },
+    {
+      "attested_state_version": "1",
+      "outcome": "DIRECT_RESTORE_COMPATIBLE",
+      "scenario": "supported-prior-stable-state",
+      "writes": false
+    },
+    {
+      "attested_state_version": "2",
+      "outcome": "UNSUPPORTED_NEWER_STATE",
+      "scenario": "unsupported-newer-state",
+      "writes": false
+    },
+    {
+      "attested_state_version": "beta",
+      "outcome": "RESTORE_COMPATIBILITY_UNKNOWN",
+      "scenario": "unknown-state",
+      "writes": false
+    },
+    {
+      "outcome": "MIGRATION_REQUIRED",
+      "production_transform_claim": false,
+      "scenario": "synthetic-older-migratable-classification"
+    }
+  ],
+  "source_scope": "synthetic declared members only; no production state"
+}

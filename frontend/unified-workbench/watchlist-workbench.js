@@ -19,7 +19,13 @@
     };
 
     async function api(path, options) {
-        const response = await fetch(path, options);
+        const response = await fetch(path, {
+            ...options,
+            headers: {
+                ...options?.headers,
+                'X-TW-Market-Service-Contract': 'unified_market_evidence_local_service.v2',
+            },
+        });
         const body = await response.json().catch(() => ({}));
         if (!response.ok) {
             const detail = body.detail && body.detail.error ? body.detail.error : body;

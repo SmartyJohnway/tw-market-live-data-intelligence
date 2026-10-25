@@ -1,0 +1,17 @@
+{
+  "current_disposition": "OWNER_ADJUDICATED; genuine runtime bridge independently testable",
+  "historical_evidence": {
+    "blocking_disposition": "L7_A4_PUBLIC_SURFACE_UNCLASSIFIED",
+    "current_observed_identifier": "unified_market_evidence_local_service.v2",
+    "interpretation": "Identifier v2 alone does not imply Product SemVer2; published public-contract scope versus internal component-pairing promise remains unresolved",
+    "outcome": "local_service_contract_incompatible",
+    "product_VERSION_after": "1.0.0",
+    "product_VERSION_before": "1.0.0",
+    "published_client_sha256": "ce8c86027351f469b5e5822a0fd6beb9de889f8d5724fc24fcade040623ac05d",
+    "published_commit": "e02bcb125999f542308a75f349c212f0ff3fee83",
+    "published_expected_identifier": "unified_market_evidence_local_service.v1",
+    "scope": "Exact historical method AST executed against actual captured current Local Service capabilities; no network or source rewrite",
+    "status": "REPRODUCED"
+  },
+  "raw_sha256": "f3c75adfae80aa69ef5665af3bdc215ec9cf64b47372b05427ba34adf418e1d1"
+}

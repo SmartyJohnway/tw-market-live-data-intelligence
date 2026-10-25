@@ -1,0 +1,121 @@
+{
+  "HTTP_operation_count": 52,
+  "enum": [
+    "PUBLIC_STABLE",
+    "PUBLIC_COMPATIBILITY",
+    "PUBLIC_DEPRECATED",
+    "INTERNAL"
+  ],
+  "families": [
+    {
+      "authority": "schemas/unified_market_evidence_request.v3.schema.json",
+      "classification": "PUBLIC_STABLE",
+      "name": "Unified Request V3"
+    },
+    {
+      "authority": "server/services/unified_contract_versions.py",
+      "classification": "PUBLIC_COMPATIBILITY",
+      "name": "Request V1/V2"
+    },
+    {
+      "authority": "server/unified_mcp/tool_contracts.py",
+      "classification": "PUBLIC_STABLE",
+      "name": "Validation and preview"
+    },
+    {
+      "authority": "server/services/unified_replay_inspector.py",
+      "classification": "PUBLIC_STABLE",
+      "name": "Result readback"
+    },
+    {
+      "authority": "server/services/unified_replay_inspector.py",
+      "classification": "PUBLIC_STABLE",
+      "name": "Audit lineage"
+    },
+    {
+      "authority": "docs/contracts/V1_API_ERROR_POLICY.md",
+      "classification": "PUBLIC_STABLE",
+      "name": "Machine errors"
+    },
+    {
+      "authority": "server/unified_mcp/server.py",
+      "classification": "PUBLIC_STABLE",
+      "name": "MCP six tools and envelopes"
+    },
+    {
+      "authority": "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json",
+      "classification": "PUBLIC_STABLE",
+      "name": "Capability Catalog"
+    },
+    {
+      "authority": "docs/contracts/schemas/persistent_watchlist.v1.schema.json",
+      "classification": "PUBLIC_STABLE",
+      "name": "Watchlist"
+    },
+    {
+      "authority": "docs/contracts/schemas/taiwan_market_identity_record.v1.schema.json",
+      "classification": "PUBLIC_STABLE",
+      "name": "Taiwan Market Identity"
+    },
+    {
+      "authority": "server/unified_mcp/server.py",
+      "classification": "PUBLIC_STABLE",
+      "name": "AI handoff"
+    },
+    {
+      "authority": "server/main.py",
+      "classification": "PUBLIC_STABLE",
+      "name": "Canonical Workbench"
+    },
+    {
+      "authority": "scripts/tw_market_installation.py",
+      "classification": "PUBLIC_STABLE",
+      "name": "Installation state"
+    },
+    {
+      "authority": "server/services/unified_restore.py",
+      "classification": "PUBLIC_COMPATIBILITY",
+      "name": "L2 backup/restore"
+    },
+    {
+      "authority": "server/services/unified_migration.py",
+      "classification": "INTERNAL",
+      "name": "L2 migration implementation"
+    },
+    {
+      "authority": "server/main.py",
+      "classification": "PUBLIC_DEPRECATED",
+      "name": "Legacy Workbench redirect"
+    },
+    {
+      "authority": "docs/contracts/V1_API_ERROR_POLICY.md",
+      "classification": "INTERNAL",
+      "name": "OS paths/process ownership/English prose"
+    },
+    {
+      "authority": "docs/contracts/L7_PUBLIC_COMPATIBILITY_MCP_SDK_VERSION_POLICY.md",
+      "classification": "PUBLIC_COMPATIBILITY",
+      "name": "Local Service v1",
+      "version": "unified_market_evidence_local_service.v1"
+    },
+    {
+      "authority": "docs/contracts/L7_PUBLIC_COMPATIBILITY_MCP_SDK_VERSION_POLICY.md",
+      "classification": "PUBLIC_STABLE",
+      "name": "Local Service v2",
+      "version": "unified_market_evidence_local_service.v2"
+    },
+    {
+      "authority": "docs/contracts/L7_PUBLIC_COMPATIBILITY_MCP_SDK_VERSION_POLICY.md",
+      "classification": "PUBLIC_COMPATIBILITY",
+      "name": "Published adapter v1",
+      "version": "unified_market_evidence_mcp_adapter.v1"
+    },
+    {
+      "authority": "docs/contracts/L7_PUBLIC_COMPATIBILITY_MCP_SDK_VERSION_POLICY.md",
+      "classification": "PUBLIC_STABLE",
+      "name": "Current adapter v2",
+      "version": "unified_market_evidence_mcp_adapter.v2"
+    }
+  ],
+  "unclassified": []
+}

@@ -1,0 +1,114 @@
+{
+  "cases": [
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_selected_version_is_distinct_from_published_release",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_front_door_validates_selected_version_instead_of_empty_release_patterns",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_exact_published_source_identity",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_exact_historical_client_and_current_client_handshake",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[capabilities-]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[capabilities-unified_market_evidence_local_service.v3]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[capabilities-unified_market_evidence_local_service.v2-extra]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[fetch-evidence-]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[fetch-evidence-unified_market_evidence_local_service.v3]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[fetch-evidence-unified_market_evidence_local_service.v2-extra]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[authorizations-]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[authorizations-unified_market_evidence_local_service.v3]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[authorizations-unified_market_evidence_local_service.v2-extra]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[executions-]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[executions-unified_market_evidence_local_service.v3]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_unknown_contract_fails_before_operation[executions-unified_market_evidence_local_service.v2-extra]",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_historical_client_deterministic_errors_and_fetch_boundary",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_historical_client_validates_and_previews_synthetic_identity",
+      "passed": true
+    },
+    {
+      "classname": "tests.unit.test_l7_a4_local_service_compatibility",
+      "name": "test_historical_client_reads_real_synthetic_governed_outputs",
+      "passed": true
+    }
+  ],
+  "historical_client_rewriting": false,
+  "operations": {
+    "describe": "PASS, exact 7-capability v1 projection",
+    "export_AI_handoff": "PASS, structuredContent/TextContent/isError preserved",
+    "fetch": "PASS_SAFE_REJECTION preview mode before ticket/provider; no live execution claim",
+    "historical_errors": "PASS via exact published mapper",
+    "preview": "PASS with synthetic qualified identity",
+    "read_governed_Result": "PASS, canonical hash/lineage and immutable files",
+    "startup": "PASS",
+    "validate": "PASS with synthetic qualified identity"
+  },
+  "source_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "status": "PASS",
+  "synthetic_result_setup": "Established fixture-authority seam used only to prepare finalized package; HTTP acceptance runs unmodified backend and historical client",
+  "transport": "Real TCP/HTTP candidate backend; exact published immutable client and server dispatch/error mapping"
+}

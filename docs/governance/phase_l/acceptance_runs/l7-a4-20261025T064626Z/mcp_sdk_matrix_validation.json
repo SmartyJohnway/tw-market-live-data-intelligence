@@ -1,0 +1,39 @@
+{
+  "exact_release_sdk": "1.29.0",
+  "rows": [
+    {
+      "artifact_sha256_verified": true,
+      "claimed_supported": false,
+      "diagnostic_behavior": "PASS",
+      "public_entry_exit": 4,
+      "version": "1.28.1"
+    },
+    {
+      "artifact_sha256_verified": true,
+      "claimed_supported": true,
+      "diagnostic_behavior": "PASS",
+      "public_entry_exit": 0,
+      "version": "1.29.0"
+    },
+    {
+      "artifact_sha256_verified": true,
+      "claimed_supported": false,
+      "diagnostic_behavior": "PASS",
+      "public_entry_exit": 4,
+      "version": "1.29.1"
+    },
+    {
+      "artifact_sha256_verified": true,
+      "claimed_supported": false,
+      "diagnostic_behavior": "NOT_COMPATIBLE_WITH_CURRENT_GRAPH_OR_ENTRY",
+      "public_entry_exit": 1,
+      "version": "2.3.0"
+    }
+  ],
+  "source_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "status": "PASS",
+  "supported_set": [
+    "1.29.0"
+  ],
+  "unclaimed_candidate_failures_not_waived": true
+}

@@ -23,7 +23,7 @@ def main():
     ap.add_argument('--wheelhouse',type=Path,required=True)
     ap.add_argument('--source-commit',required=True)
     ap.add_argument('--source-tree',required=True)
-    ap.add_argument('--validation-scope',choices=['l7-a2','l7-a3'],default='l7-a2')
+    ap.add_argument('--validation-scope',choices=['l7-a2','l7-a3','l7-a4'],default='l7-a2')
     a=ap.parse_args();work=a.work.resolve()
     if os.name=='nt' and not work.is_relative_to(Path(r'C:\twmarket_temp')/a.validation_scope):raise ValueError('bounded validation workspace required')
     work.mkdir(parents=True,exist_ok=False)

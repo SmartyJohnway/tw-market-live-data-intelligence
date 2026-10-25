@@ -13,6 +13,10 @@ ROOT = Path(__file__).resolve().parents[2]
 CATALOG_PATH = ROOT / "docs" / "data_capabilities" / "unified_market_evidence_capability_catalog.v3.json"
 ROUTING_PATH = ROOT / "docs" / "data_capabilities" / "m8r_05b_capability_to_executor_routing_matrix.v3.json"
 SERVICE_CONTRACT_VERSION = "unified_market_evidence_local_service.v2"
+LEGACY_SERVICE_CONTRACT_VERSION = "unified_market_evidence_local_service.v1"
+SERVICE_CONTRACT_HEADER = "X-TW-Market-Service-Contract"
+LEGACY_CATALOG_PATH = ROOT / "docs/data_capabilities/unified_market_evidence_capability_catalog.v1.json"
+LEGACY_ROUTING_PATH = ROOT / "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.json"
 
 
 class LocalServiceError(Exception):
@@ -31,9 +35,9 @@ def _load_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def _authorities() -> tuple[dict[str, Any], dict[str, Any], dict[str, dict[str, Any]], list[dict[str, Any]]]:
-    catalog = _load_json(CATALOG_PATH)
-    routing = _load_json(ROUTING_PATH)
+def _authorities(*, legacy: bool = False) -> tuple[dict[str, Any], dict[str, Any], dict[str, dict[str, Any]], list[dict[str, Any]]]:
+    catalog = _load_json(LEGACY_CATALOG_PATH if legacy else CATALOG_PATH)
+    routing = _load_json(LEGACY_ROUTING_PATH if legacy else ROUTING_PATH)
     capabilities = catalog.get("data_need_capabilities")
     routes = routing.get("routes")
     if not isinstance(capabilities, list) or not isinstance(routes, list):
@@ -67,9 +71,12 @@ def _availability(executors: list[dict[str, Any]], capability_id: str, market: s
     )
 
 
-def describe_capabilities() -> dict[str, Any]:
+def describe_capabilities(contract_version: str = SERVICE_CONTRACT_VERSION) -> dict[str, Any]:
     """Project catalog → routing disposition → production registration truthfully."""
-    catalog, routing, routes, executors = _authorities()
+    if contract_version not in {LEGACY_SERVICE_CONTRACT_VERSION, SERVICE_CONTRACT_VERSION}:
+        raise LocalServiceError("local_service_contract_incompatible")
+    legacy = contract_version == LEGACY_SERVICE_CONTRACT_VERSION
+    catalog, routing, routes, executors = _authorities(legacy=True) if legacy else _authorities()
     capabilities: list[dict[str, Any]] = []
     for capability in catalog.get("data_need_capabilities", []):
         if not isinstance(capability, dict) or not isinstance(capability.get("capability_id"), str):
@@ -134,6 +141,18 @@ def describe_capabilities() -> dict[str, Any]:
             "blocking_reasons": route.get("blocking_reasons", []),
             "markets": market_entries,
         })
+    if legacy:
+        # Reuse current registration checks with the retained v1 vocabulary.
+        # This projection does not advertise later-only capabilities.
+        for capability in capabilities:
+            for key in ("instrument_scope", "coverage_modes", "historical_lookup_supported", "possible_fallbacks"):
+                capability.pop(key, None)
+        return {
+            "service_contract_version": LEGACY_SERVICE_CONTRACT_VERSION,
+            "capability_catalog_schema_version": catalog.get("schema_version"),
+            "routing_matrix_schema_version": routing.get("schema_version"),
+            "capabilities": capabilities,
+        }
     return {
         "service_contract_version": SERVICE_CONTRACT_VERSION,
         "capability_catalog_schema_version": catalog.get("schema_version"),

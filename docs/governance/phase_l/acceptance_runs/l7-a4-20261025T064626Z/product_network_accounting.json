@@ -1,0 +1,10 @@
+{
+  "Security_Master_live_updates": 0,
+  "background_market_polling": 0,
+  "historical_harness_denials": "Retained in historical_harness_diagnostics.json; never retroactively relabeled PASS",
+  "instrumentation": "Python/inherited-Python and injected Node guards, read-only application containers, disabled guest networking; no OS-wide firewall claim",
+  "live_provider_requests": 0,
+  "localhost": "Explicit source/Native/container integration only; separate from setup",
+  "market_acquisition_attempts": 0,
+  "production_refresh": 0
+}

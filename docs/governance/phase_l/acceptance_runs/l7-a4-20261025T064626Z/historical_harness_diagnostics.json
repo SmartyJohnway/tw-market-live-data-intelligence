@@ -1,0 +1,52 @@
+{
+  "Docker_setup_diagnostic": "Missing exact image reference and first safe-PATH credential-helper lookup failure; same pinned digest acquired, new fresh acceptance PASS",
+  "Python311_resolution": "Reuse exact accepted A3 source-runtime identity guard and its exact readonly cmd /c ver allowance; no canonical guard mutation",
+  "diagnostics": [
+    {
+      "denials": [
+        {
+          "event": "denied",
+          "pid": 20328,
+          "reason": "UNOBSERVED_NODE_MODE",
+          "value": "['C:\\\\Program Files\\\\nodejs\\\\node.exe', '--check', 'frontend/unified-workbench/unified-workbench.js']"
+        }
+      ],
+      "disposition": "HARNESS_ONLY; retained failed diagnostic, not final accepted gate; canonical guard unchanged",
+      "label": "static_node_invocation",
+      "raw_sha256": "667c4b3006b09f7a3cead1ed4db1373d3982a41f1dc8ac0c4056700ae9a359c3"
+    },
+    {
+      "denials": [
+        {
+          "event": "denied",
+          "pid": 39216,
+          "reason": "UNOBSERVED_NATIVE_PROCESS",
+          "value": "ver"
+        },
+        {
+          "event": "denied",
+          "pid": 39216,
+          "reason": "UNOBSERVED_NATIVE_PROCESS",
+          "value": "command /c ver"
+        },
+        {
+          "event": "denied",
+          "pid": 39216,
+          "reason": "UNOBSERVED_NATIVE_PROCESS",
+          "value": "cmd /c ver"
+        }
+      ],
+      "disposition": "HARNESS_ONLY; retained failed diagnostic, not final accepted gate; canonical guard unchanged",
+      "label": "Python311_canonical_guard_diagnostic",
+      "raw_sha256": "ea3b78316a3ef1458765d7c500fe330a7295a15a9bb7254ba3a2455ec0fdae34"
+    }
+  ],
+  "static_resolution": "Parse-only Node commands explicitly preload existing Node guard; zero denied events",
+  "superseded_tested_source": "45960fa927649c36c2261b3ba92a68c8368fd1ec; final acceptance uses 3b250552, original runs retained externally",
+  "version_literal_diagnostic": {
+    "failed": 1,
+    "passed": 94,
+    "prior_run": "version-focused-1",
+    "reason": "Current version unit literal still 1.0.0 after authorized 1.5.0 application; updated exact expectation, no skip/exemption"
+  }
+}

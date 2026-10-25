@@ -75,7 +75,10 @@ class UnifiedLocalServiceClient:
 
     async def _request(self, method: str, route: str, payload: dict[str, Any] | None = None, *, trace_id: str | None = None, timeout_seconds: float | None = None, timeout_error_code: str = "local_service_timeout") -> dict[str, Any]:
         body: bytes | None = None
-        headers: dict[str, str] = {"Accept": "application/json"}
+        headers: dict[str, str] = {
+            "Accept": "application/json",
+            "X-TW-Market-Service-Contract": LOCAL_SERVICE_CONTRACT_VERSION,
+        }
         if trace_id is not None:
             normalized_trace = normalize_trace_id(trace_id)
             if normalized_trace is None:

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.0 (selected, unpublished)
+
+- Preserve published Local Service v1 clients through explicit version negotiation
+  and a retained v1 capability projection while keeping current v2 behavior.
+- Retain exact MCP SDK 1.29.0 support and A3 dependency locks; declare public/data
+  compatibility and select v1.5.0. A4 governance evidence records technical acceptance separately.
+- No tag, release, release asset or registry publication is authorized.
+
 ## 1.0.0 (2026-09-14)
 
 - Promotes the accepted V1 release-candidate contract to final V1 ProductVersion

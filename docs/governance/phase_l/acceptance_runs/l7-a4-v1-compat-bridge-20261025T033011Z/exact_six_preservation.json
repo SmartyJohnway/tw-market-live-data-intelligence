@@ -1,0 +1,17 @@
+{
+  "Native_host": true,
+  "count": 6,
+  "genuine_Win11": true,
+  "new_tools": 0,
+  "removed_tools": 0,
+  "source_stdio": true,
+  "status": "PASS",
+  "tool_names": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ]
+}

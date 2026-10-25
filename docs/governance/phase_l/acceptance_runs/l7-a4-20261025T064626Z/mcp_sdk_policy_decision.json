@@ -1,0 +1,9 @@
+{
+  "policy": "EXACT_PIN_POLICY",
+  "range": null,
+  "reason": "Canonical behavioral proof and exact A3 reproducibility; adjacent diagnostic success is not full support and latest requires additional unaccepted dependencies",
+  "supported": [
+    "1.29.0"
+  ],
+  "update_policy": "Explicit future authority, same behavior matrix, affected A3/A2 reconciliation"
+}

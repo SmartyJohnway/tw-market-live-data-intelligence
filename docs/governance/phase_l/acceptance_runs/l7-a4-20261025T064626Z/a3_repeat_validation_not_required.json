@@ -1,0 +1,56 @@
+{
+  "A3_exact_authorities_preserved": true,
+  "Native_and_Docker_rebuilt_for_current_source": true,
+  "Python311_noncanonical_source_runtime": {
+    "doctor_read_only": true,
+    "guard_denials": [],
+    "installation_id": "21b6efed-d507-44a3-b224-88227be8be42",
+    "product_version": "1.5.0",
+    "published_v1_handshake": true,
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "scope": "Noncanonical Python 3.11 source/runtime compatibility; not Native bootstrap or canonical release gate",
+    "sequence": [
+      {
+        "exit_code": 0,
+        "label": "preinit"
+      },
+      {
+        "exit_code": 0,
+        "label": "init"
+      },
+      {
+        "exit_code": 0,
+        "label": "init-again"
+      },
+      {
+        "exit_code": 0,
+        "label": "start"
+      },
+      {
+        "exit_code": 0,
+        "label": "status"
+      },
+      {
+        "exit_code": 0,
+        "label": "doctor"
+      },
+      {
+        "exit_code": 0,
+        "label": "stop"
+      }
+    ],
+    "source_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+    "status": "PASS",
+    "tools": [
+      "market_describe_capabilities",
+      "market_export_ai_handoff",
+      "market_fetch_evidence",
+      "market_preview_request",
+      "market_read_result",
+      "market_validate_request"
+    ]
+  },
+  "dependency_graph_change": 0,
+  "full_Python311_canonical_guard_diagnostic": "Historical harness mismatch retained separately; not claimed as canonical or clean full-suite PASS",
+  "reason": "A4 dependency declarations/artifact bytes unchanged; full A3 reproducibility rebuild not required solely for bridge/version selection per Owner adjudication section 23"
+}
