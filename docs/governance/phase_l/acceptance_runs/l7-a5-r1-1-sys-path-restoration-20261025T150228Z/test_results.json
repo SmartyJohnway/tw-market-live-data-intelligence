@@ -1,0 +1,50 @@
+{
+  "compileall": {
+    "command": [
+      "python",
+      "-B",
+      "-m",
+      "compileall",
+      "-q",
+      "scripts/m8r_06_01b_materialize_production_inputs.py",
+      "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py"
+    ],
+    "exit_code": 0
+  },
+  "focused": {
+    "command": [
+      "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=C:\\twmarket_temp\\l7-a5-r1-1\\temp\\focused",
+      "-q",
+      "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py",
+      "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py",
+      "tests/unit/test_m8r_06_01b_production_input_materialization.py",
+      "tests/unit/test_m8r_06_01b_manifest_generation.py",
+      "tests/unit/test_m6d_ssl_policy.py",
+      "tests/unit/test_l6_a2_security_master_paths.py",
+      "tests/unit/test_m8r_03d_f1_verified_security_master_snapshot.py",
+      "tests/unit/test_m8r_08g_identity_service_and_releases.py"
+    ],
+    "deselected": 0,
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 106,
+    "skipped": 0
+  },
+  "git_diff_check": {
+    "exit_code": 0
+  },
+  "initial_validator_invocation_cwd_error": "one invocation used external cwd with relative validator/compile paths; discarded, rerun in repo; direct-script absolute --help succeeded",
+  "portable_validator": {
+    "checks": 205,
+    "command": "python -B skills/tw-security-master-classifier/scripts/validate_skill.py",
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 205
+  }
+}

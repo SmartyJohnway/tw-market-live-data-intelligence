@@ -1,0 +1,22 @@
+{
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "scripts.run_deterministic_ci",
+    "--output-root",
+    "C:\\twmarket_temp\\l7-a5\\l7-a5-r1-1-deterministic-ci-final"
+  ],
+  "contract_selection_changed": false,
+  "deselected": 20,
+  "external_network_attempt_events": 0,
+  "failed": 0,
+  "guard_denials": 0,
+  "guard_events": 385,
+  "included_node_count": 1899,
+  "passed": 1895,
+  "pytest_exit_code": 0,
+  "skipped": 4,
+  "status": "PASS",
+  "unexpected_skips": []
+}

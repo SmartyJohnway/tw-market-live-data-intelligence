@@ -1,0 +1,20 @@
+{
+  "A5_live_authority": "UNCONSUMED",
+  "A5_live_requests": 0,
+  "DGPA_requests": 0,
+  "Security_Master_refresh_invocations": 0,
+  "TPEx_requests": 0,
+  "TWSE_requests": 0,
+  "external_DNS_attempts": 0,
+  "external_HTTP_attempts": 0,
+  "external_socket_attempts": 0,
+  "guard_event_types": {
+    "child_git_local": 312,
+    "child_node_injected": 1,
+    "child_python_injected": 35,
+    "guard_loaded": 36,
+    "guard_loaded_node": 1
+  },
+  "market_source_requests": 0,
+  "prior_refresh_authority": "CONSUMED / FAILED; not reused"
+}

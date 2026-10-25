@@ -1,0 +1,9 @@
+{
+  "PR": false,
+  "authority": "L7-A5-R1.1 — Security Master TLS Repair sys.path Restoration Corrective Patch",
+  "basis": "direct Owner instruction",
+  "live_authority": false,
+  "merge": false,
+  "offline_only": true,
+  "push": false
+}

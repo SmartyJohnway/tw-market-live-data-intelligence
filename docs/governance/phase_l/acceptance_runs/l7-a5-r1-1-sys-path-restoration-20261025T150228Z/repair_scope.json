@@ -1,0 +1,13 @@
+{
+  "Skill_bytes_changed": false,
+  "TLS_architecture_changed": false,
+  "blanket_sys_path_restoration": false,
+  "dependencies_versions_fixtures_changed": false,
+  "ownership": "root inserted conditionally; Skill path always inserted as temporary duplicate; cleanup searches by object identity in finally blocks",
+  "runtime_files_changed": [
+    "scripts/m8r_06_01b_materialize_production_inputs.py"
+  ],
+  "test_files_changed": [
+    "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py"
+  ]
+}

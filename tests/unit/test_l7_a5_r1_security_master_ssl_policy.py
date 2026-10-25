@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import ssl
+import subprocess
 import sys
 import urllib.error
 from pathlib import Path
@@ -147,3 +148,39 @@ def test_manager_cli_rejects_unsafe_policy_before_lifecycle_or_network():
 def test_manager_rejects_ssl_policy_outside_live_update():
     with pytest.raises(SystemExit):
         manage_security_master.main(["status", "--ssl-policy", "compatibility"])
+
+
+@pytest.mark.parametrize("root_present,skill_present", [(True, False), (False, False), (True, True)])
+def test_materializer_preserves_caller_owned_sys_path(root_present, skill_present):
+    code = r'''
+import importlib, json, runpy, sys
+from pathlib import Path
+root = Path(sys.argv[1])
+skill = str(root / "skills/tw-security-master-classifier/scripts")
+sentinel = r"C:\twmarket_temp\SENTINEL"
+unrelated = r"C:\twmarket_temp\UNRELATED"
+root_present, skill_present = json.loads(sys.argv[2])
+base = [p for p in sys.path if p and p not in {str(root), skill}]
+sys.path[:] = [sentinel, unrelated, *base]
+if root_present:
+    sys.path.append(str(root))
+if skill_present:
+    sys.path.append(skill)
+caller_paths = list(sys.path)
+if root_present:
+    module = importlib.import_module("scripts.m8r_06_01b_materialize_production_inputs")
+    assert module.ROOT == root
+else:
+    namespace = runpy.run_path(str(root / "scripts/m8r_06_01b_materialize_production_inputs.py"))
+    assert namespace["ROOT"] == root
+assert sys.path[:2] == [sentinel, unrelated], sys.path[:2]
+assert all(sys.path.count(p) == caller_paths.count(p) for p in caller_paths)
+assert [p for p in sys.path if p in caller_paths] == caller_paths
+assert sys.path.count(str(root)) == int(root_present)
+assert sys.path.count(skill) == int(skill_present)
+'''
+    completed = subprocess.run(
+        [sys.executable, "-B", "-c", code, str(ROOT), json.dumps([root_present, skill_present])],
+        cwd=ROOT, capture_output=True, text=True, check=False,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr

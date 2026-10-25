@@ -1,0 +1,25 @@
+{
+  "caller_owned_repo_root_preserved": true,
+  "caller_owned_sentinel_preserved": true,
+  "caller_owned_skill_path_preserved": true,
+  "cases": [
+    {
+      "ROOT_present": true,
+      "SKILL_SCRIPTS_present": false
+    },
+    {
+      "ROOT_present": false,
+      "SKILL_SCRIPTS_present": false
+    },
+    {
+      "ROOT_present": true,
+      "SKILL_SCRIPTS_present": true
+    }
+  ],
+  "direct_script_help_from_external_cwd_exit_code": 0,
+  "module_owned_path_cleanup_only": true,
+  "network_calls": 0,
+  "post_patch": "PASS",
+  "test_state_cleanup": "fresh subprocess exits; parent sys.path never modified by regression harness",
+  "unrelated_caller_paths_removed": 0
+}
