@@ -1,0 +1,59 @@
+{
+  "Architecture": "amd64",
+  "Config": {
+    "ArgsEscaped": true,
+    "Cmd": [
+      "serve"
+    ],
+    "Entrypoint": [
+      "python",
+      "-m",
+      "scripts.tw_market_docker"
+    ],
+    "Env": [
+      "PATH=/opt/tw-market/venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "PYTHON_VERSION=3.13.17",
+      "PYTHON_SHA256=6020bd10aff3bf4821be16f088ebb1591beb7b811dcd8fab1da8f7c22a7b27e7",
+      "PYTHONPATH=/opt/tw-market/app",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "PYTHONUNBUFFERED=1",
+      "PIP_NO_CACHE_DIR=1",
+      "TW_MARKET_HOME=/var/lib/tw-market/home",
+      "TW_MARKET_STATE_ROOT=/var/lib/tw-market/state"
+    ],
+    "ExposedPorts": {
+      "8000/tcp": {}
+    },
+    "Labels": {
+      "org.opencontainers.image.revision": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+      "org.opencontainers.image.source": "https://github.com/SmartyJohnway/tw-market-live-data-intelligence",
+      "org.opencontainers.image.title": "TW-Market Local Service",
+      "org.twmarket.dependency-lock-sha256": "cbee3e92b5cbf194a64b65261055b6daabb93be044a2494b67b872810cda9d57",
+      "org.twmarket.source-tree": "a11c5be938470270b69c903c5e4430fdd46e2ed0",
+      "org.twmarket.validation-variant": "b"
+    },
+    "User": "10001:10001",
+    "WorkingDir": "/opt/tw-market/app"
+  },
+  "Id": "sha256:464a2c120e99d534f9208691b973ec9d852f57559cd43b9f3b898448f68dda1d",
+  "Os": "linux",
+  "RepoDigests": [
+    "tw-market-l7-a4-1792910285312123100@sha256:464a2c120e99d534f9208691b973ec9d852f57559cd43b9f3b898448f68dda1d"
+  ],
+  "RootFS": {
+    "Layers": [
+      "sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba",
+      "sha256:631edff44224924165ce2b5f8b7c2a9d55cc06f8e15528ad70d475173bdb3b7d",
+      "sha256:8cd5f028b744bfcb850b4d8b8a5fec249e7938152e4c9e69da3691eb2f3fe641",
+      "sha256:1e6e26d9bf7ade604f81da062368f8b19e047e3db1ea78f27000bbb3fd23f490",
+      "sha256:c2bac4cba0bb872c3f4d847dcf6b67bd2bcf8651e576111b1d05789179654324",
+      "sha256:3dc6f453af81e9cfca491152bb0e4aeb1f71c4ed33717a7253fc5e280256f55e",
+      "sha256:69ac8bc53ca01beaa8cb1f210ed83b6b0d6578625f392daf4fc1bf108d7f9945",
+      "sha256:66398df3c29a674594ea72f62de94c341476d2b1c8fd2cf6e64125b8891461a3",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+    ],
+    "Type": "layers"
+  },
+  "scope": "Local task-owned validation image; no registry publication or manufactured digest"
+}

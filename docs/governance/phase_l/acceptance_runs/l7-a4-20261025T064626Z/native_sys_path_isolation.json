@@ -1,0 +1,44 @@
+{
+  "installation": {
+    "app_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\app",
+    "cache_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\home 非ASCII\\cache",
+    "diagnostics": {
+      "home_source": "env",
+      "settings_origins": {
+        "host": "settings",
+        "port": "env"
+      },
+      "state_root_source": "metadata"
+    },
+    "effective_service_host": "127.0.0.1",
+    "effective_service_port": 2222,
+    "governed_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\business state\\governed",
+    "home": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\home 非ASCII",
+    "installation_id": "fa873d43-ada0-4b0f-bdab-d5d1840ba20c",
+    "installation_metadata_path": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\home 非ASCII\\meta\\installation.json",
+    "installation_status": "READY",
+    "logs_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\home 非ASCII\\logs",
+    "operational_event_path": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+    "runtime_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\tmp\\TW-Market\\fa873d43-ada0-4b0f-bdab-d5d1840ba20c\\runtime",
+    "security_master_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\business state\\security-master",
+    "settings_path": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\home 非ASCII\\config\\settings.json",
+    "state_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\business state",
+    "temp_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\tmp\\TW-Market\\fa873d43-ada0-4b0f-bdab-d5d1840ba20c\\temp",
+    "watchlist_root": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\business state\\watchlists"
+  },
+  "source_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "sys_executable": "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\runtime\\venv\\Scripts\\python.exe",
+  "sys_path": [
+    "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\app",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python313.zip",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\DLLs",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\Lib",
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313",
+    "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\runtime\\venv",
+    "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\runtime\\venv\\Lib\\site-packages",
+    "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\runtime\\venv\\Lib\\site-packages\\win32",
+    "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\runtime\\venv\\Lib\\site-packages\\win32\\lib",
+    "C:\\twmarket_temp\\l7-a4\\native-release\\native acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\runtime\\venv\\Lib\\site-packages\\pythonwin"
+  ],
+  "version": "1.5.0"
+}

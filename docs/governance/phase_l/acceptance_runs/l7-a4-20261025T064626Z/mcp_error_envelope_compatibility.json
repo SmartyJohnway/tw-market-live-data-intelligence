@@ -1,0 +1,1500 @@
+{
+  "algorithm": "Existing published literals remain stable; later literals additive; no renaming or removal is introduced by A4",
+  "classification_authority": "Published governance promises take precedence over literal implementation discovery; no public promise is narrowed.",
+  "current_source": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "deprecated_codes_removed": [],
+  "internal": [
+    "English prose",
+    "exception class names",
+    "raw filesystem diagnostics",
+    "unmapped implementation-only exceptions"
+  ],
+  "published_baseline": "e02bcb125999f542308a75f349c212f0ff3fee83",
+  "published_error_policy_sha256": "15a00a087f01b708b6869d2cba178b84eb60f4c61659104f5b4e97dd167fa849",
+  "rows": [
+    {
+      "classification": "STABLE_V1",
+      "code": "IDENTITY_AMBIGUOUS",
+      "sources": [
+        {
+          "line": 466,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "IDENTITY_MIGRATION_REVIEW_REQUIRED",
+      "sources": [
+        {
+          "line": 583,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "IDENTITY_NOT_FOUND",
+      "sources": [
+        {
+          "line": 467,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "IDENTITY_SCHEME_UNSUPPORTED",
+      "sources": [
+        {
+          "line": 469,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "SECURITY_MASTER_NOT_INITIALIZED",
+      "published_governance_promise": true,
+      "sources": [
+        {
+          "line": 352,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 80,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "SECURITY_MASTER_UNAVAILABLE",
+      "sources": [
+        {
+          "line": 353,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_CONFIRMATION_ALREADY_CONSUMED",
+      "sources": [
+        {
+          "line": 644,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 664,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_CONFIRMATION_EXPIRED",
+      "sources": [
+        {
+          "line": 677,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_CONFIRMATION_MISMATCH",
+      "published_governance_promise": true,
+      "sources": [
+        {
+          "line": 642,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 663,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_CONFIRMATION_REQUIRED",
+      "sources": [
+        {
+          "line": 634,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_DEFAULT_CONFLICT",
+      "sources": [
+        {
+          "line": 696,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_ENTRY_ALREADY_EXISTS",
+      "sources": [
+        {
+          "line": 380,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 542,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_ENTRY_NOT_FOUND",
+      "sources": [
+        {
+          "line": 545,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 549,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 553,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 557,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 581,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_IMPORT_TOO_LARGE",
+      "sources": [
+        {
+          "line": 477,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_NOT_FOUND",
+      "sources": [
+        {
+          "line": 462,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 364,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 538,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_PREVIEW_INTEGRITY_FAILED",
+      "published_governance_promise": true,
+      "sources": [
+        {
+          "line": 655,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 649,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 676,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 669,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_PREVIEW_STALE_IDENTITY_CONTEXT",
+      "sources": [
+        {
+          "line": 683,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_RESOURCE_LIMIT_EXCEEDED",
+      "sources": [
+        {
+          "line": 116,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 122,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 377,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 478,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 382,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 529,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 558,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_SCHEMA_INVALID",
+      "sources": [
+        {
+          "line": 101,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 105,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 121,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 476,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 481,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 484,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 496,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 512,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 515,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 489,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 501,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 503,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 505,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 507,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 519,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 493,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 561,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_STORAGE_CORRUPT",
+      "sources": [
+        {
+          "line": 310,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 314,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 177,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 283,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 322,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 335,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 697,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 719,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 720,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 274,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 305,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "ADDITIVE_V1",
+      "code": "WATCHLIST_STORAGE_PATH_UNSAFE",
+      "sources": [
+        {
+          "line": 143,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 161,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_STORAGE_SCHEMA_UNSUPPORTED",
+      "sources": [
+        {
+          "line": 312,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 325,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 722,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 276,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 278,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 332,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_VERSION_CHAIN_BROKEN",
+      "sources": [
+        {
+          "line": 368,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 373,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 454,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 724,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 450,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 727,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 730,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 442,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "WATCHLIST_VERSION_CONFLICT",
+      "sources": [
+        {
+          "line": 524,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        },
+        {
+          "line": 680,
+          "path": "scripts/m8r_09_persistent_watchlists.py",
+          "transport_authority": "WatchlistError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "approval_scope_input_conflict",
+      "sources": [
+        {
+          "line": 296,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 300,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 303,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "approval_scope_mode_invalid",
+      "sources": [
+        {
+          "line": 290,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "authorization_confirmation_required",
+      "sources": [
+        {
+          "line": 274,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "authorization_ttl_invalid",
+      "sources": [
+        {
+          "line": 306,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "canonical_dependency_malformed",
+      "sources": [
+        {
+          "line": 88,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "canonical_dependency_missing",
+      "sources": [
+        {
+          "line": 86,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "canonical_security_master_unavailable",
+      "sources": [
+        {
+          "line": 81,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        },
+        {
+          "line": 118,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        },
+        {
+          "line": 157,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        },
+        {
+          "line": 85,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "capability_authority_malformed",
+      "sources": [
+        {
+          "line": 34,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 44,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 46,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 49,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 83,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 90,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 95,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 98,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 101,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "capability_authority_unavailable",
+      "sources": [
+        {
+          "line": 32,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "capability_routing_missing",
+      "sources": [
+        {
+          "line": 87,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "control_package_already_finalized",
+      "sources": [
+        {
+          "line": 98,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "control_package_id_invalid",
+      "sources": [
+        {
+          "line": 62,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 144,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 172,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 187,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 176,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 184,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 153,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "control_package_partial_conflict",
+      "sources": [
+        {
+          "line": 100,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "execution_confirmation_required",
+      "published_governance_promise": true,
+      "sources": [
+        {
+          "line": 64,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "invalid_api_envelope",
+      "sources": [
+        {
+          "line": 20,
+          "path": "server/services/unified_local_operator_action.py",
+          "transport_authority": "LocalOperatorActionError"
+        },
+        {
+          "line": 269,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 330,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 50,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 316,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "invalid_tool_arguments",
+      "sources": [
+        {
+          "line": 78,
+          "path": "server/unified_mcp/server.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_operator_action_internal_error",
+      "sources": [
+        {
+          "line": 199,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_contract_incompatible",
+      "sources": [
+        {
+          "line": 77,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 133,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_http_error",
+      "sources": [
+        {
+          "line": 124,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_protocol_invalid",
+      "sources": [
+        {
+          "line": 122,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        },
+        {
+          "line": 120,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        },
+        {
+          "line": 105,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_request_invalid",
+      "sources": [
+        {
+          "line": 91,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_request_too_large",
+      "sources": [
+        {
+          "line": 93,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_response_bound_invalid",
+      "sources": [
+        {
+          "line": 68,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_response_too_large",
+      "sources": [
+        {
+          "line": 109,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_timeout_invalid",
+      "sources": [
+        {
+          "line": 66,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "ADDITIVE_V1",
+      "code": "local_service_trace_invalid",
+      "sources": [
+        {
+          "line": 85,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_unavailable",
+      "sources": [
+        {
+          "line": 116,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "local_service_url_invalid",
+      "sources": [
+        {
+          "line": 39,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        },
+        {
+          "line": 56,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        },
+        {
+          "line": 44,
+          "path": "server/unified_mcp/local_service_client.py",
+          "transport_authority": "LocalServiceClientError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "market_fetch_requires_execute_mode",
+      "published_governance_promise": true,
+      "sources": [
+        {
+          "line": 24,
+          "path": "server/services/unified_local_operator_action.py",
+          "transport_authority": "LocalOperatorActionError"
+        },
+        {
+          "line": 333,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 111,
+          "path": "server/unified_mcp/server.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mcp_adapter_internal_error",
+      "sources": [
+        {
+          "line": 43,
+          "path": "server/unified_mcp/error_mapping.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "ADDITIVE_V1",
+      "code": "mcp_result_too_large",
+      "sources": [
+        {
+          "line": 67,
+          "path": "server/unified_mcp/server.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_a_internal_error",
+      "sources": [
+        {
+          "line": 90,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_b1_internal_error",
+      "sources": [
+        {
+          "line": 134,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_b1_planning_dependency_unavailable",
+      "sources": [
+        {
+          "line": 189,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 126,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_b2_execution_child_protocol_invalid",
+      "sources": [
+        {
+          "line": 104,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 123,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 98,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_b2_execution_internal_error",
+      "sources": [
+        {
+          "line": 181,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_b2_execution_timeout",
+      "sources": [
+        {
+          "line": 90,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_b2_internal_error",
+      "sources": [
+        {
+          "line": 159,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_b2_preview_stale",
+      "sources": [
+        {
+          "line": 286,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_artifact_invalid",
+      "sources": [
+        {
+          "line": 79,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_artifact_unavailable",
+      "sources": [
+        {
+          "line": 77,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_control_integrity_failed",
+      "sources": [
+        {
+          "line": 155,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 159,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 115,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 166,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 164,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 216,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 336,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_execution_not_finalized",
+      "sources": [
+        {
+          "line": 192,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_existing_output_inconsistent",
+      "sources": [
+        {
+          "line": 275,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 291,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 307,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 392,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 404,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 210,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 305,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 326,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 343,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 397,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_f3_reconstruction_mismatch",
+      "sources": [
+        {
+          "line": 204,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_internal_error",
+      "sources": [
+        {
+          "line": 217,
+          "path": "server/unified_workbench_router.py",
+          "transport_authority": "public_error_envelope"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_lineage_verification_failed",
+      "sources": [
+        {
+          "line": 232,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 259,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_materialization_failed",
+      "sources": [
+        {
+          "line": 369,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "ADDITIVE_V1",
+      "code": "mode_c_public_projection_too_large",
+      "sources": [
+        {
+          "line": 88,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 108,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 427,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        },
+        {
+          "line": 101,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "mode_c_required_execution_artifact_missing",
+      "sources": [
+        {
+          "line": 135,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "network_execution_confirmation_required",
+      "published_governance_promise": true,
+      "sources": [
+        {
+          "line": 69,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "operator_confirmation_reference_invalid",
+      "sources": [
+        {
+          "line": 67,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "privileged_field_forbidden",
+      "sources": [
+        {
+          "line": 272,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 56,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        },
+        {
+          "line": 59,
+          "path": "server/services/unified_mode_b2_execution.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "production_executor_metadata_malformed",
+      "sources": [
+        {
+          "line": 60,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 54,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        },
+        {
+          "line": 58,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "production_executor_metadata_unavailable",
+      "sources": [
+        {
+          "line": 56,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "selected_production_executor_unavailable",
+      "sources": [
+        {
+          "line": 114,
+          "path": "server/services/unified_local_service.py",
+          "transport_authority": "LocalServiceError"
+        }
+      ]
+    },
+    {
+      "classification": "STABLE_V1",
+      "code": "selection_provenance_integrity_failed",
+      "sources": [
+        {
+          "line": 163,
+          "path": "server/services/unified_mode_b2.py",
+          "transport_authority": "ModeB2Error"
+        }
+      ]
+    },
+    {
+      "classification": "ADDITIVE_V1",
+      "code": "unsupported_output_schema_version",
+      "sources": [
+        {
+          "line": 320,
+          "path": "server/services/unified_mode_c.py",
+          "transport_authority": "ModeCError"
+        }
+      ]
+    }
+  ],
+  "scope": "Literal machine codes raised by typed Unified/Watchlist errors or public error envelopes; dynamic domain validation reasons remain governed by their unchanged public schemas"
+}

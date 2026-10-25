@@ -1,0 +1,11 @@
+{
+  "APP_ROOT_A": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\app",
+  "APP_ROOT_B": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\Location-B\\TW-Market-1.5.0-windows-x64\\app",
+  "app_B_immutable": true,
+  "independent_local_venvs": true,
+  "name": "A3_DISTRIBUTION_RELOCATION_PROBE",
+  "same_installation_id": "3f7563c8-ae2a-4347-b72c-fcbcab572a5b",
+  "same_state_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\business state",
+  "settings_unchanged": true,
+  "stale_marker_rejected": true
+}

@@ -1,0 +1,7 @@
+{
+  "capabilities": 7,
+  "classification": "PUBLIC_COMPATIBILITY",
+  "operations": "published_v1_operation_matrix.json",
+  "source_identity": "published_v1_client_identity.json",
+  "version": "unified_market_evidence_local_service.v1"
+}

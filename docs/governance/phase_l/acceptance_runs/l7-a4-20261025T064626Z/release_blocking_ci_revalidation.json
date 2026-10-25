@@ -1,0 +1,30 @@
+{
+  "counts": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1895,
+    "skipped": 4,
+    "tests": 1899
+  },
+  "exact_A3_member_ledger_equal": true,
+  "guard_source_changes": 0,
+  "result": {
+    "boundary": "Python audit and injected Python/Node child guards; local Git allowlist; no OS firewall claim",
+    "elapsed_seconds": 223.546,
+    "guard_denials": [],
+    "guard_events": 385,
+    "profile": "release-blocking-ci",
+    "profile_version": 1,
+    "pytest_exit_code": 0,
+    "skipped_nodes": [
+      "tests/unit/test_m8r_06_01c1b_compact_runtime_identity_index.py::test_sealed_bundle_acceptance_and_exhaustive_resolver_equivalence",
+      "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_sealed_candidate_production_activation",
+      "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_active_release_http_e2e_without_runtime_monkeypatch",
+      "tests/integration/test_unified_workbench_api.py::test_real_sealed_candidate_is_not_a_production_fallback"
+    ],
+    "status": "PASS",
+    "unexpected_skips": []
+  },
+  "selection_contract_changes": 0,
+  "status": "PASS"
+}

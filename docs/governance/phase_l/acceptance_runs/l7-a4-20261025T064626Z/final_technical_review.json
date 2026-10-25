@@ -1,0 +1,27 @@
+{
+  "A1": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1895,
+    "skipped": 4,
+    "tests": 1899
+  },
+  "A4_focused_passed": 240,
+  "A5_plus": "NOT_AUTHORIZED",
+  "Docker_replacement": "PASS",
+  "Native": "PASS",
+  "Phase_L": "NOT_CLOSED",
+  "SDK_policy": "EXACT_PIN_POLICY mcp==1.29.0",
+  "VERSION": "1.5.0 selected/unpublished",
+  "disposition": "L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_PASS",
+  "final_candidate": "Commit/tree containing sealed evidence, independently verified in final receipt and PR; distinct from tested implementation identity",
+  "genuine_Win11": "PASS",
+  "internal_readonly_preseal_review": "No material blocker; manifest hashes independently checked. Numeric compile-result normalization is evidence formatting only.",
+  "merge": "NOT_AUTHORIZED",
+  "original_blocker": "OWNER_ADJUDICATED; historical blocked evidence preserved, not relabeled PASS",
+  "owner_acceptance": "PENDING",
+  "public_v1_bridge": "PASS",
+  "stable_publication": "NOT_AUTHORIZED",
+  "tested_implementation_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "tested_implementation_tree": "a11c5be938470270b69c903c5e4430fdd46e2ed0"
+}

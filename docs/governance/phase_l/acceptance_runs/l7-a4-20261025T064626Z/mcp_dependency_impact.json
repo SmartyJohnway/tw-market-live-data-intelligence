@@ -1,0 +1,38 @@
+{
+  "A3_release_resolution": "Exact unchanged per-consumer locks and hashes",
+  "dependency_artifact_bytes_changed": 0,
+  "dependency_graph_changed": 0,
+  "identities": [
+    {
+      "path": "requirements.txt",
+      "sha256": "9ddd5c37b59cc37c1ccd5c71f9236fceda5269e1424235a52705c58a736b51a0",
+      "unchanged": true
+    },
+    {
+      "path": "requirements-lock.txt",
+      "sha256": "dfd3bc6ed6f56654acae5264b67e44f9d66f5e1326213eb00de4420cea338862",
+      "unchanged": true
+    },
+    {
+      "path": "requirements-browser-e2e.txt",
+      "sha256": "e5198eae07d7890739ee1d38c235a7e1be05d74f9c79d01407bb9505b17442a8",
+      "unchanged": true
+    },
+    {
+      "path": "packaging_native/wheelhouse-lock.json",
+      "sha256": "483bdbbffde3d7fb810931256bb2652a833749752591de38c20a9df915f3a38f",
+      "unchanged": true
+    },
+    {
+      "path": "packaging_docker/dependency-lock-linux-amd64-cp313.json",
+      "sha256": "cbee3e92b5cbf194a64b65261055b6daabb93be044a2494b67b872810cda9d57",
+      "unchanged": true
+    },
+    {
+      "path": "config/release_blocking_ci.v1.json",
+      "sha256": "b80476b43307d670a5a3000e84e84c3b617085db6c68373fc9b522c92708d2e7",
+      "unchanged": true
+    }
+  ],
+  "mcp": "1.29.0"
+}

@@ -1,0 +1,39 @@
+{
+  "duration_ms": 1406.0,
+  "identity": {
+    "root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\business state\\security-master",
+    "status": "NOT_INITIALIZED"
+  },
+  "installation": {
+    "app_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.5.0-windows-x64\\app",
+    "cache_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\home 非ASCII\\cache",
+    "diagnostics": {
+      "home_source": "cli",
+      "settings_origins": {
+        "host": "settings",
+        "port": "env"
+      },
+      "state_root_source": "metadata"
+    },
+    "effective_service_host": "127.0.0.1",
+    "effective_service_port": 49671,
+    "governed_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\business state\\governed",
+    "home": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\home 非ASCII",
+    "installation_id": "3f7563c8-ae2a-4347-b72c-fcbcab572a5b",
+    "installation_metadata_path": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+    "installation_status": "READY",
+    "logs_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\home 非ASCII\\logs",
+    "operational_event_path": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+    "runtime_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\tmp\\TW-Market\\3f7563c8-ae2a-4347-b72c-fcbcab572a5b\\runtime",
+    "security_master_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\business state\\security-master",
+    "settings_path": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+    "state_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\business state",
+    "temp_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\tmp\\TW-Market\\3f7563c8-ae2a-4347-b72c-fcbcab572a5b\\temp",
+    "watchlist_root": "C:\\twmarket_temp\\l7-a4\\guest\\acceptance\\business state\\watchlists"
+  },
+  "network_on_init": false,
+  "operation_id": "de05d773-3670-4474-b6a4-f6943f6f5a6e",
+  "started_at": "2026-10-25T06:45:48.302178+00:00",
+  "status": "INSTALLATION_READY",
+  "trace_id": "5c51fd9b-7aa5-4f55-b859-2c42c31ec941"
+}

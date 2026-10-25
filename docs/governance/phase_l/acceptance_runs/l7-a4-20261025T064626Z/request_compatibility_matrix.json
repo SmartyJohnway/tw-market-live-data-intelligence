@@ -1,0 +1,28 @@
+[
+  {
+    "fixture": "tests/fixtures/m8r_05a/valid_request.json",
+    "key": null,
+    "schema": "unified_market_evidence_request.v1",
+    "sha256": "6ac1fa99f766707ed99ee075ff817ddafa9b8eaee8fee528b79a2fa74beb929b",
+    "status": "SUPPORTED_VIA_COMPATIBILITY"
+  },
+  {
+    "fixture": "tests/fixtures/phase_g_contract_v2/example_unified_market_evidence_request.v2.json",
+    "key": null,
+    "schema": "unified_market_evidence_request.v2",
+    "sha256": "bd5c9616a6da1f9422651a1f1e8ec904e1cf0cd274a038d3f9f83f84d242a7fb",
+    "status": "SUPPORTED_VIA_COMPATIBILITY"
+  },
+  {
+    "fixture": "tests/fixtures/phase_h_contract_v3/contract_examples.json",
+    "key": "request_v3",
+    "schema": "unified_market_evidence_request.v3",
+    "sha256": "11eafaab2d8907c6b73fa637c46a7cdf1e8de2f7d46cf3a374611b19a94f246b",
+    "status": "CURRENTLY_SUPPORTED"
+  },
+  {
+    "before_identity_or_source": true,
+    "schema": "v99",
+    "status": "UNSUPPORTED_FAIL_CLOSED"
+  }
+]

@@ -1,0 +1,474 @@
+{
+  "additional_durable": [
+    "installation metadata",
+    "settings/configuration",
+    "backup/restore receipts",
+    "persistent pointers/identity metadata"
+  ],
+  "installation_schema_version": 1,
+  "policy": "inspect -> preview -> verified backup/checkpoint -> apply implemented path -> verify; no silent migration; unsupported/newer fail closed",
+  "restore_contract": {
+    "migration_rules": [
+      {
+        "family": "persistent_watchlists_and_revision_database",
+        "migration_id": "watchlist-schema-v0-to-v1",
+        "source_version": "0"
+      }
+    ],
+    "product_identity": "tw-market-live-data-intelligence",
+    "restore_contract_version": "tw_market_restore_contract.v1",
+    "supported_backup_formats": [
+      "tw_market_backup.v1"
+    ],
+    "supported_manifest_versions": [
+      "tw_market_backup_manifest.v1"
+    ],
+    "supported_state_family_versions": {
+      "persistent_watchlists_and_revision_database": [
+        "1"
+      ],
+      "security_master_active_release_pointer": [
+        "1"
+      ],
+      "security_master_release_history_and_rollback_artifacts": [
+        "1"
+      ]
+    }
+  },
+  "retention_families": [
+    {
+      "artifact_family": "security_master_active_release_pointer",
+      "audit_required": "YES",
+      "authority_role": "active identity authority pointer",
+      "backup_tier": "CORE",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_state_replacement",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "release_id_and_manifest_hash",
+      "network_required_to_rebuild": "NO",
+      "notes": "Current pointer selects installation identity authority; do not replace from a fresh download.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "NO",
+      "state_class": "CANONICAL_USER_STATE"
+    },
+    {
+      "artifact_family": "security_master_release_history_and_rollback_artifacts",
+      "audit_required": "YES",
+      "authority_role": "versioned identity authority and rollback history",
+      "backup_tier": "CORE",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "supported_release_supersession_contract",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "release_manifest_content_schema_hashes",
+      "network_required_to_rebuild": "NO",
+      "notes": "Immutable qualified releases support history and rollback.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "CONDITIONAL",
+      "state_class": "CANONICAL_USER_STATE"
+    },
+    {
+      "artifact_family": "persistent_watchlists_and_revision_database",
+      "audit_required": "YES",
+      "authority_role": "durable user state",
+      "backup_tier": "CORE",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_user_state_export_or_replacement",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "sqlite_integrity_and_revision_hash_chain",
+      "network_required_to_rebuild": "NO",
+      "notes": "Includes current Watchlists, revisions, and tombstones.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "NO",
+      "state_class": "CANONICAL_USER_STATE"
+    },
+    {
+      "artifact_family": "user_product_settings",
+      "audit_required": "CONDITIONAL",
+      "authority_role": "durable user configuration",
+      "backup_tier": "CORE",
+      "current_mutable_authority_required_to_rebuild": "UNKNOWN",
+      "deletion_eligible": "NOT_YET_ELIGIBLE",
+      "deletion_prerequisites": [
+        "settings_authority_inventory",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "configuration_schema_if_present",
+      "network_required_to_rebuild": "NO",
+      "notes": "No single current persisted user-settings store was established; classification remains conservative.",
+      "rebuildable": "UNKNOWN",
+      "replay_required": "NO",
+      "state_class": "CANONICAL_USER_STATE"
+    },
+    {
+      "artifact_family": "finalized_control_package",
+      "audit_required": "YES",
+      "authority_role": "execution authority and evidence envelope",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes",
+        "lineage_and_reference_closure"
+      ],
+      "integrity_binding": "control_manifest_member_sha256_and_lineage",
+      "network_required_to_rebuild": "NO",
+      "notes": "Package contains finalized control, evidence, and execution lineage.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "request_and_plan",
+      "audit_required": "YES",
+      "authority_role": "authorized intent and planned scope",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "control_manifest_sha256_and_schema_version",
+      "network_required_to_rebuild": "NO",
+      "notes": "Retained as finalized package predecessors.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "authorization_and_consumption_binding",
+      "audit_required": "YES",
+      "authority_role": "one-shot authorization and binding",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "control_manifest_sha256_and_consumption_lineage",
+      "network_required_to_rebuild": "NO",
+      "notes": "Never recreate or reuse authority during replay.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "execution_claim",
+      "audit_required": "YES",
+      "authority_role": "finalized authorization consumption claim",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "package_hash_and_claim_receipt_binding",
+      "network_required_to_rebuild": "NO",
+      "notes": "Claim state and identity establish one-shot execution finality.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "execution_receipt",
+      "audit_required": "YES",
+      "authority_role": "execution completion record",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "package_hash_and_claim_binding",
+      "network_required_to_rebuild": "NO",
+      "notes": "Receipt identity and timing are retained execution evidence.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "evidence_bundle",
+      "audit_required": "YES",
+      "authority_role": "evidence artifact inventory and lineage",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "bundle_hash_inventory_and_lineage",
+      "network_required_to_rebuild": "NO",
+      "notes": "Bundle references retained source and operation artifacts.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "f3_historical_validation_artifact",
+      "audit_required": "YES",
+      "authority_role": "historical identity validation evidence",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes",
+        "retained_historical_identity_authority"
+      ],
+      "integrity_binding": "retained_bytes_and_bound_hash",
+      "network_required_to_rebuild": "NO",
+      "notes": "A2 proves missing historical F3 cannot be rebuilt from current Security Master.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "operation_evidence_and_source_snapshots",
+      "audit_required": "YES",
+      "authority_role": "retained source observation and lineage",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "bundle_inventory_and_sha256",
+      "network_required_to_rebuild": "NO",
+      "notes": "Includes governed payload snapshots required by accepted lineage.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "selection_provenance",
+      "audit_required": "YES",
+      "authority_role": "user selection lineage",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "control_manifest_sha256_and_request_binding",
+      "network_required_to_rebuild": "NO",
+      "notes": "Retained when included in finalized package.",
+      "rebuildable": "NOT_REBUILDABLE",
+      "replay_required": "CONDITIONAL",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "persisted_result_json",
+      "audit_required": "YES",
+      "authority_role": "canonical governed output",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "NOT_YET_ELIGIBLE",
+      "deletion_prerequisites": [
+        "verified_retained_predecessors",
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "result_schema_lineage_and_audit_hash",
+      "network_required_to_rebuild": "NO",
+      "notes": "READ_EXISTING reads these bytes; replay may reproduce in memory from retained authority.",
+      "rebuildable": "DETERMINISTIC_FROM_RETAINED_AUTHORITY",
+      "replay_required": "NO",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "persisted_result_markdown",
+      "audit_required": "YES",
+      "authority_role": "canonical human-readable governed output",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "NOT_YET_ELIGIBLE",
+      "deletion_prerequisites": [
+        "verified_retained_predecessors",
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "result_projection_and_package_lineage",
+      "network_required_to_rebuild": "NO",
+      "notes": "Do not treat as cache while it is a persisted canonical triplet member.",
+      "rebuildable": "DETERMINISTIC_FROM_RETAINED_AUTHORITY",
+      "replay_required": "NO",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "persisted_audit_package",
+      "audit_required": "YES",
+      "authority_role": "canonical audit and lineage record",
+      "backup_tier": "FULL_GOVERNED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "PROHIBITED",
+      "deletion_prerequisites": [
+        "verified_retained_predecessors",
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "audit_hash_and_replay_manifest",
+      "network_required_to_rebuild": "NO",
+      "notes": "Audit and reference metadata are governed evidence, never disposable cache.",
+      "rebuildable": "DETERMINISTIC_FROM_RETAINED_AUTHORITY",
+      "replay_required": "YES",
+      "state_class": "GOVERNED_EVIDENCE"
+    },
+    {
+      "artifact_family": "persisted_ai_handoff",
+      "audit_required": "CONDITIONAL",
+      "authority_role": "derived projection",
+      "backup_tier": "DERIVED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "POTENTIALLY_ELIGIBLE",
+      "deletion_prerequisites": [
+        "prove_not_canonical_release_output",
+        "verified_retained_predecessors",
+        "explicit_future_policy",
+        "verified_backup_manifest_and_hashes"
+      ],
+      "integrity_binding": "projection_inputs_and_lineage_if_persisted",
+      "network_required_to_rebuild": "NO",
+      "notes": "L0 treats AI Handoff as rebuildable unless a release contract explicitly retains it.",
+      "rebuildable": "DETERMINISTIC_FROM_RETAINED_AUTHORITY",
+      "replay_required": "NO",
+      "state_class": "REBUILDABLE_DERIVED"
+    },
+    {
+      "artifact_family": "finalized_package_indexes",
+      "audit_required": "NO",
+      "authority_role": "lookup acceleration",
+      "backup_tier": "DERIVED",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "POTENTIALLY_ELIGIBLE",
+      "deletion_prerequisites": [
+        "prove_rebuild_from_retained_authority",
+        "explicit_future_policy"
+      ],
+      "integrity_binding": "source_package_identity_if_bound",
+      "network_required_to_rebuild": "NO",
+      "notes": "Classification applies only to confirmed indexes, not similarly named governed files.",
+      "rebuildable": "DETERMINISTIC_FROM_RETAINED_AUTHORITY",
+      "replay_required": "NO",
+      "state_class": "REBUILDABLE_DERIVED"
+    },
+    {
+      "artifact_family": "cache",
+      "audit_required": "UNKNOWN",
+      "authority_role": "unresolved",
+      "backup_tier": "UNDETERMINED",
+      "current_mutable_authority_required_to_rebuild": "UNKNOWN",
+      "deletion_eligible": "NOT_YET_ELIGIBLE",
+      "deletion_prerequisites": [
+        "identify_owner_and_lineage"
+      ],
+      "integrity_binding": "UNDETERMINED",
+      "network_required_to_rebuild": "UNKNOWN",
+      "notes": "The label cache alone does not establish ephemerality.",
+      "rebuildable": "UNKNOWN",
+      "replay_required": "UNKNOWN",
+      "state_class": "UNCLASSIFIED_REQUIRES_POLICY"
+    },
+    {
+      "artifact_family": "preview_only_temporary_material",
+      "audit_required": "NO",
+      "authority_role": "non-authoritative preview",
+      "backup_tier": "NONE",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "EPHEMERAL",
+      "deletion_prerequisites": [
+        "prove_preview_only_and_no_governed_references"
+      ],
+      "integrity_binding": "no_governed_binding_permitted",
+      "network_required_to_rebuild": "NO",
+      "notes": "Only material proven preview-only and unreferenced qualifies; deterministic rebuild is not assumed.",
+      "rebuildable": "UNKNOWN",
+      "replay_required": "NO",
+      "state_class": "EPHEMERAL"
+    },
+    {
+      "artifact_family": "temporary_test_acceptance_runtime",
+      "audit_required": "NO",
+      "authority_role": "test-only runtime material",
+      "backup_tier": "NONE",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "EPHEMERAL",
+      "deletion_prerequisites": [
+        "prove_test_runtime_ownership_and_no_governed_references"
+      ],
+      "integrity_binding": "test_runtime_ownership",
+      "network_required_to_rebuild": "NO",
+      "notes": "Historical acceptance evidence itself is not covered by this family; rebuildability is not assumed.",
+      "rebuildable": "UNKNOWN",
+      "replay_required": "NO",
+      "state_class": "EPHEMERAL"
+    },
+    {
+      "artifact_family": "operational_jsonl_diagnostics",
+      "audit_required": "NO",
+      "authority_role": "non-authoritative diagnosis",
+      "backup_tier": "NONE",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "EPHEMERAL",
+      "deletion_prerequisites": [
+        "prove_not_governed_audit_or_manifest_input"
+      ],
+      "integrity_binding": "runtime_event_schema_and_ownership",
+      "network_required_to_rebuild": "NO",
+      "notes": "Operational diagnostics are separate from governed Audit; any referenced record must be reclassified.",
+      "rebuildable": "UNKNOWN",
+      "replay_required": "NO",
+      "state_class": "EPHEMERAL"
+    },
+    {
+      "artifact_family": "lifecycle_ownership_runtime_files",
+      "audit_required": "NO",
+      "authority_role": "process ownership/runtime coordination",
+      "backup_tier": "NONE",
+      "current_mutable_authority_required_to_rebuild": "NO",
+      "deletion_eligible": "EPHEMERAL",
+      "deletion_prerequisites": [
+        "prove_no_live_owner_and_runtime_file_ownership"
+      ],
+      "integrity_binding": "lifecycle_identity_and_owner_process_binding",
+      "network_required_to_rebuild": "NO",
+      "notes": "Must not remove active ownership state; rebuildability is not assumed and this classifier performs no cleanup.",
+      "rebuildable": "UNKNOWN",
+      "replay_required": "NO",
+      "state_class": "EPHEMERAL"
+    },
+    {
+      "artifact_family": "unclassified_artifact",
+      "audit_required": "UNKNOWN",
+      "authority_role": "unresolved",
+      "backup_tier": "UNDETERMINED",
+      "current_mutable_authority_required_to_rebuild": "UNKNOWN",
+      "deletion_eligible": "NOT_YET_ELIGIBLE",
+      "deletion_prerequisites": [
+        "identify_owner_authority_lineage_and_references"
+      ],
+      "integrity_binding": "UNDETERMINED",
+      "network_required_to_rebuild": "UNKNOWN",
+      "notes": "Unknown is never inferred to be ephemeral.",
+      "rebuildable": "UNKNOWN",
+      "replay_required": "UNKNOWN",
+      "state_class": "UNCLASSIFIED_REQUIRES_POLICY"
+    }
+  ],
+  "settings_schema_version": 1
+}

@@ -1,0 +1,1590 @@
+{
+  "current_schemas": {
+    "market_describe_capabilities": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {},
+      "type": "object"
+    },
+    "market_export_ai_handoff": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "control_package_id": {
+          "maxLength": 28,
+          "minLength": 28,
+          "pattern": "^umea-v1-[0-9a-f]{20}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "control_package_id"
+      ],
+      "type": "object"
+    },
+    "market_fetch_evidence": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "oneOf": [
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v1",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v1",
+              "type": "object"
+            },
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v2",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality",
+                          "material_disclosures",
+                          "monthly_revenue"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v2",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v2",
+              "type": "object"
+            },
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v3",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality",
+                          "material_disclosures",
+                          "monthly_revenue",
+                          "trading_status_context",
+                          "corporate_action_context",
+                          "market_state_context",
+                          "index_futures_context",
+                          "cash_institutional_flow_context"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v3",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v3",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "type": "object"
+    },
+    "market_preview_request": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "oneOf": [
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v1",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v1",
+              "type": "object"
+            },
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v2",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality",
+                          "material_disclosures",
+                          "monthly_revenue"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v2",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v2",
+              "type": "object"
+            },
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v3",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality",
+                          "material_disclosures",
+                          "monthly_revenue",
+                          "trading_status_context",
+                          "corporate_action_context",
+                          "market_state_context",
+                          "index_futures_context",
+                          "cash_institutional_flow_context"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v3",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v3",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "type": "object"
+    },
+    "market_read_result": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "control_package_id": {
+          "maxLength": 28,
+          "minLength": 28,
+          "pattern": "^umea-v1-[0-9a-f]{20}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "control_package_id"
+      ],
+      "type": "object"
+    },
+    "market_validate_request": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "oneOf": [
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v1",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v1",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v1",
+              "type": "object"
+            },
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v2",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality",
+                          "material_disclosures",
+                          "monthly_revenue"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v2",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v2",
+              "type": "object"
+            },
+            {
+              "$id": "urn:tw-market-live-data-intelligence:unified_market_evidence_request:v3",
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": false,
+              "properties": {
+                "data_needs": {
+                  "items": {
+                    "additionalProperties": false,
+                    "allOf": [
+                      {
+                        "else": {
+                          "properties": {
+                            "parameters": {
+                              "maxProperties": 0,
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "if": {
+                          "properties": {
+                            "type": {
+                              "const": "recent_performance"
+                            }
+                          }
+                        },
+                        "then": {
+                          "properties": {
+                            "parameters": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "lookback_trading_days": {
+                                  "maximum": 20,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "lookback_trading_days"
+                              ],
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "properties": {
+                      "client_need_reference": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "type": "object"
+                      },
+                      "priority": {
+                        "enum": [
+                          "required",
+                          "optional"
+                        ],
+                        "type": "string"
+                      },
+                      "type": {
+                        "enum": [
+                          "identity",
+                          "current_observation",
+                          "official_eod_reference",
+                          "recent_performance",
+                          "session_status",
+                          "source_currentness",
+                          "evidence_quality",
+                          "material_disclosures",
+                          "monthly_revenue",
+                          "trading_status_context",
+                          "corporate_action_context",
+                          "market_state_context",
+                          "index_futures_context",
+                          "cash_institutional_flow_context"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "priority"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "execution_mode": {
+                  "enum": [
+                    "preview",
+                    "execute"
+                  ],
+                  "type": "string"
+                },
+                "request_id": {
+                  "type": "string"
+                },
+                "response_preferences": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "include_audit_reference": {
+                      "type": "boolean"
+                    },
+                    "include_caveats": {
+                      "type": "boolean"
+                    },
+                    "include_citations": {
+                      "type": "boolean"
+                    },
+                    "include_currentness": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "schema_version": {
+                  "const": "unified_market_evidence_request.v3",
+                  "type": "string"
+                },
+                "targets": {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "client_target_reference": {
+                        "type": "string"
+                      },
+                      "input": {
+                        "type": "string"
+                      },
+                      "market_hint": {
+                        "enum": [
+                          "TWSE",
+                          "TPEX",
+                          "TAIFEX",
+                          null
+                        ],
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "resolution_requirement": {
+                        "enum": [
+                          "exact",
+                          "allow_ambiguity",
+                          "best_effort"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "input"
+                    ],
+                    "type": "object"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "schema_version",
+                "request_id",
+                "targets",
+                "data_needs",
+                "execution_mode"
+              ],
+              "title": "Unified Market Evidence Request v3",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "type": "object"
+    }
+  },
+  "historical_v1_inputs": "Exact immutable published schema/client acceptance; V1/V2 compatibility retained by V3 resolver",
+  "proof": "release_focused_result.json; published_v1_operation_matrix.json",
+  "status": "PASS",
+  "tool_contract_source_unchanged_from_entry": true,
+  "tool_names": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ]
+}

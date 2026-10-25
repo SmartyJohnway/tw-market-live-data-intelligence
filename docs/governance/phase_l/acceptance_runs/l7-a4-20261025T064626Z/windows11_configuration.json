@@ -1,0 +1,9 @@
+{
+  "configuration": "<Configuration>\n<Networking>Disable</Networking><ClipboardRedirection>Disable</ClipboardRedirection>\n<MappedFolders>\n<MappedFolder><HostFolder>C:\\twmarket_temp\\l7-a4\\sandbox\\input</HostFolder><SandboxFolder>C:\\a4-input</SandboxFolder><ReadOnly>true</ReadOnly></MappedFolder>\n<MappedFolder><HostFolder>C:\\twmarket_temp\\l7-a4\\sandbox\\output</HostFolder><SandboxFolder>C:\\a4-output</SandboxFolder><ReadOnly>false</ReadOnly></MappedFolder>\n</MappedFolders>\n<LogonCommand><Command>powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\a4-input\\guest.ps1</Command></LogonCommand>\n</Configuration>",
+  "developer_venv_mapped": false,
+  "guest_harness_sha256": "fd106255978a22b3e7a243b6ad742603c88f9b88cd80fcfd089780211636c762",
+  "host_profile_mapped": false,
+  "networking": "Disabled",
+  "sha256": "05978774cf0b2dda86e32ff58f3f121ee39b3484c10c363106016578775fa180",
+  "source_checkout_mapped": false
+}

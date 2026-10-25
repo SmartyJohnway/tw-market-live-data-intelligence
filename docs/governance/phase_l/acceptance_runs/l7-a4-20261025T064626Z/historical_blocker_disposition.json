@@ -1,0 +1,9 @@
+{
+  "authority": "USER_CHAT_2026-10-25_L7_A4_PUBLIC_V1_CLIENT_BACKEND_COMPATIBILITY_BRIDGE_ADJUDICATION",
+  "blocker": "L7_A4_PUBLIC_SURFACE_UNCLASSIFIED",
+  "disposition": "OWNER_ADJUDICATED",
+  "historical_status_not_rewritten_to_PASS": true,
+  "original_checkpoint": "9bc3be99bd37d035cb7d1f02172569f7120781ea",
+  "original_directory_preserved": true,
+  "repair": "Real backend negotiation and v1 projection; both historical v1 and current v2 clients PASS"
+}

@@ -1,0 +1,16 @@
+{
+  "VERSION_during_bridge_tests": "1.0.0",
+  "current_consumers": [
+    "scripts/tw_market_lifecycle.py",
+    "frontend/unified-workbench/unified-workbench.js",
+    "frontend/unified-workbench/watchlist-workbench.js"
+  ],
+  "dependencies_changed": 0,
+  "final_VERSION": "1.5.0 selected after compatibility analysis",
+  "resource_closure": "One retained v1 routing JSON added to existing policy",
+  "runtime_files": [
+    "server/services/unified_local_service.py",
+    "server/unified_mcp/local_service_client.py",
+    "server/unified_workbench_router.py"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "authority": "Existing L2 only",
+  "new_migration_authorities": 0,
+  "policy": "inspect -> preview -> verified backup/checkpoint -> explicit implemented apply -> verify",
+  "proof": "240 focused tests include unchanged L2 restore/migration/replay tests",
+  "retained_limit": "watchlist-schema-v0-to-v1 KNOWN_NOT_IMPLEMENTED; apply MIGRATION_PATH_NOT_IMPLEMENTED; v0 not previously supported stable state",
+  "silent_migration": false,
+  "status": "PASS",
+  "synthetic_migratable_test": "Classification/rollback witness only; no production v0 transformer claim"
+}

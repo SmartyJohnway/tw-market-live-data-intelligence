@@ -1,0 +1,9 @@
+{
+  "both_clients": "PASS",
+  "final_A4_run": "l7-a4-20261025T064626Z",
+  "governed_bytes_unchanged": true,
+  "independent_readonly_architecture_review": "No remaining blocker; final acceptance independently testable",
+  "overall_A4_disposition": "L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_PASS",
+  "runtime_bridge": "Real negotiation and retained v1 projection; not client rewriting or test-only bridge",
+  "status": "PASS"
+}

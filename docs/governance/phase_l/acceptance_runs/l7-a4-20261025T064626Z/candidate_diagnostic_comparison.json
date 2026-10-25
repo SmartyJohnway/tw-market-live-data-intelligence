@@ -1,0 +1,20 @@
+{
+  "A4_focused_passed": 240,
+  "baseline_A3_counts": {
+    "failed": 0,
+    "passed": 1895,
+    "skipped": 4
+  },
+  "candidate_counts": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 1895,
+    "skipped": 4,
+    "tests": 1899
+  },
+  "candidate_only_unintended_failures": 0,
+  "canonical_entry": "9bc3be99bd37d035cb7d1f02172569f7120781ea",
+  "exact_member_ledger_equal": true,
+  "retained_harness_diagnostics": "historical_harness_diagnostics.json",
+  "selection_contract_changed": false
+}

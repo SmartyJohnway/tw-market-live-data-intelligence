@@ -1,0 +1,477 @@
+{
+  "canonical_entry_commit": "9bc3be99bd37d035cb7d1f02172569f7120781ea",
+  "disposition": "L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_PASS",
+  "final_candidate_binding": "Exact commit/tree containing this manifest; independently verified after commit in the final candidate receipt and PR body.",
+  "member_count": 93,
+  "members": [
+    {
+      "bytes": 458,
+      "path": "a0_a1_a2_a3_contract_binding.json",
+      "sha256": "19a05bc70d8809698ba6ee3b2791915b9915925e1ef8cedd50fd2bb3adef817c"
+    },
+    {
+      "bytes": 5734,
+      "path": "a2_repeat_validation.json",
+      "sha256": "af38897d6b9dd4d7a2d233557e7a876a24c1e81865db82962f068a82811688e2"
+    },
+    {
+      "bytes": 1713,
+      "path": "a3_repeat_validation_not_required.json",
+      "sha256": "c28ad0fdfa4271f97554113e289a6789470e555a9d386776885fd41ef3c0b304"
+    },
+    {
+      "bytes": 163,
+      "path": "a4_exit_criteria_matrix.json",
+      "sha256": "0d858bb440d3565a878e50d1c37fd936d25e6ecc9bc88c9931a7d98c45998cdf"
+    },
+    {
+      "bytes": 154,
+      "path": "a4_gap_closure_matrix.json",
+      "sha256": "da2c8784c0f94986f36da43afea8a4cfab88f85f0c601049fe2098597b46ffab"
+    },
+    {
+      "bytes": 1890,
+      "path": "audit_compatibility_matrix.json",
+      "sha256": "c3da67157f949acd638f74908c449f06d2129478bff016685ef387cdca5fb26b"
+    },
+    {
+      "bytes": 326,
+      "path": "authority.json",
+      "sha256": "6628afebcec9899778653114d6b7463e3ef213b6b67844012d0e517273aff884"
+    },
+    {
+      "bytes": 221,
+      "path": "bridge_continuation_binding.json",
+      "sha256": "fabe122a6ce7f3ebd93ef223319c8c31f0e0111894bafbc4ace973fe15f8ccd0"
+    },
+    {
+      "bytes": 494,
+      "path": "candidate_diagnostic_comparison.json",
+      "sha256": "19f8bcd11e9247e962a0eb16881954fa3a19f5f1d5bc8e4bf910380aaa5e8ffe"
+    },
+    {
+      "bytes": 37381,
+      "path": "docker_dual_client_runtime.json",
+      "sha256": "910236775524230f6d568164dad8b28023016b1fb7b69a7775f9ce8be9cf8d56"
+    },
+    {
+      "bytes": 1408,
+      "path": "docker_environment_identity.json",
+      "sha256": "298537e8d0c95477589c63df37ed00dd7870ecd5c969d26c44e85811a63c61bb"
+    },
+    {
+      "bytes": 2504,
+      "path": "docker_replacement_image_identity.json",
+      "sha256": "073b4875a079a5e2a6724401804fdefb3698df1cc7390344c727b02e039a0619"
+    },
+    {
+      "bytes": 2504,
+      "path": "docker_source_image_identity.json",
+      "sha256": "8a9a056a890453081f37c207eb2a2b05f82063d5d342075cab48b1247ec34069"
+    },
+    {
+      "bytes": 3286,
+      "path": "docker_state_survival.json",
+      "sha256": "cebf7309af5981c84a7d0387961a82a9078c68c08ac90f9458189715468cbab0"
+    },
+    {
+      "bytes": 328,
+      "path": "entry_identity.json",
+      "sha256": "22f68961feb03aa7ccb1fa2ae243f98f634b61be3b4b7fd875a8b47125a05c90"
+    },
+    {
+      "bytes": 355,
+      "path": "exact_six_acceptance.json",
+      "sha256": "3e63a98dbeb68076448680b3f3b45d61924933395dccbda24b93aa2d0ba90eff"
+    },
+    {
+      "bytes": 1164,
+      "path": "final_technical_review.json",
+      "sha256": "71e2a2e219e579a7c1bfe4a61e78d403cd280f1dfd3aa1127b5e24841275aa5a"
+    },
+    {
+      "bytes": 692,
+      "path": "fresh_clone_environment.json",
+      "sha256": "0413b5c79bfa67f4f2b2cbe002986477ad7d31cbd2aa4ffaf1dbd71c95ec9231"
+    },
+    {
+      "bytes": 157,
+      "path": "fresh_clone_identity.json",
+      "sha256": "071520580e4185b7469defaf7d445baae5c79282717dee19661ab7c54b27bf6b"
+    },
+    {
+      "bytes": 461,
+      "path": "historical_blocker_disposition.json",
+      "sha256": "0c946791124677e9f135d6ad7d6987ae5aa3cf583ac41edeba811c2ddf561cbb"
+    },
+    {
+      "bytes": 2147,
+      "path": "historical_harness_diagnostics.json",
+      "sha256": "4a1bd4e19ad52b94f9e2f1a23919d167759f6f7fd9938bb3cab6e7556ee99d83"
+    },
+    {
+      "bytes": 2121,
+      "path": "historical_state_readback.json",
+      "sha256": "282f20b8248d59ffa7df87171214ac98a55e9fd753e6826454227fd6f6d896ac"
+    },
+    {
+      "bytes": 14718,
+      "path": "http_surface_classification.json",
+      "sha256": "339bba65957eba6f2db032db74c44ccdd0e691559b22b4ba7b027d00b139afaa"
+    },
+    {
+      "bytes": 436,
+      "path": "implementation_input_binding.json",
+      "sha256": "c2ee4d8c4a3105e46bd230a7a22b2048a54ff2cf3298640efb5ad279cfa67429"
+    },
+    {
+      "bytes": 41678,
+      "path": "machine_error_compatibility.json",
+      "sha256": "5745848c7e8abb21a7bbcfc300725d021de9acacb33f0f4a619f6f6cae3d4278"
+    },
+    {
+      "bytes": 3536,
+      "path": "mcp_candidate_matrix.json",
+      "sha256": "432263cdcfbab3f039fbcc3ca0d0a2e3ac18e182acf82af5b49c429a854f5368"
+    },
+    {
+      "bytes": 1220,
+      "path": "mcp_dependency_impact.json",
+      "sha256": "87623e212f74f07bdea3b5c2f8606062c6921ea21a2cf30856177df2ab05cbe8"
+    },
+    {
+      "bytes": 53425,
+      "path": "mcp_error_envelope_behavior.json",
+      "sha256": "d4a9a5c421f7c7f070056ceaa6fc8cd7cfe15dd57fabaff45127ec858da2fbe7"
+    },
+    {
+      "bytes": 41678,
+      "path": "mcp_error_envelope_compatibility.json",
+      "sha256": "5745848c7e8abb21a7bbcfc300725d021de9acacb33f0f4a619f6f6cae3d4278"
+    },
+    {
+      "bytes": 981,
+      "path": "mcp_sdk_matrix_validation.json",
+      "sha256": "e2d6b7b193d76204949b2acb56bd0a0cb18fd31fefee42fbdd26dcd80afeb447"
+    },
+    {
+      "bytes": 363,
+      "path": "mcp_sdk_policy_decision.json",
+      "sha256": "8034ab9a308a2b1a1ef72a9c4afdf066f2bdd7498a3c0e1c4bcd74a5819d2714"
+    },
+    {
+      "bytes": 990898,
+      "path": "mcp_sdk_test_matrix.json",
+      "sha256": "8f0b0217cfcae4b1b38d6af389a3f26d4ffc83d93867135db5d97137e422eeb6"
+    },
+    {
+      "bytes": 55553,
+      "path": "mcp_tool_schema_compatibility.json",
+      "sha256": "07c25caa54d1bb992e63a60b206881f308a349b5c646b0f7861d336059f9dc28"
+    },
+    {
+      "bytes": 5647,
+      "path": "mcp_upstream_version_inventory.json",
+      "sha256": "7c0b29aa25138ac4f1a2707bb64158e56030abfbac89f510804ce1dadecc7c0f"
+    },
+    {
+      "bytes": 567,
+      "path": "migration_policy_acceptance.json",
+      "sha256": "7055e4a8491ba34c650c8a88c4f99ae4eaa6b9aaa2ee0553aa522b16ad859991"
+    },
+    {
+      "bytes": 70067,
+      "path": "native_app_root_write_guard.json",
+      "sha256": "43db0f654bd03d619898ff1cf9cb1d6ef8d781d37eeee8484952cc6e01ac04b8"
+    },
+    {
+      "bytes": 588457,
+      "path": "native_artifact_identity.json",
+      "sha256": "b289af909a14a7c81c60620dd3a8bfd0dadbbf74c1dc82b4a288e7794390f929"
+    },
+    {
+      "bytes": 1163,
+      "path": "native_bootstrap_acceptance.json",
+      "sha256": "d602215d1359ab351263e563a8ac8589798c3eb7aaa77aff796e6412de99f334"
+    },
+    {
+      "bytes": 278,
+      "path": "native_distribution_manifest_verification.json",
+      "sha256": "f64d0f926251724f8fdd2a9ba56a018b6e07f37201f3f33ff71a138c67570b53"
+    },
+    {
+      "bytes": 611,
+      "path": "native_distribution_relocation_probe.json",
+      "sha256": "9791049debeb2583e0d4b5135814d42c5527899fdeebafc954711e180e1b89e7"
+    },
+    {
+      "bytes": 55,
+      "path": "native_doctor_read_only.json",
+      "sha256": "68ff33300b142e65aa6b04bd4484e501d3f0a4d2209dbd023ae6fbebdd6d63eb"
+    },
+    {
+      "bytes": 1630,
+      "path": "native_final_result.json",
+      "sha256": "95f8778f16cfd8979ea28ccf9ef390530d6d61cffa9a2b4f6885f1674b89252e"
+    },
+    {
+      "bytes": 2368,
+      "path": "native_initialized_package_acceptance.json",
+      "sha256": "f1314feb5d1b9efc992b14869fc9a2c9d38a1dcc3afc1db087aa5228ad7bd38c"
+    },
+    {
+      "bytes": 14727,
+      "path": "native_lifecycle_acceptance.json",
+      "sha256": "f2749567e93ee9f4f906f4883c3f53de89fe2641af6047e08cb1177bb4b9e5b8"
+    },
+    {
+      "bytes": 96121,
+      "path": "native_mcp_interactive_protocol.json",
+      "sha256": "8379ebf0d569146f44b4dfab1efa006a9ae4c05bb4cdd5b4ad761766ee53988f"
+    },
+    {
+      "bytes": 71390,
+      "path": "native_mcp_package_acceptance.json",
+      "sha256": "bc274df27fc708893f27c654451185c6b38850c21163f50a12e568b75c098b26"
+    },
+    {
+      "bytes": 4717,
+      "path": "native_preinit_package_acceptance.json",
+      "sha256": "a44218e207e41bb6b51bc944f70ff145dabc6d8060a7ec64491900232e72f962"
+    },
+    {
+      "bytes": 1068,
+      "path": "native_prior_state_creation.json",
+      "sha256": "4f52494dbed23eb1639641d985bfbf03b6a207f1545b81aa6bf44ee3bc336e15"
+    },
+    {
+      "bytes": 19843,
+      "path": "native_prior_state_upgrade.json",
+      "sha256": "c5050b1b83341203b002292ec6c10367eded3ce3b15b75b6879289b01c741c48"
+    },
+    {
+      "bytes": 212,
+      "path": "native_security_master_package_acceptance.json",
+      "sha256": "1dc8be4ea028b1e93855e0045f48d4f260a60d382fd60ae945427e425d27d3cc"
+    },
+    {
+      "bytes": 3515,
+      "path": "native_sys_path_isolation.json",
+      "sha256": "f09f08874dd581f518f3adab42eac2c26a928b0ce943dd1fb584fca669bdac65"
+    },
+    {
+      "bytes": 1314,
+      "path": "persistent_state_compatibility_matrix.json",
+      "sha256": "46ae0fecaafcbd664f71c37d6704fa717068afa1cfa0213e6dd81a69f4539f01"
+    },
+    {
+      "bytes": 19051,
+      "path": "persistent_state_inventory.json",
+      "sha256": "81e90bca0138ed7ba273b0bed25d6c0b1212715720612bdb914929614318df08"
+    },
+    {
+      "bytes": 537,
+      "path": "product_network_accounting.json",
+      "sha256": "f834df80c3b490a2c8ca3be80e99438f5c8a1d3824b4974ff950ab376634ae5e"
+    },
+    {
+      "bytes": 327,
+      "path": "public_contract_preservation.json",
+      "sha256": "45f7e13815939d8456bd45f6306f8fd2cd344c329445fc3127c83ab12e41923b"
+    },
+    {
+      "bytes": 3749,
+      "path": "public_surface_classification.json",
+      "sha256": "dce6104054f2cc2dd2931b48d15d9c1d53c2db55af25881440915cb8018a2ea2"
+    },
+    {
+      "bytes": 21355,
+      "path": "public_surface_inventory.json",
+      "sha256": "5ffcb455f2295b7bde999a40589d2ef36ae0bfd5f1dc45f796e80a80e17db684"
+    },
+    {
+      "bytes": 1487,
+      "path": "published_v1_client_identity.json",
+      "sha256": "acb712580eb5bc68dccd621a4845f67972a05e16c41ddea270996b713aea72de"
+    },
+    {
+      "bytes": 4791,
+      "path": "published_v1_operation_matrix.json",
+      "sha256": "4912392d2e6861c05120e435601a1bd6424afd074ef32421acf5019b71360e17"
+    },
+    {
+      "bytes": 1108,
+      "path": "python311_runtime_compatibility.json",
+      "sha256": "560cb79fd628254659552a50a6b8e530a239cff627926ab6bb5a5a7a0ed365c5"
+    },
+    {
+      "bytes": 238297,
+      "path": "release_blocking_ci_members.json",
+      "sha256": "054883a8542b9fbabdba315104c7eab7fb1949082d4e49087bb4f5dd517d7635"
+    },
+    {
+      "bytes": 1109,
+      "path": "release_blocking_ci_revalidation.json",
+      "sha256": "5471422d803041967bed671965126a2bffa44abe982f285e4abf9696083078db"
+    },
+    {
+      "bytes": 3218,
+      "path": "release_focused_result.json",
+      "sha256": "a8f5a1d9257f3b1e7fc448dae75e72b658e896c09a33536378d24e85a0b2e146"
+    },
+    {
+      "bytes": 961,
+      "path": "request_compatibility_matrix.json",
+      "sha256": "fa8692f174fe741530b4e8a9da786229c7971f34bd99a6085cdd63ec5500238d"
+    },
+    {
+      "bytes": 4404,
+      "path": "required_validators.json",
+      "sha256": "d74860a967f6907f702adb9a50659ce67f7dcb665c5236a1eb7ce1a3ee5cf308"
+    },
+    {
+      "bytes": 1890,
+      "path": "result_compatibility_matrix.json",
+      "sha256": "c3da67157f949acd638f74908c449f06d2129478bff016685ef387cdca5fb26b"
+    },
+    {
+      "bytes": 2687,
+      "path": "scope_diff_verification.json",
+      "sha256": "c39da8e7a95580fa6cda3e2214138218e2fa5502c7a8dfccf517abb5b6be09b5"
+    },
+    {
+      "bytes": 466,
+      "path": "semver_compatibility_analysis.json",
+      "sha256": "8f3f7a55a2d52da973a796a437936ed1cbfe6858c415295eef97c1233964d561"
+    },
+    {
+      "bytes": 1488,
+      "path": "setup_network_accounting.json",
+      "sha256": "2afd1ba4e7e67eead0b3d84a006e26a8ed9d2f2584789481d5377562d9602fc9"
+    },
+    {
+      "bytes": 215,
+      "path": "stable_version_decision.json",
+      "sha256": "498892dd8411190fa8bb8ac13aa2da4824225fc8cd7ffce2749fe2189be5ff42"
+    },
+    {
+      "bytes": 223,
+      "path": "static_node_validation.json",
+      "sha256": "d75cb654ad179b36187ba33ced94c86306cfbe8c2df397ef690b0eb36640314a"
+    },
+    {
+      "bytes": 113595,
+      "path": "version_propagation.json",
+      "sha256": "9149406b3f7ec70f73c1c0abab7ce8f5d6715ebc5fd43ccee19be1e5ee704ba8"
+    },
+    {
+      "bytes": 601420,
+      "path": "windows11_artifact_verification.json",
+      "sha256": "6637a418488505d685a3f8bf4b34d10e9fa6f50738f5190526f438b739bc5fb9"
+    },
+    {
+      "bytes": 943,
+      "path": "windows11_configuration.json",
+      "sha256": "087280d1c9f1711853313b307d47a37379debbb507ebfcd5d4df220a03432b76"
+    },
+    {
+      "bytes": 725,
+      "path": "windows11_environment_identity.json",
+      "sha256": "9125514e7cc6956a4c4d325c359455fe09a8b5da124275f1aa8b7063670df7fb"
+    },
+    {
+      "bytes": 96,
+      "path": "windows11_host_cleanup.json",
+      "sha256": "459064bed2be35d04b3d199cfc8d243b8349accca88df445173f06cd1ca17686"
+    },
+    {
+      "bytes": 241,
+      "path": "windows11_host_launch.json",
+      "sha256": "352cd9eed94342e54cefba53eb7faf9dabfc07544f9a9d37fdaa21537edbb05b"
+    },
+    {
+      "bytes": 70067,
+      "path": "windows11_native_app_root_write_guard.json",
+      "sha256": "43db0f654bd03d619898ff1cf9cb1d6ef8d781d37eeee8484952cc6e01ac04b8"
+    },
+    {
+      "bytes": 1099,
+      "path": "windows11_native_bootstrap_acceptance.json",
+      "sha256": "13c6d2e5f38fe48c794e4363f3efd563baacd8b09a4efef1bcbe429a8136ed5e"
+    },
+    {
+      "bytes": 278,
+      "path": "windows11_native_distribution_manifest_verification.json",
+      "sha256": "f64d0f926251724f8fdd2a9ba56a018b6e07f37201f3f33ff71a138c67570b53"
+    },
+    {
+      "bytes": 563,
+      "path": "windows11_native_distribution_relocation_probe.json",
+      "sha256": "52a51382a4251a846585f5a992649adfedc236d399a999088594a7adc573ae18"
+    },
+    {
+      "bytes": 55,
+      "path": "windows11_native_doctor_read_only.json",
+      "sha256": "68ff33300b142e65aa6b04bd4484e501d3f0a4d2209dbd023ae6fbebdd6d63eb"
+    },
+    {
+      "bytes": 1630,
+      "path": "windows11_native_final_result.json",
+      "sha256": "95f8778f16cfd8979ea28ccf9ef390530d6d61cffa9a2b4f6885f1674b89252e"
+    },
+    {
+      "bytes": 2144,
+      "path": "windows11_native_initialized_package_acceptance.json",
+      "sha256": "06280f578a0302d363c0f49dc5cb738bf6648bafce0b1b1b487cb2d6894bcbed"
+    },
+    {
+      "bytes": 13713,
+      "path": "windows11_native_lifecycle_acceptance.json",
+      "sha256": "31118072bca9bb5b03363653cdf1be81903a23606d18cb0cf6ea42e42217300a"
+    },
+    {
+      "bytes": 96121,
+      "path": "windows11_native_mcp_interactive_protocol.json",
+      "sha256": "8379ebf0d569146f44b4dfab1efa006a9ae4c05bb4cdd5b4ad761766ee53988f"
+    },
+    {
+      "bytes": 71390,
+      "path": "windows11_native_mcp_package_acceptance.json",
+      "sha256": "bc274df27fc708893f27c654451185c6b38850c21163f50a12e568b75c098b26"
+    },
+    {
+      "bytes": 4367,
+      "path": "windows11_native_preinit_package_acceptance.json",
+      "sha256": "e04c1328f062318f229d2e47773982b79e73d520395dd7ff62eea71ab3bcb2e9"
+    },
+    {
+      "bytes": 212,
+      "path": "windows11_native_security_master_package_acceptance.json",
+      "sha256": "1dc8be4ea028b1e93855e0045f48d4f260a60d382fd60ae945427e425d27d3cc"
+    },
+    {
+      "bytes": 3152,
+      "path": "windows11_native_sys_path_isolation.json",
+      "sha256": "d3ee7f161b0f09d94bbb5d13c447167bdb398747e238f2224dfb54606bc5c630"
+    },
+    {
+      "bytes": 526,
+      "path": "windows11_prerequisite.json",
+      "sha256": "d45843328be0b8c8422aa67738cda27cd37f89f48a23fda7fcb6d85cdc36c38b"
+    },
+    {
+      "bytes": 1461,
+      "path": "windows11_prerequisite_identity.json",
+      "sha256": "9c69cb7d93495ef4bb5bcc81acdc039b144cb7289847578c1e3433417c489cd6"
+    },
+    {
+      "bytes": 133,
+      "path": "windows11_result.json",
+      "sha256": "f61b1847bac2f7cf527776b36777ebccd525609e219f8248ae9e454f9dbbbd0c"
+    }
+  ],
+  "schema_version": 1,
+  "self_digest": "10705e65abe5565784a47c899877a3dd2e265147ce910e8ca6146a6e224bff17",
+  "tested_implementation_commit": "3b25055231a0a3970f5dc95928ce042ca6f482b3",
+  "tested_implementation_tree": "a11c5be938470270b69c903c5e4430fdd46e2ed0"
+}

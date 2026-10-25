@@ -1,0 +1,363 @@
+{
+  "negotiation": "Headerless or exact v1 -> retained public v1; exact v2 -> current public v2; unknown fails closed across Unified router",
+  "no_new_HTTP_routes": true,
+  "operations": [
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "read_root__get",
+      "path": "/",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_context_briefing_api_context_briefing_get",
+      "path": "/api/context/briefing",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_context_canonical_api_context_canonical_get",
+      "path": "/api/context/canonical",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_context_capability_summary_api_context_capability_summary_get",
+      "path": "/api/context/capability-summary",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_context_snapshot_api_context_snapshot_get",
+      "path": "/api/context/snapshot",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_context_source_health_api_context_source_health_get",
+      "path": "/api/context/source-health",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_conversation_context_api_conversation_context_get",
+      "path": "/api/conversation/context",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "POST",
+      "operation_id": "compose_temporary_evidence_request_api_evidence_request_previews_post",
+      "path": "/api/evidence-request-previews",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "read_governance_api_governance_get",
+      "path": "/api/governance",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "read_health_api_health_get",
+      "path": "/api/health",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "POST",
+      "operation_id": "post_m5k_conversation_handoff_api_m5k_conversation_handoff_post",
+      "path": "/api/m5k/conversation/handoff",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "POST",
+      "operation_id": "post_m5k_execute_live_observation_api_m5k_live_observation_execute_post",
+      "path": "/api/m5k/live-observation/execute",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_m5k_live_observation_history_api_m5k_live_observation_history_get",
+      "path": "/api/m5k/live-observation/history",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_m5k_latest_live_observation_api_m5k_live_observation_latest_get",
+      "path": "/api/m5k/live-observation/latest",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "POST",
+      "operation_id": "post_m5k_plan_live_observation_api_m5k_live_observation_plan_post",
+      "path": "/api/m5k/live-observation/plan",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_m5k_default_watchlist_api_m5k_watchlist_default_get",
+      "path": "/api/m5k/watchlist/default",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "POST",
+      "operation_id": "post_m5k_validate_watchlist_api_m5k_watchlist_validate_post",
+      "path": "/api/m5k/watchlist/validate",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_m5l_source_adapter_matrix_api_m5l_source_adapter_matrix_get",
+      "path": "/api/m5l/source-adapter-matrix",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_m5l_source_capabilities_api_m5l_source_capabilities_get",
+      "path": "/api/m5l/source-capabilities",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "POST",
+      "operation_id": "post_m7g_controlled_refresh_execute_api_m7g_controlled_refresh_execute_post",
+      "path": "/api/m7g/controlled-refresh/execute",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_matrix_api_matrix_get",
+      "path": "/api/matrix",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_source_health_history_api_source_health_history_get",
+      "path": "/api/source-health/history",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_source_health_latest_api_source_health_latest_get",
+      "path": "/api/source-health/latest",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_source_health_schema_api_source_health_schema_get",
+      "path": "/api/source-health/schema",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "POST",
+      "operation_id": "create_authorization_api_unified_authorizations_post",
+      "path": "/api/unified/authorizations",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "GET",
+      "operation_id": "get_capabilities_api_unified_capabilities_get",
+      "path": "/api/unified/capabilities",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "POST",
+      "operation_id": "execute_authorization_api_unified_executions_post",
+      "path": "/api/unified/executions",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "POST",
+      "operation_id": "fetch_evidence_api_unified_fetch_evidence_post",
+      "path": "/api/unified/fetch-evidence",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "POST",
+      "operation_id": "preview_request_api_unified_preview_request_post",
+      "path": "/api/unified/preview-request",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "POST",
+      "operation_id": "build_result_package_api_unified_result_package_post",
+      "path": "/api/unified/result-package",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "GET",
+      "operation_id": "download_result_audit_api_unified_result_package__control_package_id__audit_json_get",
+      "path": "/api/unified/result-package/{control_package_id}/audit.json",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "GET",
+      "operation_id": "read_ai_handoff_api_unified_result_package__control_package_id__handoff_get",
+      "path": "/api/unified/result-package/{control_package_id}/handoff",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "POST",
+      "operation_id": "validate_request_api_unified_validate_request_post",
+      "path": "/api/unified/validate-request",
+      "scope": "Only this enumerated governed Unified operation, not arbitrary HTTP namespace routes"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_watchlist_api_watchlist_get",
+      "path": "/api/watchlist",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "POST",
+      "operation_id": "commit_persistent_watchlist_mutation_api_watchlist_mutations_commit_post",
+      "path": "/api/watchlist-mutations/commit",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "POST",
+      "operation_id": "preview_persistent_watchlist_mutation_api_watchlist_mutations_preview_post",
+      "path": "/api/watchlist-mutations/preview",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_watchlist_schema_api_watchlist_schema_get",
+      "path": "/api/watchlist/schema",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "operation_id": "get_watchlist_summary_api_watchlist_summary_get",
+      "path": "/api/watchlist/summary",
+      "scope": "Legacy implementation or diagnostics; not a newly promoted public promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "GET",
+      "operation_id": "get_persistent_watchlists_api_watchlists_get",
+      "path": "/api/watchlists",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "GET",
+      "operation_id": "get_persistent_watchlist_api_watchlists__watchlist_id__get",
+      "path": "/api/watchlists/{watchlist_id}",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "POST",
+      "operation_id": "compose_watchlist_evidence_request_api_watchlists__watchlist_id__evidence_request_preview_post",
+      "path": "/api/watchlists/{watchlist_id}/evidence-request-preview",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "GET",
+      "operation_id": "export_persistent_watchlist_api_watchlists__watchlist_id__export_get",
+      "path": "/api/watchlists/{watchlist_id}/export",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "GET",
+      "operation_id": "get_persistent_watchlist_versions_api_watchlists__watchlist_id__versions_get",
+      "path": "/api/watchlists/{watchlist_id}/versions",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "PUBLIC_COMPATIBILITY",
+      "method": "GET",
+      "operation_id": "get_persistent_watchlist_version_api_watchlists__watchlist_id__versions__version__get",
+      "path": "/api/watchlists/{watchlist_id}/versions/{version}",
+      "scope": "Workbench backend compatibility; no general REST API extension promise"
+    },
+    {
+      "classification": "PUBLIC_STABLE",
+      "method": "GET",
+      "path": "/workbench/",
+      "scope": "Canonical user-facing workbench"
+    },
+    {
+      "classification": "PUBLIC_DEPRECATED",
+      "method": "GET",
+      "path": "/workbench/mode-a/",
+      "scope": "Retained compatibility redirect, no separate product"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "path": "/api/probe/twse",
+      "scope": "Non-schema diagnostic route; not public API"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "path": "/api/probe/tpex",
+      "scope": "Non-schema diagnostic route; not public API"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "path": "/api/probe/yahoo",
+      "scope": "Non-schema diagnostic route; not public API"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "path": "/api/probe/twse_mis",
+      "scope": "Non-schema diagnostic route; not public API"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "path": "/api/probe/finmind",
+      "scope": "Non-schema diagnostic route; not public API"
+    },
+    {
+      "classification": "INTERNAL",
+      "method": "GET",
+      "path": "/api/probe/feasibility",
+      "scope": "Non-schema diagnostic route; not public API"
+    }
+  ],
+  "scope": "Enumerated governed operations and Workbench backend; not a general REST execution proxy"
+}

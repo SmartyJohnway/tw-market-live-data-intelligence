@@ -1,0 +1,42 @@
+{
+  "commit": "e02bcb125999f542308a75f349c212f0ff3fee83",
+  "files": [
+    {
+      "blob": "4f26531a0293d75f994839cdd7b6270b26deb1fb",
+      "bytes": 271,
+      "path": "server/unified_mcp/__init__.py",
+      "sha256": "4bac8dba72b8496b3b0b6cafeb74c92a04432bc3d939679f68134d489caf4c17"
+    },
+    {
+      "blob": "455c74fb941eebb8474b1b843ad4ff05f2f2310c",
+      "bytes": 7264,
+      "path": "server/unified_mcp/local_service_client.py",
+      "sha256": "ce8c86027351f469b5e5822a0fd6beb9de889f8d5724fc24fcade040623ac05d"
+    },
+    {
+      "blob": "815c1ff473d31e0fd55722febafa4922a559b14c",
+      "bytes": 7814,
+      "path": "server/unified_mcp/tool_contracts.py",
+      "sha256": "59e1ff21c2589e0c18a71ffd42592b7222a28a1fce406c965a6d6e68a70376dd"
+    },
+    {
+      "blob": "7129c03bb6c89ae791260035475eb865ea677724",
+      "bytes": 1387,
+      "path": "server/unified_mcp/error_mapping.py",
+      "sha256": "36a30e6ef3593392bd1aef4fb9a9ec688c10d476b2187f599c757e40122e0200"
+    },
+    {
+      "blob": "d430384e12efccef2f13218a8a9379a6dd9d5646",
+      "bytes": 4496,
+      "path": "server/unified_mcp/server.py",
+      "sha256": "9400ee3474d37a19050d4df01f5ad3e720f2206e7fa7176a29db128c9eba17c0"
+    },
+    {
+      "blob": "b38c8c3adbeaf494bcf8aa489f7e3bd18cb31f91",
+      "bytes": 3375,
+      "path": "schemas/unified_market_evidence_request.v1.schema.json",
+      "sha256": "c56add4bdb200d7dc1a1e9c27d576fefbf434dc7a8658fd17000c4ae8ee84cac"
+    }
+  ],
+  "source_rewriting": false
+}
