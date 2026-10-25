@@ -1,7 +1,9 @@
 # Phase L / L7-A4 — Public Compatibility / MCP SDK / Stable Version Decision
 
 Technical disposition: `L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_PASS`.
-Owner acceptance and independent PR review remain pending. Merge, A5+, publication,
+Independent review passed under `L7_A4_INDEPENDENT_TECHNICAL_REVIEW_PASS` (review `5642080353`).
+Owner accepted the exact candidate under `L7_A4_OWNER_ACCEPTED_FOR_MERGE` (review `5642097513`).
+PR #416 normal-merged at `28a22ffc206db425ffefa8e578bf5ef7dcdb1a19`; A5+, stable publication,
 Phase M and Phase L closure remain unauthorized.
 
 ## Authority and exact source
@@ -131,5 +133,7 @@ Final run: [manifest](acceptance_runs/l7-a4-20261025T064626Z/manifest.json),
 93 members; self-digest `10705e65abe5565784a47c899877a3dd2e265147ce910e8ca6146a6e224bff17`.
 Separate bridge continuation: [manifest](acceptance_runs/l7-a4-v1-compat-bridge-20261025T033011Z/manifest.json).
 Committed member lengths/hashes/self-digests and implementation-input byte identity
-must be verified after the evidence-only commit before push/PR. After PR opening,
-stop for independent review / Owner acceptance; do not merge.
+were independently verified on exact candidate `902febc323b2fd568a2d00c00a18eac24f5ae655`, tree
+`d264f509efda2affbf13c3253363e1844651cc17`. PR #416 was Owner-accepted and normal-merged at
+`28a22ffc206db425ffefa8e578bf5ef7dcdb1a19`. This record does not authorize A5+, publication,
+Phase M or Phase L closure.

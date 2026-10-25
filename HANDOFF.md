@@ -1,24 +1,30 @@
 # HANDOFF.md — Current Operational Handoff
 
-## Current L7-A4 technical candidate (2026-10-25)
+## Current L7-A4 merged state (2026-10-25)
 
-L7-A4 is **TECHNICAL PASS; OWNER ACCEPTANCE PENDING** under
+L7-A4 is **OWNER-ACCEPTED AND MERGED** under
 `L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_PASS`.
-L6 remains CLOSED; L7-A0/A1/A2/A3 remain OWNER-ACCEPTED AND MERGED.
+Independent disposition is `L7_A4_INDEPENDENT_TECHNICAL_REVIEW_PASS`, review
+`5642080353`; Owner disposition is `L7_A4_OWNER_ACCEPTED_FOR_MERGE`, review
+`5642097513`. PR #416 normal-merged exact accepted head
+`902febc323b2fd568a2d00c00a18eac24f5ae655`, tree
+`d264f509efda2affbf13c3253363e1844651cc17`, at merge commit
+`28a22ffc206db425ffefa8e578bf5ef7dcdb1a19`. Merge parents are prior canonical main
+`9bc3be99bd37d035cb7d1f02172569f7120781ea` and the exact accepted A4 head; GitHub merge verification is valid.
+
 ProductVersion is **1.5.0 selected/unpublished**; published stable remains v1.0.0.
-Published Local Service v1 clients are retained through a real compatibility
-bridge, current v2 and exact-six remain supported, and MCP SDK policy is exact
-`mcp==1.29.0` with unchanged A3 locks/artifacts. Canonical A1 remains
-1895 passed / four contracted skips / zero failures or guard denials; focused
-compatibility has 240 passed. Native, genuine fresh Win11 and Docker replacement
-repeat acceptance passed from exact tested source `3b25055231a0a3970f5dc95928ce042ca6f482b3`.
-The final evidence-only candidate identity is the exact PR head/tree, separately
-verified after sealing; it must not be confused with the tested source identity.
+Published Local Service v1 clients remain supported through the accepted compatibility bridge,
+current v2 and exact-six remain supported, and MCP SDK policy is exact `mcp==1.29.0`.
+Canonical A1 remains 1895 passed / 0 failed / four contracted skips / zero guard denials;
+A4 focused compatibility/version/state acceptance remains 240 passed. GAP-13 is
+`CLOSED_BY_EXPLICIT_EXACT_PIN_POLICY`; GAP-14 is
+`CLOSED_BY_V1_5_0_PUBLIC_STATE_COMPATIBILITY_DECISION`; only EXIT-08/09/10/14/15 gain A4 PASS.
 
 Report: `docs/governance/phase_l/PHASE_L_L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_2026-10-25.md`.
 Policy: `docs/contracts/L7_PUBLIC_COMPATIBILITY_MCP_SDK_VERSION_POLICY.md`.
-After the A4 PR opens, stop for independent review / Owner acceptance.
-**Merge, A5+, stable publication, Phase M and Phase L closure remain NOT AUTHORIZED.**
+Reconciliation: `docs/governance/phase_l/PHASE_L_L7_A4_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-25.md`.
+**L7-A5+ remains NOT AUTHORIZED. ProductVersion 1.5.0 is not published. Stable publication,
+Phase M and Phase L closure remain NOT AUTHORIZED.**
 
 ## Historical L7-A3 merged state (2026-10-25)
 

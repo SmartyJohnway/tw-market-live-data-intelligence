@@ -1,6 +1,24 @@
 # Governance Index
 
-## Current L7-A3 merged state (2026-10-25)
+## Current L7-A4 merged state (2026-10-25)
+
+L7-A4 is **OWNER-ACCEPTED AND MERGED** under
+`L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_PASS`.
+Independent disposition is `L7_A4_INDEPENDENT_TECHNICAL_REVIEW_PASS`, review `5642080353`;
+Owner disposition is `L7_A4_OWNER_ACCEPTED_FOR_MERGE`, review `5642097513`.
+PR #416 normal-merged accepted head `902febc323b2fd568a2d00c00a18eac24f5ae655`, tree
+`d264f509efda2affbf13c3253363e1844651cc17`, at merge commit
+`28a22ffc206db425ffefa8e578bf5ef7dcdb1a19`; GitHub merge verification is valid.
+
+ProductVersion is **1.5.0 selected/unpublished**; published stable remains v1.0.0.
+Published Local Service v1 compatibility remains supported; current v2/exact-six remain supported;
+MCP SDK policy is exact `mcp==1.29.0`. GAP-13/14 are closed and only EXIT-08/09/10/14/15 gain A4 PASS.
+**L7-A5+, stable publication, Phase M and Phase L closure remain NOT AUTHORIZED.**
+
+Report: `phase_l/PHASE_L_L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_2026-10-25.md`.
+Reconciliation: `phase_l/PHASE_L_L7_A4_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-25.md`.
+
+## Historical L7-A3 merged state (2026-10-25)
 
 L6 remains **CLOSED**. L7-A0, L7-A1, L7-A2 and L7-A3 are **OWNER-ACCEPTED AND MERGED**.
 L7-A3 technical disposition remains `L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_PASS`;
