@@ -6,7 +6,8 @@ from scripts.product_version import ProductVersionError, product_version
 
 
 def test_product_version_is_tracked_final_promotion_authority():
-    assert product_version() == "1.0.0"
+    # A4 applies the selected development version; publication remains separate.
+    assert product_version() == "1.5.0"
 
 
 @pytest.mark.parametrize("value", ("", "v1.0.0", "1.0", "1.0.0\nextra"))

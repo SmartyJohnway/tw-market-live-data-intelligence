@@ -83,8 +83,8 @@ def main():
         ap.error('select at least one actual acceptance: --gate or --native')
     exact_release_validation_source(git,args.source_commit,args.source_tree)
     work=args.work.resolve()
-    if os.name=='nt' and not any(work.is_relative_to(Path(r'C:\twmarket_temp')/scope) for scope in ('l7-a2','l7-a3')):
-        raise ValueError('output must remain under the authorized A2/A3 C workspace')
+    if os.name=='nt' and not any(work.is_relative_to(Path(r'C:\twmarket_temp')/scope) for scope in ('l7-a2','l7-a3','l7-a4')):
+        raise ValueError('output must remain under the authorized A2/A3/A4 C workspace')
     if work.is_relative_to(ROOT) or work.exists():
         raise ValueError('choose a fresh output outside source checkout')
     work.mkdir(parents=True)
@@ -111,7 +111,7 @@ def main():
         from scripts.build_native_distribution import build
         artifact=build(work/'artifacts',args.wheelhouse.resolve(),release_validation_source=args.source_commit,release_validation_tree=args.source_tree)
         save(work/'native-build.json',artifact)
-        guard_base=str(next(p for p in work.parents if p.name in {'l7-a2','l7-a3'}))
+        guard_base=str(next(p for p in work.parents if p.name in {'l7-a2','l7-a3','l7-a4'}))
         run('native-acceptance',[sys.executable,'-B','scripts/accept_native_distribution.py','--zip',str(work/'artifacts'/artifact['filename']),'--python',sys.executable,'--run',str(work/'native acceptance'),'--guard-base',guard_base])
     save(work/'result.json',{'status':'PASS','source_commit':args.source_commit,'source_tree':args.source_tree,'gate_executed':args.gate,'native_executed':args.native,'genuine_windows11_acceptance_claimed':False,'validation_only':True})
 

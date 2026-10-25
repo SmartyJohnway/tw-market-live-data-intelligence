@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const unifiedFetch = (path, options = {}) => fetch(path, {
+        ...options,
+        headers: {
+            ...options.headers,
+            'X-TW-Market-Service-Contract': 'unified_market_evidence_local_service.v2',
+        },
+    });
     const fileInput = document.getElementById('file-input');
     const formatBtn = document.getElementById('btn-format');
     const clearBtn = document.getElementById('btn-clear');
@@ -154,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         validateBtn.textContent = 'Validating...';
         
         try {
-            const response = await fetch('/api/unified/validate-request', {
+            const response = await unifiedFetch('/api/unified/validate-request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ request: parsedRequest })
@@ -188,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         previewBtn.disabled = true;
         previewBtn.textContent = 'Building Preview...';
         try {
-            const response = await fetch('/api/unified/preview-request', {
+            const response = await unifiedFetch('/api/unified/preview-request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ request: parsedRequest })
@@ -216,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
             expected_plan_id: currentPreviewResult.orchestration_plan.plan_id,
             expected_plan_hash: currentPreviewResult.orchestration_plan.plan_hash,
             confirm_authorization: true, approval_scope_mode: 'whole_plan_executable_scope' };
-        const response = await fetch('/api/unified/authorizations', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+        const response = await unifiedFetch('/api/unified/authorizations', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
         const data = await response.json();
         if (!response.ok) { modeB2Summary.textContent = `Authorization unavailable: ${data.error || 'unknown'}`; return; }
         currentAuthorization = data;
@@ -232,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         invalidateModeCState();
         const reference = window.prompt('Operator confirmation reference');
         if (!reference) return;
-        const response = await fetch('/api/unified/executions', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
+        const response = await unifiedFetch('/api/unified/executions', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
             control_package_id: currentAuthorization.control_package_id, confirm_execution:true,
             operator_confirmation_reference:reference, confirm_network_execution:networkConfirmation.checked === true
         })});
@@ -245,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     buildResultBtn.addEventListener('click', async () => {
         if (!currentAuthorization) return;
         buildResultBtn.disabled = true;
-        const response = await fetch('/api/unified/result-package', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({control_package_id: currentAuthorization.control_package_id})});
+        const response = await unifiedFetch('/api/unified/result-package', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({control_package_id: currentAuthorization.control_package_id})});
         const data = await response.json();
         if (!response.ok) { modeCSummary.textContent = `Result package unavailable: ${data.error || 'unknown'}`; return; }
         currentModeCResult = data;
@@ -288,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-download-result').addEventListener('click', () => downloadJson(currentModeCResult?.canonical_result, 'canonical-result'));
     document.getElementById('btn-download-audit').addEventListener('click', async () => {
         if (!currentAuthorization) return;
-        const response = await fetch(`/api/unified/result-package/${encodeURIComponent(currentAuthorization.control_package_id)}/audit.json`);
+        const response = await unifiedFetch(`/api/unified/result-package/${encodeURIComponent(currentAuthorization.control_package_id)}/audit.json`);
         if (response.ok) downloadJson(await response.json(), 'audit');
     });
 

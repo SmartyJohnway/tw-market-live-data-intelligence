@@ -8,7 +8,8 @@
 
 ![Deterministic Unified Workbench overview](docs/assets/workbench-overview.png)
 
-ProductVersion = `1.0.0`. The current stable release is `v1.0.0`
+ProductVersion = `1.5.0`. Selected `v1.5.0` is unpublished; selection alone is not technical acceptance.
+The current stable release is `v1.0.0`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)).
 The published prerelease history is `v1.0.0-rc.1`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)),
@@ -150,7 +151,7 @@ security concerns using the grounded guidance in [SECURITY.md](SECURITY.md).
 
 ## Release status
 
-`VERSION` records `1.0.0`. The current stable release is `v1.0.0`
+`VERSION` records `1.5.0` (selected, unpublished). The current stable release is `v1.0.0`
 ([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0));
 published prerelease history remains `v1.0.0-rc.1`. The current development
 line has progressed through accepted Phase G G1/G2 runtime work and H-ACT-V3

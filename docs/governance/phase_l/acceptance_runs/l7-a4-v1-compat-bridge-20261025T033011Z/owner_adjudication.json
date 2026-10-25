@@ -1,0 +1,10 @@
+{
+  "authority": "USER_CHAT_2026-10-25_L7_A4_PUBLIC_V1_CLIENT_BACKEND_COMPATIBILITY_BRIDGE_ADJUDICATION",
+  "blocker": "L7_A4_PUBLIC_SURFACE_UNCLASSIFIED",
+  "disposition": "OWNER_ADJUDICATED",
+  "published_v1_compatibility": "AFFIRMED",
+  "same_release_only": "REJECTED",
+  "VERSION": "1.0.0",
+  "bridge": "AUTHORIZED_NOT_YET_ACCEPTED",
+  "blocked_evidence_preserved": true
+}

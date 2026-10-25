@@ -1,5 +1,5 @@
 import json
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, HTTPException, Depends
 from .unified_bounded_io import bounded_json_response as JSONResponse, read_bounded_request_body
 from .unified_payload_bounds import MAX_UNIFIED_REQUEST_BYTES
 from .services.unified_mode_a import validate_mode_a_request
@@ -11,12 +11,32 @@ from .services.unified_mode_b1 import (
 from .services.unified_mode_b2 import ModeB2Error, build_mode_b2_authorization
 from .services.unified_mode_b2_execution import execute_mode_b2_once
 from .services.unified_mode_c import ModeCError, build_mode_c_ai_handoff, build_mode_c_result_package, read_mode_c_audit
-from .services.unified_local_service import LocalServiceError, describe_capabilities
+from .services.unified_local_service import (
+    LocalServiceError, describe_capabilities, LEGACY_SERVICE_CONTRACT_VERSION,
+    SERVICE_CONTRACT_VERSION, SERVICE_CONTRACT_HEADER,
+)
 from .services.unified_local_operator_action import LocalOperatorActionError, fetch_market_evidence
 from .operational_diagnostics import current_trace_id
 
+def negotiated_service_contract(request: Request) -> str:
+    """Retain headerless v1 clients and reject unknown contracts before execution."""
+    value = request.headers.get(SERVICE_CONTRACT_HEADER, LEGACY_SERVICE_CONTRACT_VERSION)
+    if value not in {LEGACY_SERVICE_CONTRACT_VERSION, SERVICE_CONTRACT_VERSION}:
+        raise HTTPException(status_code=409, detail="local_service_contract_incompatible")
+    return value
+
+
+def service_response_envelope(payload: dict, request: Request) -> dict:
+    """Project the negotiated transport identity; governed artifacts stay intact."""
+    if (negotiated_service_contract(request) == LEGACY_SERVICE_CONTRACT_VERSION
+            and payload.get("service_contract_version") == SERVICE_CONTRACT_VERSION):
+        return {**payload, "service_contract_version": LEGACY_SERVICE_CONTRACT_VERSION}
+    return payload
+
+
 router = APIRouter(
     prefix="/api/unified",
+    dependencies=[Depends(negotiated_service_contract)],
     tags=["unified-workbench-mode-a"]
 )
 
@@ -24,10 +44,10 @@ MAX_BODY_SIZE = MAX_UNIFIED_REQUEST_BYTES
 
 
 @router.get("/capabilities")
-async def get_capabilities():
+async def get_capabilities(contract: str = Depends(negotiated_service_contract)):
     """Deterministic catalog/routing/registration projection; never executes."""
     try:
-        return JSONResponse(status_code=200, content=describe_capabilities())
+        return JSONResponse(status_code=200, content=describe_capabilities(contract))
     except LocalServiceError as exc:
         return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": current_trace_id()})
 
@@ -177,7 +197,7 @@ async def fetch_evidence(request: Request):
         return JSONResponse(status_code=status, content={"error": exc.code, "trace_id": current_trace_id()})
     except Exception:
         return JSONResponse(status_code=500, content={"error": "local_operator_action_internal_error", "trace_id": current_trace_id()})
-    return JSONResponse(status_code=200, content=result)
+    return JSONResponse(status_code=200, content=service_response_envelope(result, request))
 
 
 @router.post("/result-package")
@@ -207,9 +227,11 @@ async def download_result_audit(control_package_id: str):
 
 
 @router.get("/result-package/{control_package_id}/handoff")
-async def read_ai_handoff(control_package_id: str):
+async def read_ai_handoff(control_package_id: str, request: Request):
     """Verified AI-safe Result/Audit transport; never performs market retrieval."""
     try:
-        return JSONResponse(status_code=200, content=build_mode_c_ai_handoff(control_package_id))
+        return JSONResponse(status_code=200, content=service_response_envelope(
+            build_mode_c_ai_handoff(control_package_id), request,
+        ))
     except ModeCError as exc:
         return JSONResponse(status_code=409, content={"error": exc.code, "trace_id": current_trace_id()})

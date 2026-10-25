@@ -1107,6 +1107,12 @@
       "justification": "Runtime reference in scripts/m8r_03c_contracts.py"
     },
     {
+      "source": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.json",
+      "destination": "app/docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.json",
+      "role": "runtime_resource",
+      "justification": "Published v1 Local Service compatibility projection"
+    },
+    {
       "source": "docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v2.json",
       "destination": "app/docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v2.json",
       "role": "runtime_resource",

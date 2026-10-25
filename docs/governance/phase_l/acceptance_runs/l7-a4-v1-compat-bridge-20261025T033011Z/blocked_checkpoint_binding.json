@@ -1,0 +1,24 @@
+{
+  "commit": "9bc3be99bd37d035cb7d1f02172569f7120781ea",
+  "tree": "f7109f532234b95ce14e4a32681bd9befcfc0731",
+  "blocker": "L7_A4_PUBLIC_SURFACE_UNCLASSIFIED",
+  "disposition": "OWNER_ADJUDICATED",
+  "historical_blocker_unchanged": true,
+  "files": [
+    {
+      "name": "blocked_report.json",
+      "bytes": 1314,
+      "sha256": "8ec8e5f8d37af9b88a906b211c305b80272bde5dde23798cc137c1fc4a5bf5c1"
+    },
+    {
+      "name": "handshake_reproduction.json",
+      "bytes": 857,
+      "sha256": "f3c75adfae80aa69ef5665af3bdc215ec9cf64b47372b05427ba34adf418e1d1"
+    },
+    {
+      "name": "manifest.json",
+      "bytes": 529,
+      "sha256": "a5ae19f8e6b3639e9931e96906df9417c3d035b2349795e554d5b9861a0551c3"
+    }
+  ]
+}

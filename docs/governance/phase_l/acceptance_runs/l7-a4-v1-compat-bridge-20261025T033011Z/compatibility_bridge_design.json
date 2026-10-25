@@ -1,0 +1,22 @@
+{
+  "policy": "Published supported v1 clients remain usable against later supported product v1.x backends for their contracted behavior",
+  "negotiation_header": "X-TW-Market-Service-Contract",
+  "absent": "unified_market_evidence_local_service.v1",
+  "supported_exact": [
+    "unified_market_evidence_local_service.v1",
+    "unified_market_evidence_local_service.v2"
+  ],
+  "unknown": "409 before Unified endpoint execution; outer security/resource checks remain in force",
+  "capabilities": "v1 retained catalog/routing with current executor registration; exact historical vocabulary and field set; v2 current projection unchanged",
+  "governed_outputs": "Canonical Result/Audit unchanged; transport identity projected only for v1 handoff/fetch; artifacts and product SemVer have independent versions",
+  "current_consumers": [
+    "MCP client",
+    "lifecycle capability probe",
+    "unified-workbench.js",
+    "watchlist-workbench.js"
+  ],
+  "historical_consumers": "Historical v1 browser and Phase J/K acceptance scripts preserved",
+  "dependency_changes": 0,
+  "VERSION_during_bridge": "1.0.0",
+  "review": "Read-only sol_architect found no remaining architecture/diff blocker; tests and complete A4 gates remain required"
+}
