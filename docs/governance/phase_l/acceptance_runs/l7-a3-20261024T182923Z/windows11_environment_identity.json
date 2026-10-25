@@ -1,0 +1,21 @@
+{
+    "source_checkout_mapped":  false,
+    "architecture":  "64-bit",
+    "username":  "E57CD39B-5D8A-4\\WDAGUtilityAccount",
+    "version":  "10.0.26100",
+    "networking":  "Disabled by WSB",
+    "developer_venv_mapped":  false,
+    "preexisting_TWMarket":  false,
+    "build":  "26100",
+    "localappdata":  "C:\\Users\\WDAGUtilityAccount\\AppData\\Local",
+    "sid":  "S-1-5-21-2047949552-857980807-821054962-504",
+    "profile":  "C:\\Users\\WDAGUtilityAccount",
+    "edition":  "Microsoft Windows 11 Enterprise",
+    "computer":  "E57CD39B-5D8A-4",
+    "preexisting_python_processes":  0,
+    "preexisting_acceptance_root":  false,
+    "timestamp":  "2026-10-24T18:05:05.3640908Z",
+    "host_profile_mapped":  false,
+    "python_on_PATH":  false,
+    "git_on_PATH":  false
+}

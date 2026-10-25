@@ -1,5 +1,6 @@
 # Exact dependency graph generated in a disposable CPython 3.11.15 venv.
 # Tested platform: Windows 11 x86_64; pip 26.2.1. Platform-specific entries use markers.
+# Shared exact version projection; consumer artifact authority: config/dependency_authority.json.
 annotated-doc==0.0.5
 annotated-types==0.8.0
 anyio==4.15.1

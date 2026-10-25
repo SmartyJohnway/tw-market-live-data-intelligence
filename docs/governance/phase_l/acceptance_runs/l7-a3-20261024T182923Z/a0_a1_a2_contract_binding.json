@@ -1,0 +1,9 @@
+{
+  "A0": "OWNER_ACCEPTED_AND_MERGED",
+  "A1": "OWNER_ACCEPTED_AND_MERGED",
+  "A2": "OWNER_ACCEPTED_AND_MERGED_POST_MERGE_RECONCILED",
+  "A2_accepted_head": "56e418e9a22469f1c7ed8fbeda01cf7474e029de",
+  "A2_final_manifest": "8d28680f73e196123949a1ffbb9a67e5d2023f965cd2c352d52204b1b8712acf",
+  "L6": "CLOSED",
+  "historical_evidence_changed": false
+}

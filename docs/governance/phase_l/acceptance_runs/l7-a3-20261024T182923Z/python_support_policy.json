@@ -1,0 +1,17 @@
+{
+  "canonical_release_gate": "CPython 3.13 only",
+  "compatibility": "3.11 source/developer/runtime, separate artifact lock; Native bootstrap/build is CPython 3.13",
+  "no_311_support_removal": true,
+  "no_312_support_added": true,
+  "policy": {
+    "canonical": "CPython 3.13",
+    "compatibility": "CPython 3.11 Windows x64, noncanonical developer/test; explicit separate artifact lock",
+    "mcp_sdk_policy": "DEFERRED_TO_A4; current mcp==1.29.0 unchanged",
+    "native_tier1": "Windows 11 x64",
+    "patch_policy": "CPython patch versions recorded per validation/build; artifact reproducibility compares identical toolchain",
+    "unsupported": [
+      "3.12"
+    ]
+  },
+  "proof": "python_311_compatibility_result.json"
+}

@@ -19,7 +19,7 @@ def test_actual_windows_job_label_eligibility(action):
     assert not smoke_job_eligible(workflow,'push',('windows-smoke',),action)
 
 
-@pytest.mark.parametrize('mutation',['published','write','missing-sync','always-run','extra-job','publish-action','git-tag'])
+@pytest.mark.parametrize('mutation',['published','write','missing-sync','always-run','extra-job','publish-action','git-tag','mutable-action'])
 def test_policy_rejects_regressions(tmp_path,mutation):
     destination=tmp_path/'.github/workflows'
     destination.mkdir(parents=True)
@@ -34,5 +34,6 @@ def test_policy_rejects_regressions(tmp_path,mutation):
     if mutation=='extra-job':data['jobs']['unguarded']={'runs-on':'windows-latest','steps':[]}
     if mutation=='publish-action':data['jobs']['validation']['steps'].append({'uses':'softprops/action-gh-release@v2'})
     if mutation=='git-tag':data['jobs']['validation']['steps'].append({'run':'git tag release'})
+    if mutation=='mutable-action':data['jobs']['validation']['steps'][0]['uses']='actions/setup-python@v5'
     path.write_text(yaml.safe_dump(data,sort_keys=False))
     with pytest.raises(AssertionError):validate(tmp_path)

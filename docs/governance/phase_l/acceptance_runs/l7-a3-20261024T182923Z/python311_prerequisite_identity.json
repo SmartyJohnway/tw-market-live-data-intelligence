@@ -1,0 +1,9 @@
+{
+  "Authenticode": "Valid; Python Software Foundation",
+  "classification": "PINNED_ARTIFACT",
+  "official_catalog_sha512_verified": true,
+  "scope": "bounded disposable compatibility probe, not release runtime",
+  "sha256": "9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67",
+  "source": "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg",
+  "version": "3.11.9"
+}

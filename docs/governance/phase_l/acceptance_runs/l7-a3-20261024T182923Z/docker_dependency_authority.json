@@ -1,0 +1,6 @@
+{
+  "authority": "packaging_docker/dependency-lock-linux-amd64-cp313.json",
+  "official_artifacts_verified": true,
+  "package_version_or_existing_wheel_bytes_changed": 0,
+  "sha256": "cbee3e92b5cbf194a64b65261055b6daabb93be044a2494b67b872810cda9d57"
+}

@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "installation_id": "8a73c45a-a591-4cd9-b3b1-66e6d2faf358",
+  "tools": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ],
+  "doctor_read_only": true,
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "scope": "Noncanonical Python 3.11 source/runtime compatibility; not Native bootstrap or canonical release gate",
+  "sequence": [
+    {
+      "label": "preinit",
+      "exit_code": 0
+    },
+    {
+      "label": "init",
+      "exit_code": 0
+    },
+    {
+      "label": "init-again",
+      "exit_code": 0
+    },
+    {
+      "label": "start",
+      "exit_code": 0
+    },
+    {
+      "label": "status",
+      "exit_code": 0
+    },
+    {
+      "label": "doctor",
+      "exit_code": 0
+    },
+    {
+      "label": "stop",
+      "exit_code": 0
+    }
+  ],
+  "guard_denials": [
+    {
+      "event": "denied",
+      "pid": 37308,
+      "reason": "UNOBSERVED_NATIVE_PROCESS",
+      "value": "ver"
+    },
+    {
+      "event": "denied",
+      "pid": 37308,
+      "reason": "UNOBSERVED_NATIVE_PROCESS",
+      "value": "command /c ver"
+    },
+    {
+      "event": "denied",
+      "pid": 37308,
+      "reason": "UNOBSERVED_NATIVE_PROCESS",
+      "value": "cmd /c ver"
+    },
+    {
+      "event": "denied",
+      "pid": 37308,
+      "reason": "UNOBSERVED_NATIVE_PROCESS",
+      "value": "ver"
+    },
+    {
+      "event": "denied",
+      "pid": 37308,
+      "reason": "UNOBSERVED_NATIVE_PROCESS",
+      "value": "command /c ver"
+    },
+    {
+      "event": "denied",
+      "pid": 37308,
+      "reason": "UNOBSERVED_NATIVE_PROCESS",
+      "value": "cmd /c ver"
+    }
+  ]
+}

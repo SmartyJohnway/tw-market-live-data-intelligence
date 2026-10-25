@@ -1,4 +1,5 @@
 -r requirements-lock.txt
+# Human browser intent; canonical hashed Linux graph: config/browser-py313-linux-lock.json.
 # Browser acceptance is a separately installed, reproducible test extra.
 # Keep this exact pin aligned with the RC validation environment.
 playwright==1.55.0

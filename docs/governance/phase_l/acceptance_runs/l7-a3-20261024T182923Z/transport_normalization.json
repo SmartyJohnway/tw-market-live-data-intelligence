@@ -1,0 +1,474 @@
+{
+  "files": [
+    {
+      "committed_sha256": "586000510811119b7bd62d0c7ccd68f945455eb9cbbed35afe8e060105b27521",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "dependency_authority_map.json",
+      "raw_sha256": "586000510811119b7bd62d0c7ccd68f945455eb9cbbed35afe8e060105b27521"
+    },
+    {
+      "committed_sha256": "9b0504f7e8fd9112a27f75f745ba9be03ec8eadd443439ea74e0508e0910acd5",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "installed_graph_verification.json",
+      "raw_sha256": "9b0504f7e8fd9112a27f75f745ba9be03ec8eadd443439ea74e0508e0910acd5"
+    },
+    {
+      "committed_sha256": "10eed21b28b01cb9493652654ba610c5965084fad0eb971d997d73e9fb6aa570",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "python311_runtime_result.json",
+      "raw_sha256": "10eed21b28b01cb9493652654ba610c5965084fad0eb971d997d73e9fb6aa570"
+    },
+    {
+      "committed_sha256": "96002fb4937e2ec2b2f79ff180aaf4402b68ead91a1d07b6f1a90177b8528147",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/python311_acceptance_guard.py",
+      "raw_sha256": "96002fb4937e2ec2b2f79ff180aaf4402b68ead91a1d07b6f1a90177b8528147"
+    },
+    {
+      "committed_sha256": "41af016badf55443f2237f76fcfe6258ea326534f7e05281fa5915123a07faba",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/python311_runtime_probe.py",
+      "raw_sha256": "41af016badf55443f2237f76fcfe6258ea326534f7e05281fa5915123a07faba"
+    },
+    {
+      "committed_sha256": "134d3be60a1c3c563d2b950659578c8f5ecd2ef553a4018a576050b8544f6ba7",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "python311_mcp_protocol.json",
+      "raw_sha256": "134d3be60a1c3c563d2b950659578c8f5ecd2ef553a4018a576050b8544f6ba7"
+    },
+    {
+      "committed_sha256": "04afca98c6543d0da2019da656a4a54cc68357134dd64a841ea3e2c35fd9ddca",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "python311_expected_negative_denials.jsonl",
+      "raw_sha256": "16ec7177926ae591a65f541a63798685635cc1b2be65c9c465ab4f1a86329987"
+    },
+    {
+      "committed_sha256": "7e224b0ae8a3cce0a14dac380eb1c2f292bade79b2b6456629475ab0c33f940f",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "python311_default_tls.json",
+      "raw_sha256": "7e224b0ae8a3cce0a14dac380eb1c2f292bade79b2b6456629475ab0c33f940f"
+    },
+    {
+      "committed_sha256": "beba5518db5757eaaca8ced2886a5846d14edeccfc6ea0a6ed971bfc6bb747e1",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "diagnostic_python311_full_gate_result.json",
+      "raw_sha256": "9a6c5284f7e763356ae8a66fa3e181ab1901afa484c53f31ca481f8db35119eb"
+    },
+    {
+      "committed_sha256": "5563b6ddca3f1f1dc1f6b37f67df62ab3682877b7473c8bd5a87aed243db3bb1",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "diagnostic_python311_full_gate_report.xml",
+      "raw_sha256": "0d56b54ecb4e39a09b357209d18a6c23ec2ab263d3e538c2f26ad92de2a8d2dc"
+    },
+    {
+      "committed_sha256": "5b03ede31dc07e57b35da71c38a0133e1bbbc13e4d58f972a5170f4231bfa56f",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "diagnostic_python311_first_runtime_raw.json",
+      "raw_sha256": "5b03ede31dc07e57b35da71c38a0133e1bbbc13e4d58f972a5170f4231bfa56f"
+    },
+    {
+      "committed_sha256": "e069da4f0af86a153da49827859fefe0926a2047f7005f2dcab965c27edd59b8",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/diagnostic_python311_guard_v1.py",
+      "raw_sha256": "e069da4f0af86a153da49827859fefe0926a2047f7005f2dcab965c27edd59b8"
+    },
+    {
+      "committed_sha256": "89fb0379802d51e1c3886ad7d9eb0622839ee3badbe362387083999196115817",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/lock_artifact_selection.py",
+      "raw_sha256": "89fb0379802d51e1c3886ad7d9eb0622839ee3badbe362387083999196115817"
+    },
+    {
+      "committed_sha256": "7d8f628ca5ddbfb78f6b77a572f2b23fe5946ebc1153ab17c2f2ad621b674330",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "dependency_artifact_hashes.json",
+      "raw_sha256": "7d8f628ca5ddbfb78f6b77a572f2b23fe5946ebc1153ab17c2f2ad621b674330"
+    },
+    {
+      "committed_sha256": "d9fff6fa24abe6bfc4e76023764ac6998cc64e533b031c532f2838713667b3d3",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "replay_windows313.txt",
+      "raw_sha256": "f8b29bc46d7434388c95bfcf296d682b49ce530412ecad5aa91b1fd86f29b6b0"
+    },
+    {
+      "committed_sha256": "4e292971a253978c0c38249b74e2c3b8760671524652aa4027199ee3426fc1ab",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "replay_windows311.txt",
+      "raw_sha256": "a4ec586881949b4c57ce16c5d597a6dfa610a0f4f839bbc109539709bf9babba"
+    },
+    {
+      "committed_sha256": "0b50270a7edc8dcb5f403a1cdb602782afcaf03772329a64e1d6ec2d3af18dbb",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "glibc_replay_commands.json",
+      "raw_sha256": "0b50270a7edc8dcb5f403a1cdb602782afcaf03772329a64e1d6ec2d3af18dbb"
+    },
+    {
+      "committed_sha256": "0c2f7dec7ef12a0abb2cd26babaf7dd69702ecb14e147977583ca764dabf3d6e",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "system_artifact_authority.json",
+      "raw_sha256": "0c2f7dec7ef12a0abb2cd26babaf7dd69702ecb14e147977583ca764dabf3d6e"
+    },
+    {
+      "committed_sha256": "2e64bc741d61d78c40ae38fadbb36264a00d3fb45b4712ff0c73504c760aa7e1",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_build_a_identity.json",
+      "raw_sha256": "2e64bc741d61d78c40ae38fadbb36264a00d3fb45b4712ff0c73504c760aa7e1"
+    },
+    {
+      "committed_sha256": "2e64bc741d61d78c40ae38fadbb36264a00d3fb45b4712ff0c73504c760aa7e1",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_build_b_identity.json",
+      "raw_sha256": "2e64bc741d61d78c40ae38fadbb36264a00d3fb45b4712ff0c73504c760aa7e1"
+    },
+    {
+      "committed_sha256": "bfd86d8ce4ffd0a915acbb434c20efd0e4aa9650f09ef7eb2f760836e7898ca2",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_reproducibility_comparison.json",
+      "raw_sha256": "bfd86d8ce4ffd0a915acbb434c20efd0e4aa9650f09ef7eb2f760836e7898ca2"
+    },
+    {
+      "committed_sha256": "dfea2be07e901b1c59dc9e2d32e333bcbe3b9c9191b3d1bd333922b0a9218155",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "docker_config_field_differences.json",
+      "raw_sha256": "dfea2be07e901b1c59dc9e2d32e333bcbe3b9c9191b3d1bd333922b0a9218155"
+    },
+    {
+      "committed_sha256": "4be21c477be71520e2bdc87b9e49d35e08dc8bea85a6654b12a3969c418913f2",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "first_party_sbom.json",
+      "raw_sha256": "4be21c477be71520e2bdc87b9e49d35e08dc8bea85a6654b12a3969c418913f2"
+    },
+    {
+      "committed_sha256": "4dd3f651c8b0fc1c04008801349c512c97c9a282bce335f6b4e1359d69cfa43f",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "canonical_gate/members.json",
+      "raw_sha256": "1bfadc4fa5ceaaf69f1af2e3b00eec01061f931be8d487fc895f2cfe92c88418"
+    },
+    {
+      "committed_sha256": "1f90bc714e885bf1bed4160286633160cee2a9cfadc972d798231a72eaf39900",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "canonical_gate/report.xml",
+      "raw_sha256": "1d5369c273e61d7eafb9733a31fee0393a08b84e43b3677b975482af36134a71"
+    },
+    {
+      "committed_sha256": "dbb09f9afef36efa11dcc908eff97202eaaff7c9169faa15854d8847995801f8",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "canonical_gate/guard.jsonl",
+      "raw_sha256": "806cc36275a4f5ae417569186a2413875be53265683bd0c93e9e44ed51941ea5"
+    },
+    {
+      "committed_sha256": "83d88f622fefd537a4d58e29273bdaba9d71645de4ae24773dda0152615456f3",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/app_root_write_guard.json",
+      "raw_sha256": "457d7392da4d42a81323b696010842ae28d735ccfabb37d5646a9f453adfee8b"
+    },
+    {
+      "committed_sha256": "d51290682c790c8998480b67a64cfb3431a4b85a99fda502e5825660ae665383",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/bootstrap_acceptance.json",
+      "raw_sha256": "56ff2dd5137ffaec5859dd73959ac62b7c70cb2f30019e29c1157f71bdf26e24"
+    },
+    {
+      "committed_sha256": "4cb39c16e375c8f7f35b07595ffd4293de7a9fc20a33a753601a7460dddb75e1",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/distribution_manifest_verification.json",
+      "raw_sha256": "146cdd89323bcfc77c82bd9635a24467385140f8274bc6cd8f0d73895b132716"
+    },
+    {
+      "committed_sha256": "0f46fa0524faf4465453e6454aa01caef601420449a41a75bc57730a562e4951",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/distribution_relocation_probe.json",
+      "raw_sha256": "89e7ed6e97fb5e56c4786ba85c2928044b1aca7abe0603b37c400b6a768db87b"
+    },
+    {
+      "committed_sha256": "c4b1bae2e45fb191c3f0d9141dbbbd413433db551a6546a6732a54d9073c22a5",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/doctor_read_only.json",
+      "raw_sha256": "5bc710c1d420b3de2df3aa80c2c9ca95a8fad429880862e0a683acc061762816"
+    },
+    {
+      "committed_sha256": "2e173237bdb3616197c05abd989247979954d9dc28d43f41b1da0b435ea77337",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/final_result.json",
+      "raw_sha256": "7757c1e4b7ac0fd642f03f71136e68f9dc229dedeaf81b599348200246eec24a"
+    },
+    {
+      "committed_sha256": "df053f25d31adde4e220fe93fd0561ff14e0f4f48fbe1736874f2fafc726fcbf",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/initialized_package_acceptance.json",
+      "raw_sha256": "54ffcb77d043002742dc9dbf78838c2533bf5da7d547731a18315982c0d4b940"
+    },
+    {
+      "committed_sha256": "257bc5516ae6b8845556d229b4ccee6400677f169e9c5f55d78660d155617f77",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/launcher_acceptance.json",
+      "raw_sha256": "769e2f636eabb737ec8e45823f674fc4f722ad3732aab72a211a7f03ff34fce2"
+    },
+    {
+      "committed_sha256": "0180858562deb52e6df2a36fcbe8869ccc7208dd4a1f562359c2aa04a47e550a",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/lifecycle_acceptance.json",
+      "raw_sha256": "d70eb2bc64b242ef36dc6f9745965ae3b7f0d4363f1ba29b104128d00d3524bc"
+    },
+    {
+      "committed_sha256": "3322226a8d7e159bc0cf1668fa0da12a2cf3ee1e3b67aa10a4a67a3aa4575bda",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/lifecycle_start_attempt.json",
+      "raw_sha256": "b6e31f122a742cdb8922f0e691e790d2e49aaf33fdaecb7213751f53bc103042"
+    },
+    {
+      "committed_sha256": "3a52841f608fe1fc97746726b39988f71062a7e9ba5d99adbd66d7abff9d5ce5",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/mcp_interactive_protocol.json",
+      "raw_sha256": "075d9ee1bee08152add766dea71a0166b9e6e75d13c011d47e97162df202a5fd"
+    },
+    {
+      "committed_sha256": "781fa834e4db82cc68243faefe255d820e74cebd21bc1a609610ed1b56fafb69",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/mcp_package_acceptance.json",
+      "raw_sha256": "0f0a0fce003954009493c8a39009235e12b93777fd0e71fce028391f3d2d074f"
+    },
+    {
+      "committed_sha256": "cffeae903e18796b59ed1089b1939302cc539e267f422c4f4b70a1029d99c680",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/preinit_package_acceptance.json",
+      "raw_sha256": "a10f6fa596fed3dcd056ee91e6c18cbf7d8074cb39574efd8d13711394a161f9"
+    },
+    {
+      "committed_sha256": "1dc8be4ea028b1e93855e0045f48d4f260a60d382fd60ae945427e425d27d3cc",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/security_master_package_acceptance.json",
+      "raw_sha256": "f87c07ff4d623ac34dfcd2323657da1346e7d47e8777c6fd3904a3f85734743a"
+    },
+    {
+      "committed_sha256": "9fe02f31432360bb5d4e56929da67ca88b8caa1aa6b249501d8d74d92ae02876",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_host/sys_path_isolation.json",
+      "raw_sha256": "41a0e9cbf078d9c04b95ed30e86d487804264b948cfff3127e2cc0c8d36a9c97"
+    },
+    {
+      "committed_sha256": "83d88f622fefd537a4d58e29273bdaba9d71645de4ae24773dda0152615456f3",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/app_root_write_guard.json",
+      "raw_sha256": "457d7392da4d42a81323b696010842ae28d735ccfabb37d5646a9f453adfee8b"
+    },
+    {
+      "committed_sha256": "680a3eb13c50be75f28c0f58b1078104a858a8ad25fc5e942a5864a2d8f0366b",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/bootstrap_acceptance.json",
+      "raw_sha256": "8d4f2652b85d7030e5d9346435c136fc8364adb70cf0f5ab2031b1af1f1512a2"
+    },
+    {
+      "committed_sha256": "4cb39c16e375c8f7f35b07595ffd4293de7a9fc20a33a753601a7460dddb75e1",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/distribution_manifest_verification.json",
+      "raw_sha256": "146cdd89323bcfc77c82bd9635a24467385140f8274bc6cd8f0d73895b132716"
+    },
+    {
+      "committed_sha256": "ab2ac103cb671b2497682e259117fee702fe5918f100d6b6fb510c6af88fa7d6",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/distribution_relocation_probe.json",
+      "raw_sha256": "2aa6e83995208641ccc14a05f6517c1b18dccb7eec9433ac82acd2c1e6196f9c"
+    },
+    {
+      "committed_sha256": "c4b1bae2e45fb191c3f0d9141dbbbd413433db551a6546a6732a54d9073c22a5",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/doctor_read_only.json",
+      "raw_sha256": "5bc710c1d420b3de2df3aa80c2c9ca95a8fad429880862e0a683acc061762816"
+    },
+    {
+      "committed_sha256": "2e173237bdb3616197c05abd989247979954d9dc28d43f41b1da0b435ea77337",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/final_result.json",
+      "raw_sha256": "7757c1e4b7ac0fd642f03f71136e68f9dc229dedeaf81b599348200246eec24a"
+    },
+    {
+      "committed_sha256": "b285a305628a38097f47664dd166620d81c126de9267184249fa004f23cbf314",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/initialized_package_acceptance.json",
+      "raw_sha256": "c339589476502d5f6b0fe6e4624827935a5ed775f4934d98fc9ef89e04015684"
+    },
+    {
+      "committed_sha256": "73b2e3b6de42853e9172f2c22dc37bb06a52e51e3d654ad7f9ccbefb83ccb83a",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/launcher_acceptance.json",
+      "raw_sha256": "26ce7ed6ed543e8e53cda7aaa3444f1fe73a59d9b565af755347eb7323680602"
+    },
+    {
+      "committed_sha256": "3bcd94265940a1d1e983bc642c73d9f1d2866dfcb339baacee6c9a1b368d59d4",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/lifecycle_acceptance.json",
+      "raw_sha256": "f52fbd1c73757021e9b54401925c2c70bb6715c151aa7b68fb38df64ac15c414"
+    },
+    {
+      "committed_sha256": "69e76c8e378dd199732615221a6e8af832ab5289be472c711de44244b3b164f8",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/lifecycle_start_attempt.json",
+      "raw_sha256": "774f387011eef8ef80a4ebc35ef2fb3b46225b1c1077fa79c536a160e863034b"
+    },
+    {
+      "committed_sha256": "3a52841f608fe1fc97746726b39988f71062a7e9ba5d99adbd66d7abff9d5ce5",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/mcp_interactive_protocol.json",
+      "raw_sha256": "075d9ee1bee08152add766dea71a0166b9e6e75d13c011d47e97162df202a5fd"
+    },
+    {
+      "committed_sha256": "781fa834e4db82cc68243faefe255d820e74cebd21bc1a609610ed1b56fafb69",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/mcp_package_acceptance.json",
+      "raw_sha256": "0f0a0fce003954009493c8a39009235e12b93777fd0e71fce028391f3d2d074f"
+    },
+    {
+      "committed_sha256": "cd926cd8417bd52aa2f774e90ec072ef245b90266a0eb18ae82f695022071330",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/preinit_package_acceptance.json",
+      "raw_sha256": "c333207b83cc1ea9bed7852aa94bbb49c0f5d7aa02c4bc85c5d1fa2f2bd47a27"
+    },
+    {
+      "committed_sha256": "1dc8be4ea028b1e93855e0045f48d4f260a60d382fd60ae945427e425d27d3cc",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/security_master_package_acceptance.json",
+      "raw_sha256": "f87c07ff4d623ac34dfcd2323657da1346e7d47e8777c6fd3904a3f85734743a"
+    },
+    {
+      "committed_sha256": "a7cd9bc61ea26ca110a3c1fbc3d6b2ca1f2b3a5ebdc428d1597bdfde32ec0d54",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_native/sys_path_isolation.json",
+      "raw_sha256": "db3bcf628771457b8c0ba66c4b16c0758108cf10ec3ff23f2cd835d434ba8a90"
+    },
+    {
+      "committed_sha256": "47d1cdd81cda3f5d879062f9e8908839a4656078c540060b90f95075fb60f159",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "native_restart_result.json",
+      "raw_sha256": "47d1cdd81cda3f5d879062f9e8908839a4656078c540060b90f95075fb60f159"
+    },
+    {
+      "committed_sha256": "5f9200f056ee6fbc6d2ea61d2de6ed2736f2be2e73a2d91587e9efe045a407ba",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/native_restart_probe.py",
+      "raw_sha256": "5f9200f056ee6fbc6d2ea61d2de6ed2736f2be2e73a2d91587e9efe045a407ba"
+    },
+    {
+      "committed_sha256": "a5842d77f5c64a7a002fda9d163a02b851726fc0d0fcf465a04680304a1a10d5",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_environment_identity.json",
+      "raw_sha256": "b1530e34531e44d0b67e41ec54b531baf0d796f001d55fa761fab9473c5046f3"
+    },
+    {
+      "committed_sha256": "804da22f4382a3a1ebe5bbe36781cc35951551f628ab906549ca15720f5ad57f",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_artifact_verification.json",
+      "raw_sha256": "1241717c25359eb8f668ede61367950c01520841b1d8733dbcb2cf8a0e3c9a4b"
+    },
+    {
+      "committed_sha256": "6d1f30d33e80708644be883d22c360f99cc11187810694a5687e4a6d2b1c1b2e",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_prerequisite.json",
+      "raw_sha256": "923588ba00ce0257849cf5df773d52310788acf4fc9c03d13ea88d2135174821"
+    },
+    {
+      "committed_sha256": "6402d18ff33d98b0e8225df9cbb55c071f89216243545539df33d2a32fa277e3",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/windows11_guest.ps1",
+      "raw_sha256": "6402d18ff33d98b0e8225df9cbb55c071f89216243545539df33d2a32fa277e3"
+    },
+    {
+      "committed_sha256": "6be4203575be175f31e18a74be344984f4fdc37109e81c4ea1662f1cb1527d6c",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/windows11.wsb",
+      "raw_sha256": "12a879fcd21251aa8a6c4bdebae0a0f780be13bf65c5c6390847457e6cf9188c"
+    },
+    {
+      "committed_sha256": "e4d1dd7e4ab2c317c08e5e71290a0d754479ff1fbb6e8ae0903c4b6fe2e0d269",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_host_launch.json",
+      "raw_sha256": "0fd101836653832ff75fa9aae10c68aadfee173ade06391c8e129aec9874a716"
+    },
+    {
+      "committed_sha256": "e5902369f5eda34b0b802e56243bd35e840566010c1e4f6ef613dfecea2bc558",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "windows11_host_cleanup.json",
+      "raw_sha256": "e5bcf3b447f59a146c31b8a2e695dbae4593b6b5dabd0438aa9536923a7e433e"
+    },
+    {
+      "committed_sha256": "dda542b5d36129def8b548e5459065fe0830dddc49fbb65a7b0539319c5ef83a",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "docker_runtime_state_survival.json",
+      "raw_sha256": "ff25d32f966146abbcf84b62dc01dc4f4c589bc38dca75cc6af333e5c578a0f3"
+    },
+    {
+      "committed_sha256": "00f959d53416301bfe62b2a154f0f625f3b23ca1b1f5ac85b40265d878402482",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "docker_runtime_image_a.json",
+      "raw_sha256": "9b3f0b1fa5cb55cd3c3c97ce300d484a8a9422043a4e1b91366ce49ea670bd72"
+    },
+    {
+      "committed_sha256": "d96a330b562c64cd98e3acc7063240c174857571d3dfd812563802aab0841645",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "docker_runtime_image_b.json",
+      "raw_sha256": "fdb1ab020b1457dfafdfb176d2afa8dc706cfb526f29a3c08ff473451c2cc183"
+    },
+    {
+      "committed_sha256": "298537e8d0c95477589c63df37ed00dd7870ecd5c969d26c44e85811a63c61bb",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "docker_environment_identity.json",
+      "raw_sha256": "97210ae50dbc03ef561a5b93f7f3ccb7254ded95fbb4d07060311c31430e9b2d"
+    },
+    {
+      "committed_sha256": "013abb2a388eff702e132f77a2dabd98ebcebfd18172b201290fdaf49923749c",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "docker_init.json",
+      "raw_sha256": "a83ba25bba078004782819a6b89b46b13aec53df077b315b540f6bf54c28fca6"
+    },
+    {
+      "committed_sha256": "ff5f1a06b3fec79fab5ccc134fa123d2d833bca2be6d165c1712d0d0a26a19aa",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "diagnostic_docker_generated_bytecode_differences.json",
+      "raw_sha256": "ff5f1a06b3fec79fab5ccc134fa123d2d833bca2be6d165c1712d0d0a26a19aa"
+    },
+    {
+      "committed_sha256": "d227a2f7ab225bf53899977ad6dbdbd0861b86a10b283047a53b1f3980778adc",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "diagnostic_docker_preflight_result.json",
+      "raw_sha256": "aecf6bdb88e22322ca4203b515df57d10d13a29916530afe165aaf5e4dea6d1f"
+    },
+    {
+      "committed_sha256": "2bc70565b1d138ea8139f11597299afd2601b997dbf97a95a378dd041f406807",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "diagnostic_docker_base_alias.json",
+      "raw_sha256": "30a2b7650e5056629a87f9693f586571a3be0450893139cf1576743d6c237830"
+    },
+    {
+      "committed_sha256": "ab9126151ff91f8e7769027f88e3497c3ba7dbbe2d0ef3c60f17991e2e7f116a",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "docker_base_exact_reference_setup.txt",
+      "raw_sha256": "1139122f303faec57a3854e53afc3db4256ddc90a605f829603fb722771a5970"
+    },
+    {
+      "committed_sha256": "2835aa5300e77401d7b7827458e6ad65b599bf8822ae697664c7f8c7d5d2be9d",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "required_validators.json",
+      "raw_sha256": "2835aa5300e77401d7b7827458e6ad65b599bf8822ae697664c7f8c7d5d2be9d"
+    },
+    {
+      "committed_sha256": "67fccad9793db0c6f2d9abfef6d9f0204c15028c62579433179147095e17de54",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/final_fact_verification.py",
+      "raw_sha256": "71e2a99e23aba584f6482fb2a6cad74dce85638fbe7d8ef437138c1885f5f7d8"
+    },
+    {
+      "committed_sha256": "73210407684d262df4c22aeb5385aca151d1679e61260778e8c8a0a85ef46ee4",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/docker_clean_reproducibility.py",
+      "raw_sha256": "73210407684d262df4c22aeb5385aca151d1679e61260778e8c8a0a85ef46ee4"
+    },
+    {
+      "committed_sha256": "5f3ff50c61b2b236a6ddf13bcbab48ac7db0854b86ff53ba3150fa36062b0fe2",
+      "normalization": "UTF8 no BOM, LF, trailing-space/EOF normalization only; original retained externally",
+      "path": "harness/glibc_offline_replay.py",
+      "raw_sha256": "30eb6369b031ee79d220e5998bd962b6854d1f547124e4ed9af9be878021935d"
+    }
+  ],
+  "originals_retained_beneath": "C:\\twmarket_temp\\l7-a3",
+  "semantic_changes": false
+}

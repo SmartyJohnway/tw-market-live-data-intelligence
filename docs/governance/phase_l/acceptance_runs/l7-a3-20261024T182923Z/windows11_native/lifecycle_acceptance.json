@@ -1,0 +1,336 @@
+{
+  "start": {
+    "duration_ms": 3136.93,
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "settings",
+          "port": "env"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 49671,
+      "governed_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\governed",
+      "home": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII",
+      "installation_id": "07577129-bf5e-477f-af62-0186aa9e9e3f",
+      "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state",
+      "temp_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\watchlists"
+    },
+    "operation_id": "00b5b792-fdf6-4499-8ce2-a378a2074724",
+    "pid": 7928,
+    "service": {
+      "host": "127.0.0.1",
+      "port": 49671,
+      "url": "http://127.0.0.1:49671"
+    },
+    "started_at": "2026-10-24T18:06:33.948431+00:00",
+    "status": "STARTED",
+    "trace_id": "f5e63ccf-59a2-4ba7-8ad1-8921468c192e"
+  },
+  "status": {
+    "checks": [],
+    "configuration": {
+      "host": "127.0.0.1",
+      "port": 49671,
+      "sources": {
+        "host": "settings",
+        "port": "env"
+      }
+    },
+    "duration_ms": 3554.39,
+    "identity": {
+      "root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+      "status": "NOT_INITIALIZED"
+    },
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "settings",
+          "port": "env"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 49671,
+      "governed_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\governed",
+      "home": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII",
+      "installation_id": "07577129-bf5e-477f-af62-0186aa9e9e3f",
+      "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state",
+      "temp_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\watchlists"
+    },
+    "mcp": {
+      "local_service_reachable": true,
+      "sdk_compatible": true,
+      "service_url": "http://127.0.0.1:49671",
+      "status": "READY"
+    },
+    "operation_id": "b8b88d13-fda9-45f0-96dd-f9abf7a878dc",
+    "paths": {
+      "control_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\governed",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+      "ownership_file": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\runtime\\service-49671.json",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\watchlists"
+    },
+    "readiness": {
+      "preload": "READY",
+      "routes": {
+        "capability_count": 14,
+        "projection": "READY"
+      },
+      "schema_catalog": "READY"
+    },
+    "resources": {
+      "application_root_disk_free_bytes": 82597150720,
+      "managed_service_process_memory_bytes": 3997696,
+      "runtime_root_disk_free_bytes": 82597150720
+    },
+    "service": {
+      "alive": true,
+      "health": {
+        "status": "healthy"
+      },
+      "host": "127.0.0.1",
+      "port": 49671,
+      "process": "RUNNING",
+      "url": "http://127.0.0.1:49671"
+    },
+    "started_at": "2026-10-24T18:06:39.978401+00:00",
+    "status": "SERVICE_ALIVE / IDENTITY_NOT_INITIALIZED",
+    "trace_id": "080c1e43-9fb9-4bf7-b756-fdb90f7d408a"
+  },
+  "doctor": {
+    "checks": [
+      {
+        "detail": {
+          "version": "3.13.9"
+        },
+        "name": "python",
+        "status": "PASS"
+      },
+      {
+        "name": "dependencies",
+        "status": "PASS"
+      },
+      {
+        "name": "environment_verification",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "security_master_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "watchlist_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "exists": true,
+          "readable": true
+        },
+        "name": "control_root",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "event_file_exists": true,
+          "parent_ready": true
+        },
+        "name": "operational_event_sink",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "application_root_disk_free_bytes": 82597142528,
+          "managed_service_process_memory_bytes": 3997696,
+          "runtime_root_disk_free_bytes": 82597142528
+        },
+        "name": "resource_snapshot",
+        "status": "PASS"
+      },
+      {
+        "name": "security_master",
+        "reason_code": "SECURITY_MASTER_NOT_INITIALIZED",
+        "status": "WARN"
+      },
+      {
+        "name": "process_ownership",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "security_master_status": "NOT_INITIALIZED",
+          "status": "not_initialized"
+        },
+        "name": "workbench_preload",
+        "status": "PASS"
+      },
+      {
+        "name": "local_service",
+        "status": "PASS"
+      },
+      {
+        "name": "route_capability_projection",
+        "status": "PASS"
+      },
+      {
+        "detail": {
+          "tool_count": 6
+        },
+        "name": "mcp_tool_contract",
+        "status": "PASS"
+      },
+      {
+        "name": "mcp_startup_check",
+        "status": "PASS"
+      }
+    ],
+    "configuration": {
+      "host": "127.0.0.1",
+      "port": 49671,
+      "sources": {
+        "host": "settings",
+        "port": "env"
+      }
+    },
+    "duration_ms": 15123.48,
+    "identity": {
+      "root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+      "status": "NOT_INITIALIZED"
+    },
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "settings",
+          "port": "env"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 49671,
+      "governed_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\governed",
+      "home": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII",
+      "installation_id": "07577129-bf5e-477f-af62-0186aa9e9e3f",
+      "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state",
+      "temp_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\watchlists"
+    },
+    "mcp": {
+      "local_service_reachable": true,
+      "sdk_compatible": true,
+      "service_url": "http://127.0.0.1:49671",
+      "status": "READY"
+    },
+    "operation_id": "faf67fcd-3bdb-4eed-ad49-d3bfd29a7100",
+    "paths": {
+      "control_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\governed",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+      "ownership_file": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\runtime\\service-49671.json",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\watchlists"
+    },
+    "readiness": {
+      "preload": "READY",
+      "routes": {
+        "capability_count": 14,
+        "projection": "READY"
+      },
+      "schema_catalog": "READY"
+    },
+    "resources": {
+      "application_root_disk_free_bytes": 82597142528,
+      "managed_service_process_memory_bytes": 3997696,
+      "runtime_root_disk_free_bytes": 82597142528
+    },
+    "service": {
+      "alive": true,
+      "health": {
+        "status": "healthy"
+      },
+      "host": "127.0.0.1",
+      "port": 49671,
+      "process": "RUNNING",
+      "url": "http://127.0.0.1:49671"
+    },
+    "started_at": "2026-10-24T18:06:46.391880+00:00",
+    "status": "WARN",
+    "trace_id": "704f6269-6e72-498c-af31-7d06c4fc8f7f"
+  },
+  "stop": {
+    "duration_ms": 230.39,
+    "installation": {
+      "app_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\Location A With Spaces 非ASCII\\TW-Market-1.0.0-windows-x64\\app",
+      "cache_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\cache",
+      "diagnostics": {
+        "home_source": "env",
+        "settings_origins": {
+          "host": "settings",
+          "port": "env"
+        },
+        "state_root_source": "metadata"
+      },
+      "effective_service_host": "127.0.0.1",
+      "effective_service_port": 49671,
+      "governed_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\governed",
+      "home": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII",
+      "installation_id": "07577129-bf5e-477f-af62-0186aa9e9e3f",
+      "installation_metadata_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\meta\\installation.json",
+      "installation_status": "READY",
+      "logs_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs",
+      "operational_event_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\logs\\operational-events.jsonl",
+      "runtime_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\runtime",
+      "security_master_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\security-master",
+      "settings_path": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\home 非ASCII\\config\\settings.json",
+      "state_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state",
+      "temp_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\tmp\\TW-Market\\07577129-bf5e-477f-af62-0186aa9e9e3f\\temp",
+      "watchlist_root": "C:\\twmarket_temp\\l7-a3\\guest\\acceptance\\business state\\watchlists"
+    },
+    "operation_id": "b32805ec-6353-4375-b513-4ba35e563739",
+    "reason_code": "STOPPED",
+    "started_at": "2026-10-24T18:07:21.087395+00:00",
+    "status": "STOPPED",
+    "trace_id": "0beda507-df43-4059-97ec-8f2ce7247ff9"
+  }
+}

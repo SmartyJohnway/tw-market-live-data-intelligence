@@ -1,0 +1,11 @@
+{
+  "installation_diagnostics": {
+    "home_source": "env",
+    "settings_origins": {
+      "host": "settings",
+      "port": "env"
+    },
+    "state_root_source": "metadata"
+  },
+  "status": "NOT_INITIALIZED"
+}

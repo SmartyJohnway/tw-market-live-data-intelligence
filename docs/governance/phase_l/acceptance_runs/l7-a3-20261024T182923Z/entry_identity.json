@@ -1,0 +1,21 @@
+{
+  "branch": "phase-l/l7-a3-dependency-reproducibility-supply-chain",
+  "canonical_entry": {
+    "commit": "5c62d6d8cc6c49b2803126aa2190a1778fa1d4ac",
+    "parents": [
+      "2219552d9817e11219c08b53e606d2969a368d02",
+      "d4087bc12f06d276d992356074d4995576bf42a1"
+    ],
+    "tree": "06a87a1d66f18c775ef8891e19a4dac44b94d3c9"
+  },
+  "clean_before_implementation": true,
+  "observed_origin_main": {
+    "commit": "5c62d6d8cc6c49b2803126aa2190a1778fa1d4ac",
+    "parents": [
+      "2219552d9817e11219c08b53e606d2969a368d02",
+      "d4087bc12f06d276d992356074d4995576bf42a1"
+    ],
+    "tree": "06a87a1d66f18c775ef8891e19a4dac44b94d3c9"
+  },
+  "source_transport": "fresh GitHub clone followed by exact local unpushed implementation fetch; no runtime checkout dependency"
+}

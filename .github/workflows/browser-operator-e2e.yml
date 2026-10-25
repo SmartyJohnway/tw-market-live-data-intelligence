@@ -7,17 +7,27 @@ jobs:
   browser-operator-e2e:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
-          python-version: "3.11"
-      - name: Install application dependencies
-        run: python -m pip install -r requirements.txt
-      - name: Install browser E2E dependencies
-        run: python -m pip install -r requirements-browser-e2e.txt
-      - name: Install Chromium and OS browser dependencies
-        run: python -m playwright install --with-deps chromium
+          python-version: "3.13"
+      - name: Record hosted runner and toolchain provenance
+        run: |
+          printf 'ImageOS=%s ImageVersion=%s OS=%s ARCH=%s\n' "$ImageOS" "$ImageVersion" "$RUNNER_OS" "$RUNNER_ARCH"
+          python --version
+          python -m pip --version
+          git --version
+      - name: Acquire and replay exact A3 dependency authority
+        run: |
+          python -m venv "$RUNNER_TEMP/a3-venv"
+          "$RUNNER_TEMP/a3-venv/bin/python" -B scripts/dependency_authority.py --consumer browser-linux --wheelhouse "$RUNNER_TEMP/a3-wheels" --work "$RUNNER_TEMP/a3-setup" --acquire --install
+          echo "$RUNNER_TEMP/a3-venv/bin" >> "$GITHUB_PATH"
+      - name: Acquire frozen browser revision and hosted OS prerequisites
+        run: |
+          python -B scripts/verify_browser_artifact.py --acquire --work "$RUNNER_TEMP/a3-browser"
+          python -m playwright install-deps chromium
+          dpkg-query -W > "$RUNNER_TEMP/a3-browser-system-packages.txt"
       - name: Run BROWSER_E2E profile
         run: python scripts/run_test_profile.py browser-e2e --json

@@ -1,0 +1,14 @@
+{
+  "Security_Master_live_updates": 0,
+  "accepted_Docker_external_attempts": 0,
+  "accepted_Native_guard_denials": 0,
+  "accepted_Win11_guard_denials": 0,
+  "background_market_polling": 0,
+  "canonical_gate_guard_denials": 0,
+  "failed_diagnostic_guard_events_retained": "historical_attempts.json",
+  "live_provider_requests": 0,
+  "localhost": "allowed and separately scoped: service lifecycle/doctor/health/MCP",
+  "market_acquisition_attempts": 0,
+  "production_refresh": 0,
+  "scope": "Python process/inherited Python guards, Docker nonroot read-only runtime; no OS-wide firewall claim"
+}
