@@ -18,7 +18,12 @@
     "content_type": {"type": "string"},
     "byte_count": {"type": "integer", "minimum": 0},
     "raw_payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-    "error_signatures_found": {"type": "array", "items": {"type": "string"}}
+    "error_signatures_found": {"type": "array", "items": {"type": "string"}},
+    "error_type": {"type": "string"},
+    "transport_outer_error_class": {"type": "string"},
+    "transport_error_class": {"enum": ["tls_certificate_verification", "timeout", "network"]},
+    "transport_reason_class": {"type": ["string", "null"]},
+    "transport_reason_code": {"enum": ["PYTHON_X509_STRICT_COMPATIBILITY", "TLS_CERTIFICATE_VERIFICATION_FAILED", "NETWORK_TIMEOUT", "NETWORK_ERROR"]}
   },
   "additionalProperties": true
 }

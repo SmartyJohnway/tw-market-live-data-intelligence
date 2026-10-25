@@ -1,0 +1,17 @@
+{
+  "chain": [
+    "scripts/manage_security_master.py",
+    "scripts/m8r_06_01b_materialize_production_inputs.py",
+    "skills/tw-security-master-classifier/scripts/probe_sources.py"
+  ],
+  "context_owner": "materializer builds context with scripts.ssl_policy.build_ssl_context and injects it into every probe call",
+  "injection_guard": [
+    "requires ssl.SSLContext",
+    "requires ssl.CERT_REQUIRED",
+    "requires check_hostname is true",
+    "rejects before dispatch reservation"
+  ],
+  "policy_authority": "scripts.ssl_policy",
+  "portable_probe": "no repository-level import; omitted ssl_context continues to use ssl.create_default_context()",
+  "selection_owner": "manage_security_master.py resolves CLI policy with an empty explicit environment; ambient TW_MARKET_SSL_POLICY cannot opt in"
+}

@@ -849,7 +849,7 @@
   "snapshot_id": "fixture-m8r03d-f1",
   "source_skill": {
     "name": "tw-security-master-classifier",
-    "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
+    "skill_contract_hash": "0e58265aa58d3f12cd1f05642f9be7d4b250e15a246f3a1f635e077cba2983ab",
     "skill_path": "skills/tw-security-master-classifier",
     "skill_version": "source-manifest-1.1.0"
   }

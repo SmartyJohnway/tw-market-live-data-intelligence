@@ -1,0 +1,25 @@
+{
+  "automatic_retry_after_tls_failure": false,
+  "compatibility": {
+    "certificate_verification": true,
+    "change": "clears only VERIFY_X509_STRICT through central policy builder",
+    "fallback": false,
+    "hostname_verification": true,
+    "selection": "explicit --ssl-policy compatibility only"
+  },
+  "strict": {
+    "certificate_verification": true,
+    "context": "probe default context",
+    "default": true,
+    "fallback": false,
+    "hostname_verification": true,
+    "selection": "default or explicit --ssl-policy strict"
+  },
+  "unknown": {
+    "rejected_before_child_or_network": true
+  },
+  "unsafe-explicit": {
+    "rejected_before_child_or_network": true,
+    "security_master_allowed": false
+  }
+}

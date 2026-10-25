@@ -1,0 +1,28 @@
+{
+  "authorized_changed_file_count": 8,
+  "authorized_changed_files": [
+    "scripts/manage_security_master.py",
+    "scripts/m8r_06_01b_materialize_production_inputs.py",
+    "skills/tw-security-master-classifier/scripts/probe_sources.py",
+    "skills/tw-security-master-classifier/references/schemas/probe-result.schema.json",
+    "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py",
+    "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py",
+    "tests/fixtures/m8r_03d_f1/snapshot.json",
+    "tests/fixtures/m8r_03d_f1/manifest.json"
+  ],
+  "no_dependency_or_version_mutation": true,
+  "no_network_or_source_data_changes": true,
+  "preexisting_untracked_blocker_paths_excluded_from_staging": true,
+  "product_runtime_files": [
+    "scripts/manage_security_master.py",
+    "scripts/m8r_06_01b_materialize_production_inputs.py",
+    "skills/tw-security-master-classifier/scripts/probe_sources.py"
+  ],
+  "test_and_schema_files": [
+    "skills/tw-security-master-classifier/references/schemas/probe-result.schema.json",
+    "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py",
+    "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py",
+    "tests/fixtures/m8r_03d_f1/snapshot.json",
+    "tests/fixtures/m8r_03d_f1/manifest.json"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "compileall": {
+    "exit_code": 0,
+    "files": [
+      "scripts/manage_security_master.py",
+      "scripts/m8r_06_01b_materialize_production_inputs.py",
+      "scripts/ssl_policy.py",
+      "skills/tw-security-master-classifier/scripts/probe_sources.py",
+      "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py",
+      "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py"
+    ],
+    "status": "PASS"
+  },
+  "focused_regression": {
+    "command": "python -B -m pytest -p no:cacheprovider --basetemp=C:\\twmarket_temp\\l7-a5-r1\\temp\\pytest-final4 -q tests\\unit\\test_l7_a5_r1_security_master_ssl_policy.py tests\\unit\\test_m8r_06_01b_bootstrap_dispatch_budget.py tests\\unit\\test_m8r_06_01b_production_input_materialization.py tests\\unit\\test_m8r_06_01b_manifest_generation.py tests\\unit\\test_m6d_ssl_policy.py tests\\unit\\test_l6_a2_security_master_paths.py tests\\unit\\test_m8r_03d_f1_verified_security_master_snapshot.py tests\\unit\\test_m8r_08g_identity_service_and_releases.py",
+    "deselected": 0,
+    "external_network_attempts": 0,
+    "failed": 0,
+    "passed": 103,
+    "skipped": 0
+  },
+  "git_diff_check": {
+    "exit_code": 0,
+    "status": "PASS"
+  },
+  "portable_skill_validator": {
+    "checks": 205,
+    "command": "python -B skills\\tw-security-master-classifier\\scripts\\validate_skill.py",
+    "failed": 0,
+    "status": "PASS"
+  },
+  "runtime": {
+    "python": "3.13.7",
+    "python_utf8_mode": true
+  },
+  "superseded_diagnostic_runs": [
+    {
+      "disposition": "one test expectation refined to match SSL error metadata; legacy source decode required explicit UTF-8 mode",
+      "result": "51 passed / 2 failed"
+    },
+    {
+      "disposition": "snapshot test fixtures were bound to prior Skill bytes; fixture hash metadata and dependent snapshot digest were refreshed without data changes",
+      "result": "93 passed / 8 failed"
+    },
+    {
+      "disposition": "asserted the expected fail-closed disposition after all five mocked probes, then verified injected contexts",
+      "result": "one integration case initially expected synthetic unqualified fixture to qualify"
+    }
+  ]
+}

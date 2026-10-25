@@ -23,10 +23,10 @@
   "record_count": 14,
   "schema_sha256": "e4d36bf0710fb366f09bc969b8c943b03e03e029f00988d2513f67bfeb478935",
   "schema_version": "tw_verified_security_master_snapshot_manifest.v1",
-  "skill_contract_hash": "488b3e04af2e318cd387b0dfdcbad02be4f2c3f495539c3e436698464f37d77a",
+  "skill_contract_hash": "0e58265aa58d3f12cd1f05642f9be7d4b250e15a246f3a1f635e077cba2983ab",
   "snapshot_id": "fixture-m8r03d-f1",
   "snapshot_path": "tests/fixtures/m8r_03d_f1/snapshot.json",
-  "snapshot_sha256": "e76a279729d30078da681561de89fd67aa329e58ac888a66fc062751011cdac5",
+  "snapshot_sha256": "f0fbde53c8d74a9e45a33089edf841a2bd738dbe5960f41efb560b7b9ea3d13f",
   "validation_issues": [],
   "validation_status": "passed"
 }

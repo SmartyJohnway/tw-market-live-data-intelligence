@@ -28,6 +28,8 @@ from urllib.parse import urlencode
 ROOT = Path(__file__).resolve().parent.parent
 SKILL_ROOT = ROOT / "skills" / "tw-security-master-classifier"
 SKILL_SCRIPTS = SKILL_ROOT / "scripts"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 # Add skill scripts to path so we can import existing modules
 sys.path.insert(0, str(SKILL_SCRIPTS))
@@ -47,12 +49,16 @@ from probe_sources import (  # noqa: E402
     find_source_contract,
 )
 from schema_validation import validate as validate_schema  # noqa: E402
+from scripts.ssl_policy import (  # noqa: E402
+    SSL_POLICY_COMPATIBILITY,
+    SSL_POLICY_STRICT,
+    build_ssl_context,
+)
 
 # Remove skill scripts from path after importing
 sys.path.pop(0)
 
 # Import exporter (via scripts/ relative to ROOT)
-sys.path.insert(0, str(ROOT))
 from scripts.m8r_03d_f1_security_master_snapshot_exporter import (  # noqa: E402
     compute_skill_contract_hash,
     export_verified_security_master_snapshot,
@@ -284,6 +290,12 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle-root", type=Path, default=None)
     parser.add_argument("--report-root", type=Path, default=None)
+    parser.add_argument(
+        "--ssl-policy",
+        choices=(SSL_POLICY_STRICT, SSL_POLICY_COMPATIBILITY),
+        default=SSL_POLICY_STRICT,
+        help="verified TLS policy for official-source probes (default: strict)",
+    )
     # Unit harnesses historically call ``main()`` while pytest's own flags
     # remain in sys.argv.  Explicit callers must use the real parser so that
     # installation/app roots cannot be smuggled in as alternate authorities.
@@ -291,6 +303,7 @@ def main(argv: list[str] | None = None) -> int:
         args, _unknown = parser.parse_known_args()
     else:
         args = parser.parse_args(argv)
+    ssl_context = build_ssl_context(args.ssl_policy)
     now_utc = datetime.now(timezone.utc)
     generated_at = now_utc.isoformat()
     effective_date = now_utc.strftime("%Y-%m-%d")
@@ -385,6 +398,7 @@ def main(argv: list[str] | None = None) -> int:
             save_raw=raw_path,
             dispatch_budget=dispatch_budget,
             max_followed_redirects=BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+            ssl_context=ssl_context,
         )
         probe_result["source_id"] = source_id
         probe_result["bootstrap_dispatch_reservations"] = probe_result.get("dispatch_reservations")
@@ -497,6 +511,7 @@ def main(argv: list[str] | None = None) -> int:
             save_raw=raw_path,
             dispatch_budget=dispatch_budget,
             max_followed_redirects=BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+            ssl_context=ssl_context,
             **request_options,
         )
         probe_result["source_id"] = source_id

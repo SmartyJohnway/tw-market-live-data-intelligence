@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import io
 import json
+import ssl
 import sys
 from email.message import Message
 from pathlib import Path
@@ -393,7 +394,7 @@ def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None
 
     def fake_probe(url, _allowed_hosts, *, save_raw=None, dispatch_budget=None, method="GET", body=None, content_type=None, **_kwargs):
         dispatch_budget.reserve_before_dispatch()
-        probe_call_details.append({"url": url, "method": method, "body": body, "save_raw": save_raw})
+        probe_call_details.append({"url": url, "method": method, "body": body, "save_raw": save_raw, "ssl_context": _kwargs.get("ssl_context")})
         save_raw.parent.mkdir(parents=True, exist_ok=True)
         save_raw.write_bytes(b"sanitized test capture")
         if "strMode=2" in url:
@@ -503,6 +504,25 @@ def _run_materializer_case(monkeypatch, tmp_path, *, tpex_transport_failure=None
 
     module._test_probe_call_details = probe_call_details
     return module, calls, report, qualification_calls, export_calls, parser_calls
+
+
+def test_materializer_injects_explicit_compatibility_context(monkeypatch, tmp_path):
+    module, calls, *_ = _run_materializer_case(monkeypatch, tmp_path)
+    # The synthetic fixture is intentionally unqualified; reaching that
+    # post-probe disposition proves transport setup without live acquisition.
+    assert module.main(["--ssl-policy", "compatibility"]) == 1
+    assert calls == [
+        "twse_isin_mode2_zh",
+        "twse_isin_mode4_zh",
+        "twse_delisted",
+        "tpex_delisted",
+        "twse_etn_expired",
+    ]
+    contexts = [entry["ssl_context"] for entry in module._test_probe_call_details]
+    assert len(contexts) == len(calls)
+    for context in contexts:
+        assert context.verify_mode == ssl.CERT_REQUIRED
+        assert context.check_hostname is True
 
 
 def test_tpex_transport_failure_stops_before_next_probe_and_phase_e(monkeypatch, tmp_path, capsys):

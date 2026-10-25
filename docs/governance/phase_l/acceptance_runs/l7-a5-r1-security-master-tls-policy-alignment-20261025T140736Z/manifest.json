@@ -1,0 +1,74 @@
+{
+  "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon); self_digest excluded",
+  "member_count": 13,
+  "member_mismatches": 0,
+  "members": [
+    {
+      "bytes": 802,
+      "path": "architecture.json",
+      "sha256": "61f2000b9619e99b9130de54dbe59950522d3ddf6ed5669cbd50c9ec6a1f2102"
+    },
+    {
+      "bytes": 706,
+      "path": "authority.json",
+      "sha256": "f6de679fb501e1ae56b62e2162c2ba36f5db78240996fff7eaa0b119d18b4eda"
+    },
+    {
+      "bytes": 1531,
+      "path": "changed_file_hashes.json",
+      "sha256": "ea9a0de81cc9721fc100cf45f137d8a9968faaa493378a2e1f874c3f690dfb69"
+    },
+    {
+      "bytes": 628,
+      "path": "entry_identity.json",
+      "sha256": "c2916b55ce6a45779f85df967f1335abea473a486714a3bed1176368e56d6e5f"
+    },
+    {
+      "bytes": 500,
+      "path": "filesystem_boundary.json",
+      "sha256": "c33e9c8097334090fe1e205b71fa452fabdb220f1446c39d5d230e54e21c2e0d"
+    },
+    {
+      "bytes": 719,
+      "path": "final_review.json",
+      "sha256": "b4712fb0fbbc717c9a0f5d44766f3547738ebaa571cd5dfddc18592dcde47b83"
+    },
+    {
+      "bytes": 648,
+      "path": "network_accounting.json",
+      "sha256": "98b135753cae20245a5a953db6e6e576e96862d90e353b294ec9f2b5ec018ff7"
+    },
+    {
+      "bytes": 1150,
+      "path": "release_blocking_ci_result.json",
+      "sha256": "27da9b47812bd9908312d619c288b520b577cf9e980c14b612df0088ea3c3050"
+    },
+    {
+      "bytes": 940,
+      "path": "repair_scope.json",
+      "sha256": "f79ac40e96c653b35bda8da957608afc770a5169eb6246b13aa387fdbe27b71f"
+    },
+    {
+      "bytes": 1254,
+      "path": "scope_diff_verification.json",
+      "sha256": "811b75fe29341772dc961f6f1fd08ba8c5873e23ff3ab120a5ddb328bbd1418b"
+    },
+    {
+      "bytes": 2142,
+      "path": "test_results.json",
+      "sha256": "28b10531c0c0a19b372ab910eab410f7904e98b4e099effc75efc3d690f3ef90"
+    },
+    {
+      "bytes": 721,
+      "path": "tls_policy_matrix.json",
+      "sha256": "c9113c327cb661d4114da93cafa6da777b634f450d619199fffbf1bc43ae114e"
+    },
+    {
+      "bytes": 642,
+      "path": "transport_error_telemetry.json",
+      "sha256": "3a80aa626b9a8a728079b8dc9a11f4521e64355f0d215f964ba35d99d2b367af"
+    }
+  ],
+  "schema": "twmarket.l7_a5_r1.security_master_tls_policy_repair.v1",
+  "self_digest": "5666e55b07777358d3b54f7026ca49f87841b2363608c3daea8d9cc08ce3e869"
+}
