@@ -37,6 +37,17 @@ def test_selected_version_is_distinct_from_published_release(tmp_path):
     assert "readme_selected_version_claimed_published" in check(readme, current_product_version="1.5.0")
 
 
+def test_front_door_validates_selected_version_instead_of_empty_release_patterns(tmp_path, monkeypatch):
+    from scripts import validate_v1_front_door as front
+    assert front.required_release_patterns()
+    assert front.validate() == []
+    readme = tmp_path / "README.md"
+    text = front.README.read_text(encoding="utf-8")
+    readme.write_text(text + "\nThe current stable release is v1.5.0.\n", encoding="utf-8")
+    monkeypatch.setattr(front, "README", readme)
+    assert "front_door:readme_selected_version_claimed_published" in front.validate()
+
+
 def published_module(name):
     package = "published_v1_acceptance"
     if package not in sys.modules:
