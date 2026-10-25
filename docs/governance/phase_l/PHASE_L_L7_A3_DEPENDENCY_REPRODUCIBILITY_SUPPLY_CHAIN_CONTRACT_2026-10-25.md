@@ -1,9 +1,13 @@
 # L7-A3 dependency, reproducibility and supply-chain contract — 2026-10-25
 
-Disposition: **L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_PASS**.
-Technical PASS; independent review / Owner acceptance pending. L7-A0/A1/A2 remain
-Owner-accepted and merged. A4+, merge, stable release/publication and Phase M are
-not authorized. Phase L is not closed.
+Disposition: **L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_PASS**. **OWNER-ACCEPTED AND MERGED**.
+Independent review disposition is `L7_A3_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
+`L7_A3_OWNER_ACCEPTED_FOR_MERGE`. Independent PASS review is `5640713251`; provenance-review correction is
+`5640717276`; Owner acceptance review is `5640717621`.
+PR #414 normal-merged exact accepted head `3805b5542b03fc3e707aa9550ff7d0892d743cb6`, tree
+`ac178739d478f06b2ac6287633d30110a80b9970`, at merge commit `c06108e40930881f340e44ed61b45a42d8ceb046`;
+merge parents are prior canonical main `5c62d6d8cc6c49b2803126aa2190a1778fa1d4ac` and the exact accepted A3 head;
+GitHub merge verification is valid. L7-A4+, stable release/publication and Phase M remain not authorized; Phase L is not closed.
 
 ## Authority and exact source
 
@@ -150,5 +154,6 @@ production state mutations, VERSION/MCP policy changes, new MCP tools, tag/relea
 registry publication, signing-secret creation and branch-protection mutation are zero.
 Instrumentation is Python/inherited Python plus scoped containers, not an OS firewall.
 
-After the technically complete PR is opened: STOP for independent review / Owner
-acceptance. Merge, A4+, stable release/publication and Phase M remain unauthorized.
+L7-A3 is now independently reviewed, Owner-accepted and normal-merged through PR #414.
+This post-merge reconciliation is governance-only. L7-A4+, stable release/publication,
+Phase M and Phase L closure remain unauthorized.
