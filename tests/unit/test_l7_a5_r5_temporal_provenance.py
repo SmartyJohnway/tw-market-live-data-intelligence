@@ -32,7 +32,7 @@ def _complete(tmp_path):
     body = _bytes("TWSE")
     production_batch_operation_adapter_candidate([_request("TWSE", "1101")], SimpleNamespace(mode="execute-approved", governed_output_root=str(tmp_path)),
         acquire=lambda *a, **k: transport.Acquisition(body, _telemetry("TWSE", body)))
-    return json.loads(next((tmp_path / "evidence").rglob("*.json")).read_text())
+    return json.loads(next((tmp_path / "evidence").rglob("*.json")).read_text(encoding="utf-8"))
 
 
 @pytest.mark.parametrize("case,valid", [("complete", True), ("transport_null", True), ("fabricated_failure", False),
@@ -51,7 +51,7 @@ def test_schema_transport_condition_equivalence(tmp_path, case, valid, embedded)
     if case == "complete_null": e["retrieved_at"] = None
     if case == "missing": e.pop("retrieved_at")
     if case == "invalid_datetime": e["retrieved_at"] = "not-a-date"
-    schema = json.loads((ROOT / "schemas" / ("unified_market_evidence_result.v3.schema.json" if embedded else "cash_institutional_flow_context_evidence.v2.schema.json")).read_text())
+    schema = json.loads((ROOT / "schemas" / ("unified_market_evidence_result.v3.schema.json" if embedded else "cash_institutional_flow_context_evidence.v2.schema.json")).read_text(encoding="utf-8"))
     if embedded: schema = {**schema, "$ref": "#/definitions/cash_institutional_flow_context"}
     validator = (Draft7Validator if embedded else Draft202012Validator)(schema, format_checker=FORMAT_CHECKER)
     assert (not list(validator.iter_errors(e))) == valid
@@ -82,7 +82,7 @@ def test_i3_failed_acquisition_emits_null_typed_evidence(tmp_path):
     def acquire(*a, **k):
         return transport.acquire_once("TPEX", opener=Opener(), clock=lambda: pytest.fail("failed retrieval must not sample completion clock"))
     result = production_batch_operation_adapter_candidate([_request("TPEX", "5347")], SimpleNamespace(mode="execute-approved", governed_output_root=str(tmp_path)), acquire=acquire)
-    e = json.loads(next((tmp_path / "evidence").rglob("*.json")).read_text())
+    e = json.loads(next((tmp_path / "evidence").rglob("*.json")).read_text(encoding="utf-8"))
     assert result[0]["status"] == "failed" and e["status"] == "source_failed"
     assert e["retrieved_at"] is None and e["transport"]["complete_body_received"] is False
     assert e["transport"]["failure_phase"] == "connection" and e["transport"]["error_code"] == "URLError"
@@ -93,7 +93,7 @@ def test_i3_normalization_failure_retains_completed_retrieval(tmp_path):
         def open(self, *a, **k): return _Response(b"{}")
     def acquire(*a, **k): return transport.acquire_once("TWSE", resolved_source_trade_date="2026-09-30", opener=Opener(), clock=lambda: datetime(2026,10,1,11,0,1,tzinfo=timezone.utc))
     out = production_batch_operation_adapter_candidate([_request("TWSE", "1101")], SimpleNamespace(mode="execute-approved", governed_output_root=str(tmp_path)), acquire=acquire)
-    e = json.loads(next((tmp_path / "evidence").rglob("*.json")).read_text())
+    e = json.loads(next((tmp_path / "evidence").rglob("*.json")).read_text(encoding="utf-8"))
     assert e["status"] == "source_failed" and e["transport"]["complete_body_received"] is True
     assert e["retrieved_at"] == "2026-10-01T11:00:01Z"
     assert "source preparation failed: twse_root_invalid" in e["caveats"]
@@ -103,7 +103,7 @@ def test_i3_normalization_failure_retains_completed_retrieval(tmp_path):
 @pytest.mark.parametrize("module,prefix", [(twse,"twse"),(tpex,"tpex")])
 def test_eod_fetch_retrieval_parse_completion_order(monkeypatch, module, prefix):
     events=[]
-    rows=json.loads((ROOT/"tests/fixtures/m8a_official_eod"/(prefix+"_normal_rows.json")).read_text())
+    rows=json.loads((ROOT/"tests/fixtures/m8a_official_eod"/(prefix+"_normal_rows.json")).read_text(encoding="utf-8"))
     def fetch(**k): events.append("fetch_complete"); return rows,200,"application/json"
     original=getattr(module,"parse_"+prefix+"_official_eod_rows")
     def parse(*a,**k): events.append("parse"); return original(*a,**k)
@@ -177,7 +177,7 @@ def test_deferred_high_level_and_execute_once_mode_c(tmp_path,monkeypatch,failed
         cli.execute_once(auth["authorization_id"],confirm_execution=True,operator_confirmation_reference="R5_OFFLINE",confirm_network_execution=True)
     else:
         orchestrator.execute_controlled_plan(plan,auth,binding,supplied_consumption_state=unused,accepted_preflight=preflight,evaluation_timestamp=claim_time,claim_created_at=claim_time,finalization_clock=clock,executor_registry_metadata=metadata,runtime_adapter_registry=registry,output_root=str(tmp_path),mode="execute-approved",confirm_execution=True,operator_confirmation_reference="R5_OFFLINE",confirm_network_execution=True)
-    claim_obj=json.loads(next((tmp_path/"claims").glob("*.json")).read_text());receipt=json.loads(next((tmp_path/"receipts").glob("*.json")).read_text());bundle=json.loads(next((tmp_path/"bundles").glob("*.json")).read_text())
+    claim_obj=json.loads(next((tmp_path/"claims").glob("*.json")).read_text(encoding="utf-8"));receipt=json.loads(next((tmp_path/"receipts").glob("*.json")).read_text(encoding="utf-8"));bundle=json.loads(next((tmp_path/"bundles").glob("*.json")).read_text(encoding="utf-8"))
     assert claim_obj["claim_created_at"]==claim_time
     assert claim_obj["finalized_at"]==receipt["finalized_at"]==bundle["finalized_at"]==STAMP
     inputs=load_projection_inputs(request_path=str(tmp_path/"control/request.json"),f3_validation_path=str(tmp_path/"f3_validation.json"),plan_path=str(tmp_path/"control/plan.json"),authorization_path=str(tmp_path/"control/authorization.json"),consumption_binding_path=str(tmp_path/"control/consumption_binding.json"),claim_path=str(next((tmp_path/"claims").glob("*.json"))),receipt_path=str(next((tmp_path/"receipts").glob("*.json"))),bundle_path=str(next((tmp_path/"bundles").glob("*.json"))),artifact_root=str(tmp_path),calculated_at=receipt["finalized_at"],calculated_at_source="receipt.finalized_at")
@@ -185,8 +185,8 @@ def test_deferred_high_level_and_execute_once_mode_c(tmp_path,monkeypatch,failed
     citations=build_citation_index(build_lineage_map(inputs),inputs.bundle,"unified_market_evidence_result.v3")
     audit=build_audit_package(result,inputs,citations,"result.v3.json",output_schema_version="unified_market_evidence_audit_package.v3")
     assert result["generated_at"]==STAMP and hash_body_excluding_key(result,"result_hash")==result["result_hash"]
-    Draft7Validator(json.loads((ROOT/"schemas/unified_market_evidence_result.v3.schema.json").read_text()),format_checker=FORMAT_CHECKER).validate(result)
-    Draft7Validator(json.loads((ROOT/"schemas/unified_market_evidence_audit_package.v3.schema.json").read_text()),format_checker=FORMAT_CHECKER).validate(audit)
+    Draft7Validator(json.loads((ROOT/"schemas/unified_market_evidence_result.v3.schema.json").read_text(encoding="utf-8")),format_checker=FORMAT_CHECKER).validate(result)
+    Draft7Validator(json.loads((ROOT/"schemas/unified_market_evidence_audit_package.v3.schema.json").read_text(encoding="utf-8")),format_checker=FORMAT_CHECKER).validate(audit)
     if failed:assert '"retrieved_at": null' in json.dumps(result)
 
 @pytest.mark.parametrize("complete,value,error", [(True,None,"timestamp_missing"),(False,STAMP,"timestamp_forbidden")])
