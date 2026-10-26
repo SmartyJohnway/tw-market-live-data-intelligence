@@ -1,0 +1,11 @@
+{
+  "bounded_seed_default_calls": 0,
+  "cases": [
+    "TWSE:2330",
+    "TPEX:6488"
+  ],
+  "external_network_attempts": 0,
+  "provenance_bound": true,
+  "source": "synthetic active identity service; source spies; real source parser with fixture JSON also exercised",
+  "status": "PASS"
+}

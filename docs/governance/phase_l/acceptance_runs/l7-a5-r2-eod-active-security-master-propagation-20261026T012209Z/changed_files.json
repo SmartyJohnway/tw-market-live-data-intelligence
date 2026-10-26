@@ -1,0 +1,30 @@
+{
+  "binding": "Exact tested implementation/test bytes; no later implementation changes permitted.",
+  "files": [
+    {
+      "bytes": 63578,
+      "path": "scripts/m8r_06_03_production_adapter.py",
+      "sha256": "401f22a63cc496ea62a33d21226b6f84e900418248f23c3839f78488a8d61c83"
+    },
+    {
+      "bytes": 12783,
+      "path": "scripts/m8r_06_03_execute_once.py",
+      "sha256": "86cc0a4782daf1a66696cca4b50ed1f1592c1353d03c266958169c0675cde088"
+    },
+    {
+      "bytes": 11149,
+      "path": "tests/unit/test_l7_a5_r2_eod_active_security_master.py",
+      "sha256": "0daaddcdb789e2e2fd9565bd3094d230db23fcecbef5a9a70d0b3432a21414dc"
+    },
+    {
+      "bytes": 17459,
+      "path": "tests/unit/test_m8r_06_03_production_adapter.py",
+      "sha256": "8030889a1188b3913256d7c9c1324ad87abba50f31a65a2d0d1d16c680799541"
+    },
+    {
+      "bytes": 8223,
+      "path": "tests/unit/test_m8r_06_03_batch_runtime.py",
+      "sha256": "87da1ba591f273d44ed86e493abbcb6ad685371d1c877e641b1ad52f1c5e454a"
+    }
+  ]
+}

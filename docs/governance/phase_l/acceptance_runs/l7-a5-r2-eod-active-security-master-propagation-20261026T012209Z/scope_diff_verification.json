@@ -1,0 +1,12 @@
+{
+  "R1_R1_1_evidence_changed": false,
+  "TLS_changed": false,
+  "VERSION_changed": false,
+  "catalog_routing_MCP_changed": false,
+  "dependencies_changed": false,
+  "git_diff_check_exit": 0,
+  "production_runtime_scope": "one shared integration bridge; one deterministic fake transport signature",
+  "public_schemas_changed": false,
+  "release_loader_changed": false,
+  "source_adapters_changed": false
+}

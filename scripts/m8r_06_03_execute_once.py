@@ -169,7 +169,7 @@ def _install_deterministic_test_transport() -> None:
             "caveats": ["current_observation_not_guaranteed_realtime"],
         } for item in watchlist["items"]]}
 
-    def eod(symbols, *, timeout):
+    def eod(symbols, *, timeout, security_master):
         record_invocation()
         if delay_seconds:
             time.sleep(delay_seconds)

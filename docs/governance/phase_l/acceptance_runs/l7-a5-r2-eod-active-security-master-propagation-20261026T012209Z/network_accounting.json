@@ -1,0 +1,13 @@
+{
+  "A5_HTTP_requests": 0,
+  "A5_authority": "AUTHORIZED_UNCONSUMED",
+  "Security_Master_refresh_invocations": 0,
+  "authority_consumption_latch": "absent; no live harness invoked",
+  "closure_requests": 0,
+  "external_DNS_attempts": 0,
+  "external_HTTP_attempts": 0,
+  "external_socket_attempts": 0,
+  "guard_boundary": "Python audit and injected Python/Node child guards; local Git allowlist; no OS firewall claim",
+  "live_window": "NOT_STARTED",
+  "market_source_requests": 0
+}

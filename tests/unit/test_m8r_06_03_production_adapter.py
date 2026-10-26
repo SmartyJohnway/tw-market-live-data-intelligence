@@ -189,10 +189,27 @@ def test_current_observation_adapter_uses_normalized_stub_and_writes_contained_a
     assert currentness["safe_for_ai_context"] is False
 
 
+def _active_eod_authority(monkeypatch, market, codes):
+    from types import SimpleNamespace
+    from scripts.m8r_08g_identity_service import TaiwanMarketIdentityService
+
+    service = TaiwanMarketIdentityService([
+        {"canonical_target_id": f"{market}:{code}", "identity": {"security_code": code},
+         "classification": {"market": market, "instrument_family": "company_share", "instrument_type": "common_share"},
+         "execution_eligibility": {"status": "allowed", "reason_codes": []}}
+        for code in codes
+    ], release_id="synthetic-adapter-active", manifest_hash="a" * 64)
+    monkeypatch.setattr(
+        "scripts.m8r_06_01c2_mode_a_security_master_loader.get_production_mode_a_security_master",
+        lambda: SimpleNamespace(identity_service=service),
+    )
+
+
 def test_official_eod_adapter_uses_exact_market_stub(tmp_path, monkeypatch):
+    _active_eod_authority(monkeypatch, "TWSE", ["2330"])
     monkeypatch.setattr(
         "scripts.m8r_06_03_production_adapter.execute_twse_official_eod_adapter",
-        lambda symbols, *, timeout: {"source_id": "TWSE_OPENAPI", "observations": [{"symbol": symbols[0]}]},
+        lambda symbols, *, timeout, security_master: {"source_id": "TWSE_OPENAPI", "observations": [{"symbol": symbols[0]}]},
     )
     result = production_operation_adapter(
         _request("official_eod_reference", "TWSE"),
@@ -238,9 +255,11 @@ def test_production_batch_partial_fanout_never_retries_missing_symbol(tmp_path, 
 
 
 def test_production_batch_eod_uses_exact_market_once_and_fans_out(tmp_path, monkeypatch):
+    _active_eod_authority(monkeypatch, "TPEX", ["5227", "6488"])
     calls = []
 
-    def fake_execute(symbols, *, timeout):
+    def fake_execute(symbols, *, timeout, security_master):
+        assert set(security_master) == {("tpex_otc", symbol) for symbol in symbols}
         calls.append((symbols, timeout))
         return {"source_id": "TPEX_OPENAPI", "observations": [{"symbol": symbol} for symbol in symbols]}
 

@@ -1,0 +1,11 @@
+{
+  "ancestry": [
+    "96c0e5dd340d641b1b34f820be43f37234e954f7",
+    "59cb926d07aa1c4ebac33475e3a6bf8d3d3af09b",
+    "617ccea728befa2fd3ea7b847665072c0e728f00"
+  ],
+  "binding": "Candidate is the direct child commit containing this evidence; implementation inputs are bound by changed_files.json, avoiding self-referential commit hashes.",
+  "branch": "phase-l/l7-a5-r2-eod-active-security-master-propagation",
+  "starting_head": "96c0e5dd340d641b1b34f820be43f37234e954f7",
+  "starting_tree": "1abc82fcb40c1cb99179e0850999eb4b526c7239"
+}

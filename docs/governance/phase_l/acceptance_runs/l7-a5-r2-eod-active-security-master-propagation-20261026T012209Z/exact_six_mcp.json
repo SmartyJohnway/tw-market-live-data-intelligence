@@ -1,0 +1,13 @@
+{
+  "count": 6,
+  "exact_set_equality": true,
+  "names": [
+    "market_describe_capabilities",
+    "market_export_ai_handoff",
+    "market_fetch_evidence",
+    "market_preview_request",
+    "market_read_result",
+    "market_validate_request"
+  ],
+  "status": "PASS"
+}

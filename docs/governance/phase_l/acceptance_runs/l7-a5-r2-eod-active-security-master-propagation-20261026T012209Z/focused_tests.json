@@ -1,0 +1,58 @@
+{
+  "command": [
+    "C:\\Users\\weitang\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-m",
+    "not historical",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=C:\\twmarket_temp\\l7-a5-r2\\focused-final\\pytest-temp",
+    "--junitxml=C:\\twmarket_temp\\l7-a5-r2\\focused-final\\report.xml",
+    "tests/unit/test_l7_a5_r2_eod_active_security_master.py",
+    "tests/unit/test_m8r_06_03_production_adapter.py",
+    "tests/unit/test_m8r_06_03_batch_runtime.py",
+    "tests/unit/test_m8a_twse_official_eod_adapter.py",
+    "tests/unit/test_m8a_tpex_official_eod_adapter.py",
+    "tests/unit/test_m8a_official_eod_instrument_classification.py",
+    "tests/unit/test_m8a_controlled_official_eod_execution.py",
+    "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py",
+    "tests/unit/test_m8r_08g_identity_service_and_releases.py",
+    "tests/unit/test_l6_a2_security_master_paths.py",
+    "tests/unit/test_m8r_05b_03_dispatch.py",
+    "tests/unit/test_m8r_05b_03_controlled_dispatch.py",
+    "tests/unit/test_m8r_05b_03_orchestrator.py",
+    "tests/unit/test_m8r_05b_03_aggregation.py",
+    "tests/unit/test_m8r_05b_03_operation_result.py",
+    "tests/unit/test_m8r_06_04_mode_c.py",
+    "tests/unit/test_m8r_08e_local_operator_action.py",
+    "tests/acceptance/test_m8r_06_05_operator_acceptance.py"
+  ],
+  "deselected": 4,
+  "deselected_nodes": [
+    "tests/unit/test_m8r_06_04_mode_c.py::test_mode_c_materializes_and_reuses_sanitized_finalized_lineage",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_existing_result_semantic_tamper_with_rewritten_hash_is_rejected",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_existing_audit_semantic_tamper_with_rewritten_hash_is_rejected",
+    "tests/unit/test_m8r_06_04_mode_c.py::test_verified_handoff_reuses_mode_c_outputs_and_audit_citations"
+  ],
+  "external_network_attempt_events": [],
+  "failed": 0,
+  "guard_denials": [],
+  "guard_events": 22,
+  "passed": 193,
+  "pytest_exit_code": 0,
+  "skipped": 2,
+  "skipped_nodes": [
+    {
+      "nodeid": "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_sealed_candidate_production_activation",
+      "reason": "('C:\\\\twmarket_temp\\\\l7-a5\\\\repo\\\\tests\\\\unit\\\\test_m8r_06_01c2_mode_a_pointer_activation.py', 553, 'Skipped: accepted local C1B compact candidate is not materialized')"
+    },
+    {
+      "nodeid": "tests/unit/test_m8r_06_01c2_mode_a_pointer_activation.py::test_active_release_http_e2e_without_runtime_monkeypatch",
+      "reason": "('C:\\\\twmarket_temp\\\\l7-a5\\\\repo\\\\tests\\\\unit\\\\test_m8r_06_01c2_mode_a_pointer_activation.py', 605, 'Skipped: installation-local active release is not initialized')"
+    }
+  ],
+  "status": "PASS"
+}

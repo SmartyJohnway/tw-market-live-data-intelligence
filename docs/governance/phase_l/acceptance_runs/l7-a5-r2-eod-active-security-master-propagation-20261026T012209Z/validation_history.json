@@ -1,0 +1,39 @@
+{
+  "compileall": {
+    "exit_code": 0,
+    "files": [
+      "scripts/m8r_06_03_production_adapter.py",
+      "scripts/m8r_06_03_execute_once.py",
+      "tests/unit/test_l7_a5_r2_eod_active_security_master.py",
+      "tests/unit/test_m8r_06_03_production_adapter.py",
+      "tests/unit/test_m8r_06_03_batch_runtime.py"
+    ],
+    "pycache_root": "C:\\twmarket_temp\\l7-a5-r2\\pycache"
+  },
+  "final": {
+    "deselected": 4,
+    "failed": 0,
+    "passed": 193,
+    "skipped": 2
+  },
+  "git_diff_check_exit": 0,
+  "initial_focused_trial": {
+    "cause": "Two already historical Mode C expectations were inadvertently selected; two fake operator startup checks had an uninitialized isolated HOME. No runtime fix or waiver introduced. Final harness initializes its isolated installation and honors existing historical marker.",
+    "failed": 4,
+    "passed": 189,
+    "skipped": 2
+  },
+  "intermediate_v3": {
+    "deselected": 4,
+    "failed": 0,
+    "passed": 191,
+    "skipped": 2
+  },
+  "no_new_skip_or_profile_exclusion": true,
+  "portable_validator": {
+    "checks": 205,
+    "command": "python -B skills/tw-security-master-classifier/scripts/validate_skill.py",
+    "exit_code": 0,
+    "failed": 0
+  }
+}
