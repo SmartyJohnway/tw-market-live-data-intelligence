@@ -3,7 +3,7 @@ title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
 updated: "2026-09-14"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "2026-10-26: L7-A0-A4 Owner-accepted and merged; A5 technical/live and independent acceptance PASS; GAP-15 CLOSED; EXIT-19 PASS; A5 Owner merge decision PENDING; A6/A7 NOT AUTHORIZED; ProductVersion 1.5.0 selected/unpublished; stable publication and Phase M NOT AUTHORIZED; Phase L NOT CLOSED"
+status_reconciled_through: "2026-10-27: L7-A0-A5 Owner-accepted and merged through PR #418; A5 technical/live, independent and merge acceptance PASS; GAP-15 CLOSED; EXIT-19 PASS; post-merge governance reconciliation in progress; A6/A7 NOT AUTHORIZED; ProductVersion 1.5.0 selected/unpublished; stable publication and Phase M NOT AUTHORIZED; Phase L NOT CLOSED"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
 stable_product_release: "v1.0.0"
@@ -21,6 +21,24 @@ tags:
 ---
 
 # tw-market-live-data-intelligence
+
+## Current L7-A5 merged state (2026-10-27)
+
+L7-A5 is **OWNER-AUTHORIZED AND MERGED**. PR #418 normal-merged accepted head
+`70cafb61144afea0f0014563873004c8864822ac`, tree `16677e83c87efd1b7b3440711e527bf877899186`,
+at merge commit `a812e212cb710a869289a18b3e7a29c886a43512` on `2026-10-26T16:52:54Z`.
+The merge parents are prior canonical main `617ccea728befa2fd3ea7b847665072c0e728f00` and the exact accepted A5 head;
+GitHub merge verification is valid and all eight accepted A5 commits remain in ancestry.
+
+A5 technical acceptance, independent acceptance and normal-merge acceptance are **PASS**.
+`L7-GAP-15 = CLOSED`; `L7-EXIT-19 = PASS`; the GH2 temporal finding is closed by R5/R5.1/R5.2 + GH5.
+ProductVersion remains **1.5.0 selected/unpublished**; published stable remains **v1.0.0**.
+Post-merge reconciliation: `docs/governance/phase_l/PHASE_L_L7_A5_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-27.md`.
+
+**A6 and A7 are NOT AUTHORIZED. Stable publication and Phase M remain NOT AUTHORIZED. Phase L remains NOT CLOSED.**
+A6 requires a separate Owner authorization after this post-merge reconciliation is independently accepted and merged.
+
+All subsequent dated milestone records are historical; their authorization/status statements describe those milestones only.
 
 ## Current L7-A5 technical/live acceptance (2026-10-26)
 

@@ -1,5 +1,25 @@
 # Phase L — Current Status & Recovery Index
 
+## Current L7-A5 merged state (2026-10-27)
+
+L7-A5 is **OWNER-AUTHORIZED AND MERGED**. PR #418 normal-merged accepted head
+`70cafb61144afea0f0014563873004c8864822ac`, tree `16677e83c87efd1b7b3440711e527bf877899186`,
+at merge commit `a812e212cb710a869289a18b3e7a29c886a43512` on `2026-10-26T16:52:54Z`.
+Merge parents are prior canonical main `617ccea728befa2fd3ea7b847665072c0e728f00` and the exact accepted A5 head;
+GitHub merge verification is valid and all eight accepted A5 commits remain in ancestry.
+
+A5 technical acceptance, independent acceptance and merge acceptance are **PASS**.
+`L7-GAP-15 = CLOSED`; `L7-EXIT-19 = PASS`.
+`L7_A5_GH2_TEMPORAL_PROVENANCE_INVERSION = CLOSED_BY_R5_R5_1_R5_2_AND_GH5`;
+historical GH2/GH3/GH4 evidence remains immutable and GH5 remains the accepted live proof.
+ProductVersion remains **1.5.0 selected/unpublished**; published stable remains **v1.0.0**.
+
+Post-merge reconciliation: [PHASE_L_L7_A5_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-27.md](PHASE_L_L7_A5_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-27.md).
+**A6/A7, stable publication and Phase M remain NOT AUTHORIZED; Phase L remains NOT CLOSED.**
+A6 requires separate Owner authorization after this post-merge reconciliation is independently accepted and merged.
+
+All subsequent dated milestone records are historical; their authorization/status statements describe those milestones only.
+
 ## Current L7-A5 technical/live acceptance (2026-10-26)
 
 L7-A0–A4 remain Owner-accepted and merged. L7-A5 technical/live acceptance is
