@@ -1,0 +1,34 @@
+{
+  "coverage_semantics": "Each listed date is explicitly adjudicated by the governed producer; both authority families must cover every actually traversed date including current and selected source date. No inference from no events or annual calendar.",
+  "legacy_DGPA_only_callers": "Fail closed even with closure_authority_complete=True; historical acquisition runners remain unchanged and cannot self-upgrade negative evidence.",
+  "maximum_coverage_dates_and_override_count": 368,
+  "override_contract": {
+    "closure_scope": "full_day",
+    "date": "canonical YYYY-MM-DD",
+    "market": "TWSE",
+    "reason": "unscheduled_exchange_closure",
+    "session_status": "closed"
+  },
+  "plan_reference": "existing closure_authority_ref = I3_COMPOSITE_CLOSURE:sha256:<canonical composite digest>",
+  "precedence": "governed exchange CLOSED overrides annual trading value; existing Taipei full_day/morning closure also excludes session",
+  "protocol": "i3_composite_closure_authority.v1",
+  "provenance_fields": [
+    "taipei_closure_authority_sha256",
+    "exchange_session_authority_sha256"
+  ],
+  "provenance_values": "strict lowercase SHA-256 references to independently governed authority/provenance artifacts",
+  "public_plan_schema_change": false,
+  "real_current_authority_materialized": false,
+  "separate_plan_authority_reference_added": false,
+  "strict_fields": [
+    "schema_version",
+    "market",
+    "provenance",
+    "closure_events",
+    "taipei_closure_coverage_dates",
+    "exchange_session_coverage_dates",
+    "exchange_session_overrides"
+  ],
+  "trust_boundary": "Digest verifies supplied composite binding, not official authenticity or adjudication quality. Governed caller/producer must validate the referenced accepted provenance. R4 adds no acquisition/qualification or automatic completeness producer.",
+  "unknown_shapes_duplicates_conflicts": "FAIL_CLOSED"
+}

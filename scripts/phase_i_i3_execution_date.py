@@ -6,18 +6,89 @@ from datetime import date, datetime, time, timedelta
 from typing import Any, Mapping
 from zoneinfo import ZoneInfo
 
-from scripts.m8r_05b_01.canonical import plan_hash_and_id
+from scripts.m8r_05b_01.canonical import plan_hash_and_id, sha256_json
 from scripts.m8r_05b_01.planner import plan_identity_scope
 from scripts.m8r_eod_expected_trade_date import get_taipei_closure_scope
 
 TAIPEI = ZoneInfo("Asia/Taipei")
 TWSE_CALENDAR_URL = "https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule"
+COMPOSITE_CLOSURE_SCHEMA = "i3_composite_closure_authority.v1"
+MAX_CLOSURE_COVERAGE_DATES = 368  # Current date plus the existing 367-day walk.
+
+
+def composite_closure_authority_ref(authority: Mapping[str, Any]) -> str:
+    """Bind supplied composite bytes; a digest does not itself grant authority."""
+    return "I3_COMPOSITE_CLOSURE:sha256:" + sha256_json(authority)
+
+
+def _closure_coverage_dates(values: Any) -> set[date]:
+    if not isinstance(values, list) or not 1 <= len(values) <= MAX_CLOSURE_COVERAGE_DATES:
+        raise ValueError("i3_closure_authority_coverage_invalid")
+    result: set[date] = set()
+    for value in values:
+        if not isinstance(value, str):
+            raise ValueError("i3_closure_authority_date_invalid")
+        try:
+            parsed = date.fromisoformat(value)
+        except ValueError as exc:
+            raise ValueError("i3_closure_authority_date_invalid") from exc
+        if parsed.isoformat() != value or parsed in result:
+            raise ValueError("i3_closure_authority_date_duplicate_or_invalid")
+        result.add(parsed)
+    return result
+
+
+def _validate_composite_closure_authority(
+    authority: Mapping[str, Any] | None, events: list[dict[str, Any]], reference: str,
+) -> tuple[set[date], set[date], set[date]]:
+    """Validate independently governed coverage, never infer it from no events."""
+    keys = {"schema_version", "market", "provenance", "closure_events", "taipei_closure_coverage_dates",
+            "exchange_session_coverage_dates", "exchange_session_overrides"}
+    if not isinstance(authority, Mapping) or set(authority) != keys:
+        raise ValueError("i3_composite_closure_authority_required_or_invalid")
+    if authority["schema_version"] != COMPOSITE_CLOSURE_SCHEMA or authority["market"] != "TWSE":
+        raise ValueError("i3_composite_closure_authority_invalid")
+    provenance = authority["provenance"]
+    if (not isinstance(provenance, Mapping)
+            or set(provenance) != {"taipei_closure_authority_sha256", "exchange_session_authority_sha256"}
+            or any(not isinstance(v, str) or len(v) != 64
+                   or any(c not in "0123456789abcdef" for c in v) for v in provenance.values())):
+        raise ValueError("i3_composite_closure_provenance_invalid")
+    if not isinstance(authority["closure_events"], list) or authority["closure_events"] != events:
+        raise ValueError("i3_closure_authority_events_mismatch")
+    taipei = _closure_coverage_dates(authority["taipei_closure_coverage_dates"])
+    exchange = _closure_coverage_dates(authority["exchange_session_coverage_dates"])
+    overrides = authority["exchange_session_overrides"]
+    if not isinstance(overrides, list) or len(overrides) > MAX_CLOSURE_COVERAGE_DATES:
+        raise ValueError("i3_exchange_session_overrides_invalid")
+    closed: set[date] = set()
+    for item in overrides:
+        if (not isinstance(item, Mapping)
+                or set(item) != {"market", "date", "session_status", "closure_scope", "reason"}
+                or item["market"] != "TWSE" or item["session_status"] != "closed"
+                or item["closure_scope"] != "full_day"
+                or item["reason"] != "unscheduled_exchange_closure"):
+            raise ValueError("i3_exchange_session_override_invalid")
+        day = next(iter(_closure_coverage_dates([item["date"]])))
+        if day in closed:
+            raise ValueError("i3_exchange_session_override_duplicate")
+        if day not in exchange:
+            raise ValueError("i3_exchange_session_override_coverage_missing")
+        closed.add(day)
+    try:
+        expected_ref = composite_closure_authority_ref(authority)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("i3_composite_closure_authority_invalid") from exc
+    if reference != expected_ref:
+        raise ValueError("i3_composite_closure_authority_hash_mismatch")
+    return taipei, exchange, closed
 
 
 def resolve_i3_twse_source_trade_date(
     *, evaluation_time: str | datetime, official_calendar: Mapping[str, Any] | list[Mapping[str, Any]],
     closure_events: list[dict[str, Any]], calendar_authority_ref: str,
     closure_authority_ref: str, closure_authority_complete: bool,
+    closure_authority: Mapping[str, Any] | None = None,
 ) -> dict[str, str]:
     """Resolve latest completed TWSE T86 date using supplied governed data.
 
@@ -36,6 +107,9 @@ def resolve_i3_twse_source_trade_date(
         raise ValueError("i3_official_calendar_required")
     if any(not isinstance(item, dict) for item in closure_events):
         raise ValueError("i3_closure_events_invalid")
+    taipei_coverage, exchange_coverage, exchange_closed = _validate_composite_closure_authority(
+        closure_authority, closure_events, closure_authority_ref,
+    )
     parsed = datetime.fromisoformat(evaluation_time.replace("Z", "+00:00")) if isinstance(evaluation_time, str) else evaluation_time
     if not isinstance(parsed, datetime) or parsed.tzinfo is None or parsed.utcoffset() is None:
         raise ValueError("i3_evaluation_time_timezone_required")
@@ -75,14 +149,21 @@ def resolve_i3_twse_source_trade_date(
                 raise ValueError("i3_official_calendar_duplicate_or_invalid_dates")
             calendar_by_date[item_date] = item["is_trading_day"]
 
-    # Resolve only dates traversed. Missing irrelevant dates elsewhere in an
-    # annual artifact do not block this lookup.
+    def effective_closed(day: date) -> bool:
+        if day not in taipei_coverage or day not in exchange_coverage:
+            raise ValueError("i3_closure_coverage_unresolved")
+        # Reuse the EOD exchange_session_override precedence: CLOSED wins over
+        # the annual schedule. Absence of an override requires explicit coverage.
+        return (day in exchange_closed
+                or get_taipei_closure_scope(closure_events, day.isoformat()) in {"full_day", "morning"})
+
+    # Resolve only dates traversed. Both unscheduled authorities must cover
+    # every inspected day, including the selected source day.
     source_session_cutoff = time(20, 0)
     current_is_trading = calendar_by_date.get(local_date)
     if current_is_trading is None:
         raise ValueError("i3_official_calendar_coverage_incomplete")
-    current_closure = get_taipei_closure_scope(closure_events, local_date.isoformat())
-    current_closed = current_closure in {"full_day", "morning"}
+    current_closed = effective_closed(local_date)
     if current_is_trading and not current_closed and parsed.timetz().replace(tzinfo=None) >= source_session_cutoff:
         source_date = local_date.isoformat()
     else:
@@ -92,8 +173,8 @@ def resolve_i3_twse_source_trade_date(
             is_trading = calendar_by_date.get(cursor)
             if is_trading is None:
                 raise ValueError("i3_official_calendar_coverage_incomplete")
-            closure = get_taipei_closure_scope(closure_events, cursor.isoformat())
-            if is_trading and closure not in {"full_day", "morning"}:
+            closed = effective_closed(cursor)
+            if is_trading and not closed:
                 source_date = cursor.isoformat()
                 break
             cursor -= timedelta(days=1)
@@ -130,6 +211,7 @@ def resolve_and_bind_i3_twse_plan(
     official_calendar: Mapping[str, Any], closure_events: list[dict[str, Any]],
     calendar_authority_ref: str, closure_authority_ref: str,
     closure_authority_complete: bool,
+    closure_authority: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Canonical pre-authorization resolver -> immutable plan binding path."""
     binding = resolve_i3_twse_source_trade_date(
@@ -137,5 +219,6 @@ def resolve_and_bind_i3_twse_plan(
         closure_events=closure_events, calendar_authority_ref=calendar_authority_ref,
         closure_authority_ref=closure_authority_ref,
         closure_authority_complete=closure_authority_complete,
+        closure_authority=closure_authority,
     )
     return bind_i3_source_trade_date(plan, binding)

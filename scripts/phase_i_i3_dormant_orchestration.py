@@ -92,6 +92,7 @@ def prepare_dormant_i3_execution(
     calendar_authority_ref: str | None, closure_authority_ref: str | None,
     closure_authority_complete: bool,
     owner_identity_reference: str, owner_review_reference: str,
+    closure_authority: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Bind date, then build authorization and V3 requests; never dispatch.
 
@@ -118,6 +119,7 @@ def prepare_dormant_i3_execution(
             closure_events=closure_events, calendar_authority_ref=calendar_authority_ref,
             closure_authority_ref=closure_authority_ref,
             closure_authority_complete=closure_authority_complete,
+            closure_authority=closure_authority,
         )
     elif any("resolved_source_trade_date" in op.get("parameters", {}) for op in operations):
         raise ValueError("i3_tpex_query_date_forbidden")

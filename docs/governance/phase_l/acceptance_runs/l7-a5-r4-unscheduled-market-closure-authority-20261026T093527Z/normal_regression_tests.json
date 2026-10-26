@@ -1,0 +1,142 @@
+{
+  "R3_tests_preserved": 27,
+  "cases": [
+    {
+      "name": "test_weekend_and_post_close_resolve_last_trading_session",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_scheduled_holiday_is_skipped_by_supplied_official_calendar",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_annual_calendar_artifacts_resolve_across_new_year",
+      "seconds": "0.006",
+      "status": "PASS"
+    },
+    {
+      "name": "test_first_trading_day_after_new_year_resolves_itself_after_cutoff",
+      "seconds": "0.005",
+      "status": "PASS"
+    },
+    {
+      "name": "test_weekend_and_scheduled_holiday_cross_year_and_december_31",
+      "seconds": "0.007",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_annual_calendar_builder_artifact_is_directly_usable",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TWSE-twse_root_invalid]",
+      "seconds": "0.042",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TWSE-twse_fields_invalid]",
+      "seconds": "0.040",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TWSE-twse_row_width_invalid]",
+      "seconds": "0.038",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TWSE-required_security_code_missing]",
+      "seconds": "0.041",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TWSE-required_source_fields_missing]",
+      "seconds": "0.037",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TWSE-twse_governed_source_date_mismatch]",
+      "seconds": "0.034",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TWSE-required_integer_invalid]",
+      "seconds": "0.034",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TWSE-duplicate_json_key]",
+      "seconds": "0.035",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TPEX-tpex_root_invalid]",
+      "seconds": "0.035",
+      "status": "PASS"
+    },
+    {
+      "name": "test_canonical_normalization_reason_survives_in_caveat_and_warning[TPEX-required_integer_invalid]",
+      "seconds": "0.034",
+      "status": "PASS"
+    },
+    {
+      "name": "test_success_bytes_numbers_and_citations_match_pre_repair_baseline[TWSE-a8aaa0c680aa76053fad5cc8b093ef0d2dbc44b2ba7c8b771807a9744d8d3bc2-140]",
+      "seconds": "0.026",
+      "status": "PASS"
+    },
+    {
+      "name": "test_success_bytes_numbers_and_citations_match_pre_repair_baseline[TPEX-d33caa3093c2fa86874d8af306652dd255ecef5730b833a3f24e924c0e53521d-120]",
+      "seconds": "0.026",
+      "status": "PASS"
+    },
+    {
+      "name": "test_existing_taipei_scope_semantics_preserved[full_day-2026-10-22]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_existing_taipei_scope_semantics_preserved[morning-2026-10-22]",
+      "seconds": "0.005",
+      "status": "PASS"
+    },
+    {
+      "name": "test_existing_taipei_scope_semantics_preserved[afternoon-2026-10-23]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_normal_cutoff_weekend_scheduled_holiday_preserved[2026-10-23T19:59:59+08:00-2026-10-22]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_normal_cutoff_weekend_scheduled_holiday_preserved[2026-10-23T20:00:00+08:00-2026-10-23]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_normal_cutoff_weekend_scheduled_holiday_preserved[2026-10-25T21:00:00+08:00-2026-10-23]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_normal_cutoff_weekend_scheduled_holiday_preserved[2026-10-26T21:00:00+08:00-2026-10-23]",
+      "seconds": "0.004",
+      "status": "PASS"
+    }
+  ],
+  "normal_cases": [
+    "normal weekday",
+    "scheduled holiday",
+    "weekend",
+    "Taipei full_day",
+    "Taipei morning",
+    "cross-year traversal",
+    "before cutoff",
+    "after cutoff"
+  ],
+  "production_annual_builder_unchanged": true,
+  "status": "PASS"
+}

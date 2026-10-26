@@ -1,4 +1,5 @@
 """Governed I3 TWSE runtime date binding stays explicit, pure, and immutable."""
+from tests.unit.i3_closure_authority_test_helpers import closure_authority_fixture
 from datetime import date, datetime, timedelta
 
 import pytest
@@ -30,7 +31,7 @@ def _resolve(evaluation, cal=None, closure_complete=True):
     return resolve_i3_twse_source_trade_date(
         evaluation_time=evaluation, official_calendar=calendar,
         closure_events=[], calendar_authority_ref="official-calendar:test-v1",
-        closure_authority_ref="closure-feed:test-v1", closure_authority_complete=closure_complete,
+        **closure_authority_fixture(evaluation), closure_authority_complete=closure_complete,
     )
 
 
@@ -61,7 +62,7 @@ def test_canonical_annual_calendar_artifacts_resolve_across_new_year():
     for evaluation in ("2026-01-01T21:00:00+08:00", "2026-01-02T21:00:00+08:00"):
         result = resolve_i3_twse_source_trade_date(evaluation_time=evaluation,
             official_calendar=[prior, current], closure_events=[], calendar_authority_ref="annual:2025-2026",
-            closure_authority_ref="closure:v1", closure_authority_complete=True)
+            **closure_authority_fixture(evaluation), closure_authority_complete=True)
         assert result["resolved_source_trade_date"] == "2025-12-31"
 
 
@@ -69,7 +70,7 @@ def test_first_trading_day_after_new_year_resolves_itself_after_cutoff():
     cal = [_calendar("2025-01-01"), _calendar("2026-01-01", holidays={"2026-01-01"})]
     result = resolve_i3_twse_source_trade_date(evaluation_time="2026-01-02T20:01:00+08:00",
         official_calendar=cal, closure_events=[], calendar_authority_ref="annual:pair",
-        closure_authority_ref="closure:v1", closure_authority_complete=True)
+        **closure_authority_fixture("2026-01-02T20:01:00+08:00"), closure_authority_complete=True)
     assert result["resolved_source_trade_date"] == "2026-01-02"
 
 
@@ -80,11 +81,11 @@ def test_weekend_and_scheduled_holiday_cross_year_and_december_31():
     for evaluation in ("2026-01-03T21:00:00+08:00", "2026-01-01T21:00:00+08:00"):
         result = resolve_i3_twse_source_trade_date(evaluation_time=evaluation,
             official_calendar=[prior, current], closure_events=[], calendar_authority_ref="annual:pair",
-            closure_authority_ref="closure:v1", closure_authority_complete=True)
+            **closure_authority_fixture(evaluation), closure_authority_complete=True)
         assert result["resolved_source_trade_date"] == "2025-12-31"
     dec31 = resolve_i3_twse_source_trade_date(evaluation_time="2025-12-31T21:00:00+08:00",
         official_calendar=prior, closure_events=[], calendar_authority_ref="annual:2025",
-        closure_authority_ref="closure:v1", closure_authority_complete=True)
+        **closure_authority_fixture("2025-12-31T21:00:00+08:00"), closure_authority_complete=True)
     assert dec31["resolved_source_trade_date"] == "2025-12-31"
 
 
@@ -94,12 +95,12 @@ def test_missing_inspected_prior_year_day_fails_but_irrelevant_gap_does_not():
     with pytest.raises(ValueError, match="coverage_incomplete"):
         resolve_i3_twse_source_trade_date(evaluation_time="2026-01-01T21:00:00+08:00",
             official_calendar=[prior, current], closure_events=[], calendar_authority_ref="annual:pair",
-            closure_authority_ref="closure:v1", closure_authority_complete=True)
+            **closure_authority_fixture("2026-01-01T21:00:00+08:00"), closure_authority_complete=True)
     prior = _calendar("2025-01-01", omit={"2025-07-01"})
     current = _calendar("2026-01-01")
     result = resolve_i3_twse_source_trade_date(evaluation_time="2026-01-05T21:00:00+08:00",
         official_calendar=[prior, current], closure_events=[], calendar_authority_ref="annual:pair",
-        closure_authority_ref="closure:v1", closure_authority_complete=True)
+        **closure_authority_fixture("2026-01-05T21:00:00+08:00"), closure_authority_complete=True)
     assert result["resolved_source_trade_date"] == "2026-01-05"
 
 
@@ -122,7 +123,7 @@ def test_annual_calendar_artifact_validation_fails_closed(mutation, code):
     with pytest.raises(ValueError, match=code):
         resolve_i3_twse_source_trade_date(evaluation_time="2026-01-01T21:00:00+08:00",
             official_calendar=cal, closure_events=[], calendar_authority_ref="annual:2026",
-            closure_authority_ref="closure:v1", closure_authority_complete=True)
+            **closure_authority_fixture("2026-01-01T21:00:00+08:00"), closure_authority_complete=True)
 
 
 def test_conflicting_duplicate_date_across_annual_inputs_fails_closed():
@@ -132,7 +133,7 @@ def test_conflicting_duplicate_date_across_annual_inputs_fails_closed():
     with pytest.raises(ValueError, match="conflicting_duplicate_date"):
         resolve_i3_twse_source_trade_date(evaluation_time="2026-01-01T21:00:00+08:00",
             official_calendar=[first, second], closure_events=[], calendar_authority_ref="annual:dupe",
-            closure_authority_ref="closure:v1", closure_authority_complete=True)
+            **closure_authority_fixture("2026-01-01T21:00:00+08:00"), closure_authority_complete=True)
 
 
 def test_canonical_annual_calendar_builder_artifact_is_directly_usable():
@@ -141,7 +142,7 @@ def test_canonical_annual_calendar_builder_artifact_is_directly_usable():
         year=2026, holiday_schedule_records=[], generated_at_utc="2026-01-01T00:00:00Z")
     resolved = resolve_i3_twse_source_trade_date(evaluation_time="2026-10-04T21:00:00+08:00",
         official_calendar=annual, closure_events=[], calendar_authority_ref="canonical:2026",
-        closure_authority_ref="closure:v1", closure_authority_complete=True)
+        **closure_authority_fixture("2026-10-04T21:00:00+08:00"), closure_authority_complete=True)
     assert resolved["resolved_source_trade_date"] == "2026-10-02"
 
 
@@ -165,7 +166,7 @@ def test_dormant_candidate_pipeline_binds_date_before_authorization_and_request(
     calendar = build_twse_trading_calendar_from_holiday_schedule(year=2026,
         holiday_schedule_records=[], generated_at_utc="2026-01-01T00:00:00Z")
     common = {"official_calendar": calendar, "closure_events": [], "calendar_authority_ref": "calendar:2026",
-              "closure_authority_ref": "closures:2026", "closure_authority_complete": True,
+              **closure_authority_fixture("2026-10-05T21:00:00+08:00"), "closure_authority_complete": True,
               "owner_identity_reference": "offline-test-owner", "owner_review_reference": "offline-test"}
     before_close = prepare_dormant_i3_execution(package, evaluation_time="2026-10-05T19:00:00+08:00", **common)
     after_close = prepare_dormant_i3_execution(package, evaluation_time="2026-10-05T21:00:00+08:00", **common)
@@ -308,7 +309,7 @@ def test_unified_v3_preview_accepts_i3_and_binds_date_without_authorizing_execut
     bound = resolve_and_bind_i3_twse_plan(
         plan, evaluation_time="2026-10-04T21:00:00+08:00",
         official_calendar=[_calendar("2025-01-01"), _calendar("2026-01-01")], closure_events=[],
-        calendar_authority_ref="calendar-v1", closure_authority_ref="closures-v1",
+        calendar_authority_ref="calendar-v1", **closure_authority_fixture("2026-10-04T21:00:00+08:00"),
         closure_authority_complete=True,
     )
     assert bound["resolved_source_trade_date"] == "2026-10-02"

@@ -1,0 +1,21 @@
+{
+  "authority": "Owner L7-A5-R4 adjudication",
+  "finding": "L7_A5_I3_UNSCHEDULED_MARKET_CLOSURE_AUTHORITY_GAP",
+  "gap": "DGPA negative lookup was insufficient to adjudicate exchange-session completeness.",
+  "incident": {
+    "actual_session": "closed",
+    "annual_calendar_candidate": "trading_day",
+    "closure_type": "unscheduled_full_day",
+    "date": "2026-10-23",
+    "market": "TWSE"
+  },
+  "non_findings": [
+    "T86 parser defect",
+    "R3 defect",
+    "TLS or HTTP defect",
+    "transport or retry defect",
+    "query parameter defect",
+    "Security Master defect"
+  ],
+  "production_incident_date_hardcoded": false
+}

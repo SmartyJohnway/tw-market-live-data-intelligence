@@ -1,0 +1,9 @@
+{
+  "candidate_binding": "Exactly one direct child implementation/evidence commit; enclosing commit supplies exact candidate identity. changed_files.json binds final tested input bytes.",
+  "repair_branch": "phase-l/l7-a5-r4-unscheduled-market-closure-authority",
+  "starting_HEAD": "c3c7bddb28e874be4dfee9d31428598fb5f70739",
+  "starting_branch": "phase-l/l7-a5-r3-i3-normalization-diagnostic-fidelity",
+  "starting_parent": "e98dba733b2a93252f471b0f4e294ac2999355a7",
+  "starting_tracked_worktree": "CLEAN",
+  "starting_tree": "5752323f55311d90ed5d1d9f4ca5ea9c7987d3f5"
+}

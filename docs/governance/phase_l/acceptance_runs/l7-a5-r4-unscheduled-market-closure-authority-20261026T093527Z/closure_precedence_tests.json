@@ -1,0 +1,93 @@
+{
+  "cases": [
+    {
+      "name": "test_owner_incident_skips_unscheduled_closed_weekday",
+      "seconds": "0.009",
+      "status": "PASS"
+    },
+    {
+      "name": "test_accepted_annual_artifact_remains_unchanged_and_override_corrects_effective_date",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_existing_taipei_scope_semantics_preserved[full_day-2026-10-22]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_existing_taipei_scope_semantics_preserved[morning-2026-10-22]",
+      "seconds": "0.005",
+      "status": "PASS"
+    },
+    {
+      "name": "test_existing_taipei_scope_semantics_preserved[afternoon-2026-10-23]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[market]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[status]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[scope]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[reason]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[compact_date]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[week_date]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[invalid_date]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[unknown_key]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[missing_key]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_strict_shape_and_closed_only_scope[non_object]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_duplicate_identical_or_conflicting_override_rejected[False]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_duplicate_identical_or_conflicting_override_rejected[True]",
+      "seconds": "0.003",
+      "status": "PASS"
+    }
+  ],
+  "closed_override_wins": true,
+  "conflicting_open_override_rejected": true,
+  "duplicate_identical_rejected": true,
+  "status": "PASS"
+}

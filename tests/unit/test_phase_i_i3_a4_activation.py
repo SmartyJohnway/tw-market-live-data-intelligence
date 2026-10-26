@@ -1,4 +1,5 @@
 """Owner-authorized I3 A4 activation proof using only injected source bytes."""
+from tests.unit.i3_closure_authority_test_helpers import closure_authority_fixture
 import hashlib
 import json
 import socket
@@ -109,7 +110,7 @@ def _prepared(package, *, evaluation="2026-10-01T19:00:00+08:00"):
         holiday_schedule_records=[], generated_at_utc="2026-01-01T00:00:00Z")
     return prepare_i3_authorized_execution(package, evaluation_time=evaluation, official_calendar=calendar,
         closure_events=[], calendar_authority_ref="fixture:twse-calendar-2026",
-        closure_authority_ref="fixture:closure-complete", closure_authority_complete=True,
+        **closure_authority_fixture(evaluation), closure_authority_complete=True,
         decision_input=decision)
 
 

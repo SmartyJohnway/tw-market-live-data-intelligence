@@ -1,0 +1,50 @@
+{
+  "files": [
+    {
+      "bytes": 12212,
+      "path": "scripts/phase_i_i3_execution_date.py",
+      "sha256": "37c432af3972c6b53a5e1b6db736390d5338f3cc5221187c6ea7abe2bb3cf218"
+    },
+    {
+      "bytes": 5124,
+      "path": "scripts/phase_i_i3_execution_pipeline.py",
+      "sha256": "c600f0e5a4f863795a9543b59f53f40ccb29cfcfda4d3c6dfbbbc020bce9dc7a"
+    },
+    {
+      "bytes": 9842,
+      "path": "scripts/phase_i_i3_dormant_orchestration.py",
+      "sha256": "aab10807a22d05a3843f720474f88a60f7f9eb4afdf917c8e382e9e7e7508ad9"
+    },
+    {
+      "bytes": 20097,
+      "path": "tests/unit/test_phase_i_i3_execution_date.py",
+      "sha256": "ffec1e07a999e8592dc2287cabec4dfb759689317c02c040ecbdfcc2ae7b3e3e"
+    },
+    {
+      "bytes": 15236,
+      "path": "tests/unit/test_phase_i_i3_a4_activation.py",
+      "sha256": "c4bd2c8b997fdf8762ee8231cd7974ccf5e03a862532803762f9c3d768435084"
+    },
+    {
+      "bytes": 16363,
+      "path": "tests/unit/test_phase_l_a6_p0_r1_dgpa_closure_authority.py",
+      "sha256": "955c792610b30492ed291dae0f9c4d7562b782651f921748fdb5d0df54b868ba"
+    },
+    {
+      "bytes": 1473,
+      "path": "tests/unit/i3_closure_authority_test_helpers.py",
+      "sha256": "14723f97120009e3682351fb73c4786bc0850a4974dff15965dd3ed0d50f70ea"
+    },
+    {
+      "bytes": 8138,
+      "path": "tests/unit/test_l7_a5_r4_unscheduled_closure.py",
+      "sha256": "615ed2ff0316087e790cbd9affad0ebaf54f36f7ebf4b64417371d466084da5b"
+    },
+    {
+      "bytes": 4441,
+      "path": "tests/unit/test_phase_i_i3_execution_date_binding.py",
+      "sha256": "914e8ea0bf76ff795291d0e36866c605191828dda625141718766cc120e88fb6"
+    }
+  ],
+  "tested_input_binding": "No source or test byte changes after focused/CI validation."
+}

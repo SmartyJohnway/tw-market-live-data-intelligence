@@ -30,6 +30,7 @@ def prepare_i3_authorized_execution(
     calendar_authority_ref: str | None, closure_authority_ref: str | None,
     closure_authority_complete: bool,
     decision_input: Mapping[str, Any],
+    closure_authority: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Bind governed date, then construct approval-bound V3 requests.
 
@@ -56,6 +57,7 @@ def prepare_i3_authorized_execution(
             closure_events=closure_events, calendar_authority_ref=calendar_authority_ref,
             closure_authority_ref=closure_authority_ref,
             closure_authority_complete=closure_authority_complete,
+            closure_authority=closure_authority,
         )
     elif any("resolved_source_trade_date" in op.get("parameters", {}) for op in operations):
         raise ValueError("i3_tpex_query_date_forbidden")

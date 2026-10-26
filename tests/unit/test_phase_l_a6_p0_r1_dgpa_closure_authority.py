@@ -1,3 +1,4 @@
+from tests.unit.i3_closure_authority_test_helpers import closure_authority_fixture
 from datetime import datetime
 import json
 from pathlib import Path
@@ -247,9 +248,9 @@ def test_existing_i3_resolver_requires_completeness_and_derives_date_from_calend
     assert normalized_calendar_sha256(calendar) == "28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8"
     with pytest.raises(ValueError, match="closure_coverage_unresolved"):
         resolve_i3_twse_source_trade_date(evaluation_time="2026-10-16T11:38:22+08:00", official_calendar=calendar,
-            closure_events=[], calendar_authority_ref="calendar", closure_authority_ref="closure", closure_authority_complete=False)
+            closure_events=[], calendar_authority_ref="calendar", **closure_authority_fixture("2026-10-16T11:38:22+08:00"), closure_authority_complete=False)
     binding = resolve_i3_twse_source_trade_date(evaluation_time="2026-10-16T11:38:22+08:00", official_calendar=calendar,
-        closure_events=[], calendar_authority_ref="calendar", closure_authority_ref="closure", closure_authority_complete=True)
+        closure_events=[], calendar_authority_ref="calendar", **closure_authority_fixture("2026-10-16T11:38:22+08:00"), closure_authority_complete=True)
     assert binding["resolved_source_trade_date"] == "2026-10-15"
 
 
