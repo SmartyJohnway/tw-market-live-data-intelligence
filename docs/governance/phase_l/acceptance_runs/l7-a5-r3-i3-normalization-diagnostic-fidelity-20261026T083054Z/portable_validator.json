@@ -1,0 +1,7 @@
+{
+  "check_count": 205,
+  "command": "python -B skills/tw-security-master-classifier/scripts/validate_skill.py",
+  "exit_code": 0,
+  "failed": 0,
+  "passed": 205
+}

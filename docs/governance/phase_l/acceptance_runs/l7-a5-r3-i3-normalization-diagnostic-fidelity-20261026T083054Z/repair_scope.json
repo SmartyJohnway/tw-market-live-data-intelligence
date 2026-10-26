@@ -1,0 +1,15 @@
+{
+  "A5_G_H_execution": false,
+  "authority": "Owner L7-A5-R3 I3 TWSE Normalization Diagnostic Fidelity Repair",
+  "diagnostic_channel": "existing caveats array; existing warnings projection",
+  "generic_parser_failure_status_and_error": "source_failed",
+  "product_files": [
+    "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py"
+  ],
+  "product_line_additions": 4,
+  "public_schema_change": false,
+  "raw_provider_text_copied": false,
+  "test_files": [
+    "tests/unit/test_l7_a5_r3_i3_normalization_diagnostics.py"
+  ]
+}

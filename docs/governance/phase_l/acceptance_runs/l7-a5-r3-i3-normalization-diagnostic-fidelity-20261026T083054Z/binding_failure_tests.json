@@ -1,0 +1,35 @@
+{
+  "cases": [
+    {
+      "name": "test_binding_failure_does_not_gain_normalization_caveat[0-TWSE]",
+      "seconds": "0.026",
+      "status": "PASS"
+    },
+    {
+      "name": "test_binding_failure_does_not_gain_normalization_caveat[0-TPEX]",
+      "seconds": "0.024",
+      "status": "PASS"
+    },
+    {
+      "name": "test_binding_failure_does_not_gain_normalization_caveat[2-TWSE]",
+      "seconds": "0.025",
+      "status": "PASS"
+    },
+    {
+      "name": "test_binding_failure_does_not_gain_normalization_caveat[2-TPEX]",
+      "seconds": "0.025",
+      "status": "PASS"
+    }
+  ],
+  "exact_matches": [
+    0,
+    2
+  ],
+  "markets": [
+    "TWSE",
+    "TPEX"
+  ],
+  "normalization_caveat_added": false,
+  "status": "PASS",
+  "status_and_error": "binding_failed"
+}

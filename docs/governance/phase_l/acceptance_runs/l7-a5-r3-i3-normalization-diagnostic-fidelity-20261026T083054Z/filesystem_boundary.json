@@ -1,0 +1,12 @@
+{
+  "A5_H_authorization_package_accessed": false,
+  "A5_live_packages_mutated": false,
+  "D_access": 0,
+  "allowed_mutation_root": "C:\\twmarket_temp",
+  "canonical_ci_output": "C:\\twmarket_temp\\l7-a5\\l7-a5-r3-deterministic-ci-final",
+  "explicit_TEMP_TMP_and_pytest_basetemp": true,
+  "preexisting_untracked_blocker_hashes_unchanged": true,
+  "production_access": 0,
+  "production_mutation": 0,
+  "test_output_root": "C:\\twmarket_temp\\l7-a5-r3"
+}

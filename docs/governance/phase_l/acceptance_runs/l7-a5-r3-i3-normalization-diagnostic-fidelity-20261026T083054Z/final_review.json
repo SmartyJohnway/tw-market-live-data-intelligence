@@ -1,0 +1,16 @@
+{
+  "A5_authority": "CONSUMED_NON_REUSABLE",
+  "A5_technical_PASS": false,
+  "G_PASS": false,
+  "H_PASS": false,
+  "L7-EXIT-19": "NOT_PASS",
+  "L7-GAP-15": "OPEN",
+  "PR": false,
+  "STOP_after_local_candidate": true,
+  "disposition": "L7_A5_R3_I3_NORMALIZATION_DIAGNOSTIC_FIDELITY_IMPLEMENTATION_CANDIDATE",
+  "independent_acceptance": false,
+  "merge": false,
+  "push": false,
+  "release": false,
+  "tag": false
+}

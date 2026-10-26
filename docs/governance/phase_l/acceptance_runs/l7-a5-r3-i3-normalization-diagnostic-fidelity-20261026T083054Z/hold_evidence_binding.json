@@ -1,0 +1,14 @@
+{
+  "A5_authority": "CONSUMED_NON_REUSABLE",
+  "G_live_fact": {
+    "TPEX:5347": "complete",
+    "TWSE:1101": "source_failed"
+  },
+  "historical_exact_parser_reason": "NOT_RECOVERABLE_FROM_PERSISTED_A5_EVIDENCE",
+  "immutable_verified": true,
+  "member_count": 73,
+  "member_mismatches": 0,
+  "path": "C:\\twmarket_temp\\l7-a5-current-authorities\\evidence\\20261026T050344Z-l7-a5-bounded-live-release-acceptance-r2-e1-zulu-corrected",
+  "raw_payload_reconstruction_attempted": false,
+  "self_digest": "ded3309cadca846519400f6c7630d153ff100fd54ffccce447c34c483a3830f0"
+}

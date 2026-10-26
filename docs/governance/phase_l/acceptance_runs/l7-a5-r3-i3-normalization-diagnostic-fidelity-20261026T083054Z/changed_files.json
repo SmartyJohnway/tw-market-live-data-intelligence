@@ -1,0 +1,15 @@
+{
+  "files": [
+    {
+      "bytes": 12679,
+      "path": "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+      "sha256": "0aa06079906a6e559be375e71cd95e29b600e69de3dabca5650b9876b776a56c"
+    },
+    {
+      "bytes": 9012,
+      "path": "tests/unit/test_l7_a5_r3_i3_normalization_diagnostics.py",
+      "sha256": "73ca29d4833a0e141c811ab9d68e74a7253fdb0f1426b1b0ea541aed5f970d9d"
+    }
+  ],
+  "tested_implementation_binding": "Product bytes unchanged after deterministic gate. New R3 test final-line CR normalized before commit and final focused rerun; all canonical gate-selected inputs unchanged."
+}
