@@ -90,6 +90,19 @@ def _plan(targets: list[str], capabilities: list[str]) -> dict:
 
 
 def _dispatch(plan: dict, tmp_path: Path, monkeypatch) -> tuple[list[dict], dict[str, int], dict]:
+    from types import SimpleNamespace
+    from scripts.m8r_08g_identity_service import TaiwanMarketIdentityService
+
+    targets = sorted({target for op in plan["operations"] for target in op["canonical_target_ids"]})
+    records = []
+    for target in targets:
+        market, code = target.split(":", 1)
+        records.append({"canonical_target_id": target, "identity": {"security_code": code},
+                        "classification": {"market": market, "instrument_family": "company_share", "instrument_type": "common_share"},
+                        "execution_eligibility": {"status": "allowed", "reason_codes": []}})
+    service = TaiwanMarketIdentityService(records, release_id="synthetic-batch-active", manifest_hash="a" * 64)
+    monkeypatch.setattr("scripts.m8r_06_01c2_mode_a_security_master_loader.get_production_mode_a_security_master",
+                        lambda: SimpleNamespace(identity_service=service))
     calls = {"current": 0, "twse_eod": 0, "tpex_eod": 0}
 
     def current(watchlist, **kwargs):
@@ -97,11 +110,13 @@ def _dispatch(plan: dict, tmp_path: Path, monkeypatch) -> tuple[list[dict], dict
         assert kwargs["allow_individual_fallback"] is False
         return {"observations": [{"symbol": item["symbol"]} for item in watchlist["items"]]}
 
-    def twse(symbols, *, timeout):
+    def twse(symbols, *, timeout, security_master):
+        assert set(security_master) == {("listed", symbol) for symbol in symbols}
         calls["twse_eod"] += 1
         return {"source_id": "TWSE_OPENAPI", "observations": [{"symbol": symbol} for symbol in symbols]}
 
-    def tpex(symbols, *, timeout):
+    def tpex(symbols, *, timeout, security_master):
+        assert set(security_master) == {("tpex_otc", symbol) for symbol in symbols}
         calls["tpex_eod"] += 1
         return {"source_id": "TPEX_OPENAPI", "observations": [{"symbol": symbol} for symbol in symbols]}
 

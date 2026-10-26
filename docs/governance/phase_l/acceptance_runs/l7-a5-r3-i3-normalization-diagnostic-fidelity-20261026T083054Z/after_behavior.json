@@ -1,0 +1,91 @@
+{
+  "external_network_attempts": 0,
+  "success_comparison": {
+    "TPEX": {
+      "artifact_bytes_identical_to_pre_R3": true,
+      "artifact_sha256": "d33caa3093c2fa86874d8af306652dd255ecef5730b833a3f24e924c0e53521d",
+      "entire_operation_result_identical_to_pre_R3": true,
+      "numeric_and_citation_identity_preserved": true
+    },
+    "TWSE": {
+      "artifact_bytes_identical_to_pre_R3": true,
+      "artifact_sha256": "a8aaa0c680aa76053fad5cc8b093ef0d2dbc44b2ba7c8b771807a9744d8d3bc2",
+      "entire_operation_result_identical_to_pre_R3": true,
+      "numeric_and_citation_identity_preserved": true
+    }
+  },
+  "synthetic_failure": {
+    "evidence": {
+      "canonical_target_id": "TWSE:1101",
+      "caveats": [
+        "publication finality and currentness are unknown",
+        "source preparation failed: twse_root_invalid"
+      ],
+      "citation_ids": [
+        "cite-933378393d521610"
+      ],
+      "currentness_status": "unknown",
+      "error_code": "source_failed",
+      "market": "TWSE",
+      "publication_finality": "unknown",
+      "resolved_source_trade_date": "2026-09-30",
+      "retrieved_at": "2026-10-04T12:00:00Z",
+      "schema_version": "cash_institutional_flow_context_evidence.v2",
+      "security_code": "1101",
+      "source": {
+        "authority": "official",
+        "market": "TWSE",
+        "source_contract_ref": "docs/governance/phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json",
+        "source_contract_sha256": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428",
+        "source_id": "I3-TWSE-T86-INSTITUTIONAL-TRADING",
+        "source_reported_trade_date": null
+      },
+      "source_reported_trade_date": null,
+      "status": "source_failed",
+      "trade_date": null,
+      "transport": {
+        "complete_body_received": true,
+        "content_type": "application/json",
+        "error_code": null,
+        "failure_phase": null,
+        "http_status": 200,
+        "mode": "official_https_live",
+        "network_get_count": 1,
+        "partial_response_byte_count": 0,
+        "raw_payload_persisted": false,
+        "redirect_policy": "reject",
+        "response_byte_count": 48,
+        "response_sha256": "86e8f9a4e411bc0e3f43ed61c3a239285fd9411a8b8ed3f0ae8331c9d7ec007f",
+        "retry_count": 0,
+        "tls_policy": "compatibility"
+      }
+    },
+    "operation": {
+      "capability_id": "cash_institutional_flow_context",
+      "error_code": "source_failed",
+      "evidence_artifacts": [
+        {
+          "artifact_role": "primary_evidence",
+          "byte_size": 1327,
+          "evidence_contract": "cash_institutional_flow_context_evidence.v2",
+          "item_count": 1,
+          "relative_path": "evidence/phase_i/i3/umeop-op-v1-00000000000000000001.json",
+          "schema_version": "cash_institutional_flow_context_evidence.v2",
+          "sha256": "1366849178582acd3ba6ae0dd6c1fe604dac0353a2b022584f51cb13210319b3"
+        }
+      ],
+      "evidence_contract": "cash_institutional_flow_context_evidence.v2",
+      "execution_request_hash": "0000000000000000000000000000000000000000000000000000000000000001",
+      "execution_request_id": "umereq-v3-00000000000000000001",
+      "executor_id": "phase_i_i3_cash_institutional_flow_context_executor",
+      "operation_id": "umeop-op-v1-00000000000000000001",
+      "result_item_count": 1,
+      "schema_version": "unified_market_evidence_operation_result.v2",
+      "status": "failed",
+      "warnings": [
+        "publication finality and currentness are unknown",
+        "source preparation failed: twse_root_invalid"
+      ]
+    }
+  }
+}

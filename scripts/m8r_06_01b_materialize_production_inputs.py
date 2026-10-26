@@ -28,52 +28,68 @@ from urllib.parse import urlencode
 ROOT = Path(__file__).resolve().parent.parent
 SKILL_ROOT = ROOT / "skills" / "tw-security-master-classifier"
 SKILL_SCRIPTS = SKILL_ROOT / "scripts"
+def _remove_owned_import_path(entry: str) -> None:
+    """Remove only the exact path object inserted by this module."""
+    for index, current in enumerate(sys.path):
+        if current is entry:
+            del sys.path[index]
+            break
 
-# Add skill scripts to path so we can import existing modules
-sys.path.insert(0, str(SKILL_SCRIPTS))
 
-from classifier import classify_all, classify_record, merge_records  # noqa: E402
-from common import canonical_hash, file_sha256, normalize_text  # noqa: E402
-from isin_parser import parse_html  # noqa: E402
-from lifecycle_common import LifecycleSchemaDrift  # noqa: E402
-from merge_lifecycle_events import merge as merge_lifecycle  # noqa: E402
-from parse_etn_termination import parse as parse_etn, parse_twse_expired_json  # noqa: E402
-from parse_tpex_delisted import parse as parse_tpex_delisted  # noqa: E402
-from parse_twse_delisted import parse as parse_twse_delisted  # noqa: E402
-from probe_sources import (  # noqa: E402
-    BootstrapDispatchBudget,
-    probe,
-    load_manifest,
-    find_source_contract,
-)
-from schema_validation import validate as validate_schema  # noqa: E402
+_repo_root_entry = str(ROOT) if str(ROOT) not in sys.path else None
+_skill_scripts_entry = str(SKILL_SCRIPTS)
+try:
+    if _repo_root_entry is not None:
+        sys.path.insert(0, _repo_root_entry)
+    # Always insert a temporary Skill entry; caller-owned duplicates stay intact.
+    sys.path.insert(0, _skill_scripts_entry)
+    try:
+        from classifier import classify_all, classify_record, merge_records  # noqa: E402
+        from common import canonical_hash, file_sha256, normalize_text  # noqa: E402
+        from isin_parser import parse_html  # noqa: E402
+        from lifecycle_common import LifecycleSchemaDrift  # noqa: E402
+        from merge_lifecycle_events import merge as merge_lifecycle  # noqa: E402
+        from parse_etn_termination import parse as parse_etn, parse_twse_expired_json  # noqa: E402
+        from parse_tpex_delisted import parse as parse_tpex_delisted  # noqa: E402
+        from parse_twse_delisted import parse as parse_twse_delisted  # noqa: E402
+        from probe_sources import (  # noqa: E402
+            BootstrapDispatchBudget,
+            probe,
+            load_manifest,
+            find_source_contract,
+        )
+        from schema_validation import validate as validate_schema  # noqa: E402
+        from scripts.ssl_policy import (  # noqa: E402
+            SSL_POLICY_COMPATIBILITY,
+            SSL_POLICY_STRICT,
+            build_ssl_context,
+        )
+    finally:
+        _remove_owned_import_path(_skill_scripts_entry)
 
-# Remove skill scripts from path after importing
-sys.path.pop(0)
-
-# Import exporter (via scripts/ relative to ROOT)
-sys.path.insert(0, str(ROOT))
-from scripts.m8r_03d_f1_security_master_snapshot_exporter import (  # noqa: E402
-    compute_skill_contract_hash,
-    export_verified_security_master_snapshot,
-    sha256_json,
-    validate_skill_classification_record,
-    validate_skill_lifecycle_event,
-)
-from scripts.m8r_03d_f1_security_master_snapshot_adapter import (  # noqa: E402
-    validate_verified_security_master_snapshot,
-)
-from scripts.m8r_06_security_master_candidate_paths import (  # noqa: E402
-    is_legacy_accepted_candidate,
-    materialization_report_path,
-    source_immutable_seal_path,
-    validate_candidate_id,
-)
-from scripts.m8r_filesystem_safety import (  # noqa: E402
-    reject_reparse_components,
-    validate_authorized_root,
-)
-sys.path.pop(0)
+    from scripts.m8r_03d_f1_security_master_snapshot_exporter import (  # noqa: E402
+        compute_skill_contract_hash,
+        export_verified_security_master_snapshot,
+        sha256_json,
+        validate_skill_classification_record,
+        validate_skill_lifecycle_event,
+    )
+    from scripts.m8r_03d_f1_security_master_snapshot_adapter import (  # noqa: E402
+        validate_verified_security_master_snapshot,
+    )
+    from scripts.m8r_06_security_master_candidate_paths import (  # noqa: E402
+        is_legacy_accepted_candidate,
+        materialization_report_path,
+        source_immutable_seal_path,
+        validate_candidate_id,
+    )
+    from scripts.m8r_filesystem_safety import (  # noqa: E402
+        reject_reparse_components,
+        validate_authorized_root,
+    )
+finally:
+    if _repo_root_entry is not None:
+        _remove_owned_import_path(_repo_root_entry)
 
 # ── Constants ────────────────────────────────────────────────────────────────
 MANIFEST_PATH = SKILL_ROOT / "references" / "source-manifest.json"
@@ -284,6 +300,12 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle-root", type=Path, default=None)
     parser.add_argument("--report-root", type=Path, default=None)
+    parser.add_argument(
+        "--ssl-policy",
+        choices=(SSL_POLICY_STRICT, SSL_POLICY_COMPATIBILITY),
+        default=SSL_POLICY_STRICT,
+        help="verified TLS policy for official-source probes (default: strict)",
+    )
     # Unit harnesses historically call ``main()`` while pytest's own flags
     # remain in sys.argv.  Explicit callers must use the real parser so that
     # installation/app roots cannot be smuggled in as alternate authorities.
@@ -291,6 +313,7 @@ def main(argv: list[str] | None = None) -> int:
         args, _unknown = parser.parse_known_args()
     else:
         args = parser.parse_args(argv)
+    ssl_context = build_ssl_context(args.ssl_policy)
     now_utc = datetime.now(timezone.utc)
     generated_at = now_utc.isoformat()
     effective_date = now_utc.strftime("%Y-%m-%d")
@@ -385,6 +408,7 @@ def main(argv: list[str] | None = None) -> int:
             save_raw=raw_path,
             dispatch_budget=dispatch_budget,
             max_followed_redirects=BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+            ssl_context=ssl_context,
         )
         probe_result["source_id"] = source_id
         probe_result["bootstrap_dispatch_reservations"] = probe_result.get("dispatch_reservations")
@@ -497,6 +521,7 @@ def main(argv: list[str] | None = None) -> int:
             save_raw=raw_path,
             dispatch_budget=dispatch_budget,
             max_followed_redirects=BOOTSTRAP_MAX_REDIRECTS_PER_PROBE,
+            ssl_context=ssl_context,
             **request_options,
         )
         probe_result["source_id"] = source_id

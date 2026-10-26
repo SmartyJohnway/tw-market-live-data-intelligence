@@ -1,0 +1,16 @@
+{
+  "additional_file_justification": {
+    "scripts/m8r_06_03_execute_once.py": "Only the existing deterministic test transport signature accepts the propagated security_master keyword; no source transport behavior changed."
+  },
+  "authority": "Owner L7-A5-R2 Scenario H Active Security Master Propagation Repair",
+  "no_push_pr_merge": true,
+  "product_files": [
+    "scripts/m8r_06_03_production_adapter.py",
+    "scripts/m8r_06_03_execute_once.py"
+  ],
+  "test_files": [
+    "tests/unit/test_l7_a5_r2_eod_active_security_master.py",
+    "tests/unit/test_m8r_06_03_production_adapter.py",
+    "tests/unit/test_m8r_06_03_batch_runtime.py"
+  ]
+}

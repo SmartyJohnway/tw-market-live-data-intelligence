@@ -218,7 +218,7 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
         execute_controlled_plan(
             invalid_plan, invalid_authorization, invalid_binding,
             supplied_consumption_state=invalid_state, accepted_preflight={},
-            evaluation_timestamp=STAMP, claim_created_at=STAMP, finalized_at=STAMP,
+            evaluation_timestamp=STAMP, claim_created_at=STAMP, finalization_clock=lambda: STAMP,
             executor_registry_metadata=load_production_executor_metadata(),
             runtime_adapter_registry=guarded_registry,
             output_root=str(invalid_root), mode="execute-approved", confirm_execution=True,
@@ -306,7 +306,7 @@ def test_network_free_production_chain_projects_verified_h4_to_result_audit_and_
     execution = execute_controlled_plan(
         plan, authorization, consumption_binding,
         supplied_consumption_state=supplied_state, accepted_preflight=preflight,
-        evaluation_timestamp=STAMP, claim_created_at=STAMP, finalized_at=STAMP,
+        evaluation_timestamp=STAMP, claim_created_at=STAMP, finalization_clock=lambda: STAMP,
         executor_registry_metadata=metadata,
         runtime_adapter_registry=build_production_runtime_adapter_registry(),
         output_root=str(output_root), mode="execute-approved", confirm_execution=True,

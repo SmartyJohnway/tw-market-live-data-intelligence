@@ -1,0 +1,16 @@
+{
+  "A5_G_reexecution": 0,
+  "A5_H_execution": 0,
+  "DGPA_requests": 0,
+  "GH_authority": "CONSUMED_NON_REUSABLE",
+  "NCDR_requests": 0,
+  "Security_Master_refresh": 0,
+  "TAIFEX_requests": 0,
+  "TPEX_requests": 0,
+  "TWSE_T86_requests": 0,
+  "calendar_refresh": 0,
+  "external_requests": 0,
+  "new_live_authorities_created": 0,
+  "original_A5_authority": "CONSUMED_NON_REUSABLE",
+  "source_probes": 0
+}

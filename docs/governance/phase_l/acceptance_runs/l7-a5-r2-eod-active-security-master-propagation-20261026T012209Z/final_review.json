@@ -1,0 +1,11 @@
+{
+  "A5_PASS_claimed": false,
+  "L7_EXIT_19_passed": false,
+  "L7_GAP_15_closed": false,
+  "PR": false,
+  "disposition": "L7_A5_R2_SCENARIO_H_ACTIVE_SECURITY_MASTER_PROPAGATION_IMPLEMENTATION_CANDIDATE",
+  "independent_review_pending": true,
+  "merge": false,
+  "next_step": "STOP for independent R2 review",
+  "push": false
+}

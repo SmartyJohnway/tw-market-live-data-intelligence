@@ -40,6 +40,12 @@ from scripts.m8r_filesystem_safety import (
     reject_reparse_components,
     validate_authorized_root,
 )
+from scripts.ssl_policy import (
+    SSL_POLICY_COMPATIBILITY,
+    SSL_POLICY_STRICT,
+    SSL_POLICY_UNSAFE,
+    resolve_ssl_policy,
+)
 from server.resource_boundaries import ResourceDiskAdmissionError, require_disk_capacity
 
 
@@ -72,6 +78,14 @@ def _installation_context(args, *, require_initialized: bool = False):
 
 def _print(value: object) -> None:
     print(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True))
+
+
+def _select_security_master_ssl_policy(value: str | None = None) -> str:
+    """Select an explicit verified TLS policy for Security Master acquisition."""
+    selected = resolve_ssl_policy(value, environ={})
+    if selected == SSL_POLICY_UNSAFE:
+        raise ValueError("SECURITY_MASTER_UNSAFE_TLS_POLICY_REJECTED")
+    return selected
 
 
 def _validate_staged_candidate(bundle_dir: Path, staging_base: Path) -> str:
@@ -198,9 +212,18 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="perform one explicit bounded official acquisition",
     )
+    parser.add_argument(
+        "--ssl-policy",
+        type=_select_security_master_ssl_policy,
+        choices=(SSL_POLICY_STRICT, SSL_POLICY_COMPATIBILITY),
+        default=None,
+        help="verified TLS policy for update --live (default: strict)",
+    )
     # Keep the documented command form portable across supported Python
     # versions when optional flags appear between the two positional values.
     args = parser.parse_intermixed_args(argv)
+    if args.ssl_policy is not None and not (args.command == "update" and args.live):
+        parser.error("--ssl-policy is only valid with update --live")
     try:
         requires_init = args.command in {"rollback", "migrate-legacy-active"} or (
             args.command == "update" and args.live
@@ -321,6 +344,10 @@ def main(argv: list[str] | None = None) -> int:
             if args.live and args.records:
                 parser.error("update accepts either --live or --records, not both")
             if args.live:
+                try:
+                    ssl_policy = _select_security_master_ssl_policy(args.ssl_policy)
+                except ValueError as exc:
+                    parser.error(str(exc))
                 # The existing governed materializer is the only acquisition
                 # path.  It is explicit here and never reachable from startup.
                 staging_base = (
@@ -335,6 +362,8 @@ def main(argv: list[str] | None = None) -> int:
                         / "scripts"
                         / "m8r_06_01b_materialize_production_inputs.py"
                     ),
+                    "--ssl-policy",
+                    ssl_policy,
                 ]
                 if installation is not None:
                     command.extend(

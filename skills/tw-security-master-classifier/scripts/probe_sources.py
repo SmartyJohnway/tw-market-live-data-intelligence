@@ -179,6 +179,46 @@ def _base(url: str, observed_at: str) -> dict[str, Any]:
     }
 
 
+def _validate_ssl_context(context: ssl.SSLContext) -> None:
+    if not isinstance(context, ssl.SSLContext):
+        raise ValueError("BOOTSTRAP_SSL_CONTEXT_TYPE_REJECTED")
+    if context.verify_mode != ssl.CERT_REQUIRED or context.check_hostname is not True:
+        raise ValueError("BOOTSTRAP_SSL_CONTEXT_VERIFICATION_REQUIRED")
+
+
+def _transport_error_diagnostics(exc: BaseException) -> dict[str, str | None]:
+    """Return bounded transport classes/codes without persisting exception text."""
+    reason = exc.reason if isinstance(exc, urllib.error.URLError) else None
+    inner = reason if isinstance(reason, BaseException) else None
+    certificate_error = inner if isinstance(inner, ssl.SSLCertVerificationError) else (
+        exc if isinstance(exc, ssl.SSLCertVerificationError) else None
+    )
+    if certificate_error is not None:
+        transport_class = "tls_certificate_verification"
+        # Inspect only for an allowlisted classification phrase; never persist
+        # either representation because OpenSSL messages may include host data.
+        safe_message = (
+            getattr(certificate_error, "verify_message", "") or str(certificate_error)
+        )
+        reason_code = (
+            "PYTHON_X509_STRICT_COMPATIBILITY"
+            if "subject key identifier" in safe_message.lower()
+            else "TLS_CERTIFICATE_VERIFICATION_FAILED"
+        )
+    elif isinstance(inner or exc, TimeoutError):
+        transport_class = "timeout"
+        reason_code = "NETWORK_TIMEOUT"
+    else:
+        transport_class = "network"
+        reason_code = "NETWORK_ERROR"
+    return {
+        "transport_outer_error_class": type(exc).__name__,
+        "transport_error_class": transport_class,
+        "transport_reason_class": type(reason).__name__ if reason is not None else None,
+        "transport_reason_code": reason_code,
+    }
+
+
 def probe(
     url: str,
     allowed_hosts: list[str],
@@ -191,6 +231,7 @@ def probe(
     method: str = "GET",
     body: bytes | None = None,
     content_type: str | None = None,
+    ssl_context: ssl.SSLContext | None = None,
 ) -> dict[str, Any]:
     validate_url(url, allowed_hosts)
     if (
@@ -202,6 +243,8 @@ def probe(
         raise ValueError("BOOTSTRAP_METHOD_REJECTED")
     if (method == "GET" and body is not None) or (method == "POST" and not isinstance(body, bytes)):
         raise ValueError("BOOTSTRAP_REQUEST_BODY_INVALID")
+    context = ssl.create_default_context() if ssl_context is None else ssl_context
+    _validate_ssl_context(context)
     observed_at = datetime.now(timezone.utc).isoformat()
     base = _base(url, observed_at)
     base["request_method"] = method
@@ -211,7 +254,7 @@ def probe(
         dispatch_budget=dispatch_budget,
         max_followed_redirects=max_followed_redirects,
     )
-    opener = urllib.request.build_opener(handler, urllib.request.HTTPSHandler(context=ssl.create_default_context()))
+    opener = urllib.request.build_opener(handler, urllib.request.HTTPSHandler(context=context))
     request_headers = {"User-Agent": "tw-security-master-classifier/1.1 (+official-source-validation)"}
     if content_type is not None:
         request_headers["Content-Type"] = content_type
@@ -292,7 +335,14 @@ def probe(
             result.update(sanitized)
         return result
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
-        return {**base, "redirect_count": handler.redirect_count, "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before), "acquisition_status": "network_error", "error_type": type(exc).__name__}
+        return {
+            **base,
+            "redirect_count": handler.redirect_count,
+            "dispatch_reservations": _dispatch_delta(dispatch_budget, dispatches_before),
+            "acquisition_status": "network_error",
+            "error_type": type(exc).__name__,
+            **_transport_error_diagnostics(exc),
+        }
 
     if save_raw:
         save_raw.parent.mkdir(parents=True, exist_ok=True)

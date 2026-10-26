@@ -98,10 +98,7 @@ def acquire_once(
     client = opener if opener is not None else _opener(policy)
     telemetry = _base_telemetry(market)
     now = clock or (lambda: datetime.now(timezone.utc))
-    timestamp = now()
-    if timestamp.tzinfo is None or timestamp.utcoffset() is None:
-        raise ValueError("i3_retrieval_clock_timezone_required")
-    telemetry["retrieved_at"] = timestamp.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+    telemetry["retrieved_at"] = None
     try:
         req = Request(url, headers={"Accept": "application/json", "User-Agent": "tw-market-live-data-intelligence/1.0"}, method="GET")
         # This is the only HTTP dispatch boundary in this module.
@@ -152,6 +149,9 @@ def acquire_once(
         if not body:
             telemetry.update(failure_phase="response_body_read", error_code="empty_body")
             raise AcquisitionError("empty_body", telemetry)
+        timestamp = now()
+        if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+            raise ValueError("i3_retrieval_clock_timezone_required")
         telemetry.update(complete_body_received=True, response_byte_count=len(body), partial_response_byte_count=0,
                         response_sha256=hashlib.sha256(body).hexdigest(), retrieved_at=timestamp.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"))
         return Acquisition(body, telemetry)

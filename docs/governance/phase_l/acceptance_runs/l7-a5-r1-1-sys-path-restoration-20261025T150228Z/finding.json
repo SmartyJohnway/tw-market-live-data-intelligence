@@ -1,0 +1,13 @@
+{
+  "finding_id": "L7_A5_R1_F1_SYS_PATH_RESTORATION",
+  "origin": "independent review of 59cb926d07aa1c4ebac33475e3a6bf8d3d3af09b",
+  "post_patch": "PASS",
+  "pre_patch": "REPRODUCED",
+  "pre_patch_result": {
+    "deselected": 14,
+    "exit_code": 1,
+    "failed": 2,
+    "passed": 1,
+    "semantic_fact": "caller-owned ROOT present: sentinel removed; ROOT absent: existing behavior passes"
+  }
+}

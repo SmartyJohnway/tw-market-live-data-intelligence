@@ -1,0 +1,31 @@
+{
+  "cases": [
+    {
+      "name": "test_success_bytes_numbers_and_citations_match_pre_repair_baseline[TWSE-a8aaa0c680aa76053fad5cc8b093ef0d2dbc44b2ba7c8b771807a9744d8d3bc2-140]",
+      "seconds": "0.026",
+      "status": "PASS"
+    },
+    {
+      "name": "test_success_bytes_numbers_and_citations_match_pre_repair_baseline[TPEX-d33caa3093c2fa86874d8af306652dd255ecef5730b833a3f24e924c0e53521d-120]",
+      "seconds": "0.026",
+      "status": "PASS"
+    }
+  ],
+  "entire_operation_results_identical": true,
+  "new_normalization_caveat_on_success": false,
+  "pre_post_comparison": {
+    "TPEX": {
+      "artifact_bytes_identical_to_pre_R3": true,
+      "artifact_sha256": "d33caa3093c2fa86874d8af306652dd255ecef5730b833a3f24e924c0e53521d",
+      "entire_operation_result_identical_to_pre_R3": true,
+      "numeric_and_citation_identity_preserved": true
+    },
+    "TWSE": {
+      "artifact_bytes_identical_to_pre_R3": true,
+      "artifact_sha256": "a8aaa0c680aa76053fad5cc8b093ef0d2dbc44b2ba7c8b771807a9744d8d3bc2",
+      "entire_operation_result_identical_to_pre_R3": true,
+      "numeric_and_citation_identity_preserved": true
+    }
+  },
+  "status": "PASS"
+}

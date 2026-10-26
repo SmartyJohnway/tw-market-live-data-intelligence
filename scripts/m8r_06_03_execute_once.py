@@ -169,7 +169,7 @@ def _install_deterministic_test_transport() -> None:
             "caveats": ["current_observation_not_guaranteed_realtime"],
         } for item in watchlist["items"]]}
 
-    def eod(symbols, *, timeout):
+    def eod(symbols, *, timeout, security_master):
         record_invocation()
         if delay_seconds:
             time.sleep(delay_seconds)
@@ -194,7 +194,7 @@ def execute_once(authorization_id: str, *, confirm_execution: bool, operator_con
         artifacts["plan"], artifacts["authorization"], artifacts["consumption_binding"],
         supplied_consumption_state=artifacts["unused_consumption_state"],
         accepted_preflight=artifacts["preflight"], evaluation_timestamp=now,
-        claim_created_at=now, finalized_at=now,
+        claim_created_at=now, finalization_clock=None,
         executor_registry_metadata=load_production_executor_metadata(),
         runtime_adapter_registry=build_production_runtime_adapter_registry(),
         output_root=str(package_root), mode="execute-approved",

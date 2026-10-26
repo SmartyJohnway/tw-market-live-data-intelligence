@@ -1,0 +1,18 @@
+{
+  "authority_gets_per_batch": 1,
+  "cases": [
+    [
+      "TWSE:2330",
+      "TWSE:1101"
+    ],
+    [
+      "TPEX:6488",
+      "TPEX:5347"
+    ]
+  ],
+  "only_approved_targets_projected": true,
+  "source_calls_per_batch": 1,
+  "status": "PASS",
+  "unrelated_9999_excluded": true,
+  "validates_all_targets_before_dispatch": true
+}

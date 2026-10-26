@@ -1,0 +1,23 @@
+{
+  "MAX_BYTES_changed": false,
+  "VERSION_changed": false,
+  "changed_files": [
+    "scripts/manage_security_master.py",
+    "scripts/m8r_06_01b_materialize_production_inputs.py",
+    "skills/tw-security-master-classifier/scripts/probe_sources.py",
+    "skills/tw-security-master-classifier/references/schemas/probe-result.schema.json",
+    "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py",
+    "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py",
+    "tests/fixtures/m8r_03d_f1/snapshot.json",
+    "tests/fixtures/m8r_03d_f1/manifest.json"
+  ],
+  "dependencies_changed": 0,
+  "dispatch_or_redirect_contract_changed": false,
+  "parser_or_qualification_semantics_changed": false,
+  "portable_skill_imports_repository_tls_policy": false,
+  "production_state_mutations": 0,
+  "public_api_or_MCP_contract_changed": false,
+  "retry_policy_changed": false,
+  "security_master_sources_changed": 0,
+  "source_endpoints_changed": 0
+}

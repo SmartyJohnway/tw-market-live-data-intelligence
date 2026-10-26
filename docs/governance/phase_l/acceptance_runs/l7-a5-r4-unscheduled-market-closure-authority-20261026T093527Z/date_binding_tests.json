@@ -1,0 +1,42 @@
+{
+  "all_date_plan_authorization_request_identity_changes": true,
+  "cases": [
+    {
+      "name": "test_dormant_candidate_pipeline_binds_date_before_authorization_and_request",
+      "seconds": "0.057",
+      "status": "PASS"
+    },
+    {
+      "name": "test_date_is_bound_before_authorization_and_changes_plan_identity",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_override_rebinds_date_plan_authorization_and_execution_request_identities",
+      "seconds": "0.033",
+      "status": "PASS"
+    }
+  ],
+  "closed_fixture": {
+    "authorization_hash": "3e74ce9208fdd23815487fac08e296a2b3378f5de56d0cb5cfd9027619bd9abd",
+    "closure_authority_ref": "I3_COMPOSITE_CLOSURE:sha256:c55a3823a1765be6a8414e6b52046b6a698ab9a993ab2993d9e19bcdfd3cca42",
+    "execution_request_hash": "9841c9b068676249b7cd97f91002fad2fb9f31057b05335a06c8f1fa9c805c33",
+    "execution_request_id": "umereq-v3-9841c9b068676249b7cd",
+    "network_dispatched": false,
+    "plan_hash": "10fff44e85f4a842dd27e67c1959a058fa42ab0c9e6ca3448fd33fc530e43e67",
+    "plan_id": "umeop-v1-10fff44e85f4a842dd27",
+    "source_date": "2026-10-22"
+  },
+  "counterfactual_clear_fixture": {
+    "authorization_hash": "6fdf953a91068ae16520fbcd8ffd73628d0d485cae4d88d4ee7d6c32a8aaa655",
+    "closure_authority_ref": "I3_COMPOSITE_CLOSURE:sha256:c8f18ec41959b4404db8a90b13321fb12fbcee6248a2e2669932aabaa034d10a",
+    "execution_request_hash": "cf0f92243d14a98531ff94c9ab95331fb34183af66645817e8a041c345f1bbe5",
+    "execution_request_id": "umereq-v3-cf0f92243d14a98531ff",
+    "network_dispatched": false,
+    "plan_hash": "d738e63cc9552260446ee36237b489957a94f08fbe8e2e76886149e221c2f6a2",
+    "plan_id": "umeop-v1-d738e63cc9552260446e",
+    "source_date": "2026-10-23"
+  },
+  "no_public_schema_change": true,
+  "status": "PASS"
+}

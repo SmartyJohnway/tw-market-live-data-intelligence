@@ -1,0 +1,7 @@
+{
+  "after": "Canonical internally generated prepared.error_code retained in existing caveats and operation warnings; public error remains source_failed",
+  "before": "prepare_market_source error collapsed to generic source_failed without reason",
+  "classification": "PRODUCTION_DIAGNOSTIC_FIDELITY_REGRESSION",
+  "finding": "L7_A5_I3_NORMALIZATION_DIAGNOSTIC_FIDELITY_LOSS",
+  "historical_exact_parser_reason": "NOT_RECOVERABLE_FROM_PERSISTED_A5_EVIDENCE"
+}

@@ -1,0 +1,1 @@
+{"accepted_product_schema_CAS_defect":false,"affected_tests":["test_eod_fetch_retrieval_parse_completion_order[scripts.m8a_twse_official_eod_adapter-twse]","test_eod_fetch_retrieval_parse_completion_order[scripts.m8a_tpex_official_eod_adapter-tpex]"],"independent_review":"124 passed / 2 CP950 UnicodeDecodeError failures reported by Owner"}

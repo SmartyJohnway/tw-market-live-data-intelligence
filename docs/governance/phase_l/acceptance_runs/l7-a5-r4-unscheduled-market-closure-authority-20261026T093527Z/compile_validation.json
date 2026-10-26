@@ -1,0 +1,21 @@
+{
+  "PYTHONPYCACHEPREFIX": "C:\\twmarket_temp\\l7-a5-r4\\pycache",
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "compileall",
+    "-q",
+    "scripts/phase_i_i3_execution_date.py",
+    "scripts/phase_i_i3_execution_pipeline.py",
+    "scripts/phase_i_i3_dormant_orchestration.py",
+    "tests/unit/test_phase_i_i3_execution_date.py",
+    "tests/unit/test_phase_i_i3_a4_activation.py",
+    "tests/unit/test_phase_l_a6_p0_r1_dgpa_closure_authority.py",
+    "tests/unit/i3_closure_authority_test_helpers.py",
+    "tests/unit/test_l7_a5_r4_unscheduled_closure.py",
+    "tests/unit/test_phase_i_i3_execution_date_binding.py"
+  ],
+  "exit_code": 0,
+  "git_diff_check_exit_code": 0
+}

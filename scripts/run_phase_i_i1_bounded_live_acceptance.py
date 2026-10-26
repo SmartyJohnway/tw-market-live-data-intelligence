@@ -587,7 +587,7 @@ def run_acceptance(*, transport: Callable[[str, int], tuple[int, Mapping[str, st
             execution = execute_controlled_plan(
                 plan, authorization, binding, supplied_consumption_state=unused_state,
                 accepted_preflight=preflight, evaluation_timestamp=decision["issued_at"],
-                claim_created_at=_zulu(_now()), finalized_at=_zulu(_now()),
+                claim_created_at=_zulu(_now()), finalization_clock=None,
                 executor_registry_metadata=metadata, runtime_adapter_registry=candidate_registry,
                 output_root=str(package_root), mode="execute-approved", confirm_execution=True,
                 operator_confirmation_reference=OWNER_AUTHORITY_REFERENCE, confirm_network_execution=True,

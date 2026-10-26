@@ -1,0 +1,12 @@
+{
+  "A_F_evidence_mutated": false,
+  "D_access": 0,
+  "allowed_mutation_root": "C:\\twmarket_temp",
+  "canonical_ci_output": "C:\\twmarket_temp\\l7-a5\\l7-a5-r4-deterministic-ci-final",
+  "explicit_TEMP_TMP_and_basetemp": true,
+  "focused_output": "C:\\twmarket_temp\\l7-a5-r4\\focused",
+  "live_claim_authorization_packages_accessed_or_modified": false,
+  "old_untracked_artifacts_unchanged": true,
+  "production_access": 0,
+  "production_mutation": 0
+}

@@ -1,0 +1,9 @@
+{
+  "candidate_binding": "Exactly one direct child implementation/evidence commit; candidate identity is the enclosing Git commit. Tested input bytes are bound in changed_files.json.",
+  "repair_branch": "phase-l/l7-a5-r3-i3-normalization-diagnostic-fidelity",
+  "starting_HEAD": "e98dba733b2a93252f471b0f4e294ac2999355a7",
+  "starting_branch": "phase-l/l7-a5-r2-eod-active-security-master-propagation",
+  "starting_parent": "96c0e5dd340d641b1b34f820be43f37234e954f7",
+  "starting_product_sha256": "1a547217afcb3ebdcc07dc4c94e7223081b3de0e1996aff79791d65690dc03a0",
+  "starting_tree": "6aa6ff929d3afd816a68ad6ae778dff197a7d191"
+}

@@ -1,0 +1,14 @@
+{
+  "PYTHONPYCACHEPREFIX": "C:\\twmarket_temp\\l7-a5-r3\\pycache",
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "compileall",
+    "-q",
+    "server/services/phase_i_i3_cash_institutional_flow_production_candidate.py",
+    "tests/unit/test_l7_a5_r3_i3_normalization_diagnostics.py"
+  ],
+  "exit_code": 0,
+  "git_diff_check_exit_code": 0
+}

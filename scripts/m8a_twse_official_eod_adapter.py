@@ -55,8 +55,8 @@ def parse_twse_official_eod_rows(rows: Any, *, requested_symbols: list[str], ret
     result["completed_at_utc"]=utc_now(); return result
 
 def execute_twse_official_eod_adapter(requested_symbols:list[str], *, timeout:int=20, security_master:dict|None=None) -> dict:
-    ts=utc_now()
     try: rows,status,ctype=fetch_twse_official_eod_json(timeout=timeout)
     except Exception as exc:
-        r=empty_adapter_result(SOURCE_ID,ENDPOINT_CONTRACT_ID,requested_symbols,ts); r.update(source_status="error",batch_status="source_error",completed_at_utc=utc_now()); r["caveats"].append(str(exc).splitlines()[0][:80]); return r
+        r=empty_adapter_result(SOURCE_ID,ENDPOINT_CONTRACT_ID,requested_symbols); r.update(source_status="error",batch_status="source_error",completed_at_utc=utc_now()); r["caveats"].append(str(exc).splitlines()[0][:80]); return r
+    ts=utc_now()
     r=parse_twse_official_eod_rows(rows,requested_symbols=requested_symbols,retrieved_at_utc=ts,http_status=status,security_master=security_master); r["provenance"]={"source_url":URL,"content_type":ctype,"request_method":"GET"}; return r

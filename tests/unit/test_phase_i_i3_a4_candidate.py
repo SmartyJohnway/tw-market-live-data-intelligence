@@ -238,7 +238,7 @@ def test_transport_failure_evidence_is_schema_valid_and_truthful(tmp_path, failu
     telemetry["http_status"] = 200
     telemetry["content_type"] = "application/json"
     telemetry["declared_content_length"] = declared
-    telemetry["retrieved_at"] = "2026-10-04T12:00:00Z"
+    telemetry["retrieved_at"] = None
 
     def fail_acquire(_market, *, resolved_source_trade_date=None):
         assert resolved_source_trade_date is None

@@ -1,0 +1,18 @@
+{
+  "A5_PASS": false,
+  "A6_A7_Phase_M": false,
+  "G": "HOLD",
+  "H": "NOT_REACHED",
+  "L7-EXIT-19": "NOT_PASS",
+  "L7-GAP-15": "OPEN",
+  "PR": false,
+  "STOP_after_local_candidate": true,
+  "both_previous_live_authorities": "CONSUMED_NON_REUSABLE",
+  "disposition": "L7_A5_R4_UNSCHEDULED_MARKET_CLOSURE_AUTHORITY_IMPLEMENTATION_CANDIDATE",
+  "incident_regression": "2026-10-23 skipped; source date 2026-10-22",
+  "independent_acceptance": false,
+  "merge": false,
+  "push": false,
+  "release": false,
+  "tag": false
+}

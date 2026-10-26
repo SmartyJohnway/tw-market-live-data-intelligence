@@ -1,0 +1,15 @@
+{
+  "R1_evidence_unchanged": true,
+  "TLS_architecture_unchanged": true,
+  "dependency_version_mutation": false,
+  "dispatch_semantics_unchanged": true,
+  "governance_evidence_files_added": "this additive R1.1 directory only",
+  "product_runtime_files_changed": [
+    "scripts/m8r_06_01b_materialize_production_inputs.py"
+  ],
+  "qualification_semantics_unchanged": true,
+  "source_endpoints_unchanged": true,
+  "test_files_changed": [
+    "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py"
+  ]
+}

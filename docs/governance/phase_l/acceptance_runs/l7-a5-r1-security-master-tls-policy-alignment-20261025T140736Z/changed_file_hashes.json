@@ -1,0 +1,45 @@
+{
+  "count": 8,
+  "files": [
+    {
+      "bytes": 20393,
+      "path": "scripts/manage_security_master.py",
+      "sha256": "71342882c71ebf4d9ac2e5acece2b469c4379c2992a1a984bfbc2723fe3a9595"
+    },
+    {
+      "bytes": 53907,
+      "path": "scripts/m8r_06_01b_materialize_production_inputs.py",
+      "sha256": "c250e043d71f99546df57e982cd03a35ee207bc49a9bcb7720ae48415964d835"
+    },
+    {
+      "bytes": 17158,
+      "path": "skills/tw-security-master-classifier/scripts/probe_sources.py",
+      "sha256": "2f2302e45fb6a3f731ee9f2c0d9ca8caf7803336d77fd6696afbca0a1ab5c6da"
+    },
+    {
+      "bytes": 1657,
+      "path": "skills/tw-security-master-classifier/references/schemas/probe-result.schema.json",
+      "sha256": "4ded75a3d6311ca6585b33f41c523c56edb0533f35b684bb15e60492914142c9"
+    },
+    {
+      "bytes": 5703,
+      "path": "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py",
+      "sha256": "5ca193b4dde9968830e846a394cb731d815dbfdd1fc96693991b3d3f9c45f5a8"
+    },
+    {
+      "bytes": 29374,
+      "path": "tests/unit/test_m8r_06_01b_bootstrap_dispatch_budget.py",
+      "sha256": "e6131aebec67b5e753bec0d1f22b594541b321c28ad3bab5be5eb085a52c2714"
+    },
+    {
+      "bytes": 25861,
+      "path": "tests/fixtures/m8r_03d_f1/snapshot.json",
+      "sha256": "151bfd6423603c08513e9db5297e87990c8d6b58905bfee2d3fa3c4906e92c3c"
+    },
+    {
+      "bytes": 1074,
+      "path": "tests/fixtures/m8r_03d_f1/manifest.json",
+      "sha256": "cea7da86287fc65e596550788549580be707ed57707d5476395cc07eda7b5b57"
+    }
+  ]
+}

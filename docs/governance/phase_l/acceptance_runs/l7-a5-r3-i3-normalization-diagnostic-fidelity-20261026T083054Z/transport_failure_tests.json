@@ -1,0 +1,59 @@
+{
+  "all_acquisitions_synthetic": true,
+  "automatic_retry": 0,
+  "cases": [
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[transport_error-TWSE]",
+      "seconds": "0.023",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[transport_error-TPEX]",
+      "seconds": "0.025",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[http_error-TWSE]",
+      "seconds": "0.024",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[http_error-TPEX]",
+      "seconds": "0.030",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[unsupported_content_type-TWSE]",
+      "seconds": "0.024",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[unsupported_content_type-TPEX]",
+      "seconds": "0.026",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[response_read_failed-TWSE]",
+      "seconds": "0.024",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[response_read_failed-TPEX]",
+      "seconds": "0.024",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[response_byte_limit_exceeded-TWSE]",
+      "seconds": "0.024",
+      "status": "PASS"
+    },
+    {
+      "name": "test_acquisition_failure_keeps_telemetry_without_normalization_caveat[response_byte_limit_exceeded-TPEX]",
+      "seconds": "0.024",
+      "status": "PASS"
+    }
+  ],
+  "manufactured_normalization_reason": false,
+  "status": "PASS",
+  "telemetry_unchanged": true
+}

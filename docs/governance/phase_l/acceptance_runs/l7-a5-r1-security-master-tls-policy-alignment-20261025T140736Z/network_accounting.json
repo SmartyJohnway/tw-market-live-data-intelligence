@@ -1,0 +1,18 @@
+{
+  "A5_live_authority_consumed": false,
+  "closure_DGPA_requests": 0,
+  "external_dns_or_socket_attempts": 0,
+  "local_test_loopback_only_if_present": "test-controlled local services only; no market/source authority",
+  "market_source_requests": 0,
+  "product_external_http_requests": 0,
+  "release_blocking_guard_denials": 0,
+  "release_blocking_guard_events": {
+    "child_git_local": 312,
+    "child_node_injected": 1,
+    "child_python_injected": 35,
+    "guard_loaded": 35,
+    "guard_loaded_node": 1
+  },
+  "security_master_refresh_authority": "CONSUMED / FAILED before this repair; not reused",
+  "security_master_refresh_invocations": 0
+}

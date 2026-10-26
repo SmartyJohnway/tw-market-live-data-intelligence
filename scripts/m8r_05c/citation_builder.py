@@ -17,6 +17,7 @@ from dataclasses import dataclass, field
 from .canonical import sha256_json
 from .lineage_resolver import LineageMap, OperationBinding
 from .models import CitationProjection, CitationToOperationEntry
+from .evidence_projector import governed_i3_failure_artifact
 
 _CITATION_ID_PREFIX = "cite-"
 _CITATION_ID_LEN = 16
@@ -88,7 +89,9 @@ def build_citation_index(
                 and primary_h2.get("schema_version") == "corporate_action_context_evidence.v1"
                 and primary_h2.get("status") in {"source_failed", "binding_failed"}
             )
-            if (binding.status == "failed" and not governed_h2_failure) or not binding.evidence_artifacts:
+            governed_i3_failure = (data_need == "cash_institutional_flow_context"
+                                   and governed_i3_failure_artifact(binding) is not None)
+            if (binding.status == "failed" and not (governed_h2_failure or governed_i3_failure)) or not binding.evidence_artifacts:
                 # Preserve citations for governed typed H2 failures: they are
                 # real, schema-validated evidence inputs to fail-closed H4.
                 key = f"{canonical_target_id}::{data_need}"

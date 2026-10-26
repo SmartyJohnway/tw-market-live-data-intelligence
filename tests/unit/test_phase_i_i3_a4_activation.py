@@ -1,4 +1,5 @@
 """Owner-authorized I3 A4 activation proof using only injected source bytes."""
+from tests.unit.i3_closure_authority_test_helpers import closure_authority_fixture
 import hashlib
 import json
 import socket
@@ -109,7 +110,7 @@ def _prepared(package, *, evaluation="2026-10-01T19:00:00+08:00"):
         holiday_schedule_records=[], generated_at_utc="2026-01-01T00:00:00Z")
     return prepare_i3_authorized_execution(package, evaluation_time=evaluation, official_calendar=calendar,
         closure_events=[], calendar_authority_ref="fixture:twse-calendar-2026",
-        closure_authority_ref="fixture:closure-complete", closure_authority_complete=True,
+        **closure_authority_fixture(evaluation), closure_authority_complete=True,
         decision_input=decision)
 
 
@@ -138,7 +139,7 @@ def _run(package, prepared, tmp_path, *, acquired_markets):
         return Acquisition(body, telemetry)
     registry = build_production_runtime_adapter_registry(i3_acquire=fake_acquire)
     result = execute_controlled_plan(plan, authorization, binding, supplied_consumption_state=unused,
-        accepted_preflight=preflight, evaluation_timestamp=stamp, claim_created_at=stamp, finalized_at=stamp,
+        accepted_preflight=preflight, evaluation_timestamp=stamp, claim_created_at=stamp, finalization_clock=lambda: stamp,
         executor_registry_metadata=metadata, runtime_adapter_registry=registry, output_root=str(output_root),
         mode="execute-approved", confirm_execution=True, operator_confirmation_reference="I3-A4-offline-test",
         confirm_network_execution=True)

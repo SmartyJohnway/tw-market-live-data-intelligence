@@ -1,0 +1,23 @@
+{
+  "cases": [
+    "NOT_INITIALIZED",
+    "active pointer invalid",
+    "release integrity invalid",
+    "identity service absent",
+    "not found",
+    "ambiguous",
+    "canonical mismatch",
+    "market mismatch",
+    "code mismatch",
+    "unsupported family",
+    "unsupported type",
+    "eligibility blocked",
+    "manifest invalid",
+    "malformed classification",
+    "second batch target blocked"
+  ],
+  "network_attempts": 0,
+  "r2_specific_test_cases": 37,
+  "source_calls_on_failure": 0,
+  "status": "PASS"
+}

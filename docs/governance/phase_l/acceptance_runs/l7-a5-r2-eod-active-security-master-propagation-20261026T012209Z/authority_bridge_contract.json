@@ -1,0 +1,31 @@
+{
+  "batch_authority_gets": 1,
+  "batch_source_calls": 1,
+  "loader": "get_production_mode_a_security_master",
+  "mapping": {
+    "company_share/common_share": "equity"
+  },
+  "new_cache": false,
+  "provenance": [
+    "canonical_target_id",
+    "release_id",
+    "release_manifest_sha256",
+    "canonical_instrument_family",
+    "canonical_instrument_type",
+    "execution_eligibility"
+  ],
+  "repository_seed_fallback": false,
+  "requirements": [
+    "resolved",
+    "exact canonical target",
+    "exact market",
+    "exact code",
+    "company_share",
+    "common_share",
+    "eligibility allowed",
+    "valid release manifest binding"
+  ],
+  "selection": "PROCESS_LIFETIME_IMMUTABLE_SELECTION",
+  "single_and_batch_shared_helper": "_official_eod_security_master_projection",
+  "target_bounded": true
+}

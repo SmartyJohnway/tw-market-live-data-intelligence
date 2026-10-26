@@ -1,0 +1,1 @@
+{"boundary":"Python audit and injected Python/Node child guards; local Git allowlist; no OS firewall claim","external_network_attempts":0,"guard_denials":0,"guard_events":386,"guard_log_sha256":"3b6ce7ebf55471a07ae2380ee772a453631c9c605af4058d481126abdb7581fb","status":"PASS","unexpected_skips":0}

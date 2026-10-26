@@ -1,0 +1,106 @@
+{
+  "accepted_annual_calendar_path": "C:\\twmarket_temp\\l7-a5\\repo\\docs\\governance\\phase_l\\acceptance_runs\\l3-a6-p0-20261016T033822Z\\twse_trading_calendar_2026.json",
+  "accepted_annual_raw_hash": "f8a2e6908cda1595587d29f4eb3c8fd66a11104b9f41558c1d4735243141883a",
+  "classification": "SYNTHETIC_OFFLINE_AUTHORITY_FIXTURES_ONLY_NOT_NEW_REAL_MARKET_AUTHORITY",
+  "closed_override": {
+    "authority": {
+      "closure_events": [],
+      "exchange_session_coverage_dates": [
+        "2026-10-26",
+        "2026-10-25",
+        "2026-10-24",
+        "2026-10-23",
+        "2026-10-22"
+      ],
+      "exchange_session_overrides": [
+        {
+          "closure_scope": "full_day",
+          "date": "2026-10-23",
+          "market": "TWSE",
+          "reason": "unscheduled_exchange_closure",
+          "session_status": "closed"
+        }
+      ],
+      "market": "TWSE",
+      "provenance": {
+        "exchange_session_authority_sha256": "e458204a86b4cdcab02af270077098d5d4510a62fdc874ebf57df2f69d3b1fca",
+        "taipei_closure_authority_sha256": "666ed8943489d1f5a5d93fdd18f4efe951dfb47cfcc531314acd58534420e4ba"
+      },
+      "schema_version": "i3_composite_closure_authority.v1",
+      "taipei_closure_coverage_dates": [
+        "2026-10-26",
+        "2026-10-25",
+        "2026-10-24",
+        "2026-10-23",
+        "2026-10-22"
+      ]
+    },
+    "identities": {
+      "authorization_hash": "3e74ce9208fdd23815487fac08e296a2b3378f5de56d0cb5cfd9027619bd9abd",
+      "closure_authority_ref": "I3_COMPOSITE_CLOSURE:sha256:c55a3823a1765be6a8414e6b52046b6a698ab9a993ab2993d9e19bcdfd3cca42",
+      "execution_request_hash": "9841c9b068676249b7cd97f91002fad2fb9f31057b05335a06c8f1fa9c805c33",
+      "execution_request_id": "umereq-v3-9841c9b068676249b7cd",
+      "network_dispatched": false,
+      "plan_hash": "10fff44e85f4a842dd27e67c1959a058fa42ab0c9e6ca3448fd33fc530e43e67",
+      "plan_id": "umeop-v1-10fff44e85f4a842dd27",
+      "source_date": "2026-10-22"
+    },
+    "result": {
+      "calendar_authority_ref": "P0:TWSE_CALENDAR:28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+      "closure_authority_ref": "I3_COMPOSITE_CLOSURE:sha256:c55a3823a1765be6a8414e6b52046b6a698ab9a993ab2993d9e19bcdfd3cca42",
+      "evaluation_time": "2026-10-26T01:42:41.461562+08:00",
+      "market": "TWSE",
+      "resolved_source_trade_date": "2026-10-22"
+    }
+  },
+  "counterfactual_adjudicated_clear": {
+    "authority": {
+      "closure_events": [],
+      "exchange_session_coverage_dates": [
+        "2026-10-26",
+        "2026-10-25",
+        "2026-10-24",
+        "2026-10-23",
+        "2026-10-22"
+      ],
+      "exchange_session_overrides": [],
+      "market": "TWSE",
+      "provenance": {
+        "exchange_session_authority_sha256": "6fa77c9c421b495b3c4017bc02fb3a88c16eaf12386f94012a03df701faaf9ab",
+        "taipei_closure_authority_sha256": "666ed8943489d1f5a5d93fdd18f4efe951dfb47cfcc531314acd58534420e4ba"
+      },
+      "schema_version": "i3_composite_closure_authority.v1",
+      "taipei_closure_coverage_dates": [
+        "2026-10-26",
+        "2026-10-25",
+        "2026-10-24",
+        "2026-10-23",
+        "2026-10-22"
+      ]
+    },
+    "identities": {
+      "authorization_hash": "6fdf953a91068ae16520fbcd8ffd73628d0d485cae4d88d4ee7d6c32a8aaa655",
+      "closure_authority_ref": "I3_COMPOSITE_CLOSURE:sha256:c8f18ec41959b4404db8a90b13321fb12fbcee6248a2e2669932aabaa034d10a",
+      "execution_request_hash": "cf0f92243d14a98531ff94c9ab95331fb34183af66645817e8a041c345f1bbe5",
+      "execution_request_id": "umereq-v3-cf0f92243d14a98531ff",
+      "network_dispatched": false,
+      "plan_hash": "d738e63cc9552260446ee36237b489957a94f08fbe8e2e76886149e221c2f6a2",
+      "plan_id": "umeop-v1-d738e63cc9552260446e",
+      "source_date": "2026-10-23"
+    },
+    "result": {
+      "calendar_authority_ref": "P0:TWSE_CALENDAR:28c07f487c120a26c5b7c4cef1c74542880c85827b91878662dcfc88e2be9ca8",
+      "closure_authority_ref": "I3_COMPOSITE_CLOSURE:sha256:c8f18ec41959b4404db8a90b13321fb12fbcee6248a2e2669932aabaa034d10a",
+      "evaluation_time": "2026-10-26T01:42:41.461562+08:00",
+      "market": "TWSE",
+      "resolved_source_trade_date": "2026-10-23"
+    }
+  },
+  "evaluation": "2026-10-26T01:42:41.461562+08:00",
+  "incident_fact_authority": "Owner L7-A5-R4 adjudication",
+  "incomplete_authority_rejections": {
+    "DGPA_only": "i3_composite_closure_authority_required_or_invalid",
+    "exchange_coverage_missing": "i3_closure_coverage_unresolved"
+  },
+  "network_attempts": 0
+}

@@ -1,0 +1,12 @@
+{
+  "D_drive_access": 0,
+  "D_drive_access_commands": 0,
+  "all_task_writes_under_C_twmarket_temp": true,
+  "authorized_workspace_root": "C:\\twmarket_temp",
+  "preexisting_blocker_artifacts_modified": false,
+  "production_LOCALAPPDATA_TW_Market_access": 0,
+  "production_security_master_mutations": 0,
+  "production_state_mutations": 0,
+  "release_blocking_isolated_state": "C:\\twmarket_temp\\l7-a5\\l7-a5-r1-deterministic-ci-20261025T140425Z",
+  "task_temp": "C:\\twmarket_temp\\l7-a5-r1\\temp"
+}

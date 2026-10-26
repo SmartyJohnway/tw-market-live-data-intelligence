@@ -1,0 +1,13 @@
+{
+  "branch": "phase-l/l7-a5-r1-security-master-tls-policy-alignment",
+  "entry_commit": "617ccea728befa2fd3ea7b847665072c0e728f00",
+  "entry_tree": "87290c4503c91fbe485b362dd0ecd05a50cf125b",
+  "expected_commit": "617ccea728befa2fd3ea7b847665072c0e728f00",
+  "expected_tree": "87290c4503c91fbe485b362dd0ecd05a50cf125b",
+  "mcp_requirement": "mcp==1.29.0",
+  "origin_main_commit": "617ccea728befa2fd3ea7b847665072c0e728f00",
+  "origin_main_tree": "87290c4503c91fbe485b362dd0ecd05a50cf125b",
+  "pre-existing_untracked_A5_blocker_evidence_preserved": true,
+  "repository": "C:\\twmarket_temp\\l7-a5\\repo",
+  "version": "1.5.0"
+}

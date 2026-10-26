@@ -1,12 +1,17 @@
 """End-to-end controlled plan execution entry point for M8R-05B-03."""
 from __future__ import annotations
 
-from typing import Any
+from datetime import datetime, timezone
+from typing import Any, Callable
 
 from .controlled_dispatch import claim_and_dispatch_approved
 from .dispatch import RuntimeAdapterRegistry
 from .evidence_aggregation import aggregate_dispatch_outcomes
 from .receipt import finalize_consumption_and_write_receipt
+
+
+def _finalization_timestamp() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def execute_controlled_plan(
@@ -18,7 +23,7 @@ def execute_controlled_plan(
     accepted_preflight: dict[str, Any],
     evaluation_timestamp: str,
     claim_created_at: str,
-    finalized_at: str,
+    finalization_clock: Callable[[], str] | None = None,
     executor_registry_metadata: dict[str, Any],
     runtime_adapter_registry: RuntimeAdapterRegistry,
     output_root: str,
@@ -62,6 +67,8 @@ def execute_controlled_plan(
     aggregation["artifact_inventory"].sort(key=lambda item: item["relative_path"])
 
     if mode == "execute-approved":
+        # Sample transaction-entry time only after all acquisition/aggregation work.
+        finalized_at = (finalization_clock or _finalization_timestamp)()
         final_claim, receipt, bundle = finalize_consumption_and_write_receipt(
             accepted_preflight,
             dispatch_res["claim_record"],

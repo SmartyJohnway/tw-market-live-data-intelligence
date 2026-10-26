@@ -1,0 +1,120 @@
+{
+  "cases": [
+    {
+      "name": "test_missing_composite_authority_stops_before_authorization_or_request_projection[production]",
+      "seconds": "0.024",
+      "status": "PASS"
+    },
+    {
+      "name": "test_missing_composite_authority_stops_before_authorization_or_request_projection[dormant]",
+      "seconds": "0.024",
+      "status": "PASS"
+    },
+    {
+      "name": "test_DGPA_negative_and_complete_boolean_alone_cannot_qualify_exchange_coverage",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_every_actually_traversed_day_requires_both_coverage_families[2026-10-26-taipei_closure_coverage_dates]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_every_actually_traversed_day_requires_both_coverage_families[2026-10-26-exchange_session_coverage_dates]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_every_actually_traversed_day_requires_both_coverage_families[2026-10-23-taipei_closure_coverage_dates]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_every_actually_traversed_day_requires_both_coverage_families[2026-10-23-exchange_session_coverage_dates]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_every_actually_traversed_day_requires_both_coverage_families[2026-10-22-taipei_closure_coverage_dates]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_every_actually_traversed_day_requires_both_coverage_families[2026-10-22-exchange_session_coverage_dates]",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_unadjudicated_exchange_candidate_without_override_fails_closed",
+      "seconds": "0.004",
+      "status": "PASS"
+    },
+    {
+      "name": "test_irrelevant_untraversed_day_does_not_require_coverage",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[unknown_shape]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[bad_schema]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[bad_market]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[missing_provenance]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[bad_provenance]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[unknown_provenance]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[duplicate_coverage]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[oversized_coverage]",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_composite_authority_strict_bounded_and_provenanced[oversized_overrides]",
+      "seconds": "0.007",
+      "status": "PASS"
+    },
+    {
+      "name": "test_tampering_after_hash_binding_rejected",
+      "seconds": "0.003",
+      "status": "PASS"
+    },
+    {
+      "name": "test_caller_events_cannot_diverge_from_composite_hash_bound_events",
+      "seconds": "0.003",
+      "status": "PASS"
+    }
+  ],
+  "explicit_rejections": {
+    "DGPA_only": "i3_composite_closure_authority_required_or_invalid",
+    "exchange_coverage_missing": "i3_closure_coverage_unresolved"
+  },
+  "negative_evidence_alone_not_authority": true,
+  "status": "PASS"
+}

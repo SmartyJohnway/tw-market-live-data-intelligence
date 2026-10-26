@@ -1,0 +1,69 @@
+{
+  "canonicalization": "UTF-8 JSON ensure_ascii=false sort_keys=true separators=(comma,colon); self_digest excluded",
+  "member_count": 12,
+  "member_mismatches": 0,
+  "members": [
+    {
+      "bytes": 241,
+      "path": "authority.json",
+      "sha256": "22cc6b4e1dabe5cbd271c8bb0cc1993142577cd0766dae069da45f63c7eb0d80"
+    },
+    {
+      "bytes": 396,
+      "path": "changed_file_hashes.json",
+      "sha256": "0fa334d557e5f30bf60f4ff6a8d2bd06b625ca1d3ab239b42c3aa58f52fe10bd"
+    },
+    {
+      "bytes": 316,
+      "path": "entry_identity.json",
+      "sha256": "2b0de12b4dd5c510a87e82c04ccc3261f8890c0714b6816e81c604acb95272d4"
+    },
+    {
+      "bytes": 330,
+      "path": "filesystem_boundary.json",
+      "sha256": "53068cdee0ee92d06385ca34c4f94b9b1767d8fd6505e92c00eb5f71bb0279a2"
+    },
+    {
+      "bytes": 458,
+      "path": "final_review.json",
+      "sha256": "a478d681e2f5f59c5ee61b6818eebb4f8a4cd2a45218dc3d6da18240125652d8"
+    },
+    {
+      "bytes": 397,
+      "path": "finding.json",
+      "sha256": "067997aef8c3aecbe692671f07671303ffaa438046e40564193dd8b2445bf4e6"
+    },
+    {
+      "bytes": 534,
+      "path": "network_accounting.json",
+      "sha256": "a58f57ba94eeffcc12338b4898038d620bec5fc652e983cbe81fa13e73382984"
+    },
+    {
+      "bytes": 475,
+      "path": "release_blocking_ci_result.json",
+      "sha256": "d73b2f7cc3f75a8f434ef4a4be627c2f82d6986a6340b81f2a5629ebfff7b4c4"
+    },
+    {
+      "bytes": 500,
+      "path": "repair_scope.json",
+      "sha256": "355b070bcb3150710ddfe895a71d1d3feff2013d5d3749493e4ed8a088211856"
+    },
+    {
+      "bytes": 503,
+      "path": "scope_diff_verification.json",
+      "sha256": "0930cdf44dad698ffd3e830918b4928add8b1d0bed824440fc6769e7e9c20ac4"
+    },
+    {
+      "bytes": 672,
+      "path": "sys_path_regression.json",
+      "sha256": "a01eef50251d68750364e27fb6e39b496c1e0b37405624ad1a18f6acce7f13c7"
+    },
+    {
+      "bytes": 1567,
+      "path": "test_results.json",
+      "sha256": "444d790a6754387964cd4ea5f146487c8865382dfc8d23fcd62fedf647ae2be0"
+    }
+  ],
+  "schema": "twmarket.l7_a5_r1_1.sys_path_restoration.v1",
+  "self_digest": "49a401aa984e2670b9b1ae11eb8083ccacd1e39ddb68e1beb3b6e866871ce34f"
+}

@@ -1,0 +1,14 @@
+{
+  "PR": false,
+  "compatibility_explicit_only": true,
+  "disposition": "L7_A5_R1_1_SYS_PATH_RESTORATION_IMPLEMENTATION_CANDIDATE",
+  "exactly_one_corrective_commit_to_follow": true,
+  "independent_review_pending": true,
+  "merge": false,
+  "parent": "59cb926d07aa1c4ebac33475e3a6bf8d3d3af09b",
+  "portable_Skill_repo_TLS_import_added": false,
+  "push": false,
+  "silent_fallback": false,
+  "strict_default_preserved": true,
+  "unsafe_TLS_rejected": true
+}

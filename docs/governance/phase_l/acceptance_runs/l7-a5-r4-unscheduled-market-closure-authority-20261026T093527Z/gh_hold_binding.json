@@ -1,0 +1,11 @@
+{
+  "G": "HOLD",
+  "H": "NOT_REACHED",
+  "Owner_disposition": "L7_A5_GH_BOUNDED_LIVE_RECERTIFICATION_HOLD_G_VALID",
+  "authority": "CONSUMED_NON_REUSABLE",
+  "historical_body_reconstruction_attempted": false,
+  "member_count": 44,
+  "member_mismatches": 0,
+  "path": "C:\\twmarket_temp\\l7-a5-current-authorities\\evidence\\20261026T085331Z-l7-a5-gh-bounded-live-recertification-r3",
+  "self_digest": "f8b87db2f23ade81b32bb92c9f0be3d65299aacfe59e2146886f4f5ccdd6e036"
+}

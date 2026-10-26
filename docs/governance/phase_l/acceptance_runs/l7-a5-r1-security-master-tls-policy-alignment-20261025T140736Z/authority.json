@@ -1,0 +1,26 @@
+{
+  "authority_basis": "direct user instruction in this task",
+  "authorized": [
+    "bounded product code repair",
+    "offline unit/regression tests",
+    "compile and validators",
+    "local candidate commit",
+    "bounded repair evidence"
+  ],
+  "live_authority_consumed_by_this_run": false,
+  "prohibited": [
+    "live HTTP or source requests",
+    "manage_security_master.py update --live",
+    "Security Master acquisition",
+    "DGPA/closure acquisition",
+    "A5 scenarios A-H",
+    "production state access or mutation",
+    "D: access",
+    "push",
+    "PR",
+    "merge",
+    "release/publication",
+    "A6+"
+  ],
+  "task": "L7-A5-R1 — Security Master Bootstrap TLS Policy Alignment Repair"
+}

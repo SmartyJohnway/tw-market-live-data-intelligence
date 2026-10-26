@@ -6,6 +6,7 @@ solely when the 05B-03 dispatcher invokes an already approved registration.
 from __future__ import annotations
 
 import hashlib
+import copy
 import json
 import math
 import os
@@ -505,6 +506,72 @@ def _current_observation(request: dict[str, Any], context: DispatchRuntimeContex
     return result
 
 
+def _official_eod_security_master_projection(
+    market: str, symbols: list[str]
+) -> dict[tuple[str, str], dict[str, Any]]:
+    """Project approved common shares from the process-selected active authority."""
+    from scripts.m8r_06_01c2_mode_a_security_master_loader import (
+        ModeASecurityMasterUnavailable,
+        get_production_mode_a_security_master,
+    )
+    from scripts.m8a_official_eod_instrument_classifier import normalize_market
+
+    if market not in {"TWSE", "TPEX"} or not symbols:
+        raise OrchestrationError("official_eod_classification_projection_invalid")
+    try:
+        runtime = get_production_mode_a_security_master()
+    except ModeASecurityMasterUnavailable as exc:
+        raise OrchestrationError("official_eod_active_security_master_unavailable") from exc
+    service = getattr(runtime, "identity_service", None)
+    if service is None or not callable(getattr(service, "resolve", None)):
+        raise OrchestrationError("official_eod_identity_service_unavailable")
+    release_id = getattr(service, "release_id", None)
+    manifest_hash = getattr(service, "manifest_hash", None)
+    if (not isinstance(release_id, str) or not release_id
+            or not isinstance(manifest_hash, str) or len(manifest_hash) != 64
+            or any(char not in "0123456789abcdef" for char in manifest_hash)):
+        raise OrchestrationError("official_eod_active_authority_binding_invalid")
+    projection: dict[tuple[str, str], dict[str, Any]] = {}
+    for symbol in symbols:
+        if not isinstance(symbol, str) or not symbol or symbol.strip() != symbol or ":" in symbol:
+            raise OrchestrationError("official_eod_classification_projection_invalid")
+        target = f"{market}:{symbol}"
+        resolution = service.resolve(target)
+        record = getattr(resolution, "selected", None)
+        if getattr(resolution, "status", None) != "resolved" or not isinstance(record, dict):
+            raise OrchestrationError("official_eod_target_resolution_failed")
+        identity = record.get("identity") or {}
+        classification = record.get("classification") or {}
+        eligibility = record.get("execution_eligibility") or {}
+        if not all(isinstance(value, dict) for value in (identity, classification, eligibility)):
+            raise OrchestrationError("official_eod_classification_projection_invalid")
+        if (record.get("canonical_target_id") != target
+                or classification.get("market") != market
+                or identity.get("security_code") != symbol):
+            raise OrchestrationError("official_eod_target_identity_mismatch")
+        if (classification.get("instrument_family") != "company_share"
+                or classification.get("instrument_type") != "common_share"):
+            raise OrchestrationError("official_eod_classification_unsupported")
+        if eligibility.get("status") != "allowed":
+            raise OrchestrationError("official_eod_execution_ineligible")
+        projection[(normalize_market(market), symbol)] = {
+            # Explicit bridge to the unchanged legacy EOD observation taxonomy.
+            "instrument_type": "equity",
+            "classification_status": "classified",
+            "coverage_mode": "canonical_security_master",
+            "production_classification_completeness": "complete",
+            "source": "installation_active_security_master",
+            "provenance": f"installation_active_security_master:{release_id}",
+            "canonical_target_id": target,
+            "release_id": release_id,
+            "release_manifest_sha256": manifest_hash,
+            "canonical_instrument_family": classification["instrument_family"],
+            "canonical_instrument_type": classification["instrument_type"],
+            "execution_eligibility": copy.deepcopy(eligibility),
+        }
+    return projection
+
+
 def _official_eod(request: dict[str, Any], context: DispatchRuntimeContext) -> dict[str, Any]:
     _require_approved_execution((request,), context)
     identifiers = request["approved_security_identifiers"]
@@ -519,10 +586,11 @@ def _official_eod(request: dict[str, Any], context: DispatchRuntimeContext) -> d
     execute = execute_twse_official_eod_adapter if market == "TWSE" else execute_tpex_official_eod_adapter if market == "TPEX" else None
     if execute is None:
         return _result_base(request, status="failed", error_code="unsupported_market")
+    security_master = _official_eod_security_master_projection(market, [symbol])
     source_id = TWSE_EOD_SOURCE_ID if market == "TWSE" else TPEX_EOD_SOURCE_ID
     source_result = timed_source_call(
         source_id,
-        lambda: execute([symbol], timeout=request["timeout_seconds"]),
+        lambda: execute([symbol], timeout=request["timeout_seconds"], security_master=security_master),
         market=market,
         capability_id="official_eod_reference",
     )
@@ -1108,10 +1176,11 @@ def production_batch_operation_adapter(requests: tuple[dict[str, Any], ...], con
         )
         if execute is None:
             raise OrchestrationError("unsupported_market")
+        security_master = _official_eod_security_master_projection(market, symbols)
         source_id = TWSE_EOD_SOURCE_ID if market == "TWSE" else TPEX_EOD_SOURCE_ID
         source = timed_source_call(
             source_id,
-            lambda: execute(symbols, timeout=first["timeout_seconds"]),
+            lambda: execute(symbols, timeout=first["timeout_seconds"], security_master=security_master),
             market=market,
             capability_id="official_eod_reference",
         )

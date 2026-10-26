@@ -1,0 +1,7 @@
+{
+  "R1_evidence_self_digest": "5666e55b07777358d3b54f7026ca49f87841b2363608c3daea8d9cc08ce3e869",
+  "R1_evidence_unchanged": true,
+  "branch": "phase-l/l7-a5-r1-1-sys-path-restoration",
+  "starting_commit": "59cb926d07aa1c4ebac33475e3a6bf8d3d3af09b",
+  "starting_tree": "b8b6896838591c5c84a3ad9da5f7b8103db1c224"
+}

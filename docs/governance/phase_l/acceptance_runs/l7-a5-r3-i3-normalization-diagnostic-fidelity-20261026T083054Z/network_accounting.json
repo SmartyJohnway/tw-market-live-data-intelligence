@@ -1,0 +1,15 @@
+{
+  "A5_authority": "CONSUMED_NON_REUSABLE",
+  "A5_scenario_G_executions": 0,
+  "A5_scenario_H_executions": 0,
+  "DGPA_requests": 0,
+  "NCDR_requests": 0,
+  "Security_Master_refresh": 0,
+  "TAIFEX_requests": 0,
+  "TPEX_requests": 0,
+  "TWSE_requests": 0,
+  "calendar_refresh": 0,
+  "external_network_attempts": 0,
+  "fixture_transport_note": "Production V2 telemetry values are injected by offline fakes to exercise schema semantics, not evidence of real HTTP.",
+  "replacement_live_authority_created": false
+}

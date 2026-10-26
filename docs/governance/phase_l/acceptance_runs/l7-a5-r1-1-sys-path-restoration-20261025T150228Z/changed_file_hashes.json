@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "bytes": 54563,
+      "path": "scripts/m8r_06_01b_materialize_production_inputs.py",
+      "sha256": "f8d5332585b2ff6420311687729aeab5aed4449a1fb5da24d73b4f1a2336e6a1"
+    },
+    {
+      "bytes": 7307,
+      "path": "tests/unit/test_l7_a5_r1_security_master_ssl_policy.py",
+      "sha256": "b36fad53d181a7892d167deb33cb34731e7bba28db71d45d128c4acf033d3b13"
+    }
+  ]
+}
