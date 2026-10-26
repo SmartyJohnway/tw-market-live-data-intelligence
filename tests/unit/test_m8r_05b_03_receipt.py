@@ -138,11 +138,11 @@ class TestBasicFinalization:
         receipt_schema = json.loads((ROOT / "schemas/unified_market_evidence_execution_receipt.v1.schema.json").read_text())
         validator = Draft202012Validator(receipt_schema)
         assert not list(validator.iter_errors(receipt))
-        for version in (1, 2):
+        for version in (1, 2, 3):
             candidate = json.loads(json.dumps(receipt))
             candidate["operation_receipts"][0]["execution_request_id"] = f"umereq-v{version}-" + "a" * 20
             assert not list(validator.iter_errors(candidate))
-        for invalid_id in ("umereq-v3-" + "a" * 20, "bad-request-id"):
+        for invalid_id in ("umereq-v4-" + "a" * 20, "bad-request-id"):
             candidate = json.loads(json.dumps(receipt))
             candidate["operation_receipts"][0]["execution_request_id"] = invalid_id
             assert list(validator.iter_errors(candidate))

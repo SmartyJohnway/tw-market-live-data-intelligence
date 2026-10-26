@@ -322,7 +322,7 @@ def _run_governed_acceptance(*, output_root: Path, fake_transport,
         runtime_registry = RuntimeAdapterRegistry([reg])
         execution = execute_controlled_plan(plan, authorization, consumption_binding,
             supplied_consumption_state=unused_state, accepted_preflight=preflight,
-            evaluation_timestamp=decision_at, claim_created_at=decision_at, finalized_at=decision_at,
+            evaluation_timestamp=decision_at, claim_created_at=decision_at, finalization_clock=None,
             executor_registry_metadata=registry_json, runtime_adapter_registry=runtime_registry,
             output_root=str(package_root), mode="execute-approved", confirm_execution=True,
             operator_confirmation_reference=owner_authority, confirm_network_execution=True)
@@ -341,7 +341,7 @@ def _run_governed_acceptance(*, output_root: Path, fake_transport,
         try:
             execute_controlled_plan(plan, authorization, consumption_binding,
                 supplied_consumption_state=unused_state, accepted_preflight=preflight,
-                evaluation_timestamp=decision_at, claim_created_at=decision_at, finalized_at=decision_at,
+                evaluation_timestamp=decision_at, claim_created_at=decision_at, finalization_clock=None,
                 executor_registry_metadata=registry_json, runtime_adapter_registry=runtime_registry,
                 output_root=str(package_root), mode="execute-approved", confirm_execution=True,
                 operator_confirmation_reference=owner_authority, confirm_network_execution=True)

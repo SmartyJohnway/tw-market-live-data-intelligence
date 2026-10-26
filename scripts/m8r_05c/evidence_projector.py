@@ -44,6 +44,24 @@ _ENVELOPE_DATA_NEEDS = {
 _OFFICIAL_EOD_NEED = "official_eod_reference"
 
 
+
+def governed_i3_failure_artifact(binding: OperationBinding | None) -> dict | None:
+    """Retain schema-validated failed I3 evidence without promoting operation success."""
+    if binding is None or binding.status != "failed":
+        return None
+    artifact = _research_artifact(binding)
+    if artifact is None or artifact.get("schema_version") != "cash_institutional_flow_context_evidence.v2":
+        return None
+    if artifact.get("status") not in {"source_failed", "binding_failed", "unavailable"} or artifact.get("error_code") != binding.error_code:
+        raise ProjectionError("i3_failed_typed_evidence_inconsistent")
+    from server.services.phase_i_i3_cash_institutional_flow_v2_evidence import validate_evidence_v2
+    try:
+        validate_evidence_v2(artifact)
+    except ValueError as exc:
+        raise ProjectionError("i3_failed_typed_evidence_invalid") from exc
+    return artifact
+
+
 def project_typed_research_evidence(
     binding: OperationBinding | None,
     citation_ids: list[str],
@@ -55,9 +73,12 @@ def project_typed_research_evidence(
     established operation/artifact citation lineage; an arbitrary caller ID is
     never promoted into a Result V3 citation.
     """
-    if binding is None or binding.status != "succeeded":
+    if binding is None:
         return None
-    artifact = _research_artifact(binding)
+    if binding.status != "succeeded":
+        artifact = governed_i3_failure_artifact(binding) if expected_schema_version == "cash_institutional_flow_context_evidence.v2" else None
+    else:
+        artifact = _research_artifact(binding)
     if artifact is None:
         return None
     if artifact.get("schema_version") != expected_schema_version:

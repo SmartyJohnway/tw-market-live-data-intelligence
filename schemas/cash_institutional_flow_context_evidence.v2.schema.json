@@ -14,7 +14,7 @@
     "trade_date": {"type": ["string", "null"], "format": "date"},
     "resolved_source_trade_date": {"type": ["string", "null"], "format": "date"},
     "source_reported_trade_date": {"type": ["string", "null"], "format": "date"},
-    "retrieved_at": {"type": "string", "format": "date-time"},
+    "retrieved_at": {"type": ["string", "null"], "format": "date-time"},
     "unit": {"const": "share"},
     "foreign_and_mainland_excluding_foreign_dealer": {"$ref": "#/$defs/flow"},
     "investment_trust": {"$ref": "#/$defs/flow"},
@@ -34,6 +34,8 @@
     {"if": {"properties": {"status": {"const": "complete"}}, "required": ["status"]}, "then": {"required": ["unit", "foreign_and_mainland_excluding_foreign_dealer", "investment_trust", "dealer_total", "institutional_total_net_shares"], "properties": {"trade_date": {"type": "string", "format": "date"}, "source_reported_trade_date": {"type": "string", "format": "date"}, "transport": {"properties": {"complete_body_received": {"const": true}}}}, "not": {"required": ["error_code"]}}},
     {"if": {"properties": {"status": {"enum": ["unavailable", "source_failed", "binding_failed"]}}, "required": ["status"]}, "then": {"required": ["error_code"], "not": {"anyOf": [{"required": ["unit"]}, {"required": ["foreign_and_mainland_excluding_foreign_dealer"]}, {"required": ["investment_trust"]}, {"required": ["dealer_total"]}, {"required": ["institutional_total_net_shares"]}, {"required": ["source_native_optional"]}]}}},
     {"if": {"properties": {"market": {"const": "TWSE"}}, "required": ["market"]}, "then": {"properties": {"transport": {"properties": {"tls_policy": {"const": "compatibility"}}}}}},
-    {"if": {"properties": {"market": {"const": "TPEX"}}, "required": ["market"]}, "then": {"properties": {"transport": {"properties": {"tls_policy": {"const": "strict"}}}}}}
+    {"if": {"properties": {"market": {"const": "TPEX"}}, "required": ["market"]}, "then": {"properties": {"transport": {"properties": {"tls_policy": {"const": "strict"}}}}}},
+    {"if":{"properties":{"transport":{"properties":{"complete_body_received":{"const":true}},"required":["complete_body_received"]}},"required":["transport"]},"then":{"properties":{"retrieved_at":{"type":"string","format":"date-time"}}},"else":{"properties":{"retrieved_at":{"type":"null"}}}},
+    {"if":{"properties":{"status":{"enum":["complete","binding_failed","unavailable"]}},"required":["status"]},"then":{"properties":{"transport":{"properties":{"complete_body_received":{"const":true}}}}}}
   ]
 }

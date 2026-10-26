@@ -147,8 +147,13 @@ def production_batch_operation_adapter_candidate(
     else:
         code = None
     stamp = transport.get("retrieved_at")
-    if not isinstance(stamp, str):
+    complete_body = transport.get("complete_body_received")
+    if complete_body is True and not isinstance(stamp, str):
         raise OrchestrationError("i3_transport_retrieval_timestamp_missing")
+    if complete_body is False and stamp is not None:
+        raise OrchestrationError("i3_incomplete_transport_retrieval_timestamp_forbidden")
+    if type(complete_body) is not bool:
+        raise OrchestrationError("i3_transport_completion_state_invalid")
     if source_date is not None:
         transport["resolved_source_trade_date"] = source_date
     prepared = None

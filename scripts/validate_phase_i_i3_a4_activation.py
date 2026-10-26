@@ -122,8 +122,35 @@ def validate() -> dict:
 
         v1_sha = _sha("schemas/cash_institutional_flow_context_evidence.v1.schema.json")
         assert v1_sha == "3be9a0ca3cf0e0bb5badb427231d47ce86fdb604ae28cb31582b0f9612c76f7c"
-        v2_sha = _sha("schemas/cash_institutional_flow_context_evidence.v2.schema.json")
-        assert v2_sha == "caaf9deb00b6d711b92c8e9abc64e80c73be7f1186a414bd09cf7ce4ec716756"
+        # A4 frozen bytes remain historical authority; R5 deliberately evolves V2
+        # in place for truthful incomplete-retrieval provenance.
+        v2_path = "schemas/cash_institutional_flow_context_evidence.v2.schema.json"
+        historical_v2_sha = _historical_git_sha(v2_path, PHASE_J_A2_6_BASELINE)
+        assert historical_v2_sha == "caaf9deb00b6d711b92c8e9abc64e80c73be7f1186a414bd09cf7ce4ec716756"
+        current_v2 = _json(v2_path)
+        assert _sha(v2_path) == "d33a2b23300ec6e910cf5ca0c6d438bffbed8fc082f1819bd46cbe4113c14d4f"
+        assert current_v2["properties"]["schema_version"]["const"] == "cash_institutional_flow_context_evidence.v2"
+        assert "retrieved_at" in current_v2["required"]
+        assert set(current_v2["properties"]["retrieved_at"]["type"]) == {"string", "null"}
+        embedded = result_schema["definitions"]["cash_institutional_flow_context"]
+        assert "retrieved_at" in embedded["required"]
+        assert embedded["properties"]["retrieved_at"] == current_v2["properties"]["retrieved_at"]
+        assert embedded["allOf"][-2:] == current_v2["allOf"][-2:]
+        # Exercise both schema surfaces independently, rather than trusting equal
+        # declarations (or replacing an old hash with a new hash alone).
+        from jsonschema import Draft202012Validator, Draft7Validator
+        for surface, validator in ((current_v2, Draft202012Validator), (embedded, Draft7Validator)):
+            timing = {"type": "object", "required": ["retrieved_at", "transport"],
+                      "properties": {"retrieved_at": surface["properties"]["retrieved_at"],
+                                     "transport": {"type": "object", "required": ["complete_body_received"],
+                                                   "properties": {"complete_body_received": {"type": "boolean"}}}},
+                      "allOf": [surface["allOf"][-2]]}
+            check = validator(timing)
+            for complete, timestamp, accepted in ((True, "2026-10-26T00:00:00Z", True),
+                    (False, None, True), (True, None, False), (False, "2026-10-26T00:00:00Z", False)):
+                errors = list(check.iter_errors({"retrieved_at": timestamp,
+                                                "transport": {"complete_body_received": complete}}))
+                assert bool(errors) is not accepted
 
         from scripts.phase_i_i3_a4_rollback_proof import prove_i3_rollback
         rollback = prove_i3_rollback()

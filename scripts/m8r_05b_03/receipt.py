@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import re
 import uuid
+import threading
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable
@@ -267,6 +268,34 @@ def _read_and_validate_disk_claim(
 # ---------------------------------------------------------------------------
 # Core finalization transaction
 # ---------------------------------------------------------------------------
+
+JOURNAL_STABILIZATION_MAX_ATTEMPTS = 16
+JOURNAL_STABILIZATION_WAIT_SECONDS = 0.005
+
+
+def _journal_stabilization_wait(attempt: int) -> None:
+    """Yield boundedly to the exclusive creator; never retry execution or ownership."""
+    threading.Event().wait(JOURNAL_STABILIZATION_WAIT_SECONDS)
+
+
+def _read_published_journal(path: Path, *, stabilize: Callable[[int], None] | None = None) -> dict:
+    """An O_EXCL collision can expose the winner's not-yet-complete initial write.
+
+    Re-read only JSON publication, at most 16 times (15 bounded yields).
+    Valid JSON still undergoes the existing schema, identity and owner checks.
+    Persistent invalid bytes remain corruption; no ownership or dispatch retry.
+    """
+    wait = stabilize or _journal_stabilization_wait
+    for attempt in range(1, JOURNAL_STABILIZATION_MAX_ATTEMPTS + 1):
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            if attempt == JOURNAL_STABILIZATION_MAX_ATTEMPTS:
+                raise OrchestrationError("finalization_journal_corrupt") from exc
+            wait(attempt)
+    raise AssertionError("bounded journal read exhausted without disposition")
+
+
 def _execute_finalization_transaction(
     preflight: dict[str, Any],
     disk_claim: dict[str, Any],
@@ -319,10 +348,7 @@ def _execute_finalization_transaction(
         if exc.code == "already_consumed_or_replayed":
             if not journal_dest.path.is_file():
                 raise OrchestrationError("finalization_journal_read_failed") from exc
-            try:
-                journal = json.loads(journal_dest.path.read_text(encoding="utf-8"))
-            except json.JSONDecodeError as err:
-                raise OrchestrationError("finalization_journal_corrupt") from err
+            journal = _read_published_journal(journal_dest.path)
 
             _validate_schema(journal, journal_schema, "finalization_journal_schema_invalid")
 

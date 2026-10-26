@@ -120,7 +120,7 @@ def test_success_bytes_numbers_and_citations_match_pre_repair_baseline(tmp_path,
 def test_acquisition_failure_keeps_telemetry_without_normalization_caveat(tmp_path, market, error):
     body = _bytes(market)
     telemetry = _telemetry(market, body)
-    telemetry.update(complete_body_received=False, response_byte_count=0, response_sha256=None,
+    telemetry.update(retrieved_at=None, complete_body_received=False, response_byte_count=0, response_sha256=None,
                      http_status=503 if error == "http_error" else None, error_code=error, failure_phase="acquisition")
     calls = []
     def fail(*args, **kwargs):

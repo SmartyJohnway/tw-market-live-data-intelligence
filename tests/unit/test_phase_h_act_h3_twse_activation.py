@@ -329,7 +329,7 @@ def test_h3_producer_artifacts_project_through_real_receipt_bundle_and_v3(tmp_pa
         artifacts["plan"], artifacts["authorization"], artifacts["consumption_binding"],
         supplied_consumption_state=artifacts["unused_consumption_state"],
         accepted_preflight=artifacts["preflight"], evaluation_timestamp=timestamp,
-        claim_created_at=timestamp, finalized_at=timestamp,
+        claim_created_at=timestamp, finalization_clock=lambda: timestamp,
         executor_registry_metadata=production.load_production_executor_metadata(),
         runtime_adapter_registry=production.build_production_runtime_adapter_registry(),
         output_root=str(root), mode="execute-approved", confirm_execution=True,

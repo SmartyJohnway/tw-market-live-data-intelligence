@@ -139,7 +139,7 @@ def _run(package, prepared, tmp_path, *, acquired_markets):
         return Acquisition(body, telemetry)
     registry = build_production_runtime_adapter_registry(i3_acquire=fake_acquire)
     result = execute_controlled_plan(plan, authorization, binding, supplied_consumption_state=unused,
-        accepted_preflight=preflight, evaluation_timestamp=stamp, claim_created_at=stamp, finalized_at=stamp,
+        accepted_preflight=preflight, evaluation_timestamp=stamp, claim_created_at=stamp, finalization_clock=lambda: stamp,
         executor_registry_metadata=metadata, runtime_adapter_registry=registry, output_root=str(output_root),
         mode="execute-approved", confirm_execution=True, operator_confirmation_reference="I3-A4-offline-test",
         confirm_network_execution=True)

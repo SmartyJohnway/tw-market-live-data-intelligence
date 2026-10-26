@@ -1,0 +1,1 @@
+{"classification":"STALE_GOVERNANCE_VALIDATOR","historical_authority_changed":false,"old_error":"Compared authorized current R5 V2 bytes to frozen historical A4 SHA","repair":"Verify historical SHA against governed immutable git snapshot; separately bind and validate authorized current V2 and embedded Result semantics"}

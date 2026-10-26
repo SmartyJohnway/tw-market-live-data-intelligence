@@ -263,7 +263,7 @@ def run_production_offline_proof(output_root: Path, payload: bytes):
     with patch("socket.socket.connect", deny), patch("socket.create_connection", deny), patch("server.services.phase_i_i2_production_candidate._read_once", fake), patch("server.services.phase_i_i2_production_candidate._stamp", return_value=stamp), patch("server.services.phase_i_i2_production_candidate.acquire_taifex_once", fake_clock_acquisition):
         registry = build_production_runtime_adapter_registry()
         kwargs = dict(supplied_consumption_state=unused, accepted_preflight=preflight, evaluation_timestamp=stamp,
-                      claim_created_at=stamp, finalized_at=stamp, executor_registry_metadata=metadata,
+                      claim_created_at=stamp, finalization_clock=lambda: stamp, executor_registry_metadata=metadata,
                       runtime_adapter_registry=registry, output_root=str(output_root), mode="execute-approved",
                       confirm_execution=True, operator_confirmation_reference=AUTHORITY, confirm_network_execution=True)
         execution = execute_controlled_plan(plan, authorization, binding, **kwargs)
