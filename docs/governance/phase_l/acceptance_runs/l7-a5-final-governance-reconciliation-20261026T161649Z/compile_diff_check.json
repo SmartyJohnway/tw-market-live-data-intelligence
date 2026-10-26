@@ -1,0 +1,1 @@
+{"compileall_command":"python -m compileall -q scripts server tests","compileall_exit":0,"external_network_attempts":0,"git_diff_check_exit":0,"historical_copy_extra_lint":"historical_copy_whitespace_observation.json","isolated_pycache":"C:\\twmarket_temp\\l7-a5\\final-governance-work\\static\\pycache","new_governance_staged_diff_check_exit":0,"status":"PASS"}

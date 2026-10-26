@@ -1,5 +1,32 @@
 # Phase L — Current Status & Recovery Index
 
+## Current L7-A5 technical/live acceptance (2026-10-26)
+
+L7-A0–A4 remain Owner-accepted and merged. L7-A5 technical/live acceptance is
+**PASS** and independent acceptance is **PASS**. R5/R5.1/R5.2 consolidated review
+is `L7_A5_R5_R5_1_R5_2_CONSOLIDATED_INDEPENDENT_REVIEW_PASS`; fresh GH5 review is
+`L7_A5_GH_TEMPORAL_PROVENANCE_LIVE_RECERTIFICATION_5_ACCEPTANCE_REVIEW_PASS`.
+The consolidated result is `L7_A5_R5_R5_1_R5_2_AND_GH5_CONSOLIDATED_ACCEPTANCE_PASS`.
+
+Exact accepted implementation input: HEAD `1d87d2b9301e7caf5976fcf4cd0b8ebc98866942`,
+tree `843d11de216924ea16fce39e38bdd5248295211c`.
+**L7-GAP-15 = CLOSED; L7-EXIT-19 = PASS.**
+`L7_A5_GH2_TEMPORAL_PROVENANCE_INVERSION = CLOSED_BY_R5_R5_1_R5_2_AND_GH5`;
+historical GH2 temporal failure/final-acceptance block remains unchanged.
+
+A5 Owner merge acceptance is **PENDING**; A5 is **NOT MERGED**.
+ProductVersion remains **1.5.0 selected/unpublished**; published stable remains **v1.0.0**.
+**A6 and A7 are NOT AUTHORIZED. Stable publication and Phase M remain NOT AUTHORIZED.
+Phase L remains NOT CLOSED.** No A6/A7 exit criterion gains PASS here.
+
+Current A5 report: [PHASE_L_L7_A5_FINAL_GOVERNANCE_RECONCILIATION_2026-10-26.md](PHASE_L_L7_A5_FINAL_GOVERNANCE_RECONCILIATION_2026-10-26.md).
+
+Repository GH5 historical evidence: [l7-a5-gh5-live-20261026T153216Z](acceptance_runs/l7-a5-gh5-live-20261026T153216Z/manifest.json).
+
+Next boundary: Review the exact A5 final governance-sealing candidate. If independently accepted, obtain explicit Owner authorization for push / PR / normal merge. Only after A5 is merged may L7-A6 be separately authorized.
+
+All subsequent dated milestone records are historical; their authorization/status statements describe those milestones only.
+
 ## Current L7-A4 merged state (2026-10-25)
 
 L7-A4 is **OWNER-ACCEPTED AND MERGED** under
