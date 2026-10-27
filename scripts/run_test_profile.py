@@ -26,6 +26,8 @@ def command_to_display(cmd:list[str])->str: return ' '.join(cmd)
 
 def _materialize_runner_command(cmd: list[str], ssl_policy: str, output_root: Path | None = None) -> list[str]:
     materialized = [sys.executable if c == 'python' else c.format(ssl_policy=ssl_policy) for c in cmd]
+    if 'scripts/run_deterministic_ci.py' in materialized:
+        materialized.insert(1, '-B')
     if output_root:
         if 'scripts/run_m6e_operator_acceptance.py' in materialized:
             materialized.extend(['--output-root', str(output_root / 'm6e')])
