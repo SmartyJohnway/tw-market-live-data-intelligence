@@ -1,0 +1,21 @@
+{
+  "schema_version": "l7_release_artifact_set.v1",
+  "product_version": "1.5.0",
+  "registry_publication": false,
+  "manifest_self_hash_policy": "MANIFEST_SELF_HASH_EXTERNAL_BINDING",
+  "artifacts": [
+    {"role":"native_zip","filename":"TW-Market-1.5.0-windows-x64.zip","classification":"PUBLICATION_ASSET","media_type":"application/zip","required":true},
+    {"role":"native_checksum","filename":"TW-Market-1.5.0-windows-x64.zip.sha256","classification":"PUBLICATION_ASSET","media_type":"text/plain","required":true},
+    {"role":"mcpb","filename":"tw-market-unified-mcp-v1.5.0-win-x64.mcpb","classification":"PUBLICATION_ASSET","media_type":"application/zip","required":true},
+    {"role":"mcpb_checksum","filename":"tw-market-unified-mcp-v1.5.0-win-x64.mcpb.sha256","classification":"PUBLICATION_ASSET","media_type":"text/plain","required":true},
+    {"role":"first_party_sbom","filename":"TW-Market-1.5.0-first-party-sbom.json","classification":"PUBLICATION_ASSET","media_type":"application/json","required":true},
+    {"role":"publication_manifest","filename":"TW-Market-1.5.0-publication-manifest.json","classification":"PUBLICATION_ASSET","media_type":"application/json","required":true},
+    {"role":"docker","filename":"Docker-validation-content-identity","classification":"VALIDATION_ONLY","media_type":"application/vnd.oci.image.manifest.v1+json","required":true},
+    {"role":"github_source_zip","filename":"GitHub-generated-source.zip","classification":"PLATFORM_GENERATED","media_type":"application/zip","required":false},
+    {"role":"github_source_tar","filename":"GitHub-generated-source.tar.gz","classification":"PLATFORM_GENERATED","media_type":"application/gzip","required":false},
+    {"role":"historical_mcpb","filename":"tw-market-unified-mcp-v1.0.0-win-x64.mcpb","classification":"HISTORICAL_ONLY","media_type":"application/zip","required":false},
+    {"role":"historical_mcpb_checksum","filename":"tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256","classification":"HISTORICAL_ONLY","media_type":"text/plain","required":false},
+    {"role":"historical_v1_manifest","filename":"v1_release_manifest.v1.json","classification":"HISTORICAL_ONLY","media_type":"application/json","required":false},
+    {"role":"publisher_signature","filename":"publisher-signature","classification":"DECISION_EXCLUDED","media_type":"application/octet-stream","required":false}
+  ]
+}

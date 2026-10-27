@@ -1,0 +1,214 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "source",
+    "runtime_policy",
+    "dependency_authority",
+    "artifact_set_policy_sha256",
+    "artifact_set",
+    "governed_files",
+    "expected_validations",
+    "stable_source_frozen",
+    "final_artifacts_frozen",
+    "self_reference_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "l7_rc_source_contract.v1"
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "product_version"
+      ],
+      "properties": {
+        "name": {
+          "const": "TW-Market Live Data Intelligence"
+        },
+        "product_version": {
+          "const": "1.5.0"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "tree",
+        "repository",
+        "source_contract_version"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+        },
+        "repository": {
+          "const": "SmartyJohnway/tw-market-live-data-intelligence"
+        },
+        "source_contract_version": {
+          "const": "l7_rc_source_contract.v1"
+        }
+      }
+    },
+    "runtime_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_python",
+        "native_os",
+        "native_arch",
+        "docker_platform",
+        "mcp_sdk_policy"
+      ],
+      "properties": {
+        "canonical_python": {
+          "const": "CPython 3.13"
+        },
+        "native_os": {
+          "const": "Windows 11"
+        },
+        "native_arch": {
+          "const": "x64"
+        },
+        "docker_platform": {
+          "const": "linux/amd64"
+        },
+        "mcp_sdk_policy": {
+          "const": "mcp==1.29.0"
+        }
+      }
+    },
+    "dependency_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirements_lock_sha256",
+        "dependency_authority_sha256",
+        "native_wheelhouse_lock_sha256",
+        "docker_wheelhouse_lock_sha256",
+        "first_party_sbom_sha256"
+      ],
+      "properties": {
+        "requirements_lock_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "dependency_authority_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "native_wheelhouse_lock_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "docker_wheelhouse_lock_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "first_party_sbom_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        }
+      }
+    },
+    "artifact_set_policy_sha256": {
+      "type": "string",
+      "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+    },
+    "artifact_set": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "filename",
+          "classification",
+          "media_type",
+          "required"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1
+          },
+          "classification": {
+            "enum": [
+              "PUBLICATION_ASSET",
+              "VALIDATION_ONLY",
+              "PLATFORM_GENERATED",
+              "HISTORICAL_ONLY",
+              "DECISION_EXCLUDED"
+            ]
+          },
+          "media_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean"
+          }
+        }
+      },
+      "minItems": 9
+    },
+    "governed_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_./-]+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "expected_validations": {
+      "const": [
+        "canonical_ci",
+        "native",
+        "docker",
+        "compatibility",
+        "bounded_live",
+        "artifact_hygiene"
+      ]
+    },
+    "stable_source_frozen": {
+      "const": false
+    },
+    "final_artifacts_frozen": {
+      "const": false
+    },
+    "self_reference_policy": {
+      "const": "EXTERNAL_INSTANCE_FROM_IMMUTABLE_SOURCE_AND_MANIFEST_SELF_HASH_EXTERNAL_BINDING"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "l7_rc_source_contract.v1.schema.json"
+}

@@ -1,0 +1,1113 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "source",
+    "runtime_policy",
+    "dependency_authority",
+    "artifacts",
+    "validation",
+    "provenance",
+    "release_notes",
+    "retained_limitations",
+    "publication"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "l7_publication_manifest.v1"
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "product_version"
+      ],
+      "properties": {
+        "name": {
+          "const": "TW-Market Live Data Intelligence"
+        },
+        "product_version": {
+          "const": "1.5.0"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "tree",
+        "repository",
+        "source_contract_version"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+        },
+        "repository": {
+          "const": "SmartyJohnway/tw-market-live-data-intelligence"
+        },
+        "source_contract_version": {
+          "const": "l7_rc_source_contract.v1"
+        }
+      }
+    },
+    "runtime_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_python",
+        "native_os",
+        "native_arch",
+        "docker_platform",
+        "mcp_sdk_policy"
+      ],
+      "properties": {
+        "canonical_python": {
+          "const": "CPython 3.13"
+        },
+        "native_os": {
+          "const": "Windows 11"
+        },
+        "native_arch": {
+          "const": "x64"
+        },
+        "docker_platform": {
+          "const": "linux/amd64"
+        },
+        "mcp_sdk_policy": {
+          "const": "mcp==1.29.0"
+        }
+      }
+    },
+    "dependency_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirements_lock_sha256",
+        "dependency_authority_sha256",
+        "native_wheelhouse_lock_sha256",
+        "docker_wheelhouse_lock_sha256",
+        "first_party_sbom_sha256"
+      ],
+      "properties": {
+        "requirements_lock_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "dependency_authority_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "native_wheelhouse_lock_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "docker_wheelhouse_lock_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "first_party_sbom_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "filename",
+          "media_type",
+          "bytes",
+          "sha256",
+          "source_commit",
+          "source_tree"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "native_zip",
+              "native_checksum",
+              "mcpb",
+              "mcpb_checksum",
+              "first_party_sbom"
+            ]
+          },
+          "filename": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+$"
+          },
+          "media_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+          },
+          "source_commit": {
+            "type": "string",
+            "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+          },
+          "source_tree": {
+            "type": "string",
+            "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+          }
+        }
+      },
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_ci",
+        "native",
+        "docker",
+        "compatibility",
+        "bounded_live",
+        "artifact_hygiene"
+      ],
+      "properties": {
+        "canonical_ci": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "source_commit",
+            "source_tree",
+            "evidence_sha256",
+            "evidence_id",
+            "passed",
+            "failed",
+            "contracted_skips",
+            "deselected",
+            "guard_events",
+            "guard_denials",
+            "unexpected_skips",
+            "member_ledger_sha256"
+          ],
+          "properties": {
+            "status": {
+              "const": "PASS"
+            },
+            "source_commit": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "source_tree": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "evidence_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            },
+            "evidence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+            },
+            "passed": {
+              "const": 1895
+            },
+            "failed": {
+              "const": 0
+            },
+            "contracted_skips": {
+              "const": 4
+            },
+            "deselected": {
+              "const": 20
+            },
+            "guard_events": {
+              "const": 386
+            },
+            "guard_denials": {
+              "const": 0
+            },
+            "unexpected_skips": {
+              "const": 0
+            },
+            "member_ledger_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            }
+          }
+        },
+        "native": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "source_commit",
+            "source_tree",
+            "evidence_sha256",
+            "evidence_id",
+            "os",
+            "arch",
+            "native_zip_sha256"
+          ],
+          "properties": {
+            "status": {
+              "const": "PASS"
+            },
+            "source_commit": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "source_tree": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "evidence_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            },
+            "evidence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+            },
+            "os": {
+              "const": "Windows 11"
+            },
+            "arch": {
+              "const": "x64"
+            },
+            "native_zip_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            }
+          }
+        },
+        "docker": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "source_commit",
+            "source_tree",
+            "evidence_sha256",
+            "evidence_id",
+            "platform",
+            "base_digest",
+            "image_identity",
+            "content_sha256",
+            "rootfs_sha256",
+            "runtime_configuration",
+            "reproducibility_boundary",
+            "registry_publication"
+          ],
+          "properties": {
+            "status": {
+              "const": "PASS"
+            },
+            "source_commit": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "source_tree": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "evidence_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            },
+            "evidence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+            },
+            "platform": {
+              "const": "linux/amd64"
+            },
+            "base_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "image_identity": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            },
+            "rootfs_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            },
+            "runtime_configuration": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "entrypoint",
+                "command",
+                "user",
+                "exposed_ports"
+              ],
+              "properties": {
+                "entrypoint": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "command": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "user": {
+                  "type": "string"
+                },
+                "exposed_ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "reproducibility_boundary": {
+              "const": "REPRODUCIBLE_ROOTFS_CONTENT_WITH_EXPLICIT_OCI_METADATA_BOUNDARY"
+            },
+            "registry_publication": {
+              "const": false
+            }
+          }
+        },
+        "compatibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "source_commit",
+            "source_tree",
+            "evidence_sha256",
+            "evidence_id",
+            "public_contract_policy"
+          ],
+          "properties": {
+            "status": {
+              "const": "PASS"
+            },
+            "source_commit": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "source_tree": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "evidence_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            },
+            "evidence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+            },
+            "public_contract_policy": {
+              "const": "V1_RETAINED_WITH_CURRENT_V2_V3_COMPATIBILITY"
+            }
+          }
+        },
+        "bounded_live": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "source_commit",
+            "source_tree",
+            "evidence_sha256",
+            "evidence_id",
+            "review_disposition"
+          ],
+          "properties": {
+            "status": {
+              "const": "PASS"
+            },
+            "source_commit": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "source_tree": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "evidence_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            },
+            "evidence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+            },
+            "review_disposition": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          }
+        },
+        "artifact_hygiene": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "source_commit",
+            "source_tree",
+            "evidence_sha256",
+            "evidence_id",
+            "blocking_count"
+          ],
+          "properties": {
+            "status": {
+              "const": "PASS"
+            },
+            "source_commit": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "source_tree": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "evidence_sha256": {
+              "type": "string",
+              "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+            },
+            "evidence_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+            },
+            "blocking_count": {
+              "const": 0
+            }
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dependency_authority_sha256",
+        "signing_policy",
+        "publisher_surface",
+        "docker_reproducibility_boundary",
+        "manifest_self_hash_policy"
+      ],
+      "properties": {
+        "dependency_authority_sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        },
+        "signing_policy": {
+          "const": "SHA256_AND_RELEASE_PROVENANCE_PUBLISHER_SIGNATURE_NOT_ESTABLISHED"
+        },
+        "publisher_surface": {
+          "const": "GITHUB_RELEASE_WITH_SEPARATELY_AUTHORIZED_MCP_REGISTRY_UPDATE"
+        },
+        "docker_reproducibility_boundary": {
+          "const": "REPRODUCIBLE_ROOTFS_CONTENT_WITH_EXPLICIT_OCI_METADATA_BOUNDARY"
+        },
+        "manifest_self_hash_policy": {
+          "const": "MANIFEST_SELF_HASH_EXTERNAL_BINDING"
+        }
+      }
+    },
+    "release_notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filename",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "filename": {
+          "const": "V1_5_0_RELEASE_NOTES_DRAFT.md"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+        }
+      }
+    },
+    "retained_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "description"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "github_repository",
+        "publication_state"
+      ],
+      "properties": {
+        "tag": {
+          "const": "v1.5.0"
+        },
+        "github_repository": {
+          "const": "SmartyJohnway/tw-market-live-data-intelligence"
+        },
+        "publication_state": {
+          "enum": [
+            "READY_FOR_AUTHORIZED_PUBLICATION",
+            "PUBLISHED_VERIFIED"
+          ]
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "l7_publication_manifest.v1.schema.json",
+  "$defs": {
+    "artifact_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "source",
+        "product_version",
+        "artifacts"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "l7_artifact_binding.v1"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commit",
+            "tree",
+            "repository",
+            "source_contract_version"
+          ],
+          "properties": {
+            "commit": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "tree": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "repository": {
+              "const": "SmartyJohnway/tw-market-live-data-intelligence"
+            },
+            "source_contract_version": {
+              "const": "l7_rc_source_contract.v1"
+            }
+          }
+        },
+        "product_version": {
+          "const": "1.5.0"
+        },
+        "artifacts": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "role",
+              "filename",
+              "media_type",
+              "bytes",
+              "sha256",
+              "source_commit",
+              "source_tree",
+              "path"
+            ],
+            "properties": {
+              "role": {
+                "enum": [
+                  "native_zip",
+                  "native_checksum",
+                  "mcpb",
+                  "mcpb_checksum",
+                  "first_party_sbom"
+                ]
+              },
+              "filename": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+$"
+              },
+              "media_type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+              },
+              "source_commit": {
+                "type": "string",
+                "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+              },
+              "source_tree": {
+                "type": "string",
+                "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "validation_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "source",
+        "product_version",
+        "validation"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "l7_validation_binding.v1"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commit",
+            "tree",
+            "repository",
+            "source_contract_version"
+          ],
+          "properties": {
+            "commit": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "tree": {
+              "type": "string",
+              "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+            },
+            "repository": {
+              "const": "SmartyJohnway/tw-market-live-data-intelligence"
+            },
+            "source_contract_version": {
+              "const": "l7_rc_source_contract.v1"
+            }
+          }
+        },
+        "product_version": {
+          "const": "1.5.0"
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "canonical_ci",
+            "native",
+            "docker",
+            "compatibility",
+            "bounded_live",
+            "artifact_hygiene"
+          ],
+          "properties": {
+            "canonical_ci": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "source_commit",
+                "source_tree",
+                "evidence_sha256",
+                "evidence_id",
+                "passed",
+                "failed",
+                "contracted_skips",
+                "deselected",
+                "guard_events",
+                "guard_denials",
+                "unexpected_skips",
+                "member_ledger_sha256"
+              ],
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                },
+                "source_commit": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "source_tree": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "evidence_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                },
+                "evidence_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+                },
+                "passed": {
+                  "const": 1895
+                },
+                "failed": {
+                  "const": 0
+                },
+                "contracted_skips": {
+                  "const": 4
+                },
+                "deselected": {
+                  "const": 20
+                },
+                "guard_events": {
+                  "const": 386
+                },
+                "guard_denials": {
+                  "const": 0
+                },
+                "unexpected_skips": {
+                  "const": 0
+                },
+                "member_ledger_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                }
+              }
+            },
+            "native": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "source_commit",
+                "source_tree",
+                "evidence_sha256",
+                "evidence_id",
+                "os",
+                "arch",
+                "native_zip_sha256"
+              ],
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                },
+                "source_commit": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "source_tree": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "evidence_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                },
+                "evidence_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+                },
+                "os": {
+                  "const": "Windows 11"
+                },
+                "arch": {
+                  "const": "x64"
+                },
+                "native_zip_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                }
+              }
+            },
+            "docker": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "source_commit",
+                "source_tree",
+                "evidence_sha256",
+                "evidence_id",
+                "platform",
+                "base_digest",
+                "image_identity",
+                "content_sha256",
+                "rootfs_sha256",
+                "runtime_configuration",
+                "reproducibility_boundary",
+                "registry_publication"
+              ],
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                },
+                "source_commit": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "source_tree": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "evidence_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                },
+                "evidence_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+                },
+                "platform": {
+                  "const": "linux/amd64"
+                },
+                "base_digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "image_identity": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                },
+                "rootfs_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                },
+                "runtime_configuration": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "entrypoint",
+                    "command",
+                    "user",
+                    "exposed_ports"
+                  ],
+                  "properties": {
+                    "entrypoint": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "command": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "user": {
+                      "type": "string"
+                    },
+                    "exposed_ports": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "reproducibility_boundary": {
+                  "const": "REPRODUCIBLE_ROOTFS_CONTENT_WITH_EXPLICIT_OCI_METADATA_BOUNDARY"
+                },
+                "registry_publication": {
+                  "const": false
+                }
+              }
+            },
+            "compatibility": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "source_commit",
+                "source_tree",
+                "evidence_sha256",
+                "evidence_id",
+                "public_contract_policy"
+              ],
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                },
+                "source_commit": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "source_tree": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "evidence_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                },
+                "evidence_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+                },
+                "public_contract_policy": {
+                  "const": "V1_RETAINED_WITH_CURRENT_V2_V3_COMPATIBILITY"
+                }
+              }
+            },
+            "bounded_live": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "source_commit",
+                "source_tree",
+                "evidence_sha256",
+                "evidence_id",
+                "review_disposition"
+              ],
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                },
+                "source_commit": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "source_tree": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "evidence_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                },
+                "evidence_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+                },
+                "review_disposition": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              }
+            },
+            "artifact_hygiene": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "source_commit",
+                "source_tree",
+                "evidence_sha256",
+                "evidence_id",
+                "blocking_count"
+              ],
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                },
+                "source_commit": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "source_tree": {
+                  "type": "string",
+                  "pattern": "^(?!0{40}$)[0-9a-f]{40}$"
+                },
+                "evidence_sha256": {
+                  "type": "string",
+                  "pattern": "^(?!0{64}$)[0-9a-f]{64}$"
+                },
+                "evidence_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
+                },
+                "blocking_count": {
+                  "const": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
