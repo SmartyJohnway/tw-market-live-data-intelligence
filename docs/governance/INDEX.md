@@ -1,5 +1,22 @@
 # Governance Index
 
+
+## Current L7-A6-P0 merged state (2026-10-27)
+
+L7-A6-P0 release infrastructure readiness is **PASS**; independent review is **PASS**; Owner merge is **COMPLETE** and `merged: true`.
+
+- merge commit: `32fc28fc33cb19337bf8d8a2d2e857f978b31b4c`
+- merge tree: `5d30bd899978fa068d0b89de682a8ce5dcf9a8a2`
+- accepted head: `94be7102b046dab6e2a62d3735505402b3a838f6`
+- parents: `ddae25ee4c0539edc7f43073708113795a56e58b` and `94be7102b046dab6e2a62d3735505402b3a838f6`
+- PR #420 merged normally at `2026-10-27T04:09:39Z`.
+
+Canonical release-blocking CI remains `1895 passed / 0 failed / 4 contracted skips / 20 deselected / 386 guard events / 0 denials / 0 unexpected skips`; Portable validator remains `205 passed / 0 failed`. M6E legacy-route drift and M6G legacy-route drift are both `CLOSED_BY_R1`.
+
+L7-A6 overall acceptance is **NOT_YET**; stable source and artifacts are not frozen. `L7-GAP-16`, `L7-GAP-17`, and `L7-GAP-18` remain **OPEN**. `L7-EXIT-16`, `L7-EXIT-20`, `L7-EXIT-21`, `L7-EXIT-22`, `L7-EXIT-23`, and `L7-EXIT-24` remain **NOT_YET_PASS**. ProductVersion is `1.5.0 selected / unpublished`; published stable is `v1.0.0`.
+
+**A6-R1 is READY_FOR_SEPARATE_OWNER_AUTHORIZATION and NOT_STARTED by this reconciliation.** Its future scope is limited to the additive typed publication manifest, canonical v1.5.0 artifact-set decision, first-party SBOM final-RC binding, release notes/retained-limitations source, and stable-source self-reference avoidance contract. A7 is **NOT_AUTHORIZED**; stable publication is **NOT_AUTHORIZED**; Phase L is **NOT_CLOSED**; Phase M is **NOT_AUTHORIZED**.
+
 ## Current L7-A5 merged state (2026-10-27)
 
 L7-A5 is **OWNER-AUTHORIZED AND MERGED**. PR #418 normal-merged accepted head
