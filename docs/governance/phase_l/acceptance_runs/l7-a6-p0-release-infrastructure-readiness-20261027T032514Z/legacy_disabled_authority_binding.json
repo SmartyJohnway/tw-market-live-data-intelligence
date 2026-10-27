@@ -1,0 +1,1 @@
+{"contract":"L4-A4 LEGACY_DISABLED HTTP 410","error":"legacy_live_observation_execution_disabled","governance":{"path":"docs/governance/phase_l/PHASE_L_L4_A4_PROMPT_TOOL_INJECTION_AUTHORIZATION_SECRET_BOUNDARY_2026-10-17.md","sha256":"c86ec4ed82b154f1f073cbcca71a40764be683da0172815f57619d4defc08c66"},"product_route_changed":false,"route":"POST /api/m5k/live-observation/execute"}

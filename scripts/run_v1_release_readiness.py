@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -37,13 +38,16 @@ def git_clean() -> bool:
 
 def run(name: str, command: list[str], *, cwd: Path = ROOT) -> dict[str, Any]:
     started = time.monotonic()
-    completed = subprocess.run(command, cwd=cwd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
+    env = os.environ.copy()
+    env.update(PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1")
+    completed = subprocess.run(command, cwd=cwd, text=True, encoding="utf-8", errors="replace", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False, env=env)
     return {
         "name": name,
         "command": command,
         "return_code": completed.returncode,
         "duration_seconds": round(time.monotonic() - started, 3),
         "output_tail": completed.stdout[-4000:],
+        "output": completed.stdout,
         "status": "PASS" if completed.returncode == 0 else "FAIL",
     }
 
@@ -89,9 +93,12 @@ def javascript_syntax(output_root: Path) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-root", type=Path, required=True, help="External directory for all release-gate evidence.")
+    parser.add_argument("--require-browser-e2e", action="store_true", help="Make real-browser evidence a blocking gate for this release plan.")
     args = parser.parse_args(argv)
     output_root = args.output_root.resolve()
-    output_root.mkdir(parents=True, exist_ok=True)
+    if output_root == ROOT or ROOT in output_root.parents:
+        raise ValueError("release readiness output must be outside the source checkout")
+    output_root.mkdir(parents=True, exist_ok=False)
     report_path = output_root / "v1_release_readiness.json"
     report: dict[str, Any] = {
         "schema_version": "v1_release_readiness.v1",
@@ -102,6 +109,8 @@ def main(argv: list[str] | None = None) -> int:
         "worktree_clean_before": git_clean(),
         "market_network_used": False,
         "gates": [],
+        "diagnostics": [],
+        "browser_e2e": {"status": "NOT_REQUESTED_BY_RELEASE_PLAN"},
     }
     commands = [
         ("environment", [sys.executable, "scripts/verify_environment.py"]),
@@ -113,24 +122,29 @@ def main(argv: list[str] | None = None) -> int:
         ("runtime_skill_guide_semantics", [sys.executable, "scripts/validate_runtime_skill_guide_sync.py"]),
         ("market_evidence_skill", [sys.executable, "skills/tw-market-evidence-agent/scripts/validate_skill.py"]),
         ("security_master_skill", [sys.executable, "skills/tw-security-master-classifier/scripts/validate_skill.py"]),
-        ("compileall", [sys.executable, "-m", "compileall", "scripts", "server", "tests"]),
-        ("default_ci", [sys.executable, "scripts/run_test_profile.py", "default-ci", "--json", "--output-root", str(output_root / "default-ci")]),
-        ("full_non_network", [sys.executable, "scripts/run_test_profile.py", "full-non-network", "--json", "--output-root", str(output_root / "full-non-network")]),
+        ("compileall", [sys.executable, "-B", "-X", "pycache_prefix=" + str(output_root / "pycache"), "-m", "compileall", "scripts", "server", "tests"]),
+        ("release_blocking_ci", [sys.executable, "-B", "scripts/run_test_profile.py", "release-blocking-ci", "--json", "--output-root", str(output_root / "canonical")]),
         ("operator_preflight", [sys.executable, "scripts/run_test_profile.py", "operator-preflight", "--json", "--output-root", str(output_root / "operator-preflight")]),
-        ("browser_e2e", [sys.executable, "scripts/run_test_profile.py", "browser-e2e", "--json", "--output-root", str(output_root / "browser-e2e")]),
         ("release_manifest", [sys.executable, "scripts/build_v1_release_manifest.py", "--output", str(output_root / "v1_release_manifest.json")]),
     ]
+    if args.require_browser_e2e:
+        report["browser_e2e"] = {"status": "NOT_REACHED"}
+        commands.append(("browser_e2e", [sys.executable, "scripts/run_test_profile.py", "browser-e2e", "--json", "--output-root", str(output_root / "browser-e2e")]))
+    diagnostic_commands = [(name, [sys.executable, "-B", "scripts/run_test_profile.py", profile, "--json", "--output-root", str(output_root / profile)]) for name, profile in (("default_ci", "default-ci"), ("full_non_network", "full-non-network"))]
     if not report["worktree_clean_before"]:
         report["gates"].append({"name": "worktree_clean_before", "status": "FAIL"})
     else:
         for name, command in commands:
             gate = run(name, command)
             report["gates"].append(gate)
+            if name == "browser_e2e":
+                report["browser_e2e"] = gate
             if gate["status"] != "PASS":
                 break
         if all(gate["status"] == "PASS" for gate in report["gates"]):
             report["gates"].append({"name": "javascript_syntax", **javascript_syntax(output_root)})
             report["gates"].append({"name": "source_archive", **source_archive_smoke(output_root)})
+        report["diagnostics"] = [run(name, command) for name, command in diagnostic_commands]
     report["worktree_clean_after"] = git_clean()
     report["status"] = "PASS" if report["worktree_clean_before"] and report["worktree_clean_after"] and all(gate["status"] == "PASS" for gate in report["gates"]) else "FAIL"
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")

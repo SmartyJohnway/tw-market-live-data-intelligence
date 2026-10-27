@@ -71,9 +71,12 @@ def test_final_status_logic_pass_and_fail():
         "unexpected_execute_requests": 0,
         "polling_detected": False,
         "caveats": [],
-        "mode_b_observation": {"ssl_policy_api_checks": {"env_override": True, "query_override": True, "invalid_policy_fail_closed": True}},
+        "mode_b_observation": {"legacy_disabled_route_checks": {"legacy_disabled_without_policy": True, "legacy_disabled_with_valid_policy": True, "legacy_disabled_with_invalid_policy": True, "historical_executor_calls": 0}},
     }
     assert m6g.final_status(report) == "pass"
+    report["mode_b_observation"]["legacy_disabled_route_checks"]["historical_executor_calls"] = 1
+    assert m6g.final_status(report) == "fail"
+    report["mode_b_observation"]["legacy_disabled_route_checks"]["historical_executor_calls"] = 0
     report["unexpected_execute_requests"] = 1
     assert m6g.final_status(report) == "fail"
 
@@ -182,12 +185,14 @@ def test_report_paths_can_be_directed_outside_repository(tmp_path):
     assert all(not str(path).startswith(str(m6g.ROOT)) for path in paths)
 
 
-def test_ssl_policy_api_checks_fail_closed_and_override():
-    checks = m6g.ssl_policy_api_checks()
-    assert checks["env_override"] is True
-    assert checks["query_override"] is True
-    assert checks["invalid_policy_fail_closed"] is True
-    assert [c["ssl_policy"] for c in checks["execution_calls"]] == ["compatibility", "strict"]
+def test_legacy_disabled_route_matrix_never_calls_executor():
+    checks = m6g.legacy_disabled_route_checks()
+    assert checks == {
+        "legacy_disabled_without_policy": True,
+        "legacy_disabled_with_valid_policy": True,
+        "legacy_disabled_with_invalid_policy": True,
+        "historical_executor_calls": 0,
+    }
 
 
 def test_item_contract_and_id_generation():

@@ -121,8 +121,13 @@ def fastapi_acceptance(watchlist: dict[str, Any]) -> dict[str, Any]:
     endpoints = ["/api/health", "/api/governance", "/api/context/canonical", "/api/context/snapshot", "/api/conversation/context", "/api/source-health/latest", "/api/m5k/live-observation/history"]
     results = [ok(f"GET {e}", c.get(e).status_code == 200, c.get(e).status_code) for e in endpoints]
     results.append(ok("POST /api/m5k/live-observation/plan", c.post("/api/m5k/live-observation/plan", json=watchlist).status_code == 200))
-    results.append(ok("execute requires confirmation", c.post("/api/m5k/live-observation/execute", json=watchlist).status_code == 400))
-    results.append(ok("invalid ssl_policy returns 400", c.post("/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy=invalid", json=watchlist).status_code == 400))
+    # The legacy HTTP endpoint is disabled before historical execution or SSL policy handling.
+    for name, url in (
+        ("legacy execution disabled without confirmation", "/api/m5k/live-observation/execute"),
+        ("legacy execution disabled with confirmation and policy", "/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy=invalid"),
+    ):
+        response = c.post(url, json=watchlist)
+        results.append(ok(name, response.status_code == 410 and response.json().get("detail", {}).get("error") == "legacy_live_observation_execution_disabled"))
     results.append(ok("probe routes fail closed", c.get("/api/probe/health").status_code in {404, 405}))
     return {"status": "pass" if all(r["status"] == "pass" for r in results) else "fail", "checks": results, "network_calls": False}
 

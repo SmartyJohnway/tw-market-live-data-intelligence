@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import socket
 from pathlib import Path
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
@@ -190,8 +191,13 @@ def test_explicit_output_root_keeps_reports_and_conversation_outside_repository(
 def test_invalid_ssl_policy_acceptance_surfaces_fail_closed():
     client = TestClient(app)
     watchlist = json.loads((ROOT / "config/m5k_default_watchlist.json").read_text(encoding="utf-8"))
-    assert client.post("/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy=invalid", json=watchlist).status_code == 400
-    assert client.post("/api/m5k/live-observation/execute", json=watchlist).status_code == 400
+    import server.main as main
+    with patch.object(main, "_m5k_execute_live_observation", create=True) as historical_executor:
+        for url in ("/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy=invalid", "/api/m5k/live-observation/execute"):
+            response = client.post(url, json=watchlist)
+            assert response.status_code == 410
+            assert response.json()["detail"]["error"] == "legacy_live_observation_execution_disabled"
+        historical_executor.assert_not_called()
     result = run_m5k_live_observation_tool({"confirm_live_observation": True, "watchlist": watchlist, "ssl_policy": "invalid"})
     assert result["status"] == "failed_closed"
     assert result["failure_reason"] == "invalid_ssl_policy"
