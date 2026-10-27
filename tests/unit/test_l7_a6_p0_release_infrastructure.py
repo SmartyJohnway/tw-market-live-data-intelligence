@@ -94,3 +94,12 @@ def test_readiness_rejects_reused_evidence_directory(tmp_path):
     existing.mkdir()
     with pytest.raises(FileExistsError):
         readiness.main(['--output-root', str(existing)])
+
+def test_legacy_http_execution_remains_disabled_for_release_acceptance():
+    from scripts.run_m6e_operator_acceptance import fastapi_acceptance
+    watchlist = json.loads((readiness.ROOT / 'config/m5k_default_watchlist.json').read_text(encoding='utf-8'))
+    result = fastapi_acceptance(watchlist)
+    disabled = [c for c in result['checks'] if c['name'].startswith('legacy execution disabled')]
+    assert len(disabled) == 2
+    assert all(c['status'] == 'pass' for c in disabled)
+    assert result['network_calls'] is False

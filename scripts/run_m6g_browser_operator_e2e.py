@@ -87,36 +87,27 @@ def item_ok(item: dict[str, Any]) -> bool:
     return all(k in item for k in required) and item.get("id") == f"{item.get('category')}:{item.get('symbol')}"
 
 
-def ssl_policy_api_checks() -> dict[str, Any]:
+def legacy_disabled_route_checks() -> dict[str, Any]:
+    """Verify the disabled HTTP boundary without exercising SSL or source transport."""
     from fastapi.testclient import TestClient
+    from unittest.mock import patch
     import server.main as main
 
-    calls: list[dict[str, Any]] = []
-    original = main._m5k_execute_live_observation
-
-    def fake_execute(watchlist: dict, write_latest: bool = True, ssl_policy: str = "strict") -> dict[str, Any]:
-        calls.append({"ssl_policy": ssl_policy, "watchlist": watchlist})
-        return {"status": "ok", "diagnostics": {"ssl_policy": {"selected": ssl_policy}}}
-
-    main._m5k_execute_live_observation = fake_execute
-    try:
-        watchlist = {"schema_version": "m5n_watchlist.v1", "items": []}
+    watchlist = {"schema_version": "m5n_watchlist.v1", "items": []}
+    route = "/api/m5k/live-observation/execute"
+    with patch.object(main, "_m5k_execute_live_observation", create=True) as historical_executor:
         with TestClient(main.app) as client:
-            os.environ["TW_MARKET_SSL_POLICY"] = "compatibility"
-            env_response = client.post("/api/m5k/live-observation/execute?confirm_live_observation=true", json=watchlist)
-            query_response = client.post("/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy=strict", json=watchlist)
-            os.environ["TW_MARKET_SSL_POLICY"] = "bad-policy"
-            invalid_env_response = client.post("/api/m5k/live-observation/execute?confirm_live_observation=true", json=watchlist)
-            invalid_query_response = client.post("/api/m5k/live-observation/execute?confirm_live_observation=true&ssl_policy=bad-policy", json=watchlist)
-    finally:
-        main._m5k_execute_live_observation = original
-        os.environ.pop("TW_MARKET_SSL_POLICY", None)
-    return {
-        "env_override": env_response.status_code == 200 and env_response.json()["diagnostics"]["ssl_policy"]["selected"] == "compatibility",
-        "query_override": query_response.status_code == 200 and query_response.json()["diagnostics"]["ssl_policy"]["selected"] == "strict",
-        "invalid_policy_fail_closed": invalid_env_response.status_code == 400 and invalid_query_response.status_code == 400,
-        "execution_calls": calls,
-    }
+            responses = {
+                "legacy_disabled_without_policy": client.post(route, json=watchlist),
+                "legacy_disabled_with_valid_policy": client.post(route + "?confirm_live_observation=true&ssl_policy=strict", json=watchlist),
+                "legacy_disabled_with_invalid_policy": client.post(route + "?confirm_live_observation=true&ssl_policy=invalid", json=watchlist),
+            }
+        checks = {
+            name: response.status_code == 410 and response.json().get("detail", {}).get("error") == "legacy_live_observation_execution_disabled"
+            for name, response in responses.items()
+        }
+        checks["historical_executor_calls"] = historical_executor.call_count
+    return checks
 
 
 def server_env_policy_for_mode(*, execute_live: bool, selected_ssl_policy: str) -> tuple[str | None, str]:
@@ -205,8 +196,8 @@ def final_status(report: dict[str, Any]) -> str:
     if not report["playwright_available"]:
         return "skipped_with_caveats"
     failures = [report["id_generation_status"] != "pass", report["validate_request_status"] != "pass", report["plan_request_status"] != "pass", report["unexpected_execute_requests"] != 0, report["polling_detected"]]
-    ssl = report["mode_b_observation"].get("ssl_policy_api_checks", {})
-    failures.extend([not ssl.get("env_override"), not ssl.get("query_override"), not ssl.get("invalid_policy_fail_closed")])
+    disabled = report["mode_b_observation"].get("legacy_disabled_route_checks", {})
+    failures.extend([not disabled.get("legacy_disabled_without_policy"), not disabled.get("legacy_disabled_with_valid_policy"), not disabled.get("legacy_disabled_with_invalid_policy"), disabled.get("historical_executor_calls") != 0])
     return "fail" if any(failures) else ("pass_with_caveats" if report["caveats"] else "pass")
 
 
@@ -294,7 +285,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "targets": DEFAULT_TARGETS,
         "artifacts_written": [display_path(path) for path in report_paths(getattr(args, "report_dir", None))],
         "mode_a_reference": {"m5f_canonical": True, "mutated": False},
-        "mode_b_observation": {"canonical": False, "reference_only_is_not_current_price": True, "ssl_policy_api_checks": ssl_policy_api_checks()},
+        "mode_b_observation": {"canonical": False, "reference_only_is_not_current_price": True, "legacy_disabled_route_checks": legacy_disabled_route_checks()},
         "mode_c_conversation": {"contract": "M5N conversation package", "parallel_contract_created": False},
         "governance": {"no_m5f_mutation": True, "no_polling": True, "no_scheduler": True, "no_startup_network_calls": True, "no_full_market_scan": True, "no_trading_output": True, "no_silent_tls_fallback": True},
         "caveats": caveats,
