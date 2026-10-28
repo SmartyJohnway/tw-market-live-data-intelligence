@@ -2,6 +2,10 @@
 
 ## 1.5.0 (selected, unpublished)
 
+- Canonical release-note source: [v1.5.0 draft](docs/release/V1_5_0_RELEASE_NOTES_DRAFT.md).
+  Native/MCPB/SBOM publication inputs remain subject to exact-source R2 validation
+  and R3 freeze; publication is separately authorized under A7.
+
 - Preserve published Local Service v1 clients through explicit version negotiation
   and a retained v1 capability projection while keeping current v2 behavior.
 - Retain exact MCP SDK 1.29.0 support and A3 dependency locks; declare public/data
