@@ -126,6 +126,7 @@ def run_checks():
         or 'V1 release candidate' in readme
         or 'The repository is preparing candidate version' in readme
         or 'The current stable release is `v1.0.0`' in readme
+        or 'TW-Market `v1.5.0` is the current stable GitHub release' in readme
     )
     record_check(checks, 'readme_current_or_legacy_governance_wording', readme_ok, {'reason': 'Stale M3G-08 wording found or no governed README product statement'})
 
@@ -171,7 +172,7 @@ def main():
 
     checks, res = run_checks()
     failed=[x for x in checks if x['status']!='passed']
-    report={'status':'passed' if not failed else 'failed','network_calls':False,'checks':checks,'m5f':res,'release_status':'m5ij_local_product_release_candidate' if not failed else 'request_review_blocked'}
+    report={'status':'passed' if not failed else 'failed','network_calls':False,'checks':checks,'m5f':res,'release_status':'m5ij_historical_acceptance_current_product_stable_v1_5_0' if not failed else 'request_review_blocked'}
     print(json.dumps(report,indent=2,sort_keys=True))
     return 0 if not failed else 1
 if __name__=='__main__': raise SystemExit(main())

@@ -38,8 +38,8 @@ def required_release_patterns() -> tuple[str, ...]:
     if product_version() == "1.5.0":
         return (
             r"productversion\s*=\s*`1\.5\.0`",
-            r"selected\s+`v1\.5\.0`\s+is\s+unpublished",
-            r"current\s+stable\s+release\s+is[\s\S]{0,180}?v1\.0\.0",
+            r"current\s+stable\s+(?:github\s+)?release[\s\S]{0,80}?v1\.5\.0",
+            r"v1\.0\.0",
             r"v1\.0\.0-rc\.1",
             r"v0\.1\.0",
         )

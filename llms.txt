@@ -1,0 +1,75 @@
+# TW-Market Live Data Intelligence
+
+> Local-first, governed Taiwan-market evidence infrastructure for humans and AI agents.
+
+Current stable release: v1.5.0 (2026-10-28)
+Frozen release source: acaf726a5b59baee4c5a30521ea5a5d5ec0cec76
+Frozen release tree: d44f66dc154c21326ac8b105d2f15fd793f6071b
+
+TW-Market validates identity and capability, previews bounded work, requires explicit authorization, executes once, then materializes governed Result/Audit evidence and an AI-ready handoff. It is not a broker, autonomous trader, general-purpose crawler, or realtime guarantee.
+
+## Start here
+
+- Product overview: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/README.md
+- Traditional Chinese overview: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/README.zh-TW.md
+- Operator Quick Start: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/operator/QUICK_START.md
+- AI usage guide: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/agent_usage_guide.md
+- MCP reference: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/reference/MCP_REFERENCE.md
+- Product architecture: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/architecture/PRODUCT_ARCHITECTURE.md
+- Documentation index: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/INDEX.md
+
+## AI / MCP contract
+
+Unified Request v3 is preferred. Request v1/v2 remain compatibility contracts. Current executability is determined by the machine-readable Capability Catalog, Routing Matrix, and selected executor authority; schema support alone never authorizes execution.
+
+The MCP surface is exactly six tools:
+
+1. market_describe_capabilities
+2. market_validate_request
+3. market_preview_request
+4. market_read_result
+5. market_export_ai_handoff
+6. market_fetch_evidence
+
+Canonical flow:
+Request -> Validate / Identity -> Preview -> explicit authorization -> Execute Once -> Result -> Audit -> AI Handoff
+
+Preview is not authorization. Authorization is not execution. Do not autonomously retry, switch sources, or fabricate missing evidence.
+
+## Current selected route highlights
+
+- current_observation: TWSE/TPEX resolved
+- official_eod_reference: TWSE/TPEX resolved
+- material_disclosures: TWSE/TPEX resolved, latest completed official daily batch
+- monthly_revenue: TWSE/TPEX resolved, latest available reporting period
+- trading_status_context: selected TPEx route; partial H1 coverage
+- market_state_context: TWSE/TPEX resolved
+- index_futures_context: selected TWSE route using bounded TAIFEX context
+- cash_institutional_flow_context: TWSE/TPEX resolved
+- recent_performance: selected bounded TWSE route
+- corporate_action_context: selected bounded TWSE route; subtype-limited coverage
+- session_status: blocked with no selected executor
+
+## Hard boundaries
+
+- Local-first; no hidden startup market fetch.
+- No default scheduler, polling, or silent background refresh.
+- No trading, order routing, or broker credential handling.
+- No silent Watchlist mutation or successor-identity rewrite.
+- No unsupported realtime guarantee.
+- Missing, unsupported, not-published, stale, partial, and source-failed are distinct semantics.
+- Official EOD is completed-session reference data, not a live quote.
+- Phase M scheduled/monitoring work is NOT_AUTHORIZED.
+
+## Machine-readable authorities
+
+- Capability Catalog: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json
+- Routing Matrix: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json
+- Portable Agent Skill: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/skills/tw-market-evidence-agent/SKILL.md
+
+## Distribution
+
+- Stable release: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0
+- MCP distribution: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/distribution/MCP_DISTRIBUTION.md
+
+The GitHub v1.5.0 release and MCP Registry are separate publication surfaces. Do not infer a v1.5.0 Registry publication from the GitHub release.

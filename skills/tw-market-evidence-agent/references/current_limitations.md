@@ -13,9 +13,10 @@ remain mandatory.
   every Phase H route. `trading_status_context` executes through the selected TPEx H1 composite
   (attention/disposition); cmode marker semantics remain unresolved with zero
   canonical coverage. The broader H1 scope remains partial.
-- `corporate_action_context` and `recent_performance` remain plan-only or
-  blocked where current routing says so; session-state semantics remain bounded
-  by the capability authority.
+- `recent_performance` and `corporate_action_context` have selected bounded TWSE
+  routes. TPEx remains non-executable for those capabilities; corporate-action
+  coverage remains subtype-limited. Session-state semantics remain bounded by
+  the capability authority.
 - `material_disclosures` is executable only for eligible TWSE/TPEX common
   shares and covers the latest completed official daily batch; it is not a
   historical or realtime disclosure search.

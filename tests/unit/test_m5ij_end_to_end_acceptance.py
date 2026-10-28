@@ -6,7 +6,7 @@ REPO = Path(__file__).resolve().parents[2]
 def test_m5ij_acceptance_check_only_passes():
     r=subprocess.run([sys.executable, str(REPO/'scripts/run_m5ij_end_to_end_acceptance.py'), '--check-only'], cwd=REPO, text=True, capture_output=True, encoding="utf-8")
     assert r.returncode == 0, r.stdout + r.stderr
-    assert 'm5ij_local_product_release_candidate' in r.stdout
+    assert 'm5ij_historical_acceptance_current_product_stable_v1_5_0' in r.stdout
 
 def test_m5e_supersession_accepted_by_default():
     import scripts.run_m5ij_end_to_end_acceptance as acc

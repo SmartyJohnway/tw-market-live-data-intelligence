@@ -1,81 +1,30 @@
 # AGENTS.md — Repository Governance and AI Collaboration Contract
 
-## Current Phase J closure boundary (2026-10-12)
+## Current repository boundary (2026-10-28)
 
-Roadmap Phase J — Integrated Research Acceptance is **COMPLETE** under
-`PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_PASS`. Historical Attempt #6 remains
-unchanged with its harness-level `HARD_BLOCK_TOOL_POLICY_VIOLATION`, while its
-real-agent MCP Result/Audit lineage and correct stale/currentness/no-trading
-interpretation satisfy the Roadmap-level `real_agent_layer`. No Attempt #7 is
-required. `tool-call sequencing` and a successful host-level AI Handoff export
-witness are Phase K compatibility carry-forwards, not Phase J blockers. PR #326
-and post-Phase-J portability PR #327 are merged; canonical main includes both.
-Phase K K0 governance entry is STARTED; no host evaluation has run. The current
-charter is `docs/governance/phase_k/PHASE_K_K0_LEAN_COMPATIBILITY_CHARTER_2026-10-12.md`.
+TW-Market stable `v1.5.0` is published from frozen source commit
+`acaf726a5b59baee4c5a30521ea5a5d5ec0cec76`, tree
+`d44f66dc154c21326ac8b105d2f15fd793f6071b`. Phase L is **CLOSED** after
+29/29 L7 exits passed, R3 froze source/artifact identities, A7 published the
+GitHub stable release, and Owner final closure was accepted.
 
-Use `docs/governance/phase_j/PHASE_J_CLOSURE_AUTHORITY_RECONCILIATION_2026-10-12.json`
-as the current Phase J closure authority. Older dated Phase-J-not-started text in
-this file is historical context and must not override this current boundary.
-
-## Current I3 production boundary (2026-10-05)
-
-I3-A3 `cash_institutional_flow_context` bounded-live adapter acceptance is
-`OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_BOUNDED_LIVE_PASS`. Attempts 1–3 remain
-historical HOLD outcomes; Attempt 4 is the accepted PASS. Its live authority
-is consumed. No additional A3 acquisition or Attempt 5 is authorized or
-required. The Owner acceptance ledger is
-`docs/governance/phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json`.
-
-I3-A4 is `OWNER_ACCEPTED_INDEPENDENTLY_ACCEPTED_PRODUCTION_ACTIVATION_PASS`
-and closed on PR #301: two active source authorities, one logical same-market
-route, two default-runtime market registrations, governed pre-authorization
-TWSE date binding, Unified V3 integration, and production evidence V2. A4
-closure performed no market acquisition. PR #301 merged as
-`39e162fa9f0b321b23300b20bfac8ce096646b63`; the Phase I final exit review
-passed. Phase J remains unauthorized; MCP remains exactly six tools.
-
-Activation ledger:
-`docs/governance/phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json`.
-
-Final Owner acceptance closure:
-`docs/governance/phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json`.
-
-## Current I2 production activation boundary (2026-10-01)
-
-I2-A4 production activation is Owner-accepted and merge-authorized.
-
-- Catalog: `index_futures_context` is runtime executable with
-  `phase_i_activation_state=selected_route_active`.
-- Routing: resolved, approval required, `same_source`, selected
-  `phase_i_i2_index_futures_context_executor`; one normal TWSE production route.
-- Source authority: one active TAIFEX source; eligible cash targets remain TWSE
-  company/common shares. Loading is explicit/optional only, never startup refresh.
-- `I2-ROLL-001`: PASS; deterministic rollback target remains
-  `7ffbdf7fb102668457b2a15877c10ad7673da9bf`.
-- No additional market request was authorized or performed for activation.
-- I1 remains active with two routes and three sources; MCP remains exactly six.
-- I3-A3 and I3-A4 are Owner-accepted and merged; I3 production is active.
-  Additional live acquisition is not required. Phase I is closed by the final
-  exit review; Phase J is not started or authorized.
-
-Activation evidence:
-
-`docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json`
-
-`docs/governance/phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json`
+Phase M remains **NOT_AUTHORIZED**. The current authorized workstream is
+Post-Phase-L frontdoor/documentation maintenance. Documentation commits may
+advance `main` beyond the frozen release source but must not redefine v1.5.0.
 
 ## 1. Read this repository in the right order
 
-Before substantial work, read these root governance files:
+Before substantial work, read:
 
-1. `PROJECT.md` — current product/project truth;
-2. `ROADMAP.md` — durable architecture and phase scope;
-3. `HANDOFF.md` — current stopping point, accepted evidence, and next boundary;
-4. `AGENTS.md` — working rules.
+1. `PROJECT.md` — current product/project authority;
+2. `HANDOFF.md` — current stopping point and allowed next work;
+3. `ROADMAP.md` — durable architecture and phase scope;
+4. `AGENTS.md` — working rules;
+5. `docs/INDEX.md` — current documentation navigation.
 
-Then inspect the exact current runtime authority and the frozen contract/ledger
-for the task. Do not reconstruct "current state" by reading old milestone
-documents in chronological order.
+Then inspect current Catalog / Routing / executor authority and the exact
+frozen contract/ledger required by the task. Do not reconstruct current state
+by reading old milestone documents in chronological order.
 
 ## 2. Product objective
 
@@ -110,39 +59,26 @@ Never equate "contract exists" with "route executable".
 
 ## 4. Current roadmap boundary
 
-Roadmap V3.2 is the durable roadmap authority.
+Roadmap V3.2 remains the durable roadmap authority. A phase is not complete
+merely because one schema, route, implementation tranche, or promotion gate
+closed; use accepted phase-exit authority.
 
-A Roadmap phase is not complete merely because one implementation tranche,
-schema, route, or promotion gate closed. Use exact evidence.
+Current high-level lifecycle:
 
-As of this governance consolidation:
+- product foundation A–F and V1 Release Gate: established;
+- Phase I: COMPLETE;
+- Phase J: COMPLETE;
+- Phase K: COMPLETE;
+- Phase L: CLOSED;
+- Phase M: NOT_AUTHORIZED.
 
-- initial Phase G G1/G2 runtime evidence exists and is accepted;
-- H-ACT-V3 promotion is accepted;
-- H1 coverage remains partial;
-- H2 remains inactive; the selected H3 TWSE route is Owner-accepted and active;
-- **Phase I I1 production-capable implementation, bounded live acceptance,
-  rollback, and Owner production-route activation are accepted and merged.
-  `market_state_context` is runtime executable on its bounded, approval-gated
-  route. I2-A0 is PASS_GO and I2-A1 source/evidence contract is FROZEN_PASS;
-  I2-A2 dormant offline implementation and I2-A3 bounded-live acceptance are
-  accepted historical stages. I2-A4 production activation is Owner-accepted:
-  `index_futures_context` is runtime executable through the selected
-  `phase_i_i2_index_futures_context_executor` route with one active TAIFEX
-  source and one normal TWSE production route. I3-A3 and I3-A4 are
-  Owner-accepted. I3 is production active with two sources, one logical route,
-  and two runtime market registrations. The Phase I final exit review passed.
-  Phase J was later closed separately by the 2026-10-12 closure authority
-  reconciliation; Phase K K0 governance entry is STARTED.**
+Phase G/H contain substantial accepted runtime/governance work, but broad
+roadmap coverage must not be inferred from individual route activations.
+Current executable truth remains the machine-readable Catalog / Routing /
+executor configuration.
 
-Do not repeat I1 bounded live acceptance or rollback. I1 activation is accepted
-current runtime truth. I2-A2 remains historical dormant implementation truth; A3 used its fresh
-single-GET authority exactly once and no repeat acceptance request is authorized.
-Current I2 production execution is permitted only through the normal explicit,
-approval-bound I2-A4 route. I3-A3 and I3-A4 are closed and accepted; future
-I3 authority changes still require separate explicit Owner authorization.
-Phase I final exit review is PASS. Phase J is separately COMPLETE under the
-2026-10-12 closure authority reconciliation. Phase K K0 governance entry is STARTED; no host evaluation has run.
+The current Post-Phase-L documentation tranche does not reopen Phase L, start
+Phase M, authorize new live acquisition, or alter release/Registry authority.
 
 ## 5. Authority hierarchy
 
@@ -385,32 +321,22 @@ important audit evidence.
 
 ## 16. Current stop rule
 
-For the current Phase I state:
+> **Phase L is CLOSED. Phase M is NOT_AUTHORIZED.**
 
-> **I1 production activation is Owner-accepted and merged.**
+Current work is limited to the separately authorized Post-Phase-L
+frontdoor/documentation-maintenance tranche. Preserve all accepted runtime,
+release, source and historical evidence unless a later explicit authorization
+changes that authority.
 
-`market_state_context` is runtime executable on the explicitly requested,
-approval-gated `phase_i_i1_market_state_executor` route, with two normal
-production routes and exactly three active I1 sources. I2-A0 is PASS_GO and
-I2-A1 `index_futures_context` source/evidence contract is FROZEN_PASS. I2-A2 dormant implementation and I2-A3 bounded-live acceptance are accepted
-historical gates. I2-A4 production activation is Owner-accepted: runtime is
-executable, one active TAIFEX source and one normal TWSE route are selected, and
-the selected executor is `phase_i_i2_index_futures_context_executor`. The live acceptance ledger
-records one TAIFEX GET, zero retries, two same-source target operations, valid
-Result/Audit V3 and lineage, and no raw persistence. The old live authority was
-superseded without use; the fresh single-GET authority is consumed. I3-A3 is
-Owner-accepted bounded-live adapter evidence. I3-A4 production is active and
-Owner-accepted; no live acquisition occurred in the activation/closure tranches.
-Preserve accepted evidence; do not repeat A3 or rollback.
-Phase I is complete by its final exit review. Phase J is complete by the
-2026-10-12 closure authority reconciliation. Phase K K0 governance entry is STARTED; no host evaluation has run.
+Do not:
 
-## Current Phase K K0 working rules (2026-10-12)
+- rerun consumed historical live authorities merely to refresh evidence;
+- modify the governance-frozen `v1.5.0` tag or its six published release assets;
+- update MCP Registry metadata as a documentation side effect;
+- publish Docker/Registry artifacts without separate authorization;
+- start Phase M or scheduled/monitoring behavior;
+- rewrite historical contracts/ledgers to current wording;
+- add a seventh MCP tool or fork the canonical request/result core.
 
-- The canonical product contract outranks harness convenience rules.
-- Label stricter harness restrictions `HARNESS_ONLY`; they do not by themselves establish a product compatibility failure.
-- Host behavior may vary unless the canonical contract defines a real precondition.
-- Prefer documentation and adapters over host-specific core forks.
-- Acceptance runtimes must not become product dependencies.
-- Evaluate portability from clean environments.
-- User-facing setup must not expose internal governance ceremony.
+Current recovery/navigation authority is `PROJECT.md` + `HANDOFF.md`; exact
+historical gate truth remains in frozen governance records.

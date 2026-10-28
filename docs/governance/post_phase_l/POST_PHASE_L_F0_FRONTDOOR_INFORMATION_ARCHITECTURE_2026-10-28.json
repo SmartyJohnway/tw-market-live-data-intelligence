@@ -1,0 +1,272 @@
+{
+    "schema_version":  "post_phase_l_f0_frontdoor_information_architecture.v1",
+    "date":  "2026-10-28",
+    "status":  "POST_PHASE_L_F0_FRONTDOOR_INFORMATION_ARCHITECTURE_CANDIDATE_COMPLETE",
+    "source":  {
+                   "commit":  "acaf726a5b59baee4c5a30521ea5a5d5ec0cec76",
+                   "tree":  "d44f66dc154c21326ac8b105d2f15fd793f6071b",
+                   "branch":  "post-phase-l/frontdoor-docs"
+               },
+    "lifecycle":  {
+                      "published_stable":  "v1.5.0",
+                      "phase_l":  "CLOSED",
+                      "phase_m":  "NOT_AUTHORIZED",
+                      "stable_source_frozen":  true,
+                      "final_artifact_hashes_frozen":  true,
+                      "github_release_asset_count":  6,
+                      "mcp_registry_v1_5_publication":  false,
+                      "docker_registry_publication":  false
+                  },
+    "authority_hashes":  {
+                             "r3_final_decision":  "cd297d5173070478ff354b43a69facd628dd36f2b442950a4d4b5c29141f9ef9",
+                             "a7_publication_decision":  "2493766a4560135ffba6317735836d85e0a23f6bab317189e9a6ce30865f721b",
+                             "phase_l_final_closure_decision":  "7eb7e7245993927a770de83b872f0762ced6dca07ba1f7f91ad6b4d1f8d841c1",
+                             "phase_l_final_closure_report":  "113b1b02a93b195a3e1d2c8a8e5cff9fd6bdde6aafef6e26ed82bc636a42ea92"
+                         },
+    "layers":  [
+                   "PUBLIC_PRODUCT_FRONTDOOR",
+                   "USER_AND_AI_DOCUMENTATION",
+                   "CURRENT_ENGINEERING_AUTHORITY",
+                   "FROZEN_OR_HISTORICAL_EVIDENCE"
+               ],
+    "onboarding_paths":  [
+                             "WINDOWS_NATIVE_ZIP",
+                             "WINDOWS_MCPB",
+                             "SOURCE_CHECKOUT"
+                         ],
+    "preserved_surfaces":  [
+                               "packaging_native/README-PACKAGE.md",
+                               "docs/release/V1_5_0_RELEASE_NOTES_DRAFT.md",
+                               "config/l7_release_artifact_set.v1.json",
+                               "docs/contracts/L7_PUBLIC_COMPATIBILITY_MCP_SDK_VERSION_POLICY.md",
+                               "docs/contracts/L7_RELEASE_SOURCE_AND_PUBLICATION_MANIFEST_CONTRACT.md",
+                               "tests/unit/test_l7_a6_r1_release_contract.py"
+                           ],
+    "separate_authorization_surfaces":  [
+                                            "server.json",
+                                            "MCP Registry publication",
+                                            "Docker registry publication",
+                                            "Phase M"
+                                        ],
+    "validation_dependencies":  [
+                                    "scripts/validate_v1_front_door.py",
+                                    "scripts/validate_v1_public_contracts.py",
+                                    "scripts/run_m5ij_end_to_end_acceptance.py",
+                                    "tests/unit/test_validate_v1_public_contracts.py",
+                                    "tests/unit/test_l7_a4_local_service_compatibility.py"
+                                ],
+    "tranche_sequence":  [
+                             "F1_PUBLIC_PRODUCT_FRONTDOOR",
+                             "F2_INSTALL_QUICKSTART_DISTRIBUTION",
+                             "F3_ENGINEERING_FRONTDOOR_CONSOLIDATION",
+                             "F4_AI_DISCOVERABILITY_VISUAL_POLISH",
+                             "F5_DOCUMENTATION_ONLY_VALIDATION"
+                         ],
+    "f0":  {
+               "product_runtime_modified":  false,
+               "release_assets_modified":  false,
+               "github_settings_modified":  false,
+               "registry_metadata_modified":  false,
+               "phase_m_started":  false,
+               "commit_authorized":  false,
+               "push_authorized":  false,
+               "pr_authorized":  false,
+               "merge_authorized":  false
+           },
+    "surface_dispositions":  [
+                                 {
+                                     "path":  "README.md",
+                                     "class":  "PUBLIC_CURRENT",
+                                     "tranche":  "F1",
+                                     "action":  "REWRITE"
+                                 },
+                                 {
+                                     "path":  "README.zh-TW.md",
+                                     "class":  "PUBLIC_CURRENT",
+                                     "tranche":  "F1",
+                                     "action":  "REWRITE_PARITY"
+                                 },
+                                 {
+                                     "path":  "GitHub About description",
+                                     "class":  "PUBLIC_CURRENT_METADATA",
+                                     "tranche":  "F4",
+                                     "action":  "REVIEW_KEEP_UNLESS_BETTER"
+                                 },
+                                 {
+                                     "path":  "GitHub homepage",
+                                     "class":  "PUBLIC_CURRENT_METADATA",
+                                     "tranche":  "F4",
+                                     "action":  "KEEP_BLANK_UNTIL_REAL_DESTINATION"
+                                 },
+                                 {
+                                     "path":  "GitHub topics",
+                                     "class":  "PUBLIC_CURRENT_METADATA",
+                                     "tranche":  "F4",
+                                     "action":  "OPTIONAL_POLISH"
+                                 },
+                                 {
+                                     "path":  "CHANGELOG.md",
+                                     "class":  "PUBLIC_RELEASE_HISTORY",
+                                     "tranche":  "F2",
+                                     "action":  "RECONCILE_V1_5_0_PUBLISHED"
+                                 },
+                                 {
+                                     "path":  "docs/operator/QUICK_START.md",
+                                     "class":  "USER_CURRENT",
+                                     "tranche":  "F2",
+                                     "action":  "REDESIGN_THREE_PATHS"
+                                 },
+                                 {
+                                     "path":  "docs/distribution/MCP_DISTRIBUTION.md",
+                                     "class":  "USER_CURRENT",
+                                     "tranche":  "F2",
+                                     "action":  "UPDATE_GITHUB_DIST_PRESERVE_REGISTRY_DISTINCTION"
+                                 },
+                                 {
+                                     "path":  "docs/INDEX.md",
+                                     "class":  "NAV_CURRENT",
+                                     "tranche":  "F3",
+                                     "action":  "PERSONA_FIRST"
+                                 },
+                                 {
+                                     "path":  "PROJECT.md",
+                                     "class":  "ENGINEERING_CURRENT",
+                                     "tranche":  "F3",
+                                     "action":  "COMPACT_CURRENT_AUTHORITY"
+                                 },
+                                 {
+                                     "path":  "HANDOFF.md",
+                                     "class":  "OPERATIONS_CURRENT",
+                                     "tranche":  "F3",
+                                     "action":  "COMPACT_CURRENT_HANDOFF"
+                                 },
+                                 {
+                                     "path":  "ROADMAP.md",
+                                     "class":  "DURABLE_ROADMAP_CURRENT",
+                                     "tranche":  "F3",
+                                     "action":  "TARGETED_STATUS_RECONCILIATION"
+                                 },
+                                 {
+                                     "path":  "AGENTS.md",
+                                     "class":  "ENGINEERING_RULES_CURRENT",
+                                     "tranche":  "F3",
+                                     "action":  "TARGETED_CURRENT_BOUNDARY_RECONCILIATION"
+                                 },
+                                 {
+                                     "path":  "docs/governance/INDEX.md",
+                                     "class":  "GOVERNANCE_INDEX_CURRENT",
+                                     "tranche":  "F3",
+                                     "action":  "UPDATE_CURRENT_POINTER"
+                                 },
+                                 {
+                                     "path":  "docs/PROJECT_HISTORY.md",
+                                     "class":  "HISTORICAL_SUMMARY",
+                                     "tranche":  "F3",
+                                     "action":  "EXTEND_HIGH_LEVEL_CHRONOLOGY"
+                                 },
+                                 {
+                                     "path":  "docs/agent_usage_guide.md",
+                                     "class":  "AI_CURRENT",
+                                     "tranche":  "F4",
+                                     "action":  "CURRENTNESS_AUDIT"
+                                 },
+                                 {
+                                     "path":  "skills/tw-market-evidence-agent/SKILL.md",
+                                     "class":  "AI_CURRENT",
+                                     "tranche":  "F4",
+                                     "action":  "CURRENTNESS_AUDIT"
+                                 },
+                                 {
+                                     "path":  "llms.txt",
+                                     "class":  "AI_DISCOVERABILITY_NEW",
+                                     "tranche":  "F4",
+                                     "action":  "CANDIDATE_CREATE"
+                                 },
+                                 {
+                                     "path":  "packaging_native/README-PACKAGE.md",
+                                     "class":  "FROZEN_RELEASE_EMBEDDED_DOC",
+                                     "tranche":  "PRESERVE",
+                                     "action":  "NO_CHANGE"
+                                 },
+                                 {
+                                     "path":  "docs/release/V1_5_0_RELEASE_NOTES_DRAFT.md",
+                                     "class":  "HISTORICAL_RELEASE_INPUT",
+                                     "tranche":  "PRESERVE",
+                                     "action":  "NO_CHANGE"
+                                 },
+                                 {
+                                     "path":  "config/l7_release_artifact_set.v1.json",
+                                     "class":  "FROZEN_RELEASE_CONTRACT",
+                                     "tranche":  "PRESERVE",
+                                     "action":  "NO_CHANGE"
+                                 },
+                                 {
+                                     "path":  "docs/contracts/L7_PUBLIC_COMPATIBILITY_MCP_SDK_VERSION_POLICY.md",
+                                     "class":  "FROZEN_GATE_CONTRACT",
+                                     "tranche":  "PRESERVE",
+                                     "action":  "NO_CHANGE"
+                                 },
+                                 {
+                                     "path":  "docs/contracts/L7_RELEASE_SOURCE_AND_PUBLICATION_MANIFEST_CONTRACT.md",
+                                     "class":  "FROZEN_GATE_CONTRACT",
+                                     "tranche":  "PRESERVE",
+                                     "action":  "NO_CHANGE"
+                                 },
+                                 {
+                                     "path":  "server.json",
+                                     "class":  "EXTERNAL_REGISTRY_PUBLICATION_SURFACE",
+                                     "tranche":  "SEPARATE_AUTHORIZATION",
+                                     "action":  "NO_CHANGE"
+                                 },
+                                 {
+                                     "path":  "scripts/validate_v1_front_door.py",
+                                     "class":  "VALIDATION_DEPENDENCY",
+                                     "tranche":  "F5",
+                                     "action":  "UPDATE_LIFECYCLE_VALIDATION"
+                                 },
+                                 {
+                                     "path":  "scripts/validate_v1_public_contracts.py",
+                                     "class":  "VALIDATION_DEPENDENCY",
+                                     "tranche":  "F5",
+                                     "action":  "UPDATE_LIFECYCLE_VALIDATION"
+                                 },
+                                 {
+                                     "path":  "scripts/run_m5ij_end_to_end_acceptance.py",
+                                     "class":  "VALIDATION_DEPENDENCY",
+                                     "tranche":  "F5",
+                                     "action":  "RECONCILE_CURRENT_README_WORDING"
+                                 },
+                                 {
+                                     "path":  "tests/unit/test_validate_v1_public_contracts.py",
+                                     "class":  "VALIDATION_DEPENDENCY",
+                                     "tranche":  "F5",
+                                     "action":  "ADD_PUBLISHED_V1_5_LIFECYCLE_COVERAGE"
+                                 },
+                                 {
+                                     "path":  "tests/unit/test_l7_a4_local_service_compatibility.py",
+                                     "class":  "MIXED_CURRENT_AND_HISTORICAL_TEST",
+                                     "tranche":  "F5",
+                                     "action":  "PRESERVE_A4_HISTORY_ADD_CURRENT_PROOF_SEPARATELY"
+                                 },
+                                 {
+                                     "path":  "tests/unit/test_l7_a6_r1_release_contract.py",
+                                     "class":  "HISTORICAL_GATE_TEST",
+                                     "tranche":  "PRESERVE",
+                                     "action":  "NO_CHANGE"
+                                 }
+                             ],
+    "contradiction_ids":  [
+                              "F0-C01",
+                              "F0-C02",
+                              "F0-C03",
+                              "F0-C04",
+                              "F0-C05",
+                              "F0-C06",
+                              "F0-C07",
+                              "F0-C08",
+                              "F0-C09",
+                              "F0-C10",
+                              "F0-C11",
+                              "F0-C12"
+                          ]
+}

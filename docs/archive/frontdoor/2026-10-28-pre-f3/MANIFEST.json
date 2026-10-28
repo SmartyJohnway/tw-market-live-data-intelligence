@@ -1,0 +1,57 @@
+{
+    "schema":  "post_phase_l_f3_pre_edit_archive_manifest.v1",
+    "created_date":  "2026-10-28",
+    "baseline_commit":  "acaf726a5b59baee4c5a30521ea5a5d5ec0cec76",
+    "files":  [
+                  {
+                      "source":  "PROJECT.md",
+                      "archive":  "docs/archive/frontdoor/2026-10-28-pre-f3/PROJECT.md",
+                      "bytes":  59304,
+                      "sha256":  "8ac26ca4da164d2f64640babe779617a75ec03099b3969b2fa357db50aea98c7",
+                      "copy_sha256":  "8ac26ca4da164d2f64640babe779617a75ec03099b3969b2fa357db50aea98c7"
+                  },
+                  {
+                      "source":  "HANDOFF.md",
+                      "archive":  "docs/archive/frontdoor/2026-10-28-pre-f3/HANDOFF.md",
+                      "bytes":  54088,
+                      "sha256":  "6852c8253e5d2cf2096d1c8d081f523f436ad1da020f4f7d826fa703d633a245",
+                      "copy_sha256":  "6852c8253e5d2cf2096d1c8d081f523f436ad1da020f4f7d826fa703d633a245"
+                  },
+                  {
+                      "source":  "ROADMAP.md",
+                      "archive":  "docs/archive/frontdoor/2026-10-28-pre-f3/ROADMAP.md",
+                      "bytes":  77068,
+                      "sha256":  "cddb9194a38605795e9f3bc4cbd7e5a63e4aad0f96ed45bc85f5be484b77c6d7",
+                      "copy_sha256":  "cddb9194a38605795e9f3bc4cbd7e5a63e4aad0f96ed45bc85f5be484b77c6d7"
+                  },
+                  {
+                      "source":  "AGENTS.md",
+                      "archive":  "docs/archive/frontdoor/2026-10-28-pre-f3/AGENTS.md",
+                      "bytes":  15693,
+                      "sha256":  "9ec1c975141611207f3a19ed4d45fbd008e2a3b94598872b7c2d2b3af88b28dd",
+                      "copy_sha256":  "9ec1c975141611207f3a19ed4d45fbd008e2a3b94598872b7c2d2b3af88b28dd"
+                  },
+                  {
+                      "source":  "docs/INDEX.md",
+                      "archive":  "docs/archive/frontdoor/2026-10-28-pre-f3/docs__INDEX.md",
+                      "bytes":  3269,
+                      "sha256":  "4f11f6e22991aa143ff222be9eddbc6b2437ee043168dec0406f333f9ee80852",
+                      "copy_sha256":  "4f11f6e22991aa143ff222be9eddbc6b2437ee043168dec0406f333f9ee80852"
+                  },
+                  {
+                      "source":  "docs/governance/INDEX.md",
+                      "archive":  "docs/archive/frontdoor/2026-10-28-pre-f3/docs__governance__INDEX.md",
+                      "bytes":  26340,
+                      "sha256":  "1b5fcc3b58ee74c30c5c1817d8e1abf7d441770fd0b1b8f504ed60bc0a9806fa",
+                      "copy_sha256":  "1b5fcc3b58ee74c30c5c1817d8e1abf7d441770fd0b1b8f504ed60bc0a9806fa"
+                  },
+                  {
+                      "source":  "docs/PROJECT_HISTORY.md",
+                      "archive":  "docs/archive/frontdoor/2026-10-28-pre-f3/docs__PROJECT_HISTORY.md",
+                      "bytes":  2332,
+                      "sha256":  "c91b4e102cfcfa0126dc575758fec1a34b5d81d0c89ea20fc880cb780ab2a071",
+                      "copy_sha256":  "c91b4e102cfcfa0126dc575758fec1a34b5d81d0c89ea20fc880cb780ab2a071"
+                  }
+              ],
+    "all_copies_exact":  true
+}

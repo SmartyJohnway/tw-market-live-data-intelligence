@@ -1,0 +1,175 @@
+{
+  "schema": "post_phase_l_f5_documentation_validation.v1",
+  "status": "CANDIDATE_COMPLETE_SELF_REVIEW_PASS",
+  "baseline": {
+    "commit": "acaf726a5b59baee4c5a30521ea5a5d5ec0cec76",
+    "tree": "d44f66dc154c21326ac8b105d2f15fd793f6071b"
+  },
+  "checks": {
+    "utf8_hygiene": true,
+    "local_links": true,
+    "current_contradictions_zero": true,
+    "scope_containment": true,
+    "pre_f3_archive_exact": true,
+    "frozen_machine_authorities_unchanged": true,
+    "live_release_binding": true,
+    "git_diff_check": true,
+    "final_focused_regression_141_passed": true,
+    "r1_workspace_basetemp_37_passed": true
+  },
+  "metrics": {
+    "current_doc_local_links_checked": 111,
+    "current_stale_status_hits": 0,
+    "final_focused_regression_passed": 141,
+    "final_focused_regression_failed": 0,
+    "r1_workspace_basetemp_passed": 37,
+    "pre_f3_archive_files_verified": 7
+  },
+  "test_harness_incident": {
+    "initial_broad_regression": "139 passed / 2 failed",
+    "cause": "default Windows pytest tmp_path outside selected-workspace containment",
+    "product_or_contract_defect": false,
+    "resolution": "rerun with fresh C:/twmarket_temp workspace-local basetemp; R1 suite 37/37 PASS; final combined suite 141/141 PASS"
+  },
+  "live_release": {
+    "tag": "v1.5.0",
+    "tag_target": "acaf726a5b59baee4c5a30521ea5a5d5ec0cec76",
+    "asset_count": 6,
+    "digests_match": true
+  },
+  "changed_paths": [
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "HANDOFF.md",
+    "PROJECT.md",
+    "README.md",
+    "README.zh-TW.md",
+    "ROADMAP.md",
+    "docs/INDEX.md",
+    "docs/PROJECT_HISTORY.md",
+    "docs/agent_usage_guide.md",
+    "docs/architecture/PRODUCT_ARCHITECTURE.md",
+    "docs/distribution/MCP_DISTRIBUTION.md",
+    "docs/governance/INDEX.md",
+    "docs/operator/QUICK_START.md",
+    "scripts/run_m5ij_end_to_end_acceptance.py",
+    "scripts/validate_v1_front_door.py",
+    "scripts/validate_v1_public_contracts.py",
+    "skills/tw-market-evidence-agent/SKILL.md",
+    "skills/tw-market-evidence-agent/references/current_limitations.md",
+    "tests/unit/test_l7_a4_local_service_compatibility.py",
+    "tests/unit/test_m5ij_end_to_end_acceptance.py",
+    "tests/unit/test_validate_v1_public_contracts.py",
+    "docs/archive/frontdoor/",
+    "docs/governance/post_phase_l/",
+    "llms.txt"
+  ],
+  "text_hygiene": {
+    "README.md": {
+      "sha256": "5f7a17c808ce9ef57cfb790a293cbbd9afa209823fd3bc6bbd854ef820c4eb97",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "README.zh-TW.md": {
+      "sha256": "e4657d7b05ad01369a49cc68b384a6e9b3c3455a97ea612778d2e7fc07be52e7",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "PROJECT.md": {
+      "sha256": "9ced50ecf134bbbe37d1bdc8093b72bb268f42b702d1dcdf1f704782b4decf0e",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "HANDOFF.md": {
+      "sha256": "4c01118b14b9e33dd83b1d846360df535775b1f13c430ebab2ef39dfabe8429a",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "CHANGELOG.md": {
+      "sha256": "c96b7dda97ac349ad4687a5ca781d64cf0ef5537928064b0ecb0fa7ee7d9bc69",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "llms.txt": {
+      "sha256": "20d534597b6b58755573a33138fc85ae466a65172e93e796f0b7dcf53652e5e9",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "docs/INDEX.md": {
+      "sha256": "8d0e90614084daadc01f4e4dcb73d48ee1d98f3aa22ba99c5f03cb7abf112f48",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "docs/governance/INDEX.md": {
+      "sha256": "8b44d8fee4b5f83e4abc98b1ff8ee34f6c313a5e1abed2cdf562a0d501dc4323",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "docs/PROJECT_HISTORY.md": {
+      "sha256": "a5b23428ea5c3522929385de4b0950f9d37792b8380ed989619784ba3c12e49a",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "docs/operator/QUICK_START.md": {
+      "sha256": "8a16876889971b9da8eab048a1aa21499aa7415d98b3b531e68dfa2147a0d56f",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "docs/distribution/MCP_DISTRIBUTION.md": {
+      "sha256": "b1d15208882c8b21f91000a9de0e1c468adb117a96102de67b9a774610b59296",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "docs/agent_usage_guide.md": {
+      "sha256": "155bbef90ff019711694f6899549307eed37213cb988434737f074df2699302e",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "docs/architecture/PRODUCT_ARCHITECTURE.md": {
+      "sha256": "031a8b54ea0d103343090b3d9252e0ea4c8b017f25dfbf510838965fcac2f2b2",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "skills/tw-market-evidence-agent/SKILL.md": {
+      "sha256": "3202d543d3f14bdd081444d81f48021c4b7d3f8f584c82b4f0de04105088ef44",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "skills/tw-market-evidence-agent/references/current_limitations.md": {
+      "sha256": "43fbccffd2f81feac8f0bb69eb233a43e2836ecb30a86f1da6ad472616a6a0c2",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    },
+    "docs/governance/post_phase_l/POST_PHASE_L_F5_DOCUMENTATION_ONLY_VALIDATION_2026-10-28.md": {
+      "sha256": "1004bbc1644ad218505a41477dac4acd77d1ce95827b0a8c71ef9261beefee75",
+      "bom": false,
+      "replacement_chars": 0,
+      "trailing_whitespace_lines": 0
+    }
+  },
+  "boundaries": {
+    "runtime_product_behavior_changed": false,
+    "v1_5_0_release_changed": false,
+    "mcp_registry_changed": false,
+    "docker_registry_published": false,
+    "phase_m_started": false,
+    "commit_performed": false,
+    "push_performed": false,
+    "pr_performed": false
+  }
+}

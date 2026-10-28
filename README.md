@@ -2,32 +2,151 @@
 
 [English](README.md) | [繁體中文](README.zh-TW.md)
 
-> Local-first, governed Taiwan-market evidence for an operator and an AI
-> assistant — validate first, preview bounded work, then explicitly authorize
-> one execution where the capability permits it.
+[![Stable v1.5.0](https://img.shields.io/badge/stable-v1.5.0-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
+![Windows 11 x64](https://img.shields.io/badge/Windows-11%20x64-0078d4)
+![Python 3.13](https://img.shields.io/badge/Python-3.13-3776ab)
+[![MCP six tools](https://img.shields.io/badge/MCP-exactly%206%20tools-5c4ee5)](docs/reference/MCP_REFERENCE.md)
+[![License MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+
+> Local-first, governed Taiwan-market evidence infrastructure for human operators
+> and AI agents — validate first, preview bounded work, then explicitly authorize
+> one execution only when the current capability and route permit it.
+
+## Architecture at a glance
+
+```mermaid
+flowchart LR
+    H[Human / Operator] --> W[Unified Workbench]
+    A[AI Agent] --> M[Six-tool MCP]
+    W --> R[Unified Runtime]
+    M --> R
+    R --> V[Validate + Identity]
+    V --> P[Preview + Route Bounds]
+    P --> X[Explicit Authorization]
+    X --> E[Execute Once]
+    E --> S[Governed Official / Approved Sources]
+    S --> O[Result + Audit + AI Handoff]
+    L[Persistent Watchlists] --> W
+```
+
+## Current stable release
+
+**TW-Market `v1.5.0` is the current stable GitHub release.** ProductVersion = `1.5.0`.
+It was published on 2026-10-28 from frozen source commit
+`acaf726a5b59baee4c5a30521ea5a5d5ec0cec76` and tree
+`d44f66dc154c21326ac8b105d2f15fd793f6071b`.
+
+- [GitHub Release v1.5.0](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
+- [Windows Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip)
+- [Native SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip.sha256)
+- [Windows MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb)
+- [MCPB SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb.sha256)
+- [First-party SBOM](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-first-party-sbom.json)
+- [Publication manifest](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-publication-manifest.json)
+
+The frozen v1.5.0 tag and SHA-256-verified release assets remain the release
+authority even if `main` later advances with post-release documentation or
+development work. GitHub Immutable Releases enforcement is not enabled for this
+release; the non-mutation requirement is a governance/freeze policy, not a platform lock.
+
+## Choose your path
+
+| Path | Best for | Start here |
+|---|---|---|
+| **Windows Native ZIP** | Normal local operator / Workbench use | [Download v1.5.0 Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip) |
+| **Windows MCPB** | AI / MCP client | [Download v1.5.0 MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb) |
+| **Source checkout** | Developer / contributor | [Source/developer path](docs/operator/QUICK_START.md#path-c--source-checkout-developer--contributor-path) |
+
+For a **60-second orientation and first-run sequence**, use the
+[Operator Quick Start](docs/operator/QUICK_START.md). The Native ZIP is the
+recommended operator path; source checkout is not the default installation path
+for every user.
+
+## What TW-Market is
+
+TW-Market is a governed evidence and research workbench for Taiwan-market data.
+It gives a human operator or AI agent a deterministic path from target identity
+and capability validation to bounded source acquisition, canonical Result/Audit
+materialization, citations, and an AI-ready handoff.
+
+It is intentionally **not** a broker, autonomous trader, portfolio system,
+general-purpose crawler, or realtime-price guarantee.
+
+Core product characteristics:
+
+- **Local-first:** installation state, Security Master, Watchlists, evidence, and
+  audit artifacts remain under explicit local control.
+- **Identity-aware:** Taiwan cash instruments use ISIN as durable identity and
+  `MARKET:CODE` as listing/routing identity.
+- **Preview before execute:** validation and preview do not authorize network
+  acquisition; execution is explicit, bounded, and auditable.
+- **Persistent Watchlists are supported:** installation-local Watchlists use immutable
+  revisions, optimistic concurrency, and explicit preview/commit mutation.
+- **Evidence, not conclusions:** source authority, timing/currentness, missingness,
+  caveats, and citations remain visible to downstream humans and AI.
+
+## Governed workflow
+
+A typical `2330` flow is:
+
+1. Create or select an installation-local Watchlist and add `2330`.
+2. Compose a Unified Market Evidence Request and validate identity/capability.
+3. Preview the exact planned operation and its route boundary.
+4. Explicitly authorize one bounded execution only if the preview is executable.
+5. Read the canonical Result and Audit Package, or export the AI-ready handoff.
+
+Unified Request v3 is preferred. Request v1/v2 remain supported compatibility
+contracts; historical supported Result/Audit packages remain readable without
+rewriting their canonical bytes or provenance.
+
+The Unified MCP surface remains exactly six governed tools:
+
+`market_describe_capabilities`, `market_validate_request`,
+`market_preview_request`, `market_read_result`,
+`market_export_ai_handoff`, and `market_fetch_evidence`.
+
+See the [AI usage guide](docs/agent_usage_guide.md) and
+[V1 historical public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) for the
+current request/result/handoff semantics and compatibility boundary.
+
+<details>
+<summary>View the full Unified Workbench screenshot</summary>
 
 ![Deterministic Unified Workbench overview](docs/assets/workbench-overview.png)
 
-ProductVersion = `1.5.0`. Selected `v1.5.0` is unpublished; selection alone is not technical acceptance.
-The current stable release is `v1.0.0`
-([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0)).
-The published prerelease history is `v1.0.0-rc.1`
-([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0-rc.1)),
-and the earlier stable GitHub Release was `v0.1.0`. The current development
-line now uses Unified Request/Result/Audit V3 as the preferred authority while
-retaining V1/V2 compatibility. Phase G G1/G2 runtime capabilities have passed
-bounded controlled-live acceptance; Phase H has one active TPEx attention route; broader
-Roadmap Phase G/H scope remains explicitly incomplete. This is a local-first
-evidence workbench, not a realtime trading product.
+</details>
 
-## Why TW-Market
+## Current evidence capabilities
 
-AI discussion needs evidence with identity, source, timestamp, caveat, and
-execution provenance — not an unqualified price claim. This workbench gives a
-human operator a governed local path from request validation to an AI-ready
-handoff, while retaining a separate audit package.
+Current governed product scope includes:
 
-## Quick start
+- installation-local Taiwan Market Identity Service and persistent Watchlists;
+- official material-disclosure and monthly-revenue evidence for eligible
+  TWSE/TPEx company common shares;
+- selected bounded market-state, index-futures, institutional-flow,
+  corporate-action, and recent-performance context where current Catalog and
+  Routing authority make the requested market/target executable;
+- canonical Result/Audit lineage, citations, timing/currentness semantics, and
+  AI-ready Markdown handoff.
+
+Capability support is not the same as route executability. A known instrument,
+schema, or capability does not by itself authorize source acquisition. Always
+validate and preview against the current Catalog and selected Routing.
+
+Research evidence is intentionally bounded. It does not imply arbitrary history,
+realtime disclosures, a full-market scanner, `financial_summary`, investment
+advice, or trading signals.
+
+## Safety boundary
+
+There is **no automatic polling, scheduler, startup market fetch, Watchlist-driven
+automatic execution, trading, or order routing**. There is also no silent source
+fallback or model-selected executor/URL. Missing evidence is not converted to
+zero, and execution success is not presented as a realtime guarantee.
+
+## Source/developer quick start
+
+For a source checkout:
 
 ```bash
 git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
@@ -39,8 +158,8 @@ python scripts/verify_environment.py
 python scripts/manage_security_master.py status
 ```
 
-`NOT_INITIALIZED` is the normal fresh-install state. A Security Master update
-is an explicit operator action and may use official external acquisition:
+`NOT_INITIALIZED` is the expected fresh-install Security Master state. Initialization
+or refresh is an explicit operator action:
 
 ```bash
 python scripts/manage_security_master.py update --live
@@ -54,122 +173,71 @@ For an MCP host, start the separate stdio launcher:
 python scripts/run_unified_market_evidence_mcp.py
 ```
 
-## A governed 2330 workflow
+The release ZIP/MCPB installation paths are documented separately; keep those
+operator instructions distinct from this source/developer path.
 
-1. Create or select an installation-local Watchlist, then add `2330`.
-2. Compose a Unified Market Evidence Request and validate its identity.
-3. Preview the planned operation and its capability boundary.
-4. Explicitly authorize and confirm one bounded execution only when the
-   preview is executable.
-5. Read the canonical Result and Audit Package, or export the AI-ready
-   handoff for continued discussion.
+## MCP distribution and registry boundary
 
-## Core capabilities
+The current GitHub `v1.5.0` release includes the supported Windows MCPB and its
+SHA-256 sidecar. It uses local stdio transport and exposes the same exact six
+governed tools as the source launcher.
 
-- **Identity-aware requests:** Mode A validates targets against the
-  installation-local Taiwan Market Identity Service.
-- **Bounded execution:** Mode B previews, explicitly authorizes, and executes
-  one request only when its governed capability is executable.
-- **Auditable handoff:** Mode C creates a canonical Result, separate Audit
-  Package, and AI-ready Markdown without dispatching another market source.
-- **Persistent Watchlists are supported:** installation-local Watchlists have immutable
-  revisions, optimistic concurrency, and explicit preview/commit mutation.
-- **Official research evidence:** eligible TWSE/TPEX common shares support the
-  latest completed official material-disclosure batch and latest available
-  monthly revenue (TWD, unit thousand), using official CSV with an explicit
-  governed official JSON fallback.
+The public MCP Registry entry
+`io.github.SmartyJohnway/tw-market-live-data-intelligence` is a **separate
+publication surface**. Its currently published package metadata remains on the
+historical `v1.0.0` package until a separately authorized Registry update is
+performed. Do not infer Registry publication from the GitHub v1.5.0 release.
 
-## Unified MCP
+See [MCP distribution](docs/distribution/MCP_DISTRIBUTION.md) for installation,
+integrity, and Security Master boundaries.
 
-The MCP surface has exactly six governed tools:
-
-`market_describe_capabilities`, `market_validate_request`,
-`market_preview_request`, `market_read_result`,
-`market_export_ai_handoff`, and `market_fetch_evidence`.
-
-Request v3 is preferred; Request v1 and v2 remain accepted compatibility
-contracts. New governed materializations default to Result v3 and Audit Package
-v3, while historical V1/V2/V3 packages remain readable without rewriting. See the
-[V1 historical public contracts](docs/contracts/V1_PUBLIC_CONTRACTS.md) and
-[current AI usage guide](docs/agent_usage_guide.md) for request, result, and
-handoff semantics.
-
-## MCP distribution
-
-The supported Windows MCPB distribution is published with
-[`v1.0.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0):
-[download the MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb)
-and its [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.0.0/tw-market-unified-mcp-v1.0.0-win-x64.mcpb.sha256).
-It uses local stdio transport and provides the same six tools. The [official
-Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.SmartyJohnway/tw-market-live-data-intelligence)
-is `io.github.SmartyJohnway/tw-market-live-data-intelligence`. See
-[MCP distribution](docs/distribution/MCP_DISTRIBUTION.md) for installation
-scope, integrity, and Security Master boundaries.
-
-## Data and source caveats
-
-Capability support, currentness, source provenance, and execution eligibility
-are explicit product data. A supported identity does not imply an executable
-source route; a preview is not an authorization; a source observation is not a
-realtime guarantee. Research support does not provide arbitrary disclosure or
-monthly-revenue history, realtime disclosures, or `financial_summary`.
-Consult the [capability matrix](docs/reference/CAPABILITY_MATRIX.md),
-[source matrix](docs/reference/SOURCE_MATRIX.md), and
-[governance boundaries](docs/reference/GOVERNANCE_BOUNDARIES.md) before relying
-on any result.
-
-## Safety and non-goals
-
-There is no automatic polling, scheduler, startup market fetch, Watchlist-driven
-automatic execution, trading, order routing, full-market scan, model-selected
-URL/executor, or realtime guarantee. Persistent Watchlists mutate only through
-explicit preview/commit. Never commit credentials, tokens, cookies, or private
-market payloads.
+Docker is validated as a release/provenance surface for `linux/amd64`, but
+v1.5.0 does not publish a Docker registry image.
 
 ## Documentation
 
-Repository governance front door:
-
-- [PROJECT.md](PROJECT.md) — current project/product authority
-- [ROADMAP.md](ROADMAP.md) — canonical Roadmap V3.2
-- [HANDOFF.md](HANDOFF.md) — current operational handoff
-- [AGENTS.md](AGENTS.md) — AI/repository collaboration rules
-
-Product documentation:
+Operator and product docs:
 
 - [Operator quick start](docs/operator/QUICK_START.md)
 - [Local Workbench guide](docs/operator/LOCAL_WORKBENCH.md)
 - [Troubleshooting](docs/operator/TROUBLESHOOTING.md)
+- [AI / agent usage guide](docs/agent_usage_guide.md)
+- [AI discovery entry (`llms.txt`)](llms.txt)
+- [Capability matrix](docs/reference/CAPABILITY_MATRIX.md)
+- [Source matrix](docs/reference/SOURCE_MATRIX.md)
 - [Documentation index](docs/INDEX.md)
-- [V1 release](docs/release/V1_RELEASE.md)
-- [Changelog](CHANGELOG.md)
+
+Engineering/governance front doors:
+
+- [PROJECT.md](PROJECT.md) — current project/product authority
+- [ROADMAP.md](ROADMAP.md) — canonical Roadmap V3.2
+- [HANDOFF.md](HANDOFF.md) — current operational handoff
+- [AGENTS.md](AGENTS.md) — repository and AI collaboration rules
+
+Historical engineering and acceptance records remain available for audit and
+compatibility, but they are not a second current-product contract. Start with
+[Project History](docs/PROJECT_HISTORY.md) or the
+[Engineering history / protocol archive](docs/INDEX.md#engineering-history--protocol-archive).
+
+## Release history and provenance
+
+- **`v1.5.0`** — current stable GitHub release; frozen source and final release
+  assets passed the Phase L release-governance and publication acceptance chain.
+- **`v1.0.0`** — historical stable release and current MCP Registry package
+  until a separately authorized Registry update occurs.
+- **`v1.0.0-rc.1`** — historical prerelease.
+- **`v0.1.0`** — earlier stable GitHub release.
+
+The v1.5.0 publication includes the Native ZIP/checksum, MCPB/checksum,
+first-party SBOM, and typed publication manifest. SHA-256/provenance/SBOM are
+integrity and traceability controls; they are not cryptographic publisher
+signatures.
 
 ## Contributing and security
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Report
-security concerns using the grounded guidance in [SECURITY.md](SECURITY.md).
-
-## Release status
-
-`VERSION` records `1.5.0` (selected, unpublished). The current stable release is `v1.0.0`
-([GitHub Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.0.0));
-published prerelease history remains `v1.0.0-rc.1`. The current development
-line has progressed through accepted Phase G G1/G2 runtime work and H-ACT-V3
-preferred-authority promotion; this does not retag or rewrite the immutable
-`v1.0.0` release. Roadmap Phase G/H completion remains a broader scope question
-tracked separately in [ROADMAP.md](ROADMAP.md). Both release tags are immutable authorities; subsequent
-documentation status updates do not move them.
-
-## Project Overview
-
-This root README is the current product entry point. Engineering history,
-protocol acceptance, and prior M5/M6/M8 architecture remain available through
-[Project History](docs/PROJECT_HISTORY.md), the [Engineering history / protocol
-archive](docs/INDEX.md#engineering-history--protocol-archive), and
-[`docs/archive/`](docs/archive/), including the
-[`2026-06-30 historical README`](docs/archive/readme/README_20260630_M5LRM_ARCHITECTURE_CONVERGENCE.md).
-They are retained for audit and compatibility,
-not as a second current-product contract.
+security concerns using [SECURITY.md](SECURITY.md). Never commit credentials,
+tokens, cookies, or private market payloads.
 
 ## License
 

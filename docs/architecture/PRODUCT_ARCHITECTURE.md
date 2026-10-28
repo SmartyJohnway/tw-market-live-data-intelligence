@@ -35,11 +35,19 @@ flowchart TB
 - explicit missing/partial/failure/currentness semantics;
 - no trading.
 
-## Current Phase H shape
+## Current selected routing shape
 
-The architecture supports V3 Phase H contracts, but source activation remains
-incremental. The current active source set contains only the TPEx attention H1
-route. H2/H3 are not implicitly enabled by the architecture.
+Architecture support does not by itself activate a route. Current machine-readable
+Routing selects bounded executors for `current_observation`, `official_eod_reference`,
+`material_disclosures`, `monthly_revenue`, TPEx `trading_status_context`, TWSE/TPEX
+`market_state_context`, TWSE `index_futures_context`, TWSE/TPEX
+`cash_institutional_flow_context`, TWSE `recent_performance`, and TWSE
+`corporate_action_context`.
+
+Important non-executable boundaries remain explicit: `session_status` is blocked
+with no selected executor; `identity`, `source_currentness`, and `evidence_quality`
+are plan-only through this routing surface; TPEx recent-performance/corporate-action
+routes remain non-executable; and H1/H2 coverage remains intentionally partial.
 
 ## Historical architecture
 

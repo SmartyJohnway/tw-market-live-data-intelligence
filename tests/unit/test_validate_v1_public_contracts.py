@@ -16,6 +16,66 @@ def test_readme_validator_rejects_persistent_watchlist_contradiction(tmp_path) -
     )
 
 
+def test_readme_validator_accepts_v1_5_stable_published_status(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "\n".join(
+            (
+                "Persistent Watchlists are supported.",
+                "ProductVersion = `1.5.0`.",
+                "TW-Market `v1.5.0` is the current stable GitHub release.",
+                "History: `v1.0.0`, `v1.0.0-rc.1`, `v0.1.0`.",
+            )
+        ),
+        encoding="utf-8",
+    )
+    assert (
+        validate_v1_public_contracts.readme_current_product_truth_failures(
+            readme, current_product_version="1.5.0"
+        )
+        == []
+    )
+
+
+def test_readme_validator_rejects_v1_5_stable_with_unpublished_wording(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "\n".join(
+            (
+                "Persistent Watchlists are supported.",
+                "ProductVersion = `1.5.0`.",
+                "TW-Market `v1.5.0` is the current stable GitHub release.",
+                "History: `v1.0.0`, `v1.0.0-rc.1`, `v0.1.0`.",
+                "Selected `v1.5.0` is unpublished.",
+            )
+        ),
+        encoding="utf-8",
+    )
+    assert "readme_stale_v1_5_unpublished_status" in (
+        validate_v1_public_contracts.readme_current_product_truth_failures(
+            readme, current_product_version="1.5.0"
+        )
+    )
+
+
+def test_readme_validator_retains_explicit_historical_selected_unpublished_state(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "Persistent Watchlists are supported. ProductVersion = `1.5.0`. "
+        "Selected `v1.5.0` is unpublished. The current stable release is `v1.0.0`. "
+        "History: `v1.0.0-rc.1` and `v0.1.0`.",
+        encoding="utf-8",
+    )
+    assert (
+        validate_v1_public_contracts.readme_current_product_truth_failures(
+            readme,
+            current_product_version="1.5.0",
+            release_lifecycle_state="selected_unpublished",
+        )
+        == []
+    )
+
+
 def test_readme_validator_accepts_published_rc_status(tmp_path) -> None:
     readme = tmp_path / "README.md"
     readme.write_text(

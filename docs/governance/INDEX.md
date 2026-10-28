@@ -1,384 +1,104 @@
 # Governance Index
 
+This directory contains accepted governance, frozen contracts, closure records,
+and audit evidence. This page is navigation for **current governance state**;
+individual dated records retain the truth of their own gate and are not rewritten
+merely because later phases closed.
 
-## Current L7-A6-P0 merged state (2026-10-27)
+## Current governance state
 
-L7-A6-P0 release infrastructure readiness is **PASS**; independent review is **PASS**; Owner merge is **COMPLETE** and `merged: true`.
+As of 2026-10-28:
 
-- merge commit: `32fc28fc33cb19337bf8d8a2d2e857f978b31b4c`
-- merge tree: `5d30bd899978fa068d0b89de682a8ce5dcf9a8a2`
-- accepted head: `94be7102b046dab6e2a62d3735505402b3a838f6`
-- parents: `ddae25ee4c0539edc7f43073708113795a56e58b` and `94be7102b046dab6e2a62d3735505402b3a838f6`
-- PR #420 merged normally at `2026-10-27T04:09:39Z`.
+```text
+Stable product                 v1.5.0
+Frozen source commit           acaf726a5b59baee4c5a30521ea5a5d5ec0cec76
+Frozen source tree             d44f66dc154c21326ac8b105d2f15fd793f6071b
+Phase I                        COMPLETE
+Phase J                        COMPLETE
+Phase K                        COMPLETE
+Phase L                        CLOSED
+L7 canonical exits             29 / 29 PASS
+GitHub v1.5.0 publication      PASS
+Phase M                        NOT_AUTHORIZED
+```
 
-Canonical release-blocking CI remains `1895 passed / 0 failed / 4 contracted skips / 20 deselected / 386 guard events / 0 denials / 0 unexpected skips`; Portable validator remains `205 passed / 0 failed`. M6E legacy-route drift and M6G legacy-route drift are both `CLOSED_BY_R1`.
+Phase L final closure and A7 publication occurred after the frozen v1.5.0 source
+was established, so post-release current docs reconcile those accepted facts
+without modifying the frozen release commit/tree. See the Post-Phase-L F0 record:
 
-L7-A6 overall acceptance is **NOT_YET**; stable source and artifacts are not frozen. `L7-GAP-16`, `L7-GAP-17`, and `L7-GAP-18` remain **OPEN**. `L7-EXIT-16`, `L7-EXIT-20`, `L7-EXIT-21`, `L7-EXIT-22`, `L7-EXIT-23`, and `L7-EXIT-24` remain **NOT_YET_PASS**. ProductVersion is `1.5.0 selected / unpublished`; published stable is `v1.0.0`.
+- [Post-Phase-L F0 Frontdoor Information Architecture](post_phase_l/POST_PHASE_L_F0_FRONTDOOR_INFORMATION_ARCHITECTURE_2026-10-28.md)
 
-**A6-R1 is READY_FOR_SEPARATE_OWNER_AUTHORIZATION and NOT_STARTED by this reconciliation.** Its future scope is limited to the additive typed publication manifest, canonical v1.5.0 artifact-set decision, first-party SBOM final-RC binding, release notes/retained-limitations source, and stable-source self-reference avoidance contract. A7 is **NOT_AUTHORIZED**; stable publication is **NOT_AUTHORIZED**; Phase L is **NOT_CLOSED**; Phase M is **NOT_AUTHORIZED**.
+## Repository governance front doors
 
-## Current L7-A5 merged state (2026-10-27)
+- [PROJECT.md](../../PROJECT.md) — current project/product authority
+- [HANDOFF.md](../../HANDOFF.md) — current operational stopping point
+- [ROADMAP.md](../../ROADMAP.md) — durable Roadmap V3.2 scope
+- [AGENTS.md](../../AGENTS.md) — repository / AI working rules
+- [Documentation Index](../INDEX.md) — user/developer navigation
 
-L7-A5 is **OWNER-AUTHORIZED AND MERGED**. PR #418 normal-merged accepted head
-`70cafb61144afea0f0014563873004c8864822ac`, tree `16677e83c87efd1b7b3440711e527bf877899186`,
-at merge commit `a812e212cb710a869289a18b3e7a29c886a43512` on `2026-10-26T16:52:54Z`.
-Merge parents are prior canonical main `617ccea728befa2fd3ea7b847665072c0e728f00` and the exact accepted A5 head;
-GitHub merge verification is valid and all eight accepted A5 commits remain in ancestry.
+## Major governance areas
 
-A5 technical, independent and merge acceptance are **PASS**. `L7-GAP-15 = CLOSED`; `L7-EXIT-19 = PASS`.
-The GH2 temporal finding is `CLOSED_BY_R5_R5_1_R5_2_AND_GH5`; historical evidence remains immutable.
-ProductVersion remains **1.5.0 selected/unpublished**; published stable remains **v1.0.0**.
+### Phase H
 
-Post-merge reconciliation: [PHASE_L_L7_A5_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-27.md](phase_l/PHASE_L_L7_A5_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-27.md).
-Final A5 pre-merge reconciliation: [PHASE_L_L7_A5_FINAL_GOVERNANCE_RECONCILIATION_2026-10-26.md](phase_l/PHASE_L_L7_A5_FINAL_GOVERNANCE_RECONCILIATION_2026-10-26.md).
-GH5 historical evidence: [l7-a5-gh5-live-20261026T153216Z](phase_l/acceptance_runs/l7-a5-gh5-live-20261026T153216Z/manifest.json).
+Accepted interpretation/runtime evidence is under [`phase_h/`](phase_h/),
+including H1/H3 bounded route activation, selected-product live E2E, and V3
+promotion. Frozen records remain historical authority for their exact gate.
 
-**A6/A7, stable publication and Phase M remain NOT AUTHORIZED; Phase L remains NOT CLOSED.**
-A6 requires separate Owner authorization after this post-merge reconciliation is independently accepted and merged.
+### Phase I
 
-All subsequent dated milestone records are historical; their authorization/status statements describe those milestones only.
+Accepted I1/I2/I3 source contracts, bounded-live evidence, production activation,
+exit review and closure are under [`phase_i/`](phase_i/). Phase I is complete;
+current executability still comes from current Catalog / Routing / executor truth.
 
-## Current L7-A5 technical/live acceptance (2026-10-26)
+### Phase J
 
-L7-A0–A4 remain Owner-accepted and merged. L7-A5 technical/live acceptance is
-**PASS** and independent acceptance is **PASS**. R5/R5.1/R5.2 consolidated review
-is `L7_A5_R5_R5_1_R5_2_CONSOLIDATED_INDEPENDENT_REVIEW_PASS`; fresh GH5 review is
-`L7_A5_GH_TEMPORAL_PROVENANCE_LIVE_RECERTIFICATION_5_ACCEPTANCE_REVIEW_PASS`.
-The consolidated result is `L7_A5_R5_R5_1_R5_2_AND_GH5_CONSOLIDATED_ACCEPTANCE_PASS`.
+Integrated research acceptance and final closure are under
+[`phase_j/`](phase_j/). Historical harness/tool-policy limitations remain evidence;
+they do not automatically become current product defects.
 
-Exact accepted implementation input: HEAD `1d87d2b9301e7caf5976fcf4cd0b8ebc98866942`,
-tree `843d11de216924ea16fce39e38bdd5248295211c`.
-**L7-GAP-15 = CLOSED; L7-EXIT-19 = PASS.**
-`L7_A5_GH2_TEMPORAL_PROVENANCE_INVERSION = CLOSED_BY_R5_R5_1_R5_2_AND_GH5`;
-historical GH2 temporal failure/final-acceptance block remains unchanged.
+### Phase K
 
-A5 Owner merge acceptance is **PENDING**; A5 is **NOT MERGED**.
-ProductVersion remains **1.5.0 selected/unpublished**; published stable remains **v1.0.0**.
-**A6 and A7 are NOT AUTHORIZED. Stable publication and Phase M remain NOT AUTHORIZED.
-Phase L remains NOT CLOSED.** No A6/A7 exit criterion gains PASS here.
+Multi-agent compatibility governance and host-evaluation closure are under
+[`phase_k/`](phase_k/). Phase K completed with two native host passes, one bounded
+host limitation and zero product compatibility defects.
 
-Current A5 report: [PHASE_L_L7_A5_FINAL_GOVERNANCE_RECONCILIATION_2026-10-26.md](phase_l/PHASE_L_L7_A5_FINAL_GOVERNANCE_RECONCILIATION_2026-10-26.md).
+### Phase L
 
-Repository GH5 historical evidence: [l7-a5-gh5-live-20261026T153216Z](phase_l/acceptance_runs/l7-a5-gh5-live-20261026T153216Z/manifest.json).
+Production hardening / release governance is under [`phase_l/`](phase_l/).
+L0 was frozen; L1-L7 ultimately closed. L7 culminated in exact-source
+recertification, stable source/artifact freeze, GitHub v1.5.0 publication and
+Owner final Phase L closure.
 
-Next boundary: Review the exact A5 final governance-sealing candidate. If independently accepted, obtain explicit Owner authorization for push / PR / normal merge. Only after A5 is merged may L7-A6 be separately authorized.
+Phase M is not started and remains **NOT_AUTHORIZED**.
 
-All subsequent dated milestone records are historical; their authorization/status statements describe those milestones only.
+## Post-Phase-L documentation governance
 
-## Current L7-A4 merged state (2026-10-25)
+Current documentation-only maintenance is tracked under
+[`post_phase_l/`](post_phase_l/). Its purpose is to reconcile public/user/engineering
+frontdoors after the frozen v1.5.0 release without changing runtime behavior,
+release assets, Registry metadata, or Phase M authority.
 
-L7-A4 is **OWNER-ACCEPTED AND MERGED** under
-`L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_PASS`.
-Independent disposition is `L7_A4_INDEPENDENT_TECHNICAL_REVIEW_PASS`, review `5642080353`;
-Owner disposition is `L7_A4_OWNER_ACCEPTED_FOR_MERGE`, review `5642097513`.
-PR #416 normal-merged accepted head `902febc323b2fd568a2d00c00a18eac24f5ae655`, tree
-`d264f509efda2affbf13c3253363e1844651cc17`, at merge commit
-`28a22ffc206db425ffefa8e578bf5ef7dcdb1a19`; GitHub merge verification is valid.
+- [F0 frontdoor information architecture](post_phase_l/POST_PHASE_L_F0_FRONTDOOR_INFORMATION_ARCHITECTURE_2026-10-28.md)
+- [F5 documentation-only validation](post_phase_l/POST_PHASE_L_F5_DOCUMENTATION_ONLY_VALIDATION_2026-10-28.md)
+- [F5-R1 independent-review corrections](post_phase_l/POST_PHASE_L_F5_R1_INDEPENDENT_REVIEW_CORRECTIONS_2026-10-28.md)
 
-ProductVersion is **1.5.0 selected/unpublished**; published stable remains v1.0.0.
-Published Local Service v1 compatibility remains supported; current v2/exact-six remain supported;
-MCP SDK policy is exact `mcp==1.29.0`. GAP-13/14 are closed and only EXIT-08/09/10/14/15 gain A4 PASS.
-**L7-A5+, stable publication, Phase M and Phase L closure remain NOT AUTHORIZED.**
+The pre-F3 versions of the seven engineering-frontdoor files were preserved
+byte-for-byte before consolidation. See:
 
-Report: `phase_l/PHASE_L_L7_A4_PUBLIC_COMPATIBILITY_MCP_SDK_STABLE_VERSION_DECISION_2026-10-25.md`.
-Reconciliation: `phase_l/PHASE_L_L7_A4_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-25.md`.
-
-## Historical L7-A3 merged state (2026-10-25)
-
-L6 remains **CLOSED**. L7-A0, L7-A1, L7-A2 and L7-A3 are **OWNER-ACCEPTED AND MERGED**.
-L7-A3 technical disposition remains `L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_PASS`;
-independent disposition is `L7_A3_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
-`L7_A3_OWNER_ACCEPTED_FOR_MERGE`. Independent review is `5640713251`; provenance-review correction is
-`5640717276`; Owner acceptance review is `5640717621`.
-
-PR #414 normal-merged exact accepted head `3805b5542b03fc3e707aa9550ff7d0892d743cb6`, tree
-`ac178739d478f06b2ac6287633d30110a80b9970`, at merge commit `c06108e40930881f340e44ed61b45a42d8ceb046`.
-Merge parents are prior canonical main `5c62d6d8cc6c49b2803126aa2190a1778fa1d4ac` and the exact accepted A3 head;
-GitHub merge verification is valid. The independent-review checkout-v4 SHA transcription defect is corrected by
-review `5640717276`; repository/evidence bytes were already correct.
-
-Canonical release/build/CI Python is 3.13; independently proven 3.11 source/developer compatibility remains
-noncanonical and separately locked; Python 3.12 remains unsupported. Core dependency versions, MCP 1.29.0 and
-VERSION remain unchanged. Native reproducibility is byte-identical; Docker retains the accepted equal-content /
-explicit OCI metadata boundary. The canonical A1 gate remains 1895 passed / 0 failed / four contracted skips /
-zero guard denials, and the A2 release path was repeated successfully under the frozen A3 authority.
-
-L7-GAP-08/09 are CLOSED; GAP-10 is `ACCEPTED_WITH_EXPLICIT_REPRODUCIBILITY_BOUNDARY`; GAP-11 is
-`CLOSED_BY_EXPLICIT_POLICY`; GAP-12 is `HARDENED_WITH_HOSTED_RUNNER_PROVENANCE_BOUNDARY`. Only
-L7-EXIT-11/12/13/17/18 gain A3 PASS. Public/exact-six final compatibility acceptance remains deferred to A4.
-
-**L7-A4+ NOT AUTHORIZED. Stable release/publication NOT AUTHORIZED. Phase M NOT AUTHORIZED.
-Phase L NOT CLOSED.** This reconciliation is governance-only and does not start A4.
-
-Report: `docs/governance/phase_l/PHASE_L_L7_A3_DEPENDENCY_REPRODUCIBILITY_SUPPLY_CHAIN_CONTRACT_2026-10-25.md`.
-Evidence: `docs/governance/phase_l/acceptance_runs/l7-a3-20261024T182923Z/`.
-Reconciliation: `docs/governance/phase_l/PHASE_L_L7_A3_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-25.md`.
-
-## Historical L7-A2 merged state (2026-10-25)
-
-L6 remains **CLOSED**. L7-A0 and L7-A1 remain **OWNER-ACCEPTED AND MERGED**;
-A1 post-merge governance is reconciled at canonical entry `0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5`.
-L7-A2 is **OWNER-ACCEPTED AND MERGED** under
-`L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_PASS`.
-Independent review disposition is `L7_A2_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
-`L7_A2_OWNER_ACCEPTED_FOR_MERGE`.
-
-PR #412 normal-merged accepted head `56e418e9a22469f1c7ed8fbeda01cf7474e029de`,
-tree `dc91f58ec8a4b45733c3852036afd29d35986be3`, at merge commit
-`2219552d9817e11219c08b53e606d2969a368d02`. Merge parents are prior canonical main
-`0e903ba042df7fed63f2c0ccd1c82dd5a28b62b5` and the exact accepted A2 head; GitHub merge verification is valid.
-The bounded validator reproducibility correction is included in the accepted head; its prior review blocker is closed.
-
-Fresh clone, genuine Windows11 x64 guest, Native and Docker validation artifacts remain accepted;
-canonical A1 gate is 1895 passed / 0 failed / four contracted historical witness skips,
-with no unexpected skips/xfails or guard denials. GAP05/06/07 are CLOSED; GAP20 remains a retained
-nonblocking historical limitation with current A2 replacement/state-survival proof.
-Only EXIT04/05/06/07 gain A2 PASS; exact-six/public contracts remain preservation checks,
-with final L7 acceptance deferred. Existing A1 acceptance and immutable failed/TEMP evidence remain.
-
-**L7-A3+ NOT AUTHORIZED. Stable release/publication NOT AUTHORIZED.
-Phase M NOT AUTHORIZED. Phase L NOT CLOSED.** No dependency/support policy or VERSION changes.
-
-Report: `docs/governance/phase_l/PHASE_L_L7_A2_FRESH_CLONE_WINDOWS_NATIVE_DOCKER_RELEASE_VALIDATION_INTEGRATION_FINAL_2026-10-24.md`.
-Evidence: `docs/governance/phase_l/acceptance_runs/l7-a2-20261024T133622Z-final/`.
-Reconciliation: `docs/governance/phase_l/PHASE_L_L7_A2_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-25.md`.
-
-## Historical L7-A1 merged state (2026-10-24)
-
-L6 remains **CLOSED**; L7-A0 is **OWNER-ACCEPTED AND MERGED**, reconciled by
-PR #409 normal merge `405bf16f5f82f4d37062d036ca6815eba27f7c4d`.
-L7-A1 is **OWNER-ACCEPTED AND MERGED** under
-`L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_PASS`.
-Independent review disposition is `L7_A1_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
-`L7_A1_OWNER_ACCEPTED_FOR_MERGE`.
-
-PR #410 normal-merged accepted head `c2cdb66fb8d5e1a697f56a8c65de9f7313dafc14`,
-tree `f1105c640e749247c99ed23dd2e45c9432bb1b4a`, at merge commit
-`fe07765e67422dbad065cb5be8aad4ddb3d14914`. Merge parents are prior canonical main
-`405bf16f5f82f4d37062d036ca6815eba27f7c4d` and the exact accepted A1 head; GitHub merge verification is valid.
-
-Canonical `release-blocking-ci` v1 remains accepted at 1895 passed / 0 failed / four named optional
-historical artifact witnesses skipped; zero unexpected skips and guard denials. All 47 baseline
-failures remain finally adjudicated with DECISION_REQUIRED=0. DEFAULT_CI remains diagnostic FAIL;
-FULL_NON_NETWORK remains diagnostic FAIL at the preserved Windows `fcntl` collection boundary.
-
-Only L7-GAP-01/02/03/04 are CLOSED; only L7-EXIT-01/02/03/27 are PASS. The other 17 A0 gaps and
-25 final release criteria remain unaccepted. **L7-A2+ NOT AUTHORIZED. Stable release/publication
-NOT AUTHORIZED. Phase M NOT AUTHORIZED. Phase L NOT CLOSED.**
-
-Report: `docs/governance/phase_l/PHASE_L_L7_A1_DETERMINISTIC_REQUIRED_CI_AND_HISTORICAL_FAILURE_CLASSIFICATION_2026-10-24.md`.
-Reconciliation: `docs/governance/phase_l/PHASE_L_L7_A1_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-24.md`.
-Evidence: `docs/governance/phase_l/acceptance_runs/l7-a1-20261024T003128Z/`.
-
-## Historical L7-A0 merged state (2026-10-24)
-
-L6 remains **CLOSED** under `PHASE_L_L6_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`.
-L7 is **STARTED**. L7-A0 is **OWNER-ACCEPTED AND MERGED** under
-`L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_FROZEN`.
-Independent re-review disposition is `L7_A0_INDEPENDENT_REVIEW_PASS`; Owner disposition is
-`L7_A0_OWNER_ACCEPTED_FOR_MERGE`.
-
-PR #408 normal-merged accepted head `15d601a8ca98c4fd49577d7b1c7f8d038ad2b01f`,
-tree `34da9233c4f3acee39afe92c1e8c288d8544ca89`, at merge commit
-`37b6a836fd80addfd6a8cf03c3c6f19848b3e143`. Merge parents are prior canonical main
-`125188604126bcdbfcfea0f6421eae6a160e9085` and the exact accepted A0 head; GitHub merge verification is valid.
-
-The accepted A0 contract retains 15 L7 obligations, 21 owned gaps / 0 unowned gaps, and the
-canonical 29-item L7 exit contract. Default CI remains overall FAIL at 1245 passed / 45 failed /
-4 skipped / 5 deselected; expanded evidence remains overall FAIL at 525 passed / 2 historical
-assertions. Windows 11 x64 remains the release-blocking Native Tier-1 for L6/L7 under the accepted
-prospective supersession; historical L0-D03 remains unchanged.
-
-**L7-A1+ remains NOT AUTHORIZED. Stable release/publication remains NOT AUTHORIZED.
-Phase M remains NOT AUTHORIZED. Phase L remains NOT CLOSED.**
-
-Report: `docs/governance/phase_l/PHASE_L_L7_A0_CI_RELEASE_CURRENT_STATE_INVENTORY_AND_GOVERNANCE_CONTRACT_2026-10-23.md`.
-Reconciliation: `docs/governance/phase_l/PHASE_L_L7_A0_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-24.md`.
-Evidence: `docs/governance/phase_l/acceptance_runs/l7-a0-20261023T164344Z/`.
-
-## Historical L6 closure state ? CLOSED (2026-10-23)
-
-L6 is **CLOSED** under `PHASE_L_L6_OWNER_ACCEPTED_FINAL_CLOSURE_PASS`, following
-technical exit `PHASE_L_L6_EXIT_REVIEW_PASS`. L6-A6 is OWNER-ACCEPTED AND MERGED
-via PR #406 at normal merge `5a071013a5d0d333f32e1928a4d081904078197a`, tree
-`e29ff3fd71805fdeedcd647004e44434ae26f171`; the accepted A6 candidate is
-`4bf95ca87211e16e9c53a1a935cf731bdca5ebd3`. Independent review disposition is
-`L6_A6_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
-`L6_A6_OWNER_ACCEPTED_FOR_MERGE`.
-
-The accepted exit retains 23/23 L6 criteria PASS, unresolved A0 findings=0,
-unresolved A1 gaps=0, P1?P6 PASS, post-A5 product drift=0, exact-six MCP, and L2
-as the sole backup/verify/isolated-restore/migration authority. Default CI remains
-overall FAIL at 1245 passed / 45 failed / 4 skipped / 5 deselected on both base
-and candidate with candidate-only failures=0; expanded validation remains overall
-FAIL at 525 passed / 2 unchanged historical L5 scope assertions. Retained A6
-limitations remain visible and unchanged.
-
-No L6-A7 is created or authorized. **L7 remains NOT AUTHORIZED. Phase M remains
-NOT AUTHORIZED.** Release/signing/publication, image publication, installer work,
-and any new product capability remain outside this closure. Phase L itself is not
-closed because L7 has not been authorized or completed.
-
-Closure: `docs/governance/phase_l/PHASE_L_L6_OWNER_FINAL_CLOSURE_2026-10-23.md`.
-Technical review: `docs/governance/phase_l/PHASE_L_L6_A6_PACKAGING_PORTABILITY_TECHNICAL_EXIT_REVIEW_2026-10-23.md`.
-Evidence: `docs/governance/phase_l/acceptance_runs/l6-a6-20261023T141800Z/`.
-
-## Historical L6-A5 merged state (2026-10-23)
-
-L6-A5 is **OWNER-ACCEPTED AND MERGED**. Technical disposition is
-`L6_A5_INTEGRATED_P1_P6_PORTABILITY_ACCEPTANCE_PASS`; independent review is
-`L6_A5_INDEPENDENT_TECHNICAL_REVIEW_PASS`; Owner disposition is
-`L6_A5_OWNER_ACCEPTED_FOR_MERGE`. P1=PASS, P2=PASS, P3=PASS, P4=PASS,
-P5=PASS and P6=PASS.
-
-The accepted runtime/package source is `3707c553497240f6ff0f7e5358301395fd60205a`, tree
-`946e765b26b2520f623672dc49a51c913139f44f`. The exact accepted A5 candidate is `32bc480cccdd7eb394062ccfe34a44958fc56bf1`,
-tree `041f7c660a3fba40b84d5fbab869c2ee353919ac`. PR #404 normal-merged that exact candidate at
-`08bec63ec3d924d2c3b206ecc4fcc017b259ea75`, tree `041f7c660a3fba40b84d5fbab869c2ee353919ac`. Merge parents are prior canonical main
-`d5dac702c25e9728db86e9ef32f4fe8185086b89` and the accepted A5 candidate; GitHub merge verification is valid.
-
-Accepted artifact identities remain Native ZIP SHA-256 `6772e8c3550525ff0d952929c7e36cef4833e265936b0009b6d517152ab74e04`, Docker source
-image `sha256:2b25c1e54879b0761d3c0a3591236cb2a1f820c1530fee25f643ec93cf962675`, and Docker replacement image
-`sha256:98bafa33505e0d5f4c088e58949e388768b21b0a0741f4da5649eff539f91323`. Default CI remains FAIL at 1245 passed / 45 failed /
-4 skipped / 5 deselected on both exact base and final candidate, with identical failed-node
-sets and candidate-only regressions = 0. The expanded applicability suite remains
-525 passed / 2 unchanged historical L5 scope-assertion failures. No acceptance result is
-rerun or rewritten by this reconciliation.
-
-Phase L/L6 is **not closed**. L6-A6 technical exit review, L7, Phase M,
-installer/release work and image publication remain **NOT AUTHORIZED**. The next bounded
-action requires separate Owner authorization for L6-A6.
-
-See `docs/governance/phase_l/PHASE_L_L6_A5_INTEGRATED_P1_P6_PORTABILITY_ACCEPTANCE_2026-10-23.md`,
-`docs/governance/phase_l/acceptance_runs/l6-a5-20261023T132500Z/`, and
-`docs/governance/phase_l/PHASE_L_L6_A5_POST_MERGE_GOVERNANCE_RECONCILIATION_2026-10-23.md`.
-
-
-This directory contains repository governance and accepted gate evidence.
-
-## Current governance front door
-
-The repository-level governance authority is intentionally small:
-
-- [PROJECT.md](../../PROJECT.md) — current project/product truth
-- [ROADMAP.md](../../ROADMAP.md) — durable Roadmap V3.2
-- [HANDOFF.md](../../HANDOFF.md) — current operational state
-- [AGENTS.md](../../AGENTS.md) — repository working rules
-
-## Historical Phase L / L6-A4 disposition (2026-10-23)
-
-L6-A4 Docker Local Service Packaging is technically complete; Owner acceptance
-is pending. P6 is `IMPLEMENTED_A4 / FINAL_ACCEPTANCE_PENDING_A5`. L6-A5, L7 and
-Phase M remain unauthorized, and merge is not authorized. See the [A4 technical
-record](phase_l/PHASE_L_L6_A4_DOCKER_LOCAL_SERVICE_PACKAGING_2026-10-23.md) and
-[acceptance evidence](phase_l/acceptance_runs/l6-a4-20261023T061105Z/).
-
-## Current runtime governance
-
-Phase J remains not started. The [G/H/I integrated Phase J readiness preflight](phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.md)
-preserves all J.1 scenarios and records the product-intent realignment to a
-two-gap conversational-correctness HOLD;
-the [structured record](phase_j/PHASE_J_GHI_INTEGRATED_READINESS_PREFLIGHT_2026-10-05.json)
-is the validator input. The preflight makes no market acquisition or product
-activation.
-
-I2-A4 and I3-A4 production activation are Owner-accepted. I3 has two active
-official sources, one logical route, two runtime market registrations, active
-Unified V3 integration, and production evidence V2. PR #301 merged as
-`39e162fa9f0b321b23300b20bfac8ce096646b63`. A3 bounded-live evidence was
-sufficient for A4 closure; Phase I exit review passed, while Phase J remains
-unauthorized. MCP remains six tools.
-
-- [I2-A4 activation candidate and I2-ROLL-001 proof](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json)
-- [I2-A4 final production activation acceptance](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json)
-
-Current executable truth is governed by:
-
-- [Capability Catalog V3](../data_capabilities/unified_market_evidence_capability_catalog.v3.json)
-- [Routing Matrix V3](../data_capabilities/m8r_05b_capability_to_executor_routing_matrix.v3.json)
-- executor registry/configuration
-- current implementation and tests
-
-## Phase H accepted governance
-
-Key current/historical Phase H evidence:
-
-- [H-ACT-H1 TPEx attention acceptance](phase_h/PHASE_H_H_ACT_H1_TPEX_ATTENTION_ACCEPTANCE_LEDGER.json)
-- [H-ACT-H3 TWSE recent-performance final acceptance](phase_h/PHASE_H_H_ACT_H3_TWSE_RECENT_PERFORMANCE_ACCEPTANCE_LEDGER.json)
-- [H-ACC-7L selected-product live E2E](phase_h/PHASE_H_H_ACC_7L_SELECTED_PRODUCT_LIVE_E2E_LEDGER.json)
-- [H-ACT-V3 promotion preflight](phase_h/PHASE_H_H_ACT_V3_PROMOTION_PREFLIGHT_AND_AUTHORITY_IMPACT_INVENTORY.json)
-- [H-ACT-V3 promotion acceptance](phase_h/PHASE_H_H_ACT_V3_PROMOTION_ACCEPTANCE_LEDGER.json)
-- [H0-H implementation gate matrix](phase_h/PHASE_H_H0_H_IMPLEMENTATION_GATE_MATRIX.json)
-
-Frozen contracts/manifests under `phase_h/` remain immutable evidence of their
-accepted gate. They must not be rewritten merely because the current preferred
-runtime later changed.
-
-## Phase I accepted governance
-
-- [I2-A0 TAIFEX TX bounded preflight](phase_i/PHASE_I_I2_A0_TX_REGULAR_SESSION_GO_NO_GO_PREFLIGHT_2026-09-30.json)
-- [I2-A1 TX regular-session source/evidence contract (authoritative JSON)](phase_i/PHASE_I_I2_TX_REGULAR_SESSION_SOURCE_EVIDENCE_CONTRACT_2026-09-30_FROZEN.json)
-- [I2-A1 TX regular-session source/evidence contract (Markdown companion)](phase_i/Phase_I_I2_TX_Regular_Session_Source_Evidence_Contract_2026-09-30_FROZEN.md)
-- [I2-A1 Owner acceptance / merge authorization ledger](phase_i/PHASE_I_I2_A1_SOURCE_EVIDENCE_CONTRACT_ACCEPTANCE_LEDGER_2026-09-30.json)
-- [I2-A2 dormant offline implementation candidate](phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_CANDIDATE_2026-09-30.json)
-- [I2-A2 Owner acceptance / merge authorization ledger](phase_i/PHASE_I_I2_A2_DORMANT_OFFLINE_IMPLEMENTATION_ACCEPTANCE_LEDGER_2026-10-01.json)
-- [I2-A3 historical pre-network governed runner candidate](phase_i/PHASE_I_I2_A3_PRE_NETWORK_GOVERNED_RUNNER_CANDIDATE_2026-10-01.json)
-- [I2-A3 single-GET bounded live acceptance PASS](phase_i/PHASE_I_I2_A3_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-10-01.json)
-- [I2-A3 Owner acceptance / merge closure](phase_i/PHASE_I_I2_A3_OWNER_ACCEPTANCE_AND_MERGE_CLOSURE_2026-10-01.json)
-- [I2-A4 technical activation candidate / rollback proof](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-10-01.json)
-- [I2-A4 final production activation acceptance](phase_i/PHASE_I_I2_A4_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-10-01.json)
-- [I2 active source authority descriptor](../data_capabilities/phase_i_i2_source_authority.v1.json)(../data_capabilities/phase_i_i2_source_authority.v1.json)
-- [I1 frozen source contract](phase_i/PHASE_I_I1_MARKET_STATE_SOURCE_CONTRACT_2026-09-29_FROZEN.json)
-- [I1 bounded live acceptance](phase_i/PHASE_I_I1_BOUNDED_LIVE_ACCEPTANCE_LEDGER_2026-09-30.json)
-- [I1 technical activation candidate snapshot](phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_CANDIDATE_2026-09-30.json)
-- [I1 final production route activation acceptance](phase_i/PHASE_I_I1_PRODUCTION_ROUTE_ACTIVATION_ACCEPTANCE_LEDGER_2026-09-30.json)
-- [I3-A0 final source/timing/symmetry composite GO](phase_i/PHASE_I_I3_A0_FINAL_COMPOSITE_CLOSURE_2026-10-03.json)
-- [I3-A1 frozen cash institutional flow source/evidence contract](phase_i/PHASE_I_I3_A1_CASH_INSTITUTIONAL_FLOW_SOURCE_EVIDENCE_CONTRACT_2026-10-03_FROZEN.json)
-- [I3-A2-R1 offline optional-detail repair closure](phase_i/PHASE_I_I3_A2_R1_OPTIONAL_SOURCE_NATIVE_FAILURE_SEMANTICS_CLOSURE_2026-10-03.json)
-- [I3-A3 Attempt 4 accepted bounded-live evidence](phase_i/PHASE_I_I3_A3_ATTEMPT_4_BOUNDED_LIVE_ADAPTER_ACCEPTANCE_2026-10-04.json)
-- [I3-A3-R4 post-live lifecycle and independent-review candidate](phase_i/PHASE_I_I3_A3_R4_ATTEMPT_4_POST_LIVE_LIFECYCLE_AND_INDEPENDENT_REVIEW_CLOSURE_2026-10-04.json)
-- [I3-A3 Owner final acceptance closure](phase_i/PHASE_I_I3_A3_OWNER_FINAL_ACCEPTANCE_CLOSURE_2026-10-04.json)
-- [I3-A3 final merge / I3-A4 preflight transition](phase_i/PHASE_I_I3_A3_FINAL_MERGE_AND_A4_PREFLIGHT_TRANSITION_2026-10-04.json)
-- [I3-A4 production evidence V2 decision](phase_i/PHASE_I_I3_A4_PRODUCTION_EVIDENCE_V2_DECISION_2026-10-04.json)
-- [I3-A4 technical activation candidate](phase_i/PHASE_I_I3_A4_TECHNICAL_ACTIVATION_CANDIDATE_2026-10-04.json)
-- [I3-A4 bounded production activation implementation](phase_i/PHASE_I_I3_A4_BOUNDED_PRODUCTION_ACTIVATION_2026-10-05.json)
-- [I3-A4 portable lineage sync repair](phase_i/PHASE_I_I3_A4_ACTIVATION_ACCEPTANCE_R1_PORTABLE_LINEAGE_SYNC_2026-10-05.json)
-- [I3-A4 final Owner acceptance and closure](phase_i/PHASE_I_I3_A4_FINAL_OWNER_ACCEPTANCE_AND_CLOSURE_2026-10-05.json)
-- [Phase I final exit review](phase_i/PHASE_I_FINAL_EXIT_REVIEW_2026-10-05.json)
-- [Phase I final closure](phase_i/PHASE_I_FINAL_CLOSURE_2026-10-05.json)
-
-Technical-candidate records remain historical. The final I1/I2/I3 acceptance
-ledgers govern their respective capabilities; the Phase I exit review and
-closure record the completed Roadmap Phase I scope.
-
-I2-A0 is accepted preflight evidence. I2-A1 source/evidence contract, I2-A2
-dormant implementation, and I2-A3 bounded-live acceptance are accepted historical
-gates. I2-A4 production activation is independently reviewed and Owner-accepted:
-the selected executor is `phase_i_i2_index_futures_context_executor`, with one
-active TAIFEX source and one normal approval-gated TWSE production route.
-`I2-ROLL-001` preserves deterministic rollback to `7ffbdf7f...`. The earlier
-unused I2 live authority is superseded_without_use. I3-A3 bounded-live adapter
-acceptance is independently reviewed and Owner-accepted. Attempts 1–3 remain
-historical HOLD outcomes; Attempt 4 is accepted PASS. I3-A4 technical candidate
-implementation including production evidence V2 and Public V3 integration is
-now production-active, Owner-accepted, and merged on PR #301: two official
-sources, one logical route, and two runtime market registrations. A3 evidence
-was sufficient; final A4 closure performed no market GET. Phase I exit review
-passed; Phase J remains unauthorized. MCP remains exactly six tools.
+- [`../archive/frontdoor/2026-10-28-pre-f3/`](../archive/frontdoor/2026-10-28-pre-f3/)
 
 ## Governance policy
 
 - [Governance policy manifest](governance_policy_manifest.json)
 - [Workflow policy matrix](workflow_policy_matrix.json)
 
-## Documentation lifecycle
-
-Use four classes:
+Use four documentation classes:
 
 1. **CURRENT** — current product/runtime/navigation.
 2. **FROZEN CONTRACT** — accepted contract/gate authority.
 3. **HISTORICAL EVIDENCE** — earlier milestone truth.
-4. **ARCHIVE** — superseded navigation/planning material.
+4. **ARCHIVE** — superseded navigation/planning material retained for history.
 
 A historical statement is not a current-status bug unless the document is still
-presented as a current authority.
+presented as a current authority. Never mass-rewrite historical ledgers to make
+them match a later state.

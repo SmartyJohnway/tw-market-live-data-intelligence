@@ -101,8 +101,9 @@ capability catalog says so; a capability boundary is not a source outage.
 For V3 trading-status context, only explicitly activated source routes execute.
 The current H1 product slice is intentionally partial: the selected TPEx H1 composite covers attention/disposition; cmode marker
 semantics remain unresolved with zero canonical coverage. Suspension, resumption
-and changed-trading types remain uncovered. Corporate-action context and recent-performance execution
-remain blocked or plan-only where current routing says so.
+and changed-trading types remain uncovered. `recent_performance` and
+`corporate_action_context` now have selected bounded TWSE routes, but TPEx remains
+non-executable for those capabilities and corporate-action coverage is subtype-limited.
 
 For an eligible TWSE/TPEX company common share, `material_disclosures` returns
 at most 50 items from the latest completed official daily batch. A healthy
