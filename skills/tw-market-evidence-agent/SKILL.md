@@ -105,9 +105,9 @@ required clarification.
 - `trading_status_context` is V3-native but the selected TPEx H1 composite route executes with attention/disposition
   coverage; cmode marker semantics remain unresolved with zero canonical coverage.
   Suspension, resumption and changed-trading coverage remain uncovered. Do not convert partial H1 coverage into a complete market-status claim.
-- `corporate_action_context` and `recent_performance` remain non-executable
-  where current Catalog/Route authority says plan-only or blocked; V3 preferred
-  does not override those states.
+- `recent_performance` and `corporate_action_context` have selected bounded TWSE
+  routes. TPEx remains non-executable for those capabilities, and corporate-action
+  coverage remains subtype-limited; V3 preferred never overrides route scope.
 - Both research capabilities are limited to eligible TWSE/TPEX
   `company_share`/`common_share` targets. There is no arbitrary history,
   realtime research guarantee, or executable `financial_summary` capability.

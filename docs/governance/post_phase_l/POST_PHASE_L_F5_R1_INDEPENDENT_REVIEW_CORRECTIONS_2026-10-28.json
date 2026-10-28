@@ -1,0 +1,63 @@
+{
+  "schema": "post_phase_l_f5_r1_independent_review_corrections.v1",
+  "status": "CANDIDATE_COMPLETE_CORRECTION_GATE_PASS",
+  "baseline": {
+    "commit": "acaf726a5b59baee4c5a30521ea5a5d5ec0cec76",
+    "tree": "d44f66dc154c21326ac8b105d2f15fd793f6071b"
+  },
+  "parent_independent_review": {
+    "decision": "BLOCKED_PENDING_TARGETED_DOCUMENTATION_CORRECTIONS",
+    "evidence_sha256": "b6141c818e4502477c274ac1b0aca2ceeaa78dc7a0b1cecf698142b4cb47d375"
+  },
+  "findings": {
+    "IR-001": {
+      "status": "CLOSED",
+      "resolution": "governance-frozen/SHA-256-verified wording; GitHub immutable=false retained explicitly"
+    },
+    "IR-002": {
+      "status": "CLOSED",
+      "resolution": "AGENTS.md ASCII question-mark substitutions restored to em/en dash punctuation"
+    },
+    "IR-003": {
+      "status": "CLOSED",
+      "resolution": "bilingual README Native/MCPB/source Choose-your-path plus 60-second Quick Start pointer"
+    }
+  },
+  "validation": {
+    "targeted_finding_checks": "PASS",
+    "validate_v1_front_door": "PASS",
+    "validate_v1_public_contracts": "PASS",
+    "current_local_links": "118/118 PASS",
+    "git_diff_check": "PASS",
+    "preserved_surfaces_zero_diff": true,
+    "focused_regression": "141/141 PASS",
+    "github_live_release": {
+      "tag": "v1.5.0",
+      "draft": false,
+      "prerelease": false,
+      "immutable": false,
+      "asset_count": 6
+    }
+  },
+  "touched_surface_sha256": {
+    "README.md": "ee11d5a52779e53ea8ddea6585203a964bb94e6712b45491ec4db17cbdd24b09",
+    "README.zh-TW.md": "39b28f257404f3242851520197a9f5314ccbf71493476aba9275a7a7a883880d",
+    "HANDOFF.md": "becdf4cc3df65eefd2ab63d6677d237067ce25c2c148c60388303e184eb26cd9",
+    "AGENTS.md": "5f052d52a0cf2d9271b20bd60dbd80ef0234a92980fe4d3e7be8fce82c004ef2",
+    "docs/distribution/MCP_DISTRIBUTION.md": "bf448c7a8703bac10e697266c55b9db4a770fc5454d0fcf673a45ac3a0585e4e",
+    "docs/PROJECT_HISTORY.md": "52a06fdb9ec19cf852e6302956ba404fcdf3a324c83cd0f4660dfd678db6ae4e",
+    "docs/governance/INDEX.md": "3f08211d3a23c8bbd016ff8f28515dc6deb3446e3aa58bcca28dae2c1894a5c8",
+    "docs/governance/post_phase_l/POST_PHASE_L_F5_DOCUMENTATION_ONLY_VALIDATION_2026-10-28.md": "b7dcbf30e9a57d74173952fca78200ef723bad2d2e59810aeac4493e26cd992f",
+    "docs/governance/post_phase_l/POST_PHASE_L_F5_R1_INDEPENDENT_REVIEW_CORRECTIONS_2026-10-28.md": "3584f776326b7cf33a45a12c760b2853f8565adeebc9557fb64a602b27ac2bfa"
+  },
+  "boundaries": {
+    "runtime_product_behavior_changed": false,
+    "v1_5_0_release_changed": false,
+    "mcp_registry_changed": false,
+    "phase_m_started": false,
+    "commit_performed": false,
+    "push_performed": false,
+    "pr_performed": false
+  },
+  "next_gate": "CUMULATIVE_INDEPENDENT_RE_REVIEW_REQUIRED"
+}
