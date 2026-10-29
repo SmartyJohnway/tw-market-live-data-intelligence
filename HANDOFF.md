@@ -6,7 +6,7 @@ It is intentionally short. Historical root snapshots are preserved under
 
 ## Current status
 
-Date: **2026-10-28**
+Date: **2026-10-29**
 
 ```text
 Stable product                  v1.5.0
@@ -35,28 +35,48 @@ PR #423                          MERGED
 
 Current authorized workstream:
 
-> **Post-v1.5 Productization & Stabilization — P0 Current-state Reconciliation**
+> **Post-v1.5 Productization & Stabilization — P1 Windows Launcher / First-run UX**
 
-P0 is bounded to current-authority/documentation projection reconciliation. It
-must not change selected executors, runtime behavior, frozen v1.5.0 release
-identity, Registry publication state, or Phase M authority. P1–P5 remain planned
-follow-on tranches and are not entered by P0 alone.
+P0 Current-state Reconciliation is complete. Its accepted six-file correction
+candidate was independently re-reviewed as `ACCEPT_WITH_NOTES`, committed as
+`430d320784d5249508c37bbd6e8272732bf63ee8`, and pushed to `origin/main`.
 
-P0-R1 status: **CORRECTION_CANDIDATE_COMPLETE**. The first independent review
-identified three current-surface reconciliation defects; R1 corrected all three:
-exact Catalog-status projection for `trading_status_context`, completed/historical
-wording for the Post-Phase-L governance section, and the stale current-workstream
-boundary in `AGENTS.md`. Current frontdoors and the human capability matrix now
-align with the merged state and current Catalog/Routing truth. Existing
-frontdoor/public-contract/runtime-skill/portable/product-version and L5
-publication-conformance validators all pass.
+P1-A0 Existing Windows Native Launcher / Runtime Architecture Audit is complete.
+P1-A1 First-run / Setup UX Contract is **OWNER_FROZEN** on 2026-10-29. The frozen
+contract selects the P1-Minimal model: a thin Windows Launcher orchestrates the
+existing bootstrap and lifecycle authority; external CPython 3.13 x64 remains a
+prerequisite, but the operator is not required to type Python commands. Setup has
+zero automatic external network activity and does not acquire market data, update
+Security Master, start Local Runtime, open Workbench, start MCP, or auto-repair /
+delete existing runtime or business state.
+
+P1-A2 — Daily Main Launcher / Runtime Control UX Contract is **OWNER_FROZEN** on
+2026-10-29 after Owner review accepted it with zero blockers. It freezes the
+normalized daily runtime states, explicit Start/Stop/Refresh/Diagnose controls,
+validated loopback-only Workbench opening, status-only Security Master/MCP
+projections, and no timer-based background polling.
+
+P1-A3 — Minimal Windows Launcher Implementation first reached an uncommitted
+closure candidate and received an independent `CHANGES_REQUIRED` review. The
+bounded **P1-A3-R1** correction then received an independent re-review that was
+also `CHANGES_REQUIRED`. The bounded **P1-A3-R2** correction closed the two
+remaining defects without scope expansion. Deterministic P1-A3/lifecycle/package
+revalidation is `97 passed`. Exact-current Windows Sandbox **R5** headless
+lifecycle + fresh interactive GUI acceptance passed against launcher SHA-256
+`96f9cbaeaf61d7292aa5ff0e783e32e8d17689056ce8dfdbfa60eedf1e299aa5`.
+A separate interactive R5 failure-path probe also verified Setup failure preserves
+`SETUP_BLOCKED / EXISTING_STATE_REQUIRES_EXPLICIT_TRANSFER` in Technical Details.
+A fresh Codex independent re-review of R2/R5 returned `PASS_WITH_NOTES` with zero
+blocking findings. Owner then explicitly authorized the controlled commit/push.
+P1-A3-R2 implementation, tests, R1–R5 evidence and post-v1.5 governance were
+committed and pushed to `main` as `3059531b7cb02bede681938228a0f258b8b5b9d9`.
+v1.5.0 release authority remains unchanged.
 
 P0 also identified one protected machine-authority summary debt: the Catalog V3
 top-level `known_limitations` summary still contains stale H1/H2 wording even
 though the capability entries and V3 Routing contain the later selected-route
-truth. P0 deliberately does **not** modify that Catalog text because the L5/A4
-publication-conformance gate classifies such a Catalog change as a separately
-governed semantic-authority mutation.
+truth. The debt remains deferred; do **not** bypass the L5/A4 semantic-authority
+gate merely to make summary wording look current.
 
 ## Current product/runtime truth to preserve
 
@@ -76,14 +96,17 @@ release; Registry publication remains separate.
 
 ## Allowed next work
 
-P0-R1 correction is candidate-complete. The next bounded step is an independent
-re-review of this six-file current-authority/reference diff. Commit, push, and PR
-remain separate authorization decisions.
+P1-A1 and P1-A2 are Owner-frozen. P1-A3-R1 independent re-review returned
+`CHANGES_REQUIRED`; bounded P1-A3-R2 corrections, `97 passed` deterministic
+revalidation, exact-current R5 headless + fresh GUI acceptance, targeted GUI
+failure-details acceptance, and the fresh P1-A3-R2 independent re-review are now
+complete. The independent disposition is `PASS_WITH_NOTES` with zero blocking
+findings. Owner authorized controlled commit/push, and the P1-A3-R2 implementation
+commit `3059531b7cb02bede681938228a0f258b8b5b9d9` is now present on `origin/main`.
 
-Do not begin P1 until the corrected P0 diff is accepted. The protected Catalog V3
-summary debt identified above also requires a separate governance decision if it
-is to be changed; do not bypass the L5/A4 semantic-authority gate merely to make
-summary wording look current.
+P1-A3-R2 does not authorize release mutation, Security Master live update UX,
+ChatGPT/tunnel integration, a persistent MCP daemon, P2–P5, or Phase M. The
+protected Catalog V3 summary debt also remains separately governed and deferred.
 
 Later post-release work may advance `main` beyond the frozen v1.5.0 commit. It
 must not mutate the v1.5.0 tag, release assets, or claim those later changes are

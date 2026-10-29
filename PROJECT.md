@@ -116,11 +116,26 @@ comes from the machine-readable Catalog / Routing / executor authority.
 - Phase M: **NOT_AUTHORIZED**.
 
 The current authorized workstream is **Post-v1.5 Productization & Stabilization**.
-The active bounded tranche is **P0 — Current-state Reconciliation**: align current
-project/frontdoor/capability projections with the already-accepted machine routing
-and the merged Post-Phase-L state. P0 does not activate new routes, change runtime
-behavior, mutate frozen v1.5.0 release authority, or authorize Phase M. P1–P5 are
-planned follow-on productization/stabilization tranches and are not entered by P0.
+P0 — Current-state Reconciliation is complete and was committed/pushed to `main`
+as `430d320784d5249508c37bbd6e8272732bf63ee8` after independent re-review.
+
+The active productization tranche is **P1 — Windows Launcher / First-run UX**.
+P1-A0 architecture audit is complete. P1-A1 First-run / Setup UX Contract and
+P1-A2 Daily Main Launcher / Runtime Control UX Contract are both **OWNER_FROZEN**
+on 2026-10-29. The first independent review of P1-A3 returned
+`CHANGES_REQUIRED`; the bounded P1-A3-R1 correction then received an independent
+re-review that was also `CHANGES_REQUIRED`. The bounded **P1-A3-R2** correction
+closed the two remaining defects; deterministic P1-A3/lifecycle/package
+revalidation is `97 passed`. Exact-current Windows Sandbox **R5** headless
+lifecycle + fresh interactive GUI acceptance passed against launcher SHA-256
+`96f9cbaeaf61d7292aa5ff0e783e32e8d17689056ce8dfdbfa60eedf1e299aa5`, and a
+separate interactive failure-path probe verified Setup failure Technical Details
+remains `SETUP_BLOCKED / EXISTING_STATE_REQUIRES_EXPLICIT_TRANSFER`. A fresh
+Codex independent re-review of P1-A3-R2/R5 returned **PASS_WITH_NOTES** with zero
+blocking findings. Owner then explicitly authorized the controlled commit/push.
+P1-A3-R2 implementation, tests, R1–R5 evidence and post-v1.5 governance were
+committed and pushed to `main` as `3059531b7cb02bede681938228a0f258b8b5b9d9`.
+P2–P5 remain later bounded tranches and Phase M remains separately unauthorized.
 
 ## Current authority hierarchy
 

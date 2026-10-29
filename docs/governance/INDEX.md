@@ -7,7 +7,7 @@ merely because later phases closed.
 
 ## Current governance state
 
-As of 2026-10-28:
+As of 2026-10-29:
 
 ```text
 Stable product                 v1.5.0
@@ -29,10 +29,33 @@ maintenance tranche was subsequently merged through PR #423 to `main` at
 `b86ae52a2f43f53fd854e9d84cfde1c80050dcc9`.
 
 The current authorized post-release workstream is **Post-v1.5 Productization &
-Stabilization**. Only **P0 — Current-state Reconciliation** is active here; P1–P5
-remain planned follow-on tranches and Phase M remains NOT_AUTHORIZED.
+Stabilization**. P0 Current-state Reconciliation is complete. **P1 — Windows
+Launcher / First-run UX** is active: P1-A0 audit is complete, and both P1-A1
+First-run / Setup UX Contract and P1-A2 Daily Main Launcher / Runtime Control UX
+Contract are Owner-frozen. The first P1-A3 independent review and the subsequent
+P1-A3-R1 independent re-review both returned `CHANGES_REQUIRED`. Bounded
+P1-A3-R2 corrections are complete, deterministic revalidation is `97 passed`, and
+exact-current Windows Sandbox R5 headless lifecycle + fresh interactive GUI +
+targeted failure-details acceptance passed. The fresh P1-A3-R2 independent
+re-review returned `PASS_WITH_NOTES` with zero blocking findings. Owner then
+explicitly authorized controlled commit/push; P1-A3-R2 implementation, tests,
+preserved R1–R5 evidence and post-v1.5 governance were committed and pushed as
+`3059531b7cb02bede681938228a0f258b8b5b9d9`. P2–P5 remain later tranches and
+Phase M remains NOT_AUTHORIZED.
 
-See the Post-Phase-L F0 record:
+Current post-v1.5 governance:
+
+- [P1-A1 First-run / Setup UX Contract — FROZEN](post_v1_5/POST_V1_5_P1_A1_FIRST_RUN_SETUP_UX_CONTRACT_FROZEN_2026-10-29.md)
+- [P1-A2 Daily Main Launcher / Runtime Control UX Contract — FROZEN](post_v1_5/POST_V1_5_P1_A2_DAILY_MAIN_LAUNCHER_RUNTIME_CONTROL_UX_CONTRACT_FROZEN_2026-10-29.md)
+- [P1-A3 Minimal Windows Launcher Implementation Closure — initial pre-review record](post_v1_5/POST_V1_5_P1_A3_MINIMAL_WINDOWS_LAUNCHER_IMPLEMENTATION_CLOSURE_2026-10-29.md)
+- [P1-A3 Independent Review Disposition — CHANGES_REQUIRED](post_v1_5/POST_V1_5_P1_A3_INDEPENDENT_REVIEW_DISPOSITION_2026-10-29.md)
+- [P1-A3-R1 Bounded Correction and R4 Recertification — historical corrected candidate](post_v1_5/POST_V1_5_P1_A3_R1_BOUNDED_CORRECTION_R4_RECERTIFICATION_2026-10-29.md)
+- [P1-A3-R1 Independent Re-review Disposition — CHANGES_REQUIRED](post_v1_5/POST_V1_5_P1_A3_R1_INDEPENDENT_RE_REVIEW_DISPOSITION_2026-10-29.md)
+- [P1-A3-R2 Bounded Correction and R5 Recertification — historical pre-review closure](post_v1_5/POST_V1_5_P1_A3_R2_BOUNDED_CORRECTION_R5_RECERTIFICATION_2026-10-29.md)
+- [P1-A3-R2 Independent Re-review Disposition — PASS_WITH_NOTES / implementation committed and pushed](post_v1_5/POST_V1_5_P1_A3_R2_INDEPENDENT_RE_REVIEW_DISPOSITION_2026-10-29.md)
+- P1-A3 durable Sandbox evidence (R1–R5 preserved): [`../acceptance_runs/post_v1_5/p1_a3/`](../acceptance_runs/post_v1_5/p1_a3/)
+
+Completed Post-Phase-L frontdoor governance begins with:
 
 - [Post-Phase-L F0 Frontdoor Information Architecture](post_phase_l/POST_PHASE_L_F0_FRONTDOOR_INFORMATION_ARCHITECTURE_2026-10-28.md)
 

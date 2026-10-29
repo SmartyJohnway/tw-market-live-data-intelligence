@@ -1,6 +1,6 @@
 # AGENTS.md — Repository Governance and AI Collaboration Contract
 
-## Current repository boundary (2026-10-28)
+## Current repository boundary (2026-10-29)
 
 TW-Market stable `v1.5.0` is published from frozen source commit
 `acaf726a5b59baee4c5a30521ea5a5d5ec0cec76`, tree
@@ -9,10 +9,20 @@ TW-Market stable `v1.5.0` is published from frozen source commit
 GitHub stable release, and Owner final closure was accepted.
 
 Phase M remains **NOT_AUTHORIZED**. The current authorized workstream is
-**Post-v1.5 Productization & Stabilization**, with **P0 — Current-state
-Reconciliation** as the active bounded tranche. P0 may reconcile current
-frontdoor/reference projections but must not redefine v1.5.0, alter runtime or
-machine authority, or start P1–P5 without separate authorization.
+**Post-v1.5 Productization & Stabilization**, with **P1 — Windows Launcher /
+First-run UX** as the active productization tranche. P0 Current-state
+Reconciliation is complete. P1-A0 architecture audit is complete; P1-A1 First-run
+/ Setup UX Contract and P1-A2 Daily Main Launcher / Runtime Control UX Contract
+are both Owner-frozen. The first independent review of P1-A3 returned
+`CHANGES_REQUIRED`, and the P1-A3-R1 independent re-review also returned
+`CHANGES_REQUIRED`. Bounded P1-A3-R2 corrections, `97 passed` deterministic
+revalidation, and exact-current Windows Sandbox R5 headless + fresh GUI +
+targeted failure-details acceptance are complete. A fresh Codex P1-A3-R2
+independent re-review returned `PASS_WITH_NOTES` with zero blocking findings.
+Owner then explicitly authorized controlled commit/push; P1-A3-R2 implementation,
+tests, preserved R1–R5 evidence and post-v1.5 governance were committed and pushed
+as `3059531b7cb02bede681938228a0f258b8b5b9d9`. P2–P5 remain separately bounded
+follow-on work.
 
 ## 1. Read this repository in the right order
 
@@ -79,9 +89,15 @@ roadmap coverage must not be inferred from individual route activations.
 Current executable truth remains the machine-readable Catalog / Routing /
 executor configuration.
 
-The current P0 reconciliation tranche does not reopen Phase L, start Phase M,
-authorize new live acquisition, alter release/Registry authority, or enter the
-later P1–P5 productization/stabilization tranches.
+The current P1 launcher tranche does not reopen Phase L, start Phase M,
+authorize new live acquisition, alter release/Registry authority, or enter later
+P2–P5 productization/stabilization work. P1-A1 and P1-A2 are Owner-frozen design
+contracts. P1-A3-R1 independent re-review returned `CHANGES_REQUIRED`; bounded
+P1-A3-R2 corrections, 97-test deterministic revalidation, and R5 headless + fresh
+GUI + targeted failure-details recertification are complete. The fresh P1-A3-R2
+independent re-review returned `PASS_WITH_NOTES` with zero blocking findings.
+Owner subsequently authorized controlled commit/push, and implementation commit
+`3059531b7cb02bede681938228a0f258b8b5b9d9` is present on `origin/main`.
 
 ## 5. Authority hierarchy
 
@@ -327,10 +343,17 @@ important audit evidence.
 > **Phase L is CLOSED. Phase M is NOT_AUTHORIZED.**
 
 Current work is limited to the separately authorized **Post-v1.5 Productization &
-Stabilization — P0 Current-state Reconciliation** tranche. Preserve all accepted
-runtime, release, source and historical evidence unless a later explicit
-authorization changes that authority. P1–P5 and Phase M remain outside the
-current authorization.
+Stabilization — P1 Windows Launcher / First-run UX** tranche. P1-A1 and P1-A2 are
+Owner-frozen design contracts. P1-A3-R1 independent re-review returned
+`CHANGES_REQUIRED`; bounded P1-A3-R2 corrections, `97 passed` deterministic
+revalidation, and exact-current Windows Sandbox R5 headless + fresh GUI +
+targeted failure-details acceptance are complete. The fresh P1-A3-R2 independent
+re-review returned `PASS_WITH_NOTES` with zero blocking findings. Owner then
+explicitly authorized controlled commit/push; implementation commit
+`3059531b7cb02bede681938228a0f258b8b5b9d9` is present on `origin/main`.
+Preserve all accepted runtime, release, source and historical evidence unless a
+later explicit authorization changes that authority. P2–P5 and Phase M remain
+outside the current authorization.
 
 Do not:
 
