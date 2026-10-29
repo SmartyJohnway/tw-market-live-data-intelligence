@@ -1,0 +1,11 @@
+﻿{
+    "schema":  "p1-a3-acceptance-overlay.v1",
+    "classification":  "NOT_RELEASE_ARTIFACT",
+    "base_release":  "v1.5.0",
+    "base_zip_sha256":  "dd2098d094e1ea2373d68f535694cdaefd7483ea82896783444f9ae74bf2ea67",
+    "base_source_commit":  "acaf726a5b59baee4c5a30521ea5a5d5ec0cec76",
+    "working_tree_base_head":  "430d320784d5249508c37bbd6e8272732bf63ee8",
+    "working_tree_snapshot_sha256":  "e41098a1e46bf16aeeb48133c6b54fc24a0ba54fb5db220c98e6cfe2e9e12ec1",
+    "purpose":  "Windows Sandbox acceptance of P1-A3 launcher over frozen v1.5.0 Native runtime base",
+    "release_authority":  false
+}

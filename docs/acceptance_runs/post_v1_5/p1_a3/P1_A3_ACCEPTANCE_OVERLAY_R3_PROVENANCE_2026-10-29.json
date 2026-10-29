@@ -1,0 +1,38 @@
+{
+  "schema": "p1-a3-acceptance-overlay.v1",
+  "classification": "NOT_RELEASE_ARTIFACT",
+  "base_release": "v1.5.0",
+  "base_zip_sha256": "dd2098d094e1ea2373d68f535694cdaefd7483ea82896783444f9ae74bf2ea67",
+  "base_source_commit": "acaf726a5b59baee4c5a30521ea5a5d5ec0cec76",
+  "working_tree_base_head": "430d320784d5249508c37bbd6e8272732bf63ee8",
+  "working_tree_snapshot_sha256": "94ecd54444d911e2abb0154590b6063cc370c57260b5d55925410c2d13fd921e",
+  "working_tree_snapshot_members": [
+    {
+      "path": "packaging_native/launchers/Launch-TW-Market.cmd",
+      "bytes": 238,
+      "sha256": "8cdfad2f8e86e9c91b9aac89216b8e5bd817dbf3476407de2e8269fdcb5914ca"
+    },
+    {
+      "path": "packaging_native/launchers/tw-market-launcher.ps1",
+      "bytes": 26052,
+      "sha256": "04be1dfd090b6509584ff41d0c247a9ccdbaf165d4098c5c347ddccd1f0b8389"
+    },
+    {
+      "path": "packaging_native/README-PACKAGE.md",
+      "bytes": 2354,
+      "sha256": "fdf0851d7bf327ea5d41009accb60dc7bc4d0d18dd5e38c8ecd0e2e72d489fb4"
+    },
+    {
+      "path": "packaging_native/resource-policy.json",
+      "bytes": 77230,
+      "sha256": "91415ef107721904ce5d4824c62359f98c980dbb5852d51ab1c8edc4f67bdcdb"
+    },
+    {
+      "path": "tests/unit/test_p1_a3_windows_launcher.py",
+      "bytes": 5880,
+      "sha256": "4ad3a4d3cc23a0ae08c2f79509202a6fe7926f6f547b7a7b517aacb718aaa637"
+    }
+  ],
+  "purpose": "Windows Sandbox recertification of the exact current P1-A3 launcher candidate over frozen v1.5.0 Native runtime base",
+  "release_authority": false
+}

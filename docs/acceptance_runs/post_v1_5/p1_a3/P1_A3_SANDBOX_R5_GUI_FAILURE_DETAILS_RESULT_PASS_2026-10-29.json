@@ -1,0 +1,17 @@
+﻿{
+    "schema":  "p1-a3-r5-gui-failure-details.v1",
+    "status":  "PASS",
+    "started_utc":  "2026-10-29T10:14:31.5283635Z",
+    "launcher_sha256":  "96f9cbaeaf61d7292aa5ff0e783e32e8d17689056ce8dfdbfa60eedf1e299aa5",
+    "expected_launcher_sha256":  "96f9cbaeaf61d7292aa5ff0e783e32e8d17689056ce8dfdbfa60eedf1e299aa5",
+    "digest_verified":  true,
+    "warm_setup_status":  "SETUP_COMPLETE",
+    "setup_modal_seen":  true,
+    "technical_dialog_seen":  true,
+    "technical_status":  "SETUP_BLOCKED",
+    "technical_reason_code":  "EXISTING_STATE_REQUIRES_EXPLICIT_TRANSFER",
+    "sentinel_preserved":  true,
+    "process_alive_after_failure":  true,
+    "error":  null,
+    "finished_utc":  "2026-10-29T10:16:11.7648834Z"
+}

@@ -1,0 +1,11 @@
+﻿{
+    "schema":  "p1-a3-command-discovery-timing.v1",
+    "status":  "PASS",
+    "session_id":  1,
+    "user":  "WDAGUtilityAccount",
+    "py_ms":  10018,
+    "py_source":  null,
+    "python_ms":  425,
+    "python_source":  null,
+    "timestamp_utc":  "2026-10-29T08:49:52.8964013Z"
+}

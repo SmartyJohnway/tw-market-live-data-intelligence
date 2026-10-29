@@ -1,0 +1,14 @@
+﻿{
+    "schema":  "sandbox-jit-result.v1",
+    "sid":  "S-1-5-83-0",
+    "right":  "SeServiceLogonRight",
+    "config":  "C:\\TWMarket-P1-A3-Acceptance\\jobs\\p1-a3-e2e-r4-diag-20261029-162805\\r4-gui-logon.wsb",
+    "added_by_wrapper":  true,
+    "sandbox_started":  true,
+    "sandbox_closed":  true,
+    "policy_drift_detected":  false,
+    "cleanup_action":  "RESTORED_BEFORE",
+    "cleanup_complete":  true,
+    "status":  "PASS_RESTORED",
+    "error":  null
+}

@@ -1575,6 +1575,18 @@
       "justification": "Relative package entry point"
     },
     {
+      "source": "packaging_native/launchers/Launch-TW-Market.cmd",
+      "destination": "Launch-TW-Market.cmd",
+      "role": "launcher",
+      "justification": "Human-facing Windows launcher entry point"
+    },
+    {
+      "source": "packaging_native/launchers/tw-market-launcher.ps1",
+      "destination": "launcher/tw-market-launcher.ps1",
+      "role": "launcher",
+      "justification": "Thin WinForms facade over canonical bootstrap and lifecycle commands"
+    },
+    {
       "source": "packaging_native/README-PACKAGE.md",
       "destination": "README-PACKAGE.md",
       "role": "metadata",

@@ -1,7 +1,20 @@
 # TW-Market Native Package C
 
 Requires Windows 11 x64 and CPython 3.13 x64. Extract this complete bundle to
-a writable application location. From PowerShell, run:
+a writable application location. The normal operator entry is:
+
+```text
+Launch-TW-Market.cmd
+```
+
+Double-click it to open the Windows launcher. The launcher detects a suitable
+local CPython 3.13 x64 runtime, performs the existing offline bootstrap and
+conditional installation init only after an explicit **Set Up TW-Market** action,
+and then exposes Start / Stop / Refresh / Diagnose / Open Workbench controls.
+It does not install Python, acquire market data, initialize Security Master,
+or start the Local Runtime during setup.
+
+The canonical command-line lifecycle remains available for advanced operation:
 
 ```powershell
 & .\bootstrap\bootstrap.ps1

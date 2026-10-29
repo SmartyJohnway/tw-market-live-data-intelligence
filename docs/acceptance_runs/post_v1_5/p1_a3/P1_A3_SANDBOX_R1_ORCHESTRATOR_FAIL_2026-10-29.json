@@ -1,0 +1,23 @@
+﻿{
+    "schema":  "sandbox-job-orchestrator.v0",
+    "job_root":  "C:\\TWMarket-P1-A3-Acceptance\\jobs\\p1-a3-e2e-20261029-135401",
+    "started_utc":  "2026-10-29T05:57:47.9307590Z",
+    "sandbox_id":  "6b3fdf3f-179a-4afb-baef-c54aa3a717a1",
+    "jit_run_dir":  "D:\\AI-Tools\\Sandbox-JIT\\evidence\\20261029T055750754Z",
+    "share_input_exit":  0,
+    "share_output_exit":  0,
+    "guest_exec_exit":  1,
+    "guest_result_found":  false,
+    "preflight_orphan_cleanup_count":  1,
+    "post_stop_control_cleanup_count":  2,
+    "final_orphan_cleanup_count":  1,
+    "jit_exit_code":  0,
+    "jit_status":  "PASS_RESTORED",
+    "jit_cleanup_action":  "RESTORED_BEFORE",
+    "post_running_sandboxes":  0,
+    "post_active_marker":  false,
+    "status":  "FAIL",
+    "error":  "GUEST_EXIT_1",
+    "finished_utc":  "2026-10-29T05:59:04.2730679Z",
+    "duration_seconds":  76.342
+}

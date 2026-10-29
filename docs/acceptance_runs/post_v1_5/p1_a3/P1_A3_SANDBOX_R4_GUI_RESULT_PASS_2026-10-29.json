@@ -1,0 +1,396 @@
+﻿{
+    "schema":  "p1-a3-gui-probe.v1",
+    "status":  "PASS",
+    "started_utc":  "2026-10-29T08:51:14.5217947Z",
+    "session_id":  1,
+    "launcher_sha256":  "7329e666c309f9d9768764feb492abff5feb6cd7d78f680adc335fbf847e2907",
+    "expected_launcher_sha256":  "7329e666c309f9d9768764feb492abff5feb6cd7d78f680adc335fbf847e2907",
+    "digest_verified":  true,
+    "window_title":  "TW-Market",
+    "window_handle_nonzero":  true,
+    "process_alive_after_render":  true,
+    "observed_top_level_windows":  [
+                                       {
+                                           "name":  "GDI+ Window (TabTip.exe)",
+                                           "process_id":  5384,
+                                           "visible":  false,
+                                           "handle":  65882
+                                       },
+                                       {
+                                           "name":  "Shell Handwriting Canvas",
+                                           "process_id":  5384,
+                                           "visible":  false,
+                                           "handle":  65848
+                                       },
+                                       {
+                                           "name":  "",
+                                           "process_id":  5840,
+                                           "visible":  false,
+                                           "handle":  65934
+                                       },
+                                       {
+                                           "name":  "",
+                                           "process_id":  5840,
+                                           "visible":  false,
+                                           "handle":  65862
+                                       },
+                                       {
+                                           "name":  "",
+                                           "process_id":  5840,
+                                           "visible":  false,
+                                           "handle":  65780
+                                       },
+                                       {
+                                           "name":  "",
+                                           "process_id":  5840,
+                                           "visible":  false,
+                                           "handle":  65742
+                                       },
+                                       {
+                                           "name":  "",
+                                           "process_id":  5840,
+                                           "visible":  true,
+                                           "handle":  65702
+                                       },
+                                       {
+                                           "name":  "TW-Market",
+                                           "process_id":  7196,
+                                           "visible":  true,
+                                           "handle":  197330
+                                       }
+                                   ],
+    "observed_names":  [
+                           {
+                               "name":  "TW-Market Local Operator",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Package Runtime",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Not set up",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Python 3.13 x64",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Required",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Local Installation",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Not initialized",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Local Runtime",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "SETUP_REQUIRED",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Workbench",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Unavailable",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Security Master",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Unknown",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Local MCP",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Unknown",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "TW-Market needs initial local setup. No market data will be downloaded.",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Set Up TW-Market",
+                               "enabled":  false,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Locate Python 3.13...",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Start TW-Market",
+                               "enabled":  false,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Open Workbench",
+                               "enabled":  false,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Refresh",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Diagnose",
+                               "enabled":  false,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Stop TW-Market",
+                               "enabled":  false,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Technical Details",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Installation Help",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           },
+                           {
+                               "name":  "Close",
+                               "enabled":  true,
+                               "control_type":  "ControlType.Pane"
+                           }
+                       ],
+    "expected_controls":  {
+                              "TW-Market Local Operator":  {
+                                                               "found":  true,
+                                                               "expected_enabled":  true,
+                                                               "observed":  [
+                                                                                {
+                                                                                    "name":  "TW-Market Local Operator",
+                                                                                    "enabled":  true,
+                                                                                    "control_type":  "ControlType.Pane"
+                                                                                }
+                                                                            ]
+                                                           },
+                              "Package Runtime":  {
+                                                      "found":  true,
+                                                      "expected_enabled":  true,
+                                                      "observed":  [
+                                                                       {
+                                                                           "name":  "Package Runtime",
+                                                                           "enabled":  true,
+                                                                           "control_type":  "ControlType.Pane"
+                                                                       }
+                                                                   ]
+                                                  },
+                              "Not set up":  {
+                                                 "found":  true,
+                                                 "expected_enabled":  true,
+                                                 "observed":  [
+                                                                  {
+                                                                      "name":  "Not set up",
+                                                                      "enabled":  true,
+                                                                      "control_type":  "ControlType.Pane"
+                                                                  }
+                                                              ]
+                                             },
+                              "Python 3.13 x64":  {
+                                                      "found":  true,
+                                                      "expected_enabled":  true,
+                                                      "observed":  [
+                                                                       {
+                                                                           "name":  "Python 3.13 x64",
+                                                                           "enabled":  true,
+                                                                           "control_type":  "ControlType.Pane"
+                                                                       }
+                                                                   ]
+                                                  },
+                              "Required":  {
+                                               "found":  true,
+                                               "expected_enabled":  true,
+                                               "observed":  [
+                                                                {
+                                                                    "name":  "Required",
+                                                                    "enabled":  true,
+                                                                    "control_type":  "ControlType.Pane"
+                                                                }
+                                                            ]
+                                           },
+                              "Local Runtime":  {
+                                                    "found":  true,
+                                                    "expected_enabled":  true,
+                                                    "observed":  [
+                                                                     {
+                                                                         "name":  "Local Runtime",
+                                                                         "enabled":  true,
+                                                                         "control_type":  "ControlType.Pane"
+                                                                     }
+                                                                 ]
+                                                },
+                              "SETUP_REQUIRED":  {
+                                                     "found":  true,
+                                                     "expected_enabled":  true,
+                                                     "observed":  [
+                                                                      {
+                                                                          "name":  "SETUP_REQUIRED",
+                                                                          "enabled":  true,
+                                                                          "control_type":  "ControlType.Pane"
+                                                                      }
+                                                                  ]
+                                                 },
+                              "TW-Market needs initial local setup. No market data will be downloaded.":  {
+                                                                                                              "found":  true,
+                                                                                                              "expected_enabled":  true,
+                                                                                                              "observed":  [
+                                                                                                                               {
+                                                                                                                                   "name":  "TW-Market needs initial local setup. No market data will be downloaded.",
+                                                                                                                                   "enabled":  true,
+                                                                                                                                   "control_type":  "ControlType.Pane"
+                                                                                                                               }
+                                                                                                                           ]
+                                                                                                          },
+                              "Set Up TW-Market":  {
+                                                       "found":  true,
+                                                       "expected_enabled":  false,
+                                                       "observed":  [
+                                                                        {
+                                                                            "name":  "Set Up TW-Market",
+                                                                            "enabled":  false,
+                                                                            "control_type":  "ControlType.Pane"
+                                                                        }
+                                                                    ]
+                                                   },
+                              "Locate Python 3.13...":  {
+                                                            "found":  true,
+                                                            "expected_enabled":  true,
+                                                            "observed":  [
+                                                                             {
+                                                                                 "name":  "Locate Python 3.13...",
+                                                                                 "enabled":  true,
+                                                                                 "control_type":  "ControlType.Pane"
+                                                                             }
+                                                                         ]
+                                                        },
+                              "Start TW-Market":  {
+                                                      "found":  true,
+                                                      "expected_enabled":  false,
+                                                      "observed":  [
+                                                                       {
+                                                                           "name":  "Start TW-Market",
+                                                                           "enabled":  false,
+                                                                           "control_type":  "ControlType.Pane"
+                                                                       }
+                                                                   ]
+                                                  },
+                              "Open Workbench":  {
+                                                     "found":  true,
+                                                     "expected_enabled":  false,
+                                                     "observed":  [
+                                                                      {
+                                                                          "name":  "Open Workbench",
+                                                                          "enabled":  false,
+                                                                          "control_type":  "ControlType.Pane"
+                                                                      }
+                                                                  ]
+                                                 },
+                              "Refresh":  {
+                                              "found":  true,
+                                              "expected_enabled":  true,
+                                              "observed":  [
+                                                               {
+                                                                   "name":  "Refresh",
+                                                                   "enabled":  true,
+                                                                   "control_type":  "ControlType.Pane"
+                                                               }
+                                                           ]
+                                          },
+                              "Diagnose":  {
+                                               "found":  true,
+                                               "expected_enabled":  false,
+                                               "observed":  [
+                                                                {
+                                                                    "name":  "Diagnose",
+                                                                    "enabled":  false,
+                                                                    "control_type":  "ControlType.Pane"
+                                                                }
+                                                            ]
+                                           },
+                              "Stop TW-Market":  {
+                                                     "found":  true,
+                                                     "expected_enabled":  false,
+                                                     "observed":  [
+                                                                      {
+                                                                          "name":  "Stop TW-Market",
+                                                                          "enabled":  false,
+                                                                          "control_type":  "ControlType.Pane"
+                                                                      }
+                                                                  ]
+                                                 },
+                              "Technical Details":  {
+                                                        "found":  true,
+                                                        "expected_enabled":  true,
+                                                        "observed":  [
+                                                                         {
+                                                                             "name":  "Technical Details",
+                                                                             "enabled":  true,
+                                                                             "control_type":  "ControlType.Pane"
+                                                                         }
+                                                                     ]
+                                                    },
+                              "Installation Help":  {
+                                                        "found":  true,
+                                                        "expected_enabled":  true,
+                                                        "observed":  [
+                                                                         {
+                                                                             "name":  "Installation Help",
+                                                                             "enabled":  true,
+                                                                             "control_type":  "ControlType.Pane"
+                                                                         }
+                                                                     ]
+                                                    },
+                              "Close":  {
+                                            "found":  true,
+                                            "expected_enabled":  true,
+                                            "observed":  [
+                                                             {
+                                                                 "name":  "Close",
+                                                                 "enabled":  true,
+                                                                 "control_type":  "ControlType.Pane"
+                                                             }
+                                                         ]
+                                        }
+                          },
+    "error":  null,
+    "finished_utc":  "2026-10-29T08:51:37.4390637Z"
+}

@@ -1,0 +1,178 @@
+﻿{
+    "schema":  "p1-a3-windows-sandbox-acceptance.v1",
+    "status":  "PASS",
+    "started_utc":  "2026-10-29T09:52:56.9790393Z",
+    "candidate_classification":  "NOT_RELEASE_ARTIFACT",
+    "artifact_identity":  {
+                              "provenance_snapshot_sha256":  "8c25fc1ee788b8221057f618ed4df9aac632a504e9bd69a4a2f3abd7dd9d8f7b",
+                              "expected_launcher_sha256":  "96f9cbaeaf61d7292aa5ff0e783e32e8d17689056ce8dfdbfa60eedf1e299aa5",
+                              "source_launcher_sha256":  "96f9cbaeaf61d7292aa5ff0e783e32e8d17689056ce8dfdbfa60eedf1e299aa5",
+                              "executed_launcher_sha256":  "96f9cbaeaf61d7292aa5ff0e783e32e8d17689056ce8dfdbfa60eedf1e299aa5",
+                              "source_cmd_sha256":  "8cdfad2f8e86e9c91b9aac89216b8e5bd817dbf3476407de2e8269fdcb5914ca",
+                              "executed_cmd_sha256":  "8cdfad2f8e86e9c91b9aac89216b8e5bd817dbf3476407de2e8269fdcb5914ca",
+                              "executed_launcher_bytes":  28202,
+                              "self_digest_verified":  true
+                          },
+    "missing_python":  {
+                           "exit_code":  1,
+                           "status":  "PREREQUISITE_BLOCKED",
+                           "reason_code":  "CPYTHON_3_13_X64_REQUIRED",
+                           "runtime_created":  false,
+                           "home_created":  false
+                       },
+    "prerequisite":  {
+                         "installer_exit":  0,
+                         "python":  {
+                                        "version":  [
+                                                        3,
+                                                        13
+                                                    ],
+                                        "implementation":  "CPython",
+                                        "bits":  64,
+                                        "machine":  "AMD64"
+                                    }
+                     },
+    "network_isolation":  {
+                              "before":  [
+                                             {
+                                                 "Name":  "乙太網路",
+                                                 "Status":  "Up",
+                                                 "InterfaceDescription":  "Microsoft Hyper-V Network Adapter"
+                                             }
+                                         ],
+                              "after":  [
+                                            {
+                                                "Name":  "乙太網路",
+                                                "Status":  "Disabled",
+                                                "InterfaceDescription":  "Microsoft Hyper-V Network Adapter"
+                                            }
+                                        ],
+                              "external_adapters_enabled_after":  0,
+                              "launcher_actions_executed_after_disable":  true
+                          },
+    "setup":  {
+                  "valid_setup":  {
+                                      "status":  "SETUP_COMPLETE",
+                                      "data":  {
+                                                   "checks":  [
+
+                                                              ],
+                                                   "configuration":  {
+                                                                         "host":  "127.0.0.1",
+                                                                         "port":  8000,
+                                                                         "sources":  {
+                                                                                         "host":  "settings",
+                                                                                         "port":  "settings"
+                                                                                     }
+                                                                     },
+                                                   "duration_ms":  3084.01,
+                                                   "identity":  {
+                                                                    "root":  "C:\\P1A3State\\state\\security-master",
+                                                                    "status":  "NOT_INITIALIZED"
+                                                                },
+                                                   "installation":  {
+                                                                        "app_root":  "C:\\P1A3Candidate\\app",
+                                                                        "cache_root":  "C:\\P1A3State\\home\\cache",
+                                                                        "diagnostics":  {
+                                                                                            "home_source":  "env",
+                                                                                            "settings_origins":  {
+                                                                                                                     "host":  "settings",
+                                                                                                                     "port":  "settings"
+                                                                                                                 },
+                                                                                            "state_root_source":  "metadata"
+                                                                                        },
+                                                                        "effective_service_host":  "127.0.0.1",
+                                                                        "effective_service_port":  8000,
+                                                                        "governed_root":  "C:\\P1A3State\\state\\governed",
+                                                                        "home":  "C:\\P1A3State\\home",
+                                                                        "installation_id":  "c43ee08c-c823-4b1d-b663-fe7e48ba2731",
+                                                                        "installation_metadata_path":  "C:\\P1A3State\\home\\meta\\installation.json",
+                                                                        "installation_status":  "READY",
+                                                                        "logs_root":  "C:\\P1A3State\\home\\logs",
+                                                                        "operational_event_path":  "C:\\P1A3State\\home\\logs\\operational-events.jsonl",
+                                                                        "runtime_root":  "C:\\Windows\\TEMP\\TW-Market\\c43ee08c-c823-4b1d-b663-fe7e48ba2731\\runtime",
+                                                                        "security_master_root":  "C:\\P1A3State\\state\\security-master",
+                                                                        "settings_path":  "C:\\P1A3State\\home\\config\\settings.json",
+                                                                        "state_root":  "C:\\P1A3State\\state",
+                                                                        "temp_root":  "C:\\Windows\\TEMP\\TW-Market\\c43ee08c-c823-4b1d-b663-fe7e48ba2731\\temp",
+                                                                        "watchlist_root":  "C:\\P1A3State\\state\\watchlists"
+                                                                    },
+                                                   "mcp":  {
+                                                               "local_service_reachable":  false,
+                                                               "sdk_compatible":  true,
+                                                               "service_url":  "http://127.0.0.1:8000",
+                                                               "status":  "SERVICE_UNREACHABLE"
+                                                           },
+                                                   "operation_id":  "a7a27544-268f-40ed-98ff-7ac19f7806f3",
+                                                   "paths":  {
+                                                                 "control_root":  "C:\\P1A3State\\state\\governed",
+                                                                 "operational_event_path":  "C:\\P1A3State\\home\\logs\\operational-events.jsonl",
+                                                                 "ownership_file":  "C:\\Windows\\TEMP\\TW-Market\\c43ee08c-c823-4b1d-b663-fe7e48ba2731\\runtime\\service-8000.json",
+                                                                 "security_master_root":  "C:\\P1A3State\\state\\security-master",
+                                                                 "watchlist_root":  "C:\\P1A3State\\state\\watchlists"
+                                                             },
+                                                   "readiness":  {
+                                                                     "preload":  "READY",
+                                                                     "routes":  {
+                                                                                    "projection":  "UNKNOWN_SERVICE_UNAVAILABLE"
+                                                                                },
+                                                                     "schema_catalog":  "READY"
+                                                                 },
+                                                   "resources":  {
+                                                                     "application_root_disk_free_bytes":  82413490176,
+                                                                     "managed_service_process_memory_bytes":  null,
+                                                                     "runtime_root_disk_free_bytes":  82413490176
+                                                                 },
+                                                   "service":  {
+                                                                   "alive":  false,
+                                                                   "health":  null,
+                                                                   "host":  "127.0.0.1",
+                                                                   "port":  8000,
+                                                                   "process":  "NOT_RUNNING",
+                                                                   "url":  "http://127.0.0.1:8000"
+                                                               },
+                                                   "started_at":  "2026-10-29T10:04:14.816502+00:00",
+                                                   "status":  "NOT_RUNNING",
+                                                   "trace_id":  "dcfbd541-1812-4daa-91c5-db31c41df9b9"
+                                               }
+                                  },
+                  "post_setup_status":  "STOPPED",
+                  "security_master":  "NOT_INITIALIZED",
+                  "installation_id":  "c43ee08c-c823-4b1d-b663-fe7e48ba2731",
+                  "runtime_exists":  true
+              },
+    "post_setup":  {
+                       "repeated_setup":  "SETUP_COMPLETE",
+                       "installation_id_reused":  true,
+                       "status":  "STOPPED"
+                   },
+    "start":  {
+                  "result":  "START_COMPLETE",
+                  "status":  "RUNNING_READY",
+                  "identity":  "NOT_INITIALIZED",
+                  "service_url":  "http://127.0.0.1:8000"
+              },
+    "workbench":  {
+                      "uri":  "http://127.0.0.1:8000/workbench/",
+                      "http_status":  200
+                  },
+    "doctor":  {
+                   "launcher_status":  "DOCTOR_COMPLETE",
+                   "canonical_status":  "WARN",
+                   "check_count":  15
+               },
+    "stop":  {
+                 "result":  "STOP_COMPLETE"
+             },
+    "final_status":  {
+                         "launcher_status":  "STOPPED",
+                         "security_master":  "NOT_INITIALIZED",
+                         "service_alive":  false,
+                         "existing_business_sentinel_preserved":  true,
+                         "tampered_runtime_created":  false,
+                         "stale_runtime_probe_preserved":  true,
+                         "wrong_python_blocked":  true
+                     },
+    "error":  null,
+    "finished_utc":  "2026-10-29T10:06:09.8599400Z"
+}

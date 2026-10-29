@@ -1,0 +1,28 @@
+﻿{
+    "schema":  "p1-a3-windows-sandbox-acceptance.v1",
+    "status":  "FAIL",
+    "started_utc":  "2026-10-29T05:58:17.1419936Z",
+    "candidate_classification":  "NOT_RELEASE_ARTIFACT",
+    "missing_python":  {
+                           "exit_code":  1,
+                           "status":  "PREREQUISITE_BLOCKED",
+                           "reason_code":  "CPYTHON_3_13_X64_REQUIRED",
+                           "runtime_created":  false,
+                           "home_created":  false
+                       },
+    "prerequisite":  null,
+    "network_isolation":  null,
+    "setup":  null,
+    "post_setup":  null,
+    "start":  null,
+    "workbench":  null,
+    "doctor":  null,
+    "stop":  null,
+    "final_status":  null,
+    "error":  "PYTHON_INSTALL_EXIT_3",
+    "emergency_stop":  {
+                           "exit_code":  1,
+                           "raw":  "{\"status\":\"ACTION_BLOCKED\",\"reason_code\":\"STOP_NOT_ALLOWED_FROM_SETUP_REQUIRED\"}"
+                       },
+    "finished_utc":  "2026-10-29T05:58:50.7508984Z"
+}
