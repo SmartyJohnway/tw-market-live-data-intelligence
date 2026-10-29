@@ -24,23 +24,39 @@ v1.5.0. GitHub Immutable Releases enforcement is not enabled for this release.
 
 ## Current workstream
 
-Authorized workstream:
+The Post-Phase-L Frontdoor / Documentation Maintenance tranche is complete and
+was merged through PR #423 on 2026-10-28.
 
-> **Post-Phase-L Frontdoor / Documentation Maintenance**
+```text
+main after merge                 b86ae52a2f43f53fd854e9d84cfde1c80050dcc9
+frontdoor documentation commit   e5f61e1289be46d1bab6f2c6de931a3973badc90
+PR #423                          MERGED
+```
 
-Current tranche status:
+Current authorized workstream:
 
-- F0 — Frontdoor inventory / information architecture: **CANDIDATE_COMPLETE**.
-- F1 — Public product frontdoor: **CANDIDATE_COMPLETE**.
-- F2 — Install / Quick Start / Distribution: **CANDIDATE_COMPLETE**.
-- F3 — Engineering Frontdoor Consolidation: **CANDIDATE_COMPLETE**.
-- F4 — AI / discoverability / visual polish: **CANDIDATE_COMPLETE**.
-- F5 — documentation-only validation: **CANDIDATE_COMPLETE**.
-- F5-R1 — independent-review targeted documentation corrections: **CANDIDATE_COMPLETE**.
+> **Post-v1.5 Productization & Stabilization — P0 Current-state Reconciliation**
 
-The initial cumulative independent review found three documentation-only blockers;
-F5-R1 has corrected all three and passed the same focused validation gate. Final
-acceptance still requires an independent re-review of the corrected cumulative diff.
+P0 is bounded to current-authority/documentation projection reconciliation. It
+must not change selected executors, runtime behavior, frozen v1.5.0 release
+identity, Registry publication state, or Phase M authority. P1–P5 remain planned
+follow-on tranches and are not entered by P0 alone.
+
+P0-R1 status: **CORRECTION_CANDIDATE_COMPLETE**. The first independent review
+identified three current-surface reconciliation defects; R1 corrected all three:
+exact Catalog-status projection for `trading_status_context`, completed/historical
+wording for the Post-Phase-L governance section, and the stale current-workstream
+boundary in `AGENTS.md`. Current frontdoors and the human capability matrix now
+align with the merged state and current Catalog/Routing truth. Existing
+frontdoor/public-contract/runtime-skill/portable/product-version and L5
+publication-conformance validators all pass.
+
+P0 also identified one protected machine-authority summary debt: the Catalog V3
+top-level `known_limitations` summary still contains stale H1/H2 wording even
+though the capability entries and V3 Routing contain the later selected-route
+truth. P0 deliberately does **not** modify that Catalog text because the L5/A4
+publication-conformance gate classifies such a Catalog change as a separately
+governed semantic-authority mutation.
 
 ## Current product/runtime truth to preserve
 
@@ -60,14 +76,18 @@ release; Registry publication remains separate.
 
 ## Allowed next work
 
-The corrected F0–F5 + F5-R1 documentation candidate is complete. The next
-bounded step is an independent re-review of the cumulative Post-Phase-L diff and
-its correction evidence. A documentation-only commit / push / PR requires a
-separate acceptance/authorization decision; it is not performed by F5-R1 itself.
+P0-R1 correction is candidate-complete. The next bounded step is an independent
+re-review of this six-file current-authority/reference diff. Commit, push, and PR
+remain separate authorization decisions.
 
-Documentation work may advance `main` beyond the frozen v1.5.0 commit. It must
-not mutate the v1.5.0 tag, release assets, or claim those later docs are part of
-the frozen release source. Phase M remains separately unauthorized.
+Do not begin P1 until the corrected P0 diff is accepted. The protected Catalog V3
+summary debt identified above also requires a separate governance decision if it
+is to be changed; do not bypass the L5/A4 semantic-authority gate merely to make
+summary wording look current.
+
+Later post-release work may advance `main` beyond the frozen v1.5.0 commit. It
+must not mutate the v1.5.0 tag, release assets, or claim those later changes are
+part of the frozen release source. Phase M remains separately unauthorized.
 
 ## Explicit stop boundaries
 

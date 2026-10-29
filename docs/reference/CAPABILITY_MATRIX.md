@@ -2,21 +2,26 @@
 
 This page is a human-readable summary. The machine authority is
 `docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json`
-plus the V3 routing matrix and executor registry.
+plus the V3 routing matrix and executor registry. Catalog support can be broader
+than selected-route executability; the route-scope column below describes the
+currently selected executable route where one exists.
 
-| Capability | Contract status | Current execution summary | Markets | Key limitation |
+| Capability | Catalog status | Current execution summary | Current route scope | Key limitation |
 |---|---|---|---|---|
-| `identity` | contract_supported | resolved by installation-local Security Master, not a standalone source operation | TWSE / TPEX / TAIFEX | known identity != executable capability |
-| `current_observation` | runtime_executable | governed bounded route(s) | TWSE / TPEX | not guaranteed realtime; TAIFEX current observation not implemented |
-| `official_eod_reference` | runtime_executable | governed bounded official reference | TWSE / TPEX | publication-grace semantics apply |
-| `session_status` | runtime_executable | governed deterministic/session authority | TWSE / TPEX | TAIFEX session authority remains limited/provisional |
-| `material_disclosures` | runtime_executable | Phase G G1 | TWSE / TPEX eligible common shares | latest completed official daily batch; no arbitrary history |
-| `monthly_revenue` | runtime_executable | Phase G G2 | TWSE / TPEX eligible common shares | latest available reporting period; no arbitrary history |
-| `trading_status_context` | runtime_executable, partial | **TPEx attention route only** | semantic scope TWSE / TPEX; active route TPEX | broader H1 types/routes are uncovered/inactive |
-| `corporate_action_context` | contract_supported | not currently route-executable | TWSE / TPEX | no H2 route activated |
-| `recent_performance` | contract_supported | not currently route-executable | TWSE / TPEX | H3 default 5D/20D route not proven/activated |
-| `source_currentness` | contract_supported | projected/derived where governed | TWSE / TPEX / TAIFEX | not a promise of realtime data |
-| `evidence_quality` | contract_supported | projected/derived where governed | TWSE / TPEX / TAIFEX | depends on underlying evidence coverage |
+| `identity` | contract_supported | installation-local Security Master resolution; route is plan-only with no standalone source executor | local identity service | known identity != executable evidence capability |
+| `current_observation` | runtime_executable | selected bounded executor route | TWSE / TPEX | latest available snapshot; not guaranteed realtime; TAIFEX not implemented |
+| `official_eod_reference` | runtime_executable | selected bounded official-reference route | TWSE / TPEX | TAIFEX remains provisional; publication-grace semantics apply |
+| `session_status` | runtime_executable | **blocked**; no selected approved executor binds the complete authoritative session/closure evidence set | none | Catalog support does not clear the current route blocker; TAIFEX remains provisional |
+| `material_disclosures` | runtime_executable | selected Phase G official-research route | TWSE / TPEX eligible common shares | latest completed official daily batch only; no arbitrary history |
+| `monthly_revenue` | runtime_executable | selected Phase G official-research route | TWSE / TPEX eligible common shares | latest available reporting period only; no arbitrary history |
+| `trading_status_context` | runtime_executable | selected TPEx composite with partial coverage: attention + disposition + source-native `cmode` | TPEX common shares | `cmode` semantics unresolved; suspension/resumption and broader H1 coverage remain incomplete |
+| `corporate_action_context` | runtime_executable | selected bounded TWSE TWT48U_ALL pre-announcement route | TWSE common shares | TPEx not executable; final/capital-reduction/par/split/consolidation coverage remains inactive, manual, or blocked |
+| `recent_performance` | runtime_executable | selected bounded TWSE lookback route (`1..20` completed sessions) | TWSE common shares | TPEx remains blocked; no persistent history accumulation/backfill |
+| `market_state_context` | runtime_executable | selected I1 production routes | TWSE / TPEX common shares | market-level context does not establish target-specific causation; no historical lookup |
+| `index_futures_context` | runtime_executable | selected I2 TAIFEX-backed TX regular-session route | TWSE common-share targets | standard monthly outright TX only; no TPEx targets/night session/weekly/options/continuous contract |
+| `cash_institutional_flow_context` | runtime_executable | selected I3 production routes | TWSE / TPEX common shares | descriptive only; no history/polling/retry; source-date/currentness caveats remain explicit |
+| `source_currentness` | contract_supported | derived/plan-only; no independent executor | derived from governed upstream evidence | not a promise of realtime data |
+| `evidence_quality` | contract_supported | derived/plan-only; no independent executor | derived from governed evidence bundle | depends on underlying evidence coverage |
 
 ## Contract versions
 

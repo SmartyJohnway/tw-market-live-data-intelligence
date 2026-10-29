@@ -9,8 +9,10 @@ TW-Market stable `v1.5.0` is published from frozen source commit
 GitHub stable release, and Owner final closure was accepted.
 
 Phase M remains **NOT_AUTHORIZED**. The current authorized workstream is
-Post-Phase-L frontdoor/documentation maintenance. Documentation commits may
-advance `main` beyond the frozen release source but must not redefine v1.5.0.
+**Post-v1.5 Productization & Stabilization**, with **P0 — Current-state
+Reconciliation** as the active bounded tranche. P0 may reconcile current
+frontdoor/reference projections but must not redefine v1.5.0, alter runtime or
+machine authority, or start P1–P5 without separate authorization.
 
 ## 1. Read this repository in the right order
 
@@ -77,8 +79,9 @@ roadmap coverage must not be inferred from individual route activations.
 Current executable truth remains the machine-readable Catalog / Routing /
 executor configuration.
 
-The current Post-Phase-L documentation tranche does not reopen Phase L, start
-Phase M, authorize new live acquisition, or alter release/Registry authority.
+The current P0 reconciliation tranche does not reopen Phase L, start Phase M,
+authorize new live acquisition, alter release/Registry authority, or enter the
+later P1–P5 productization/stabilization tranches.
 
 ## 5. Authority hierarchy
 
@@ -323,10 +326,11 @@ important audit evidence.
 
 > **Phase L is CLOSED. Phase M is NOT_AUTHORIZED.**
 
-Current work is limited to the separately authorized Post-Phase-L
-frontdoor/documentation-maintenance tranche. Preserve all accepted runtime,
-release, source and historical evidence unless a later explicit authorization
-changes that authority.
+Current work is limited to the separately authorized **Post-v1.5 Productization &
+Stabilization — P0 Current-state Reconciliation** tranche. Preserve all accepted
+runtime, release, source and historical evidence unless a later explicit
+authorization changes that authority. P1–P5 and Phase M remain outside the
+current authorization.
 
 Do not:
 

@@ -115,9 +115,12 @@ comes from the machine-readable Catalog / Routing / executor authority.
 - Stable v1.5.0 GitHub publication: PASS.
 - Phase M: **NOT_AUTHORIZED**.
 
-The current authorized workstream is **Post-Phase-L Frontdoor / Documentation
-Maintenance**. It is documentation-only maintenance and does not reopen Phase L
-or authorize Phase M.
+The current authorized workstream is **Post-v1.5 Productization & Stabilization**.
+The active bounded tranche is **P0 — Current-state Reconciliation**: align current
+project/frontdoor/capability projections with the already-accepted machine routing
+and the merged Post-Phase-L state. P0 does not activate new routes, change runtime
+behavior, mutate frozen v1.5.0 release authority, or authorize Phase M. P1–P5 are
+planned follow-on productization/stabilization tranches and are not entered by P0.
 
 ## Current authority hierarchy
 

@@ -24,7 +24,15 @@ Phase M                        NOT_AUTHORIZED
 
 Phase L final closure and A7 publication occurred after the frozen v1.5.0 source
 was established, so post-release current docs reconcile those accepted facts
-without modifying the frozen release commit/tree. See the Post-Phase-L F0 record:
+without modifying the frozen release commit/tree. The Post-Phase-L frontdoor
+maintenance tranche was subsequently merged through PR #423 to `main` at
+`b86ae52a2f43f53fd854e9d84cfde1c80050dcc9`.
+
+The current authorized post-release workstream is **Post-v1.5 Productization &
+Stabilization**. Only **P0 — Current-state Reconciliation** is active here; P1–P5
+remain planned follow-on tranches and Phase M remains NOT_AUTHORIZED.
+
+See the Post-Phase-L F0 record:
 
 - [Post-Phase-L F0 Frontdoor Information Architecture](post_phase_l/POST_PHASE_L_F0_FRONTDOOR_INFORMATION_ARCHITECTURE_2026-10-28.md)
 
@@ -73,8 +81,8 @@ Phase M is not started and remains **NOT_AUTHORIZED**.
 
 ## Post-Phase-L documentation governance
 
-Current documentation-only maintenance is tracked under
-[`post_phase_l/`](post_phase_l/). Its purpose is to reconcile public/user/engineering
+The completed Post-Phase-L documentation-maintenance tranche is tracked under
+[`post_phase_l/`](post_phase_l/). Its purpose was to reconcile public/user/engineering
 frontdoors after the frozen v1.5.0 release without changing runtime behavior,
 release assets, Registry metadata, or Phase M authority.
 

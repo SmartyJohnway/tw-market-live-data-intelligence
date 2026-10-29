@@ -26,7 +26,8 @@ frozen governance records and acceptance evidence.
 | L7-A6 R1/R2/R3 | Exact-source release contract, recertification and freeze | Stable v1.5.0 source/artifact identities frozen after exact-source recertification |
 | L7-A7 | Stable publication | `v1.5.0` GitHub Release published with Native ZIP, MCPB, checksums, first-party SBOM and typed publication manifest |
 | Phase L final closure | Owner final closure after publication | Phase L formally CLOSED on 2026-10-28; 29/29 L7 exits PASS; Phase M remained NOT_AUTHORIZED |
-| Post-Phase-L frontdoor maintenance | Separate documentation-only reconciliation | Public/user/engineering frontdoors reconciled after release without redefining frozen v1.5.0 |
+| Post-Phase-L frontdoor maintenance | Separate documentation-only reconciliation | Public/user/engineering frontdoors reconciled after release and merged through PR #423 to `main` at `b86ae52a2f43f53fd854e9d84cfde1c80050dcc9`, without redefining frozen v1.5.0 |
+| Post-v1.5 productization / stabilization | Convert the stable product into a lower-friction operator/AI experience before Phase M | P0 current-state reconciliation authorized first; P1–P5 remain planned follow-on tranches; Phase M remains NOT_AUTHORIZED |
 
 Important release identity:
 
