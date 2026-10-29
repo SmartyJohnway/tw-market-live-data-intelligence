@@ -1,4 +1,4 @@
-"""Non-production semantic validators for the frozen Phase H V3 candidate.
+"""Offline current V3 authority checks and historical Phase H semantic invariants.
 
 JSON Schema Draft-07 cannot express sibling arithmetic or array set equality.
 These pure, zero-network validators close those exact-contract gaps without
@@ -8,6 +8,8 @@ activating runtime, sources, planning, execution, or persistence.
 from __future__ import annotations
 
 from collections.abc import Mapping
+import copy
+from datetime import datetime
 import hashlib
 import json
 from math import isclose
@@ -74,6 +76,109 @@ def _matches_frozen_bytes(content: bytes, item: Mapping[str, Any]) -> bool:
 
 RETURN_PCT_ABS_TOLERANCE = 1e-9
 """Absolute tolerance for serialized JSON return percentages; no rounding."""
+
+
+# Current identity is owned by the S1 reconciliation record under
+# docs/governance/post_v1_5/POST_V1_5_CURRENT_AUTHORITY_STABILIZATION_S1_V3_VALIDATION_AUTHORITY_RECONCILIATION_2026-10-30.md,
+# based on accepted L7-A5-R5 and frozen v1.5.0.
+# A future change requires reviewed schema semantics AND authority evidence;
+# never recalculate this pin automatically. Historical J-B04-A3 retains its
+# own 9269fc9e5e07884fa2de791eae902ee57b3d937dbb793318ca4aff1a93fc5bcb.
+CURRENT_RESULT_V3_SHA256 = "700e13779757300699e6cf4dd2c81768dbd56eb853befc9f9cf218102b6a7b3a"
+
+
+def validate_result_v3_temporal_provenance(schema: Mapping[str, Any]) -> None:
+    """Probe the accepted R5/R5.1 I3 semantics, independently of the byte pin.
+
+    These synthetic objects are schema probes only, never market evidence.
+    Exercise the full embedded definition so a removed conditional cannot pass
+    merely because another invalid field masks the missing restriction.
+    """
+    from jsonschema import Draft7Validator, FormatChecker, SchemaError
+
+    checker = FormatChecker()
+
+    @checker.checks("date-time", raises=(ValueError, TypeError))
+    def timestamp(value: Any) -> bool:
+        # Match the existing offline R5 tests even without date-time extras.
+        if not isinstance(value, str):
+            return True
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return parsed.tzinfo is not None and "T" in value
+
+    try:
+        Draft7Validator.check_schema(schema)
+        definitions = schema["definitions"]
+        if "cash_institutional_flow_context" not in definitions:
+            _fail("result_v3_temporal_definition_missing")
+        validator = Draft7Validator(
+            {"$ref": "#/definitions/cash_institutional_flow_context", "definitions": definitions},
+            format_checker=checker,
+        )
+    except (SchemaError, KeyError, TypeError) as exc:
+        raise PhaseHV3ContractValidationError("result_v3_schema_structure_invalid") from exc
+
+    stamp = "2026-10-26T00:00:00Z"
+    failure = {
+        "schema_version": "cash_institutional_flow_context_evidence.v2",
+        "status": "source_failed", "market": "TWSE", "security_code": "1101",
+        "canonical_target_id": "TWSE:1101", "retrieved_at": None,
+        "publication_finality": "unknown", "currentness_status": "unknown",
+        "source": {
+            "source_id": "synthetic-schema-probe", "authority": "official", "market": "TWSE",
+            "source_contract_ref": "synthetic-schema-probe",
+            "source_contract_sha256": "4f6c00f8c0ef61bd7c5c55daa81e23cf25ec6335c4fe99ef4c539572419f5428",
+            "source_reported_trade_date": None,
+        },
+        "transport": {
+            "mode": "official_https_live", "network_get_count": 1, "retry_count": 0,
+            "http_status": None, "content_type": None, "complete_body_received": False,
+            "response_byte_count": 0, "partial_response_byte_count": 0, "response_sha256": None,
+            "tls_policy": "compatibility", "redirect_policy": "reject", "raw_payload_persisted": False,
+        },
+        "citation_ids": ["synthetic-schema-probe"], "caveats": ["Not production evidence"],
+        "error_code": "synthetic_failure",
+    }
+    complete = copy.deepcopy(failure)
+    complete.pop("error_code")
+    complete.update(
+        status="complete", retrieved_at=stamp, trade_date="2026-10-22",
+        resolved_source_trade_date="2026-10-22", source_reported_trade_date="2026-10-22",
+        unit="share", institutional_total_net_shares=0,
+    )
+    complete["transport"]["complete_body_received"] = True
+    for name in ("foreign_and_mainland_excluding_foreign_dealer", "investment_trust", "dealer_total"):
+        complete[name] = {"buy_shares": 0, "sell_shares": 0, "net_shares": 0}
+
+    for status in ("complete", "source_failed", "binding_failed", "unavailable"):
+        for body in (False, True):
+            for retrieved_at in (None, stamp, "not-a-date", "2026-10-26T00:00:00"):
+                probe = copy.deepcopy(complete if status == "complete" else failure)
+                probe.update(status=status, retrieved_at=retrieved_at)
+                probe["transport"]["complete_body_received"] = body
+                expected = (body and retrieved_at == stamp) or (
+                    not body and retrieved_at is None and status == "source_failed"
+                )
+                if validator.is_valid(probe) != expected:
+                    _fail(f"result_v3_temporal_provenance_drift:{status}:{body}:{retrieved_at}")
+    for probe in (complete, failure):
+        probe = copy.deepcopy(probe)
+        del probe["retrieved_at"]
+        if validator.is_valid(probe):
+            _fail("result_v3_temporal_retrieved_at_not_required")
+
+
+def validate_current_result_v3_authority(content: bytes) -> None:
+    """Require the accepted current bytes as well as independent semantics."""
+    try:
+        schema = strict_json_loads(content.decode("utf-8"))
+    except UnicodeDecodeError as exc:
+        raise PhaseHV3ContractValidationError("current_authority_json_invalid") from exc
+    if not isinstance(schema, dict):
+        _fail("result_v3_schema_structure_invalid")
+    if hashlib.sha256(content).hexdigest() != CURRENT_RESULT_V3_SHA256:
+        _fail("current_result_v3_authority_drift")
+    validate_result_v3_temporal_provenance(schema)
 
 
 def _validate_declared_scope(
@@ -321,12 +426,14 @@ def main() -> None:
         _fail("phase_i_v3_request_extension_not_additive")
     additive_v3_schema_hashes = {
         "schemas/unified_market_evidence_request.v3.schema.json": "b0901dbf63db3a8bc44b8fec4cb0cdc90f77e153d954266f98c690453864f3f6",
-        "schemas/unified_market_evidence_result.v3.schema.json": "9269fc9e5e07884fa2de791eae902ee57b3d937dbb793318ca4aff1a93fc5bcb",
         "schemas/unified_market_evidence_audit_package.v3.schema.json": "94208ac6f4c13bcde294de1a8c7cf6be23245d738b5dcd36fffcac1ab134c4cc",
     }
     for relative_path, expected_hash in additive_v3_schema_hashes.items():
         if hashlib.sha256((root / relative_path).read_bytes()).hexdigest() != expected_hash:
             _fail(f"phase_i_v3_additive_schema_drift:{relative_path}")
+    validate_current_result_v3_authority(
+        (root / "schemas/unified_market_evidence_result.v3.schema.json").read_bytes()
+    )
 
     h1_v1_path = "schemas/trading_status_context_evidence.v1.schema.json"
     h1_v1_sha256 = hashlib.sha256((root / h1_v1_path).read_bytes()).hexdigest()
