@@ -1,5 +1,12 @@
 # Local Unified Workbench
 
+Before running from source, complete the [source first-run sequence](QUICK_START.md#source-first-run),
+including offline `tw_market_lifecycle.py init`. The command below starts Local
+Service and serves Workbench on the same loopback endpoint. An initialized
+installation is required; Security Master ACTIVE is required by identity-dependent
+operations, not by general startup. Keep the foreground process running and stop
+it with Ctrl+C in its terminal.
+
 The canonical operator surface is the local Unified Workbench:
 
 ```bash

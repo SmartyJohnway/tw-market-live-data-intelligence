@@ -139,35 +139,13 @@ Research evidence 本來就具有明確範圍，不代表任意歷史查詢、�
 
 ## Source / developer 快速開始
 
-若要從 source checkout 使用：
+請依[主要 source first-run 流程](docs/operator/QUICK_START.md#source-first-run)
+安裝依賴、離線執行 lifecycle init，再啟動 Local Service 與 Workbench，並檢查 MCP。
+Installation 初始化與 Security Master 啟用是不同狀態：初始化後即可使用
+health、UI 與 capability inspection；需要 identity 的操作仍會在身分權威不可用時
+fail closed。Source MCP stdio adapter 需要持續運作的 loopback Local Service。
 
-```bash
-git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
-cd tw-market-live-data-intelligence
-python -m venv .venv
-# 依你的 shell 啟用 .venv，然後：
-python -m pip install -r requirements-lock.txt
-python scripts/verify_environment.py
-python scripts/manage_security_master.py status
-```
-
-全新安裝顯示 `NOT_INITIALIZED` 是預期的 Security Master 狀態。初始化或更新都是
-明確的 operator action：
-
-```bash
-python scripts/manage_security_master.py update --live
-python scripts/run_unified_workbench.py
-```
-
-在瀏覽器開啟本機回送 Workbench：[`/workbench/`](http://127.0.0.1:8000/workbench/)。
-MCP host 請另行啟動 stdio launcher：
-
-```bash
-python scripts/run_unified_market_evidence_mcp.py
-```
-
-Release ZIP / MCPB 的安裝方式請依對應 operator / distribution 文件處理，
-不要與 source/developer path 混為同一種安裝模式。
+Release ZIP / MCPB 請依各自的 operator / distribution 安裝流程處理。
 
 ## MCP 發行與 Registry 邊界
 

@@ -146,32 +146,12 @@ zero, and execution success is not presented as a realtime guarantee.
 
 ## Source/developer quick start
 
-For a source checkout:
-
-```bash
-git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
-cd tw-market-live-data-intelligence
-python -m venv .venv
-# Activate .venv using your shell, then:
-python -m pip install -r requirements-lock.txt
-python scripts/verify_environment.py
-python scripts/manage_security_master.py status
-```
-
-`NOT_INITIALIZED` is the expected fresh-install Security Master state. Initialization
-or refresh is an explicit operator action:
-
-```bash
-python scripts/manage_security_master.py update --live
-python scripts/run_unified_workbench.py
-```
-
-Open the loopback Workbench at [`/workbench/`](http://127.0.0.1:8000/workbench/).
-For an MCP host, start the separate stdio launcher:
-
-```bash
-python scripts/run_unified_market_evidence_mcp.py
-```
+Use the [primary source first-run sequence](docs/operator/QUICK_START.md#source-first-run)
+for dependencies, offline lifecycle initialization, Local Service, Workbench and
+MCP preflight. Initialization and Security Master activation are separate:
+identity-dependent operations fail closed while identity is unavailable, but
+health/UI/capability inspection can start after installation initialization.
+The source MCP stdio adapter requires the running loopback Local Service.
 
 The release ZIP/MCPB installation paths are documented separately; keep those
 operator instructions distinct from this source/developer path.

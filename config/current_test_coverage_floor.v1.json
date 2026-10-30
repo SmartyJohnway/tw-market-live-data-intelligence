@@ -152,7 +152,8 @@
         "tests/unit/test_phase_g_pr_d_closure.py",
         "tests/unit/test_current_v3_validation_authority.py",
         "tests/unit/test_current_test_governance.py",
-        "tests/unit/test_test_governance_tg5.py"
+        "tests/unit/test_test_governance_tg5.py",
+        "tests/integration/test_source_onboarding_first_run.py"
       ],
       "selected_nodes": [
         "tests/integration/test_m8r_05b_03_multi_artifact_contract.py::test_v2_aggregation_finalization_and_loader_accept_typed_evidence_and_sidecar",
@@ -1521,7 +1522,10 @@
         "tests/unit/test_yahoo_normalized_chart_v1.py::test_missing_adjclose_adds_flag_and_empty_list",
         "tests/unit/test_yahoo_normalized_chart_v1.py::test_missing_volume_array",
         "tests/unit/test_yahoo_normalized_chart_v1.py::test_preserves_none_values",
-        "tests/unit/test_yahoo_normalized_chart_v1.py::test_valid_chart_normalization"
+        "tests/unit/test_yahoo_normalized_chart_v1.py::test_valid_chart_normalization",
+        "tests/integration/test_source_onboarding_first_run.py::test_isolated_source_first_run",
+        "tests/integration/test_source_onboarding_first_run.py::test_isolation_guard_and_existing_default_cannot_satisfy_fresh_state",
+        "tests/integration/test_source_onboarding_first_run.py::test_source_start_documents_link_to_initialized_service_topology"
       ]
     },
     "full-current": {
@@ -1694,7 +1698,8 @@
         "tests/unit/test_current_v3_validation_authority.py",
         "tests/unit/test_current_test_governance.py",
         "tests/unit/test_test_governance_tg5.py",
-        "tests/unit/test_phase_i_final_exit.py"
+        "tests/unit/test_phase_i_final_exit.py",
+        "tests/integration/test_source_onboarding_first_run.py"
       ],
       "selected_nodes": [
         "tests/integration/test_m8r_05b_03_multi_artifact_contract.py::test_v2_aggregation_finalization_and_loader_accept_typed_evidence_and_sidecar",
@@ -3436,7 +3441,10 @@
         "tests/unit/test_yahoo_normalized_chart_v1.py::test_missing_adjclose_adds_flag_and_empty_list",
         "tests/unit/test_yahoo_normalized_chart_v1.py::test_missing_volume_array",
         "tests/unit/test_yahoo_normalized_chart_v1.py::test_preserves_none_values",
-        "tests/unit/test_yahoo_normalized_chart_v1.py::test_valid_chart_normalization"
+        "tests/unit/test_yahoo_normalized_chart_v1.py::test_valid_chart_normalization",
+        "tests/integration/test_source_onboarding_first_run.py::test_isolated_source_first_run",
+        "tests/integration/test_source_onboarding_first_run.py::test_isolation_guard_and_existing_default_cannot_satisfy_fresh_state",
+        "tests/integration/test_source_onboarding_first_run.py::test_source_start_documents_link_to_initialized_service_topology"
       ]
     }
   },
@@ -3445,5 +3453,21 @@
     "runner": "scripts/run_current_merge_gate.py",
     "raw_profile": "default-ci",
     "result_schema": "current_merge_verdict.v1"
-  }
+  },
+  "superset_updates": [
+    {
+      "date": "2026-10-30",
+      "baseline_commit": "581928b0b7f38bf4c540d5b1dbef196fddc57f81",
+      "authority": "Owner-authorized S2 source onboarding isolated verification; additive coverage only",
+      "governance_record": "docs/governance/post_v1_5/POST_V1_5_CURRENT_AUTHORITY_STABILIZATION_S2_SOURCE_ONBOARDING_RECONCILIATION_2026-10-30.md",
+      "added_paths": [
+        "tests/integration/test_source_onboarding_first_run.py"
+      ],
+      "added_selected_nodes": [
+        "tests/integration/test_source_onboarding_first_run.py::test_isolated_source_first_run",
+        "tests/integration/test_source_onboarding_first_run.py::test_isolation_guard_and_existing_default_cannot_satisfy_fresh_state",
+        "tests/integration/test_source_onboarding_first_run.py::test_source_start_documents_link_to_initialized_service_topology"
+      ]
+    }
+  ]
 }

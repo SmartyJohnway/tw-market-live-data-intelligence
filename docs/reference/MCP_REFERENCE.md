@@ -2,7 +2,14 @@
 
 ## Start
 
-From a source checkout:
+First complete the [source first-run sequence](../operator/QUICK_START.md#source-first-run):
+install dependencies, initialize installation state offline, then start the
+loopback Local Service. Unified MCP is its stdio adapter; it does not start the
+service. Use the same HOME / STATE_ROOT in both terminals. Security Master ACTIVE
+is required for identity-dependent operations, not for startup-check.
+
+With Local Service running, verify `python scripts/run_unified_market_evidence_mcp.py --startup-check`.
+Then configure the MCP host to run:
 
 ```bash
 python scripts/run_unified_market_evidence_mcp.py

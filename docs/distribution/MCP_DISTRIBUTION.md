@@ -66,8 +66,11 @@ semantics of the product.
 
 ## Installation state and Security Master
 
-A fresh installation can legitimately fail closed as `NOT_INITIALIZED` until an
-operator initializes the installation-local Taiwan Market Identity Service.
+Identity-dependent operations can legitimately fail closed as `NOT_INITIALIZED`
+until an operator activates the installation-local Taiwan Market Identity Service.
+Application installation initialization is separate from Security Master activation;
+see the [source first-run sequence](../operator/QUICK_START.md#source-first-run)
+for the offline source path.
 
 The MCPB is an AI/MCP distribution, not the operator administration surface for
 Security Master creation or refresh. Use the Windows Native or source operator
@@ -97,7 +100,14 @@ do not treat GitHub v1.5.0 as proof that Registry metadata was updated.
 
 ## Source launcher alternative
 
-Developers can run the same exact-six MCP contract from a source checkout:
+Developers can run the same exact-six MCP contract from a source checkout after
+following the [source first-run sequence](../operator/QUICK_START.md#source-first-run).
+Offline lifecycle initialization and a running loopback Local Service are required.
+The source MCP adapter does not start Local Service; keep both processes on the
+same HOME / STATE_ROOT and run `--startup-check` before normal stdio serving.
+Security Master ACTIVE separately gates identity-dependent operations.
+
+With those prerequisites satisfied:
 
 ```bash
 python scripts/run_unified_market_evidence_mcp.py

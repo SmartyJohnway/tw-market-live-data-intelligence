@@ -1,6 +1,9 @@
 # Current Local API Reference
 
-Start the current Unified Workbench / Local Service with:
+Complete the [source first-run sequence](../operator/QUICK_START.md#source-first-run),
+including offline installation initialization. Security Master need not be ACTIVE
+for health, UI or capability inspection; identity-dependent requests fail closed
+while it is unavailable. Start the current Unified Workbench / Local Service with:
 
 ```bash
 python scripts/run_unified_workbench.py

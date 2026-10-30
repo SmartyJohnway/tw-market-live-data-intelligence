@@ -107,44 +107,131 @@ source operator path first. The platform-default HOME is
 See [MCP distribution](../distribution/MCP_DISTRIBUTION.md) for the exact tool
 surface, Registry boundary, runtime requirement, and provenance.
 
+<a id="source-first-run"></a>
 ## Path C — Source checkout (developer / contributor path)
 
-Use source checkout when you are developing, testing, or contributing rather
-than installing the frozen release bundle:
+This is the primary source-onboarding authority. The verified S2 environment is
+**Windows 11 / CPython 3.13 / current repository source**, with an existing
+installed dependency environment passing `verify_environment.py` and completely
+isolated fresh application state. Linux, macOS,
+container startup, fresh network clone, dependency download and full locked-graph
+reinstallation were not verified by that smoke. The frozen `v1.5.0` distribution is a separate source/artifact
+identity; stay on `main` for current development.
 
-```bash
+### 1. Acquire source and dependencies
+
+From PowerShell, with CPython 3.13 available:
+
+```powershell
 git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git
 cd tw-market-live-data-intelligence
-# For the exact published v1.5.0 source, use: git checkout v1.5.0
 python -m venv .venv
-# Activate .venv using your shell
+.\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements-lock.txt
-python scripts/verify_environment.py
-python scripts/manage_security_master.py status
+python -B scripts/verify_environment.py
+python -B scripts/validate_phase_h_v3_contracts.py
 ```
 
-Stay on `main` for current development. Checkout `v1.5.0` when you need the
-exact frozen release source rather than later post-release documentation or
-development commits.
+Clone and pip installation may require external network. With an existing checkout
+and a previously prepared compatible wheelhouse, dependency installation may use
+`python -m pip install --no-index --find-links <wheelhouse> -r requirements-lock.txt`.
+S2 does not download dependencies or market data. `verify_environment.py` checks
+imports, supported Python and the exact `mcp==1.29.0` pin; it does not initialize
+application state. CPython 3.13 is canonical; 3.11 remains noncanonical source
+compatibility, and 3.12 is unsupported for the v1.5.0 release contract.
 
-CPython 3.13 is the canonical release/build/CI runtime. Python 3.11 remains
-noncanonical source/developer compatibility; Python 3.12 is unsupported for the
-v1.5.0 release contract.
+### 2. Initialize the application installation (offline)
 
-A fresh source installation can correctly report `NOT_INITIALIZED`. Initialize
-or refresh the Security Master only through the explicit operator action:
+Choose writable roots **outside the checkout**. These example environment settings
+select the normal Windows installation; use different empty disposable roots for
+tests. Preserve the same settings in every service/MCP terminal.
 
-```bash
-python scripts/manage_security_master.py update --live
+```powershell
+$env:TW_MARKET_HOME = Join-Path $env:LOCALAPPDATA 'TW-Market'
+$env:TW_MARKET_STATE_ROOT = Join-Path $env:TW_MARKET_HOME 'state'
+python -B scripts/tw_market_lifecycle.py status --json
+python -B scripts/tw_market_lifecycle.py init --home "$env:TW_MARKET_HOME" --state-root "$env:TW_MARKET_STATE_ROOT" --json
+python -B scripts/manage_security_master.py status
+python -B scripts/run_unified_workbench.py --startup-check
 ```
 
-Then start either the Workbench or the source MCP launcher:
+Before init, a fresh installation reports `INSTALLATION_NOT_INITIALIZED`; service
+startup is blocked. Init returns `INSTALLATION_READY` with
+`installation.installation_status = READY` and `network_on_init = false`.
+It creates `meta/installation.json`, `config/settings.json`, HOME cache/log
+directories and STATE_ROOT `security-master`, `watchlists`, `governed` directories.
+It does not activate Security Master, create Watchlists, acquire data or start a
+service. Init is idempotent: it preserves installation ID and existing metadata /
+settings. It refuses to silently adopt pre-existing business state
+(`EXISTING_STATE_REQUIRES_EXPLICIT_TRANSFER`).
 
-```bash
-python scripts/run_unified_workbench.py
-# or, for an MCP host:
-python scripts/run_unified_market_evidence_mcp.py
+`--home` / `--state-root` override their environment counterparts. Without a HOME
+override, HOME is `%LOCALAPPDATA%\TW-Market`; state defaults to HOME\state.
+Once initialized, metadata binds the state root; a conflicting requested root is
+`STATE_ROOT_CONFLICT`, not a migration command. Runtime/temp paths are separately
+keyed by installation ID under the system temp directory. Do not reuse another
+installation's Security Master / Watchlist / governed-root override variables.
+
+### 3. Start Local Service, then use Workbench
+
+The Workbench launcher starts the loopback Local Service and serves its UI:
+
+```powershell
+python -B scripts/run_unified_workbench.py --host 127.0.0.1 --port 8000
 ```
+
+Keep this foreground process running. Open
+[Workbench](http://127.0.0.1:8000/workbench/); `GET /api/health` and
+`GET /api/unified/capabilities` are no-acquisition checks. Stop this foreground
+service with **Ctrl+C in its terminal**. Do not launch a second service on the same
+port. A different unused port can be selected explicitly.
+
+A fresh initialized installation still has Security Master `NOT_INITIALIZED`.
+Workbench preload reports `status = not_initialized`, `security_master_loaded =
+false`, with schema/catalog loaded, and exits 0. Health, UI and capability
+inspection remain available. This is useful startup readiness, not identity or
+market-evidence readiness. An identity-dependent validation request fails closed
+with HTTP 503 / `SECURITY_MASTER_NOT_INITIALIZED`; no fixture identity is substituted.
+
+### 4. MCP uses the running Local Service
+
+In a second terminal, activate the same environment and select the same HOME /
+STATE_ROOT as above. Keep Local Service running; MCP does not start it for you.
+For the default service address:
+
+```powershell
+python -B scripts/run_unified_market_evidence_mcp.py --service-url http://127.0.0.1:8000 --startup-check
+python -B scripts/run_unified_market_evidence_mcp.py --service-url http://127.0.0.1:8000
+```
+
+Use the second command as the MCP host's stdio process; stdout is protocol-only.
+Startup-check verifies the pinned SDK, tool contract and Local Service capability
+contract, then exits (`startup_check=ok` is on stderr). It succeeds without ACTIVE
+Security Master. With installation initialized but service absent, it exits 3
+(`local_service_unavailable`). Without installation initialization it exits 2.
+For another service port, use the matching loopback `--service-url` (or
+`UNIFIED_MARKET_EVIDENCE_SERVICE_URL`). Plain stdio serving waits for its first
+input frame before checking the service; an empty-stdin exit is not a readiness
+proof. Use `--startup-check` for verification without an MCP client.
+
+### 5. Identity availability and explicit network actions
+
+Security Master ACTIVE gates identity-dependent resolution/validation and flows
+that require that identity; it does **not** gate all application startup.
+When the operator explicitly intends official identity acquisition, the separate
+network action is `python scripts/manage_security_master.py update --live`.
+This is not a prerequisite for the offline startup checks above and is never run
+by the S2 smoke. Other unavailable/corrupt identity states may fail closed;
+`NOT_INITIALIZED` does not imply every identity error is benign.
+
+Initialization, status, preload, Local Service health/UI/capabilities and MCP
+startup-check require no external acquisition. Service/MCP checks use loopback.
+Market evidence acquisition remains separately explicit, bounded and auditable.
+For the isolated regression, run
+`python -B -m pytest -p no:cacheprovider tests/integration/test_source_onboarding_first_run.py -q`.
+It uses fresh roots and a child-process audit guard, never the user's real
+installation; it does not install dependencies, use a browser, activate identity,
+or prove live-provider availability.
 
 ## Governed product flow
 
