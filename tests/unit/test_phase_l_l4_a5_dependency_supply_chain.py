@@ -93,8 +93,11 @@ def test_active_install_guidance_allowlist_uses_locked_core() -> None:
     for relative in ACTIVE_DOCS:
         content = (ROOT / relative).read_text(encoding="utf-8")
         assert "pip install -r requirements.txt" not in content, relative
-    for relative in ("README.md", "README.zh-TW.md", "docs/operator/QUICK_START.md", "docs/operator/TROUBLESHOOTING.md", "docs/runbooks/DEVELOPER_ONBOARDING_LOCAL_FIRST.md"):
-        assert "requirements-lock.txt" in (ROOT / relative).read_text(encoding="utf-8")
+    # S2 keeps dependency instructions in direct installation/remediation docs.
+    for relative in ("docs/operator/QUICK_START.md", "docs/operator/TROUBLESHOOTING.md", "docs/runbooks/DEVELOPER_ONBOARDING_LOCAL_FIRST.md"):
+        assert "requirements-lock.txt" in (ROOT / relative).read_text(encoding="utf-8"), relative
+    for relative in ("README.md", "README.zh-TW.md"):
+        assert "](docs/operator/QUICK_START.md#source-first-run)" in (ROOT / relative).read_text(encoding="utf-8"), relative
 
 
 def test_operator_remediation_uses_lock_authority() -> None:
