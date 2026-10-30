@@ -32,29 +32,18 @@ def test_tg5_default_and_rollback_profiles_both_resolve() -> None:
         assert all(command[0] for command in commands)
 
 
-def test_tg5_authority_manifest_separates_every_pr_and_lifecycle_profiles() -> None:
-    authority = json.loads(
-        (ROOT / "config/test_governance_authority.json").read_text(encoding="utf-8")
-    )
-    assert authority["authority_role"] == "CURRENT_ACTIVE_MACHINE_AUTHORITY"
-    assert authority["state"] == "TG5_PROMOTED_ACTIVE"
-    assert authority["current_authority_commit"] == "db3340da61ea6e1f3391cfc1728d42b5376157c7"
-    assert authority["current_merge_authority"]["expected_file_paths"] == 93
-    assert authority["current_merge_authority"]["expected_selected_nodes"] == 778
-    assert authority["lifecycle_regression"]["broad_current_expected_nodes"] == 1150
-    assert authority["lifecycle_regression"]["historical_expected_nodes"] == 94
-    assert authority["lifecycle_regression"]["release_expected_nodes"] == 5
-    assert authority["lifecycle_regression"]["mixed_historical_expected_nodes"] == 4
-    assert authority["lifecycle_regression"]["broad_current_profile"] == "full-current"
-    assert authority["lifecycle_regression"]["historical_profile"] == "historical-milestone-replay"
-    assert authority["lifecycle_regression"]["release_profile"] == "release-preflight-current"
-    assert authority["lifecycle_regression"]["mixed_historical_profile"] == "mixed-historical-diagnostic"
-    assert authority["rollback"]["diagnostic_profile"] == "pre-tg5-default-ci"
-    assert authority["rollback"]["authoritative_baseline_commit"] == "2ff9707d901f40c1a108dd1317fce2f03cc79735"
-    history = authority["historical_migration_evidence"]["tg2_semantic_manifest"]
-    assert history["classification"] == "HISTORICAL_MIGRATION_EVIDENCE"
-    assert history["current_authority"] is False
-    assert history["preserve_historical_facts"] is True
-    assert authority["source_evidence"]["tg5_workflow_run_id"] == 35839936603
-    assert authority["invariants"]["tests_deleted"] is False
-    assert authority["invariants"]["phase_i_implementation"] is False
+def test_tg5_frozen_evidence_preserves_cutover_identities_and_counts() -> None:
+    folder = ROOT / "docs/governance/test_governance"
+    ledger = json.loads((folder / "TG5_ACCEPTANCE_LEDGER_2026-09-23.json").read_text())
+    rollback = json.loads((folder / "TG5_ROLLBACK_CONTRACT_2026-09-23.json").read_text())
+    assert ledger["baseline_main"] == "2ff9707d901f40c1a108dd1317fce2f03cc79735"
+    assert ledger["workflow"]["run_id"] == 35839936603
+    assert ledger["promoted_default"]["file_paths"] == 93
+    assert ledger["promoted_default"]["selected_nodes"] == 778
+    assert ledger["lifecycle"]["full_current_selected_nodes"] == 1150
+    assert ledger["lifecycle"]["historical_selected_nodes"] == 94
+    assert ledger["lifecycle"]["release_selected_nodes"] == 5
+    assert rollback["expected_node_counts"]["old_default_selected"] == 1245
+    assert len(rollback["old_default_profile"]["pytest_paths"]) == 156
+    assert ledger["containment"]["tests_deleted"] is False
+    assert ledger["containment"]["phase_i_implementation"] is False
