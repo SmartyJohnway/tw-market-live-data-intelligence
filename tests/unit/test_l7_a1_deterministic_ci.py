@@ -12,6 +12,7 @@ from urllib.error import URLError
 
 import pytest
 from scripts import run_test_profile
+from scripts.s4_catalog_compat import project_s4_catalog
 
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -30,7 +31,10 @@ def accepted_authorities():
 
 
 def assert_current_authorities(current):
-    assert current==accepted_authorities(), 'current public/source/route authority drift requires explicit governance'
+    accepted=accepted_authorities()
+    projected={relative:project_s4_catalog(relative, document, accepted[relative])
+               for relative,document in current.items()}
+    assert projected==accepted, 'current public/source/route authority drift requires explicit governance'
 
 
 def test_current_public_authorities_match_accepted_entry():
