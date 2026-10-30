@@ -10,6 +10,8 @@ import json
 import subprocess
 from pathlib import Path
 
+from scripts.s4_catalog_compat import project_s4_catalog
+
 ROOT = Path(__file__).resolve().parents[1]
 CAPABILITY = "cash_institutional_flow_context"
 EVIDENCE_V2 = "cash_institutional_flow_context_evidence.v2"
@@ -452,6 +454,7 @@ def assert_non_i3_authority_unchanged(relative: str, baseline: str = CANDIDATE_B
     normalized = project_current_a26_h1_addition(relative, normalized, old)
     normalized = project_current_a3_h2_addition(relative, normalized, old)
     normalized = project_l5_a4_publication_reconciliation(relative, normalized, old)
+    normalized = project_s4_catalog(relative, normalized, old)
     assert_projected_authority_matches_historical(normalized, old, relative)
 
 

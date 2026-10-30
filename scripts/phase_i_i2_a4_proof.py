@@ -12,6 +12,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
+from scripts.s4_catalog_compat import project_s4_catalog
+
 if not __debug__:
     raise RuntimeError("A4 offline validation requires assertions enabled")
 
@@ -95,6 +97,7 @@ def verify_candidate_authority():
         (DISPOSITION, "surfaces", "surface_id", {EXECUTOR, i3_executor, h1_legacy_executor, h1_composite_executor, H2_CANDIDATE_EXECUTOR}),
     ):
         now, before = current_json(path), baseline_json(path)
+        now = project_s4_catalog(path, now, before)
         assert [x for x in now[field] if x.get(id_key) not in excluded_ids] == [x for x in before[field] if x.get(id_key) not in excluded_ids], path
     # The A2.6 activation changes only the two predeclared dormant TPEx H1
     # sources. Keep every other source record byte-for-value equal to the
@@ -180,6 +183,7 @@ def rollback_authority():
             rolled[path][field] = [x for x in rolled[path][field] if x.get(key) not in {value, i3_executor}]
         rolled[path] = project_current_a26_h1_addition(path, rolled[path], baseline)
         rolled[path] = project_current_a3_h2_addition(path, rolled[path], baseline)
+        rolled[path] = project_s4_catalog(path, rolled[path], baseline)
         assert rolled[path] == baseline, path
     rolled[SOURCE] = copy.deepcopy(baseline_json(SOURCE))
     regs = [registry.get_route(x["executor_id"], x["capability_id"], x["market"]) for x in rolled[METADATA]["executors"]]

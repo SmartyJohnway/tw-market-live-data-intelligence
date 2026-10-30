@@ -96,7 +96,7 @@
     },
     {
       "capability_id": "session_status",
-      "description": "Retrieves the market session status, local clock and closure states.",
+      "description": "Models market session status, local clock and closure states; the current Unified route is blocked with no selected executor and is not currently executable.",
       "support_status": "runtime_executable",
       "supported_markets": [
         "TWSE",
@@ -586,8 +586,8 @@
     "V3 is the preferred current request contract and new governed outputs default to Result/Audit V3",
     "Phase G research evidence is limited to TWSE/TPEX company common shares in G1/G2",
     "Phase H active source coverage is incremental; only explicitly activated routes are executable",
-    "H1 trading-status coverage remains partial; H1-TPEX-ATTENTION-OPENAPI is the only active H1 route",
-    "H2 remains inactive; H3 runtime execution is limited to the Owner-accepted H3-TWSE-DEFAULT-BOUNDED route; TPEX H3 remains blocked and non-executable",
+    "H1 trading-status coverage remains partial; the selected TPEx composite provides canonical attention and disposition plus source-native cmode with unresolved semantics and zero canonical coverage; changed_trading_method, suspension, and resumption remain uncovered; no TWSE H1 route is active",
+    "H2 execution is limited to TWSE TWT48U_ALL preannouncement using the successful same-target H3-derived comparison window; no full historical coverage or final TWT49U evidence is provided, TPEx routes remain inactive, and subtype coverage remains incomplete; H3 runtime execution is limited to the Owner-accepted H3-TWSE-DEFAULT-BOUNDED route; TPEX H3 remains blocked and non-executable",
     "no scheduler",
     "no continuous polling",
     "no auto retry",

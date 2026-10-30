@@ -56,9 +56,24 @@ boundary.
 
 ## Current Phase H boundary
 
-V3 being preferred does not make all Phase H routes executable. The current
-active H1 product slice is TPEx attention only. H2/H3 remain non-executable
-where routing authority says blocked/plan-only/inactive.
+V3 being preferred does not make all Phase H routes executable. Catalog support
+is semantic scope; selected Route / production executor authority determines
+current executability. The following summary describes the current development
+line, not the frozen v1.5.0 release artifacts.
+
+| Item | Capability / evidence ID | Current executable scope | Remaining boundary |
+|---|---|---|---|
+| H1 | `trading_status_context` | TPEx composite: canonical attention and disposition plus source-native cmode; three fixed GETs, retry zero, no fallback. | cmode has unresolved semantics and zero canonical coverage; changed_trading_method, suspension and resumption remain uncovered. No active TWSE H1 route. |
+| H2 | `corporate_action_context` | TWSE TWT48U_ALL preannouncement only; at most one GET, retry zero, no fallback; requires the successful same-target H3-derived comparison window. | No full historical coverage or final TWT49U evidence; TPEx inactive; subtype coverage remains incomplete and blocks ordinary-return interpretation. |
+| H3 | `recent_performance` | TWSE common shares only; lookback 1..20 completed sessions plus governed end observation; at most three unique STOCK_DAY monthly GETs, retry zero. | TPEx blocked and non-executable; no persistent history accumulation or backfill. |
+| H4 | `discontinuity_safety` | Derived from governed H2/H3 evidence; zero-network, no independent request capability or selected executor. | Incomplete corporate-action coverage cannot become ordinary-return clearance. |
+| session_status | `session_status` | Modeled / recognized; Catalog support_status remains runtime_executable, but the current Unified route is blocked, with no selected executor; not currently executable. | Local builders consume supplied evidence; authoritative closure retrieval has no approved complete executor. TAIFEX remains provisional. |
+
+H1/H2/H3 execution requires explicit bounded authorization. H2/H3 Owner-controlled
+use does not establish provider-approved automation; permission remains
+`NOT_ESTABLISHED_TERMS_CONFLICTED`. H4 adds no network call to upstream execution.
+`market_describe_capabilities` projects current Catalog / Route / registry truth;
+blocked, provisional and modeled states must not be advertised as executable.
 
 ## Safety
 

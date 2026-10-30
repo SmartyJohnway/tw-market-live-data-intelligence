@@ -134,7 +134,7 @@ def validate(authority: dict | None = None, config: dict | None = None, *, root:
 
 def validate_coverage(config: dict, *, root: Path = ROOT) -> dict:
     from scripts.run_current_merge_gate import FLOOR, observe, check_selection
-    require(hashlib.sha256((root / FLOOR).read_bytes()).hexdigest() == "071d9a24fcf432d55b5f6cbb5690cc6b2027a7afb0176b08167ab24a6c95eb67",
+    require(hashlib.sha256((root / FLOOR).read_bytes()).hexdigest() == "4d3816755faff33e03353afd05ad880e501d5bae8ec7821f29fd46995f8a9cfd",
             "coverage floor changed without explicit governance handling")
     floor = load(root / FLOOR)
     require(floor["merge_gate"] == {"name": "current-merge-gate", "runner": "scripts/run_current_merge_gate.py",
