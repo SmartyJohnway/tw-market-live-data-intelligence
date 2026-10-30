@@ -1,15 +1,21 @@
 # M8R-08B Local MCP Client Guide
 
-Start the accepted Workbench/Local Service on loopback first. Then configure an MCP host to launch the repository runtime over stdio:
+Complete the [source first-run sequence](QUICK_START.md#source-first-run),
+including offline lifecycle init, and start Workbench/Local Service on loopback.
+Use the same HOME / STATE_ROOT for MCP; Security Master ACTIVE is not required
+for startup-check, but identity-dependent operations fail closed without it.
+Run `python scripts/run_unified_market_evidence_mcp.py --startup-check` before
+configuring an MCP host to launch the repository runtime over stdio.
+Replace these placeholders with your activated interpreter and checkout paths:
 
 ```text
-command: P:\tw-market-live-data-intelligence-main\venv\Scripts\python.exe
-args: [P:\tw-market-live-data-intelligence-main\scripts\run_unified_market_evidence_mcp.py]
+command: <checkout>\.venv\Scripts\python.exe
+args: [<checkout>\scripts\run_unified_market_evidence_mcp.py]
 ```
 
 The default Local Service address is `http://127.0.0.1:8000`. For an explicit local test port only, set `UNIFIED_MARKET_EVIDENCE_SERVICE_URL` to an allowed loopback base URL. `localhost` normalizes to numeric `127.0.0.1`; `[::1]` remains valid for explicit IPv6 loopback. The adapter refuses non-loopback URLs and never starts a server itself.
 
-Before normal stdio serving, the adapter checks the local service capability endpoint and requires `unified_market_evidence_local_service.v1`. Startup diagnostics go to stderr. Do not send manual text or logging to its stdout: stdout is the MCP protocol stream.
+Before normal stdio serving, the adapter checks the local service capability endpoint and requires `unified_market_evidence_local_service.v2`. Startup diagnostics go to stderr. Do not send manual text or logging to its stdout: stdout is the MCP protocol stream.
 
 Six tools are available: `market_describe_capabilities`, `market_validate_request`, `market_preview_request`, `market_read_result`, `market_export_ai_handoff`, and `market_fetch_evidence`. The first five retain their established behavior. `market_fetch_evidence` accepts only the canonical Request envelope with `execution_mode: "execute"` and performs one bounded conversation-triggered retrieval through the loopback Local Service. Preview remains distinct from authorization and is rejected by the action tool without a ticket or market request. The final two read/export tools require a finalized `umea-v1-` control-package identifier and make no additional market request.
 

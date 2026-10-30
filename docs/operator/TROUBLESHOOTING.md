@@ -30,6 +30,12 @@ Do not substitute fixtures or historical Candidate B payloads.
 
 ## Workbench does not start
 
+Follow the [source first-run sequence](QUICK_START.md#source-first-run).
+`INSTALLATION_NOT_INITIALIZED` requires explicit offline lifecycle init; it is
+separate from Security Master `NOT_INITIALIZED`. Init does not update identity.
+Health, Workbench and MCP preflight can start without ACTIVE Security Master;
+identity-dependent requests still fail closed.
+
 Use the canonical launcher:
 
 ```bash
@@ -39,6 +45,11 @@ python scripts/run_unified_workbench.py
 Then open `http://127.0.0.1:8000/workbench/`.
 
 ## MCP startup failure
+
+After installation init, keep Local Service running and use the same HOME /
+STATE_ROOT for the source MCP adapter. It does not start Local Service itself.
+Use `--startup-check` before configuring the host; exit 3 with
+`local_service_unavailable` means the service prerequisite is not satisfied.
 
 Use:
 

@@ -55,6 +55,10 @@ V1/V2/V3 packages retain their stored version.
 
 ## Workbench
 
+Complete the [source first-run sequence](QUICK_START.md#source-first-run) first.
+The launcher starts Local Service and serves Workbench; installation initialization
+is required, while identity-dependent operations separately require Security Master.
+
 ```bash
 python scripts/run_unified_workbench.py
 ```
