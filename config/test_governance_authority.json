@@ -1,58 +1,65 @@
 {
-  "schema_version": "test_governance_authority.v1",
-  "date": "2026-09-23",
-  "state": "TG5_PROMOTED_ACTIVE",
-  "baseline_main": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
-  "current_merge_authority": {
-    "profile": "default-ci",
-    "expected_file_paths": 93,
-    "expected_selected_nodes": 778,
-    "automatic_ci_allowed": true,
-    "expression": "not network and not browser and not live and not release_preflight and not historical and not performance"
+  "schema_version": "test_governance_authority.v2",
+  "date": "2026-10-30",
+  "authority_role": "CURRENT_OPERATIONAL_TEST_AUTHORITY",
+  "roles": {
+    "merge": "current-merge-gate",
+    "ci": "default-ci",
+    "broad_current": "full-current",
+    "release_blocking": "release-blocking-ci",
+    "release_preflight": "release-preflight-current",
+    "historical": "historical-milestone-replay",
+    "mixed_historical": "mixed-historical-diagnostic",
+    "rollback": "pre-tg5-default-ci"
   },
-  "lifecycle_regression": {
-    "broad_current_profile": "full-current",
-    "broad_current_expected_nodes": 1150,
-    "historical_profile": "historical-milestone-replay",
-    "historical_expected_nodes": 94,
-    "release_profile": "release-preflight-current",
-    "release_expected_nodes": 5,
-    "mixed_historical_profile": "mixed-historical-diagnostic",
-    "mixed_historical_expected_nodes": 4
+  "selection_policy": {
+    "current_expression": "not network and not browser and not live and not release_preflight and not historical and not performance",
+    "current_counts": "OBSERVED_COLLECTION_FACTS_ONLY",
+    "enrollment": "Explicit reviewed paths; additions require role review and observed collection evidence. No fixed current path/node count. No failure-based removal.",
+    "mandatory_current_tests": [
+      "tests/unit/test_current_v3_validation_authority.py",
+      "tests/unit/test_current_test_governance.py",
+      "tests/unit/test_run_test_profile.py",
+      "tests/unit/test_test_governance_tg5.py",
+      "tests/unit/test_governance_forbidden_path_guard.py",
+      "tests/unit/test_forbidden_behavior_scanner.py"
+    ],
+    "release_contract": "config/release_blocking_ci.v1.json"
   },
-  "rollback": {
-    "diagnostic_profile": "pre-tg5-default-ci",
-    "authoritative_baseline_commit": "2ff9707d901f40c1a108dd1317fce2f03cc79735",
-    "exact_contract": "docs/governance/test_governance/TG5_ROLLBACK_CONTRACT_2026-09-23.json",
-    "diagnostic_gap_contract": "docs/governance/test_governance/TG5_ROLLBACK_DIAGNOSTIC_GAPS.v1.json",
-    "expected_file_paths": 156,
-    "expected_selected_nodes": 1245,
-    "mechanism": "revert TG-5 merge or restore repository to authoritative_baseline_commit"
+  "ci_workflows": {
+    ".github/workflows/ci.yml": {
+      "trigger": "workflow_dispatch",
+      "profile": "default-ci"
+    },
+    ".github/workflows/non-network-ci.yml": {
+      "trigger": "workflow_dispatch",
+      "profile": "full-non-network"
+    }
   },
-  "source_evidence": {
-    "tg4_acceptance": "docs/governance/test_governance/TG4_ACCEPTANCE_LEDGER_2026-09-23.json",
-    "tg4_workflow_run_id": 35824957803,
-    "legacy_unexplained_nodes": 0,
-    "tg5_acceptance": "docs/governance/test_governance/TG5_ACCEPTANCE_LEDGER_2026-09-23.json",
-    "tg5_workflow_run_id": 35839936603,
-    "tg5_merge_commit": "db3340da61ea6e1f3391cfc1728d42b5376157c7"
-  },
-  "invariants": {
-    "tests_deleted": false,
-    "production_runtime_changed": false,
-    "source_activation_changed": false,
-    "routing_changed": false,
-    "frozen_schema_changed": false,
-    "phase_i_implementation": false
-  },
-  "authority_role": "CURRENT_ACTIVE_MACHINE_AUTHORITY",
-  "current_authority_commit": "db3340da61ea6e1f3391cfc1728d42b5376157c7",
-  "historical_migration_evidence": {
-    "tg2_semantic_manifest": {
+  "historical_evidence": {
+    "tg4_acceptance": {
+      "path": "docs/governance/test_governance/TG4_ACCEPTANCE_LEDGER_2026-09-23.json",
+      "sha256": "d8f5c65a47e3fd581681fa831144e64b5b9b971e855e473d9b30f9fcfb600243"
+    },
+    "tg5_acceptance": {
+      "path": "docs/governance/test_governance/TG5_ACCEPTANCE_LEDGER_2026-09-23.json",
+      "sha256": "7e6a7f99a86b31a4803d9bce57e9c71e5f911a45f46fccf5b0ad951885e8f275"
+    },
+    "rollback": {
+      "path": "docs/governance/test_governance/TG5_ROLLBACK_CONTRACT_2026-09-23.json",
+      "sha256": "b4936c62f8ba05a4514b651f4ea91090ef6308acaca3a7f94a1f62e087ba895c"
+    },
+    "rollback_gaps": {
+      "path": "docs/governance/test_governance/TG5_ROLLBACK_DIAGNOSTIC_GAPS.v1.json",
+      "sha256": "4960537d63fc80918b70c4ead0d4eca3bda8d7ba240cc1fd2ae6aae1edad71f5"
+    },
+    "tg4_gaps": {
+      "path": "docs/governance/test_governance/TG4_KNOWN_HISTORICAL_REPLAY_GAPS.v1.json",
+      "sha256": "1e9b328bc0c7d2897b982d44bebeda63528c00b2a0b78e71c138f2b8f47824bb"
+    },
+    "tg2": {
       "path": "config/test_governance_semantic_profiles.json",
-      "classification": "HISTORICAL_MIGRATION_EVIDENCE",
-      "current_authority": false,
-      "preserve_historical_facts": true
+      "sha256": "af22ab81efd94c8e872ccd0ea4cee3fe2ad4b1c4166f0429961f27aa0edd2f91"
     }
   }
 }

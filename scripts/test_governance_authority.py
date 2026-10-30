@@ -10,14 +10,10 @@ PROFILES = ROOT / "config/test_execution_profiles.json"
 
 def profile_name_for_role(role: str) -> str:
     authority = json.loads(AUTHORITY.read_text(encoding="utf-8"))
-    mapping = {
-        "current": authority["current_merge_authority"]["profile"],
-        "broad_current": authority["lifecycle_regression"]["broad_current_profile"],
-        "historical": authority["lifecycle_regression"]["historical_profile"],
-        "release": authority["lifecycle_regression"]["release_profile"],
-        "mixed_historical": authority["lifecycle_regression"]["mixed_historical_profile"],
-        "rollback": authority["rollback"]["diagnostic_profile"],
-    }
+    # Preserve existing role spellings used by current regression tests.
+    aliases = {"current": "ci", "release": "release_preflight"}
+    mapping = authority["roles"]
+    role = aliases.get(role, role)
     try:
         return mapping[role]
     except KeyError as exc:

@@ -24,7 +24,7 @@
       "automatic_ci_allowed": true
     },
     "default-ci": {
-      "purpose": "TG-5 promoted ordinary PR/default CI authority: current product, supported compatibility, current contracts, security/governance, and essential deterministic integration.",
+      "purpose": "Raw current developer diagnostics; operational merge verdict is scripts/run_current_merge_gate.py. Known diagnostic failures remain visible; manual CI workflow unchanged.",
       "execution_type": "pytest",
       "pytest_expression": "not network and not browser and not live and not release_preflight and not historical and not performance",
       "pytest_paths": [
@@ -145,7 +145,10 @@
         "tests/integration/test_phase_h_imp_7d_deterministic_e2e.py",
         "tests/unit/test_phase_h_act_h1_tpex_attention_activation.py",
         "tests/unit/test_m8r_06_04_mode_c.py",
-        "tests/unit/test_phase_g_pr_d_closure.py"
+        "tests/unit/test_phase_g_pr_d_closure.py",
+        "tests/unit/test_current_v3_validation_authority.py",
+        "tests/unit/test_current_test_governance.py",
+        "tests/unit/test_test_governance_tg5.py"
       ],
       "network_policy": "no network",
       "browser_policy": "not required for shadow governance",
@@ -610,7 +613,11 @@
         "tests/unit/test_m8_multi_source_context_builder.py",
         "tests/unit/test_m8_controlled_conversation_context_integration.py",
         "tests/unit/test_m8_compatibility_hardening.py",
-        "tests/unit/test_m8c_taifex_mis_currentness_preflight.py"
+        "tests/unit/test_m8c_taifex_mis_currentness_preflight.py",
+        "tests/unit/test_current_v3_validation_authority.py",
+        "tests/unit/test_current_test_governance.py",
+        "tests/unit/test_test_governance_tg5.py",
+        "tests/unit/test_phase_i_final_exit.py"
       ],
       "network_policy": "no network",
       "browser_policy": "not required for shadow governance",

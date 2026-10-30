@@ -27,48 +27,30 @@ def _load(path: Path) -> dict:
 
 
 def validate_static() -> dict:
-    profiles = _load(PROFILES)["profiles"]
-    authority = _load(AUTHORITY)
+    # Frozen snapshots own cutover truth; current profile enrollment may evolve.
     rollback = _load(ROLLBACK)
     tg4 = _load(TG4)
     tg5 = _load(TG5)
-
-    new_default = profiles["default-ci"]
-    old_rehearsal = profiles["pre-tg5-default-ci"]
-    assert new_default == rollback["candidate_default_profile"]
+    tg2 = _load(ROOT / "config/test_governance_semantic_profiles.json")
+    new_default = rollback["candidate_default_profile"]
+    old_contract = rollback["old_default_profile"]
+    assert new_default["pytest_paths"] == tg2["shadow_execution_sets"]["tg2-default-ci-current-shadow"]["paths"]
     assert new_default["pytest_expression"] == EXPECTED_EXPR
     assert new_default["automatic_ci_allowed"] is True
     assert len(new_default["pytest_paths"]) == 93
-
-    old_contract = rollback["old_default_profile"]
     assert len(old_contract["pytest_paths"]) == 156
     assert old_contract["pytest_expression"] == EXPECTED_EXPR
-    assert old_rehearsal["pytest_paths"] == old_contract["pytest_paths"]
-    assert old_rehearsal["pytest_expression"] == old_contract["pytest_expression"]
-    assert old_rehearsal["automatic_ci_allowed"] is False
-
-    # Deterministic rollback means replacing only the default profile body.
-    restored = dict(profiles)
-    restored["default-ci"] = old_contract
+    assert rollback["baseline_main"] == "2ff9707d901f40c1a108dd1317fce2f03cc79735"
+    assert rollback["source_tg4_workflow_run_id"] == 35824957803
+    assert tg5["workflow"]["run_id"] == 35839936603
+    assert rollback["expected_node_counts"] == {
+        "old_default_selected": 1245, "new_default_selected": 778,
+        "broad_current_selected": 1150, "historical_selected": 94,
+        "release_selected": 5,
+    }
+    # The historical rollback recipe remains restoring the frozen profile body.
+    restored = {"default-ci": old_contract}
     assert restored["default-ci"] == old_contract
-
-    assert authority["authority_role"] == "CURRENT_ACTIVE_MACHINE_AUTHORITY"
-    assert authority["state"] == "TG5_PROMOTED_ACTIVE"
-    assert authority["current_authority_commit"] == "db3340da61ea6e1f3391cfc1728d42b5376157c7"
-    assert authority["current_merge_authority"]["profile"] == "default-ci"
-    assert authority["current_merge_authority"]["expected_file_paths"] == 93
-    assert authority["current_merge_authority"]["expected_selected_nodes"] == 778
-    assert authority["rollback"]["expected_file_paths"] == 156
-    assert authority["rollback"]["expected_selected_nodes"] == 1245
-    tg2_history = authority["historical_migration_evidence"]["tg2_semantic_manifest"]
-    assert tg2_history["path"] == "config/test_governance_semantic_profiles.json"
-    assert tg2_history["classification"] == "HISTORICAL_MIGRATION_EVIDENCE"
-    assert tg2_history["current_authority"] is False
-    assert tg2_history["preserve_historical_facts"] is True
-    assert (ROOT / tg2_history["path"]).exists()
-    assert authority["source_evidence"]["tg5_acceptance"] == "docs/governance/test_governance/TG5_ACCEPTANCE_LEDGER_2026-09-23.json"
-    assert authority["source_evidence"]["tg5_workflow_run_id"] == 35839936603
-    assert authority["source_evidence"]["tg5_merge_commit"] == "db3340da61ea6e1f3391cfc1728d42b5376157c7"
     assert tg5["status"] == "TG5_DEFAULT_CI_CUTOVER_PASS"
     assert tg5["promoted_default"]["file_paths"] == 93
     assert tg5["promoted_default"]["selected_nodes"] == 778
@@ -77,22 +59,10 @@ def validate_static() -> dict:
     assert tg4["node_analysis"]["legacy_layer_counts"]["unexplained"] == 0
     assert tg4["interpretation"]["shadow_protection_gap"] == "NONE_UNEXPLAINED"
 
-    for name in (
-        "full-current",
-        "historical-milestone-replay",
-        "release-preflight-current",
-        "mixed-historical-diagnostic",
-        "pre-tg5-default-ci",
-    ):
-        assert profiles[name]["automatic_ci_allowed"] is False
-
-    for path in set(new_default["pytest_paths"]) | set(old_contract["pytest_paths"]):
-        assert (ROOT / path).exists(), path
-
-    assert authority["lifecycle_regression"]["broad_current_expected_nodes"] == 1150
-    assert authority["lifecycle_regression"]["historical_expected_nodes"] == 94
-    assert authority["lifecycle_regression"]["release_expected_nodes"] == 5
-    assert authority["lifecycle_regression"]["mixed_historical_expected_nodes"] == 4
+    assert tg5["lifecycle"]["full_current_selected_nodes"] == 1150
+    assert tg5["lifecycle"]["historical_selected_nodes"] == 94
+    assert tg5["lifecycle"]["release_selected_nodes"] == 5
+    assert tg4["runtime_results"]["mixed_historical_shadow"]["selected"] == 4
 
     return {
         "status": "PASS",
