@@ -149,7 +149,8 @@
         "tests/unit/test_current_v3_validation_authority.py",
         "tests/unit/test_current_test_governance.py",
         "tests/unit/test_test_governance_tg5.py",
-        "tests/integration/test_source_onboarding_first_run.py"
+        "tests/integration/test_source_onboarding_first_run.py",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py"
       ],
       "network_policy": "no network",
       "browser_policy": "not required for shadow governance",
@@ -619,7 +620,8 @@
         "tests/unit/test_current_test_governance.py",
         "tests/unit/test_test_governance_tg5.py",
         "tests/unit/test_phase_i_final_exit.py",
-        "tests/integration/test_source_onboarding_first_run.py"
+        "tests/integration/test_source_onboarding_first_run.py",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py"
       ],
       "network_policy": "no network",
       "browser_policy": "not required for shadow governance",

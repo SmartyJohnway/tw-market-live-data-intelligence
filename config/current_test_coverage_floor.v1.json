@@ -153,7 +153,8 @@
         "tests/unit/test_current_v3_validation_authority.py",
         "tests/unit/test_current_test_governance.py",
         "tests/unit/test_test_governance_tg5.py",
-        "tests/integration/test_source_onboarding_first_run.py"
+        "tests/integration/test_source_onboarding_first_run.py",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py"
       ],
       "selected_nodes": [
         "tests/integration/test_m8r_05b_03_multi_artifact_contract.py::test_v2_aggregation_finalization_and_loader_accept_typed_evidence_and_sidecar",
@@ -1525,7 +1526,18 @@
         "tests/unit/test_yahoo_normalized_chart_v1.py::test_valid_chart_normalization",
         "tests/integration/test_source_onboarding_first_run.py::test_isolated_source_first_run",
         "tests/integration/test_source_onboarding_first_run.py::test_isolation_guard_and_existing_default_cannot_satisfy_fresh_state",
-        "tests/integration/test_source_onboarding_first_run.py::test_source_start_documents_link_to_initialized_service_topology"
+        "tests/integration/test_source_onboarding_first_run.py::test_source_start_documents_link_to_initialized_service_topology",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H1-trading_status_context-TPEX-phase_h_h1_tpex_composite_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H2-corporate_action_context-TWSE-phase_h_h2_twse_exright_pre_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H3-recent_performance-TWSE-phase_h_h3_twse_recent_performance_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H4-discontinuity_safety-None-None]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[session_status-session_status-None-None]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[h1]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[h2]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[session]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[other_top]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[route]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_s4_exact_delta_keeps_historical_baseline_and_requires_predecessors"
       ]
     },
     "full-current": {
@@ -1699,7 +1711,8 @@
         "tests/unit/test_current_test_governance.py",
         "tests/unit/test_test_governance_tg5.py",
         "tests/unit/test_phase_i_final_exit.py",
-        "tests/integration/test_source_onboarding_first_run.py"
+        "tests/integration/test_source_onboarding_first_run.py",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py"
       ],
       "selected_nodes": [
         "tests/integration/test_m8r_05b_03_multi_artifact_contract.py::test_v2_aggregation_finalization_and_loader_accept_typed_evidence_and_sidecar",
@@ -3444,7 +3457,18 @@
         "tests/unit/test_yahoo_normalized_chart_v1.py::test_valid_chart_normalization",
         "tests/integration/test_source_onboarding_first_run.py::test_isolated_source_first_run",
         "tests/integration/test_source_onboarding_first_run.py::test_isolation_guard_and_existing_default_cannot_satisfy_fresh_state",
-        "tests/integration/test_source_onboarding_first_run.py::test_source_start_documents_link_to_initialized_service_topology"
+        "tests/integration/test_source_onboarding_first_run.py::test_source_start_documents_link_to_initialized_service_topology",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H1-trading_status_context-TPEX-phase_h_h1_tpex_composite_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H2-corporate_action_context-TWSE-phase_h_h2_twse_exright_pre_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H3-recent_performance-TWSE-phase_h_h3_twse_recent_performance_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H4-discontinuity_safety-None-None]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[session_status-session_status-None-None]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[h1]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[h2]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[session]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[other_top]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[route]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_s4_exact_delta_keeps_historical_baseline_and_requires_predecessors"
       ]
     }
   },
@@ -3467,6 +3491,28 @@
         "tests/integration/test_source_onboarding_first_run.py::test_isolated_source_first_run",
         "tests/integration/test_source_onboarding_first_run.py::test_isolation_guard_and_existing_default_cannot_satisfy_fresh_state",
         "tests/integration/test_source_onboarding_first_run.py::test_source_start_documents_link_to_initialized_service_topology"
+      ]
+    },
+    {
+      "date": "2026-10-30",
+      "baseline_commit": "c77b6d0190f63ca827ef47a8b5198041f26516b2",
+      "authority": "Owner-authorized S4 Catalog / MCP current-truth reconciliation; additive coverage only",
+      "governance_record": "docs/governance/post_v1_5/POST_V1_5_CURRENT_AUTHORITY_STABILIZATION_S4_CATALOG_MCP_CURRENT_TRUTH_RECONCILIATION_2026-10-30.md",
+      "added_paths": [
+        "tests/unit/test_s4_catalog_mcp_current_truth.py"
+      ],
+      "added_selected_nodes": [
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H1-trading_status_context-TPEX-phase_h_h1_tpex_composite_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H2-corporate_action_context-TWSE-phase_h_h2_twse_exright_pre_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H3-recent_performance-TWSE-phase_h_h3_twse_recent_performance_executor]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[H4-discontinuity_safety-None-None]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_current_summary_matches_route_registry_and_publication[session_status-session_status-None-None]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[h1]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[h2]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[session]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[other_top]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_l5_rejects_drift_including_every_s4_protected_field[route]",
+        "tests/unit/test_s4_catalog_mcp_current_truth.py::test_s4_exact_delta_keeps_historical_baseline_and_requires_predecessors"
       ]
     }
   ]

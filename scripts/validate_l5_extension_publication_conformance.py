@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from scripts import generate_portable_catalog as generator
+from scripts.s4_catalog_compat import s4_expected_catalog
 from server.unified_mcp.tool_contracts import build_tool_specs
 
 CATALOG = "docs/data_capabilities/unified_market_evidence_capability_catalog.v3.json"
@@ -132,7 +133,8 @@ def validate_snapshot(s: dict) -> dict:
         if re.search(r"activation pending|activation candidate", json.dumps(row), re.I):
             reject("A4_STALE_OWNER_PENDING_PUBLICATION", "index_futures_context")
     for name, key in (("catalog", "data_need_capabilities"), ("routing", "routes")):
-        if functional_view(s[name], key) != functional_view(s["baseline_" + name], key):
+        baseline = s4_expected_catalog(s["baseline_catalog"]) if name == "catalog" else s["baseline_routing"]
+        if functional_view(s[name], key) != functional_view(baseline, key):
             reject("A4_CATALOG_SEMANTIC_CHANGE_REQUIRED", name)
     for path, source in s["runtime_inputs"].items():
         literals = [node.value for node in ast.walk(ast.parse(source))
