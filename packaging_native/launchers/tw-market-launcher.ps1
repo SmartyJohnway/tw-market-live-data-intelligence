@@ -1,22 +1,28 @@
 param(
-    [ValidateSet('Gui','Status','Setup','Start','Stop','Doctor','WorkbenchUri')]
+    [ValidateSet('Gui','Status','Setup','Start','Stop','Restart','Doctor','WorkbenchUri','SecurityStatus','SecurityUpdate')]
     [string]$Action = 'Gui',
     [switch]$Headless,
     [string]$PythonPath,
-    [switch]$ConfirmStaleOwnership
+    [switch]$ConfirmStaleOwnership,
+    [switch]$ConfirmSecurityNetwork
 )
 
 Set-StrictMode -Version 2.0
 $ErrorActionPreference = 'Stop'
 $script:BundleRoot = Split-Path -Parent $PSScriptRoot
 $script:MarketCmd = Join-Path $script:BundleRoot 'tw-market.cmd'
+$script:SecurityMasterCmd = Join-Path $script:BundleRoot 'tw-market-security-master.cmd'
 $script:BootstrapPs1 = Join-Path $script:BundleRoot 'bootstrap\bootstrap.ps1'
 $script:RuntimePython = Join-Path $script:BundleRoot 'runtime\venv\Scripts\python.exe'
 $script:RuntimeMarker = Join-Path $script:BundleRoot 'runtime\runtime-marker.json'
+$script:ProductVersionPath = Join-Path $script:BundleRoot 'app\VERSION'
 $script:SelectedPython = $PythonPath
 $script:LastTechnicalDetails = ''
 $script:LastSnapshotDetails = ''
 $script:CurrentSnapshot = $null
+$script:SecurityRestartRequired = $false
+$script:SecurityLastOperation = ''
+$script:SecurityLastReason = ''
 
 function New-LauncherResult {
     param([string]$Status, [string]$ReasonCode = '', [object]$Data = $null)
@@ -24,6 +30,20 @@ function New-LauncherResult {
     if ($ReasonCode) { $result.reason_code = $ReasonCode }
     if ($null -ne $Data) { $result.data = $Data }
     [pscustomobject]$result
+}
+
+function ConvertFrom-LastJsonPayload {
+    param([string]$Raw)
+    if (-not $Raw) { return $null }
+    try { return ($Raw.Trim() | ConvertFrom-Json) } catch {}
+    $lines = @($Raw -split "`r?`n")
+    for ($i = $lines.Count - 1; $i -ge 0; $i--) {
+        $trimmed = $lines[$i].TrimStart()
+        if (-not ($trimmed.StartsWith('{') -or $trimmed.StartsWith('['))) { continue }
+        $candidate = ($lines[$i..($lines.Count - 1)] -join [Environment]::NewLine).Trim()
+        try { return ($candidate | ConvertFrom-Json) } catch {}
+    }
+    return $null
 }
 
 function Invoke-ExternalCommand {
@@ -36,6 +56,15 @@ function Invoke-ExternalCommand {
     } catch {
         return [pscustomobject]@{ exit_code = -1; output = ''; launch_error = $_.Exception.Message }
     }
+}
+
+function Get-ProductVersion {
+    if (-not (Test-Path -LiteralPath $script:ProductVersionPath -PathType Leaf)) { return 'Unknown' }
+    try {
+        $value = (Get-Content -LiteralPath $script:ProductVersionPath -Raw).Trim()
+        if ($value) { return $value }
+    } catch {}
+    return 'Unknown'
 }
 
 function Get-RuntimePresence {
@@ -93,6 +122,78 @@ function Invoke-Lifecycle {
     $raw = $run.output.Trim()
     try { $payload = $raw | ConvertFrom-Json } catch { $payload = $null }
     return [pscustomobject]@{ exit_code = $run.exit_code; payload = $payload; raw = $raw; error = $null }
+}
+
+function Invoke-SecurityMasterCommand {
+    param([ValidateSet('status','update')][string]$Command)
+    if (-not (Test-Path -LiteralPath $script:SecurityMasterCmd -PathType Leaf)) {
+        return [pscustomobject]@{ exit_code = -1; payload = $null; raw = ''; error = 'SECURITY_MASTER_LAUNCHER_NOT_FOUND' }
+    }
+    $arguments = @($Command)
+    if ($Command -eq 'update') { $arguments += '--live' }
+    $run = Invoke-ExternalCommand -FilePath $script:SecurityMasterCmd -Arguments $arguments
+    if ($run.launch_error) {
+        return [pscustomobject]@{ exit_code = -1; payload = $null; raw = ''; error = $run.launch_error }
+    }
+    $raw = $run.output.Trim()
+    $payload = ConvertFrom-LastJsonPayload -Raw $raw
+    return [pscustomobject]@{ exit_code = $run.exit_code; payload = $payload; raw = $raw; error = $null }
+}
+
+function Get-SecurityMasterSnapshot {
+    if ((Get-RuntimePresence) -ne 'PRESENT') {
+        return New-LauncherResult -Status 'UNAVAILABLE' -ReasonCode 'PACKAGE_RUNTIME_NOT_READY'
+    }
+    $run = Invoke-SecurityMasterCommand -Command 'status'
+    if ($null -eq $run.payload) {
+        return New-LauncherResult -Status 'UNAVAILABLE' -ReasonCode 'SECURITY_MASTER_STATUS_FAILED'
+    }
+    $state = [string]$run.payload.status
+    if ($state -in @('NOT_INITIALIZED','ACTIVE')) {
+        return New-LauncherResult -Status $state -Data $run.payload
+    }
+    $reason = 'SECURITY_MASTER_STATE_UNREADABLE'
+    if ($run.payload.PSObject.Properties.Name -contains 'reason_code' -and $run.payload.reason_code) { $reason = [string]$run.payload.reason_code }
+    return New-LauncherResult -Status 'UNAVAILABLE' -ReasonCode $reason -Data $run.payload
+}
+
+function Invoke-SecurityMasterUpdateAction {
+    param([switch]$Confirmed)
+    $runtime = Get-LauncherSnapshot
+    if ($runtime.status -in @('SETUP_REQUIRED','INSTALLATION_INCOMPLETE','STATUS_ERROR')) {
+        return New-LauncherResult -Status 'ACTION_BLOCKED' -ReasonCode 'SECURITY_MASTER_REQUIRES_READY_INSTALLATION'
+    }
+    if ($runtime.status -notin @('STOPPED','RUNNING_READY','RUNNING_UNHEALTHY')) {
+        return New-LauncherResult -Status 'ACTION_BLOCKED' -ReasonCode ('SECURITY_MASTER_REQUIRES_STABLE_RUNTIME_STATE_' + $runtime.status)
+    }
+    $before = Get-SecurityMasterSnapshot
+    if ($before.status -notin @('NOT_INITIALIZED','ACTIVE')) {
+        return New-LauncherResult -Status 'ACTION_BLOCKED' -ReasonCode ('SECURITY_MASTER_UPDATE_NOT_ALLOWED_FROM_' + $before.status)
+    }
+    if (-not $Confirmed) {
+        return New-LauncherResult -Status 'CONFIRMATION_REQUIRED' -ReasonCode 'SECURITY_MASTER_EXTERNAL_ACQUISITION'
+    }
+    $mode = if ($before.status -eq 'NOT_INITIALIZED') { 'INSTALL' } else { 'UPDATE' }
+    $run = Invoke-SecurityMasterCommand -Command 'update'
+    $script:LastTechnicalDetails = $run.raw
+    if ($null -eq $run.payload -or $run.exit_code -ne 0 -or [string]$run.payload.status -ne 'ACTIVE') {
+        $reason = 'SECURITY_MASTER_UPDATE_FAILED'
+        if ($run.payload -and ($run.payload.PSObject.Properties.Name -contains 'reason_code') -and $run.payload.reason_code) { $reason = [string]$run.payload.reason_code }
+        $script:SecurityLastOperation = 'FAILED'
+        $script:SecurityLastReason = $reason
+        return New-LauncherResult -Status 'SECURITY_MASTER_UPDATE_FAILED' -ReasonCode $reason -Data $run.payload
+    }
+    $restartRequired = $false
+    if ($run.payload.PSObject.Properties.Name -contains 'restart_required') { $restartRequired = [bool]$run.payload.restart_required }
+    $script:SecurityRestartRequired = $restartRequired
+    $script:SecurityLastOperation = $mode + '_COMPLETE'
+    $script:SecurityLastReason = ''
+    return New-LauncherResult -Status 'SECURITY_MASTER_UPDATE_COMPLETE' -Data ([pscustomobject]@{
+        mode = $mode
+        restart_required = $restartRequired
+        runtime_state = $runtime.status
+        security_master = $run.payload
+    })
 }
 
 function Get-WorkbenchUri {
@@ -227,7 +328,11 @@ function Invoke-StartAction {
     $after = Get-LauncherSnapshot -PreserveTechnicalDetails
     $script:CurrentSnapshot = $after
     if ($null -eq $run.payload) { return New-LauncherResult -Status 'START_FAILED' -ReasonCode 'START_COMMAND_FAILED' }
-    if ($after.status -eq 'RUNNING_READY') { return New-LauncherResult -Status 'START_COMPLETE' -Data $after.data }
+    if ($after.status -eq 'RUNNING_READY') {
+        $script:SecurityRestartRequired = $false
+        if ($script:SecurityLastOperation -in @('INSTALL_COMPLETE','UPDATE_COMPLETE')) { $script:SecurityLastOperation = '' }
+        return New-LauncherResult -Status 'START_COMPLETE' -Data $after.data
+    }
     $reason = [string]$run.payload.status
     if ($run.payload.reason_code) { $reason = [string]$run.payload.reason_code }
     return New-LauncherResult -Status 'START_INCOMPLETE' -ReasonCode $reason -Data $after
@@ -248,6 +353,25 @@ function Invoke-StopAction {
     $reason = [string]$run.payload.status
     if ($run.payload.reason_code) { $reason = [string]$run.payload.reason_code }
     return New-LauncherResult -Status 'STOP_INCOMPLETE' -ReasonCode $reason -Data $after
+}
+
+function Invoke-RestartAction {
+    $before = Get-LauncherSnapshot
+    if ($before.status -notin @('RUNNING_READY','RUNNING_UNHEALTHY')) {
+        return New-LauncherResult -Status 'ACTION_BLOCKED' -ReasonCode ('RESTART_NOT_ALLOWED_FROM_' + $before.status)
+    }
+    $stopped = Invoke-StopAction
+    if ($stopped.status -ne 'STOP_COMPLETE' -or $script:CurrentSnapshot.status -ne 'STOPPED') {
+        return New-LauncherResult -Status 'RESTART_FAILED' -ReasonCode 'RESTART_STOP_FAILED' -Data $stopped
+    }
+    $started = Invoke-StartAction
+    if ($started.status -eq 'START_COMPLETE' -and $script:CurrentSnapshot.status -eq 'RUNNING_READY') {
+        $script:SecurityRestartRequired = $false
+        $script:SecurityLastOperation = ''
+        $script:SecurityLastReason = ''
+        return New-LauncherResult -Status 'RESTART_COMPLETE' -Data $started.data
+    }
+    return New-LauncherResult -Status 'RESTART_FAILED' -ReasonCode 'RESTART_START_FAILED' -Data $started
 }
 
 function Invoke-DoctorAction {
@@ -276,8 +400,11 @@ function Invoke-RequestedAction {
         'Setup' { return Invoke-Setup }
         'Start' { return Invoke-StartAction }
         'Stop' { return Invoke-StopAction }
+        'Restart' { return Invoke-RestartAction }
         'Doctor' { return Invoke-DoctorAction }
         'WorkbenchUri' { return Invoke-WorkbenchUriAction }
+        'SecurityStatus' { return Get-SecurityMasterSnapshot }
+        'SecurityUpdate' { return Invoke-SecurityMasterUpdateAction -Confirmed:$ConfirmSecurityNetwork }
         default { return New-LauncherResult -Status 'ACTION_BLOCKED' -ReasonCode 'UNSUPPORTED_HEADLESS_ACTION' }
     }
 }
@@ -286,7 +413,7 @@ function Write-HeadlessResult {
     param([object]$Result)
     $json = $Result | ConvertTo-Json -Depth 12 -Compress
     [Console]::Out.WriteLine($json)
-    if ($Result.status -in @('STATUS_ERROR','SETUP_BLOCKED','PREREQUISITE_BLOCKED','START_FAILED','START_INCOMPLETE','STOP_FAILED','STOP_INCOMPLETE','DOCTOR_FAILED','DOCTOR_BLOCKED','ACTION_BLOCKED','CONFIRMATION_REQUIRED')) { return 1 }
+    if ($Result.status -in @('STATUS_ERROR','SETUP_BLOCKED','PREREQUISITE_BLOCKED','START_FAILED','START_INCOMPLETE','STOP_FAILED','STOP_INCOMPLETE','RESTART_FAILED','SECURITY_MASTER_UPDATE_FAILED','DOCTOR_FAILED','DOCTOR_BLOCKED','ACTION_BLOCKED','CONFIRMATION_REQUIRED')) { return 1 }
     return 0
 }
 function Show-TechnicalDetails {
@@ -306,69 +433,162 @@ function Show-LauncherGui {
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
     [System.Windows.Forms.Application]::EnableVisualStyles()
+
     $form = New-Object System.Windows.Forms.Form
     $form.Text = 'TW-Market'
-    $form.Width = 620; $form.Height = 520; $form.StartPosition = 'CenterScreen'
+    $form.Width = 720; $form.Height = 620; $form.StartPosition = 'CenterScreen'
     $form.FormBorderStyle = 'FixedDialog'; $form.MaximizeBox = $false
+    $form.BackColor = [System.Drawing.Color]::White
 
     $title = New-Object System.Windows.Forms.Label
-    $title.Text = 'TW-Market Local Operator'; $title.AutoSize = $true
-    $title.Font = New-Object System.Drawing.Font('Segoe UI',16,[System.Drawing.FontStyle]::Bold)
-    $title.Location = New-Object System.Drawing.Point(24,20); $form.Controls.Add($title)
-    $rows = @('Package Runtime','Python 3.13 x64','Local Installation','Local Runtime','Workbench','Security Master','Local MCP')
-    $valueLabels = @{}
-    $y = 70
-    foreach ($name in $rows) {
+    $title.Text = 'TW-Market'; $title.AutoSize = $true
+    $title.Font = New-Object System.Drawing.Font('Segoe UI',18,[System.Drawing.FontStyle]::Bold)
+    $title.Location = New-Object System.Drawing.Point(24,18); $form.Controls.Add($title)
+
+    $subtitle = New-Object System.Windows.Forms.Label
+    $subtitle.Text = 'Taiwan Market Intelligence'; $subtitle.AutoSize = $true
+    $subtitle.ForeColor = [System.Drawing.Color]::DimGray
+    $subtitle.Location = New-Object System.Drawing.Point(27,52); $form.Controls.Add($subtitle)
+
+    $versionLabel = New-Object System.Windows.Forms.Label
+    $productVersion = Get-ProductVersion
+    $versionLabel.Text = if ($productVersion -eq 'Unknown') { 'Version unknown' } else { 'v' + $productVersion }
+    $versionLabel.AutoSize = $true; $versionLabel.TextAlign = 'MiddleRight'
+    $versionLabel.Location = New-Object System.Drawing.Point(610,26); $form.Controls.Add($versionLabel)
+
+    $setupPanel = New-Object System.Windows.Forms.Panel
+    $setupPanel.Location = New-Object System.Drawing.Point(20,82)
+    $setupPanel.Size = New-Object System.Drawing.Size(665,465)
+    $form.Controls.Add($setupPanel)
+
+    $setupHeading = New-Object System.Windows.Forms.Label
+    $setupHeading.Text = 'First-time setup'; $setupHeading.AutoSize = $true
+    $setupHeading.Font = New-Object System.Drawing.Font('Segoe UI',12,[System.Drawing.FontStyle]::Bold)
+    $setupHeading.Location = New-Object System.Drawing.Point(8,8); $setupPanel.Controls.Add($setupHeading)
+
+    $setupRows = @('Package Runtime','Python 3.13 x64','Local Installation')
+    $setupValues = @{}
+    $setupY = 55
+    foreach ($name in $setupRows) {
         $nameLabel = New-Object System.Windows.Forms.Label
-        $nameLabel.Text = $name; $nameLabel.Width = 170
-        $nameLabel.Location = New-Object System.Drawing.Point(30,$y)
+        $nameLabel.Text = $name; $nameLabel.Width = 180
+        $nameLabel.Location = New-Object System.Drawing.Point(24,$setupY)
         $valueLabel = New-Object System.Windows.Forms.Label
-        $valueLabel.Text = 'Checking...'; $valueLabel.Width = 330
-        $valueLabel.Location = New-Object System.Drawing.Point(210,$y)
-        $form.Controls.Add($nameLabel); $form.Controls.Add($valueLabel)
-        $valueLabels[$name] = $valueLabel; $y += 28
+        $valueLabel.Text = 'Checking...'; $valueLabel.Width = 360
+        $valueLabel.Font = New-Object System.Drawing.Font('Segoe UI',9,[System.Drawing.FontStyle]::Bold)
+        $valueLabel.Location = New-Object System.Drawing.Point(215,$setupY)
+        $setupPanel.Controls.Add($nameLabel); $setupPanel.Controls.Add($valueLabel)
+        $setupValues[$name] = $valueLabel; $setupY += 42
     }
 
-    $message = New-Object System.Windows.Forms.Label
-    $message.Width = 550; $message.Height = 56
-    $message.Location = New-Object System.Drawing.Point(30,270)
-    $form.Controls.Add($message)
+    $setupMessage = New-Object System.Windows.Forms.Label
+    $setupMessage.Width = 600; $setupMessage.Height = 62
+    $setupMessage.Location = New-Object System.Drawing.Point(24,195)
+    $setupPanel.Controls.Add($setupMessage)
 
     $setupButton = New-Object System.Windows.Forms.Button
-    $setupButton.Text = 'Set Up TW-Market'; $setupButton.Width = 150
-    $setupButton.Location = New-Object System.Drawing.Point(30,340)
+    $setupButton.Text = 'Set Up TW-Market'; $setupButton.Width = 190; $setupButton.Height = 38
+    $setupButton.Location = New-Object System.Drawing.Point(24,275); $setupPanel.Controls.Add($setupButton)
+
     $locateButton = New-Object System.Windows.Forms.Button
-    $locateButton.Text = 'Locate Python 3.13...'; $locateButton.Width = 160
-    $locateButton.Location = New-Object System.Drawing.Point(195,340)
-    $startButton = New-Object System.Windows.Forms.Button
-    $startButton.Text = 'Start TW-Market'; $startButton.Width = 130
-    $startButton.Location = New-Object System.Drawing.Point(30,380)
-    $openButton = New-Object System.Windows.Forms.Button
-    $openButton.Text = 'Open Workbench'; $openButton.Width = 130
-    $openButton.Location = New-Object System.Drawing.Point(170,380)
-    $refreshButton = New-Object System.Windows.Forms.Button
-    $refreshButton.Text = 'Refresh'; $refreshButton.Width = 90
-    $refreshButton.Location = New-Object System.Drawing.Point(310,380)
-    $doctorButton = New-Object System.Windows.Forms.Button
-    $doctorButton.Text = 'Diagnose'; $doctorButton.Width = 90
-    $doctorButton.Location = New-Object System.Drawing.Point(410,380)
-    $stopButton = New-Object System.Windows.Forms.Button
-    $stopButton.Text = 'Stop TW-Market'; $stopButton.Width = 130
-    $stopButton.Location = New-Object System.Drawing.Point(30,420)
-    $detailsButton = New-Object System.Windows.Forms.Button
-    $detailsButton.Text = 'Technical Details'; $detailsButton.Width = 130
-    $detailsButton.Location = New-Object System.Drawing.Point(170,420)
+    $locateButton.Text = 'Locate Python 3.13...'; $locateButton.Width = 170; $locateButton.Height = 38
+    $locateButton.Location = New-Object System.Drawing.Point(226,275); $setupPanel.Controls.Add($locateButton)
+
+    $setupDetailsButton = New-Object System.Windows.Forms.Button
+    $setupDetailsButton.Text = 'Technical Details'; $setupDetailsButton.Width = 150; $setupDetailsButton.Height = 34
+    $setupDetailsButton.Location = New-Object System.Drawing.Point(24,335); $setupPanel.Controls.Add($setupDetailsButton)
+
     $helpButton = New-Object System.Windows.Forms.Button
-    $helpButton.Text = 'Installation Help'; $helpButton.Width = 120
-    $helpButton.Location = New-Object System.Drawing.Point(310,420)
-    $closeButton = New-Object System.Windows.Forms.Button
-    $closeButton.Text = 'Close'; $closeButton.Width = 90
-    $closeButton.Location = New-Object System.Drawing.Point(450,420)
-    foreach ($button in @($setupButton,$locateButton,$startButton,$openButton,$refreshButton,$doctorButton,$stopButton,$detailsButton,$helpButton,$closeButton)) {
-        $form.Controls.Add($button)
+    $helpButton.Text = 'Installation Help'; $helpButton.Width = 150; $helpButton.Height = 34
+    $helpButton.Location = New-Object System.Drawing.Point(186,335); $setupPanel.Controls.Add($helpButton)
+
+    $setupDoctorButton = New-Object System.Windows.Forms.Button
+    $setupDoctorButton.Text = 'Diagnose'; $setupDoctorButton.Width = 110; $setupDoctorButton.Height = 34
+    $setupDoctorButton.Location = New-Object System.Drawing.Point(348,335); $setupPanel.Controls.Add($setupDoctorButton)
+
+    $dailyPanel = New-Object System.Windows.Forms.Panel
+    $dailyPanel.Location = New-Object System.Drawing.Point(20,82)
+    $dailyPanel.Size = New-Object System.Drawing.Size(665,475)
+    $dailyPanel.Visible = $false; $form.Controls.Add($dailyPanel)
+
+    $statusHeading = New-Object System.Windows.Forms.Label
+    $statusHeading.Text = 'System Status'; $statusHeading.AutoSize = $true
+    $statusHeading.Font = New-Object System.Drawing.Font('Segoe UI',11,[System.Drawing.FontStyle]::Bold)
+    $statusHeading.Location = New-Object System.Drawing.Point(8,4); $dailyPanel.Controls.Add($statusHeading)
+
+    function New-LauncherCard {
+        param([string]$Name,[int]$X,[int]$Y)
+        $panel = New-Object System.Windows.Forms.Panel
+        $panel.BorderStyle = 'FixedSingle'; $panel.BackColor = [System.Drawing.Color]::WhiteSmoke
+        $panel.Location = New-Object System.Drawing.Point($X,$Y); $panel.Size = New-Object System.Drawing.Size(300,105)
+        $nameLabel = New-Object System.Windows.Forms.Label
+        $nameLabel.Text = $Name; $nameLabel.AutoSize = $true
+        $nameLabel.Font = New-Object System.Drawing.Font('Segoe UI',10,[System.Drawing.FontStyle]::Bold)
+        $nameLabel.Location = New-Object System.Drawing.Point(16,12); [void]$panel.Controls.Add($nameLabel)
+        $indicator = New-Object System.Windows.Forms.Label
+        $indicator.Text = 'o'; $indicator.AutoSize = $true
+        $indicator.Font = New-Object System.Drawing.Font('Segoe UI Symbol',14,[System.Drawing.FontStyle]::Bold)
+        $indicator.Location = New-Object System.Drawing.Point(16,46); [void]$panel.Controls.Add($indicator)
+        $value = New-Object System.Windows.Forms.Label
+        $value.Text = 'Checking...'; $value.Width = 235; $value.Height = 38
+        $value.Font = New-Object System.Drawing.Font('Segoe UI',9,[System.Drawing.FontStyle]::Bold)
+        $value.Location = New-Object System.Drawing.Point(48,50); [void]$panel.Controls.Add($value)
+        [void]$dailyPanel.Controls.Add($panel)
+        return [pscustomobject]@{ panel=$panel; indicator=$indicator; value=$value }
     }
+
+    $runtimeCard = New-LauncherCard -Name 'Local Runtime' -X 8 -Y 34
+    $workbenchCard = New-LauncherCard -Name 'Workbench' -X 328 -Y 34
+    $securityCard = New-LauncherCard -Name 'Security Master' -X 8 -Y 151
+    $mcpCard = New-LauncherCard -Name 'Local MCP' -X 328 -Y 151
+
+    $securityCard.value.Width = 145
+    $securityActionButton = New-Object System.Windows.Forms.Button
+    $securityActionButton.Text = 'Install'; $securityActionButton.Width = 100; $securityActionButton.Height = 30
+    $securityActionButton.Location = New-Object System.Drawing.Point(188,48)
+    $securityCard.panel.Controls.Add($securityActionButton)
+
+    $openButton = New-Object System.Windows.Forms.Button
+    $openButton.Text = 'Open Workbench'; $openButton.Width = 230; $openButton.Height = 42
+    $openButton.Font = New-Object System.Drawing.Font('Segoe UI',10,[System.Drawing.FontStyle]::Bold)
+    $openButton.Location = New-Object System.Drawing.Point(216,276); $dailyPanel.Controls.Add($openButton)
+
+    $startButton = New-Object System.Windows.Forms.Button
+    $startButton.Text = 'Start'; $startButton.Width = 95; $startButton.Height = 34
+    $startButton.Location = New-Object System.Drawing.Point(112,337); $dailyPanel.Controls.Add($startButton)
+    $stopButton = New-Object System.Windows.Forms.Button
+    $stopButton.Text = 'Stop'; $stopButton.Width = 95; $stopButton.Height = 34
+    $stopButton.Location = New-Object System.Drawing.Point(217,337); $dailyPanel.Controls.Add($stopButton)
+    $refreshButton = New-Object System.Windows.Forms.Button
+    $refreshButton.Text = 'Refresh'; $refreshButton.Width = 95; $refreshButton.Height = 34
+    $refreshButton.Location = New-Object System.Drawing.Point(322,337); $dailyPanel.Controls.Add($refreshButton)
+    $doctorButton = New-Object System.Windows.Forms.Button
+    $doctorButton.Text = 'Diagnose'; $doctorButton.Width = 95; $doctorButton.Height = 34
+    $doctorButton.Location = New-Object System.Drawing.Point(427,337); $dailyPanel.Controls.Add($doctorButton)
+
+    $detailsButton = New-Object System.Windows.Forms.Button
+    $detailsButton.Text = 'Advanced / Technical Details'; $detailsButton.Width = 220; $detailsButton.Height = 32
+    $detailsButton.Location = New-Object System.Drawing.Point(8,392); $dailyPanel.Controls.Add($detailsButton)
+
+    $message = New-Object System.Windows.Forms.Label
+    $message.Width = 620; $message.Height = 48
+    $message.ForeColor = [System.Drawing.Color]::DimGray
+    $message.Location = New-Object System.Drawing.Point(8,432); $dailyPanel.Controls.Add($message)
+
     $script:CurrentSnapshot = $null
     $script:DiscoveredPython = $null
+
+    $setCardState = {
+        param($Card,[string]$Text,[ValidateSet('ready','neutral','warning','error','info')][string]$Severity)
+        $Card.value.Text = $Text
+        switch ($Severity) {
+            'ready' { $Card.indicator.Text = '*'; $Card.indicator.ForeColor = [System.Drawing.Color]::ForestGreen }
+            'warning' { $Card.indicator.Text = '*'; $Card.indicator.ForeColor = [System.Drawing.Color]::DarkOrange }
+            'error' { $Card.indicator.Text = '*'; $Card.indicator.ForeColor = [System.Drawing.Color]::Firebrick }
+            'info' { $Card.indicator.Text = '*'; $Card.indicator.ForeColor = [System.Drawing.Color]::SteelBlue }
+            default { $Card.indicator.Text = 'o'; $Card.indicator.ForeColor = [System.Drawing.Color]::Gray }
+        }
+    }
 
     $render = {
         param([switch]$UseCurrentSnapshot, [switch]$PreserveTechnicalDetails)
@@ -379,77 +599,139 @@ function Show-LauncherGui {
             $script:CurrentSnapshot = $snapshot
         }
         $presence = Get-RuntimePresence
-        if ($presence -eq 'MISSING') {
-            $valueLabels['Package Runtime'].Text = 'Not set up'
-            $script:DiscoveredPython = Find-Python313
-            if ($script:DiscoveredPython) { $valueLabels['Python 3.13 x64'].Text = 'Ready' }
-            else { $valueLabels['Python 3.13 x64'].Text = 'Required' }
-        } elseif ($presence -eq 'PRESENT') {
-            $valueLabels['Package Runtime'].Text = 'Ready'
-            $valueLabels['Python 3.13 x64'].Text = 'Runtime ready'
-        } else {
-            $valueLabels['Package Runtime'].Text = 'Needs attention'
-            $valueLabels['Python 3.13 x64'].Text = 'Not evaluated'
-        }
         $payload = $null
         if ($snapshot.PSObject.Properties.Name -contains 'data') { $payload = $snapshot.data }
-        $installationText = 'Not initialized'
-        if ($payload -and ($payload.PSObject.Properties.Name -contains 'installation') -and $payload.installation) {
-            $installationText = [string]$payload.installation.installation_status
+
+        if ($snapshot.status -in @('SETUP_REQUIRED','INSTALLATION_INCOMPLETE')) {
+            $dailyPanel.Visible = $false; $setupPanel.Visible = $true
+            if ($presence -eq 'MISSING') {
+                $setupValues['Package Runtime'].Text = 'Not set up'
+                $script:DiscoveredPython = Find-Python313
+                $setupValues['Python 3.13 x64'].Text = if ($script:DiscoveredPython) { 'Ready' } else { 'Required' }
+            } elseif ($presence -eq 'PRESENT') {
+                $setupValues['Package Runtime'].Text = 'Ready'
+                $setupValues['Python 3.13 x64'].Text = 'Runtime ready'
+            } else {
+                $setupValues['Package Runtime'].Text = 'Needs attention'
+                $setupValues['Python 3.13 x64'].Text = 'Not evaluated'
+            }
+            $installationText = 'Not initialized'
+            if ($payload -and ($payload.PSObject.Properties.Name -contains 'installation') -and $payload.installation) {
+                $installationText = [string]$payload.installation.installation_status
+            }
+            $setupValues['Local Installation'].Text = $installationText
+            if ($snapshot.status -eq 'INSTALLATION_INCOMPLETE') {
+                $setupMessage.Text = 'The local installation needs attention. Automatic repair is not performed. Use Technical Details or Diagnose.'
+            } else {
+                $setupMessage.Text = 'Set up the local runtime and installation. Security Master is installed separately after setup.'
+            }
+            $setupButton.Enabled = ($snapshot.status -eq 'SETUP_REQUIRED' -and $snapshot.reason_code -ne 'PACKAGE_RUNTIME_NEEDS_ATTENTION' -and (($presence -eq 'PRESENT') -or $script:DiscoveredPython))
+            $locateButton.Enabled = ($snapshot.status -eq 'SETUP_REQUIRED' -and $presence -eq 'MISSING')
+            $setupDoctorButton.Enabled = ($presence -eq 'PRESENT')
+            if (-not $PreserveTechnicalDetails) { $script:LastTechnicalDetails = ($snapshot | ConvertTo-Json -Depth 12) }
+            return
         }
-        $valueLabels['Local Installation'].Text = $installationText
-        $valueLabels['Local Runtime'].Text = $snapshot.status
-        $valueLabels['Workbench'].Text = if ($snapshot.status -eq 'RUNNING_READY') { 'Ready' } else { 'Unavailable' }
-        $identityText = 'Unknown'
-        $mcpText = 'Unknown'
-        if ($payload -and ($payload.PSObject.Properties.Name -contains 'identity') -and $payload.identity) {
-            $identityText = [string]$payload.identity.status
-        }
-        if ($payload -and ($payload.PSObject.Properties.Name -contains 'mcp') -and $payload.mcp) {
-            $mcpText = [string]$payload.mcp.status
-        }
-        $valueLabels['Security Master'].Text = $identityText
-        $valueLabels['Local MCP'].Text = $mcpText
+
+        $setupPanel.Visible = $false; $dailyPanel.Visible = $true
+
         switch ($snapshot.status) {
-            'SETUP_REQUIRED' { $message.Text = 'TW-Market needs initial local setup. No market data will be downloaded.' }
+            'STOPPED' { & $setCardState $runtimeCard 'Stopped' 'neutral' }
+            'STARTING' { & $setCardState $runtimeCard 'Starting' 'info' }
+            'RUNNING_READY' { & $setCardState $runtimeCard 'Running' 'ready' }
+            'RUNNING_UNHEALTHY' { & $setCardState $runtimeCard 'Needs attention' 'warning' }
+            'PORT_CONFLICT' { & $setCardState $runtimeCard 'Port conflict' 'error' }
+            'STALE_OWNERSHIP' { & $setCardState $runtimeCard 'Needs attention' 'warning' }
+            default { & $setCardState $runtimeCard 'Needs attention' 'error' }
+        }
+
+        $workbenchReady = $snapshot.status -eq 'RUNNING_READY' -and $payload -and (Get-WorkbenchUri -Payload $payload)
+        if ($workbenchReady) { & $setCardState $workbenchCard 'Ready' 'ready' }
+        else { & $setCardState $workbenchCard 'Unavailable' 'neutral' }
+
+        $identityState = 'UNAVAILABLE'
+        $releaseId = ''
+        if ($payload -and ($payload.PSObject.Properties.Name -contains 'identity') -and $payload.identity) {
+            $identityState = [string]$payload.identity.status
+            if ($payload.identity.PSObject.Properties.Name -contains 'release_id' -and $payload.identity.release_id) { $releaseId = [string]$payload.identity.release_id }
+        }
+
+        $securityActionButton.Visible = $true
+        if ($script:SecurityLastOperation -eq 'FAILED') {
+            $failedText = if ($identityState -eq 'ACTIVE') { 'Update failed; current release retained' } else { 'Install failed' }
+            & $setCardState $securityCard $failedText 'warning'
+            if ($identityState -eq 'ACTIVE') { $securityActionButton.Text = 'Update'; $securityActionButton.Enabled = $true }
+            elseif ($identityState -eq 'NOT_INITIALIZED') { $securityActionButton.Text = 'Install'; $securityActionButton.Enabled = $true }
+            else { $securityActionButton.Text = 'Diagnose'; $securityActionButton.Enabled = $false }
+        } elseif ($script:SecurityRestartRequired) {
+            if ($snapshot.status -in @('RUNNING_READY','RUNNING_UNHEALTHY')) {
+                & $setCardState $securityCard 'Restart required' 'warning'
+                $securityActionButton.Text = 'Restart TW-Market'; $securityActionButton.Enabled = $true
+            } else {
+                & $setCardState $securityCard 'Ready for next start' 'ready'
+                $securityActionButton.Visible = $false
+            }
+        } elseif ($identityState -eq 'NOT_INITIALIZED') {
+            & $setCardState $securityCard 'Not installed' 'neutral'
+            $securityActionButton.Text = 'Install'; $securityActionButton.Enabled = $true
+        } elseif ($identityState -eq 'ACTIVE') {
+            $securityText = if ($releaseId) { 'Ready - ' + $releaseId } else { 'Ready' }
+            & $setCardState $securityCard $securityText 'ready'
+            $securityActionButton.Text = 'Update'; $securityActionButton.Enabled = $true
+        } else {
+            & $setCardState $securityCard 'Needs attention' 'error'
+            $securityActionButton.Text = 'Diagnose'; $securityActionButton.Enabled = $false
+        }
+        if ($snapshot.status -notin @('STOPPED','RUNNING_READY','RUNNING_UNHEALTHY')) { $securityActionButton.Enabled = $false }
+
+        $mcpState = 'UNKNOWN'
+        if ($payload -and ($payload.PSObject.Properties.Name -contains 'mcp') -and $payload.mcp) { $mcpState = [string]$payload.mcp.status }
+        switch ($mcpState) {
+            'READY' { & $setCardState $mcpCard 'Ready for MCP clients' 'ready' }
+            'SERVICE_UNREACHABLE' { & $setCardState $mcpCard 'Runtime stopped' 'neutral' }
+            'MCP_RUNTIME_MISMATCH' { & $setCardState $mcpCard 'Needs attention' 'warning' }
+            default { & $setCardState $mcpCard 'Unknown' 'neutral' }
+        }
+
+        $startButton.Enabled = $snapshot.status -in @('STOPPED','STALE_OWNERSHIP')
+        $stopButton.Enabled = $snapshot.status -in @('RUNNING_READY','RUNNING_UNHEALTHY')
+        $openButton.Enabled = [bool]$workbenchReady
+        $refreshButton.Enabled = $true
+        $doctorButton.Enabled = ($presence -eq 'PRESENT')
+
+        switch ($snapshot.status) {
             'STOPPED' { $message.Text = 'TW-Market is ready. Start the Local Runtime when you want to use the Workbench.' }
             'STARTING' { $message.Text = 'TW-Market is starting. Use Refresh to check again.' }
             'RUNNING_READY' { $message.Text = 'Local Runtime and Workbench are ready.' }
-            'RUNNING_UNHEALTHY' { $message.Text = 'The owned TW-Market process is running, but Local Runtime health is not ready.' }
-            'PORT_CONFLICT' { $message.Text = 'The configured local port is being used by another process. TW-Market will not control it.' }
+            'RUNNING_UNHEALTHY' { $message.Text = 'The owned TW-Market process is running, but Local Runtime health needs attention.' }
+            'PORT_CONFLICT' { $message.Text = 'The configured local port belongs to another process. TW-Market will not control it.' }
             'STALE_OWNERSHIP' { $message.Text = 'Stale TW-Market ownership metadata was detected. Start requires confirmation.' }
             'INSTALLATION_INCOMPLETE' { $message.Text = 'The local TW-Market installation needs attention.' }
             default { $message.Text = 'TW-Market status could not be determined safely. Use Diagnose or Technical Details.' }
         }
-        $setupButton.Enabled = ($snapshot.status -eq 'SETUP_REQUIRED' -and $snapshot.reason_code -ne 'PACKAGE_RUNTIME_NEEDS_ATTENTION' -and (($presence -eq 'PRESENT') -or $script:DiscoveredPython))
-        $locateButton.Enabled = ($presence -eq 'MISSING')
-        $startButton.Enabled = $snapshot.status -in @('STOPPED','STALE_OWNERSHIP')
-        $openButton.Enabled = $snapshot.status -eq 'RUNNING_READY'
-        $refreshButton.Enabled = $true
-        $doctorButton.Enabled = $presence -eq 'PRESENT'
-        $stopButton.Enabled = $snapshot.status -in @('RUNNING_READY','RUNNING_UNHEALTHY')
-        $detailsButton.Enabled = $true
+
         if (-not $PreserveTechnicalDetails) {
-            $script:LastTechnicalDetails = ($snapshot | ConvertTo-Json -Depth 12)
+            $details = [ordered]@{
+                product_version = $productVersion
+                launcher = $snapshot
+                security_session = [ordered]@{ restart_required = $script:SecurityRestartRequired; last_operation = $script:SecurityLastOperation; last_reason = $script:SecurityLastReason }
+            }
+            $script:LastTechnicalDetails = ($details | ConvertTo-Json -Depth 12)
         }
     }
 
     $setupButton.Add_Click({
         $form.UseWaitCursor = $true
-        $setupUseCurrent = $false
         try {
             $result = Invoke-Setup
             $script:LastTechnicalDetails = ($result | ConvertTo-Json -Depth 12)
             if ($result.status -eq 'SETUP_COMPLETE') {
-                $setupUseCurrent = $true
-                [void][System.Windows.Forms.MessageBox]::Show('TW-Market local setup is complete. No market data was downloaded.','TW-Market Setup')
+                [void][System.Windows.Forms.MessageBox]::Show('TW-Market local setup is complete. Security Master can now be installed separately.','TW-Market Setup')
             } else {
                 [void][System.Windows.Forms.MessageBox]::Show("Setup did not complete: $($result.reason_code)",'TW-Market Setup')
             }
         } finally {
             $form.UseWaitCursor = $false
-            if ($setupUseCurrent) { & $render -UseCurrentSnapshot -PreserveTechnicalDetails }
-            else { & $render -PreserveTechnicalDetails }
+            & $render -PreserveTechnicalDetails
         }
     })
 
@@ -459,8 +741,7 @@ function Show-LauncherGui {
         if ($picker.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
             $candidate = Test-PythonExecutable -Executable $picker.FileName -Source 'user-selected'
             if ($candidate) {
-                $script:SelectedPython = $candidate.executable
-                $script:DiscoveredPython = $candidate
+                $script:SelectedPython = $candidate.executable; $script:DiscoveredPython = $candidate
                 [void][System.Windows.Forms.MessageBox]::Show('CPython 3.13 x64 is valid and ready for setup.','TW-Market Setup')
             } else {
                 [void][System.Windows.Forms.MessageBox]::Show('The selected executable is not a supported Windows CPython 3.13 x64 runtime.','TW-Market Setup')
@@ -480,8 +761,7 @@ function Show-LauncherGui {
         $form.UseWaitCursor = $true
         try { $result = Invoke-StartAction; $script:LastTechnicalDetails = ($result | ConvertTo-Json -Depth 12) }
         finally {
-            $form.UseWaitCursor = $false
-            $script:ConfirmStaleOwnership = $false
+            $form.UseWaitCursor = $false; $script:ConfirmStaleOwnership = $false
             & $render -UseCurrentSnapshot -PreserveTechnicalDetails
         }
     })
@@ -494,6 +774,7 @@ function Show-LauncherGui {
             & $render -UseCurrentSnapshot -PreserveTechnicalDetails
         }
     })
+
     $refreshButton.Add_Click({ & $render })
 
     $doctorButton.Add_Click({
@@ -502,7 +783,7 @@ function Show-LauncherGui {
             $result = Invoke-DoctorAction
             $script:LastTechnicalDetails = ($result | ConvertTo-Json -Depth 12)
             if ($result.status -eq 'DOCTOR_COMPLETE') {
-                [void][System.Windows.Forms.MessageBox]::Show("Diagnostics status: $($result.data.status)`r`nUse Technical Details for the canonical checks.",'TW-Market Diagnostics')
+                [void][System.Windows.Forms.MessageBox]::Show("Diagnostics status: $($result.data.status)`r`nUse Technical Details for canonical checks.",'TW-Market Diagnostics')
             } else {
                 [void][System.Windows.Forms.MessageBox]::Show("Diagnostics unavailable: $($result.reason_code)",'TW-Market Diagnostics')
             }
@@ -514,19 +795,79 @@ function Show-LauncherGui {
 
     $openButton.Add_Click({
         $result = Invoke-WorkbenchUriAction
-        if ($result.status -eq 'WORKBENCH_READY') {
-            Start-Process ([string]$result.data.uri)
-        } else {
-            [void][System.Windows.Forms.MessageBox]::Show('Workbench is not available from the current Local Runtime state.','TW-Market')
-        }
+        if ($result.status -eq 'WORKBENCH_READY') { Start-Process ([string]$result.data.uri) }
+        else { [void][System.Windows.Forms.MessageBox]::Show('Workbench is not available from the current Local Runtime state.','TW-Market') }
     })
 
     $detailsButton.Add_Click({ Show-TechnicalDetails -Text $script:LastTechnicalDetails })
+    $setupDetailsButton.Add_Click({ Show-TechnicalDetails -Text $script:LastTechnicalDetails })
+    $setupDoctorButton.Add_Click({
+        $form.UseWaitCursor = $true
+        try {
+            $result = Invoke-DoctorAction
+            $script:LastTechnicalDetails = ($result | ConvertTo-Json -Depth 12)
+            if ($result.status -eq 'DOCTOR_COMPLETE') {
+                [void][System.Windows.Forms.MessageBox]::Show("Diagnostics status: $($result.data.status)`r`nUse Technical Details for canonical checks.",'TW-Market Diagnostics')
+            } else {
+                [void][System.Windows.Forms.MessageBox]::Show("Diagnostics unavailable: $($result.reason_code)",'TW-Market Diagnostics')
+            }
+        } finally {
+            $form.UseWaitCursor = $false
+            & $render -PreserveTechnicalDetails
+        }
+    })
     $helpButton.Add_Click({
         $readme = Join-Path $script:BundleRoot 'README-PACKAGE.md'
         if (Test-Path -LiteralPath $readme -PathType Leaf) { Start-Process 'notepad.exe' -ArgumentList $readme }
     })
-    $closeButton.Add_Click({ $form.Close() })
+
+    $securityActionButton.Add_Click({
+        if ($securityActionButton.Text -eq 'Restart TW-Market') {
+            $form.UseWaitCursor = $true
+            try {
+                $result = Invoke-RestartAction
+                $script:LastTechnicalDetails = ($result | ConvertTo-Json -Depth 12)
+                if ($result.status -ne 'RESTART_COMPLETE') {
+                    [void][System.Windows.Forms.MessageBox]::Show("Restart did not complete: $($result.reason_code)",'TW-Market Security Master')
+                }
+            } finally {
+                $form.UseWaitCursor = $false
+                & $render -UseCurrentSnapshot -PreserveTechnicalDetails
+            }
+            return
+        }
+
+        $verb = if ($securityActionButton.Text -eq 'Install') { 'install' } else { 'update' }
+        $answer = [System.Windows.Forms.MessageBox]::Show(
+            "Security Master $verb performs one explicit bounded acquisition from official public sources. Continue?",
+            'TW-Market Security Master',[System.Windows.Forms.MessageBoxButtons]::YesNo,[System.Windows.Forms.MessageBoxIcon]::Information)
+        if ($answer -ne [System.Windows.Forms.DialogResult]::Yes) { return }
+
+        & $setCardState $securityCard 'Updating...' 'info'
+        $securityActionButton.Enabled = $false
+        [System.Windows.Forms.Application]::DoEvents()
+        $form.UseWaitCursor = $true
+        try {
+            $result = Invoke-SecurityMasterUpdateAction -Confirmed
+            $script:LastTechnicalDetails = ($result | ConvertTo-Json -Depth 12)
+            if ($result.status -eq 'SECURITY_MASTER_UPDATE_COMPLETE') {
+                if (-not $result.data.restart_required) {
+                    $notice = 'Security Master is ready.'
+                } elseif ($result.data.runtime_state -eq 'STOPPED') {
+                    $notice = 'Security Master is ready. The new release will be used the next time TW-Market starts.'
+                } else {
+                    $notice = 'Security Master is ready. Restart TW-Market to use the new release.'
+                }
+                [void][System.Windows.Forms.MessageBox]::Show($notice,'TW-Market Security Master')
+            } else {
+                [void][System.Windows.Forms.MessageBox]::Show("Security Master operation failed: $($result.reason_code)",'TW-Market Security Master')
+            }
+        } finally {
+            $form.UseWaitCursor = $false
+            & $render -PreserveTechnicalDetails
+        }
+    })
+
     & $render
     [void]$form.ShowDialog()
 }

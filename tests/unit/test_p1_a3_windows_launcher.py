@@ -34,16 +34,33 @@ def _fake_bundle(tmp_path: Path, status: dict) -> Path:
     bundle = tmp_path / "bundle"
     (bundle / "launcher").mkdir(parents=True)
     (bundle / "runtime/venv/Scripts").mkdir(parents=True)
+    (bundle / "app").mkdir(parents=True)
     shutil.copy2(PS1, bundle / "launcher/tw-market-launcher.ps1")
     (bundle / "runtime/venv/Scripts/python.exe").write_bytes(b"stub")
     (bundle / "runtime/runtime-marker.json").write_text("{}", encoding="utf-8")
+    (bundle / "app/VERSION").write_text("1.5.0\n", encoding="ascii")
     (bundle / "test-status.json").write_text(json.dumps(status), encoding="utf-8")
     (bundle / "test-doctor.json").write_text(json.dumps({**status, "status": "WARN", "checks": []}), encoding="utf-8")
+    (bundle / "test-security-status.json").write_text(json.dumps({"status": "NOT_INITIALIZED"}), encoding="utf-8")
+    (bundle / "test-security-update.json").write_text(json.dumps({"status": "ACTIVE", "release_id": "test-release", "qualification": "PASS", "restart_required": True}), encoding="utf-8")
     (bundle / "tw-market.cmd").write_text(
         "@echo off\n"
         "if /I \"%1\"==\"status\" (type \"%~dp0test-status.json\" & exit /b 0)\n"
         "if /I \"%1\"==\"doctor\" (type \"%~dp0test-doctor.json\" & exit /b 0)\n"
         "echo {\"status\":\"UNEXPECTED_ACTION\",\"reason_code\":\"UNEXPECTED_ACTION\"}\n"
+        "exit /b 1\n",
+        encoding="ascii",
+    )
+    (bundle / "tw-market-security-master.cmd").write_text(
+        "@echo off\n"
+        "if /I \"%1\"==\"status\" (type \"%~dp0test-security-status.json\" & exit /b 0)\n"
+        "if /I \"%1\"==\"update\" (\n"
+        "  if /I not \"%2\"==\"--live\" exit /b 9\n"
+        "  echo called>\"%~dp0security-update-called.txt\"\n"
+        "  echo diagnostic-prefix\n"
+        "  type \"%~dp0test-security-update.json\"\n"
+        "  exit /b 0\n"
+        ")\n"
         "exit /b 1\n",
         encoding="ascii",
     )
@@ -77,6 +94,19 @@ def test_launcher_sources_are_packaged() -> None:
     assert "Launch-TW-Market.cmd" in destinations
     assert "launcher/tw-market-launcher.ps1" in destinations
     assert CMD.is_file() and PS1.is_file()
+
+
+def test_source_tree_cmd_fails_fast_with_actionable_package_message() -> None:
+    if os.name != "nt":
+        pytest.skip("P1-A3 launcher is Windows-only")
+    result = subprocess.run(
+        [str(CMD), "--no-pause"], capture_output=True, text=True, timeout=20, shell=False
+    )
+    combined = result.stdout + result.stderr
+    assert result.returncode == 2
+    assert "Native package source template" in combined
+    assert "root of a built or extracted TW-Market Native bundle" in combined
+    assert "launcher\\tw-market-launcher.ps1" in combined
 
 
 def test_launcher_has_no_hidden_installer_or_polling_surface() -> None:
@@ -263,3 +293,149 @@ $result = Invoke-{action}Action
     assert observed["status_calls"] == 2
     assert observed["current_snapshot"] == expected_snapshot
     assert observed["technical"] == "not-json"
+
+
+def test_launcher_v2_daily_surface_is_host_neutral() -> None:
+    text = PS1.read_text(encoding="ascii")
+    for required in (
+        "Local Runtime", "Workbench", "Security Master", "Local MCP",
+        "Ready for MCP clients", "tw-market-security-master.cmd",
+        "Advanced / Technical Details",
+    ):
+        assert required in text
+    for forbidden in (
+        "D:\\MCP-Tunnel", "Local AI Tools Supervisor", "OpenAI Secure MCP Tunnel", "ChatGPT connector",
+    ):
+        assert forbidden not in text
+    assert "Start MCP Server" not in text
+    assert "Stop MCP Server" not in text
+
+
+def test_product_version_is_read_from_packaged_metadata(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("NOT_RUNNING", False))
+    probe = _run_function_probe(bundle, "Get-ProductVersion")
+    assert probe.returncode == 0, probe.stderr + probe.stdout
+    assert probe.stdout.strip() == "1.5.0"
+
+
+def test_security_master_first_install_requires_explicit_confirmation(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("NOT_RUNNING", False))
+    marker = bundle / "security-update-called.txt"
+    status = _invoke(bundle, "SecurityStatus")
+    assert status.returncode == 0, status.stderr + status.stdout
+    assert json.loads(status.stdout)["status"] == "NOT_INITIALIZED"
+    assert not marker.exists()
+
+    blocked = _invoke(bundle, "SecurityUpdate")
+    assert blocked.returncode == 1, blocked.stderr + blocked.stdout
+    payload = json.loads(blocked.stdout)
+    assert payload["status"] == "CONFIRMATION_REQUIRED"
+    assert payload["reason_code"] == "SECURITY_MASTER_EXTERNAL_ACQUISITION"
+    assert not marker.exists()
+
+    accepted = _invoke(bundle, "SecurityUpdate", "-ConfirmSecurityNetwork")
+    assert accepted.returncode == 0, accepted.stderr + accepted.stdout
+    payload = json.loads(accepted.stdout)
+    assert payload["status"] == "SECURITY_MASTER_UPDATE_COMPLETE"
+    assert payload["data"]["mode"] == "INSTALL"
+    assert payload["data"]["restart_required"] is True
+    assert marker.read_text(encoding="ascii").strip() == "called"
+
+
+def test_security_master_active_state_projects_update_mode(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("RUNNING", True, identity="ACTIVE"))
+    (bundle / "test-security-status.json").write_text(
+        json.dumps({"status": "ACTIVE", "release": {"release_id": "old-release"}}), encoding="utf-8"
+    )
+    result = _invoke(bundle, "SecurityUpdate", "-ConfirmSecurityNetwork")
+    assert result.returncode == 0, result.stderr + result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "SECURITY_MASTER_UPDATE_COMPLETE"
+    assert payload["data"]["mode"] == "UPDATE"
+    assert payload["data"]["runtime_state"] == "RUNNING_READY"
+
+
+def test_security_master_update_is_blocked_during_unstable_runtime_state(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("START_IN_PROGRESS", False))
+    marker = bundle / "security-update-called.txt"
+    result = _invoke(bundle, "SecurityUpdate", "-ConfirmSecurityNetwork")
+    assert result.returncode == 1, result.stderr + result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "ACTION_BLOCKED"
+    assert payload["reason_code"] == "SECURITY_MASTER_REQUIRES_STABLE_RUNTIME_STATE_STARTING"
+    assert not marker.exists()
+
+
+def test_security_update_parser_accepts_trailing_json_after_diagnostics(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("NOT_RUNNING", False))
+    result = _invoke(bundle, "SecurityUpdate", "-ConfirmSecurityNetwork")
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert json.loads(result.stdout)["data"]["security_master"]["release_id"] == "test-release"
+
+
+def test_restart_action_is_explicit_stop_then_start(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("RUNNING", True))
+    probe = _run_function_probe(
+        bundle,
+        r'''
+$script:Sequence = @()
+function Get-LauncherSnapshot { return [pscustomobject]@{ status='RUNNING_READY'; data=$null } }
+function Invoke-StopAction {
+  $script:Sequence += 'stop'
+  $script:CurrentSnapshot = [pscustomobject]@{ status='STOPPED'; data=$null }
+  return New-LauncherResult -Status 'STOP_COMPLETE'
+}
+function Invoke-StartAction {
+  $script:Sequence += 'start'
+  $script:CurrentSnapshot = [pscustomobject]@{ status='RUNNING_READY'; data=$null }
+  return New-LauncherResult -Status 'START_COMPLETE' -Data ([pscustomobject]@{ok=$true})
+}
+$result = Invoke-RestartAction
+[pscustomobject]@{status=$result.status; sequence=$script:Sequence} | ConvertTo-Json -Compress
+''',
+    )
+    assert probe.returncode == 0, probe.stderr + probe.stdout
+    observed = json.loads(probe.stdout)
+    assert observed == {"status": "RESTART_COMPLETE", "sequence": ["stop", "start"]}
+
+
+def test_restart_action_fail_closes_before_start_when_stop_fails(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("RUNNING", True))
+    probe = _run_function_probe(
+        bundle,
+        r'''
+$script:StartCalled = $false
+function Get-LauncherSnapshot { return [pscustomobject]@{ status='RUNNING_READY'; data=$null } }
+function Invoke-StopAction { return New-LauncherResult -Status 'STOP_FAILED' -ReasonCode 'synthetic' }
+function Invoke-StartAction { $script:StartCalled = $true; return New-LauncherResult -Status 'START_COMPLETE' }
+$result = Invoke-RestartAction
+[pscustomobject]@{status=$result.status; reason=$result.reason_code; start_called=$script:StartCalled} | ConvertTo-Json -Compress
+''',
+    )
+    assert probe.returncode == 0, probe.stderr + probe.stdout
+    observed = json.loads(probe.stdout)
+    assert observed["status"] == "RESTART_FAILED"
+    assert observed["reason"] == "RESTART_STOP_FAILED"
+    assert observed["start_called"] is False
+
+
+def test_launcher_v2_incomplete_installation_does_not_offer_automatic_setup_repair() -> None:
+    text = PS1.read_text(encoding="ascii")
+    assert "$snapshot.status -in @('SETUP_REQUIRED','INSTALLATION_INCOMPLETE')" in text
+    assert "$snapshot.status -eq 'SETUP_REQUIRED' -and $snapshot.reason_code" in text
+    assert "Automatic repair is not performed" in text
+    assert "$setupDoctorButton.Enabled = ($presence -eq 'PRESENT')" in text
+
+
+def test_launcher_v2_security_update_notice_distinguishes_stopped_runtime() -> None:
+    text = PS1.read_text(encoding="ascii")
+    assert "elseif ($result.data.runtime_state -eq 'STOPPED')" in text
+    assert "The new release will be used the next time TW-Market starts." in text
+    assert "Restart TW-Market to use the new release." in text
+
+
+def test_security_master_mutation_renders_updating_state_before_network_action() -> None:
+    text = PS1.read_text(encoding="ascii")
+    assert "& $setCardState $securityCard 'Updating...' 'info'" in text
+    assert "$securityActionButton.Enabled = $false" in text
+    assert "[System.Windows.Forms.Application]::DoEvents()" in text
