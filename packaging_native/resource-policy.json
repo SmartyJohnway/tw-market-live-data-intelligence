@@ -387,6 +387,12 @@
       "justification": "Runtime Python import/subprocess closure"
     },
     {
+      "source": "scripts/m8r_06_03_execute_once.py",
+      "destination": "app/scripts/m8r_06_03_execute_once.py",
+      "role": "application",
+      "justification": "Runtime Python import/subprocess closure"
+    },
+    {
       "source": "scripts/m8r_06_03_production_adapter.py",
       "destination": "app/scripts/m8r_06_03_production_adapter.py",
       "role": "application",

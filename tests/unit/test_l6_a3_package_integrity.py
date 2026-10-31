@@ -79,5 +79,10 @@ def test_allowlist_exact_and_resources():
     p=json.loads((root/'packaging_native/resource-policy.json').read_text())
     names=[x['destination'].casefold() for x in p['members']]
     assert len(names)==len(set(names))
-    assert {'app/VERSION','app/scripts/tw_market_installation.py','app/frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html'} <= {x['destination'] for x in p['members']}
+    assert {
+        'app/VERSION',
+        'app/scripts/tw_market_installation.py',
+        'app/scripts/m8r_06_03_execute_once.py',
+        'app/frontend/unified-workbench/UnifiedMarketEvidenceWorkbench.html',
+    } <= {x['destination'] for x in p['members']}
     for x in p['members']:assert (root/x['source']).is_file()
