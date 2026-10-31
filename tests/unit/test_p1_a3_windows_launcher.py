@@ -39,10 +39,20 @@ def _fake_bundle(tmp_path: Path, status: dict) -> Path:
     (bundle / "runtime/venv/Scripts/python.exe").write_bytes(b"stub")
     (bundle / "runtime/runtime-marker.json").write_text("{}", encoding="utf-8")
     (bundle / "app/VERSION").write_text("1.5.0\n", encoding="ascii")
+    status = json.loads(json.dumps(status))
+    status.setdefault("installation", {})["temp_root"] = str(bundle / "test-temp")
     (bundle / "test-status.json").write_text(json.dumps(status), encoding="utf-8")
     (bundle / "test-doctor.json").write_text(json.dumps({**status, "status": "WARN", "checks": []}), encoding="utf-8")
     (bundle / "test-security-status.json").write_text(json.dumps({"status": "NOT_INITIALIZED"}), encoding="utf-8")
     (bundle / "test-security-update.json").write_text(json.dumps({"status": "ACTIVE", "release_id": "test-release", "qualification": "PASS", "restart_required": True}), encoding="utf-8")
+    (bundle / "test-security-strict-failure.json").write_text(json.dumps({"status": "REJECTED", "reason_code": "official_acquisition_or_qualification_failed"}), encoding="utf-8")
+    (bundle / "test-security-strict-evidence.json").write_text(json.dumps({
+        "principal_decision": "BLOCKED_BY_OFFICIAL_SOURCE_PROBE_FAILURE",
+        "source_probes": [
+            {"transport_success": False, "transport_reason_code": "PYTHON_X509_STRICT_COMPATIBILITY"},
+            {"transport_success": False, "transport_reason_code": "PYTHON_X509_STRICT_COMPATIBILITY"},
+        ],
+    }), encoding="utf-8")
     (bundle / "tw-market.cmd").write_text(
         "@echo off\n"
         "if /I \"%1\"==\"status\" (type \"%~dp0test-status.json\" & exit /b 0)\n"
@@ -56,7 +66,15 @@ def _fake_bundle(tmp_path: Path, status: dict) -> Path:
         "if /I \"%1\"==\"status\" (type \"%~dp0test-security-status.json\" & exit /b 0)\n"
         "if /I \"%1\"==\"update\" (\n"
         "  if /I not \"%2\"==\"--live\" exit /b 9\n"
+        "  echo %*>\"%~dp0security-update-args.txt\"\n"
         "  echo called>\"%~dp0security-update-called.txt\"\n"
+        "  if exist \"%~dp0strict-x509-fail.flag\" if /I not \"%4\"==\"compatibility\" (\n"
+        "    if not exist \"%~dp0test-temp\\security-master\\invocation-current\\m8r06-01b-current\" mkdir \"%~dp0test-temp\\security-master\\invocation-current\\m8r06-01b-current\"\n"
+        "    copy /Y \"%~dp0test-security-strict-evidence.json\" \"%~dp0test-temp\\security-master\\invocation-current\\m8r06-01b-current\\source_evidence_manifest.json\" >nul\n"
+        "    echo diagnostic-prefix\n"
+        "    type \"%~dp0test-security-strict-failure.json\"\n"
+        "    exit /b 1\n"
+        "  )\n"
         "  echo diagnostic-prefix\n"
         "  type \"%~dp0test-security-update.json\"\n"
         "  exit /b 0\n"
@@ -372,6 +390,63 @@ def test_security_update_parser_accepts_trailing_json_after_diagnostics(tmp_path
     assert result.returncode == 0, result.stderr + result.stdout
     assert json.loads(result.stdout)["data"]["security_master"]["release_id"] == "test-release"
 
+
+def test_security_master_strict_x509_failure_requires_explicit_compatibility_retry(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("NOT_RUNNING", False))
+    (bundle / "strict-x509-fail.flag").write_text("1", encoding="ascii")
+
+    strict = _invoke(bundle, "SecurityUpdate", "-ConfirmSecurityNetwork")
+    assert strict.returncode == 1, strict.stderr + strict.stdout
+    payload = json.loads(strict.stdout)
+    assert payload["status"] == "SECURITY_MASTER_TLS_COMPATIBILITY_RETRY_AVAILABLE"
+    assert payload["reason_code"] == "PYTHON_X509_STRICT_COMPATIBILITY"
+    assert payload["data"]["compatibility"]["tls_verification"] == "enabled"
+    assert payload["data"]["compatibility"]["hostname_verification"] == "enabled"
+    assert "--ssl-policy" not in (bundle / "security-update-args.txt").read_text(encoding="ascii")
+
+    unconfirmed = _invoke(bundle, "SecurityUpdate", "-ConfirmSecurityNetwork", "-ConfirmSecurityCompatibility")
+    assert unconfirmed.returncode == 0, unconfirmed.stderr + unconfirmed.stdout
+    accepted = json.loads(unconfirmed.stdout)
+    assert accepted["status"] == "SECURITY_MASTER_UPDATE_COMPLETE"
+    assert accepted["data"]["ssl_policy"] == "compatibility"
+    assert "--ssl-policy compatibility" in (bundle / "security-update-args.txt").read_text(encoding="ascii")
+
+
+def test_security_master_compatibility_policy_requires_second_confirmation(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("NOT_RUNNING", False))
+    probe = _run_function_probe(
+        bundle,
+        r'''$result = Invoke-SecurityMasterUpdateAction -Confirmed -SslPolicy 'compatibility'
+$result | ConvertTo-Json -Depth 12 -Compress
+''',
+    )
+    assert probe.returncode == 0, probe.stderr + probe.stdout
+    payload = json.loads(probe.stdout)
+    assert payload["status"] == "CONFIRMATION_REQUIRED"
+    assert payload["reason_code"] == "SECURITY_MASTER_TLS_COMPATIBILITY_RETRY"
+    assert not (bundle / "security-update-called.txt").exists()
+
+
+def test_non_x509_acquisition_failure_does_not_offer_tls_compatibility_retry(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("NOT_RUNNING", False))
+    (bundle / "strict-x509-fail.flag").write_text("1", encoding="ascii")
+    evidence = json.loads((bundle / "test-security-strict-evidence.json").read_text(encoding="utf-8"))
+    evidence["source_probes"][1]["transport_reason_code"] = "NETWORK_TIMEOUT"
+    (bundle / "test-security-strict-evidence.json").write_text(json.dumps(evidence), encoding="utf-8")
+
+    result = _invoke(bundle, "SecurityUpdate", "-ConfirmSecurityNetwork")
+    assert result.returncode == 1, result.stderr + result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "SECURITY_MASTER_UPDATE_FAILED"
+    assert payload["reason_code"] == "official_acquisition_or_qualification_failed"
+
+
+def test_launcher_tls_retry_copy_is_explicit_verified_and_never_unsafe() -> None:
+    text = PS1.read_text(encoding="ascii")
+    assert "Retry with compatibility mode now?" in text
+    assert "Certificate and hostname verification remain enabled" in text
+    assert "-SslPolicy 'compatibility' -CompatibilityConfirmed" in text
+    assert "unsafe-explicit" not in text
 
 def test_restart_action_is_explicit_stop_then_start(tmp_path: Path) -> None:
     bundle = _fake_bundle(tmp_path, _payload("RUNNING", True))

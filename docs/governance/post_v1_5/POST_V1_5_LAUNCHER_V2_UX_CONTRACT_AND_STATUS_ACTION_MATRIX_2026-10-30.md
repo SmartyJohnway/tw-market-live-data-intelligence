@@ -129,6 +129,7 @@ Security Master is an independent explicit lifecycle on the daily view. A legal 
 | live update running | Updating... | none |
 | update succeeded, runtime stopped | Ready for next start | none |
 | update succeeded, runtime running | Restart required | `Restart TW-Market` |
+| strict X509 compatibility failure proven by current-attempt evidence | Compatibility retry available | `Retry TLS` |
 | update rejected/failed with previous active release | Update failed; current release retained | `Update` / `Diagnose` |
 | unavailable/corrupt/no usable status | Needs attention | `Diagnose` |
 
@@ -137,6 +138,10 @@ Security Master is an independent explicit lifecycle on the daily view. A legal 
 The wording differs because `NOT_INITIALIZED` is a first-install experience while `ACTIVE` is an update experience.
 
 Before `Install` or `Update`, the Launcher must show an explicit confirmation that the action performs one bounded external official acquisition. No Security Master network activity occurs on Launcher open, Refresh, Start, Stop, Workbench open, or ordinary product setup.
+
+Strict verified TLS remains the default for every Security Master live acquisition. The Launcher must never perform a silent TLS fallback. If and only if the current attempt's governed source evidence proves that every failed official source probe was blocked by `PYTHON_X509_STRICT_COMPATIBILITY`, the Launcher may expose `Retry TLS` / `Retry with Compatibility TLS`. That retry requires a second explicit user confirmation and invokes the existing canonical `--ssl-policy compatibility` path. Compatibility mode must retain certificate validation and hostname verification; `unsafe-explicit` is not a Launcher option. Non-X509 failures such as timeout, WAF/source unavailability, parser drift, schema failure, or mixed failure classes must not be relabeled as TLS compatibility failures.
+
+The corresponding user-facing state is `Compatibility retry available` with warning severity. Declining the retry leaves Security Master unmodified and keeps the bounded retry action available for the current Launcher session. Technical Details may expose the governed reason code and diagnostic path, but the main dialog uses plain-language verified-TLS wording.
 
 After a successful update, the Launcher must respect canonical `restart_required=true`. If Local Runtime is running, the user may explicitly restart it. If Local Runtime is stopped, the next Start is sufficient and no automatic start occurs.
 
@@ -170,6 +175,7 @@ Security Master `history` and `rollback` remain advanced maintenance operations 
 | update in progress | no | no | no | no |
 | update succeeded + runtime running | no | no | yes | advanced only |
 | update succeeded + runtime stopped | no | no | no | advanced only |
+| strict X509 compatibility retry available | no | no (`Retry TLS` only) | no | advanced diagnostics only |
 | update failed with active release retained | no | yes | no | advanced only |
 | unavailable/corrupt | no | no | no | advanced diagnosis only |
 
@@ -251,7 +257,8 @@ Implementation must demonstrate at least:
 9. runtime Start/Stop/Refresh/Diagnose preserve the frozen P1-A2 lifecycle semantics;
 10. Workbench remains loopback-only;
 11. no polling, scheduler, hidden agent, host-specific tunnel call, or automatic external acquisition is introduced;
-12. Windows PowerShell 5.1 parsing and launcher-focused regression tests pass.
+12. strict X509 compatibility retry is evidence-gated to the current attempt, separately confirmed, verified-TLS only, and never offered for unrelated acquisition failures;
+13. Windows PowerShell 5.1 parsing and launcher-focused regression tests pass.
 
 ## Review gate
 
@@ -268,6 +275,7 @@ The review specifically confirms:
 - no host-specific MCP integration is introduced;
 - `Restart TW-Market` is only an explicit canonical Stop -> verify -> Start sequence;
 - Security Master update remains explicit network-bearing work and is never triggered by setup or refresh;
+- strict X509 compatibility retry is never silent, is current-attempt evidence-gated, preserves certificate/hostname verification, and requires separate user confirmation;
 - `NOT_INITIALIZED` remains a legal non-blocking Security Master state;
 - implementation may proceed only within the bounded Launcher/document/test scope above.
 

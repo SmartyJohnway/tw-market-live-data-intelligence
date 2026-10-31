@@ -4,7 +4,8 @@ param(
     [switch]$Headless,
     [string]$PythonPath,
     [switch]$ConfirmStaleOwnership,
-    [switch]$ConfirmSecurityNetwork
+    [switch]$ConfirmSecurityNetwork,
+    [switch]$ConfirmSecurityCompatibility
 )
 
 Set-StrictMode -Version 2.0
@@ -23,6 +24,8 @@ $script:CurrentSnapshot = $null
 $script:SecurityRestartRequired = $false
 $script:SecurityLastOperation = ''
 $script:SecurityLastReason = ''
+$script:SecurityCompatibilityRetryAvailable = $false
+$script:SecurityCompatibilityDiagnostic = $null
 
 function New-LauncherResult {
     param([string]$Status, [string]$ReasonCode = '', [object]$Data = $null)
@@ -125,12 +128,18 @@ function Invoke-Lifecycle {
 }
 
 function Invoke-SecurityMasterCommand {
-    param([ValidateSet('status','update')][string]$Command)
+    param(
+        [ValidateSet('status','update')][string]$Command,
+        [ValidateSet('strict','compatibility')][string]$SslPolicy = 'strict'
+    )
     if (-not (Test-Path -LiteralPath $script:SecurityMasterCmd -PathType Leaf)) {
         return [pscustomobject]@{ exit_code = -1; payload = $null; raw = ''; error = 'SECURITY_MASTER_LAUNCHER_NOT_FOUND' }
     }
     $arguments = @($Command)
-    if ($Command -eq 'update') { $arguments += '--live' }
+    if ($Command -eq 'update') {
+        $arguments += '--live'
+        if ($SslPolicy -eq 'compatibility') { $arguments += @('--ssl-policy','compatibility') }
+    }
     $run = Invoke-ExternalCommand -FilePath $script:SecurityMasterCmd -Arguments $arguments
     if ($run.launch_error) {
         return [pscustomobject]@{ exit_code = -1; payload = $null; raw = ''; error = $run.launch_error }
@@ -138,6 +147,41 @@ function Invoke-SecurityMasterCommand {
     $raw = $run.output.Trim()
     $payload = ConvertFrom-LastJsonPayload -Raw $raw
     return [pscustomobject]@{ exit_code = $run.exit_code; payload = $payload; raw = $raw; error = $null }
+}
+
+function Get-SecurityMasterStrictCompatibilityEvidence {
+    param([object]$RuntimeSnapshot, [datetime]$NotBeforeUtc)
+    try {
+        if ($null -eq $RuntimeSnapshot -or -not ($RuntimeSnapshot.PSObject.Properties.Name -contains 'data')) { return $null }
+        $payload = $RuntimeSnapshot.data
+        if ($null -eq $payload -or -not ($payload.PSObject.Properties.Name -contains 'installation') -or $null -eq $payload.installation) { return $null }
+        if (-not ($payload.installation.PSObject.Properties.Name -contains 'temp_root') -or -not $payload.installation.temp_root) { return $null }
+        $securityTemp = Join-Path ([string]$payload.installation.temp_root) 'security-master'
+        if (-not (Test-Path -LiteralPath $securityTemp -PathType Container)) { return $null }
+        $cutoff = $NotBeforeUtc.AddSeconds(-2)
+        $manifests = @(Get-ChildItem -LiteralPath $securityTemp -File -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -eq 'source_evidence_manifest.json' -and ($_.LastWriteTimeUtc -ge $cutoff -or $_.CreationTimeUtc -ge $cutoff) } |
+            Sort-Object LastWriteTimeUtc -Descending)
+        foreach ($manifest in $manifests) {
+            try { $evidence = Get-Content -LiteralPath $manifest.FullName -Raw | ConvertFrom-Json } catch { continue }
+            if ([string]$evidence.principal_decision -ne 'BLOCKED_BY_OFFICIAL_SOURCE_PROBE_FAILURE') { continue }
+            $probes = @($evidence.source_probes)
+            if ($probes.Count -lt 1) { continue }
+            $strictFailures = @($probes | Where-Object {
+                $_.transport_success -eq $false -and [string]$_.transport_reason_code -eq 'PYTHON_X509_STRICT_COMPATIBILITY'
+            })
+            if ($strictFailures.Count -ne $probes.Count) { continue }
+            return [pscustomobject]@{
+                reason_code = 'PYTHON_X509_STRICT_COMPATIBILITY'
+                source_count = $probes.Count
+                diagnostic_path = $manifest.FullName
+                tls_verification = 'enabled'
+                hostname_verification = 'enabled'
+                retry_ssl_policy = 'compatibility'
+            }
+        }
+    } catch {}
+    return $null
 }
 
 function Get-SecurityMasterSnapshot {
@@ -158,7 +202,11 @@ function Get-SecurityMasterSnapshot {
 }
 
 function Invoke-SecurityMasterUpdateAction {
-    param([switch]$Confirmed)
+    param(
+        [switch]$Confirmed,
+        [ValidateSet('strict','compatibility')][string]$SslPolicy = 'strict',
+        [switch]$CompatibilityConfirmed
+    )
     $runtime = Get-LauncherSnapshot
     if ($runtime.status -in @('SETUP_REQUIRED','INSTALLATION_INCOMPLETE','STATUS_ERROR')) {
         return New-LauncherResult -Status 'ACTION_BLOCKED' -ReasonCode 'SECURITY_MASTER_REQUIRES_READY_INSTALLATION'
@@ -173,12 +221,33 @@ function Invoke-SecurityMasterUpdateAction {
     if (-not $Confirmed) {
         return New-LauncherResult -Status 'CONFIRMATION_REQUIRED' -ReasonCode 'SECURITY_MASTER_EXTERNAL_ACQUISITION'
     }
+    if ($SslPolicy -eq 'compatibility' -and -not $CompatibilityConfirmed) {
+        return New-LauncherResult -Status 'CONFIRMATION_REQUIRED' -ReasonCode 'SECURITY_MASTER_TLS_COMPATIBILITY_RETRY'
+    }
     $mode = if ($before.status -eq 'NOT_INITIALIZED') { 'INSTALL' } else { 'UPDATE' }
-    $run = Invoke-SecurityMasterCommand -Command 'update'
+    $attemptStartedUtc = [datetime]::UtcNow
+    $run = Invoke-SecurityMasterCommand -Command 'update' -SslPolicy $SslPolicy
     $script:LastTechnicalDetails = $run.raw
     if ($null -eq $run.payload -or $run.exit_code -ne 0 -or [string]$run.payload.status -ne 'ACTIVE') {
         $reason = 'SECURITY_MASTER_UPDATE_FAILED'
         if ($run.payload -and ($run.payload.PSObject.Properties.Name -contains 'reason_code') -and $run.payload.reason_code) { $reason = [string]$run.payload.reason_code }
+        if ($SslPolicy -eq 'strict' -and $reason -eq 'official_acquisition_or_qualification_failed') {
+            $compatibility = Get-SecurityMasterStrictCompatibilityEvidence -RuntimeSnapshot $runtime -NotBeforeUtc $attemptStartedUtc
+            if ($null -ne $compatibility) {
+                $script:SecurityCompatibilityRetryAvailable = $true
+                $script:SecurityCompatibilityDiagnostic = $compatibility
+                $script:SecurityLastOperation = 'COMPATIBILITY_RETRY_AVAILABLE'
+                $script:SecurityLastReason = 'PYTHON_X509_STRICT_COMPATIBILITY'
+                return New-LauncherResult -Status 'SECURITY_MASTER_TLS_COMPATIBILITY_RETRY_AVAILABLE' -ReasonCode 'PYTHON_X509_STRICT_COMPATIBILITY' -Data ([pscustomobject]@{
+                    mode = $mode
+                    runtime_state = $runtime.status
+                    compatibility = $compatibility
+                    security_master = $run.payload
+                })
+            }
+        }
+        $script:SecurityCompatibilityRetryAvailable = $false
+        $script:SecurityCompatibilityDiagnostic = $null
         $script:SecurityLastOperation = 'FAILED'
         $script:SecurityLastReason = $reason
         return New-LauncherResult -Status 'SECURITY_MASTER_UPDATE_FAILED' -ReasonCode $reason -Data $run.payload
@@ -186,16 +255,18 @@ function Invoke-SecurityMasterUpdateAction {
     $restartRequired = $false
     if ($run.payload.PSObject.Properties.Name -contains 'restart_required') { $restartRequired = [bool]$run.payload.restart_required }
     $script:SecurityRestartRequired = $restartRequired
+    $script:SecurityCompatibilityRetryAvailable = $false
+    $script:SecurityCompatibilityDiagnostic = $null
     $script:SecurityLastOperation = $mode + '_COMPLETE'
     $script:SecurityLastReason = ''
     return New-LauncherResult -Status 'SECURITY_MASTER_UPDATE_COMPLETE' -Data ([pscustomobject]@{
         mode = $mode
+        ssl_policy = $SslPolicy
         restart_required = $restartRequired
         runtime_state = $runtime.status
         security_master = $run.payload
     })
 }
-
 function Get-WorkbenchUri {
     param([object]$Payload)
     if ($null -eq $Payload -or $null -eq $Payload.service -or -not $Payload.service.alive) { return $null }
@@ -404,7 +475,10 @@ function Invoke-RequestedAction {
         'Doctor' { return Invoke-DoctorAction }
         'WorkbenchUri' { return Invoke-WorkbenchUriAction }
         'SecurityStatus' { return Get-SecurityMasterSnapshot }
-        'SecurityUpdate' { return Invoke-SecurityMasterUpdateAction -Confirmed:$ConfirmSecurityNetwork }
+        'SecurityUpdate' {
+            $policy = if ($ConfirmSecurityCompatibility) { 'compatibility' } else { 'strict' }
+            return Invoke-SecurityMasterUpdateAction -Confirmed:$ConfirmSecurityNetwork -SslPolicy $policy -CompatibilityConfirmed:$ConfirmSecurityCompatibility
+        }
         default { return New-LauncherResult -Status 'ACTION_BLOCKED' -ReasonCode 'UNSUPPORTED_HEADLESS_ACTION' }
     }
 }
@@ -413,7 +487,7 @@ function Write-HeadlessResult {
     param([object]$Result)
     $json = $Result | ConvertTo-Json -Depth 12 -Compress
     [Console]::Out.WriteLine($json)
-    if ($Result.status -in @('STATUS_ERROR','SETUP_BLOCKED','PREREQUISITE_BLOCKED','START_FAILED','START_INCOMPLETE','STOP_FAILED','STOP_INCOMPLETE','RESTART_FAILED','SECURITY_MASTER_UPDATE_FAILED','DOCTOR_FAILED','DOCTOR_BLOCKED','ACTION_BLOCKED','CONFIRMATION_REQUIRED')) { return 1 }
+    if ($Result.status -in @('STATUS_ERROR','SETUP_BLOCKED','PREREQUISITE_BLOCKED','START_FAILED','START_INCOMPLETE','STOP_FAILED','STOP_INCOMPLETE','RESTART_FAILED','SECURITY_MASTER_UPDATE_FAILED','SECURITY_MASTER_TLS_COMPATIBILITY_RETRY_AVAILABLE','DOCTOR_FAILED','DOCTOR_BLOCKED','ACTION_BLOCKED','CONFIRMATION_REQUIRED')) { return 1 }
     return 0
 }
 function Show-TechnicalDetails {
@@ -656,7 +730,10 @@ function Show-LauncherGui {
         }
 
         $securityActionButton.Visible = $true
-        if ($script:SecurityLastOperation -eq 'FAILED') {
+        if ($script:SecurityCompatibilityRetryAvailable) {
+            & $setCardState $securityCard 'Compatibility retry available' 'warning'
+            $securityActionButton.Text = 'Retry TLS'; $securityActionButton.Enabled = $true
+        } elseif ($script:SecurityLastOperation -eq 'FAILED') {
             $failedText = if ($identityState -eq 'ACTIVE') { 'Update failed; current release retained' } else { 'Install failed' }
             & $setCardState $securityCard $failedText 'warning'
             if ($identityState -eq 'ACTIVE') { $securityActionButton.Text = 'Update'; $securityActionButton.Enabled = $true }
@@ -713,7 +790,7 @@ function Show-LauncherGui {
             $details = [ordered]@{
                 product_version = $productVersion
                 launcher = $snapshot
-                security_session = [ordered]@{ restart_required = $script:SecurityRestartRequired; last_operation = $script:SecurityLastOperation; last_reason = $script:SecurityLastReason }
+                security_session = [ordered]@{ restart_required = $script:SecurityRestartRequired; last_operation = $script:SecurityLastOperation; last_reason = $script:SecurityLastReason; compatibility_retry_available = $script:SecurityCompatibilityRetryAvailable; compatibility_diagnostic = $script:SecurityCompatibilityDiagnostic }
             }
             $script:LastTechnicalDetails = ($details | ConvertTo-Json -Depth 12)
         }
@@ -837,19 +914,49 @@ function Show-LauncherGui {
             return
         }
 
-        $verb = if ($securityActionButton.Text -eq 'Install') { 'install' } else { 'update' }
-        $answer = [System.Windows.Forms.MessageBox]::Show(
-            "Security Master $verb performs one explicit bounded acquisition from official public sources. Continue?",
-            'TW-Market Security Master',[System.Windows.Forms.MessageBoxButtons]::YesNo,[System.Windows.Forms.MessageBoxIcon]::Information)
-        if ($answer -ne [System.Windows.Forms.DialogResult]::Yes) { return }
+        $compatibilityRetry = $securityActionButton.Text -eq 'Retry TLS'
+        if ($compatibilityRetry) {
+            $answer = [System.Windows.Forms.MessageBox]::Show(
+                "The official TWSE source was blocked by Python's strict X.509 compatibility rules.`r`n`r`nTW-Market can retry using verified TLS compatibility mode. Certificate validation and hostname verification remain enabled; only Python's additional X.509 strict flag is relaxed for this bounded acquisition.`r`n`r`nRetry now?",
+                'TW-Market Security Master',[System.Windows.Forms.MessageBoxButtons]::YesNo,[System.Windows.Forms.MessageBoxIcon]::Information)
+            if ($answer -ne [System.Windows.Forms.DialogResult]::Yes) { return }
+        } else {
+            $verb = if ($securityActionButton.Text -eq 'Install') { 'install' } else { 'update' }
+            $answer = [System.Windows.Forms.MessageBox]::Show(
+                "Security Master $verb performs one explicit bounded acquisition from official public sources. Continue?",
+                'TW-Market Security Master',[System.Windows.Forms.MessageBoxButtons]::YesNo,[System.Windows.Forms.MessageBoxIcon]::Information)
+            if ($answer -ne [System.Windows.Forms.DialogResult]::Yes) { return }
+        }
 
-        & $setCardState $securityCard 'Updating...' 'info'
+        if ($compatibilityRetry) { & $setCardState $securityCard 'Retrying...' 'info' }
+        else { & $setCardState $securityCard 'Updating...' 'info' }
         $securityActionButton.Enabled = $false
         [System.Windows.Forms.Application]::DoEvents()
         $form.UseWaitCursor = $true
         try {
-            $result = Invoke-SecurityMasterUpdateAction -Confirmed
+            if ($compatibilityRetry) {
+                $result = Invoke-SecurityMasterUpdateAction -Confirmed -SslPolicy 'compatibility' -CompatibilityConfirmed
+            } else {
+                $result = Invoke-SecurityMasterUpdateAction -Confirmed -SslPolicy 'strict'
+            }
             $script:LastTechnicalDetails = ($result | ConvertTo-Json -Depth 12)
+
+            if ($result.status -eq 'SECURITY_MASTER_TLS_COMPATIBILITY_RETRY_AVAILABLE') {
+                $retry = [System.Windows.Forms.MessageBox]::Show(
+                    "The official TWSE source could not be validated under Python's strict X.509 rules.`r`n`r`nA verified TLS compatibility retry is available. Certificate and hostname verification remain enabled. This will perform one more explicit bounded acquisition.`r`n`r`nRetry with compatibility mode now?",
+                    'TW-Market Security Master',[System.Windows.Forms.MessageBoxButtons]::YesNo,[System.Windows.Forms.MessageBoxIcon]::Information)
+                if ($retry -eq [System.Windows.Forms.DialogResult]::Yes) {
+                    & $setCardState $securityCard 'Retrying...' 'info'
+                    [System.Windows.Forms.Application]::DoEvents()
+                    $result = Invoke-SecurityMasterUpdateAction -Confirmed -SslPolicy 'compatibility' -CompatibilityConfirmed
+                    $script:LastTechnicalDetails = ($result | ConvertTo-Json -Depth 12)
+                } else {
+                    [void][System.Windows.Forms.MessageBox]::Show(
+                        'Security Master was not installed. You can use Retry TLS later; no unverified TLS mode will be used.',
+                        'TW-Market Security Master')
+                }
+            }
+
             if ($result.status -eq 'SECURITY_MASTER_UPDATE_COMPLETE') {
                 if (-not $result.data.restart_required) {
                     $notice = 'Security Master is ready.'
@@ -859,15 +966,18 @@ function Show-LauncherGui {
                     $notice = 'Security Master is ready. Restart TW-Market to use the new release.'
                 }
                 [void][System.Windows.Forms.MessageBox]::Show($notice,'TW-Market Security Master')
+            } elseif ($result.status -eq 'SECURITY_MASTER_TLS_COMPATIBILITY_RETRY_AVAILABLE') {
+                # The operator declined the explicit compatibility retry. The card remains actionable.
             } else {
-                [void][System.Windows.Forms.MessageBox]::Show("Security Master operation failed: $($result.reason_code)",'TW-Market Security Master')
+                [void][System.Windows.Forms.MessageBox]::Show(
+                    'Security Master could not retrieve or qualify the official source data. No release was activated. Use Advanced / Technical Details for the governed reason code and diagnostics.',
+                    'TW-Market Security Master')
             }
         } finally {
             $form.UseWaitCursor = $false
             & $render -PreserveTechnicalDetails
         }
     })
-
     & $render
     [void]$form.ShowDialog()
 }
