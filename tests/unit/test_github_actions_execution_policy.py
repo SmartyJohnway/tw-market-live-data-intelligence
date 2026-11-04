@@ -60,6 +60,8 @@ def test_windows_jobs_use_canonical_gate_instead_of_historical_step_names(tmp_pa
     assert release_run.index("config --local core.autocrlf false") < release_run.index("git checkout --detach")
     assert release_run.index("git checkout --detach") < release_run.index("verify_checkout_git_blob_identity.py")
     assert release_run.index("verify_checkout_git_blob_identity.py") < release_run.index("run_l7_a2_release_validation.py")
+    assert release_run.index("run_l7_a2_release_validation.py") < release_run.index("NATIVE_ACCEPTANCE_STAGE_DIAGNOSTIC")
+    assert "throw 'Release validation failed'" in release_run
     from scripts.verify_checkout_git_blob_identity import CheckoutByteMismatch, verify_file_bytes
     fixture_repo = tmp_path / "byte-fixture"
     fixture_repo.mkdir()

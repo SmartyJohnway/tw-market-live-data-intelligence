@@ -48,7 +48,32 @@ jobs:
         & "$env:pythonLocation\python.exe" -B -m venv "$base\venv"
         if ($LASTEXITCODE -ne 0) { throw 'Fresh prerequisite venv failed' }
         & "$base\venv\Scripts\python.exe" -B scripts/run_l7_a2_release_validation.py --source-commit $env:SOURCE_SHA --source-tree $tree --work "$base\work" --wheelhouse "$base\wheelhouse" --download-setup --provision --gate --native
-        if ($LASTEXITCODE -ne 0) { throw 'Release validation failed' }
+        if ($LASTEXITCODE -ne 0) {
+          # Capture bounded failure metadata before hosted runner workspace disappears.
+          # Do not print raw stdout/stderr, paths, data payloads, or credential material.
+          $nativeReport = Join-Path "$base\work" 'native acceptance\final_result.json'
+          if (Test-Path -LiteralPath $nativeReport) {
+            try {
+              $native = Get-Content -LiteralPath $nativeReport -Raw | ConvertFrom-Json
+              $sequence = @($native.sequence)
+              $stage = if ($sequence.Count) { [string]$sequence[-1].label } else { 'NONE' }
+              if ($stage -notmatch '^[a-zA-Z0-9_-]{1,80}$') { $stage = 'INVALID_STAGE_LABEL' }
+              $lastCode = if ($sequence.Count) { [int]$sequence[-1].exit_code } else { -1 }
+              $reason = 'OTHER_OR_ASSERTION'
+              if ([string]$native.error -match '^lifecycle start failed: ([a-zA-Z0-9_]{1,80})$') {
+                $reason = $Matches[1]
+              }
+              Write-Output "NATIVE_ACCEPTANCE_STAGE_DIAGNOSTIC status=$($native.status) stages=$($sequence.Count) last_stage=$stage last_exit=$lastCode reason=$reason"
+            }
+            catch {
+              Write-Output 'NATIVE_ACCEPTANCE_STAGE_DIAGNOSTIC status=UNREADABLE'
+            }
+          }
+          else {
+            Write-Output 'NATIVE_ACCEPTANCE_STAGE_DIAGNOSTIC status=NO_FINAL_RESULT'
+          }
+          throw 'Release validation failed'
+        }
   docker-validation:
     runs-on: ubuntu-latest
     steps:
