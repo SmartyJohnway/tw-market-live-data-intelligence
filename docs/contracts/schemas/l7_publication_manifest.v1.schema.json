@@ -227,7 +227,7 @@
               "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
             },
             "passed": {
-              "const": 1895
+              "const": 1933
             },
             "failed": {
               "const": 0
@@ -239,7 +239,7 @@
               "const": 20
             },
             "guard_events": {
-              "const": 386
+              "const": 416
             },
             "guard_denials": {
               "const": 0
@@ -816,7 +816,7 @@
                   "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
                 },
                 "passed": {
-                  "const": 1895
+                  "const": 1933
                 },
                 "failed": {
                   "const": 0
@@ -828,7 +828,7 @@
                   "const": 20
                 },
                 "guard_events": {
-                  "const": 386
+                  "const": 416
                 },
                 "guard_denials": {
                   "const": 0
