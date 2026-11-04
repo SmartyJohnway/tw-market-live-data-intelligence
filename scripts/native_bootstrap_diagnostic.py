@@ -9,6 +9,7 @@ import os
 import re
 import subprocess
 from pathlib import Path
+from native_pip_error_whitelist import classify, classify_stderr_context
 
 STEPS = {"bootstrap-A", "bootstrap-A-again", "bootstrap-B", "stale-runtime"}
 PATTERNS = (
@@ -221,6 +222,8 @@ def diagnose(root: Path) -> dict:
         result["stderr_present"] = bool(stderr)
         result["stderr_signals"] = signals(stderr)
         result["stdout_signals"] = signals(stdout)
+        result["pip_error_whitelist"] = classify(stderr)
+        result["pip_error_context"] = classify_stderr_context(stderr)
         result["runtime_probes"] = runtime_probes(root)
         result["bootstrap_substep"] = _step(stderr)
         for name, expression in PATTERNS:
