@@ -185,6 +185,36 @@ def diagnose(root: Path) -> dict:
             r"BOOTSTRAP_CHILD_STAGE=(VENV_CREATE|PIP_INSTALL|PIP_CHECK|DISTRIBUTION_PROBE)",
             stderr)
         result["child_failure_stage"] = stage_match.group(1) if stage_match else "UNKNOWN"
+        log = root / "guard-events.jsonl"
+        if log.is_file():
+            records = [json.loads(v) for v in log.read_text(encoding="utf-8").splitlines() if v.strip()]
+            reasons = {"D_DRIVE_ACCESS", "OWNER_PRODUCTION_STATE_ACCESS",
+                       "OUTSIDE_WRITE", "EXTERNAL_NETWORK", "D_SUBPROCESS",
+                       "REGISTRY_WRITE"}
+            result["guard_denial_count"] = len(records)
+            result["guard_denial_types"] = sorted({
+                r.get("blocked") for r in records if r.get("blocked") in reasons
+            })
+        else:
+            result["guard_denial_count"] = 0
+            result["guard_denial_types"] = []
+        allowed_exceptions = ("PermissionError", "FileNotFoundError",
+            "OSError", "UnicodeEncodeError", "UnicodeDecodeError",
+            "CalledProcessError", "ValueError", "RuntimeError", "KeyError",
+            "TypeError", "AssertionError", "ImportError", "ModuleNotFoundError")
+        result["observed_exception_types"] = sorted(
+            name for name in allowed_exceptions
+            if re.search(r"\\b" + name + r"\\b", stderr))
+        result["pip_diagnostic_flags"] = {
+            "error_prefix_seen": bool(re.search(r"(?m)^ERROR:", stderr)),
+            "exception_prefix_seen": bool(re.search(r"(?m)^Exception:", stderr)),
+            "successfully_installed_seen": "Successfully installed" in stderr,
+            "installing_collected_seen": "Installing collected packages" in stderr,
+            "subprocess_error_seen": "subprocess-exited-with-error" in stderr,
+            "temp_file_error_seen": "temporary file" in stderr.lower(),
+            "record_error_seen": "RECORD" in stderr,
+            "launcher_error_seen": "launcher" in stderr.lower()
+        }
         stdout = record.get("stdout", "")
         if not isinstance(stdout, str):
             stdout = ""
