@@ -55,7 +55,7 @@ def synthetic(contract,tmp_path,committed_source,monkeypatch):
     common={'status':'PASS','source_commit':commit,'source_tree':tree,'evidence_sha256':s.sha(b'SYNTHETIC EVIDENCE ONLY'),
             'evidence_id':'SYNTHETIC_FIXTURE_NOT_ACCEPTANCE_AUTHORITY'}
     validation={
-      'canonical_ci':{**common,'passed':1933,'failed':0,'contracted_skips':4,'deselected':20,'guard_events':416,'guard_denials':0,'unexpected_skips':0,'member_ledger_sha256':s.sha(b'SYNTHETIC')},
+      'canonical_ci':{**common,'passed':1934,'failed':0,'contracted_skips':4,'deselected':20,'guard_events':416,'guard_denials':0,'unexpected_skips':0,'member_ledger_sha256':s.sha(b'SYNTHETIC')},
       'native':{**common,'os':'Windows 11','arch':'x64','native_zip_sha256':s.sha(content['native_zip'])},
       'docker':{**common,'platform':'linux/amd64','base_digest':'sha256:'+'a'*64,'image_identity':'sha256:'+'b'*64,'content_sha256':'c'*64,'rootfs_sha256':'d'*64,
                 'runtime_configuration':{'entrypoint':['synthetic'],'command':[],'user':'synthetic','exposed_ports':[]},'reproducibility_boundary':p.BOUNDARY,'registry_publication':False},
