@@ -227,7 +227,7 @@
               "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
             },
             "passed": {
-              "const": 1934
+              "const": 1935
             },
             "failed": {
               "const": 0
@@ -816,7 +816,7 @@
                   "pattern": "^(?!TBD$|UNKNOWN$|PENDING$).+$"
                 },
                 "passed": {
-                  "const": 1934
+                  "const": 1935
                 },
                 "failed": {
                   "const": 0

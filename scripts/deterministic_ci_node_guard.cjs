@@ -1,7 +1,8 @@
 'use strict';
 // CI-only Node boundary. The state-contract test needs no sockets or children.
 const fs = require('node:fs');
-const log = process.env.TW_MARKET_CI_GUARD_LOG;
+// Process-owned shard prevents cross-runtime append races on Windows.
+const log = `${process.env.TW_MARKET_CI_GUARD_LOG}.pid-${process.pid}.jsonl`;
 function emit(event, reason) {
   fs.appendFileSync(log, JSON.stringify({event, reason, pid: process.pid}) + '\n');
 }

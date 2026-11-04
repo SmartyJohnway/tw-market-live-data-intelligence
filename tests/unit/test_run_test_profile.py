@@ -208,3 +208,40 @@ def test_m8r_component_security_includes_r2_security_tests():
     rendered = '\n'.join(rtp.command_to_display(cmd) for cmd in rtp.resolve_profile('component-security'))
     assert 'tests/unit/test_m8r_filesystem_containment.py' in rendered
     assert '-m not network and (component_security or core)' in rendered
+
+
+def test_ci_guard_shard_merge_preserves_events_and_rejects_damage(tmp_path):
+    from scripts.run_deterministic_ci import collect_guard_shards
+
+    def record(pid, event):
+        return (json.dumps({'pid': pid, 'event': event}, sort_keys=True) + '\n').encode()
+
+    valid = tmp_path / 'valid'
+    valid.mkdir()
+    a = record(101, 'guard_loaded') + record(101, 'child_python_injected')
+    b = record(202, 'guard_loaded_node') + record(202, 'denied')
+    (valid / 'guard.jsonl.pid-101.jsonl').write_bytes(a)
+    (valid / 'guard.jsonl.pid-202.jsonl').write_bytes(b)
+    events = collect_guard_shards(valid, 101)
+    assert len(events) == 4
+    assert sum(event['event'] == 'denied' for event in events) == 1
+    assert (valid / 'guard.jsonl').read_bytes() == a + b
+
+    # Every damaged or missing shard must refuse acceptance, even if pytest passed.
+    damaged = [
+        b'', b'{', b'not JSON\n', b'{}\n', b'\n',
+        record(203, 'guard_loaded'), record(202, 'guard_loaded')[:-1],
+    ]
+    for i, raw in enumerate(damaged):
+        case = tmp_path / f'bad-{i}'
+        case.mkdir()
+        (case / 'guard.jsonl.pid-202.jsonl').write_bytes(raw)
+        (case / 'guard.jsonl.pid-101.jsonl').write_bytes(record(101, 'guard_loaded'))
+        with pytest.raises(RuntimeError, match='CI_GUARD_'):
+            collect_guard_shards(case, 101)
+        assert not (case / 'guard.jsonl').exists()
+
+    none = tmp_path / 'missing'
+    none.mkdir()
+    with pytest.raises(RuntimeError, match='CI_GUARD_'):
+        collect_guard_shards(none, 101)

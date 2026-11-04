@@ -22,7 +22,10 @@ def install() -> None:
     bound = os.path.normcase(os.path.abspath(os.environ['TW_MARKET_CI_BOUND']))
     original_open = open
     def record(event, **details):
-        with original_open(log, 'a', encoding='utf-8') as stream:
+        # Do not let concurrent Python and Node descendants append to the
+        # same Windows text file. Each process owns a separate JSONL shard.
+        shard = f'{log}.pid-{os.getpid()}.jsonl'
+        with original_open(shard, 'a', encoding='utf-8') as stream:
             stream.write(json.dumps({'event':event,'pid':os.getpid(),**details},sort_keys=True)+'\n')
     def reject(reason, value):
         record('denied', reason=reason, value=str(value))
