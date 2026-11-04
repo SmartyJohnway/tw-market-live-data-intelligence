@@ -61,11 +61,34 @@ def runtime_probes(root: Path) -> dict[str, bool]:
             return {"bundle_present": False}
         runtime = dist / "runtime"
         venv = runtime / "venv"
+        site = venv / "Lib" / "site-packages"
+        seen = set()
+        for entry in site.glob("*.dist-info"):
+            if entry.is_dir():
+                metadata = entry / "METADATA"
+                if metadata.is_file():
+                    text = metadata.read_text(encoding="utf-8", errors="replace")[:8192]
+                    fields = [line[6:].strip() for line in text.splitlines()
+                              if line.startswith("Name: ")]
+                    if fields:
+                        seen.add(re.sub(r"[-_.]+", "-", fields[0]).lower())
+        expected = set()
+        manifest = dist / "dependency-manifest.json"
+        if manifest.is_file():
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+            expected = {re.sub(r"[-_.]+", "-", d["name"]).lower()
+                        for d in data.get("dependencies", [])}
+        observed = seen - {"pip"}
         return {"bundle_present": True, "runtime_present": runtime.is_dir(),
                 "venv_present": venv.is_dir(),
                 "venv_python_present": (venv / "Scripts" / "python.exe").is_file(),
-                "site_packages_present": (venv / "Lib" / "site-packages").is_dir(),
-                "runtime_marker_present": (runtime / "runtime-marker.json").is_file()}
+                "site_packages_present": site.is_dir(),
+                "runtime_marker_present": (runtime / "runtime-marker.json").is_file(),
+                "expected_distribution_count": len(expected),
+                "observed_distribution_count": len(observed),
+                "missing_distribution_count": len(expected - observed),
+                "unexpected_distribution_count": len(observed - expected),
+                "distribution_set_matches": bool(expected) and expected == observed}
     except OSError:
         return {"probe_error": True}
 
