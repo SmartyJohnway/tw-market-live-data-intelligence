@@ -181,6 +181,10 @@ def diagnose(root: Path) -> dict:
         if not isinstance(stderr, str):
             return result
         stderr = stderr[-131072:]
+        stage_match = re.search(
+            r"BOOTSTRAP_CHILD_STAGE=(VENV_CREATE|PIP_INSTALL|PIP_CHECK|DISTRIBUTION_PROBE)",
+            stderr)
+        result["child_failure_stage"] = stage_match.group(1) if stage_match else "UNKNOWN"
         stdout = record.get("stdout", "")
         if not isinstance(stdout, str):
             stdout = ""

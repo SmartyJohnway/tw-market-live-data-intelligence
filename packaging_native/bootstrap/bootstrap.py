@@ -21,6 +21,24 @@ def _env():
     env.update(PYTHONDONTWRITEBYTECODE='1', PIP_CONFIG_FILE=os.devnull)
     return env
 
+def _checked_child(stage, command, env):
+    try:
+        subprocess.run(command, check=True, env=env)
+    except subprocess.CalledProcessError:
+        # Fixed vocabulary only; the full command may contain paths and is
+        # retained exclusively in the local acceptance evidence.
+        print('BOOTSTRAP_CHILD_STAGE=' + stage, file=sys.stderr)
+        raise
+
+
+def _checked_output(stage, command, env):
+    try:
+        return subprocess.check_output(command, env=env, text=True)
+    except subprocess.CalledProcessError:
+        print('BOOTSTRAP_CHILD_STAGE=' + stage, file=sys.stderr)
+        raise
+
+
 def bootstrap(bundle):
     report = verify_bundle(bundle)
     root = Path(report['bundle_root'])
@@ -61,13 +79,13 @@ def bootstrap(bundle):
     env = _env()
     if not existing:
         runtime.mkdir(exist_ok=True)
-        subprocess.run([sys.executable,'-I','-B','-m','venv',str(venv_dir)],check=True,env=env)
-        subprocess.run([str(py),'-I','-B','-m','pip','--isolated','install','--no-cache-dir',
+        _checked_child('VENV_CREATE',[sys.executable,'-I','-B','-m','venv',str(venv_dir)],env)
+        _checked_child('PIP_INSTALL',[str(py),'-I','-B','-m','pip','--isolated','install','--no-cache-dir',
                         '--disable-pip-version-check','--no-compile','--no-index','--find-links',str(wheelhouse),
-                        '--only-binary=:all:','--require-hashes','-r',str(req)],check=True,env=env)
-    subprocess.run([str(py),'-I','-B','-m','pip','--isolated','check','--disable-pip-version-check'],check=True,env=env)
+                        '--only-binary=:all:','--require-hashes','-r',str(req)],env)
+    _checked_child('PIP_CHECK',[str(py),'-I','-B','-m','pip','--isolated','check','--disable-pip-version-check'],env)
     probe = "import importlib.metadata as m,json,re; print(json.dumps({re.sub(r'[-_.]+','-',d.metadata['Name'].lower()):d.version for d in m.distributions() if d.metadata.get('Name')}))"
-    installed = json.loads(subprocess.check_output([str(py),'-I','-B','-c',probe],env=env,text=True))
+    installed = json.loads(_checked_output('DISTRIBUTION_PROBE',[str(py),'-I','-B','-c',probe],env))
     installed.pop('pip',None)
     if installed != expected_deps:
         raise RuntimeError('installed distributions differ from exact dependency manifest')
