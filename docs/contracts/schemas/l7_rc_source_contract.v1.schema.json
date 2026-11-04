@@ -31,7 +31,7 @@
           "const": "TW-Market Live Data Intelligence"
         },
         "product_version": {
-          "const": "1.5.0"
+          "const": "1.5.1"
         }
       }
     },

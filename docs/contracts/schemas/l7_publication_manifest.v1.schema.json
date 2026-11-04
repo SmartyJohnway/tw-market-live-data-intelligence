@@ -30,7 +30,7 @@
           "const": "TW-Market Live Data Intelligence"
         },
         "product_version": {
-          "const": "1.5.0"
+          "const": "1.5.1"
         }
       }
     },
@@ -557,7 +557,7 @@
       ],
       "properties": {
         "filename": {
-          "const": "V1_5_0_RELEASE_NOTES_DRAFT.md"
+          "const": "V1_5_1_RELEASE_NOTES_DRAFT.md"
         },
         "bytes": {
           "type": "integer",
@@ -602,7 +602,7 @@
       ],
       "properties": {
         "tag": {
-          "const": "v1.5.0"
+          "const": "v1.5.1"
         },
         "github_repository": {
           "const": "SmartyJohnway/tw-market-live-data-intelligence"
@@ -659,7 +659,7 @@
           }
         },
         "product_version": {
-          "const": "1.5.0"
+          "const": "1.5.1"
         },
         "artifacts": {
           "type": "array",
@@ -761,7 +761,7 @@
           }
         },
         "product_version": {
-          "const": "1.5.0"
+          "const": "1.5.1"
         },
         "validation": {
           "type": "object",

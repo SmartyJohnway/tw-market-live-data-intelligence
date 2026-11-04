@@ -36,7 +36,10 @@ def contract(committed_source):
 
 
 @pytest.fixture
-def synthetic(contract,tmp_path,committed_source):
+def synthetic(contract,tmp_path,committed_source,monkeypatch):
+    # The synthetic source is an exact committed fixture; synthetic artifacts
+    # must be inside its parent, just like production requires.
+    monkeypatch.setattr(p,'ROOT',committed_source)
     sc=deepcopy(contract); source=sc['source']; commit,tree=source['commit'],source['tree']
     assets=tmp_path/'synthetic-assets'; assets.mkdir()
     policies={r['role']:r for r in sc['artifact_set'] if r['classification']=='PUBLICATION_ASSET' and r['role']!='publication_manifest'}
@@ -59,9 +62,9 @@ def synthetic(contract,tmp_path,committed_source):
       'compatibility':{**common,'public_contract_policy':'V1_RETAINED_WITH_CURRENT_V2_V3_COMPATIBILITY'},
       'bounded_live':{**common,'review_disposition':'SYNTHETIC_NO_LIVE_EXECUTION'},
       'artifact_hygiene':{**common,'blocking_count':0}}
-    return sc,{'schema_version':'l7_artifact_binding.v1','source':source,'product_version':'1.5.0','artifacts':rows},\
-           {'schema_version':'l7_validation_binding.v1','source':source,'product_version':'1.5.0','validation':validation},\
-           committed_source/'docs/release/V1_5_0_RELEASE_NOTES_DRAFT.md'
+    return sc,{'schema_version':'l7_artifact_binding.v1','source':source,'product_version':'1.5.1','artifacts':rows},\
+           {'schema_version':'l7_validation_binding.v1','source':source,'product_version':'1.5.1','validation':validation},\
+           committed_source/'docs/release/V1_5_1_RELEASE_NOTES_DRAFT.md'
 
 
 def test_source_schema_and_exact_committed_identity(contract,committed_source):
@@ -177,7 +180,8 @@ def test_hygiene_positive_and_zip_traversal(tmp_path):
 
 
 def test_release_notes_and_future_authorization_boundaries():
-    notes=(s.ROOT/'docs/release/V1_5_0_RELEASE_NOTES_DRAFT.md').read_text(encoding='utf-8')
+    notes=(s.ROOT/'docs/release/V1_5_1_RELEASE_NOTES_DRAFT.md').read_text(encoding='utf-8')
     for text in ['selected, unpublished','KNOWN_NOT_IMPLEMENTED','Python 3.12 is unsupported',
-                 'STABLE_SOURCE_NOT_YET_FROZEN','FINAL_ARTIFACT_HASHES_NOT_YET_FROZEN','A7 and stable publication are NOT_AUTHORIZED']:
+                 'v1.5.0 remains the current GitHub Stable',
+                 'Any final GitHub tag', 'This document does not claim']:
         assert text in notes

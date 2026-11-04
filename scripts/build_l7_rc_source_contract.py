@@ -26,7 +26,7 @@ GOVERNED=[SCHEMA,'docs/contracts/schemas/l7_publication_manifest.v1.schema.json'
           'packaging_mcpb/record.py','packaging_mcpb/hygiene.py',
           'packaging_mcpb/upstream/mcpb-manifest-v0.3.schema.json','packaging_mcpb/upstream/provenance.json',
           'packaging_mcpb/upstream/LICENSE','packaging_mcpb/README-PACKAGE.md',
-          'packaging_native/resource-policy.json','docs/release/V1_5_0_RELEASE_NOTES_DRAFT.md',
+          'packaging_native/resource-policy.json','docs/release/V1_5_1_RELEASE_NOTES_DRAFT.md',
           'VERSION',*DEPENDENCIES.values()]
 RUNTIME={'canonical_python':'CPython 3.13','native_os':'Windows 11','native_arch':'x64',
          'docker_platform':'linux/amd64','mcp_sdk_policy':'mcp==1.29.0'}
@@ -63,16 +63,16 @@ def build_source_contract(root=ROOT):
     if git(root,'status','--porcelain','--untracked-files=all').strip():
         raise ValueError('source must be clean and committed')
     blob=lambda p:git(root,'show','HEAD:'+p)
-    if blob('VERSION').decode('utf-8').strip()!='1.5.0':
-        raise ValueError('VERSION must be 1.5.0')
+    if blob('VERSION').decode('utf-8').strip()!='1.5.1':
+        raise ValueError('VERSION must be 1.5.1')
     policy=json.loads(blob('config/l7_release_artifact_set.v1.json'))
-    if set(policy)!={'schema_version','product_version','registry_publication','manifest_self_hash_policy','artifacts'} or policy['schema_version']!='l7_release_artifact_set.v1' or policy['product_version']!='1.5.0' or policy['registry_publication'] is not False or policy['manifest_self_hash_policy']!='MANIFEST_SELF_HASH_EXTERNAL_BINDING':
+    if set(policy)!={'schema_version','product_version','registry_publication','manifest_self_hash_policy','artifacts'} or policy['schema_version']!='l7_release_artifact_set.v1' or policy['product_version']!='1.5.1' or policy['registry_publication'] is not False or policy['manifest_self_hash_policy']!='MANIFEST_SELF_HASH_EXTERNAL_BINDING':
         raise ValueError('artifact-set policy identity mismatch')
     rows=policy['artifacts']
     if len({r['role'] for r in rows})!=len(rows) or len({r['filename'] for r in rows})!=len(rows):
         raise ValueError('duplicate artifact policy')
     result={'schema_version':'l7_rc_source_contract.v1',
-      'product':{'name':'TW-Market Live Data Intelligence','product_version':'1.5.0'},
+      'product':{'name':'TW-Market Live Data Intelligence','product_version':'1.5.1'},
       'source':{'commit':git(root,'rev-parse','HEAD').decode().strip(),'tree':git(root,'rev-parse','HEAD^{tree}').decode().strip(),
                 'repository':'SmartyJohnway/tw-market-live-data-intelligence','source_contract_version':'l7_rc_source_contract.v1'},
       'runtime_policy':RUNTIME,'dependency_authority':{k:sha(blob(p)) for k,p in DEPENDENCIES.items()},

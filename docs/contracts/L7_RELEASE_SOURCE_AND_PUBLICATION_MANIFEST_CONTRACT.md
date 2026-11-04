@@ -89,3 +89,16 @@ asset upload, Registry update and post-publication verification.
 
 R1 does not pass EXIT-16/20/21/22/23/24. A7/stable publication/Phase M remain
 NOT_AUTHORIZED and Phase L remains NOT_CLOSED.
+
+## v1.5.1 local successor (2026-11-04)
+
+The earlier R1 v1.5.0 source contract above is historical and unchanged.
+The new, Owner-authorized v1.5.1 patch candidate retains the six-role artifact
+contract, cryptographic SHA-256/source-binding checks, exact six MCP tools,
+Windows Python 3.13 wheel authority, and fail-closed source admission.
+The v1.5.1 source/manifest schema consts, artifact filenames and release-notes
+reference align to version 1.5.1; published v1.5.0 bytes/tags stay immutable.
+No tool is allowed to promote v1.5.0 artifact hashes or labels as v1.5.1.
+Local code/tests/asset verification are separate from GitHub publication
+and Registry authority. Final byte-level publication claims require a new
+committed Git source identity with all release evidence bound to it.

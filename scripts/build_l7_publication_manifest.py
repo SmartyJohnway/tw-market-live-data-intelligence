@@ -73,7 +73,7 @@ def build_publication(source_contract,artifact_binding,validation_binding,releas
     if validation_binding['validation']['native']['native_zip_sha256']!=sha(asset_bytes['native_zip']):
         raise ValueError('Native validation refers to different artifact')
     notes=Path(release_notes).read_bytes()
-    expected_notes=next((r['sha256'] for r in source_contract['governed_files'] if r['path']=='docs/release/V1_5_0_RELEASE_NOTES_DRAFT.md'),None)
+    expected_notes=next((r['sha256'] for r in source_contract['governed_files'] if r['path']=='docs/release/V1_5_1_RELEASE_NOTES_DRAFT.md'),None)
     if sha(notes)!=expected_notes:
         raise ValueError('release notes differ from source authority')
     result={'schema_version':'l7_publication_manifest.v1','product':source_contract['product'],'source':source,
@@ -83,9 +83,9 @@ def build_publication(source_contract,artifact_binding,validation_binding,releas
         'signing_policy':'SHA256_AND_RELEASE_PROVENANCE_PUBLISHER_SIGNATURE_NOT_ESTABLISHED',
         'publisher_surface':'GITHUB_RELEASE_WITH_SEPARATELY_AUTHORIZED_MCP_REGISTRY_UPDATE',
         'docker_reproducibility_boundary':BOUNDARY,'manifest_self_hash_policy':'MANIFEST_SELF_HASH_EXTERNAL_BINDING'},
-      'release_notes':{'filename':'V1_5_0_RELEASE_NOTES_DRAFT.md','bytes':len(notes),'sha256':sha(notes)},
+      'release_notes':{'filename':'V1_5_1_RELEASE_NOTES_DRAFT.md','bytes':len(notes),'sha256':sha(notes)},
       'retained_limitations':[{'code':code,'description':description} for code,description in LIMITATIONS],
-      'publication':{'tag':'v1.5.0','github_repository':source['repository'],'publication_state':publication_state}}
+      'publication':{'tag':'v1.5.1','github_repository':source['repository'],'publication_state':publication_state}}
     validate(result,schema)
     return result
 

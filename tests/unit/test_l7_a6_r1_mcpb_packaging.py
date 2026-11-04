@@ -10,13 +10,13 @@ from packaging_mcpb.record import canonical_record
 
 
 @pytest.mark.parametrize('field,expected',[
-    ('manifest_version','0.3'),('version','1.5.0'),('name','tw-market-unified-mcp')])
+    ('manifest_version','0.3'),('version','1.5.1'),('name','tw-market-unified-mcp')])
 def test_manifest_identity(field,expected):
-    assert b.manifest('1.5.0')[field]==expected
+    assert b.manifest('1.5.1')[field]==expected
 
 
 def test_windows_python_stdio_and_exact_six():
-    m=b.manifest('1.5.0')
+    m=b.manifest('1.5.1')
     assert m['compatibility']=={'platforms':['win32'],'runtimes':{'python':'>=3.13,<3.14'}}
     assert m['server']['type']=='python'
     assert m['server']['mcp_config']['command']=='python'
@@ -26,7 +26,7 @@ def test_windows_python_stdio_and_exact_six():
 
 @pytest.mark.parametrize('kind',['extra','stale','duplicate','version','platform'])
 def test_manifest_rejects_disagreement(kind):
-    m=copy.deepcopy(b.manifest('1.5.0'))
+    m=copy.deepcopy(b.manifest('1.5.1'))
     if kind=='extra': m['tools'].append({'name':'seventh'})
     if kind=='stale': m['tools'][0]['name']='historical'
     if kind=='duplicate': m['tools'].append(m['tools'][0])
@@ -36,7 +36,7 @@ def test_manifest_rejects_disagreement(kind):
 
 
 def test_archive_and_sidecar_reproducibility(tmp_path):
-    payload={'z.txt':b'z','manifest.json':b.canonical(b.manifest('1.5.0')),'app/x.py':b'x'}
+    payload={'z.txt':b'z','manifest.json':b.canonical(b.manifest('1.5.1')),'app/x.py':b'x'}
     a,bp=tmp_path/'a.mcpb',tmp_path/'b.mcpb'
     b.write_archive(a,payload); b.write_archive(bp,dict(reversed(list(payload.items()))))
     assert a.read_bytes()==bp.read_bytes()
@@ -59,7 +59,7 @@ def test_first_party_hygiene(data):
 
 
 def test_missing_wheel_fails_closed(tmp_path,monkeypatch):
-    monkeypatch.setattr(b,'git',lambda *args: b'' if args[0]=='diff' else b'1.5.0\n')
+    monkeypatch.setattr(b,'git',lambda *args: b'' if args[0]=='diff' else b'1.5.1\n')
     with pytest.raises(ValueError,match='MCPB_WHEELHOUSE_INCOMPLETE'):
         b.build(tmp_path/'external',tmp_path/'missing')
 
@@ -72,7 +72,7 @@ def test_current_registry_metadata_stays_published_v1():
 
 def test_packaging_is_test_authority_until_r2():
     p=json.loads((b.ROOT/'packaging_mcpb/resource-policy.json').read_bytes())
-    assert p['artifact_purpose']=='TEST_ONLY_UNTIL_R2_EXACT_SOURCE_RECERTIFICATION'
+    assert p['artifact_purpose']=='EXACT_SOURCE_FINAL_CANDIDATE_NOT_PUBLISHED'
     assert p['dependency_authority']=='packaging_native/wheelhouse-lock.json'
     assert p['dependency_root']=='server/lib'
 

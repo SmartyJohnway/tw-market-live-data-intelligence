@@ -20,7 +20,7 @@ from packaging_mcpb.record import normalize_installed
 
 TOOLS = {'market_describe_capabilities', 'market_validate_request', 'market_preview_request',
          'market_read_result', 'market_export_ai_handoff', 'market_fetch_evidence'}
-FILENAME = 'tw-market-unified-mcp-v1.5.0-win-x64.mcpb'
+FILENAME = 'tw-market-unified-mcp-v1.5.1-win-x64.mcpb'
 
 
 def canonical(value):
@@ -59,7 +59,7 @@ def validate_manifest(value):
     names = [t['name'] for t in value['tools']]
     if set(names) != canonical_tools() or len(names) != 6:
         raise ValueError('manifest exact-six disagreement')
-    expected = ('0.3', '1.5.0', ['win32'], '>=3.13,<3.14')
+    expected = ('0.3', '1.5.1', ['win32'], '>=3.13,<3.14')
     observed = (value['manifest_version'], value['version'], value['compatibility']['platforms'],
                 value['compatibility']['runtimes']['python'])
     if observed != expected:
@@ -89,8 +89,8 @@ def build(output, wheelhouse):
     if git('diff', 'HEAD', '--').strip():
         raise ValueError('clean tracked source required')
     version = git('show', 'HEAD:VERSION').decode().strip()
-    if version != '1.5.0':
-        raise ValueError('VERSION must be 1.5.0')
+    if version != '1.5.1':
+        raise ValueError('VERSION must be 1.5.1')
     try:
         deps = inspect_wheels(wheelhouse)
     except (ValueError, OSError) as exc:
@@ -131,7 +131,7 @@ def build(output, wheelhouse):
     sha = digest(archive.read_bytes())
     sidecar = output/(FILENAME+'.sha256')
     sidecar.write_bytes((sha+'  '+FILENAME+'\n').encode())
-    result = {'purpose':'TEST_ONLY_NOT_FINAL_PUBLICATION_HASH', 'source_commit':git('rev-parse','HEAD').decode().strip(),
+    result = {'purpose':'EXACT_SOURCE_RELEASE_CANDIDATE_NOT_PUBLISHED', 'source_commit':git('rev-parse','HEAD').decode().strip(),
               'source_tree':git('rev-parse','HEAD^{tree}').decode().strip(), 'version':version,
               'wheelhouse_lock_sha256':digest((ROOT/'packaging_native/wheelhouse-lock.json').read_bytes()),
               'requirements_lock_sha256':digest((ROOT/'requirements-lock.txt').read_bytes()),
