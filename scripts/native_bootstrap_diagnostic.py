@@ -34,6 +34,41 @@ def _step(stderr: str) -> str:
         return "PIP_OTHER"
     return "UNDETERMINED"
 
+SIGNALS = {
+    "VENV": r"\bvenv\b", "ENSUREPIP": r"ensurepip",
+    "PIP": r"\bpip\b", "INSTALL": r"\binstall\b",
+    "CHECK": r"\bcheck\b", "WHEEL": r"\bwheel(?:s|house)?\b",
+    "HASH": r"\bhash(?:es)?\b", "REQUIREMENT": r"requirement",
+    "DISTRIBUTION": r"distribution", "METADATA": r"metadata",
+    "DEPENDENCY": r"dependenc", "CONFLICT": r"conflict",
+    "PERMISSION": r"permission|access.denied|winerror 5",
+    "PATH": r"winerror 206|path.too.long|filename too long",
+    "MISSING": r"not found|no such file|missing",
+    "SSL": r"\bssl\b|certificate", "NETWORK": r"network|connection",
+    "GUARD": r"acceptance guard", "PYTHON": r"python",
+    "PROCESS": r"calledprocesserror|returned non.zero|subprocess",
+    "TRACEBACK": r"traceback", "ERROR": r"\berror\b|failed",
+}
+def signals(text: str) -> list[str]:
+    return sorted(k for k, pattern in SIGNALS.items()
+                  if re.search(pattern, text[-131072:], re.IGNORECASE))
+
+def runtime_probes(root: Path) -> dict[str, bool]:
+    try:
+        packages = root / "Location A With Spaces 非ASCII"
+        dist = next((p for p in packages.iterdir() if p.is_dir()), None)
+        if dist is None:
+            return {"bundle_present": False}
+        runtime = dist / "runtime"
+        venv = runtime / "venv"
+        return {"bundle_present": True, "runtime_present": runtime.is_dir(),
+                "venv_present": venv.is_dir(),
+                "venv_python_present": (venv / "Scripts" / "python.exe").is_file(),
+                "site_packages_present": (venv / "Lib" / "site-packages").is_dir(),
+                "runtime_marker_present": (runtime / "runtime-marker.json").is_file()}
+    except OSError:
+        return {"probe_error": True}
+
 def diagnose(root: Path) -> dict:
     result = {"status": "DIAGNOSTIC_UNAVAILABLE", "last_stage": "NONE",
               "last_exit": -1, "bootstrap_substep": "UNDETERMINED",
@@ -60,7 +95,13 @@ def diagnose(root: Path) -> dict:
         if not isinstance(stderr, str):
             return result
         stderr = stderr[-131072:]
+        stdout = record.get("stdout", "")
+        if not isinstance(stdout, str):
+            stdout = ""
         result["stderr_present"] = bool(stderr)
+        result["stderr_signals"] = signals(stderr)
+        result["stdout_signals"] = signals(stdout)
+        result["runtime_probes"] = runtime_probes(root)
         result["bootstrap_substep"] = _step(stderr)
         for name, expression in PATTERNS:
             if re.search(expression, stderr, re.IGNORECASE | re.DOTALL):
