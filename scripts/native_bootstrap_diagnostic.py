@@ -205,7 +205,7 @@ def diagnose(root: Path) -> dict:
             "TypeError", "AssertionError", "ImportError", "ModuleNotFoundError")
         result["observed_exception_types"] = sorted(
             name for name in allowed_exceptions
-            if re.search(r"\\b" + name + r"\\b", stderr))
+            if re.search(r"(?m)^\s*" + re.escape(name) + r":", stderr))
         result["pip_diagnostic_flags"] = {
             "error_prefix_seen": bool(re.search(r"(?m)^ERROR:", stderr)),
             "exception_prefix_seen": bool(re.search(r"(?m)^Exception:", stderr)),
