@@ -185,3 +185,45 @@ def test_release_notes_and_future_authorization_boundaries():
                  'v1.5.0 remains the current GitHub Stable',
                  'Any final GitHub tag', 'This document does not claim']:
         assert text in notes
+
+
+
+def test_native_l7_hygiene_exact_readme_env_var_is_narrowly_accepted(tmp_path):
+    from scripts.validate_l7_release_artifact_hygiene import validate_artifact
+    import zipfile
+    # Only an exact byte copy of the committed package README is permitted.
+    name='TW-Market-1.5.1-windows-x64/README-PACKAGE.md'
+    data=(s.ROOT/'packaging_native/README-PACKAGE.md').read_bytes()
+    assert b'%LOCALAPPDATA%' in data
+    archive=tmp_path/'TW-Market-1.5.1-windows-x64.zip'
+    with zipfile.ZipFile(archive,'w') as z:
+        z.writestr(name,data)
+    report=validate_artifact(archive)
+    assert report['status']=='PASS'
+    assert any(row['rule']=='DOCUMENTED_OPERATOR_STATE_ENV_PLACEHOLDER' and not row['blocking']
+               for row in report['observations'])
+
+
+def test_native_l7_hygiene_changed_readme_does_not_get_env_exception(tmp_path):
+    from scripts.validate_l7_release_artifact_hygiene import validate_artifact
+    import zipfile
+    name='TW-Market-1.5.1-windows-x64/README-PACKAGE.md'
+    raw=(s.ROOT/'packaging_native/README-PACKAGE.md').read_bytes()+b'\nOperator private data C:\\Users\\example\\secrets\n'
+    archive=tmp_path/'TW-Market-1.5.1-windows-x64.zip'
+    with zipfile.ZipFile(archive,'w') as z:
+        z.writestr(name,raw)
+    result=validate_artifact(archive)
+    assert result['status']=='FAIL'
+    assert any(r['rule']=='LOCAL_STATE_REFERENCE' and r['blocking'] for r in result['observations'])
+
+
+def test_native_l7_hygiene_untrusted_embedded_wheel_rejected(tmp_path):
+    from scripts.validate_l7_release_artifact_hygiene import validate_artifact
+    import zipfile
+    archive=tmp_path/'TW-Market-1.5.1-windows-x64.zip'
+    with zipfile.ZipFile(archive,'w') as z:
+        z.writestr('TW-Market-1.5.1-windows-x64/wheelhouse/forged-1.0-py3-none-any.whl',
+                   b'not an accepted, locked wheel')
+    result=validate_artifact(archive)
+    assert result['status']=='FAIL'
+    assert any(r['rule']=='NATIVE_WHEEL_UNPROVEN' and r['blocking'] for r in result['observations'])
