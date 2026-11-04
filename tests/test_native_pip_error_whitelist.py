@@ -17,6 +17,7 @@ from scripts.native_pip_error_whitelist import classify, classify_stderr_context
     ("ERROR: ResolutionImpossible due to conflicting dependencies SECRET", "RESOLUTION"),
     ("ERROR: Connection timed out: SECRET", "NETWORK"),
     ("ERROR: An exception within pip._internal: SECRET", "PIP_INTERNAL"),
+    ("ERROR: Exception:", "PIP_EXCEPTION_WRAPPER"),
 ])
 def test_closed_categories(message, expected):
     output = classify(message)

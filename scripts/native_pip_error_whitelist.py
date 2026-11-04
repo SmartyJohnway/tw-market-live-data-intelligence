@@ -16,6 +16,7 @@ RULES = (
     ("RESOLUTION", r"resolutionimpossible|conflicting dependencies|requires a different python"),
     ("NETWORK", r"network is unreachable|certificate verify failed|connection (?:refused|timed out)"),
     ("PIP_INTERNAL", r"pip\._internal|pip\._vendor|exception within pip|pip encountered an error"),
+    ("PIP_EXCEPTION_WRAPPER", r"^exception:?\s*$"),
 )
 MAX_LINES = 32
 def classify(stderr: str) -> dict:

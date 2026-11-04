@@ -63,7 +63,7 @@ if os.environ.get('TW_MARKET_ACCEPTANCE_GUARD') == '1':
         def __init__(self,args,*a,**kw):
             if isinstance(args,(list,tuple)) and str(args[0]).lower().endswith(('python.exe','pythonw.exe')):
                 tail=list(args[1:]);flags=[]
-                while tail and tail[0] in ('-I','-B','-E','-s','-S','-u'):
+                while tail and tail[0] in ('-I','-B','-E','-s','-S','-u','-Xutf8'):
                     flags.append(tail.pop(0))
                 if tail:
                     mode=tail.pop(0)

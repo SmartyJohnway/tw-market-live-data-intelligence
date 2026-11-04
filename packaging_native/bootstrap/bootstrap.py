@@ -80,7 +80,8 @@ def bootstrap(bundle):
     if not existing:
         runtime.mkdir(exist_ok=True)
         _checked_child('VENV_CREATE',[sys.executable,'-I','-B','-m','venv',str(venv_dir)],env)
-        _checked_child('PIP_INSTALL',[str(py),'-I','-B','-m','pip','--isolated','install','--no-cache-dir',
+        # -I ignores PYTHONIOENCODING; force UTF-8 for non-ASCII bundle paths.
+        _checked_child('PIP_INSTALL',[str(py),'-I','-B','-Xutf8','-m','pip','--isolated','install','--no-cache-dir',
                         '--disable-pip-version-check','--no-compile','--no-index','--find-links',str(wheelhouse),
                         '--only-binary=:all:','--require-hashes','-r',str(req)],env)
     _checked_child('PIP_CHECK',[str(py),'-I','-B','-m','pip','--isolated','check','--disable-pip-version-check'],env)
