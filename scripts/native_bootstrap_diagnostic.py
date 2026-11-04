@@ -5,7 +5,9 @@ Only fixed vocabulary codes and booleans leave the runner. Raw logs remain local
 from __future__ import annotations
 import argparse
 import json
+import os
 import re
+import subprocess
 from pathlib import Path
 
 STEPS = {"bootstrap-A", "bootstrap-A-again", "bootstrap-B", "stale-runtime"}
@@ -63,6 +65,7 @@ def runtime_probes(root: Path) -> dict[str, bool]:
         venv = runtime / "venv"
         site = venv / "Lib" / "site-packages"
         seen = set()
+        versions = {}
         for entry in site.glob("*.dist-info"):
             if entry.is_dir():
                 metadata = entry / "METADATA"
@@ -71,14 +74,41 @@ def runtime_probes(root: Path) -> dict[str, bool]:
                     fields = [line[6:].strip() for line in text.splitlines()
                               if line.startswith("Name: ")]
                     if fields:
-                        seen.add(re.sub(r"[-_.]+", "-", fields[0]).lower())
-        expected = set()
+                        name = re.sub(r"[-_.]+", "-", fields[0]).lower()
+                        seen.add(name)
+                        ver = [line[9:].strip() for line in text.splitlines()
+                               if line.startswith("Version: ")]
+                        if ver:
+                            versions[name] = ver[0]
+        expected_versions = {}
         manifest = dist / "dependency-manifest.json"
         if manifest.is_file():
             data = json.loads(manifest.read_text(encoding="utf-8"))
-            expected = {re.sub(r"[-_.]+", "-", d["name"]).lower()
-                        for d in data.get("dependencies", [])}
+            expected_versions = {re.sub(r"[-_.]+", "-", d["name"]).lower(): d["version"]
+                                 for d in data.get("dependencies", [])}
+        expected = set(expected_versions)
         observed = seen - {"pip"}
+        mismatch = sum(versions.get(k) != v for k, v in expected_versions.items())
+        pip_status = "NOT_RUN"
+        pip_stdout_signals = []
+        pip_stderr_signals = []
+        py = venv / "Scripts" / "python.exe"
+        if py.is_file():
+            safe_env = {k: v for k, v in os.environ.items()
+                        if not k.upper().startswith(("PIP_", "PYTHON"))}
+            safe_env.update(PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX="1",
+                            PYTHONDONTWRITEBYTECODE="1")
+            try:
+                completed = subprocess.run(
+                    [str(py), "-I", "-B", "-m", "pip", "--isolated",
+                     "check", "--disable-pip-version-check"],
+                    capture_output=True, text=True, encoding="utf-8",
+                    errors="replace", timeout=30, env=safe_env, check=False)
+                pip_status = "PASS" if completed.returncode == 0 else "FAIL"
+                pip_stdout_signals = signals(completed.stdout)
+                pip_stderr_signals = signals(completed.stderr)
+            except (OSError, subprocess.TimeoutExpired):
+                pip_status = "EXECUTION_ERROR"
         return {"bundle_present": True, "runtime_present": runtime.is_dir(),
                 "venv_present": venv.is_dir(),
                 "venv_python_present": (venv / "Scripts" / "python.exe").is_file(),
@@ -88,6 +118,10 @@ def runtime_probes(root: Path) -> dict[str, bool]:
                 "observed_distribution_count": len(observed),
                 "missing_distribution_count": len(expected - observed),
                 "unexpected_distribution_count": len(observed - expected),
+                "version_mismatch_count": mismatch,
+                "pip_check_status": pip_status,
+                "pip_check_stdout_signals": pip_stdout_signals,
+                "pip_check_stderr_signals": pip_stderr_signals,
                 "distribution_set_matches": bool(expected) and expected == observed}
     except OSError:
         return {"probe_error": True}
