@@ -33,10 +33,17 @@ jobs:
         if ($env:SOURCE_SHA -notmatch '^[0-9a-f]{40}$') { throw 'Exact source SHA required' }
         git clone --no-checkout https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git "$base\source"
         if ($LASTEXITCODE -ne 0) { throw 'Fresh clone failed' }
+        # GHA-WIN-EOL-001: disable implicit LF->CRLF before checkout. The
+        # governed evidence and historical fixtures require exact Git bytes.
+        git -C "$base\source" config --local core.autocrlf false
+        if ($LASTEXITCODE -ne 0) { throw 'Checkout EOL policy configuration failed' }
         Set-Location "$base\source"
         git fetch origin $env:SOURCE_SHA
+        if ($LASTEXITCODE -ne 0) { throw 'Exact source fetch failed' }
         git checkout --detach $env:SOURCE_SHA
         if ($LASTEXITCODE -ne 0) { throw 'Exact source checkout failed' }
+        & "$env:pythonLocation\python.exe" -B scripts/verify_checkout_git_blob_identity.py --repo "$base\source" --source-sha $env:SOURCE_SHA
+        if ($LASTEXITCODE -ne 0) { throw 'Exact source blob-to-checkout byte verification failed' }
         $tree = git rev-parse 'HEAD^{tree}'
         & "$env:pythonLocation\python.exe" -B -m venv "$base\venv"
         if ($LASTEXITCODE -ne 0) { throw 'Fresh prerequisite venv failed' }
