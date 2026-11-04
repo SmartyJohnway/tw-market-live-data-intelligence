@@ -72,6 +72,12 @@ jobs:
           else {
             Write-Output 'NATIVE_ACCEPTANCE_STAGE_DIAGNOSTIC status=NO_FINAL_RESULT'
           }
+          # Diagnostic emits only closed-vocabulary codes, never raw logs or paths.
+          $nativeRun = Join-Path "$base\work" 'native acceptance'
+          & "$env:pythonLocation\python.exe" -B scripts/native_bootstrap_diagnostic.py --run "$nativeRun"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Output 'NATIVE_BOOTSTRAP_DIAGNOSTIC status=EXECUTION_ERROR'
+          }
           throw 'Release validation failed'
         }
   docker-validation:

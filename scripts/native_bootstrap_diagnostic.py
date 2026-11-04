@@ -1,0 +1,81 @@
+"""Bounded, path-free failure diagnostics for hosted Windows Native acceptance.
+
+Only fixed vocabulary codes and booleans leave the runner. Raw logs remain local.
+"""
+from __future__ import annotations
+import argparse
+import json
+import re
+from pathlib import Path
+
+STEPS = {"bootstrap-A", "bootstrap-A-again", "bootstrap-B", "stale-runtime"}
+PATTERNS = (
+    ("GUARD_DENIAL", r"acceptance guard:"),
+    ("NO_MATCHING_WHEEL", r"No matching distribution found|Could not find a version that satisfies"),
+    ("WHEEL_HASH_MISMATCH", r"THESE PACKAGES DO NOT MATCH THE HASHES|hashes do not match"),
+    ("ENSUREPIP_FAILURE", r"ensurepip.*(?:returned non-zero|failed|CalledProcessError)"),
+    ("ACCESS_DENIED", r"\[WinError 5\]|Access is denied|Permission denied"),
+    ("PATH_TOO_LONG", r"\[WinError 206\]|File name too long"),
+    ("PYTHON_VERSION_REJECTED", r"Windows CPython 3\.13 x64 required"),
+    ("MISSING_BOOTSTRAP_RESOURCE", r"bootstrap dependency resources missing"),
+    ("DEPENDENCY_MANIFEST_MISMATCH", r"installed distributions differ from exact dependency manifest"),
+    ("PIP_MODULE_MISSING", r"No module named pip"),
+    ("CHILD_PROCESS_FAILED", r"returned non-zero exit status|CalledProcessError"),
+)
+
+def _step(stderr: str) -> str:
+    if re.search(r"['\"]-m['\"]\s*,\s*['\"]venv['\"]", stderr):
+        return "VENV_CREATION"
+    if re.search(r"['\"]-m['\"]\s*,\s*['\"]pip['\"]", stderr):
+        if "'install'" in stderr or '"install"' in stderr:
+            return "OFFLINE_WHEEL_INSTALL"
+        if "'check'" in stderr or '"check"' in stderr:
+            return "PIP_CHECK"
+        return "PIP_OTHER"
+    return "UNDETERMINED"
+
+def diagnose(root: Path) -> dict:
+    result = {"status": "DIAGNOSTIC_UNAVAILABLE", "last_stage": "NONE",
+              "last_exit": -1, "bootstrap_substep": "UNDETERMINED",
+              "failure_class": "UNKNOWN", "stderr_present": False}
+    try:
+        final = json.loads((root / "final_result.json").read_text(encoding="utf-8"))
+        sequence = final.get("sequence", [])
+        if not isinstance(sequence, list) or not sequence:
+            return result
+        if final.get("status") == "PASS":
+            result["status"] = "PASS"
+            result["last_exit"] = 0
+            return result
+        last = sequence[-1]
+        label = last.get("label")
+        result["status"] = "AVAILABLE"
+        result["last_stage"] = label if label in STEPS else "OTHER_STAGE"
+        code = last.get("exit_code")
+        result["last_exit"] = code if type(code) is int and -1 <= code <= 255 else -1
+        if label not in STEPS:
+            return result
+        record = json.loads((root / "logs" / (label + ".json")).read_text(encoding="utf-8"))
+        stderr = record.get("stderr", "")
+        if not isinstance(stderr, str):
+            return result
+        stderr = stderr[-131072:]
+        result["stderr_present"] = bool(stderr)
+        result["bootstrap_substep"] = _step(stderr)
+        for name, expression in PATTERNS:
+            if re.search(expression, stderr, re.IGNORECASE | re.DOTALL):
+                result["failure_class"] = name
+                break
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return result
+    return result
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--run", required=True, type=Path)
+    args = parser.parse_args()
+    print("NATIVE_BOOTSTRAP_DIAGNOSTIC " +
+          json.dumps(diagnose(args.run), sort_keys=True, separators=(",", ":")))
+
+if __name__ == "__main__":
+    main()
