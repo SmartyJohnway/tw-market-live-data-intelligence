@@ -21,6 +21,7 @@ from .phase_i_i2_index_futures_adapters import (
 )
 
 from server.operational_diagnostics import timed_source_call
+from scripts.ssl_policy import build_ssl_context
 
 TIMEOUT_SECONDS = 30
 MAX_READ_BYTES = MAX_RESPONSE_BYTES + 1
@@ -57,7 +58,10 @@ def _read_once(url: str, timeout: int) -> tuple[int, Mapping[str, str], bytes]:
     if url != SOURCE_ENDPOINT or timeout != TIMEOUT_SECONDS:
         raise ProductionTransportError("source_failed:transport_scope")
     request = urllib.request.Request(url, method="GET", headers={"Accept": "application/json, application/octet-stream"})
-    opener = urllib.request.build_opener(_RejectRedirects())
+    opener = urllib.request.build_opener(
+        _RejectRedirects(),
+        urllib.request.HTTPSHandler(context=build_ssl_context("strict")),
+    )
     try:
         response = opener.open(request, timeout=timeout)
     except urllib.error.HTTPError as exc:

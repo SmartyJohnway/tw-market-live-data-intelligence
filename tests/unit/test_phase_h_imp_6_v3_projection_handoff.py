@@ -272,6 +272,36 @@ def test_required_or_typed_missing_phase_h_evidence_never_becomes_full_success(m
     assert missing_need not in result["targets"][0]["evidence"]
 
 
+def test_rma_d013_source_failed_typed_evidence_never_satisfies_required_coverage():
+    inputs = _inputs(include_h2=False, include_h3=False)
+    path = "evidence/phase_h/h1/TWSE_2330.json"
+    artifact = inputs.evidence_artifacts[path]
+    artifact["status"] = "source_failed"
+    artifact["items"] = []
+    artifact["coverage"].update({
+        "status": "source_failed",
+        "declared_scope_complete": False,
+        "retrieval_succeeded": False,
+        "source_contract_validated": False,
+        "exact_target_search_succeeded": False,
+        "covered_status_types": [],
+        "uncovered_status_types": DECLARED_STATUS_TYPES,
+        "failed_source_families": [artifact["source"]["source_family"]],
+    })
+    schema = json.loads((ROOT / "schemas/trading_status_context_evidence.v1.schema.json").read_text(encoding="utf-8"))
+    assert not list(Draft7Validator(schema).iter_errors(artifact))
+
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    coverage = result["targets"][0]["coverage"]
+    assert "trading_status_context" not in coverage["provided_needs"]
+    assert "trading_status_context" in coverage["missing_needs"]
+    assert any(
+        item.get("reason") == "required_evidence_missing:trading_status_context"
+        for item in result.get("partial_failures", [])
+    )
+    assert result["status"] == "failed"
+
+
 def test_phase_h_citation_lineage_mismatch_fails_closed():
     inputs = _inputs()
     inputs.evidence_artifacts["evidence/phase_h/h1/TWSE_2330.json"]["citation_ids"] = ["unbound-citation"]
@@ -987,3 +1017,22 @@ def test_h3_attempt_coverage_and_outcome_are_explicit(coverage_result, outcome, 
     attempt = next(item for item in audit["phase_h_governance"]["source_attempts"]
                    if item["source_contract_id"] == inputs.phase_h_source_attempts[path][0]["source_contract_id"])
     assert (attempt["coverage_result"], attempt["outcome"], attempt["failure_code"]) == (coverage_result, outcome, failure_code)
+
+
+def test_rma_d027_recent_performance_v1_projects_metric_and_single_handoff_section():
+    inputs = _inputs()
+    result = build_result(inputs, output_schema_version="unified_market_evidence_result.v3")
+    target = result["targets"][0]
+    metric = next(item for item in target["derived_metrics"] if item["metric_id"] == "recent_return_pct")
+    assert metric["status"] == "available"
+    assert metric["value"] == 20.0
+    assert metric["unit"] == "percent"
+    assert metric["window"] == "5td"
+    assert metric["citation_ids"]
+
+    handoff = render_result_markdown(result)
+    assert handoff.count("#### 近期表現 (Recent Performance)") == 1
+    assert "**Recent Return (%)**" in handoff
+    assert "- **狀態**: available" in handoff
+    assert "- **值**: 20.0 percent" in handoff
+    assert "required_fields_absent_in_artifact" not in handoff

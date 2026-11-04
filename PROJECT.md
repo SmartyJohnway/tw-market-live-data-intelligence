@@ -115,27 +115,93 @@ comes from the machine-readable Catalog / Routing / executor authority.
 - Stable v1.5.0 GitHub publication: PASS.
 - Phase M: **NOT_AUTHORIZED**.
 
-The current authorized workstream is **Post-v1.5 Productization & Stabilization**.
-P0 — Current-state Reconciliation is complete and was committed/pushed to `main`
-as `430d320784d5249508c37bbd6e8272732bf63ee8` after independent re-review.
+The current workstream remains **Post-v1.5 Productization & Stabilization**.
+P0 and the original P1 Windows Launcher tranche are complete. Subsequent bounded
+stabilization produced three local commits on `main` ahead of `origin/main`:
+Launcher v2 / native-entry guard (`b38fde12`), explicit verified-TLS compatibility
+retry for Security Master (`8b482be4`), and Native packaging closure for the Mode
+B2 execute-once wrapper (`b84f9fc8`). RMA then produced additional bounded,
+RMA-accepted candidate repairs across lifecycle/Launcher, deterministic verified TLS,
+Result V3 truthfulness, Workbench request/preview/authorization UX, explicit
+network-confirmation UX, and Mode C handoff projection. Those repairs are accepted
+RMA candidate content selected for the Owner-authorized local clean-source gate; GitHub publication remains separately governed.
 
-The active productization tranche is **P1 — Windows Launcher / First-run UX**.
-P1-A0 architecture audit is complete. P1-A1 First-run / Setup UX Contract and
-P1-A2 Daily Main Launcher / Runtime Control UX Contract are both **OWNER_FROZEN**
-on 2026-10-29. The first independent review of P1-A3 returned
-`CHANGES_REQUIRED`; the bounded P1-A3-R1 correction then received an independent
-re-review that was also `CHANGES_REQUIRED`. The bounded **P1-A3-R2** correction
-closed the two remaining defects; deterministic P1-A3/lifecycle/package
-revalidation is `97 passed`. Exact-current Windows Sandbox **R5** headless
-lifecycle + fresh interactive GUI acceptance passed against launcher SHA-256
-`96f9cbaeaf61d7292aa5ff0e783e32e8d17689056ce8dfdbfa60eedf1e299aa5`, and a
-separate interactive failure-path probe verified Setup failure Technical Details
-remains `SETUP_BLOCKED / EXISTING_STATE_REQUIRES_EXPLICIT_TRANSFER`. A fresh
-Codex independent re-review of P1-A3-R2/R5 returned **PASS_WITH_NOTES** with zero
-blocking findings. Owner then explicitly authorized the controlled commit/push.
-P1-A3-R2 implementation, tests, R1–R5 evidence and post-v1.5 governance were
-committed and pushed to `main` as `3059531b7cb02bede681938228a0f258b8b5b9d9`.
-P2–P5 remain later bounded tranches and Phase M remains separately unauthorized.
+The **RMA — v1.5.1 Real-Machine Acceptance & Patch Release Preflight** tranche is
+now complete. It validated the actual Windows Native Launcher -> installation/runtime
+-> Security Master -> Local Service -> six-tool MCP -> explicit
+Request/Preview/Authorization -> Mode B2 -> official evidence -> Result/Audit /
+AI Handoff chain. `VERSION` is selected as `1.5.1` for an unpublished local
+candidate. Frozen v1.5.0 tag/assets remain unchanged; exact Native final-build
+and release gate are separate from the already closed RMA program.
+
+RMA is governed by the post-v1.5 RMA Test Contract, Defect Register, per-group
+closure records and Release Preflight/Continuity record. `RMA-0` through `RMA-11`
+are all **PASS/CLOSED**. The final defect register contains zero open blockers and
+zero open majors; `RMA-D022` and `RMA-D025` remain explicitly preserved as
+`DEFERRED_NON_BLOCKING` observations rather than being erased.
+
+RMA-4 proved `/api/health`, Local Service contract v2, MCP startup-check, stdio
+initialize, exact six-tool `tools/list`, all six public tool paths, Request
+V1/V2/V3 validation/preview, and Capability Catalog access on the current
+candidate. The existing Stable `tw-market-local` deployment separately proved the
+real Native -> Local Service -> MCP -> Secure MCP Tunnel -> ChatGPT deployment
+path without repointing or modifying Stable. Harness-only `RMA-D008` is
+`CLOSED_PASS`.
+
+RMA-5 proved public identity resolution across code, `MARKET:CODE`, ISIN, Chinese
+name, TPEx common-share and non-common-share cases, plus fail-closed treatment of
+unsupported and nonexistent targets. The current Security Master contains no
+natural exact-token ambiguity across the exhaustively scanned identity tokens.
+Harness-only `RMA-D009` and `RMA-D010` are `CLOSED_PASS`.
+
+RMA-6 proved the governed capability execution chain through offline inventory,
+Validate/Preview, explicit authorization, Execute Once, Result/Audit materialization,
+and bounded governed rejection. `RMA-D013` exposed a real Result V3 false-success
+projection defect for failed typed evidence; its bounded repair passed affected and
+cross-version regression plus a fresh targeted network-enabled Sandbox retest and
+is now `CLOSED_PASS`.
+
+RMA-7 — Official-source / TLS matrix is now **PASS/CLOSED**. It reproduced and
+localized `RMA-D001`, proved cold Windows/Python trust-store timing dependence,
+qualified the bundled certifi trust set against all 23 production source cases,
+and completed an authorized bounded repair. Fresh packaged cold-Sandbox retest
+returned 23/23 production routes usable with certificate/hostname verification,
+zero retry, correct strict/compatibility semantics, and 23/23 product parser/schema
+PASS. `RMA-D001` is `CLOSED_PASS`.
+
+RMA-8 — Result / Audit / evidence integrity is now **PASS/CLOSED**. Fresh final-candidate
+success cases independently verified Control Package/authorization binding, receipt,
+bundle, durable evidence bytes/hashes, citation mapping, Result V3, Audit Package,
+replay lineage and persisted/API/Handoff consistency without using chat output as
+proof. Harness-only `RMA-D016` and `RMA-D017` are `CLOSED_PASS`.
+
+RMA-9 — Failure and recovery matrix is now **PASS/CLOSED**. Fresh network-disabled
+Sandboxes proved truthful/fail-closed handling and bounded recovery for stopped
+service, unavailable MCP, port conflict, stale ownership, missing runtime,
+Security Master unavailable/corrupt state, invalid Request V3, unsupported
+capability, Control Package tamper and official-source unavailability. Harness-only
+`RMA-D018` and `RMA-D019` are `CLOSED_PASS`; no new RMA-9 product defect was found.
+
+RMA-10 — Native package / portability is now **PASS/CLOSED**. A fresh
+network-disabled Windows Sandbox validated the same exact Native candidate from two
+independently extracted locations, with identical package-manifest identity and
+49/49 locked-wheel closure. Launcher, CLI, Security Master CLI, Local Service,
+MCP startup and packaged Mode B2 entry all passed without developer-checkout or
+Stable-installation paths present in the guest. Package tamper was rejected and
+exact-byte restoration recovered normal operation. The cleanup-only RMA-D018
+class was reused and remains `CLOSED_PASS`; no RMA-10 product defect was found.
+
+RMA-11 — Operator experience acceptance is now **PASS/CLOSED**. Owner-driven E2E
+validated first-time setup, Security Master, Start/Workbench, request composition,
+validation/preview recovery, explicit authorization, network confirmation,
+Execute Once, Result/Audit export and AI-ready handoff. Bounded repairs closed
+`RMA-D020`, `RMA-D021`, `RMA-D023`, `RMA-D024`, `RMA-D026` and `RMA-D027`.
+`RMA-D022` and transient `RMA-D025` are retained as `DEFERRED_NON_BLOCKING`.
+
+`RMA-0` through `RMA-11` are therefore **PASS/CLOSED**. RMA itself is complete.
+Owner separately authorized v1.5.1 local clean-source promotion and Native final-build
+gate on 2026-11-04; RMA closure itself did not authorize publication. P2–P5 remain later
+bounded tranches and Phase M remains separately unauthorized.
 
 ## Current authority hierarchy
 

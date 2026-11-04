@@ -43,6 +43,19 @@ def test_three_confirmations_remain_separate_in_ui_sources():
     assert 'id="btn-execute-once"' in html
 
 
+def test_rma11_primary_path_hides_json_and_exposes_preview_recovery():
+    html = HTML.read_text(encoding="utf-8")
+    assert "Generated Request" in html
+    assert 'id="advanced-request-details"' in html
+    assert "Advanced: View or edit Unified Request JSON (optional)" in html
+    assert 'id="advanced-selection-provenance-details"' in html
+    assert "Advanced: View selection provenance" in html
+    assert '<pre id="selection-provenance-view"></pre>' in html
+    assert 'id="preview-recovery"' in html
+    assert 'id="btn-review-evidence"' in html
+    assert "Review Evidence Needs" in html
+
+
 def test_phase_g_builder_and_result_wording_are_truthful():
     builder = SCRIPT.read_text(encoding="utf-8")
     result_script = (

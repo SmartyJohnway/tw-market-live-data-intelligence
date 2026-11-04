@@ -18,8 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportActions = document.getElementById('export-actions');
     const previewBtn = document.getElementById('btn-preview');
     const previewSummary = document.getElementById('preview-summary');
+    const previewRecovery = document.getElementById('preview-recovery');
+    const previewRecoveryGuidance = document.getElementById('preview-recovery-guidance');
+    const previewRecoveryItems = document.getElementById('preview-recovery-items');
+    const reviewEvidenceBtn = document.getElementById('btn-review-evidence');
     const authorizeBtn = document.getElementById('btn-authorize');
     const networkConfirmation = document.getElementById('confirm-network-execution');
+    const operatorReference = document.getElementById('operator-confirmation-reference');
     const executeOnceBtn = document.getElementById('btn-execute-once');
     const modeB2Summary = document.getElementById('mode-b2-summary');
     const buildResultBtn = document.getElementById('btn-build-result');
@@ -65,6 +70,21 @@ document.addEventListener('DOMContentLoaded', () => {
         modeCSummary.textContent = 'A finalized execution is required. External network execution = NO.';
     };
 
+    const defaultOperatorReference = (authorization) => `workbench:${authorization?.authorization_id || 'authorization'}`.slice(0, 128);
+
+    const updateExecutionConfirmationControls = () => {
+        if (!currentAuthorization) {
+            executeOnceBtn.disabled = true;
+            return;
+        }
+        const controls = workbenchState.executionConfirmationControls(
+            currentAuthorization.network_required === true,
+            networkConfirmation.checked === true,
+            operatorReference.value
+        );
+        executeOnceBtn.disabled = controls.executeOnceDisabled;
+    };
+
     const invalidateExecutionAuthorization = () => {
         currentAuthorization = null;
         previewBtn.disabled = true;
@@ -73,6 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
         executeOnceBtn.disabled = controls.executeOnceDisabled;
         networkConfirmation.checked = controls.networkConfirmationChecked;
         networkConfirmation.disabled = controls.networkConfirmationDisabled;
+        operatorReference.value = '';
+        operatorReference.disabled = true;
         modeB2Summary.textContent = 'Authorization required. Execution performed = NO.';
         invalidateModeCState();
     };
@@ -91,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetValidationView();
         const val = textarea.value.trim();
         if (!val) {
-            syntaxStatus.textContent = 'JSON not loaded';
+            syntaxStatus.textContent = 'Request not generated';
             syntaxStatus.className = 'syntax-empty';
             validateBtn.disabled = true;
             parsedRequest = null;
@@ -99,11 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         try {
             parsedRequest = JSON.parse(val);
-            syntaxStatus.textContent = 'JSON syntax valid';
+            syntaxStatus.textContent = 'Generated request ready';
             syntaxStatus.className = 'syntax-valid';
             validateBtn.disabled = false;
         } catch (e) {
-            syntaxStatus.textContent = `JSON syntax invalid: ${e.message}`;
+            syntaxStatus.textContent = `Request JSON invalid: ${e.message}`;
             syntaxStatus.className = 'syntax-invalid';
             validateBtn.disabled = true;
             parsedRequest = null;
@@ -113,6 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Event Listeners ---
     textarea.addEventListener('input', updateSyntaxStatus);
     document.addEventListener('workbench-builder-dirty', invalidateDerivedState);
+    reviewEvidenceBtn.addEventListener('click', () => {
+        document.getElementById('capability-builder').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    networkConfirmation.addEventListener('change', updateExecutionConfirmationControls);
+    operatorReference.addEventListener('input', updateExecutionConfirmationControls);
 
     const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1 MiB
 
@@ -225,20 +252,32 @@ document.addEventListener('DOMContentLoaded', () => {
             confirm_authorization: true, approval_scope_mode: 'whole_plan_executable_scope' };
         const response = await unifiedFetch('/api/unified/authorizations', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
         const data = await response.json();
-        if (!response.ok) { modeB2Summary.textContent = `Authorization unavailable: ${data.error || 'unknown'}`; return; }
+        if (!response.ok) {
+            modeB2Summary.textContent = workbenchState.authorizationErrorMessage(data.error);
+            return;
+        }
         currentAuthorization = data;
         const controls = workbenchState.authorizationControls(data.network_required);
         networkConfirmation.checked = controls.networkConfirmationChecked;
         networkConfirmation.disabled = controls.networkConfirmationDisabled;
+        operatorReference.disabled = false;
+        operatorReference.value = defaultOperatorReference(data);
         modeB2Summary.textContent = `AUTHORIZED — execution performed = NO; network executed = NO; single use = YES; expires ${data.expires_at}`;
         executeOnceBtn.disabled = controls.executeOnceDisabled;
+        updateExecutionConfirmationControls();
     });
 
     executeOnceBtn.addEventListener('click', async () => {
         if (!currentAuthorization) return;
+        const reference = operatorReference.value.trim();
+        const controls = workbenchState.executionConfirmationControls(
+            currentAuthorization.network_required === true,
+            networkConfirmation.checked === true,
+            reference
+        );
+        if (controls.executeOnceDisabled) return;
         invalidateModeCState();
-        const reference = window.prompt('Operator confirmation reference');
-        if (!reference) return;
+        executeOnceBtn.disabled = true;
         const response = await unifiedFetch('/api/unified/executions', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({
             control_package_id: currentAuthorization.control_package_id, confirm_execution:true,
             operator_confirmation_reference:reference, confirm_network_execution:networkConfirmation.checked === true
@@ -317,6 +356,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetPreviewView() {
         previewSummary.textContent = 'Validate the current request before building a Preview.';
+        previewRecovery.hidden = true;
+        previewRecoveryGuidance.textContent = '';
+        previewRecoveryItems.innerHTML = '';
         document.getElementById('preview-planning').innerHTML = '';
         document.getElementById('preview-coverage').innerHTML = '';
         document.getElementById('preview-gaps').innerHTML = '';
@@ -370,11 +412,42 @@ document.addEventListener('DOMContentLoaded', () => {
             gaps.appendChild(item);
         });
         document.getElementById('preview-plan-view').textContent = JSON.stringify(result.orchestration_plan, null, 2);
-        const controls = workbenchState.previewControls(preview.status);
+        const recovery = workbenchState.previewRecovery(
+            preview,
+            result.orchestration_plan || {},
+            result.authorization_readiness || {}
+        );
+        if (recovery.blocked) {
+            previewSummary.textContent = result.authorization_readiness?.status === 'blocked'
+                ? 'This preview is valid for planning but cannot be authorized yet.'
+                : `This preview cannot be authorized yet. Technical status: ${preview.status}.`;
+        }
+        previewRecovery.hidden = !recovery.blocked;
+        previewRecoveryGuidance.textContent = recovery.guidance;
+        previewRecoveryItems.innerHTML = '';
+        recovery.items.forEach((row) => {
+            const item = document.createElement('li');
+            item.textContent = `${row.capabilityId}: ${row.explanation}`;
+            previewRecoveryItems.appendChild(item);
+        });
+        if (recovery.blocked && recovery.items.length === 0) {
+            const item = document.createElement('li');
+            item.textContent = 'This preview is not authorizable. Review Evidence Needs and remove or make optional needs that are not executable for this target.';
+            previewRecoveryItems.appendChild(item);
+        }
+        const controls = workbenchState.previewControls(
+            preview.status,
+            result.authorization_readiness || {}
+        );
         authorizeBtn.disabled = controls.authorizeDisabled;
         executeOnceBtn.disabled = controls.executeOnceDisabled;
         networkConfirmation.disabled = controls.networkConfirmationDisabled;
         networkConfirmation.checked = controls.networkConfirmationChecked;
+        if (recovery.blocked && result.authorization_readiness?.status === 'blocked') {
+            modeB2Summary.textContent = recovery.guidance;
+        } else {
+            modeB2Summary.textContent = 'Authorization required. Execution performed = NO.';
+        }
     };
 
     const renderPreviewError = (data) => {

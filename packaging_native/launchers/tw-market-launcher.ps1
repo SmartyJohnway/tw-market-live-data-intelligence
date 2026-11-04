@@ -452,6 +452,11 @@ function Invoke-DoctorAction {
     $run = Invoke-Lifecycle -Command 'doctor'
     $script:LastTechnicalDetails = $run.raw
     if ($null -eq $run.payload) { return New-LauncherResult -Status 'DOCTOR_FAILED' -ReasonCode 'DOCTOR_COMMAND_FAILED' }
+    if ($run.exit_code -ne 0 -or [string]$run.payload.status -eq 'FAIL') {
+        $reason = 'DOCTOR_COMMAND_FAILED'
+        if ($run.payload.PSObject.Properties.Name -contains 'reason_code' -and $run.payload.reason_code) { $reason = [string]$run.payload.reason_code }
+        return New-LauncherResult -Status 'DOCTOR_FAILED' -ReasonCode $reason -Data $run.payload
+    }
     return New-LauncherResult -Status 'DOCTOR_COMPLETE' -Data $run.payload
 }
 function Invoke-WorkbenchUriAction {

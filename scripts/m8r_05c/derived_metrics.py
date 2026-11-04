@@ -51,7 +51,41 @@ def project_recent_performance_metrics(
             )
         ]
 
-    # Try to extract period_return_pct if already pre-computed by executor.
+    # Current Phase H contract: consume governed baseline returns directly.
+    if recent_performance_artifact.get("schema_version") == "recent_performance_evidence.v1":
+        baselines = recent_performance_artifact.get("baselines") or []
+        candidates = [item for item in baselines if isinstance(item, dict)]
+        if lookback_trading_days is not None:
+            candidates = [
+                item for item in candidates
+                if item.get("lookback_trading_days") == lookback_trading_days
+            ]
+        for baseline in candidates:
+            if baseline.get("status") != "available" or baseline.get("recent_return_pct") is None:
+                continue
+            try:
+                value = float(baseline["recent_return_pct"])
+            except (TypeError, ValueError):
+                continue
+            baseline_days = baseline.get("lookback_trading_days")
+            return [
+                DerivedMetricProjection(
+                    metric_id="recent_return_pct",
+                    metric_name="Recent Return (%)",
+                    status="available",
+                    value=round(value, 4),
+                    unit="percent",
+                    method="direct_from_evidence",
+                    formula_or_definition="recent_performance_evidence.v1 baselines[].recent_return_pct",
+                    window=f"{baseline_days}td" if baseline_days is not None else "unknown_window",
+                    input_evidence_references=[canonical_target_id + "::recent_performance"],
+                    calculation_version=_CALCULATION_VERSION,
+                    calculated_at=calculated_at,
+                    citation_ids=citation_ids,
+                )
+            ]
+
+    # Legacy compatibility: extract period_return_pct if already pre-computed by executor.
     items = recent_performance_artifact.get("items", [recent_performance_artifact])
     if not isinstance(items, list):
         items = [recent_performance_artifact]

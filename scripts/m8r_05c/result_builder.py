@@ -237,6 +237,28 @@ def _research_status(evidence, need: str) -> str | None:
     return value.get("status") if isinstance(value, dict) else None
 
 
+_TYPED_V3_PROVIDED_STATUSES = {
+    "trading_status_context": frozenset({"available", "no_evidence_in_covered_scope", "partial", "not_applicable"}),
+    "corporate_action_context": frozenset({"available", "no_evidence_in_covered_scope", "partial", "not_applicable"}),
+    "recent_performance": frozenset({"complete", "partial", "not_applicable"}),
+    "market_state_context": frozenset({"complete", "partial"}),
+    "index_futures_context": frozenset({"complete", "partial"}),
+    "cash_institutional_flow_context": frozenset({"complete"}),
+}
+
+
+def _typed_v3_evidence_is_provided(need: str, evidence: object) -> bool:
+    """Return whether typed V3 evidence truthfully satisfies the requested need.
+
+    Artifact existence alone is insufficient. Failure, unavailable, unsupported,
+    binding-failed, insufficient, and unknown states remain missing/fail-closed.
+    """
+    if not isinstance(evidence, dict):
+        return False
+    status_field = "coverage_status" if need == "recent_performance" else "status"
+    return evidence.get(status_field) in _TYPED_V3_PROVIDED_STATUSES.get(need, frozenset())
+
+
 def _not_applicable_research(need: str, observed_at: str, market: str | None) -> dict:
     if need == "material_disclosures":
         return {
@@ -471,7 +493,9 @@ def build_result(inputs: ProjectionInputs, *, projector_version: str = CURRENT_P
                     "cash_institutional_flow_context": "cash_institutional_flow_context",
                 }.get(need)
                 if typed_field is not None:
-                    is_provided = getattr(evidence_proj, typed_field) is not None
+                    is_provided = _typed_v3_evidence_is_provided(
+                        need, getattr(evidence_proj, typed_field)
+                    )
                 elif (
                     binding is not None
                     and binding.status == "succeeded"

@@ -39,15 +39,15 @@ def test_v1_5_current_state_is_stable_published(tmp_path):
     )
 
 
-def test_front_door_validates_published_v1_5_state(tmp_path, monkeypatch):
+def test_front_door_validates_current_selected_or_stable_state(tmp_path, monkeypatch):
     from scripts import validate_v1_front_door as front
     assert front.required_release_patterns()
     assert front.validate() == []
     readme = tmp_path / "README.md"
     text = front.README.read_text(encoding="utf-8")
-    readme.write_text(text + "\nSelected `v1.5.0` is unpublished.\n", encoding="utf-8")
+    readme.write_text(text + "\nTW-Market `v1.5.1` is the current stable GitHub release.\n", encoding="utf-8")
     monkeypatch.setattr(front, "README", readme)
-    assert "front_door:readme_stale_v1_5_unpublished_status" in front.validate()
+    assert "front_door:readme_selected_1_5_1_falsely_claimed_published" in front.validate()
 
 
 def published_module(name):

@@ -31,7 +31,8 @@ flowchart LR
 
 ## Current stable release
 
-**TW-Market `v1.5.0` is the current stable GitHub release.** ProductVersion = `1.5.0`.
+**TW-Market `v1.5.0` is the current stable GitHub release.**
+Selected `v1.5.1` is unpublished. ProductVersion = `1.5.1`.
 It was published on 2026-10-28 from frozen source commit
 `acaf726a5b59baee4c5a30521ea5a5d5ec0cec76` and tree
 `d44f66dc154c21326ac8b105d2f15fd793f6071b`.
@@ -61,6 +62,10 @@ For a **60-second orientation and first-run sequence**, use the
 [Operator Quick Start](docs/operator/QUICK_START.md). The Native ZIP is the
 recommended operator path; source checkout is not the default installation path
 for every user.
+
+For developer-only source checkout, `python scripts/run_unified_workbench.py`
+and `python scripts/run_unified_market_evidence_mcp.py` remain explicit advanced
+entry points; neither replaces the built Native bundle-root Launcher.
 
 ## What TW-Market is
 

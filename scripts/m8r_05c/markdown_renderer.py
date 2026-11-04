@@ -454,6 +454,8 @@ def render_result_markdown(result: dict, *, projector_version: str = CURRENT_PRO
                 "source_currentness",
                 "evidence_quality",
             ]:
+                if result.get("schema_version") == "unified_market_evidence_result.v3" and need_key == "recent_performance":
+                    continue
                 ev = evidence.get(need_key)
                 if ev is None:
                     continue

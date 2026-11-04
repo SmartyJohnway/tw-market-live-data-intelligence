@@ -28,7 +28,10 @@ def test_strict_does_not_create_unverified_context(monkeypatch):
         nonlocal called
         called = True
     monkeypatch.setattr(ssl, "_create_unverified_context", fake_unverified)
-    assert sp.build_ssl_context("strict") is None
+    context = sp.build_ssl_context("strict")
+    assert isinstance(context, ssl.SSLContext)
+    assert context.verify_mode == ssl.CERT_REQUIRED
+    assert context.check_hostname is True
     assert called is False
 
 
@@ -41,7 +44,9 @@ def test_compatibility_is_explicit_and_reported():
     if hasattr(ssl, "VERIFY_X509_STRICT"):
         assert ctx.verify_flags & ssl.VERIFY_X509_STRICT == 0
     assert diag["compatibility_mode_used"] is True
-    assert diag["tls_verification_mode"] == "verified_tls_compatibility_context"
+    assert diag["tls_verification_mode"] == "verified_tls_certifi_compatibility_context"
+    assert diag["trust_material"] == "bundled_certifi"
+    assert diag["deterministic_trust_material"] is True
     assert diag["silent_tls_fallback"] is False
 
 

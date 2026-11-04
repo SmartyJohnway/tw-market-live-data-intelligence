@@ -156,6 +156,20 @@ textarea:focus-visible {
     margin-bottom: 20px;
 }
 
+#advanced-request-details {
+    margin-top: 14px;
+}
+#advanced-request-details > summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+.recovery-box {
+    border-left: 4px solid var(--warning);
+}
+.recovery-box h3 {
+    margin-top: 0;
+}
+
 .summary-grid {
     display: grid;
     grid-template-columns: auto 1fr;

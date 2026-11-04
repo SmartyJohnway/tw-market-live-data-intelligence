@@ -72,7 +72,10 @@
                             <button id="btn-compose-request">Compose Frozen Request</button>
                         </div>
                         <div id="composition-summary" class="summary-box">Select entries or add temporary targets.</div>
-                        <pre id="selection-provenance-view"></pre>
+                        <details id="advanced-selection-provenance-details">
+                            <summary>Advanced: View selection provenance</summary>
+                            <pre id="selection-provenance-view"></pre>
+                        </details>
                     </div>
                 </div>
                 <div id="mutation-preview-panel" class="mutation-preview" hidden>
@@ -85,18 +88,22 @@
             </section>
 
             <section class="panel request-panel">
-                <h2>Advanced Unified Request JSON</h2>
-                <p class="muted">The builder above is the primary path. Editing this JSON invalidates prior validation, preview and authorization.</p>
-                <div class="actions">
-                    <input type="file" id="file-input" accept=".json,application/json" aria-label="Import JSON File">
-                    <button id="btn-format">Format JSON</button>
-                    <button id="btn-clear" class="danger">Clear</button>
-                </div>
-                <textarea id="request-textarea" placeholder="Paste Unified Request JSON here..." aria-label="JSON Request Input"></textarea>
+                <h2>Generated Request</h2>
+                <p class="muted">The Request Builder above is the normal path. After Compose Frozen Request, you can validate without reading or editing JSON.</p>
                 <div class="status-bar">
-                    <span id="syntax-status">JSON not loaded</span>
+                    <span id="syntax-status">Request not generated</span>
                     <button id="btn-validate" disabled>Validate</button>
                 </div>
+                <details id="advanced-request-details">
+                    <summary>Advanced: View or edit Unified Request JSON (optional)</summary>
+                    <p class="muted">For import, debugging, or expert override only. Editing this JSON invalidates prior validation, preview and authorization.</p>
+                    <div class="actions">
+                        <input type="file" id="file-input" accept=".json,application/json" aria-label="Import JSON File">
+                        <button id="btn-format">Format JSON</button>
+                        <button id="btn-clear" class="danger">Clear</button>
+                    </div>
+                    <textarea id="request-textarea" placeholder="Paste Unified Request JSON here..." aria-label="JSON Request Input"></textarea>
+                </details>
             </section>
 
             <section class="panel validation-panel">
@@ -156,6 +163,12 @@
                 <div id="preview-summary" class="summary-box">
                     Validate the current request before building a Preview.
                 </div>
+                <div id="preview-recovery" class="summary-box recovery-box" hidden>
+                    <h3 id="preview-recovery-title">This preview cannot be authorized yet</h3>
+                    <p id="preview-recovery-guidance"></p>
+                    <ul id="preview-recovery-items" class="issue-list warning-list"></ul>
+                    <button id="btn-review-evidence">Review Evidence Needs</button>
+                </div>
                 <div class="preview-columns">
                     <div>
                         <h3>Requested and Planned</h3>
@@ -175,8 +188,12 @@
                 <div class="preview-placeholder">
                     <button id="btn-authorize" disabled>Authorize</button>
                     <label><input id="confirm-network-execution" type="checkbox" disabled> I explicitly confirm network execution</label>
+                    <label>Audit reference (not a password)
+                        <input id="operator-confirmation-reference" type="text" maxlength="128" disabled placeholder="Auto-filled after authorization">
+                    </label>
                     <button id="btn-execute-once" disabled>Execute Once</button>
                 </div>
+                <p class="muted">The audit reference labels this one-shot execution for traceability. You may edit it; it is not a password or secret.</p>
                 <div id="mode-b2-summary" class="summary-box">Authorization required. Execution performed = NO.</div>
             </section>
 

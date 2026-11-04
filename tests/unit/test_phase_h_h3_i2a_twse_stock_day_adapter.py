@@ -420,6 +420,14 @@ def test_invalid_timeout_and_response_limit_are_rejected_before_dispatch() -> No
     assert fake.calls == []
 
 
+def _assert_verified_strict_context(context: ssl.SSLContext | None) -> None:
+    assert isinstance(context, ssl.SSLContext)
+    assert context.verify_mode == ssl.CERT_REQUIRED
+    assert context.check_hostname is True
+    if hasattr(ssl, "VERIFY_X509_STRICT"):
+        assert context.verify_flags & ssl.VERIFY_X509_STRICT
+
+
 def test_ssl_policy_defaults_to_strict_without_compatibility_fallback(monkeypatch) -> None:
     response = FakeResponse(_html(_row("110/02/01")))
     calls = []
@@ -433,7 +441,7 @@ def test_ssl_policy_defaults_to_strict_without_compatibility_fallback(monkeypatc
 
     assert result.status == "available"
     assert len(calls) == 1
-    assert calls[0][2] is None
+    _assert_verified_strict_context(calls[0][2])
 
 
 def test_compatibility_policy_uses_repository_verified_context(monkeypatch) -> None:
@@ -495,7 +503,7 @@ def test_strict_certificate_failure_dispatches_once_without_retry(monkeypatch) -
     assert result.status == "source_failed"
     assert result.error_code == "source_failed:transport_failure"
     assert len(calls) == 1
-    assert calls[0][2] is None
+    _assert_verified_strict_context(calls[0][2])
 
 
 def test_response_without_report_heading_fails_closed() -> None:

@@ -18,6 +18,7 @@ from urllib.request import Request, urlopen
 from jsonschema import Draft7Validator, Draft202012Validator, FormatChecker
 
 from scripts.m5k_common import execute_live_observation
+from scripts.ssl_policy import build_ssl_context
 from scripts.m8_source_freshness_evaluator import build_source_freshness_assessment
 from scripts.m8r_03d_watchlist_source_integration import evaluate_evidence_currentness
 from scripts.m8r_bounded_market_context_request import load_source_registry
@@ -277,7 +278,7 @@ def _fetch_official_payload(url: str, *, timeout: int) -> bytes:
             "User-Agent": "tw-market-live-data-intelligence/1.0",
         },
     )
-    with urlopen(request, timeout=timeout) as response:
+    with urlopen(request, timeout=timeout, context=build_ssl_context("strict")) as response:
         return response.read()
 
 

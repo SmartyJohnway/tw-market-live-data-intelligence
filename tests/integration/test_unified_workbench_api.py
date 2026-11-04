@@ -227,6 +227,27 @@ def test_watchlist_composition_api_is_server_owned_and_offline(tmp_path, monkeyp
     assert result["request"]["targets"][0]["input"] == "TW0002330008"
     assert result["selection_provenance"]["watchlist"]["version"] == 2
 
+    current_capabilities = [
+        "identity", "current_observation", "official_eod_reference", "recent_performance",
+        "session_status", "source_currentness", "evidence_quality", "material_disclosures",
+        "monthly_revenue", "trading_status_context", "corporate_action_context",
+        "market_state_context", "index_futures_context", "cash_institutional_flow_context",
+    ]
+    selection_v3 = {
+        **selection,
+        "schema_version": "watchlist_evidence_selection_request.v3",
+        "data_needs": [
+            {"type": item, "priority": "required", "parameters": {"lookback_trading_days": 5} if item == "recent_performance" else {}}
+            for item in current_capabilities
+        ],
+    }
+    response_v3 = client.post(f"/api/watchlists/{watchlist['watchlist_id']}/evidence-request-preview", json=selection_v3)
+    assert response_v3.status_code == 200
+    result_v3 = response_v3.json()
+    assert result_v3["composition_status"] == "composed"
+    assert result_v3["limits"]["operation_count"] == 14
+    assert [item["type"] for item in result_v3["request"]["data_needs"]] == current_capabilities
+
 
 def test_validate_request_oversized_body(mock_validation):
     large_payload = "a" * (1 * 1024 * 1024 + 1)
@@ -282,6 +303,31 @@ def mock_preview(monkeypatch):
         }
 
     monkeypatch.setattr(unified_workbench_router, "build_mode_b1_preview", fake_preview)
+
+
+def test_preview_request_projects_authorization_readiness(monkeypatch):
+    from server import unified_workbench_router
+
+    def fake_preview(req):
+        return {
+            "validation": {"request_id": req.get("request_id")},
+            "preview": {"status": "ready_for_confirmation"},
+            "orchestration_plan": {"execution_authorized": False},
+            "authorization_readiness": {
+                "status": "blocked",
+                "blocking_reasons": [{
+                    "capability_id": "cash_institutional_flow_context",
+                    "market": "TWSE",
+                    "code": "i3_governed_source_date_authority_required",
+                }],
+            },
+            "network_executed": False,
+        }
+
+    monkeypatch.setattr(unified_workbench_router, "build_mode_b1_preview", fake_preview)
+    response = client.post("/api/unified/preview-request", json={"request": {"request_id": "rma-d024"}})
+    assert response.status_code == 200
+    assert response.json()["authorization_readiness"]["blocking_reasons"][0]["code"] == "i3_governed_source_date_authority_required"
 
 
 def test_preview_request_returns_offline_non_authorizing_envelope(mock_preview):
@@ -516,7 +562,23 @@ def test_authorization_api_uses_real_service_boundary_and_sanitizes_dependency(
     assert response.status_code == 200
     result = response.json()
     assert result["network_executed"] is False
+    assert result["network_required"] is True
     assert "governed_output_root" not in json.dumps(result)
+
+    blocked = rebuilt | {
+        "authorization_readiness": {
+            "status": "blocked",
+            "blocking_reasons": [{
+                "capability_id": "cash_institutional_flow_context",
+                "market": "TWSE",
+                "code": "i3_governed_source_date_authority_required",
+            }],
+        }
+    }
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: blocked)
+    response = client.post("/api/unified/authorizations", json=payload)
+    assert response.status_code == 409
+    assert response.json()["error"] == "i3_governed_source_date_authority_required"
 
     def unavailable(_request):
         raise ModeB1PlanningUnavailable("P:\\secret\\planning.json")

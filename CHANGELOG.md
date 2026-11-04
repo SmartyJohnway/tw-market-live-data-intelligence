@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.1 (UNRELEASED CANDIDATE — 2026-11-04)
+
+- RMA-0 through RMA-11 owner acceptance closed; bounded patch repairs address Launcher / Security Master lifecycle, deterministic verified TLS, governed Result coverage and operator UX.
+- Improve Workbench request/preview/authorization and explicit Execute Once confirmation without weakening audit or network authority.
+- Correct recent-performance derivation and AI-ready Markdown consistency; preserve the exact six MCP tools and public compatibility contracts.
+- This entry records a local selected patch candidate only. v1.5.0 remains the published stable release; no v1.5.1 GitHub Release, tag, or Registry publication is implied.
+
 ## 1.5.0 (2026-10-28)
 
 Stable release: [GitHub Release v1.5.0](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)

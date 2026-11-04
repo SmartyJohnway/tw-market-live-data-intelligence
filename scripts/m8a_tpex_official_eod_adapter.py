@@ -4,6 +4,7 @@ import json, urllib.request
 from typing import Any
 from scripts.m8a_official_eod_observation import create_observation, empty_adapter_result, parse_decimal_text, parse_int_text, parse_roc_yyyymmdd, utc_now
 from scripts.m8a_official_eod_instrument_classifier import classify_official_eod_instrument
+from scripts.ssl_policy import build_ssl_context
 SOURCE_ID="TPEX_OPENAPI"; ENDPOINT_CONTRACT_ID="tpex_openapi_mainboard_daily_close_quotes_v1"; URL="https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
 REQUIRED=["Date","SecuritiesCompanyCode","CompanyName","Close","Change","Open","High","Low","Average","TradingShares","TransactionAmount","TransactionNumber","LatestBidPrice","LatesAskPrice","Capitals","NextReferencePrice","NextLimitUp","NextLimitDown"]
 OMITTED=["Average","LatestBidPrice","LatesAskPrice","Capitals","NextReferencePrice","NextLimitUp","NextLimitDown"]
@@ -11,7 +12,7 @@ def classify_instrument(market:str,symbol:str,security_master:dict|None=None)->d
     return classify_official_eod_instrument(market, symbol, security_master)
 def fetch_tpex_official_eod_json(*,timeout:int=20,url:str=URL)->tuple[list[dict],int,str]:
     req=urllib.request.Request(url,method="GET",headers={"Accept":"application/json","User-Agent":"tw-market-m8a-official-eod/1.0"})
-    with urllib.request.urlopen(req,timeout=timeout) as resp: status=resp.status; ctype=resp.headers.get("Content-Type",""); body=resp.read()
+    with urllib.request.urlopen(req,timeout=timeout,context=build_ssl_context("strict")) as resp: status=resp.status; ctype=resp.headers.get("Content-Type",""); body=resp.read()
     if status<200 or status>=300: raise RuntimeError(f"http_status_{status}")
     if "json" not in ctype.lower(): raise RuntimeError("wrong_content_type")
     data=json.loads(body.decode("utf-8-sig"));

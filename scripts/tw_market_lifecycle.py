@@ -46,6 +46,7 @@ from scripts.tw_market_installation import (
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
+SECURITY_MASTER_STATUS_TIMEOUT_SECONDS = 60
 _INSTANCE = "TW_MARKET_LIFECYCLE_INSTANCE"
 _INSTALLATION = contextvars.ContextVar("lifecycle_installation", default=None)
 
@@ -253,7 +254,7 @@ def _safe_unlink(path: Path) -> bool:
 
 def _sm_status() -> dict:
     root = _installation().security_master_root
-    result = subprocess.run([sys.executable, str(ROOT / "scripts" / "manage_security_master.py"), "status", "--root", str(root)], cwd=ROOT, env=_child_environment(), capture_output=True, text=True, timeout=10, check=False)
+    result = subprocess.run([sys.executable, str(ROOT / "scripts" / "manage_security_master.py"), "status", "--root", str(root)], cwd=ROOT, env=_child_environment(), capture_output=True, text=True, timeout=SECURITY_MASTER_STATUS_TIMEOUT_SECONDS, check=False)
     try: payload = json.loads(result.stdout)
     except ValueError: payload = {}
     state = payload.get("status")

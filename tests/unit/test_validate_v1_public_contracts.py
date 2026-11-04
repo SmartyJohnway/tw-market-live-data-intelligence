@@ -286,3 +286,48 @@ def test_readme_validator_rejects_stable_status_with_final_promotion_wording(tmp
             readme, current_product_version="1.0.0"
         )
     )
+
+
+def test_readme_selected_1_5_1_unpublished(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "Persistent Watchlists are supported. "
+        "TW-Market `v1.5.0` is the current stable GitHub release. "
+        "Selected `v1.5.1` is unpublished. ProductVersion = `1.5.1`. "
+        "History includes `v1.0.0`, `v1.0.0-rc.1`, `v0.1.0`.",
+        encoding="utf-8",
+    )
+    assert validate_v1_public_contracts.readme_current_product_truth_failures(
+        readme, current_product_version="1.5.1"
+    ) == []
+
+
+def test_readme_selected_1_5_1_missing_unpublished_is_rejected(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "Persistent Watchlists are supported. "
+        "TW-Market `v1.5.0` is the current stable GitHub release. "
+        "ProductVersion = `1.5.1`.",
+        encoding="utf-8",
+    )
+    assert "readme_v1_5_1_selected_unpublished_status_incomplete" in (
+        validate_v1_public_contracts.readme_current_product_truth_failures(
+            readme, current_product_version="1.5.1"
+        )
+    )
+
+
+def test_readme_selected_1_5_1_falsely_published_is_rejected(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "Persistent Watchlists are supported. "
+        "TW-Market `v1.5.0` is the current stable GitHub release. "
+        "Selected `v1.5.1` is unpublished. ProductVersion = `1.5.1`. "
+        "TW-Market `v1.5.1` is the current stable GitHub release.",
+        encoding="utf-8",
+    )
+    assert "readme_selected_1_5_1_falsely_claimed_published" in (
+        validate_v1_public_contracts.readme_current_product_truth_failures(
+            readme, current_product_version="1.5.1"
+        )
+    )

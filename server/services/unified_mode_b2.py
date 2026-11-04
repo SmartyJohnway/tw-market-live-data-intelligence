@@ -190,6 +190,12 @@ def _authorizable_preview(
     preview, plan = rebuilt.get("preview"), rebuilt.get("orchestration_plan")
     if not isinstance(preview, dict) or not isinstance(plan, dict):
         raise ModeB2Error(_non_actionable_preview_code(rebuilt) if preserve_domain_failure else "preview_not_authorizable")
+    readiness = rebuilt.get("authorization_readiness")
+    if isinstance(readiness, dict) and readiness.get("status") == "blocked":
+        reasons = readiness.get("blocking_reasons")
+        first = reasons[0] if isinstance(reasons, list) and reasons else None
+        code = first.get("code") if isinstance(first, dict) else None
+        raise ModeB2Error(code if isinstance(code, str) and code else "authorization_prerequisite_unavailable")
     if preview.get("status") not in {"ready_for_confirmation", "partial_possible"}:
         raise ModeB2Error(_non_actionable_preview_code(rebuilt) if preserve_domain_failure else "preview_not_authorizable")
     if not any(item.get("operation_status") == "executable_pending_approval" for item in plan.get("operations", [])):

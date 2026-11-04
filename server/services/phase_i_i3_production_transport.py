@@ -64,14 +64,12 @@ def fixed_url(market: str, resolved_source_trade_date: str | None = None) -> str
 
 
 def _opener(policy: str):
-    if policy == "strict":
-        return build_opener(_RejectRedirect())
-    if policy == "compatibility":
-        context = build_ssl_context("compatibility")
-        if not isinstance(context, ssl.SSLContext) or context.verify_mode != ssl.CERT_REQUIRED or not context.check_hostname:
-            raise ValueError("i3_verified_compatibility_context_invalid")
-        return build_opener(_RejectRedirect(), HTTPSHandler(context=context))
-    raise ValueError("i3_tls_policy_invalid")
+    if policy not in {"strict", "compatibility"}:
+        raise ValueError("i3_tls_policy_invalid")
+    context = build_ssl_context(policy)
+    if not isinstance(context, ssl.SSLContext) or context.verify_mode != ssl.CERT_REQUIRED or not context.check_hostname:
+        raise ValueError("i3_verified_tls_context_invalid")
+    return build_opener(_RejectRedirect(), HTTPSHandler(context=context))
 
 
 def _base_telemetry(market: str) -> dict[str, Any]:

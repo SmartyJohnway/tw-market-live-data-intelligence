@@ -102,6 +102,29 @@ def test_finalized_control_package_is_write_once(tmp_path, monkeypatch):
         unified_mode_b2.build_mode_b2_authorization(payload)
 
 
+def test_i3_governed_source_date_readiness_blocks_before_ticket_materialization(monkeypatch):
+    rebuilt = _rebuilt() | {
+        "authorization_readiness": {
+            "status": "blocked",
+            "blocking_reasons": [{
+                "capability_id": "cash_institutional_flow_context",
+                "market": "TWSE",
+                "code": "i3_governed_source_date_authority_required",
+            }],
+        }
+    }
+    monkeypatch.setattr(unified_mode_b2, "build_mode_b1_preview", lambda _request: rebuilt)
+    calls = []
+    monkeypatch.setattr(
+        unified_mode_b2,
+        "_materialize_execution_ticket",
+        lambda *args, **kwargs: calls.append((args, kwargs)),
+    )
+    with pytest.raises(unified_mode_b2.ModeB2Error, match="i3_governed_source_date_authority_required"):
+        unified_mode_b2.build_mode_b2_authorization(_payload())
+    assert calls == []
+
+
 def test_mode_b1_planning_dependency_is_bounded_at_b2_service(monkeypatch):
     from server.services.unified_mode_b1 import ModeB1PlanningUnavailable
 

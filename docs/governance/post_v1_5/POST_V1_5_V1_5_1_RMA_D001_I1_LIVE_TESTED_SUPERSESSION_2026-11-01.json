@@ -1,0 +1,26 @@
+{
+  "schema": "post_v1_5_rma_live_tested_supersession.v1",
+  "status": "RMA_AUTHORIZED_SUPERSESSION",
+  "date": "2026-11-01",
+  "defect_id": "RMA-D001",
+  "owner_authority_reference": "USER_CHAT_2026-11-01_BOUNDED_REPAIR_RMA_D001",
+  "historical_activation_baseline": "0f556ca79134fd8338406ba3299eea83deab3e88",
+  "historical_authority_preserved": true,
+  "scope": [
+    {
+      "path": "server/services/phase_i_i1_production_candidate.py",
+      "historical_sha256": "4edb91f160308c4934effef408d2060c7fbea9ef81f4ce355b251033ada7cdf3",
+      "authorized_post_repair_sha256": "1eddc7f5ef4e00706feb7aebf251826f983d9e07fe2756e836a1239a5cd1f782",
+      "reason": "RMA-D001 deterministic verified TLS trust integration"
+    }
+  ],
+  "repair_candidate_sha256": "F4B8049B4614C0ED2C4F0799315F0810CC2AE029CEA39FE2F857A8131881D333",
+  "cold_source_matrix_evidence": "C:/twmarket_temp/v1.5.1-rma-20261031/rma-7/7E-d001-bounded-repair/attempt-01-cold-production-matrix/output/guest-result.json",
+  "acceptance": {
+    "production_sources_usable": "23/23",
+    "product_parser_schema_pass": "23/23",
+    "certificate_verification_retained": true,
+    "hostname_verification_retained": true,
+    "silent_fallback": false
+  }
+}

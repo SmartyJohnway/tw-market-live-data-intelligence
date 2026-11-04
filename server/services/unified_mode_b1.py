@@ -24,6 +24,47 @@ def _utc_timestamp() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
+def authorization_readiness_for_plan(plan: dict[str, Any] | None) -> dict[str, Any]:
+    """Project pre-authorization prerequisites without inventing authority.
+
+    The canonical I3 resolver/binder remains the only path that may create a
+    TWSE source-date binding.  Generic Workbench planning must therefore stop
+    before authorization when such a binding is absent.
+    """
+    operations = plan.get("operations", []) if isinstance(plan, dict) else []
+    requires_i3_twse_binding = any(
+        isinstance(operation, dict)
+        and operation.get("capability_id") == "cash_institutional_flow_context"
+        and operation.get("market") == "TWSE"
+        and operation.get("operation_status") == "executable_pending_approval"
+        for operation in operations
+    )
+    if not requires_i3_twse_binding:
+        return {"status": "ready", "blocking_reasons": []}
+    source_date = plan.get("resolved_source_trade_date") if isinstance(plan, dict) else None
+    binding = plan.get("source_date_binding") if isinstance(plan, dict) else None
+    if (
+        isinstance(source_date, str)
+        and isinstance(binding, dict)
+        and binding.get("market") == "TWSE"
+        and binding.get("resolved_source_trade_date") == source_date
+    ):
+        return {"status": "ready", "blocking_reasons": []}
+    return {
+        "status": "blocked",
+        "blocking_reasons": [{
+            "capability_id": "cash_institutional_flow_context",
+            "market": "TWSE",
+            "code": "i3_governed_source_date_authority_required",
+        }],
+        "operator_guidance": (
+            "TWSE institutional flow requires a current governed source-date authority before authorization. "
+            "This Workbench session will not guess a date. Review Evidence Needs and deselect TWSE institutional flow, "
+            "then Compose Frozen Request and build Preview again."
+        ),
+    }
+
+
 def build_mode_b1_preview(
     request: dict[str, Any], *, planning_timestamp: str | None = None
 ) -> dict[str, Any]:
@@ -35,13 +76,17 @@ def build_mode_b1_preview(
         # preferred default. Compatibility V1/V2 requests continue to use the
         # frozen V2 Catalog/Route pair.
         authorities = load_planning_authorities(request.get("schema_version"))
-        return build_mode_b1_preview_package(
+        package = build_mode_b1_preview_package(
             request,
             validation,
             security_master,
             planning_timestamp=planning_timestamp or _utc_timestamp(),
             authorities=authorities,
         )
+        package["authorization_readiness"] = authorization_readiness_for_plan(
+            package.get("orchestration_plan")
+        )
+        return package
     except FileNotFoundError:
         raise
     except PlanningError as exc:

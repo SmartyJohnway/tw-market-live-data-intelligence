@@ -514,3 +514,19 @@ def test_security_master_mutation_renders_updating_state_before_network_action()
     assert "& $setCardState $securityCard 'Updating...' 'info'" in text
     assert "$securityActionButton.Enabled = $false" in text
     assert "[System.Windows.Forms.Application]::DoEvents()" in text
+
+
+def test_doctor_failure_is_not_reported_as_complete(tmp_path: Path) -> None:
+    bundle = _fake_bundle(tmp_path, _payload("RUNNING", True))
+    (bundle / "test-doctor.json").write_text(
+        json.dumps({"status": "FAIL", "reason_code": "CHECK_TIMEOUT"}),
+        encoding="utf-8",
+    )
+
+    result = _invoke(bundle, "Doctor")
+    payload = json.loads(result.stdout)
+
+    assert result.returncode == 1
+    assert payload["status"] == "DOCTOR_FAILED"
+    assert payload["reason_code"] == "CHECK_TIMEOUT"
+    assert payload["data"]["status"] == "FAIL"

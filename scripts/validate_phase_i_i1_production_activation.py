@@ -37,6 +37,10 @@ LIVE_TESTED_FILES = (
     "server/services/phase_i_market_state_adapters.py",
     "schemas/market_state_context_evidence.v1.schema.json",
 )
+RMA_LIVE_TESTED_SUPERSESSION = (
+    "docs/governance/post_v1_5/"
+    "POST_V1_5_V1_5_1_RMA_D001_I1_LIVE_TESTED_SUPERSESSION_2026-11-01.json"
+)
 
 
 def _read(relative: str):
@@ -132,11 +136,32 @@ def validate() -> None:
         raise ValueError("i1_final_activation_decision_invalid")
 
     baseline = "0f556ca79134fd8338406ba3299eea83deab3e88"
+    supersession = _read(RMA_LIVE_TESTED_SUPERSESSION)
+    if (
+        supersession.get("schema") != "post_v1_5_rma_live_tested_supersession.v1"
+        or supersession.get("status") != "RMA_AUTHORIZED_SUPERSESSION"
+        or supersession.get("defect_id") != "RMA-D001"
+        or supersession.get("owner_authority_reference") != "USER_CHAT_2026-11-01_BOUNDED_REPAIR_RMA_D001"
+        or supersession.get("historical_activation_baseline") != baseline
+        or supersession.get("historical_authority_preserved") is not True
+    ):
+        raise ValueError("rma_live_tested_supersession_authority_invalid")
+    authorized = {item.get("path"): item for item in supersession.get("scope", [])}
+    if not set(authorized).issubset(set(LIVE_TESTED_FILES)):
+        raise ValueError("rma_live_tested_supersession_scope_invalid")
     for path in LIVE_TESTED_FILES:
         result = subprocess.run(["git", "diff", "--quiet", baseline, "--", path], cwd=ROOT, check=False)
-        if result.returncode != 0:
+        if result.returncode == 0:
+            continue
+        spec = authorized.get(path)
+        if not spec:
             raise ValueError(f"live_tested_implementation_delta:{path}")
-    print("Phase I I1 production activation: PASS (Owner accepted, two bounded routes, current Phase-H source authority preserved, no live-tested semantic delta)")
+        historical = subprocess.check_output(["git", "show", f"{baseline}:{path}"], cwd=ROOT)
+        if hashlib.sha256(historical).hexdigest() != spec.get("historical_sha256"):
+            raise ValueError(f"rma_historical_sha_mismatch:{path}")
+        if hashlib.sha256((ROOT / path).read_bytes()).hexdigest() != spec.get("authorized_post_repair_sha256"):
+            raise ValueError(f"rma_post_repair_sha_mismatch:{path}")
+    print("Phase I I1 production activation: PASS (historical activation preserved; exact post-v1.5 RMA-D001 supersession accepted)")
 
 
 if __name__ == "__main__":

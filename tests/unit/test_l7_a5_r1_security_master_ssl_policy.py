@@ -43,10 +43,13 @@ def test_compatibility_context_keeps_verification_and_only_clears_strict_flag():
 
 
 def test_strict_policy_preserves_skill_strict_default():
-    assert ssl_policy.build_ssl_context(ssl_policy.SSL_POLICY_STRICT) is None
-    context = ssl.create_default_context()
+    context = ssl_policy.build_ssl_context(ssl_policy.SSL_POLICY_STRICT)
+    assert isinstance(context, ssl.SSLContext)
     probe_sources._validate_ssl_context(context)
-    assert context.verify_flags == ssl.create_default_context().verify_flags
+    assert context.verify_mode == ssl.CERT_REQUIRED
+    assert context.check_hostname is True
+    if hasattr(ssl, "VERIFY_X509_STRICT"):
+        assert context.verify_flags & ssl.VERIFY_X509_STRICT
 
 
 @pytest.mark.parametrize(

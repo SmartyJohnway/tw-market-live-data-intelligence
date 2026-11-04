@@ -35,6 +35,13 @@ COMMON_REQUIRED_README_FACTS = (
 
 
 def required_release_patterns() -> tuple[str, ...]:
+    if product_version() == "1.5.1":
+        return (
+            r"productversion\s*=\s*`1\.5\.1`",
+            r"selected\s+`v1\.5\.1`\s+is\s+unpublished",
+            r"TW-Market\s+`v1\.5\.0`\s+is\s+the\s+current\s+stable\s+(?:GitHub\s+)?release",
+            r"v1\.0\.0",
+        )
     if product_version() == "1.5.0":
         return (
             r"productversion\s*=\s*`1\.5\.0`",
@@ -84,10 +91,10 @@ def validate() -> list[str]:
     for pattern in required_release_patterns():
         if not re.search(pattern, readme, flags=re.IGNORECASE):
             errors.append(f"front_door_missing_release_status:{pattern}")
-    if product_version() == "1.5.0":
+    if product_version() in {"1.5.0", "1.5.1"}:
         from scripts.validate_v1_public_contracts import readme_current_product_truth_failures
         errors.extend("front_door:" + error for error in
-                      readme_current_product_truth_failures(README, current_product_version="1.5.0"))
+                      readme_current_product_truth_failures(README, current_product_version=product_version()))
     for claim in FORBIDDEN_CURRENT_CLAIMS:
         if claim in readme:
             errors.append(f"front_door_forbidden_current_claim:{claim}")

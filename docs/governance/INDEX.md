@@ -7,7 +7,7 @@ merely because later phases closed.
 
 ## Current governance state
 
-As of 2026-10-29:
+As of 2026-11-03:
 
 ```text
 Stable product                 v1.5.0
@@ -28,23 +28,46 @@ without modifying the frozen release commit/tree. The Post-Phase-L frontdoor
 maintenance tranche was subsequently merged through PR #423 to `main` at
 `b86ae52a2f43f53fd854e9d84cfde1c80050dcc9`.
 
-The current authorized post-release workstream is **Post-v1.5 Productization &
-Stabilization**. P0 Current-state Reconciliation is complete. **P1 — Windows
-Launcher / First-run UX** is active: P1-A0 audit is complete, and both P1-A1
-First-run / Setup UX Contract and P1-A2 Daily Main Launcher / Runtime Control UX
-Contract are Owner-frozen. The first P1-A3 independent review and the subsequent
-P1-A3-R1 independent re-review both returned `CHANGES_REQUIRED`. Bounded
-P1-A3-R2 corrections are complete, deterministic revalidation is `97 passed`, and
-exact-current Windows Sandbox R5 headless lifecycle + fresh interactive GUI +
-targeted failure-details acceptance passed. The fresh P1-A3-R2 independent
-re-review returned `PASS_WITH_NOTES` with zero blocking findings. Owner then
-explicitly authorized controlled commit/push; P1-A3-R2 implementation, tests,
-preserved R1–R5 evidence and post-v1.5 governance were committed and pushed as
-`3059531b7cb02bede681938228a0f258b8b5b9d9`. P2–P5 remain later tranches and
-Phase M remains NOT_AUTHORIZED.
+The current post-release workstream is **Post-v1.5 Productization & Stabilization**.
+P0 and the original P1 Windows Launcher tranche are complete. At RMA handoff,
+local `main` was three commits ahead of `origin/main` (pre-promotion baseline): `b38fde12` (Launcher v2 /
+native-entry guard), `8b482be4` (explicit verified-TLS compatibility retry for
+Security Master), and `b84f9fc8` (Native packaging Mode B2 execute-once wrapper).
+The Owner separately selected `VERSION=1.5.1` for unpublished local clean-source
+promotion on 2026-11-04; frozen v1.5.0 remains the public Stable release.
+
+Owner authorized the formal RMA-0 through RMA-11 real-machine program on 2026-10-31.
+That program is now complete: `RMA-0` through `RMA-11` are **PASS/CLOSED**. RMA
+validated the actual Native Launcher -> runtime -> Security Master -> Local Service
+-> six-tool MCP -> explicit Request/Preview/Authorization -> Execute Once -> official
+evidence -> Result/Audit/AI Handoff path. The final defect register has zero open
+blockers and zero open majors; `RMA-D022` and transient `RMA-D025` remain preserved
+as `DEFERRED_NON_BLOCKING`, while all other registered RMA defects/observations are
+`CLOSED_PASS`.
+
+RMA closure did not itself make the dirty working tree or diagnostic ZIP
+release-eligible. The Owner separately authorized local v1.5.1 clean-source
+promotion and exact Native final-build gate on 2026-11-04; publication is still
+not authorized. P2–P5 and Phase M remain NOT_AUTHORIZED.
 
 Current post-v1.5 governance:
 
+- [v1.5.1 RMA Release Preflight & Continuity — CURRENT](post_v1_5/POST_V1_5_V1_5_1_RMA_RELEASE_PREFLIGHT_AND_CONTINUITY_2026-10-31.md)
+- [v1.5.1 RMA-0 Release / Provenance Baseline — PASS](post_v1_5/POST_V1_5_V1_5_1_RMA_0_RELEASE_PROVENANCE_BASELINE_2026-10-31.md)
+- [v1.5.1 RMA-1 Fresh First-Run Installation — PASS](post_v1_5/POST_V1_5_V1_5_1_RMA_1_FRESH_FIRST_RUN_INSTALLATION_2026-10-31.md)
+- [v1.5.1 RMA-2 Launcher Daily Operation — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_2_LAUNCHER_DAILY_OPERATION_2026-10-31.md)
+- [v1.5.1 RMA-3 Security Master Lifecycle — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_3_SECURITY_MASTER_LIFECYCLE_2026-11-01.md)
+- [v1.5.1 RMA-4 Local Service + MCP Real Integration — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_4_LOCAL_SERVICE_MCP_REAL_INTEGRATION_2026-11-01.md)
+- [v1.5.1 RMA-5 Identity Resolution Matrix — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_5_IDENTITY_RESOLUTION_MATRIX_2026-11-01.md)
+- [v1.5.1 RMA-6 Capability Execution Matrix — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_6_CAPABILITY_EXECUTION_MATRIX_2026-11-01.md)
+- [v1.5.1 RMA-7 Official-source / TLS Matrix — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_7_OFFICIAL_SOURCE_TLS_MATRIX_2026-11-01.md)
+- [v1.5.1 RMA-8 Result / Audit / Evidence Integrity — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_8_RESULT_AUDIT_EVIDENCE_INTEGRITY_2026-11-02.md)
+- [v1.5.1 RMA-9 Failure and Recovery Matrix — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_9_FAILURE_RECOVERY_MATRIX_2026-11-02.md)
+- [v1.5.1 RMA-10 Native Package / Portability — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_10_NATIVE_PACKAGE_PORTABILITY_2026-11-02.md)
+- [v1.5.1 RMA-11 Operator Experience Acceptance — PASS / CLOSED](post_v1_5/POST_V1_5_V1_5_1_RMA_11_OPERATOR_EXPERIENCE_ACCEPTANCE_2026-11-03.md)
+- [v1.5.1 RMA-D001 I1 Live-Tested Supersession — AUTHORIZED](post_v1_5/POST_V1_5_V1_5_1_RMA_D001_I1_LIVE_TESTED_SUPERSESSION_2026-11-01.json)
+- [v1.5.1 RMA Test Contract — RMA-0 through RMA-11](post_v1_5/POST_V1_5_V1_5_1_RMA_TEST_CONTRACT_2026-10-31.md)
+- [v1.5.1 RMA Defect Register — RMA CLOSED / PRE-RELEASE AUTHORITY](post_v1_5/POST_V1_5_V1_5_1_RMA_DEFECT_REGISTER_2026-10-31.md)
 - [P1-A1 First-run / Setup UX Contract — FROZEN](post_v1_5/POST_V1_5_P1_A1_FIRST_RUN_SETUP_UX_CONTRACT_FROZEN_2026-10-29.md)
 - [P1-A2 Daily Main Launcher / Runtime Control UX Contract — FROZEN](post_v1_5/POST_V1_5_P1_A2_DAILY_MAIN_LAUNCHER_RUNTIME_CONTROL_UX_CONTRACT_FROZEN_2026-10-29.md)
 - [P1-A3 Minimal Windows Launcher Implementation Closure — initial pre-review record](post_v1_5/POST_V1_5_P1_A3_MINIMAL_WINDOWS_LAUNCHER_IMPLEMENTATION_CLOSURE_2026-10-29.md)

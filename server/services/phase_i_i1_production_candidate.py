@@ -29,6 +29,7 @@ from scripts.m8r_05b_03.registry import ExecutorMetadataRegistry
 from scripts.m8r_06_03_production_adapter import _require_approved_execution
 from scripts.m8r_05c.citation_builder import _build_citation_id
 from scripts.m8r_filesystem_safety import atomic_write_bytes
+from scripts.ssl_policy import build_ssl_context
 from scripts.twse_trading_calendar import parse_twse_roc_date
 from server.services.phase_i_market_state_adapters import (
     MarketStateNormalizationError,
@@ -100,7 +101,10 @@ def _no_redirect_opener() -> urllib.request.OpenerDirector:
         def redirect_request(self, req, fp, code, msg, headers, newurl):
             return None
 
-    return urllib.request.build_opener(RejectRedirect())
+    return urllib.request.build_opener(
+        RejectRedirect(),
+        urllib.request.HTTPSHandler(context=build_ssl_context("strict")),
+    )
 
 
 def _http_transport(url: str, timeout_seconds: int) -> tuple[int, Mapping[str, str], bytes]:

@@ -1,4 +1,6 @@
 """Narrow status aggregation contract for Mode C canonical Results."""
+import pytest
+
 from scripts.m8r_05c.models import (
     PartialFailureProjection,
     ResolutionProjection,
@@ -15,7 +17,7 @@ from scripts.m8r_05c.evidence_projector import (
 )
 from scripts.m8r_05c.lineage_resolver import OperationBinding
 from scripts.m8r_05c.markdown_renderer import render_result_markdown
-from scripts.m8r_05c.result_builder import _compute_result_status
+from scripts.m8r_05c.result_builder import _compute_result_status, _typed_v3_evidence_is_provided
 
 
 def _target(status="resolved", *, provided=None, missing=None):
@@ -33,6 +35,32 @@ def _required_failure(target_index=0):
         reason="required_evidence_missing:official_eod_reference",
         reason_code="required_evidence_missing",
     )
+
+
+@pytest.mark.parametrize(("need", "evidence", "expected"), [
+    ("trading_status_context", {"status": "available"}, True),
+    ("trading_status_context", {"status": "no_evidence_in_covered_scope"}, True),
+    ("trading_status_context", {"status": "partial"}, True),
+    ("trading_status_context", {"status": "source_failed"}, False),
+    ("trading_status_context", {"status": "binding_failed"}, False),
+    ("recent_performance", {"coverage_status": "complete"}, True),
+    ("recent_performance", {"coverage_status": "partial"}, True),
+    ("recent_performance", {"coverage_status": "insufficient"}, False),
+    ("recent_performance", {"coverage_status": "unavailable"}, False),
+    ("market_state_context", {"status": "complete"}, True),
+    ("market_state_context", {"status": "source_failed"}, False),
+    ("index_futures_context", {"status": "unavailable"}, False),
+    ("cash_institutional_flow_context", {"status": "complete"}, True),
+    ("cash_institutional_flow_context", {"status": "binding_failed"}, False),
+])
+def test_v3_typed_evidence_requires_usable_semantic_status(need, evidence, expected):
+    assert _typed_v3_evidence_is_provided(need, evidence) is expected
+
+
+def test_v3_typed_evidence_unknown_or_missing_status_fails_closed():
+    assert _typed_v3_evidence_is_provided("trading_status_context", {}) is False
+    assert _typed_v3_evidence_is_provided("unknown_capability", {"status": "available"}) is False
+    assert _typed_v3_evidence_is_provided("market_state_context", None) is False
 
 
 def test_no_targets_is_failed():

@@ -313,3 +313,24 @@ def test_doctor_warns_on_partial_resource_snapshot(tmp_path):
     resource_check = next(check for check in report["checks"] if check["name"] == "resource_snapshot")
     assert resource_check["status"] == "WARN"
     assert resource_check["reason_code"] == "RESOURCE_SNAPSHOT_PARTIAL"
+
+
+def test_security_master_status_uses_full_active_release_timeout_budget():
+    observed = {}
+
+    def fake_run(args, **kwargs):
+        observed.update(kwargs)
+        return subprocess.CompletedProcess(
+            args,
+            0,
+            json.dumps({"status": "ACTIVE", "release": {"release_id": "security-master-test"}}),
+            "",
+        )
+
+    with patch.object(lifecycle.subprocess, "run", side_effect=fake_run):
+        report = lifecycle._sm_status()
+
+    assert lifecycle.SECURITY_MASTER_STATUS_TIMEOUT_SECONDS == 60
+    assert observed["timeout"] == lifecycle.SECURITY_MASTER_STATUS_TIMEOUT_SECONDS
+    assert report["status"] == "ACTIVE"
+    assert report["release_id"] == "security-master-test"

@@ -27,24 +27,40 @@ def resolve_ssl_policy(cli_policy: str | None = None, environ: dict[str, str] | 
     return validate_ssl_policy(env.get(SSL_POLICY_ENV_VAR))
 
 
+def _verified_certifi_context() -> ssl.SSLContext:
+    """Build a verified TLS context from the governed bundled CA set.
+
+    Do not fall back to platform/default trust material: RMA-D001 proved that the
+    cold Windows/Python default trust set is timing-dependent.
+    """
+    try:
+        import certifi
+        cafile = certifi.where()
+    except Exception as exc:
+        raise RuntimeError("TW_MARKET_VERIFIED_CA_BUNDLE_UNAVAILABLE") from exc
+    context = ssl.create_default_context(cafile=cafile)
+    if context.verify_mode != ssl.CERT_REQUIRED or context.check_hostname is not True:
+        raise RuntimeError("TW_MARKET_VERIFIED_TLS_CONTEXT_INVALID")
+    return context
+
+
 def build_ssl_context(policy: str | None = None) -> ssl.SSLContext | None:
     selected = validate_ssl_policy(policy)
-    if selected == SSL_POLICY_STRICT:
-        return None
     if selected == SSL_POLICY_UNSAFE:
         return ssl._create_unverified_context()  # explicit unsafe operator opt-in only
-    context = ssl.create_default_context()
-    if hasattr(ssl, "VERIFY_X509_STRICT") and hasattr(context, "verify_flags"):
-        context.verify_flags &= ~ssl.VERIFY_X509_STRICT
+    context = _verified_certifi_context()
+    if selected == SSL_POLICY_COMPATIBILITY:
+        if hasattr(ssl, "VERIFY_X509_STRICT") and hasattr(context, "verify_flags"):
+            context.verify_flags &= ~ssl.VERIFY_X509_STRICT
     return context
 
 
 def tls_verification_mode(policy: str | None = None) -> str:
     selected = validate_ssl_policy(policy)
     if selected == SSL_POLICY_STRICT:
-        return "default_verified_tls"
+        return "verified_tls_certifi_strict_context"
     if selected == SSL_POLICY_COMPATIBILITY:
-        return "verified_tls_compatibility_context"
+        return "verified_tls_certifi_compatibility_context"
     return "unverified_tls_operator_explicit"
 
 
@@ -54,6 +70,8 @@ def ssl_policy_diagnostics(policy: str | None = None, *, network_calls_may_have_
         "ssl_policy": selected,
         "selected": selected,
         "tls_verification_mode": tls_verification_mode(selected),
+        "trust_material": "bundled_certifi" if selected != SSL_POLICY_UNSAFE else "operator_unverified",
+        "deterministic_trust_material": selected != SSL_POLICY_UNSAFE,
         "strict_default": True,
         "compatibility_mode_used": selected == SSL_POLICY_COMPATIBILITY,
         "unsafe_mode_used": selected == SSL_POLICY_UNSAFE,

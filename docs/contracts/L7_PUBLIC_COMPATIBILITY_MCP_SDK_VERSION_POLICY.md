@@ -101,3 +101,12 @@ A4 technical PASS requires the complete original gate and versioned Native,
 genuine Windows 11 and Docker repeat validation. A5 bounded live, A6 RC freeze,
 A7 publication, merge, tags/releases/registry publication, Phase M and Phase L
 closure remain unauthorized.
+
+## Post-publication v1.5.1 candidate selection (2026-11-04)
+
+The preceding A4 decision is retained as historical gate truth. The current local
+ProductVersion selection is **1.5.1**, unpublished, for an Owner-authorized
+clean-source / Native final-candidate gate. **v1.5.0 remains the current
+published stable GitHub release** until a separate release decision. This
+patch selection does not alter Local Service v1/v2, the six MCP tools, the
+exact SDK pin, or the frozen v1.5.0 authority. No tag/push/publication is authorized.

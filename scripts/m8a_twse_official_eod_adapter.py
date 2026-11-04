@@ -5,13 +5,14 @@ from decimal import Decimal
 from typing import Any
 from scripts.m8a_official_eod_observation import create_observation, empty_adapter_result, parse_decimal_text, parse_int_text, parse_roc_yyyymmdd, utc_now
 from scripts.m8a_official_eod_instrument_classifier import classify_official_eod_instrument
+from scripts.ssl_policy import build_ssl_context
 
 SOURCE_ID="TWSE_OPENAPI"; ENDPOINT_CONTRACT_ID="twse_openapi_stock_day_all_v1"; URL="https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
 REQUIRED=["Date","Code","Name","TradeVolume","TradeValue","OpeningPrice","HighestPrice","LowestPrice","ClosingPrice","Change","Transaction"]
 
 def fetch_twse_official_eod_json(*, timeout: int=20, url: str=URL) -> tuple[list[dict], int, str]:
     req=urllib.request.Request(url, method="GET", headers={"Accept":"application/json","User-Agent":"tw-market-m8a-official-eod/1.0"})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
+    with urllib.request.urlopen(req, timeout=timeout, context=build_ssl_context("strict")) as resp:
         status=resp.status; ctype=resp.headers.get("Content-Type",""); body=resp.read()
     if status<200 or status>=300: raise RuntimeError(f"http_status_{status}")
     if "json" not in ctype.lower(): raise RuntimeError("wrong_content_type")

@@ -90,6 +90,38 @@ def test_selection_schemas_are_formal():
         Draft202012Validator.check_schema(json.loads((root / name).read_text(encoding="utf-8")))
 
 
+def test_v3_selection_schema_tracks_unified_request_v3_capabilities():
+    selection = json.loads(Path("docs/contracts/schemas/watchlist_evidence_selection_request.v3.schema.json").read_text(encoding="utf-8"))
+    request = json.loads(Path("schemas/unified_market_evidence_request.v3.schema.json").read_text(encoding="utf-8"))
+    selection_types = set(selection["properties"]["data_needs"]["items"]["properties"]["type"]["enum"])
+    request_types = set(request["properties"]["data_needs"]["items"]["properties"]["type"]["enum"])
+    assert selection_types == request_types
+    assert selection["properties"]["data_needs"]["maxItems"] >= len(request_types)
+
+
+def test_v3_composes_full_current_capability_set(store):
+    current = _watchlist(store)
+    selected = [current["entries"][0]["watchlist_entry_id"]]
+    request_schema = json.loads(Path("schemas/unified_market_evidence_request.v3.schema.json").read_text(encoding="utf-8"))
+    capability_types = request_schema["properties"]["data_needs"]["items"]["properties"]["type"]["enum"]
+    payload = _payload(current, selected=selected)
+    payload["schema_version"] = "watchlist_evidence_selection_request.v3"
+    payload["data_needs"] = [
+        {
+            "type": capability,
+            "priority": "required",
+            "parameters": {"lookback_trading_days": 5} if capability == "recent_performance" else {},
+        }
+        for capability in capability_types
+    ]
+    result = WatchlistEvidenceComposer(store=store, request_validator=_validator).compose(
+        payload, watchlist_id=current["watchlist_id"]
+    )
+    assert result["composition_status"] == "composed"
+    assert result["limits"]["operation_count"] == len(capability_types) == 14
+    assert [item["type"] for item in result["request"]["data_needs"]] == capability_types
+
+
 def test_current_v3_composition_and_v1_v2_compatibility(store):
     current = _watchlist(store)
     selected = [current["entries"][0]["watchlist_entry_id"]]
