@@ -109,6 +109,32 @@ def runtime_probes(root: Path) -> dict[str, bool]:
                 pip_stderr_signals = signals(completed.stderr)
             except (OSError, subprocess.TimeoutExpired):
                 pip_status = "EXECUTION_ERROR"
+        guarded_status = "NOT_RUN"
+        guarded_stdout_present = False
+        guarded_stderr_present = False
+        guard_script = root / "acceptance_guard.py"
+        probe_script = Path(__file__).with_name("native_guard_pip_probe.py")
+        if py.is_file() and guard_script.is_file() and probe_script.is_file():
+            guarded_env = safe_env.copy()
+            guarded_env.update(
+                TW_MARKET_ACCEPTANCE_GUARD="1",
+                TW_MARKET_ACCEPTANCE_GUARD_BASE=str(root.parents[2]),
+                TW_MARKET_GUARD_LOG=str(root / "probe-guard-events.jsonl"))
+            try:
+                test = subprocess.run(
+                    [str(py), "-I", "-B", str(probe_script), str(guard_script)],
+                    capture_output=True, text=True, encoding="utf-8",
+                    errors="replace", timeout=40, check=False,
+                    env=guarded_env, cwd=root)
+                if test.returncode == 0:
+                    parsed = json.loads(test.stdout)
+                    guarded_status = parsed.get("status", "UNREADABLE")
+                    guarded_stdout_present = parsed.get("stdout_present") is True
+                    guarded_stderr_present = parsed.get("stderr_present") is True
+                else:
+                    guarded_status = "EXECUTION_ERROR"
+            except (OSError, ValueError, subprocess.TimeoutExpired):
+                guarded_status = "EXECUTION_ERROR"
         return {"bundle_present": True, "runtime_present": runtime.is_dir(),
                 "venv_present": venv.is_dir(),
                 "venv_python_present": (venv / "Scripts" / "python.exe").is_file(),
@@ -122,6 +148,9 @@ def runtime_probes(root: Path) -> dict[str, bool]:
                 "pip_check_status": pip_status,
                 "pip_check_stdout_signals": pip_stdout_signals,
                 "pip_check_stderr_signals": pip_stderr_signals,
+                "guarded_pip_check_status": guarded_status,
+                "guarded_pip_stdout_present": guarded_stdout_present,
+                "guarded_pip_stderr_present": guarded_stderr_present,
                 "distribution_set_matches": bool(expected) and expected == observed}
     except OSError:
         return {"probe_error": True}
