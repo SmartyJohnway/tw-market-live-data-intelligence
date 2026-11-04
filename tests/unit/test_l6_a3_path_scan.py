@@ -62,3 +62,13 @@ def test_utf16_host_path_is_blocking():
 def test_root_only_unapproved_drive_example_is_blocking():
     result = scan_payload('other.whl', _wheel('other.whl', b'example "d:\\\\"'))
     assert result['blocking']
+
+
+
+def test_exception_manifest_path_cross_platform():
+    from pathlib import Path
+    import packaging_native.path_scan as module
+    assert isinstance(module._ROOT, Path)
+    exceptions_path=module._ROOT/"upstream-path-exceptions.json"
+    assert exceptions_path.is_file()
+    assert module._EXCEPTIONS==json.loads(exceptions_path.read_text(encoding="utf-8"))["wheels"]

@@ -99,6 +99,19 @@ def main():
         result=subprocess.run(command,cwd=ROOT,text=True,encoding='utf-8',errors='replace',capture_output=True)
         save(work/(label+'.json'),{'command':command,'exit_code':result.returncode,'stdout':result.stdout,'stderr':result.stderr})
         if result.returncode:
+            # GitHub-hosted runners discard the temporary workspace on failure.
+            # Report bounded diagnostic fields without exposing the full captured
+            # stdout/stderr, environment, or credential-bearing setup details.
+            try:
+                profile = json.loads(result.stdout)
+                summary = {key: profile.get(key) for key in
+                           ('status', 'failed_return_code', 'failure_output_tail')}
+                if isinstance(summary.get('failure_output_tail'), str):
+                    summary['failure_output_tail'] = summary['failure_output_tail'][-3500:]
+                print('VALIDATION_FAILURE_SUMMARY ' + json.dumps(summary), file=sys.stderr)
+            except (ValueError, TypeError):
+                print(f'VALIDATION_FAILURE_SUMMARY label={label} exit={result.returncode} '
+                      'structured_output_unavailable', file=sys.stderr)
             raise RuntimeError(f'{label} failed; inspect {work/(label+".json")}')
         return result
     if args.provision:

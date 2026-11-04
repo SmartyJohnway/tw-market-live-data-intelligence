@@ -14,9 +14,9 @@ from pathlib import PurePosixPath
 from typing import Any
 
 
-_ROOT = str(Path(__file__).resolve().parent)
+_ROOT = Path(__file__).resolve().parent
 _EXCEPTIONS = json.loads(
-    open(_ROOT + "\\upstream-path-exceptions.json", encoding="utf-8").read()
+    (_ROOT / "upstream-path-exceptions.json").read_text(encoding="utf-8")
 )["wheels"]
 _PATH_RE = re.compile(r"(?i)(?<![A-Za-z0-9_])([A-Z]:(?:\\+|/(?!/))[^\s\"'<>|`\x00-\x1f]*)")
 _HOST_TOKENS = tuple(
