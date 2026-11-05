@@ -2,7 +2,7 @@
 
 [English](README.md) | [繁體中文](README.zh-TW.md)
 
-[![Stable v1.5.0](https://img.shields.io/badge/stable-v1.5.0-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
+[![Stable v1.5.1](https://img.shields.io/badge/stable-v1.5.1-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
 ![Windows 11 x64](https://img.shields.io/badge/Windows-11%20x64-0078d4)
 ![Python 3.13](https://img.shields.io/badge/Python-3.13-3776ab)
 [![MCP six tools](https://img.shields.io/badge/MCP-exactly%206%20tools-5c4ee5)](docs/reference/MCP_REFERENCE.md)
@@ -31,31 +31,31 @@ flowchart LR
 
 ## Current stable release
 
-**TW-Market `v1.5.0` is the current stable GitHub release.**
-Selected `v1.5.1` is unpublished. ProductVersion = `1.5.1`.
-It was published on 2026-10-28 from frozen source commit
-`acaf726a5b59baee4c5a30521ea5a5d5ec0cec76` and tree
-`d44f66dc154c21326ac8b105d2f15fd793f6071b`.
+**TW-Market `v1.5.1` is the latest stable GitHub Release**, published on
+2026-11-04 (23:57 Asia/Taipei). ProductVersion: `1.5.1`.
 
-- [GitHub Release v1.5.0](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
-- [Windows Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip)
-- [Native SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip.sha256)
-- [Windows MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb)
-- [MCPB SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb.sha256)
-- [First-party SBOM](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-first-party-sbom.json)
-- [Publication manifest](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-publication-manifest.json)
+- Frozen source commit: `1f3666eefdca7e2e9a1c88099f802696bf7970d6`
+- Frozen source tree: `d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6`
+- [GitHub v1.5.1 Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1)
+- [Windows Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-windows-x64.zip)
+- [Native SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-windows-x64.zip.sha256)
+- [Windows MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb)
+- [MCPB SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb.sha256)
+- [First-party dependency SBOM](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-first-party-sbom.json)
+- [Publication manifest](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-publication-manifest.json)
+- [Verified publication record](docs/release/V1_5_1_RELEASE_PUBLICATION.md)
 
-The frozen v1.5.0 tag and SHA-256-verified release assets remain the release
-authority even if `main` later advances with post-release documentation or
-development work. GitHub Immutable Releases enforcement is not enabled for this
-release; the non-mutation requirement is a governance/freeze policy, not a platform lock.
+The `v1.5.1` tag/source and six published assets remain immutable under release
+governance. Later documentation-only commits on `main` are **not** new `v1.5.1`
+release bytes. GitHub Immutable Releases platform enforcement is not asserted.
+Previous `v1.5.0` remains a valid frozen historical release.
 
 ## Choose your path
 
 | Path | Best for | Start here |
 |---|---|---|
-| **Windows Native ZIP** | Normal local operator / Workbench use | [Download v1.5.0 Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip) |
-| **Windows MCPB** | AI / MCP client | [Download v1.5.0 MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb) |
+| **Windows Native ZIP** | Normal local operator / Workbench use | [Download v1.5.1 Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-windows-x64.zip) |
+| **Windows MCPB** | AI / MCP client | [Download v1.5.1 MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb) |
 | **Source checkout** | Developer / contributor | [Source/developer path](docs/operator/QUICK_START.md#path-c--source-checkout-developer--contributor-path) |
 
 For a **60-second orientation and first-run sequence**, use the
@@ -163,21 +163,20 @@ operator instructions distinct from this source/developer path.
 
 ## MCP distribution and registry boundary
 
-The current GitHub `v1.5.0` release includes the supported Windows MCPB and its
-SHA-256 sidecar. It uses local stdio transport and exposes the same exact six
-governed tools as the source launcher.
+The published GitHub `v1.5.1` Release includes the Windows MCPB and its
+SHA-256 sidecar. This local stdio package exposes exactly six governed tools.
 
-The public MCP Registry entry
-`io.github.SmartyJohnway/tw-market-live-data-intelligence` is a **separate
-publication surface**. Its currently published package metadata remains on the
-historical `v1.0.0` package until a separately authorized Registry update is
-performed. Do not infer Registry publication from the GitHub v1.5.0 release.
+The separate official MCP Registry identity,
+`io.github.SmartyJohnway/tw-market-live-data-intelligence`, was checked through
+the official live Registry API on 2026-11-05: its **Latest active version is
+`1.0.0`**. GitHub `v1.5.1` publication does **not** imply Registry
+`v1.5.1` publication; updating `server.json` requires separate authorization.
 
-See [MCP distribution](docs/distribution/MCP_DISTRIBUTION.md) for installation,
-integrity, and Security Master boundaries.
+See [MCP distribution](docs/distribution/MCP_DISTRIBUTION.md) for installation
+and [Unified MCP Reference](docs/reference/MCP_REFERENCE.md) for the six tools.
 
-Docker is validated as a release/provenance surface for `linux/amd64`, but
-v1.5.0 does not publish a Docker registry image.
+Docker is a validated local `linux/amd64` build/acceptance and provenance
+surface only. **No Docker registry image is published** for `v1.5.1`.
 
 ## Documentation
 
@@ -206,17 +205,19 @@ compatibility, but they are not a second current-product contract. Start with
 
 ## Release history and provenance
 
-- **`v1.5.0`** — current stable GitHub release; frozen source and final release
-  assets passed the Phase L release-governance and publication acceptance chain.
-- **`v1.0.0`** — historical stable release and current MCP Registry package
-  until a separately authorized Registry update occurs.
+- **`v1.5.1`** — current stable GitHub Release (2026-11-04), six verified assets.
+- **`v1.5.0`** — prior frozen stable GitHub Release (2026-10-28).
+- **`v1.0.0`** — historical GitHub stable release, and current MCP Registry
+  package version (verified in the official Registry on 2026-11-05).
 - **`v1.0.0-rc.1`** — historical prerelease.
-- **`v0.1.0`** — earlier stable GitHub release.
+- **`v0.1.0`** — earlier GitHub stable release.
 
-The v1.5.0 publication includes the Native ZIP/checksum, MCPB/checksum,
-first-party SBOM, and typed publication manifest. SHA-256/provenance/SBOM are
-integrity and traceability controls; they are not cryptographic publisher
-signatures.
+The published `v1.5.1` assets include Native ZIP/checksum, MCPB/checksum,
+first-party SBOM and typed publication manifest. SHA-256, provenance and SBOM
+prove integrity/traceability, **not cryptographic publisher signatures**;
+signing authority remains `NOT_ESTABLISHED`.
+See the [post-publication record](docs/release/V1_5_1_RELEASE_PUBLICATION.md)
+for exact SHA-256 values and preserved non-blocking diagnostic results.
 
 ## Contributing and security
 

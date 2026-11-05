@@ -6,73 +6,55 @@ It is intentionally short. Historical root snapshots are preserved under
 
 ## Current status
 
-Date: **2026-11-04**
+Date: **2026-11-05**
 
 ```text
-Stable product                  v1.5.0
-Stable release source commit    acaf726a5b59baee4c5a30521ea5a5d5ec0cec76
-Stable release source tree      d44f66dc154c21326ac8b105d2f15fd793f6071b
-Phase L                         CLOSED
-L7 exit contract                29 / 29 PASS
-GitHub stable publication       PASS
+Stable product                  v1.5.1
+Stable release source commit    1f3666eefdca7e2e9a1c88099f802696bf7970d6
+Stable release source tree      d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6
+GitHub latest stable            PUBLISHED 2026-11-04
+GitHub release assets           6 / 6 SHA-256 remote readback PASS
+Publication manifest SHA256     791b42375f4f9d747d4389fcd0113dab16367aa04d6bd6b8bc8b95598be7af2b
+Release Readiness               PASS (15 blocking gates)
+Diagnostics                     default_ci FAIL; full_non_network FAIL (non-blocking)
+Phase L / L7                    CLOSED / 29 of 29 PASS
 RMA-0 through RMA-11            PASS / CLOSED
 RMA open blockers / majors      0 / 0
-Next boundary                   v1.5.1 final-candidate / release-gate decision
+Documentation Gate 2            COMPLETE_WITH_FINDINGS (13)
+Documentation Gate 3            documentation-only reconciliation
+MCP Registry                    v1.0.0 active/latest (separate publication)
 Phase M                         NOT_AUTHORIZED
 ```
 
-Pre-promotion local baseline checkpoint (historical; verify live Git HEAD):
+The authoritative [GitHub v1.5.1 Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1)
+and its six published assets are frozen under release governance. Later
+documentation-only `main` commits do **not** redefine that release.
+Historical v1.5.0 remains frozen, and Registry/Docker publication is separate.
+See [post-publication record](docs/release/V1_5_1_RELEASE_PUBLICATION.md).
 
-```text
-branch                          main
-HEAD                            b84f9fc8f9be9b1c6f5c02c58aea0bbc76edb76c
-origin/main                     3f2e5b3a3588d3778d5a4b380c9d8e0a2f41ca05
-ahead / behind                  3 / 0
-VERSION at baseline             1.5.0 (selected v1.5.1 in current local candidate)
-working tree at baseline        intentionally dirty: 56-file RMA selection before version promotion
-```
-
-The v1.5.0 tag and six frozen, SHA-256-verified GitHub Release assets remain the
-release authority. Post-release documentation commits on `main` do not redefine
-v1.5.0. GitHub Immutable Releases enforcement is not enabled for this release.
+**Historical pre-promotion local checkpoint (not live Git HEAD):**
+`b84f9fc8` ahead of `3f2e5b3a` with 56 selected RMA working-tree entries;
+that state was superseded by exact final source `1f3666ee` and the official release.
+Do not act on those checkpoint values; always re-read current Git refs.
 
 ## Current workstream
 
-The Post-Phase-L Frontdoor / Documentation Maintenance tranche is complete and
-was merged through PR #423 on 2026-10-28.
+**Post-v1.5.1 documentation reconciliation**: Gate 2 audit completed 2026-11-05.
+The separately authorized Gate 3 modifies CURRENT documentation on `main` only;
+the published `v1.5.1` Tag/source/assets remain untouched. Gate 3 corrections
+include bilingual product entry points, Launcher-first operator instructions,
+the current six-tool Unified MCP and Registry separation.
 
-```text
-main after merge                 b86ae52a2f43f53fd854e9d84cfde1c80050dcc9
-frontdoor documentation commit   e5f61e1289be46d1bab6f2c6de931a3973badc90
-PR #423                          MERGED
-```
+Next productization P2–P5, any further live-provider acquisition, MCP Registry
+publication, Docker registry publication, and Phase M require separate authorization.
 
-Current stopping point:
+## Historical prepublication RMA workstream / evidence index
 
-> **Post-v1.5 Productization & Stabilization — RMA-0 through RMA-11 CLOSED; local v1.5.1 clean-source / Native final-build gate authorized**
-
-P0 and the original P1 Windows Launcher tranche are complete. Subsequent bounded
-work produced three local commits on `main`, intentionally ahead of `origin/main`:
-
-```text
-b38fde12  feat(launcher): finalize v2 UX and native entry guard
-8b482be4  fix(launcher): add explicit verified TLS compatibility retry
-b84f9fc8  fix(packaging): include Mode B2 execute-once wrapper
-```
-
-RMA additionally produced bounded, accepted repair/test changes across
-lifecycle/Launcher, deterministic verified TLS, Result V3 truthfulness, Workbench
-operator UX/authorization readiness, explicit execution confirmation, and Mode C
-handoff projection. These RMA-accepted changes are selected for a local v1.5.1 source promotion; they are not published release bytes. The normal operator entry for a built Native distribution remains the
-bundle-root `Launch-TW-Market.cmd`.
-
-Owner authorized the formal RMA-0 through RMA-11 program on 2026-10-31. It is now
-complete: all twelve RMA groups are **PASS/CLOSED**. The final defect disposition
-has zero open blockers and zero open majors; `RMA-D022` and `RMA-D025` are retained
-as `DEFERRED_NON_BLOCKING` observations. `VERSION=1.5.1` was separately selected for a local unpublished candidate on
-2026-11-04; frozen v1.5.0 authority remains unchanged. RMA closure did not
-authorize commit/push/tag,
-release publication, Registry publication, Phase M or P2–P5.
+The following RMA evidence links and per-group narratives are retained as
+**historical pre-v1.5.1-publication acceptance**, not a current pending
+source-promotion instruction. RMA-0..11 are PASS/CLOSED with zero open blockers
+and majors; RMA-D022/D025 are deferred non-blocking. The former Windows P1
+launcher work has already been incorporated into the published product.
 
 Current RMA authorities:
 
@@ -189,27 +171,22 @@ release; Registry publication remains separate.
 
 ## Allowed next work
 
-The RMA program is complete; there is no remaining RMA execution group. This
-closure authorizes only the governance reconciliation recorded here. It does not
-automatically authorize further product mutation or release actions.
+Post-v1.5.1 **documentation-only maintenance** is the present authorization:
+repair CURRENT navigation, operator/MCPB instructions, release metadata and
+historical/current boundaries using the Gate 2 issue register. Use a distinct
+`main` commit; do not retag the published release or replace its assets.
 
-Owner separately authorized v1.5.1 local clean-source promotion and an exact Native
-final-build gate on 2026-11-04, without publication authority. The gate will:
-select the intended accumulated RMA repair bytes, review unrelated working-tree
-mutations, build an exact candidate, run the required current test/release
-governance gates against those exact bytes, and record final hashes/results.
-
-The Owner has selected `VERSION=1.5.1` and authorized bounded local commit/build
-for this gate. Push, tag and publication still require separate Owner decisions. RMA closure itself does not
-authorize version mutation, commit, push, tag, GitHub release, Registry
-publication, Phase M or P2–P5. The frozen v1.5.0 tag/assets remain immutable.
+RMA closure and prior local build permissions are historical events, not standing
+authorizations for any further runtime changes, provider calls, Registry/Docker
+publication or Phase M. P2–P5 remain separately governed.
 
 ## Explicit stop boundaries
 
 Do **not**:
 
 - reopen or rerun Phase L acceptance solely for documentation maintenance;
-- modify the governance-frozen `v1.5.0` tag or six published release assets;
+- modify the governance-frozen `v1.5.0` **or `v1.5.1`** tag, source,
+  historical evidence, or six published release assets;
 - update `server.json` / MCP Registry metadata without separate publication authorization;
 - publish a Docker image or imply a container-registry release exists;
 - start Phase M;
@@ -220,32 +197,20 @@ Do **not**:
 
 ## Resume order
 
-A new human or agent should read:
+1. `PROJECT.md` — current product authority and release identity.
+2. `HANDOFF.md` — current stopping point.
+3. `ROADMAP.md` — durable phase scope, Phase M NOT_AUTHORIZED.
+4. `AGENTS.md` — repository and AI tool/acceptance rules.
+5. `docs/INDEX.md` — current documentation navigation.
+6. `docs/release/V1_5_1_RELEASE_PUBLICATION.md` — published artifact hashes,
+   retained test diagnostics and Registry boundary.
+7. `docs/governance/post_v1_5/` — historical RMA contracts, per-group
+   acceptance, defect register and release preflight.
+8. Current Capability Catalog / Routing / executor authority for live
+   executability questions; do not infer permission from documentation.
 
-1. `PROJECT.md` — current product/project authority;
-2. `HANDOFF.md` — current stop point and allowed work;
-3. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_RELEASE_PREFLIGHT_AND_CONTINUITY_2026-10-31.md`;
-4. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_0_RELEASE_PROVENANCE_BASELINE_2026-10-31.md`;
-5. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_1_FRESH_FIRST_RUN_INSTALLATION_2026-10-31.md`;
-6. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_2_LAUNCHER_DAILY_OPERATION_2026-10-31.md`;
-7. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_3_SECURITY_MASTER_LIFECYCLE_2026-11-01.md`;
-8. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_4_LOCAL_SERVICE_MCP_REAL_INTEGRATION_2026-11-01.md`;
-9. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_5_IDENTITY_RESOLUTION_MATRIX_2026-11-01.md`;
-10. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_6_CAPABILITY_EXECUTION_MATRIX_2026-11-01.md`;
-11. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_7_OFFICIAL_SOURCE_TLS_MATRIX_2026-11-01.md`;
-12. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_8_RESULT_AUDIT_EVIDENCE_INTEGRITY_2026-11-02.md`;
-13. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_9_FAILURE_RECOVERY_MATRIX_2026-11-02.md`;
-14. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_10_NATIVE_PACKAGE_PORTABILITY_2026-11-02.md`;
-15. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_11_OPERATOR_EXPERIENCE_ACCEPTANCE_2026-11-03.md`;
-16. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_TEST_CONTRACT_2026-10-31.md`;
-17. `docs/governance/post_v1_5/POST_V1_5_V1_5_1_RMA_DEFECT_REGISTER_2026-10-31.md`;
-18. `ROADMAP.md` — durable phase scope and Phase M boundary;
-19. `AGENTS.md` — repository/AI working rules;
-20. current Catalog / Routing / executor authority when final-candidate review depends on capability truth.
-
-Before continuing, re-read Git status and do not assume the checkpoint SHA in
-this handoff is still current. Do not reconstruct current state by reading
-historical milestone documents in chronological order.
+Before any subsequent work re-read Git status and the remote `main` and
+annotated Tag refs. Historical acceptance material is not current authority.
 
 ## Recovery / history pointers
 
@@ -253,7 +218,8 @@ historical milestone documents in chronological order.
 - Governance navigation: `docs/governance/INDEX.md`
 - Phase L evidence: `docs/governance/phase_l/`
 - Pre-F3 root snapshots: `docs/archive/frontdoor/2026-10-28-pre-f3/`
-- Public release: `https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0`
+- Latest public release: `https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1`
+- Previous historical release: `https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0`
 
 Current-state contradictions belong in current frontdoor documents. Historical
 gate truth remains historical and must not be laundered into later wording.

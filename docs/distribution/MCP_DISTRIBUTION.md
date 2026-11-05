@@ -5,51 +5,46 @@ a hosted market-data service.
 
 ## Current GitHub distribution
 
-The current GitHub stable MCPB is published with governance-frozen release
-[`v1.5.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0).
-GitHub Immutable Releases enforcement is not enabled for this release.
+The latest GitHub Stable MCPB is part of frozen
+[`v1.5.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1),
+published 2026-11-04. Immutable Tags/assets are release-governance policy;
+GitHub Immutable Releases platform enforcement is not asserted.
 
-- [MCPB bundle](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb)
-- [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb.sha256)
+- [MCPB bundle](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb)
+- [MCPB SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb.sha256)
+- [Release provenance / all six hashes](../release/V1_5_1_RELEASE_PUBLICATION.md)
 
 Frozen MCPB SHA-256:
 
 ```text
-8c7a02eb93a6224ca61f3c6c46014972c1045b8d19c358e1fbe6636e3d4bad5a
+3bc7b12184076e241e61abf4c4525c846de12bce5aa2340c52ead497be2f9a39
 ```
 
-Release source identity:
+Frozen v1.5.1 source identity:
 
 ```text
-commit acaf726a5b59baee4c5a30521ea5a5d5ec0cec76
-tree   d44f66dc154c21326ac8b105d2f15fd793f6071b
+commit 1f3666eefdca7e2e9a1c88099f802696bf7970d6
+tree   d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6
 ```
 
-## Runtime compatibility
-
-The v1.5.0 MCPB manifest declares:
-
-- platform: Windows (`win32`)
-- Python runtime: `>=3.13,<3.14`
-- transport: local stdio
-- product version: `1.5.0`
+The packaged MCPB manifest declares Windows (`win32`), CPython
+`>=3.13,<3.14`, local stdio, ProductVersion `1.5.1` and exactly six tools.
 
 ## Install into an MCP client
 
-1. Download the `.mcpb` and SHA-256 sidecar from the v1.5.0 GitHub Release.
-2. Verify the local file hash before importing it.
-3. Import/install the `.mcpb` using your MCP client's local package workflow.
-4. Confirm the server starts locally over stdio and exposes exactly six tools.
-
-PowerShell hash check:
+1. Download `v1.5.1` .mcpb and SHA-256 sidecar from GitHub.
+2. Verify exact local SHA-256 before importing the package.
+3. Import/install via an MCPB-capable client's local package workflow.
+4. Verify local stdio startup and the **six named tools below**; client
+   installation must not be mistaken for Security Master activation.
 
 ```powershell
-(Get-FileHash .\tw-market-unified-mcp-v1.5.0-win-x64.mcpb -Algorithm SHA256).Hash.ToLower()
+(Get-FileHash .\tw-market-unified-mcp-v1.5.1-win-x64.mcpb -Algorithm SHA256).Hash.ToLower()
 ```
 
-The package contains the TW-Market application projection plus the accepted
-Windows Python dependency payload required by the MCP server. It does not add a
-seventh tool, hosted proxy, scheduler, or background market fetch.
+The package contains the first-party application projection and
+exact accepted offline Python dependency payload. It does not introduce
+another executor, network proxy, scheduler or background acquisition.
 
 ## Exact six-tool surface
 
@@ -86,17 +81,17 @@ initialize identity data and does not perform a market fetch.
 
 ## MCP Registry boundary
 
-The official MCP Registry identity remains:
+The official MCP Registry identity is:
+[`io.github.SmartyJohnway/tw-market-live-data-intelligence`](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.SmartyJohnway%2Ftw-market-live-data-intelligence/versions/latest).
 
-[`io.github.SmartyJohnway/tw-market-live-data-intelligence`](https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.SmartyJohnway/tw-market-live-data-intelligence)
+A fresh official Registry GET on **2026-11-05** returned
+`server.version=1.0.0` and `status=active` / `isLatest=true`;
+its MCPB URL still points to the historical `v1.0.0` GitHub asset.
+The repository `server.json` matches that historical Registry declaration.
 
-GitHub Release publication and MCP Registry publication are independent. The
-v1.5.0 A7 GitHub release did **not** update Registry metadata; the currently
-published Registry package metadata therefore remains on the historical
-`v1.0.0` package until a separately authorized Registry publication occurs.
-
-Do not treat Registry metadata as proof that GitHub v1.5.0 was unpublished, and
-do not treat GitHub v1.5.0 as proof that Registry metadata was updated.
+**GitHub `v1.5.1` publication is not MCP Registry `v1.5.1`
+publication.** Updating Registry metadata requires separately authorized
+publication; do not bump `server.json` to match GitHub as a doc fix.
 
 ## Source launcher alternative
 
@@ -113,19 +108,20 @@ With those prerequisites satisfied:
 python scripts/run_unified_market_evidence_mcp.py
 ```
 
-The source launcher is a development path; it is not the frozen v1.5.0 MCPB
-artifact. Use the GitHub release asset when you need the published distribution.
+The source launcher is a development path, not the frozen `v1.5.1`
+MCPB asset. Use the published binary when a frozen release identity is needed.
 
 ## Publication provenance
 
-The v1.5.0 MCPB was frozen and published as part of the same release artifact
-set as the Windows Native ZIP, checksums, first-party SBOM, and typed
-publication manifest. Its server-side and downloaded-byte SHA-256 were verified
-against the frozen release identity after publication.
+The `v1.5.1` MCPB was published alongside Native ZIP, checksum sidecars,
+first-party SBOM and typed Publication Manifest. All six assets were
+independently downloaded and SHA-256 revalidated **after publication**.
+The exact Release/source identity remains the annotated `v1.5.1` Tag,
+not later `main` documentation commits.
 
-The MCPB does not redefine the release source commit/tree. GitHub-generated
-source archives are platform-generated from the tag; Docker is a validation /
-provenance surface only and no v1.5.0 container-registry publication is claimed.
+Docker is local build/validation/provenance only; no `v1.5.1` Docker
+registry publication is claimed. Signing authority remains
+`NOT_ESTABLISHED`: SHA-256 and SBOM do not constitute publisher signatures.
 
 ## Safety boundary
 

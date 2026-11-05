@@ -1,6 +1,9 @@
 # Docker Local Service profile
 
-This profile runs one TW-Market Local Service in a Linux/amd64 container. The
+This profile runs one TW-Market Local Service in a Linux/amd64 container.
+The v1.5.1 GitHub release accepted Docker as a **local, validation-only**
+build/provenance surface. No Docker registry publication or supported hosted
+image is claimed; Docker does not replace the Tier-1 Windows Native distribution. The
 Windows host keeps ownership of the stdio MCP adapter and connects it to
 `http://127.0.0.1:<host-port>`. No MCP server, tunnel, agent, database, or other
 service runs in the container.
@@ -8,23 +11,30 @@ service runs in the container.
 ## Build from the exact committed payload
 
 Prepare a clean Linux/amd64 CPython 3.13 wheelhouse using only the checked-in
-hashes in `requirements-linux-amd64-cp313.txt`. From a Windows Python 3.13 host:
+hashes in `requirements-linux-amd64-cp313.txt`. These commands are local
+build examples, **not a published Docker image download**; use a fresh scratch
+directory and independently bind source tree and dependency-lock hashes.
+From a Windows Python 3.13 host:
 
 ```powershell
+$build = Join-Path $env:TEMP 'twmarket-v151-local-docker-example'
+$wheelhouse = Join-Path $build 'wheelhouse'
+$context = Join-Path $build 'docker-context'
+New-Item -ItemType Directory -Force -Path $wheelhouse | Out-Null
 python -m pip download --disable-pip-version-check --no-cache-dir --no-deps `
   --only-binary=:all: --require-hashes --python-version 313 --implementation cp `
   --abi cp313 --platform musllinux_1_2_x86_64 --platform musllinux_1_1_x86_64 `
-  --dest C:\twmarket_temp\l6-a4\build\wheelhouse `
+  --dest $wheelhouse `
   -r packaging_docker\requirements-linux-amd64-cp313.txt
 python scripts\build_docker_context.py `
-  --wheelhouse C:\twmarket_temp\l6-a4\build\wheelhouse `
-  --output C:\twmarket_temp\l6-a4\build\docker-context
+  --wheelhouse $wheelhouse `
+  --output $context
 docker build --platform linux/amd64 `
   --build-arg SOURCE_TREE=<candidate-tree> `
   --build-arg DEPENDENCY_LOCK_SHA256=<dependency-lock-sha256> `
-  --tag tw-market-local-service:l6-a4 `
-  --file C:\twmarket_temp\l6-a4\build\docker-context\Dockerfile `
-  C:\twmarket_temp\l6-a4\build\docker-context
+  --tag tw-market-local-service:v1.5.1-local `
+  --file $context\Dockerfile `
+  $context
 ```
 
 The context builder accepts only exact committed resources from
@@ -40,7 +50,7 @@ that project. Keep the project name to reuse state across container replacement.
 
 ```powershell
 $env:TW_MARKET_COMPOSE_PROJECT = 'tw-market-local'
-$env:TW_MARKET_IMAGE = 'tw-market-local-service:l6-a4'
+$env:TW_MARKET_IMAGE = 'tw-market-local-service:v1.5.1-local'
 docker compose -f packaging_docker\compose.yaml run --rm --no-deps `
   --entrypoint python local-service -m scripts.tw_market init --json
 docker compose -f packaging_docker\compose.yaml up -d local-service

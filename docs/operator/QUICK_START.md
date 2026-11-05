@@ -1,8 +1,8 @@
 # Operator Quick Start
 
-TW-Market `v1.5.0` is the current stable GitHub release. Choose the path that
-matches how you want to use the product; source checkout is no longer the
-default path for every user.
+TW-Market `v1.5.1` is the current Latest Stable GitHub Release.
+The Native Windows Launcher is the recommended first-run entry; developer
+source checkout is not the ordinary operator installation.
 
 | Path | Best for | Primary requirement |
 |---|---|---|
@@ -10,102 +10,98 @@ default path for every user.
 | **Windows MCPB** | AI / MCP client | Windows + Python `>=3.13,<3.14` + MCPB-capable client |
 | **Source checkout** | Developer / contributor | Canonical development runtime: CPython 3.13 |
 
-The stable release is:
+The current published Stable:
 
-- [GitHub Release v1.5.0](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
-- frozen source commit `acaf726a5b59baee4c5a30521ea5a5d5ec0cec76`
-- frozen source tree `d44f66dc154c21326ac8b105d2f15fd793f6071b`
+- [GitHub Release v1.5.1](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1)
+- frozen source commit `1f3666eefdca7e2e9a1c88099f802696bf7970d6`
+- frozen source tree `d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6`
+- [six-asset checksum and release record](../release/V1_5_1_RELEASE_PUBLICATION.md)
 
 ## Path A — Windows Native ZIP (recommended operator path)
 
-Download:
+Download the exact released files:
 
-- [TW-Market-1.5.0-windows-x64.zip](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip)
-- [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip.sha256)
+- [TW-Market-1.5.1-windows-x64.zip](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-windows-x64.zip)
+- [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-windows-x64.zip.sha256)
 
-Verify the archive before extraction:
+Check SHA-256 before extracting:
 
 ```powershell
-(Get-FileHash .\TW-Market-1.5.0-windows-x64.zip -Algorithm SHA256).Hash.ToLower()
+(Get-FileHash .\TW-Market-1.5.1-windows-x64.zip -Algorithm SHA256).Hash.ToLower()
 ```
 
-Expected SHA-256:
-
+Expected exact file SHA-256:
 ```text
-dd2098d094e1ea2373d68f535694cdaefd7483ea82896783444f9ae74bf2ea67
+e444852cfc5864ffe3651d90b1751f1e2e22385e6743d8d26581725e49475016
 ```
 
-Extract the ZIP to a writable application directory and enter the extracted
-`TW-Market-1.5.0-windows-x64` directory. Then run:
+Extract the ZIP to a writable application directory, then enter the extracted
+`TW-Market-1.5.1-windows-x64` directory. **Double-click
+`Launch-TW-Market.cmd`**; use the graphical **Set Up TW-Market** action
+to perform the existing offline, hashed-wheel bootstrap and conditional
+installation initialization. Python 3.13 x64 must already be available;
+the Launcher does not install Python, create a Windows service, update
+Security Master, acquire market data or auto-start Local Runtime during setup.
+
+Use the Launcher to Start / Stop the local runtime, refresh displayed status,
+run Diagnose and Open Workbench as appropriate. The Workbench uses
+`http://127.0.0.1:8000/workbench/` by default. Security Master
+`NOT_INITIALIZED` can be a valid installation state until the operator
+explicitly performs its separate live update.
+
+**Advanced command-line alternative (not the recommended first-run UI):**
 
 ```powershell
 & .\bootstrap\bootstrap.ps1
 .\tw-market.cmd status --json
 .\tw-market.cmd init --json
-```
-
-Bootstrap verifies the payload and creates the package-local runtime from the
-included exact hashed wheels with pip networking disabled. Bootstrap does **not**
-initialize business state or acquire market data. `init` establishes the local
-installation; the Taiwan Market Identity Service can still correctly report
-`NOT_INITIALIZED` until you explicitly update the Security Master.
-
-Initialize or refresh the Security Master only when you intend to perform that
-official external acquisition:
-
-```powershell
 .\tw-market-security-master.cmd status
+# Run the following only when you explicitly authorize official source acquisition:
 .\tw-market-security-master.cmd update --live
-```
-
-Start the local service and inspect health:
-
-```powershell
 .\tw-market.cmd start --json
 .\tw-market.cmd status --json
 .\tw-market.cmd doctor --json
-```
-
-Open the Workbench at:
-
-```text
-http://127.0.0.1:8000/workbench/
-```
-
-Stop the local service with:
-
-```powershell
 .\tw-market.cmd stop --json
 ```
 
-The Native distribution does not require administrator privileges, registry or
-PATH changes, a Windows service, a scheduled task, an updater, or Docker.
+Bootstrap verifies the frozen payload and uses included exact hashed wheels
+with pip networking disabled; it does not initialize business state or
+acquire market evidence. `init` does not initialize Security Master.
+Do not run `update --live` as a harmless readiness test.
+
+No administrator privileges, registry or PATH edits, Windows system service,
+scheduled task, updater or Docker are required.
 
 ## Path B — Windows MCPB (AI / MCP client path)
 
-Download the current GitHub MCPB directly from `v1.5.0`:
+Download the current GitHub `v1.5.1` distribution:
 
-- [tw-market-unified-mcp-v1.5.0-win-x64.mcpb](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb)
-- [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb.sha256)
+- [tw-market-unified-mcp-v1.5.1-win-x64.mcpb](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb)
+- [SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb.sha256)
 
-Expected MCPB SHA-256:
+Exact MCPB SHA-256:
 
 ```text
-8c7a02eb93a6224ca61f3c6c46014972c1045b8d19c358e1fbe6636e3d4bad5a
+3bc7b12184076e241e61abf4c4525c846de12bce5aa2340c52ead497be2f9a39
 ```
 
-Import/install the local `.mcpb` through your MCP client's package workflow.
-The package runs a local Python stdio server and exposes exactly six governed
-tools; it is not a hosted market-data endpoint.
+Verify the .mcpb before import:
+```powershell
+(Get-FileHash .\tw-market-unified-mcp-v1.5.1-win-x64.mcpb -Algorithm SHA256).Hash.ToLower()
+```
 
-The MCPB is **not** the operator administration surface for creating or updating
-the installation-local Security Master. If the MCP server reports
-`NOT_INITIALIZED`, initialize the same local installation through the Native or
-source operator path first. The platform-default HOME is
+Import the package through an MCPB-capable client's local package workflow.
+It serves six governed tools over local stdio, **not** a hosted market-data
+endpoint. Python `>=3.13,<3.14` and Windows are required.
+
+MCPB does not itself perform operator administration for Security Master.
+A fresh identity-dependent operation may return `NOT_INITIALIZED`; activate
+the same local installation through the Native or source operator path
+only after explicit operator intent. Default HOME is
 `%LOCALAPPDATA%\TW-Market` unless explicitly overridden.
 
-See [MCP distribution](../distribution/MCP_DISTRIBUTION.md) for the exact tool
-surface, Registry boundary, runtime requirement, and provenance.
+See [MCP Distribution](../distribution/MCP_DISTRIBUTION.md) and
+[Unified MCP Reference](../reference/MCP_REFERENCE.md) for current contracts.
 
 <a id="source-first-run"></a>
 ## Path C — Source checkout (developer / contributor path)
@@ -115,8 +111,8 @@ This is the primary source-onboarding authority. The verified S2 environment is
 installed dependency environment passing `verify_environment.py` and completely
 isolated fresh application state. Linux, macOS,
 container startup, fresh network clone, dependency download and full locked-graph
-reinstallation were not verified by that smoke. The frozen `v1.5.0` distribution is a separate source/artifact
-identity; stay on `main` for current development.
+reinstallation were not verified by that smoke. The frozen `v1.5.1` tag is a separate source/artifact
+identity from later documentation-only `main` commits; stay on `main` for development.
 
 ### 1. Acquire source and dependencies
 
@@ -138,7 +134,7 @@ and a previously prepared compatible wheelhouse, dependency installation may use
 S2 does not download dependencies or market data. `verify_environment.py` checks
 imports, supported Python and the exact `mcp==1.29.0` pin; it does not initialize
 application state. CPython 3.13 is canonical; 3.11 remains noncanonical source
-compatibility, and 3.12 is unsupported for the v1.5.0 release contract.
+compatibility, and 3.12 is unsupported for the v1.5.1 release contract.
 
 ### 2. Initialize the application installation (offline)
 

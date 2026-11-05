@@ -20,18 +20,22 @@ general-purpose crawler, or investment-advice system.
 
 ## Current stable product
 
-- ProductVersion: `1.5.0`
-- Stable GitHub release: `v1.5.0` (published 2026-10-28)
-- Frozen source commit: `acaf726a5b59baee4c5a30521ea5a5d5ec0cec76`
-- Frozen source tree: `d44f66dc154c21326ac8b105d2f15fd793f6071b`
+- ProductVersion: `1.5.1`
+- Latest Stable GitHub Release: [`v1.5.1`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1), published 2026-11-04
+- Frozen release source commit: `1f3666eefdca7e2e9a1c88099f802696bf7970d6`
+- Frozen release source tree: `d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6`
 - Native Tier-1: Windows 11 x64
 - Canonical release/build/CI runtime: CPython 3.13
-- MCP SDK policy: exact `mcp==1.29.0`
+- MCP SDK: exact `mcp==1.29.0`
+- Formal GitHub release publication: **PASS / CLOSED**
+- Publication Manifest SHA-256: `791b42375f4f9d747d4389fcd0113dab16367aa04d6bd6b8bc8b95598be7af2b`
 
-The frozen v1.5.0 tag/assets remain the release authority even after `main`
-advances through post-release documentation or future development commits.
-GitHub v1.5.0 publication is complete; MCP Registry publication remains a
-separate surface and is not implied by the GitHub release.
+The earlier [`v1.5.0`](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
+remains a separately frozen historical GitHub release. Future documentation commits
+on `main` do not change the published `v1.5.1` tag/assets. The official MCP Registry
+still serves historical `v1.0.0` (verified 2026-11-05); its publication is independent.
+Docker/Registry/signing publication is **not** implied by the GitHub release.
+See [v1.5.1 publication record](docs/release/V1_5_1_RELEASE_PUBLICATION.md).
 
 ## Current runtime authority
 
@@ -106,33 +110,31 @@ comes from the machine-readable Catalog / Routing / executor authority.
 
 ## Lifecycle status
 
-- Phases A–F and V1 Release Gate: completed product foundation.
-- Phase I: COMPLETE.
-- Phase J: COMPLETE.
-- Phase K: COMPLETE.
-- Phase L: **CLOSED** under Owner final closure on 2026-10-28.
-- L7 canonical exit contract: 29/29 PASS.
-- Stable v1.5.0 GitHub publication: PASS.
-- Phase M: **NOT_AUTHORIZED**.
+- Phases A–F / V1 Release Gate: completed foundation.
+- Phase I: COMPLETE; Phase J: COMPLETE; Phase K: COMPLETE.
+- Phase L: **CLOSED** (2026-10-28); L7 canonical exit contract: 29/29 PASS.
+- RMA-0 through RMA-11: **PASS / CLOSED**; 0 open blockers and 0 open majors;
+  RMA-D022/D025 retained as `DEFERRED_NON_BLOCKING`.
+- GitHub v1.5.1 Stable / Native / MCPB / Docker local-validation gates: **PASS**;
+  GitHub Release **PUBLISHED** 2026-11-04.
+- Gate 2 Post-v1.5.1 Documentation Audit: completed 2026-11-05 with 13
+  documentation findings (2 P0, 8 P1, 3 P2).
+- Gate 3: documentation-only reconciliation on `main`; no change to the released
+  source/tag/assets.
+- P2–P5 remain separately governed tranches, not authorized by this doc update.
+- Phase M: **NOT_AUTHORIZED** (no scheduler/monitoring).
 
-The current workstream remains **Post-v1.5 Productization & Stabilization**.
-P0 and the original P1 Windows Launcher tranche are complete. Subsequent bounded
-stabilization produced three local commits on `main` ahead of `origin/main`:
-Launcher v2 / native-entry guard (`b38fde12`), explicit verified-TLS compatibility
-retry for Security Master (`8b482be4`), and Native packaging closure for the Mode
-B2 execute-once wrapper (`b84f9fc8`). RMA then produced additional bounded,
-RMA-accepted candidate repairs across lifecycle/Launcher, deterministic verified TLS,
-Result V3 truthfulness, Workbench request/preview/authorization UX, explicit
-network-confirmation UX, and Mode C handoff projection. Those repairs are accepted
-RMA candidate content selected for the Owner-authorized local clean-source gate; GitHub publication remains separately governed.
+The Release Readiness result is **PASS** using the accepted release-blocking
+profile. Historical supplemental `default_ci=FAIL` and
+`full_non_network=FAIL` diagnostic outcomes remain explicitly retained; this
+does not claim that all test profiles passed.
 
-The **RMA — v1.5.1 Real-Machine Acceptance & Patch Release Preflight** tranche is
-now complete. It validated the actual Windows Native Launcher -> installation/runtime
--> Security Master -> Local Service -> six-tool MCP -> explicit
-Request/Preview/Authorization -> Mode B2 -> official evidence -> Result/Audit /
-AI Handoff chain. `VERSION` is selected as `1.5.1` for an unpublished local
-candidate. Frozen v1.5.0 tag/assets remain unchanged; exact Native final-build
-and release gate are separate from the already closed RMA program.
+### Historical prepublication RMA acceptance
+
+The following RMA per-group findings document acceptance *before* the official
+v1.5.1 release. References to a candidate, a sandbox or a previously unpushed
+commit are chronological snapshots and **do not describe the current GitHub
+publication status**.
 
 RMA is governed by the post-v1.5 RMA Test Contract, Defect Register, per-group
 closure records and Release Preflight/Continuity record. `RMA-0` through `RMA-11`
@@ -199,9 +201,9 @@ Execute Once, Result/Audit export and AI-ready handoff. Bounded repairs closed
 `RMA-D022` and transient `RMA-D025` are retained as `DEFERRED_NON_BLOCKING`.
 
 `RMA-0` through `RMA-11` are therefore **PASS/CLOSED**. RMA itself is complete.
-Owner separately authorized v1.5.1 local clean-source promotion and Native final-build
-gate on 2026-11-04; RMA closure itself did not authorize publication. P2–P5 remain later
-bounded tranches and Phase M remains separately unauthorized.
+Owner-authorized local promotion, the final Native/MCPB/Docker acceptance,
+and the later GitHub v1.5.1 stable publication are distinct chronological
+gates. Publication is now complete; RMA alone was never publication authority.
 
 ## Current authority hierarchy
 

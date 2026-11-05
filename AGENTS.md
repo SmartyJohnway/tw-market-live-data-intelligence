@@ -1,28 +1,26 @@
 # AGENTS.md — Repository Governance and AI Collaboration Contract
 
-## Current repository boundary (2026-10-29)
+## Current repository boundary (2026-11-05)
 
-TW-Market stable `v1.5.0` is published from frozen source commit
-`acaf726a5b59baee4c5a30521ea5a5d5ec0cec76`, tree
-`d44f66dc154c21326ac8b105d2f15fd793f6071b`. Phase L is **CLOSED** after
-29/29 L7 exits passed, R3 froze source/artifact identities, A7 published the
-GitHub stable release, and Owner final closure was accepted.
+TW-Market **`v1.5.1` is the latest published GitHub Stable**, from frozen
+commit `1f3666eefdca7e2e9a1c88099f802696bf7970d6` and Git tree
+`d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6`.
+The six GitHub Release assets and Publication Manifest SHA-256
+`791b42375f4f9d747d4389fcd0113dab16367aa04d6bd6b8bc8b95598be7af2b`
+were independently verified after publication.
 
-Phase M remains **NOT_AUTHORIZED**. The current authorized workstream is
-**Post-v1.5 Productization & Stabilization**, with **P1 — Windows Launcher /
-First-run UX** as the active productization tranche. P0 Current-state
-Reconciliation is complete. P1-A0 architecture audit is complete; P1-A1 First-run
-/ Setup UX Contract and P1-A2 Daily Main Launcher / Runtime Control UX Contract
-are both Owner-frozen. The first independent review of P1-A3 returned
-`CHANGES_REQUIRED`, and the P1-A3-R1 independent re-review also returned
-`CHANGES_REQUIRED`. Bounded P1-A3-R2 corrections, `97 passed` deterministic
-revalidation, and exact-current Windows Sandbox R5 headless + fresh GUI +
-targeted failure-details acceptance are complete. A fresh Codex P1-A3-R2
-independent re-review returned `PASS_WITH_NOTES` with zero blocking findings.
-Owner then explicitly authorized controlled commit/push; P1-A3-R2 implementation,
-tests, preserved R1–R5 evidence and post-v1.5 governance were committed and pushed
-as `3059531b7cb02bede681938228a0f258b8b5b9d9`. P2–P5 remain separately bounded
-follow-on work.
+Phase L CLOSED (29/29 L7 exits PASS), RMA-0..RMA-11 PASS/CLOSED,
+and `v1.5.1` GitHub publication CLOSED. The former P1 Launcher/First-run
+tranche was accepted into this release. Gate 2 identified 13 documentation
+corrections; Gate 3 is **documentation-only reconciliation**, not a new runtime
+or Registry release. P2–P5 require separate decisions; Phase M is **NOT_AUTHORIZED**.
+The MCP Registry remains independently published at historical version
+`1.0.0` (official live Registry check 2026-11-05).
+
+Do not modify `v1.5.1` Tag/source/assets, the older frozen `v1.5.0`, exact
+release-note draft bound to the publication manifest, release contracts,
+Runtime/Capability/Catalog/Route, `server.json`, or accepted evidence to
+make this documentation update appear to be a new product version.
 
 ## 1. Read this repository in the right order
 
@@ -89,15 +87,11 @@ roadmap coverage must not be inferred from individual route activations.
 Current executable truth remains the machine-readable Catalog / Routing /
 executor configuration.
 
-The current P1 launcher tranche does not reopen Phase L, start Phase M,
-authorize new live acquisition, alter release/Registry authority, or enter later
-P2–P5 productization/stabilization work. P1-A1 and P1-A2 are Owner-frozen design
-contracts. P1-A3-R1 independent re-review returned `CHANGES_REQUIRED`; bounded
-P1-A3-R2 corrections, 97-test deterministic revalidation, and R5 headless + fresh
-GUI + targeted failure-details recertification are complete. The fresh P1-A3-R2
-independent re-review returned `PASS_WITH_NOTES` with zero blocking findings.
-Owner subsequently authorized controlled commit/push, and implementation commit
-`3059531b7cb02bede681938228a0f258b8b5b9d9` is present on `origin/main`.
+The P1 Launcher/First-run tranche is **historical accepted productization**
+and part of released `v1.5.1`. Its 2026-10-29 P1-A3-R2 review/commit
+`3059531b7cb02bede681938228a0f258b8b5b9d9` remains historical
+evidence, not a current work authorization. Documentation-only Gate 3 does not
+authorize P2–P5, Phase M, Registry publication or new bounded live execution.
 
 ## 5. Authority hierarchy
 
@@ -281,13 +275,16 @@ python -m compileall -q scripts server tests
 python scripts/validate_phase_h_v3_contracts.py
 python scripts/validate_portable_catalog_sync.py
 python scripts/validate_runtime_skill_guide_sync.py
-python scripts/run_test_profile.py default-ci
+python scripts/run_test_profile.py release-blocking-ci
 git diff --check
 ```
 
 For a change that affects a frozen/current authority, add focused tests for the
 specific contract rather than relying only on the full suite.
 
+The canonical `release-blocking-ci` result is the blocking release/test gate.
+`default-ci` and `full-non-network` remain supplemental diagnostics; the
+v1.5.1 publication retained FAIL on both and did not relabel them PASS.
 Do not claim success until the relevant acceptance evidence exists.
 
 ## 14. Change discipline
@@ -340,30 +337,24 @@ important audit evidence.
 
 ## 16. Current stop rule
 
-> **Phase L is CLOSED. Phase M is NOT_AUTHORIZED.**
+> **v1.5.1 GitHub Stable PUBLISHED / RMA CLOSED / Phase M NOT_AUTHORIZED.**
 
-Current work is limited to the separately authorized **Post-v1.5 Productization &
-Stabilization — P1 Windows Launcher / First-run UX** tranche. P1-A1 and P1-A2 are
-Owner-frozen design contracts. P1-A3-R1 independent re-review returned
-`CHANGES_REQUIRED`; bounded P1-A3-R2 corrections, `97 passed` deterministic
-revalidation, and exact-current Windows Sandbox R5 headless + fresh GUI +
-targeted failure-details acceptance are complete. The fresh P1-A3-R2 independent
-re-review returned `PASS_WITH_NOTES` with zero blocking findings. Owner then
-explicitly authorized controlled commit/push; implementation commit
-`3059531b7cb02bede681938228a0f258b8b5b9d9` is present on `origin/main`.
-Preserve all accepted runtime, release, source and historical evidence unless a
-later explicit authorization changes that authority. P2–P5 and Phase M remain
-outside the current authorization.
+This Gate 3 allows only documentation reconciliation on `main`.
+Documentation commits do not mutate the v1.5.1 release identity or permit
+runtime changes, fresh live acquisition, Registry/Docker publication, or P2–P5.
+Use exact Git/source evidence and verify the full current Catalog/Route for
+any user-visible executability claim.
 
 Do not:
-
-- rerun consumed historical live authorities merely to refresh evidence;
-- modify the governance-frozen `v1.5.0` tag or its six published release assets;
-- update MCP Registry metadata as a documentation side effect;
+- rerun consumed historical live-authorized work without new authorization;
+- modify `v1.5.0` or `v1.5.1` tags and their released six assets;
+- edit source/manifest-bound `docs/release/V1_5_1_RELEASE_NOTES_DRAFT.md`;
+- change `server.json` / MCP Registry as a documentation side effect;
 - publish Docker/Registry artifacts without separate authorization;
-- start Phase M or scheduled/monitoring behavior;
-- rewrite historical contracts/ledgers to current wording;
-- add a seventh MCP tool or fork the canonical request/result core.
+- start Phase M or background monitoring behavior;
+- rewrite historical contracts/ledgers to reflect a later status;
+- add a seventh tool or fork the canonical request/result core.
 
-Current recovery/navigation authority is `PROJECT.md` + `HANDOFF.md`; exact
-historical gate truth remains in frozen governance records.
+Use `PROJECT.md` + `HANDOFF.md` + `docs/INDEX.md` as CURRENT navigation;
+the [v1.5.1 publication record](docs/release/V1_5_1_RELEASE_PUBLICATION.md)
+binds release identity; historical acceptance records remain immutable.

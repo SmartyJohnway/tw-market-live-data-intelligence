@@ -1,4 +1,9 @@
-# M5FGH Release Checklist
+# Historical M5FGH Release Checklist
+
+> **Historical-scope notice (2026-11-05):** The M5FGH checklist below is
+> retained for historical acceptance. It is not the current `v1.5.1`
+> GitHub stable release checklist. The published release's authority is
+> [v1.5.1 publication record](release/V1_5_1_RELEASE_PUBLICATION.md).
 
 ## Compile and tests
 - [ ] `python -m compileall scripts server tests`

@@ -1,14 +1,14 @@
 ---
 title: "tw-market-live-data-intelligence — Roadmap V3.2"
 version: "3.2"
-updated: "2026-10-28"
+updated: "2026-11-05"
 canonicalized_in_repo: "2026-09-23"
-status_reconciled_through: "2026-10-28: Phase L CLOSED after L7 29/29 exits PASS, R3 stable source/artifact freeze, A7 GitHub v1.5.0 stable publication, and Owner final closure; Post-Phase-L documentation maintenance authorized; Phase M NOT_AUTHORIZED"
+status_reconciled_through: "2026-11-05: Phase L CLOSED; RMA-0..11 PASS/CLOSED; GitHub v1.5.1 stable publication complete; Gate 2 documentation audit completed; Gate 3 documentation reconciliation only; Phase M NOT_AUTHORIZED"
 project: "tw-market-live-data-intelligence"
 product_positioning: "Taiwan Market Evidence & Research Infrastructure for Humans and AI Agents"
-stable_product_release: "v1.5.0"
-stable_release_commit: "acaf726a5b59baee4c5a30521ea5a5d5ec0cec76"
-stable_release_tree: "d44f66dc154c21326ac8b105d2f15fd793f6071b"
+stable_product_release: "v1.5.1"
+stable_release_commit: "1f3666eefdca7e2e9a1c88099f802696bf7970d6"
+stable_release_tree: "d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6"
 roadmap_role: "Durable architecture and product roadmap; progress is tracked by checkboxes, not rolling status prose."
 tags:
   - tw-market-live-data-intelligence
@@ -23,35 +23,37 @@ tags:
 
 # tw-market-live-data-intelligence
 
-## Current repository reconciliation (2026-10-28)
+## Current repository reconciliation (2026-11-05)
 
-Roadmap V3.2 remains the durable product/architecture roadmap. Current lifecycle
-reconciliation is:
+The V3.2 roadmap remains durable phase scope, not a rolling progress diary.
+The current product-release reconciliation is:
 
-- stable product release: `v1.5.0`;
-- frozen v1.5.0 source: `acaf726a5b59baee4c5a30521ea5a5d5ec0cec76`,
-  tree `d44f66dc154c21326ac8b105d2f15fd793f6071b`;
-- Phase I: COMPLETE; Phase J: COMPLETE; Phase K: COMPLETE;
-- Phase L: **CLOSED** after 29/29 L7 exits, exact-source recertification,
-  stable source/artifact freeze, A7 GitHub publication and Owner final closure;
-- Phase M: **NOT_AUTHORIZED**.
+- Latest GitHub Stable: **`v1.5.1`** (2026-11-04), frozen source
+  `1f3666eefdca7e2e9a1c88099f802696bf7970d6` and tree
+  `d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6`.
+- `v1.5.0` remains a separately frozen historical stable release.
+- Phase I, J, K: COMPLETE; Phase L: CLOSED after 29/29 L7 exits.
+- RMA-0..11: PASS/CLOSED; latest v1.5.1 GitHub Stable publication: PASS.
+- Gate 2: post-release documentation audit COMPLETE_WITH_FINDINGS; Gate 3
+  is documentation-only reconciliation.
+- Phase M: **NOT_AUTHORIZED**. P2–P5 require independent Owner decisions.
 
-Post-Phase-L frontdoor/documentation maintenance may advance `main` without
-redefining frozen v1.5.0. Historical milestone details removed from this rolling
-front section remain preserved in governance records and the pre-F3 archive.
+Current Catalog/Route governs which requests can execute; documentation or
+published tool lists do not expand route permission. This reconciliation changes
+no durable milestone checkbox, accepted ledger, tag, or published asset.
 
 # Roadmap V3.2 — Post-V1.0 Stable Release & Pre-Phase-G Reconciliation
 
 > **版本日期：2026-09-14**
-> **產品穩定版：`v1.5.0`**
+> **目前 GitHub Stable：`v1.5.1`（2026-11-04）**
 > **Roadmap 版本與產品版本彼此獨立。**
 > **本文件不是 Git / release / deployment 狀態日誌。**
 > **未來一般進度更新只需由 Owner 將 `[ ]` 改為 `[x]`；不需要因 milestone 完成而重寫 Roadmap。**
 
-> **Current repository reconciliation — 2026-10-28:** Roadmap V3.2 durable
+> **Current repository reconciliation — 2026-11-05:** Roadmap V3.2 durable
 > phase scope is unchanged. Phase I/J/K are complete. Phase L is closed after
 > its production-hardening and release-governance program culminated in stable
-> `v1.5.0` publication. Phase G/H contain substantial accepted implementation,
+> `v1.5.0` publication; the subsequent `v1.5.1` patch is now published. Phase G/H contain substantial accepted implementation,
 > but broad roadmap completion remains governed by their own durable scope.
 > Phase M remains NOT_AUTHORIZED and no scheduled/monitoring work is started by
 > this reconciliation.

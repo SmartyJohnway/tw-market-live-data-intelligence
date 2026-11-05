@@ -41,7 +41,7 @@ def readme_current_product_truth_failures(
         release_lifecycle_state = (
             "published_rc" if current_product_version == "1.0.0-rc.1"
             else "v1_5_stable_published" if current_product_version == "1.5.0"
-            else "v1_5_1_selected_unpublished" if current_product_version == "1.5.1"
+            else "v1_5_1_stable_published" if current_product_version == "1.5.1"
             else "stable_published"
         )
     release_patterns_by_state = {
@@ -51,6 +51,12 @@ def readme_current_product_truth_failures(
             r"current\s+stable\s+release\s+is\s+[`*_]*v1\.0\.0",
             r"v1\.0\.0-rc\.1",
             r"v0\.1\.0",
+        ),
+        "v1_5_1_stable_published": (
+            r"ProductVersion\s*(?:=|:)\s*[`*_]*1\.5\.1",
+            r"TW-Market\s+[`*_]*v1\.5\.1[`*_]*\s+is\s+the\s+(?:latest|current)\s+stable\s+(?:GitHub\s+)?release",
+            r"v1\.5\.0",
+            r"v1\.0\.0",
         ),
         "v1_5_1_selected_unpublished": (
             r"ProductVersion\s*=\s*[`*_]*1\.5\.1",
@@ -98,6 +104,7 @@ def readme_current_product_truth_failures(
             "stable_published": "readme_stable_published_release_status_incomplete",
             "selected_unpublished": "readme_selected_unpublished_status_incomplete",
             "v1_5_stable_published": "readme_v1_5_stable_published_status_incomplete",
+            "v1_5_1_stable_published": "readme_v1_5_1_stable_published_status_incomplete",
             "v1_5_1_selected_unpublished": "readme_v1_5_1_selected_unpublished_status_incomplete",
         }.get(release_lifecycle_state, "readme_release_lifecycle_state_unsupported"))
     if re.search(
@@ -128,6 +135,11 @@ def readme_current_product_truth_failures(
         flags=re.IGNORECASE,
     ):
         failures.append("readme_stale_v1_5_unpublished_status")
+    if release_lifecycle_state == "v1_5_1_stable_published" and re.search(
+        r"selected\s+[`*_]*v1\.5\.1[`*_]*\s+is\s+unpublished",
+        text, flags=re.IGNORECASE,
+    ):
+        failures.append("readme_stale_v1_5_1_unpublished_status")
     return failures
 
 

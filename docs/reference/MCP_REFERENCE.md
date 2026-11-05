@@ -58,8 +58,9 @@ boundary.
 
 V3 being preferred does not make all Phase H routes executable. Catalog support
 is semantic scope; selected Route / production executor authority determines
-current executability. The following summary describes the current development
-line, not the frozen v1.5.0 release artifacts.
+current executability. The following summary describes the documented current development
+line. The published `v1.5.1` tag fixes its own exact runtime/source identity;
+later documentation-only `main` commits do not expand executable routes.
 
 | Item | Capability / evidence ID | Current executable scope | Remaining boundary |
 |---|---|---|---|

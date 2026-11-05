@@ -298,7 +298,7 @@ def test_readme_selected_1_5_1_unpublished(tmp_path) -> None:
         encoding="utf-8",
     )
     assert validate_v1_public_contracts.readme_current_product_truth_failures(
-        readme, current_product_version="1.5.1"
+        readme, current_product_version="1.5.1", release_lifecycle_state="v1_5_1_selected_unpublished"
     ) == []
 
 
@@ -312,7 +312,7 @@ def test_readme_selected_1_5_1_missing_unpublished_is_rejected(tmp_path) -> None
     )
     assert "readme_v1_5_1_selected_unpublished_status_incomplete" in (
         validate_v1_public_contracts.readme_current_product_truth_failures(
-            readme, current_product_version="1.5.1"
+            readme, current_product_version="1.5.1", release_lifecycle_state="v1_5_1_selected_unpublished"
         )
     )
 
@@ -327,6 +327,51 @@ def test_readme_selected_1_5_1_falsely_published_is_rejected(tmp_path) -> None:
         encoding="utf-8",
     )
     assert "readme_selected_1_5_1_falsely_claimed_published" in (
+        validate_v1_public_contracts.readme_current_product_truth_failures(
+            readme, current_product_version="1.5.1", release_lifecycle_state="v1_5_1_selected_unpublished"
+        )
+    )
+
+
+def test_readme_validator_accepts_v1_5_1_published_stable(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "Persistent Watchlists are supported.\n"
+        "ProductVersion = `1.5.1`.\n"
+        "TW-Market `v1.5.1` is the latest stable GitHub Release.\n"
+        "Historical stable releases include v1.5.0 and v1.0.0.\n",
+        encoding="utf-8",
+    )
+    assert validate_v1_public_contracts.readme_current_product_truth_failures(
+        readme, current_product_version="1.5.1"
+    ) == []
+
+
+def test_readme_validator_rejects_v1_5_1_published_with_old_unpublished_claim(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "Persistent Watchlists are supported.\n"
+        "ProductVersion = `1.5.1`.\n"
+        "TW-Market `v1.5.1` is the latest stable GitHub Release.\n"
+        "Historical stable releases include v1.5.0 and v1.0.0.\n"
+        "Selected `v1.5.1` is unpublished.\n",
+        encoding="utf-8",
+    )
+    assert "readme_stale_v1_5_1_unpublished_status" in (
+        validate_v1_public_contracts.readme_current_product_truth_failures(
+            readme, current_product_version="1.5.1"
+        )
+    )
+
+
+def test_readme_validator_rejects_v1_5_1_published_without_latest_stable(tmp_path) -> None:
+    readme = tmp_path / "README.md"
+    readme.write_text(
+        "Persistent Watchlists are supported.\nProductVersion = `1.5.1`.\n"
+        "Historic releases include v1.5.0 and v1.0.0.\n",
+        encoding="utf-8",
+    )
+    assert "readme_v1_5_1_stable_published_status_incomplete" in (
         validate_v1_public_contracts.readme_current_product_truth_failures(
             readme, current_product_version="1.5.1"
         )

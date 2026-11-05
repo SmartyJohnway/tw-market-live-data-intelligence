@@ -2,7 +2,7 @@
 
 [English](README.md) | [繁體中文](README.zh-TW.md)
 
-[![Stable v1.5.0](https://img.shields.io/badge/stable-v1.5.0-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
+[![Stable v1.5.1](https://img.shields.io/badge/stable-v1.5.1-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
 ![Windows 11 x64](https://img.shields.io/badge/Windows-11%20x64-0078d4)
 ![Python 3.13](https://img.shields.io/badge/Python-3.13-3776ab)
 [![MCP six tools](https://img.shields.io/badge/MCP-exactly%206%20tools-5c4ee5)](docs/reference/MCP_REFERENCE.md)
@@ -30,30 +30,30 @@ flowchart LR
 
 ## 目前穩定版本
 
-**TW-Market `v1.5.0` 是目前的 stable GitHub release。** ProductVersion = `1.5.0`。
-它於 2026-10-28 正式發布，凍結來源 commit 為
-`acaf726a5b59baee4c5a30521ea5a5d5ec0cec76`，source tree 為
-`d44f66dc154c21326ac8b105d2f15fd793f6071b`。
+**TW-Market `v1.5.1` 是目前最新正式穩定版（Latest Stable GitHub Release）。**
+2026-11-04 23:57（台灣時間）發布；ProductVersion = `1.5.1`。
 
-- [GitHub Release v1.5.0](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
-- [Windows Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip)
-- [Native SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip.sha256)
-- [Windows MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb)
-- [MCPB SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb.sha256)
-- [First-party SBOM](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-first-party-sbom.json)
-- [Publication manifest](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-publication-manifest.json)
+- 凍結來源 commit：`1f3666eefdca7e2e9a1c88099f802696bf7970d6`
+- 凍結來源 tree：`d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6`
+- [GitHub Release v1.5.1](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1)
+- [Windows Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-windows-x64.zip)
+- [Native SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-windows-x64.zip.sha256)
+- [Windows MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb)
+- [MCPB SHA-256 sidecar](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb.sha256)
+- [First-party dependency SBOM](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-first-party-sbom.json)
+- [Publication manifest](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-publication-manifest.json)
+- [正式發行證據與 SHA-256](docs/release/V1_5_1_RELEASE_PUBLICATION.md)
 
-即使 `main` 後續因發布後文件維護或新開發而繼續前進，已凍結的 `v1.5.0`
-tag 與經 SHA-256 驗證的 release assets 仍是該版本的正式發行 authority。
-GitHub 並未對此 release 啟用 Immutable Releases 強制機制；這裡的不變更要求
-屬於治理／freeze policy，而不是平台層技術鎖定。
+`v1.5.1` Tag、已發布的六項資產及 Manifest 維持凍結；日後 `main` 上的文件
+Commit 不會改變該版本的來源身分。`v1.5.0` 是歷史穩定版，仍可追溯。
+GitHub Immutable Releases 是否平台強制啟用不在此宣稱範圍。
 
 ## 選擇使用路徑
 
 | 路徑 | 適合對象 | 開始方式 |
 |---|---|---|
-| **Windows Native ZIP** | 一般本機操作／Workbench 使用者 | [下載 v1.5.0 Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/TW-Market-1.5.0-windows-x64.zip) |
-| **Windows MCPB** | AI／MCP client | [下載 v1.5.0 MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.0/tw-market-unified-mcp-v1.5.0-win-x64.mcpb) |
+| **Windows Native ZIP** | 一般本機操作／Workbench 使用者 | [下載 v1.5.1 Native ZIP](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/TW-Market-1.5.1-windows-x64.zip) |
+| **Windows MCPB** | AI／MCP client | [下載 v1.5.1 MCPB](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/download/v1.5.1/tw-market-unified-mcp-v1.5.1-win-x64.mcpb) |
 | **Source checkout** | 開發者／貢獻者 | [Source／developer 路徑](docs/operator/QUICK_START.md#path-c--source-checkout-developer--contributor-path) |
 
 要在 **60 秒內掌握入口與第一次啟動流程**，請直接依照
@@ -149,20 +149,20 @@ Release ZIP / MCPB 請依各自的 operator / distribution 安裝流程處理。
 
 ## MCP 發行與 Registry 邊界
 
-目前 GitHub `v1.5.0` release 已包含受支援的 Windows MCPB 與 SHA-256 sidecar，
-採用本機 stdio transport，提供與 source launcher 相同的固定六個受治理工具。
+GitHub `v1.5.1` 正式發布的 Windows MCPB 與 SHA-256 sidecar 提供本機
+stdio、固定六個受治理工具，不是雲端市場資料服務。
 
-公開 MCP Registry entry
-`io.github.SmartyJohnway/tw-market-live-data-intelligence` 是**獨立的 publication
-surface**。在另行授權 Registry update 之前，其目前已發布的 package metadata
-仍維持歷史 `v1.0.0` package。不可因 GitHub 已發布 v1.5.0，就推論 MCP Registry
-也已同步發布 v1.5.0。
+官方 MCP Registry 的身分為
+`io.github.SmartyJohnway/tw-market-live-data-intelligence`。2026-11-05
+經官方 Registry API 查核，Registry 的 **Active/Latest 版本仍是 `1.0.0`**。
+GitHub `v1.5.1` 發布不等於 Registry 同步發布；`server.json` 也未修改，
+後續 Registry 發布需要另行授權。
 
-安裝範圍、完整性與 Security Master 邊界請見
-[MCP 發行說明](docs/distribution/MCP_DISTRIBUTION.md)。
+請見 [MCP 發行說明](docs/distribution/MCP_DISTRIBUTION.md) 及
+[正式六工具參考](docs/reference/MCP_REFERENCE.md)。
 
-Docker 已作為 `linux/amd64` release / provenance validation surface 完成驗證，
-但 v1.5.0 並沒有發布 Docker registry image。
+Docker `linux/amd64` 已用於本機建置、驗證與 provenance；
+**`v1.5.1` 未發布 Docker Registry image**。
 
 ## 文件入口
 
@@ -191,16 +191,19 @@ Engineering / governance 入口：
 
 ## Release 歷史與 provenance
 
-- **`v1.5.0`**：目前 stable GitHub release；frozen source 與 final release assets
-  已通過 Phase L release-governance 與 publication acceptance chain。
-- **`v1.0.0`**：歷史 stable release；在另行授權 Registry update 前，仍是目前
-  MCP Registry 所發布的 package。
+- **`v1.5.1`**：目前最新正式 GitHub Stable（2026-11-04），六項資產已驗證。
+- **`v1.5.0`**：歷史凍結穩定版（2026-10-28），不因新版本發布而改寫。
+- **`v1.0.0`**：歷史 GitHub Stable；目前 MCP Registry 已發布版本
+  （2026-11-05 官方 Registry 即時確認）。
 - **`v1.0.0-rc.1`**：歷史 prerelease。
-- **`v0.1.0`**：更早的 stable GitHub release。
+- **`v0.1.0`**：較早版本。
 
-v1.5.0 publication 包含 Native ZIP / checksum、MCPB / checksum、first-party SBOM
-與 typed publication manifest。SHA-256 / provenance / SBOM 是完整性與追溯控制，
-不是 cryptographic publisher signature。
+`v1.5.1` 六項資產包含 Native ZIP／checksum、MCPB／checksum、
+first-party SBOM 與 Publication Manifest。SHA-256、provenance、
+SBOM 用於完整性與來源追溯，不是 publisher cryptographic signature；
+簽章 authority 仍為 `NOT_ESTABLISHED`。
+[正式發行證據](docs/release/V1_5_1_RELEASE_PUBLICATION.md)列出六項 SHA-256
+及保留的非阻擋診斷事項。
 
 ## 參與與安全回報
 

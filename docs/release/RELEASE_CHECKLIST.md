@@ -1,4 +1,12 @@
-# Release Checklist
+# Historical A1 / Phase-L Release Checklist
+
+> **Scope warning (2026-11-05):** This checklist records the earlier A1
+> release-gate development profile, not the outcome/status of the officially
+> **published v1.5.1** stable release. The current publication record is
+> [v1.5.1 Stable](V1_5_1_RELEASE_PUBLICATION.md), including its
+> exact source, six asset hashes and retained diagnostic failures.
+> Original historical checkboxes and test assertions below are kept as
+> the history of their own gate, not retroactively marked complete.
 
 ## Deterministic release-blocking gate
 
@@ -8,7 +16,10 @@
 - [ ] Record FAST / DEFAULT_CI / FULL_NON_NETWORK diagnostic results honestly; never convert their overall FAIL into PASS. They are not substitutes for the canonical blocking gate.
 - [ ] Retain the original historical assertions and legacy acceptance migration matrix at `docs/reviews/m6k_ci_gate_migration_matrix.csv`. A1's explicit classification lives in `config/release_blocking_ci.v1.json`; future selection changes require governance.
 
-`DEFAULT_CI` is the preserved current/historical mixture. `FULL_NON_NETWORK` is
+`DEFAULT_CI` is the preserved current/historical mixture. The published v1.5.1
+release uses the `release-blocking-ci` profile for release acceptance;
+`default_ci` and `full_non_network` both retained FAIL as supplemental
+diagnostic results; do not relabel them PASS. `FULL_NON_NETWORK` is
 the broader diagnostic composite; on the A1 Windows baseline it stops during
 collection because the historical Phase J A6 session helper imports Unix-only
 `fcntl`. No FULL_NON_NETWORK PASS is implied. The canonical profile preserves

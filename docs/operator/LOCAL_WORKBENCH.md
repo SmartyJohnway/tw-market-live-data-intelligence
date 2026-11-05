@@ -88,11 +88,16 @@ python scripts/run_environment_diagnostics.py
 python scripts/manage_security_master.py status
 ```
 
-For regression validation use:
+For governed release-blocking regression validation use:
 
 ```bash
-python scripts/run_test_profile.py default-ci
+python scripts/run_test_profile.py release-blocking-ci
 ```
+
+`default-ci` and `full-non-network` are supplemental diagnostic profiles,
+not the release-blocking acceptance gate; both retained FAIL outcomes in
+the v1.5.1 release evidence. Do not report them as PASS.
+
 
 ## Network boundary
 

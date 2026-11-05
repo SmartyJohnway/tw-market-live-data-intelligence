@@ -2,9 +2,9 @@
 
 > Local-first, governed Taiwan-market evidence infrastructure for humans and AI agents.
 
-Current stable release: v1.5.0 (2026-10-28)
-Frozen release source: acaf726a5b59baee4c5a30521ea5a5d5ec0cec76
-Frozen release tree: d44f66dc154c21326ac8b105d2f15fd793f6071b
+Current stable release: v1.5.1 (2026-11-04)
+Frozen release source: 1f3666eefdca7e2e9a1c88099f802696bf7970d6
+Frozen release tree: d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6
 
 TW-Market validates identity and capability, previews bounded work, requires explicit authorization, executes once, then materializes governed Result/Audit evidence and an AI-ready handoff. It is not a broker, autonomous trader, general-purpose crawler, or realtime guarantee.
 
@@ -69,7 +69,10 @@ Preview is not authorization. Authorization is not execution. Do not autonomousl
 
 ## Distribution
 
-- Stable release: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0
+- Stable release: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1
+- Stable publication provenance: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/release/V1_5_1_RELEASE_PUBLICATION.md
 - MCP distribution: https://github.com/SmartyJohnway/tw-market-live-data-intelligence/blob/main/docs/distribution/MCP_DISTRIBUTION.md
 
-The GitHub v1.5.0 release and MCP Registry are separate publication surfaces. Do not infer a v1.5.0 Registry publication from the GitHub release.
+GitHub v1.5.1 publication and MCP Registry are separate. The official Registry
+was checked on 2026-11-05: its active/latest package remains 1.0.0, not v1.5.1.
+Do not infer Registry or Docker registry publication from the GitHub release.

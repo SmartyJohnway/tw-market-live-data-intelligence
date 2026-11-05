@@ -45,6 +45,7 @@ records remain available for audit but are not a second current-product authorit
 - [Governance Index](governance/INDEX.md)
 - [Project History](PROJECT_HISTORY.md)
 - [Release docs](release/README.md)
+- [Published v1.5.1 stable / six-asset SHA-256](release/V1_5_1_RELEASE_PUBLICATION.md)
 - [V1.0.0 stable release snapshot](release/V1_RELEASE.md)
 - [Phase L governance](governance/phase_l/)
 - [Acceptance runs](acceptance_runs/)
@@ -53,10 +54,11 @@ records remain available for audit but are not a second current-product authorit
 - [Protocols](protocol/)
 - [Archive](archive/README.md)
 
-Current stable product is `v1.5.0`; its frozen source is commit
-`acaf726a5b59baee4c5a30521ea5a5d5ec0cec76`, tree
-`d44f66dc154c21326ac8b105d2f15fd793f6071b`. Later documentation commits on
-`main` do not redefine that release.
+Current Stable is [`v1.5.1`](release/V1_5_1_RELEASE_PUBLICATION.md); its frozen
+source is commit `1f3666eefdca7e2e9a1c88099f802696bf7970d6`, tree
+`d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6`. Previous `v1.5.0` remains
+a separate historical release. Documentation-only commits on `main` do not
+redefine any already published tag/source/assets.
 
 ## Engineering history / protocol archive
 

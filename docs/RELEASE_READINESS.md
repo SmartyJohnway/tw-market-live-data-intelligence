@@ -1,4 +1,11 @@
-# Release Readiness
+# Historical M4/M5 Release Readiness
+
+> **Historical-scope notice (2026-11-05):** The status statements below
+> refer to earlier local-first M4/M5 staging and frontend-publication
+> authorization, **not** the latest GitHub stable `v1.5.1` product.
+> See [published v1.5.1 source and assets](release/V1_5_1_RELEASE_PUBLICATION.md)
+> for the current GitHub Release. This notice does not authorize any
+> frontend/public, production-refresh, Phase M or scheduled/live operation.
 
 Current status: local-first staging and readonly preview are ready for non-network CI acceptance.
 

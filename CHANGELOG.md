@@ -1,11 +1,25 @@
 # Changelog
 
-## 1.5.1 (UNRELEASED CANDIDATE — 2026-11-04)
+## 1.5.1 (2026-11-04) — Published Stable
 
-- RMA-0 through RMA-11 owner acceptance closed; bounded patch repairs address Launcher / Security Master lifecycle, deterministic verified TLS, governed Result coverage and operator UX.
-- Improve Workbench request/preview/authorization and explicit Execute Once confirmation without weakening audit or network authority.
-- Correct recent-performance derivation and AI-ready Markdown consistency; preserve the exact six MCP tools and public compatibility contracts.
-- This entry records a local selected patch candidate only. v1.5.0 remains the published stable release; no v1.5.1 GitHub Release, tag, or Registry publication is implied.
+Stable release: [GitHub Release v1.5.1](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1)
+and [publication SHA-256 record](docs/release/V1_5_1_RELEASE_PUBLICATION.md).
+
+- RMA-0 through RMA-11 Owner E2E acceptance closed; patch repairs cover
+  Launcher/Security Master lifecycle, explicit verified TLS trust handling,
+  governed Result V3 truthfulness and operator UX.
+- Improve Workbench request composition, preview/authorization and explicit
+  network Execute Once confirmation without expanding authority.
+- Correct bounded recent-performance derivation and AI-ready Markdown
+  consistency while retaining exact six MCP tools and compatibility contracts.
+- Publish the Windows Native ZIP, MCPB, SHA-256 sidecars, deterministic
+  first-party SBOM and typed Publication Manifest from frozen source
+  `1f3666eefdca7e2e9a1c88099f802696bf7970d6`.
+- Independent release Readiness and Windows/Linux GitHub CI passed. Preserve
+  historical `default_ci=FAIL` and `full_non_network=FAIL` supplemental
+  diagnostics; neither is the canonical release-blocking profile.
+- v1.5.1 does **not** publish an MCP Registry update, Docker registry image,
+  cryptographic publisher signature or automatic market-data collection.
 
 ## 1.5.0 (2026-10-28)
 
