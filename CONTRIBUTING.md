@@ -73,8 +73,21 @@ It is a separate manual diagnostic, not the release-blocking authority.
 Release blocking (existing Node/Git and governed dependencies required):
 
 ```powershell
-python -B scripts/run_test_profile.py release-blocking-ci --json --output-root C:/twmarket_temp/release-check
+# Execute in PowerShell from a fresh C: isolated workspace.
+$root = "C:\twmarket-ci\review-UNIQUE-ID"
+git clone https://github.com/SmartyJohnway/tw-market-live-data-intelligence.git "$root\source"
+Set-Location "$root\source"
+python -B scripts/run_test_profile.py release-blocking-ci --json --output-root "$root\ci-output"
 ```
+
+The Runner requires the output directory to be **fresh and under the isolated
+source checkout's parent directory**, and forbids all D: output paths
+**after final path resolution**. For this reason, executing from a D:
+checkout with an unrelated C: output path does **not** work. Do not use
+`../ci-runs/...` relative to a D: checkout: it resolves onto D: and is
+rejected by the output-drive guard. The isolated C: example above is the
+supported Windows workflow; choose a unique directory and clean up only
+your own disposable test workspace.
 
 This delegates to `scripts/run_deterministic_ci.py` and the unchanged
 `config/release_blocking_ci.v1.json`. `release-preflight-current` is a separate

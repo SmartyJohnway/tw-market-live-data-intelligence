@@ -2,7 +2,7 @@
 
 [English](README.md) | [繁體中文](README.zh-TW.md)
 
-[![Stable v1.5.1](https://img.shields.io/badge/stable-v1.5.1-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
+[![Stable v1.5.1](https://img.shields.io/badge/stable-v1.5.1-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1)
 ![Windows 11 x64](https://img.shields.io/badge/Windows-11%20x64-0078d4)
 ![Python 3.13](https://img.shields.io/badge/Python-3.13-3776ab)
 [![MCP six tools](https://img.shields.io/badge/MCP-exactly%206%20tools-5c4ee5)](docs/reference/MCP_REFERENCE.md)
@@ -47,6 +47,34 @@ flowchart LR
 `v1.5.1` Tag、已發布的六項資產及 Manifest 維持凍結；日後 `main` 上的文件
 Commit 不會改變該版本的來源身分。`v1.5.0` 是歷史穩定版，仍可追溯。
 GitHub Immutable Releases 是否平台強制啟用不在此宣稱範圍。
+
+## v1.5.0 升級到 v1.5.1：Windows Native 操作體驗
+
+**這次最重要的改善，是把工程導向的操作流程改成一般使用者可以循序
+完成的 Windows Native 工作流程。** 此改善經 RMA-0～RMA-11
+的本機操作與驗收紀錄支持，不只是修改內部程式碼。
+
+- **雙擊套件根目錄的 `Launch-TW-Market.cmd`**：不需自行輸入
+  Python、PowerShell 或服務指令；首次設定畫面會檢查外部
+  Python 3.13 x64 是否已具備。
+- **首次設定與日常操作分離**：透過 Local Runtime、Workbench、
+  Security Master、Local MCP 狀態卡片，以及 Start／Stop／Refresh／
+  Diagnose／Open Workbench 操作。
+- **看得懂的 Security Master 流程**：Install／Update、官方來源
+  取得前明確確認、必要時提示 Restart；只在有證據支持時，
+  才提供仍驗證憑證的 TLS 相容性重試。
+- **Workbench 不再要求先懂 JSON**：透過 Request Builder → Compose
+  → Validate → Preview；遇到阻擋時提供原因與可採行的處理方向。
+- **網路取得不會在背後自行發生**：Authorize 後仍須明確確認
+  網路執行，再 Execute Once；最後讀取 Result／Audit，
+  匯出 Mode C 的 AI-ready Handoff。進階技術細節仍可查看，
+  但不佔據主要操作畫面。
+
+[完整 Windows Native v1.5.1 使用導覽及 RMA-0～11 證據對照](docs/operator/WINDOWS_NATIVE_V151_GUIDED_WORKFLOW.md)。
+
+**重要界限：**仍需預先具備 Python 3.13 x64；Setup 不自動安裝
+Python、不自動取得市場資料；Security Master 更新與實際網路
+查詢均需使用者明確授權。沒有背景排程、自動交易或即時行情保證。
 
 ## 選擇使用路徑
 

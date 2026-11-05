@@ -15,6 +15,42 @@
 - Exact GitHub Windows/Linux main workflow:
   [successful run 41854420205](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/actions/runs/41854420205)
 
+## What v1.5.1 changes for Windows Native users
+
+Compared with v1.5.0, the core user-facing improvement is **a simpler,
+guided Windows Native workflow** — from GUI first-run Setup and clear
+daily controls to recoverable Workbench requests and auditable AI delivery.
+This was Owner-driven and verified through RMA-0 through RMA-11.
+
+- **First run (RMA-1):** Launch from `Launch-TW-Market.cmd` with clear
+  Python readiness, one `Set Up TW-Market` step and transition to daily view;
+  no developer shell commands are needed in the primary GUI path.
+- **Daily operation (RMA-2/3):** one Launcher for Runtime, Workbench, Local
+  MCP and Security Master status, plus explicit Start/Stop, Refresh,
+  Diagnose, Install/Update and required Restart guidance.
+- **Real local integration and safe request planning (RMA-4/5/6/7):**
+  fixed six-tool MCP; identity resolution; capability-based Validate/Preview
+  and authorization; verified official-source/TLS handling.
+- **Truthful results and recovery (RMA-8/9):** Result/Audit/evidence
+  hash/receipt traceability; fail-closed blocked states and bounded recovery
+  rather than misleading success or hidden retries.
+- **Portability (RMA-10):** isolated packages tested in different
+  directories, including a path with spaces and a relocated HOME, with
+  Launcher, local service and MCP startup-check verified.
+- **End-user Workbench UX (RMA-11):** default-collapsed technical JSON,
+  Request Builder aligned to current capability selection, blocked Preview
+  explanations and recovery, authorization-readiness guidance,
+  a separate explicit network-confirmation step, Execute Once feedback,
+  and consistent Mode C Result/Audit/AI-ready Markdown.
+
+[Complete guided Windows Native journey and RMA-0–11 traceability](../operator/WINDOWS_NATIVE_V151_GUIDED_WORKFLOW.md)
+
+The accepted Owner E2E is the original RMA evidence carried forward through
+source/runtime-equivalence into this frozen published release; do **not**
+describe it as a newly repeated post-publication live E2E.
+Python 3.13 x64 remains an external prerequisite, and neither Setup nor
+Launcher startup acquires market data automatically.
+
 ## Six officially published release assets
 
 All six were downloaded fresh **after official publication**, with exact

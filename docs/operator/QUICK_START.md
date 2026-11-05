@@ -17,6 +17,25 @@ The current published Stable:
 - frozen source tree `d67e9bc1db34ff268b5b8d0f2a301d1a211df3b6`
 - [six-asset checksum and release record](../release/V1_5_1_RELEASE_PUBLICATION.md)
 
+## Guided first-use and daily journey
+
+The normal user journey is:
+**Download & verify Native ZIP → extract → double-click `Launch-TW-Market.cmd`
+→ first-run Setup → explicit Security Master Install → Start TW-Market
+→ Open Workbench → Compose → Validate → Preview → Authorize
+→ separately confirm network use → Execute Once → Result/Audit/AI Handoff.**
+
+Setup is offline and never authorizes Security Master activation or network
+market-data acquisition; an external CPython 3.13 x64 runtime is required.
+The Launcher exposes technical details only when requested. A blocked
+Preview supplies a cause and bounded recovery guidance, not a hidden
+retry or silent authorization. Security Master Install/Update is a separate
+confirmed official-source action.
+
+**Read the [v1.5.1 Windows Native guided workflow and RMA-0–11
+operator-acceptance highlights](WINDOWS_NATIVE_V151_GUIDED_WORKFLOW.md)**
+for first-run, daily Launcher, failure recovery and Mode C delivery.
+
 ## Path A — Windows Native ZIP (recommended operator path)
 
 Download the exact released files:

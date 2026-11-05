@@ -6,6 +6,7 @@ The **latest published GitHub Stable is `v1.5.1`**, frozen at
 
 - [v1.5.1 — Published Release, all six asset SHA-256](V1_5_1_RELEASE_PUBLICATION.md)
 - [GitHub v1.5.1 Release](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1)
+- [v1.5.1 Native user experience & RMA-0–11](../operator/WINDOWS_NATIVE_V151_GUIDED_WORKFLOW.md)
 - [Operator Native/MCPB Quick Start](../operator/QUICK_START.md)
 - [Unified MCP Distribution](../distribution/MCP_DISTRIBUTION.md)
 - [Current Changelog](../../CHANGELOG.md)

@@ -7,6 +7,7 @@ records remain available for audit but are not a second current-product authorit
 ## I want to use TW-Market
 
 - [Operator Quick Start](operator/QUICK_START.md) — Native ZIP / MCPB / source paths
+- [v1.5.1 Windows Native guided operation and RMA-0–11 improvements](operator/WINDOWS_NATIVE_V151_GUIDED_WORKFLOW.md)
 - [Local Unified Workbench](operator/LOCAL_WORKBENCH.md)
 - [Mode A/B/C Walkthrough](operator/MODE_ABC_WALKTHROUGH.md)
 - [Troubleshooting](operator/TROUBLESHOOTING.md)

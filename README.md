@@ -2,7 +2,7 @@
 
 [English](README.md) | [繁體中文](README.zh-TW.md)
 
-[![Stable v1.5.1](https://img.shields.io/badge/stable-v1.5.1-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.0)
+[![Stable v1.5.1](https://img.shields.io/badge/stable-v1.5.1-2ea44f)](https://github.com/SmartyJohnway/tw-market-live-data-intelligence/releases/tag/v1.5.1)
 ![Windows 11 x64](https://img.shields.io/badge/Windows-11%20x64-0078d4)
 ![Python 3.13](https://img.shields.io/badge/Python-3.13-3776ab)
 [![MCP six tools](https://img.shields.io/badge/MCP-exactly%206%20tools-5c4ee5)](docs/reference/MCP_REFERENCE.md)
@@ -49,6 +49,36 @@ The `v1.5.1` tag/source and six published assets remain immutable under release
 governance. Later documentation-only commits on `main` are **not** new `v1.5.1`
 release bytes. GitHub Immutable Releases platform enforcement is not asserted.
 Previous `v1.5.0` remains a valid frozen historical release.
+
+## Why upgrade from v1.5.0? Windows Native operator experience
+
+The main v1.5.1 improvement is a **guided, operator-first Windows workflow**
+verified across RMA-0 through RMA-11 — not simply an internal patch.
+
+- **Open the package-root `Launch-TW-Market.cmd`** instead of starting with
+  Python, PowerShell, source folders or manual service commands. The graphical
+  first-run setup checks the external Python 3.13 x64 prerequisite.
+- **Set up once, operate daily:** status cards for Local Runtime, Workbench,
+  Security Master and Local MCP; explicit Start, Stop, Refresh, Diagnose and
+  Open Workbench controls.
+- **Manage Security Master visibly:** Install/Update, confirmation before
+  official-source acquisition, clear restart guidance and a verified-TLS
+  compatibility retry only when justified by current source evidence.
+- **Build requests without editing raw JSON:** Workbench Request Builder,
+  Compose, Validate and Preview; explain blocking conditions and offer
+  bounded recovery guidance before authorization.
+- **Know exactly when data will be fetched:** explicit Authorize, separate
+  network confirmation, and Execute Once; then inspect Result/Audit and
+  export an AI-ready Mode C handoff. Advanced technical payloads remain
+  available but no longer dominate the primary journey.
+
+[See the complete Windows Native v1.5.1 guided workflow and RMA-0–11 evidence](docs/operator/WINDOWS_NATIVE_V151_GUIDED_WORKFLOW.md).
+
+This is **not** a zero-dependency installer: Python 3.13 x64 is still
+required; Setup does not install Python or fetch market data; Security
+Master acquisition and any live evidence execution require explicit
+operator authorization. No scheduler, automated trading or realtime
+data guarantee is included.
 
 ## Choose your path
 

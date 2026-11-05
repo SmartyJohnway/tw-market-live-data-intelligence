@@ -46,19 +46,39 @@ def collect_guard_shards(out: Path, parent_pid: int) -> list[dict]:
     return events
 
 
+def validate_output_root(requested: Path, *, repo_root: Path | None = None,
+                         cwd: Path | None = None) -> Path:
+    """Validate the final output location without creating files or directories.
+
+    A relative caller argument has no drive. Checking only its raw drive can
+    silently permit a final D: destination; validate the resolved path too.
+    """
+    repo_root = ROOT if repo_root is None else repo_root
+    if requested.drive.upper() == "D:":
+        raise ValueError("forbidden CI output drive")
+    candidate = (Path.cwd() if cwd is None else cwd) / requested
+    out = candidate.resolve()
+    if out.drive.upper() == "D:":
+        raise ValueError("forbidden CI output drive")
+    if out == repo_root or repo_root in out.parents:
+        raise ValueError("CI output root must be outside APP_ROOT")
+    bound = repo_root.parent
+    if not out.is_relative_to(bound):
+        raise ValueError("CI output must be under the isolated workspace parent")
+    if out.exists():
+        raise ValueError("CI output root must be fresh")
+    return out
+
+
 def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output-root',type=Path,required=True)
     args=p.parse_args(argv)
-    if args.output_root.drive.upper()=='D:':raise ValueError('forbidden CI output drive')
+    out = validate_output_root(args.output_root)
     # Filter forbidden discovery roots lexically before any prerequisite lookup.
     os.environ['PATH']=os.pathsep.join(x for x in os.environ.get('PATH','').split(os.pathsep) if Path(x.strip('"')).drive.upper()!='D:')
     sys.path[:]=[x for x in sys.path if Path(x).drive.upper()!='D:']
-    out=args.output_root.resolve()
-    if out==ROOT or ROOT in out.parents:raise ValueError('CI output root must be outside APP_ROOT')
-    bound=ROOT.parent
-    if not out.is_relative_to(bound):raise ValueError('CI output must be under the isolated workspace parent')
-    if out.exists():raise ValueError('CI output root must be fresh')
+    bound = ROOT.parent
     out.mkdir(parents=True)
     contract=json.loads((ROOT/'config/release_blocking_ci.v1.json').read_text(encoding='utf-8'))
     for name in ['home','state','temp','local']:(out/name).mkdir()

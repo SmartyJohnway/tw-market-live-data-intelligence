@@ -2,8 +2,12 @@
 
 ## Current L7 deterministic release gate
 
-`release-blocking-ci` v1 is the canonical local deterministic release gate:
-`python scripts/run_test_profile.py release-blocking-ci --json --output-root ../ci-runs/UNIQUE-RUN-ID`.
+`release-blocking-ci` v1 is the canonical local deterministic release gate.
+The runner needs a **fresh C: output sibling of a fresh C: checkout** on
+Windows; it does not permit arbitrary D: output paths, including relative
+paths resolving to D:. See the [complete PowerShell example](../../CONTRIBUTING.md#current-test-authority).
+From inside `C:\twmarket-ci\review-UNIQUE-ID\source`, run:
+`python scripts/run_test_profile.py release-blocking-ci --json --output-root C:/twmarket-ci/review-UNIQUE-ID/ci-output`.
 It uses `config/release_blocking_ci.v1.json`, fresh external state/temp roots,
 existing Node/Git/Python prerequisites and guarded Python/Node subprocesses.
 Unknown native children, external acquisition, unexpected skips and xfails fail
@@ -14,9 +18,13 @@ FAST is inner-loop feedback. DEFAULT_CI retains its earlier current/historical
 selection as a diagnostic; FULL_NON_NETWORK is a broader diagnostic and may
 report platform collection failures. Preserve their exact outcomes. Browser,
 operator and bounded-live acceptance are separate release proofs; live execution
-requires fresh Owner authority. GitHub integration/protection and stable release
-publication remain separately authorized later work. See the
-[Release Checklist](../release/RELEASE_CHECKLIST.md) for the current gate hierarchy.
+requires fresh Owner authority. **GitHub v1.5.1 is already the Latest Stable
+Release**. New Registry/Docker publication and automation/branch protection
+still require separate Owner decisions. For the current GitHub release
+identity and accepted gates, use the
+[v1.5.1 publication record](../release/V1_5_1_RELEASE_PUBLICATION.md);
+the earlier [A1 checklist](../release/RELEASE_CHECKLIST.md) is a
+historical milestone, not the current Stable release gate.
 
 Core validation commands:
 

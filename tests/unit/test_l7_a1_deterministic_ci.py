@@ -99,6 +99,81 @@ def test_output_boundary_is_checked_before_creating_directories(tmp_path,monkeyp
     assert not outside.exists()
 
 
+def test_ci_output_root_validator_allows_fresh_isolated_sibling(tmp_path):
+    from scripts import run_deterministic_ci as runner
+    checkout = tmp_path / "checkout"
+    checkout.mkdir()
+    requested = Path("../fresh-ci")
+    actual = runner.validate_output_root(requested, repo_root=checkout,
+                                         cwd=checkout)
+    assert actual == tmp_path / "fresh-ci"
+    assert not actual.exists()
+
+
+def test_ci_output_root_validator_rejects_outside_and_inside(tmp_path):
+    from scripts import run_deterministic_ci as runner
+    checkout = tmp_path / "checkout"
+    checkout.mkdir()
+    outside = tmp_path.parent / "r1-definitely-not-allowed"
+    inside = checkout / "r1-not-allowed"
+    for requested,fragment in [
+        (outside, "isolated workspace parent"),
+        (inside, "outside APP_ROOT"),
+        (checkout, "outside APP_ROOT"),
+    ]:
+        with pytest.raises(ValueError, match=fragment):
+            runner.validate_output_root(requested, repo_root=checkout,
+                                         cwd=checkout)
+        assert not requested.exists() or requested == checkout
+
+
+def test_ci_output_root_validator_rejects_existing_dir(tmp_path):
+    from scripts import run_deterministic_ci as runner
+    checkout = tmp_path / "checkout"
+    checkout.mkdir()
+    already = tmp_path / "already"
+    already.mkdir()
+    with pytest.raises(ValueError, match="must be fresh"):
+        runner.validate_output_root(already, repo_root=checkout, cwd=checkout)
+
+
+def test_ci_output_root_resolved_drive_validation_no_d_files_created(tmp_path):
+    """Prove relative/absolute/aliased D: paths are rejected on Windows."""
+    from scripts import run_deterministic_ci as runner
+    if os.name == "nt":
+        drive_root = Path("D:/ci-guard-review")
+        checkout = drive_root / "checkout"
+        raw_relative = Path("../r1-sentinel-no-create")
+        raw_absolute = drive_root / "r1-absolute-no-create"
+        for requested in (raw_relative,raw_absolute):
+            with pytest.raises(ValueError, match="forbidden CI output drive"):
+                runner.validate_output_root(requested, repo_root=checkout,
+                                             cwd=checkout)
+        # Simulate a Windows path alias/symlink whose final resolution
+        # escapes onto D:; do not create a real link or any D: directory.
+        checkout_c = tmp_path / "checkout"
+        checkout_c.mkdir()
+        alias = tmp_path / "alias-no-create"
+        real_resolve = Path.resolve
+        def resolve_for_alias(self,*a,**k):
+            if str(self) == str(alias):
+                return drive_root / "resolved-alias"
+            return real_resolve(self,*a,**k)
+        from pytest import MonkeyPatch
+        with MonkeyPatch.context() as patch:
+            patch.setattr(Path,"resolve",resolve_for_alias)
+            with pytest.raises(ValueError, match="forbidden CI output drive"):
+                runner.validate_output_root(alias, repo_root=checkout_c,
+                                             cwd=checkout_c)
+        assert not alias.exists()
+    else:
+        # Portable fallback checks the public helper and avoids new skip nodes.
+        checkout = tmp_path / "checkout"
+        checkout.mkdir()
+        with pytest.raises(ValueError, match="isolated workspace parent"):
+            runner.validate_output_root(tmp_path.parent / "outside",
+                                         repo_root=checkout, cwd=checkout)
+
 def test_current_72_cell_family_equivalent_checks_semantics_offline(monkeypatch):
     """Keep current semantic proofs without the old no-post-L5-source-change gate."""
     import socket
