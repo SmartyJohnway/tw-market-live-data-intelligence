@@ -24,3 +24,10 @@ This project must not accept committed secrets. Security reports involving
 MCP, the loopback Local Service, authorization boundaries, package integrity,
 or release tooling are in scope. Trading, order routing, and remote account
 operations are not product capabilities.
+
+## Release integrity and publisher provenance
+
+See [GitHub Platform & Signing Governance](docs/release/GITHUB_PLATFORM_AND_SIGNING_GOVERNANCE.md)
+for active branch/tag protections, future immutable Release attestations,
+and the explicitly unsigned/legacy verification boundary of v1.5.1.
+Do not treat SHA-256 checksums alone as a personal publisher signature.

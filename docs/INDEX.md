@@ -47,6 +47,7 @@ records remain available for audit but are not a second current-product authorit
 - [Project History](PROJECT_HISTORY.md)
 - [Release docs](release/README.md)
 - [Published v1.5.1 stable / six-asset SHA-256](release/V1_5_1_RELEASE_PUBLICATION.md)
+- [CURRENT GitHub platform protection and signing governance](release/GITHUB_PLATFORM_AND_SIGNING_GOVERNANCE.md)
 - [V1.0.0 stable release snapshot](release/V1_RELEASE.md)
 - [Phase L governance](governance/phase_l/)
 - [Acceptance runs](acceptance_runs/)
